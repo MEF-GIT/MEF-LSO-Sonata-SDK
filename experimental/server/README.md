@@ -21,4 +21,5 @@ In the ConnectToDB() method in ServiceQualifation class, you can change the info
 We added the *.sql files under the tables.rar file so you can see the model of our tables.  
 
 
-
+  
+The link for the original github repository:https://github.com/rami999/SonataR1_Server.
