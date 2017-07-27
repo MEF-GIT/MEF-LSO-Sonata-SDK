@@ -1,0 +1,113 @@
+@startuml
+
+
+class ZErrorDetail {
+   code:int
+   message:string
+   description:string
+   infoURL:string
+}
+
+class ZError {
+   code:int
+   message:string
+   description:string
+   infoURL:string
+}
+   ZError --> "0-*" ZErrorDetail : details
+
+class GeoPoint {
+   spatialRef:string
+   x:string
+   y:string
+}
+
+class GeoLocation
+   GeoLocation --> "0-*" GeoPoint : geoPoint
+
+class GeoLocationRef {
+   id:string
+   href:string
+}
+
+class SubAddress {
+   id:string
+   subUnitType:string
+   subUnitNumber:string
+   levelType:string
+   levelNumber:string
+   buildingName:string
+   privateStreetNumber:string
+   privateStreetName:string
+   @type:string
+   @schemaLocation:string
+}
+
+class GeographicAddress {
+   id:string
+   streetNr:string
+   streetNrSuffix:string
+   streetNrLast:string
+   streetNrLastSuffix:string
+   streetName:string
+   streetType:string
+   streetSuffix:string
+   postcode:string
+   locality:string
+   city:string
+   stateOrProvince:string
+   country:string
+   addrLine1:string
+   addrLine2:string
+   postCodeExtension:string
+   referenceId:string
+   referenceType:string
+   @type:string
+   @schemaLocation:string
+}
+   GeographicAddress --> "0-1" GeoLocation : geographicLocation
+
+class AddressValidation {
+   id:string
+   status:string
+   validationDate:dateTime
+   validationResult:string
+   provideaAlternative:boolean
+}
+   AddressValidation --> "0-1" GeographicAddress : validAddress
+   AddressValidation --> "0-*" GeographicAddress : alternateAddress
+
+class AddressValidationRequest {
+   provideaAlternative:boolean
+}
+   AddressValidationRequest --> "0-1" AddressRequestValidation : validAddress
+
+class AddressRequestValidation {
+   streetNr:string
+   streetNrSuffix:string
+   streetNrLast:string
+   streetNrLastSuffix:string
+   streetName:string
+   streetType:string
+   streetSuffix:string
+   postcode:string
+   locality:string
+   city:string
+   stateOrProvince:string
+   country:string
+}
+   AddressRequestValidation --> "0-1" GeoLocationRef : geoLocationRef
+   AddressRequestValidation --> "0-1" GeoLocation : geoLocation
+
+class AddressValidationFindRequest {
+   status:string
+   validationDate:dateTime
+}
+
+class AddressValidationFindResponse {
+   id:string
+   status:string
+   validationDate:dateTime
+}
+
+@enduml

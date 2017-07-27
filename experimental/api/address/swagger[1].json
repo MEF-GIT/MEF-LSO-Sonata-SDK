@@ -1,0 +1,591 @@
+
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "",    
+    "version": "0.1.0_inProgress",
+    "title": "API Address"
+  },
+  
+  "host": "api.orange.com",
+  "basePath":	"/",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json;charset=utf-8"
+  ],
+  "produces": [
+    "application/json;charset=utf-8"
+  ],  
+  "paths": { 
+      "/address/{addressId}": {
+      "get": {
+        "tags": [
+           "address"
+        ],    
+        "operationId": "geographicAddressGet",
+        "summary": "get geographicAddress",
+        "description": "Retrieves an address using its unique ID. This ID should be retrieve either using the address completion process (cf. completion), or in another API of the ecosystem (party, appointment, etc.)\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n",
+        "deprecated": false,        
+          
+        "parameters": [
+          
+          {
+            "name": "addressId",
+            "in": "path",
+            "required": true,            
+            "type": "string",
+            "description": ""
+          }
+        ],     
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {          
+              "$ref": "#/definitions/GeographicAddress"
+            }                                                  
+
+          }
+        }        
+      }
+    }, 
+      "/addressValidation": {
+      "post": {
+        "tags": [
+           "addressValidation"
+        ],    
+        "operationId": "addressValidationCreate",
+        "summary": "create addressValidation",
+        "description": "This operation creates an address validation request.\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n",
+        "deprecated": false,        
+          
+        "parameters": [
+          
+          {
+            "name": "addressValidationRequest",
+            "required": true,
+            "in": "body",
+            "description": "",
+            "schema": {          
+              "$ref": "#/definitions/AddressValidationRequest"
+            }                     
+          }
+        ],     
+        "responses": {
+          "201": {
+            "description": "Success",
+            "schema": {          
+              "$ref": "#/definitions/AddressValidation"
+            }                                                  
+
+          }
+        }        
+      },
+      "get": {
+        "tags": [
+           "addressValidation"
+        ],    
+        "operationId": "addressValidationFind",
+        "summary": "find addressValidation",
+        "description": "This operation retrieves a list of address validation entity.\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n",
+        "deprecated": false,        
+          
+        "parameters": [
+          
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "",
+            
+              "type": "string"                     
+          },
+          {
+            "name": "validationDate",
+            "required": false,
+            "in": "query",
+            "description": "",
+            
+              "type": "string"                     
+          }
+        ],     
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {          
+              "type": "array",
+              "items": {          
+              "$ref": "#/definitions/AddressValidationFindResponse"
+              }
+            }                                                  
+
+          }
+        }        
+      }
+    }, 
+      "/addressValidation/{addressValidationId}": {
+      "get": {
+        "tags": [
+           "addressValidation"
+        ],    
+        "operationId": "addressValidationGet",
+        "summary": "get addressValidation",
+        "description": "This operation allows to retrieve an existing address validation using its Id.\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n",
+        "deprecated": false,        
+          
+        "parameters": [
+          
+          {
+            "name": "addressValidationId",
+            "in": "path",
+            "required": true,            
+            "type": "string",
+            "description": ""
+          }
+        ],     
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {          
+              "$ref": "#/definitions/AddressValidation"
+            }                                                  
+
+          }
+        }        
+      }
+    }
+  },
+"definitions": {
+  
+    
+    "ZErrorDetail": {
+      "description": "",
+      
+      "required": [       
+          
+            "code",
+            "message"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "description": "",
+              "type": "integer",
+              "format": "int32"
+        },
+        "message": {
+          "description": "",
+              "type": "string"
+        },
+        "description": {
+          "description": "",
+              "type": "string"
+        },
+        "infoURL": {
+          "description": "",
+              "type": "string"
+        }     
+      }
+            
+    },
+    
+    "ZError": {
+      "description": "",
+      
+      "required": [       
+          
+            "code",
+            "message"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "description": "",
+              "type": "integer",
+              "format": "int32"
+        },
+        "message": {
+          "description": "",
+              "type": "string"
+        },
+        "description": {
+          "description": "",
+              "type": "string"
+        },
+        "infoURL": {
+          "description": "",
+              "type": "string"
+        },
+        "details": {
+          "description": "",
+          "type": "array",
+          "items": {          
+              "$ref": "#/definitions/ZErrorDetail"
+          }
+        }     
+      }
+            
+    },
+    
+    "GeoPoint": {
+      "description": "A GeoPoint defines a geographic point through coordinates.",
+      
+      "type": "object",
+      "properties": {
+        "spatialRef": {
+          "description": "Geocoding referential",
+              "type": "string"
+        },
+        "x": {
+          "description": "x coordinate (usually latitude)",
+              "type": "string"
+        },
+        "y": {
+          "description": "y coordinate (usually longitude)",
+              "type": "string"
+        }     
+      }
+            
+    },
+    
+    "GeoLocation": {
+      "description": "A GeoLocation allows describing through coordinate(s) a point, a line or a space",
+      
+      "type": "object",
+      "properties": {
+        "geoPoint": {
+          "description": "A GeoPoint defines a geographic point through coordinates.",
+          "type": "array",
+          "items": {          
+              "$ref": "#/definitions/GeoPoint"
+          }
+        }     
+      }
+            
+    },
+    
+    "GeoLocationRef": {
+      "description": "Reference a GeoLocation with an id and a href",
+      
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Id of a GeoLocation",
+              "type": "string"
+        },
+        "href": {
+          "description": "Href pointing to the GeoLocation",
+              "type": "string"
+        }     
+      }
+            
+    },
+    
+    "SubAddress": {
+      "description": "It is used for addressing within a property in an urban area (country properties are often defined differently). It may refer to a building, a building cluster, or a floor of a multistory building.",
+      
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique Identifier of the subAddress",
+              "type": "string"
+        },
+        "subUnitType": {
+          "description": "The type of subunit\ne.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF.",
+              "type": "string"
+        },
+        "subUnitNumber": {
+          "description": "The discriminator used for the subunit\noften just a simple number e.g. FLAT 5, may also be a range",
+              "type": "string"
+        },
+        "levelType": {
+          "description": "Describes level types within a building",
+              "type": "string"
+        },
+        "levelNumber": {
+          "description": "Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT 2",
+              "type": "string"
+        },
+        "buildingName": {
+          "description": "Allows for buildings that have well-known names",
+              "type": "string"
+        },
+        "privateStreetNumber": {
+          "description": "Private streets numbers internal to a private street",
+              "type": "string"
+        },
+        "privateStreetName": {
+          "description": "Private streets internal to a property (e.g. a university) may have internal names that are not recorded by the land title office",
+              "type": "string"
+        },
+        "@type": {
+          "description": "",
+              "type": "string"
+        },
+        "@schemaLocation": {
+          "description": "",
+              "type": "string"
+        }     
+      }
+            
+    },
+    
+    "GeographicAddress": {
+      "description": "An address is a structured textual way of describing how to find a Property in an urban area (country properties are often defined differently)",
+      
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique identifier of the address",
+              "type": "string"
+        },
+        "streetNr": {
+          "description": "Number identifying a specific property on a public street. It may be combined with streetNrLast for ranged addresses",
+              "type": "string"
+        },
+        "streetNrSuffix": {
+          "description": "The first street number suffix",
+              "type": "string"
+        },
+        "streetNrLast": {
+          "description": "Last number in a range of street numbers allocated to a property",
+              "type": "string"
+        },
+        "streetNrLastSuffix": {
+          "description": "Last street number suffix for a ranged address",
+              "type": "string"
+        },
+        "streetName": {
+          "description": "Name of the street or other street type",
+              "type": "string"
+        },
+        "streetType": {
+          "description": "Alley, avenue, boulevard, brae, crescent, drive, highway, lane, terrace, parade, place, tarn, way, wharf",
+              "type": "string"
+        },
+        "streetSuffix": {
+          "description": "A modifier denoting a relative direction",
+              "type": "string"
+        },
+        "postcode": {
+          "description": "Descriptor for a postal delivery area, used to speed and simplify the delivery of mail (also known as zipcode)",
+              "type": "string"
+        },
+        "locality": {
+          "description": "\"An area of defined or undefined boundaries within a local authority or other legislatively defined area, usually rural or semi-rural in nature.\" [ANZLIC-STREET], or a suburb \"a bounded locality within a city, town or shire principally of urban character \" [ANZLICSTREET].",
+              "type": "string"
+        },
+        "city": {
+          "description": "City that the address is in",
+              "type": "string"
+        },
+        "stateOrProvince": {
+          "description": "The State or Province that the address is in",
+              "type": "string"
+        },
+        "country": {
+          "description": "Country that the address is in",
+              "type": "string"
+        },
+        "geographicLocation": {
+          "description": "",          
+              "$ref": "#/definitions/GeoLocation"
+        },
+        "addrLine1": {
+          "description": "",
+              "type": "string"
+        },
+        "addrLine2": {
+          "description": "",
+              "type": "string"
+        },
+        "postCodeExtension": {
+          "description": "",
+              "type": "string"
+        },
+        "referenceId": {
+          "description": "",
+              "type": "string"
+        },
+        "referenceType": {
+          "description": "",
+              "type": "string"
+        },
+        "@type": {
+          "description": "",
+              "type": "string"
+        },
+        "@schemaLocation": {
+          "description": "",
+              "type": "string"
+        }     
+      }
+            
+    },
+    
+    "AddressValidation": {
+      "description": "Resource used to support a request for a validation address : check if an address described by values attributes exists)\nIf exist, id is provided\nif not, alternate address(es) could be provided",
+      
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique identifier of the Address Validation",
+              "type": "string"
+        },
+        "status": {
+          "description": "Status of the address validation (inProgress, terminatedWithErrror, done).",
+              "type": "string"
+        },
+        "validationDate": {
+          "description": "Date when the address validation is performed",
+              "type": "string",
+              "format": "date-time"
+        },
+        "validationResult": {
+          "description": "Result of the address validation (success, partial, fail)",
+              "type": "string"
+        },
+        "provideaAlternative": {
+          "description": "Indicator provided by the requester to specify if alternate addresses must be provided in case of partial or fail result",
+              "type": "boolean"
+        },
+        "validAddress": {
+          "description": "structure used to describe the address to be validated in the request and the address validated in the response",          
+              "$ref": "#/definitions/GeographicAddress"
+        },
+        "alternateAddress": {
+          "description": "Structure used to describe alternate address(es) if requested address did not exist (close addresses are described there) or if several addresses match.",
+          "type": "array",
+          "items": {          
+              "$ref": "#/definitions/GeographicAddress"
+          }
+        }     
+      }
+            
+    },
+    
+    "AddressValidationRequest": {
+      "description": "Structure used to describe an address validation request",
+      
+      "type": "object",
+      "properties": {
+        "provideaAlternative": {
+          "description": "Indicator provided by the requester to specify if alternate addresses must be provided in case of partial or fail result",
+              "type": "boolean"
+        },
+        "validAddress": {
+          "description": "structure used to describe the address to be validated in the request and the address validated in the response",          
+              "$ref": "#/definitions/AddressRequestValidation"
+        }     
+      }
+            
+    },
+    
+    "AddressRequestValidation": {
+      "description": "",
+      
+      "type": "object",
+      "properties": {
+        "streetNr": {
+          "description": "Number identifying a specific property on a public street. It may be combined with streetNrLast for ranged addresses",
+              "type": "string"
+        },
+        "streetNrSuffix": {
+          "description": "The first street number suffix",
+              "type": "string"
+        },
+        "streetNrLast": {
+          "description": "Last number in a range of street numbers allocated to a property",
+              "type": "string"
+        },
+        "streetNrLastSuffix": {
+          "description": "Last street number suffix for a ranged address",
+              "type": "string"
+        },
+        "streetName": {
+          "description": "Name of the street or other street type",
+              "type": "string"
+        },
+        "streetType": {
+          "description": "Alley, avenue, boulevard, brae, crescent, drive, highway, lane, terrace, parade, place, tarn, way, wharf",
+              "type": "string"
+        },
+        "streetSuffix": {
+          "description": "A modifier denoting a relative direction",
+              "type": "string"
+        },
+        "postcode": {
+          "description": "Descriptor for a postal delivery area, used to speed and simplify the delivery of mail (also known as zipcode)",
+              "type": "string"
+        },
+        "locality": {
+          "description": "\"An area of defined or undefined boundaries within a local authority or other legislatively defined area, usually rural or semi-rural in nature.\" [ANZLIC-STREET], or a suburb \"a bounded locality within a city, town or shire principally of urban character \" [ANZLICSTREET].",
+              "type": "string"
+        },
+        "city": {
+          "description": "City that the address is in",
+              "type": "string"
+        },
+        "stateOrProvince": {
+          "description": "The State or Province that the address is in",
+              "type": "string"
+        },
+        "country": {
+          "description": "Country that the address is in",
+              "type": "string"
+        },
+        "geoLocationRef": {
+          "description": "A geo location reference",          
+              "$ref": "#/definitions/GeoLocationRef"
+        },
+        "geoLocation": {
+          "description": "A GeoLocation allows describing through coordinate(s) a point, a line or a space",          
+              "$ref": "#/definitions/GeoLocation"
+        }     
+      }
+            
+    },
+    
+    "AddressValidationFindRequest": {
+      "description": "This class is used for request addressValidation search",
+      
+      "type": "object",
+      "properties": {
+        "status": {
+          "description": "Status of the address validation (inProgress, terminatedWithErrror, done).",
+              "type": "string"
+        },
+        "validationDate": {
+          "description": "Date when the address validation is performed",
+              "type": "string",
+              "format": "date-time"
+        }     
+      }
+            
+    },
+    
+    "AddressValidationFindResponse": {
+      "description": "",
+      
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique identifier of the Address Validation",
+              "type": "string"
+        },
+        "status": {
+          "description": "Status of the address validation (inProgress, terminatedWithErrror, done).",
+              "type": "string"
+        },
+        "validationDate": {
+          "description": "Date when the address validation is performed",
+              "type": "string",
+              "format": "date-time"
+        }     
+      }
+            
+    }  
+  }
+}
+	
