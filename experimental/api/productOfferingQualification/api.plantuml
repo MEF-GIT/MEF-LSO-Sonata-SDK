@@ -1,0 +1,227 @@
+@startuml
+
+enum serviceabilityColor {
+   GREEN
+   RED
+   YELLOW
+}
+enum state {
+   UNDER_REVIEW
+   SUBMITTED
+   ACCEPTED
+   COMPLETED
+   REJECTED
+   CANCELLED
+}
+enum timeUnit {
+   SECS
+   MINS
+   HOURS
+   BUSINESS_DAYS
+   CALENDAR_DAYS
+}
+
+class ZErrorDetail {
+   code:int
+   message:string
+   description:string
+   infoURL:string
+}
+
+class ZError {
+   code:int
+   message:string
+   description:string
+   infoURL:string
+}
+   ZError --> "0-*" ZErrorDetail : details
+
+class TerminationError {
+   id:string
+   value:string
+}
+
+class RelatedParty {
+   id:string
+   name:string
+   role:string
+   number:string
+   numberExtension:string
+   emailAddress:string
+}
+
+class ProductRelationship {
+   type:string
+   id:string
+}
+
+class ProductOfferingRef {
+   id:string
+}
+
+class Site {
+   id:string
+   type:string
+   role:string
+   @type:string
+   @schemaLocation:string
+   siteCompanyName:string
+   siteCustomerName:string
+   additionalSiteInformation:string
+   siteDescription:string
+}
+
+class GeographicSubAddress {
+   id:string
+   subUnitType:string
+   subUnitNumber:string
+   levelType:string
+   levelNumber:string
+   buildingName:string
+   privateStreetNumber:string
+   privateStreetName:string
+   @type:string
+   @schemaLocation:string
+}
+
+class GeographicPoint {
+   spatialRef:string
+   x:string
+   y:string
+}
+
+class GeographicLocation
+   GeographicLocation --> "0-1" GeographicPoint : geographicPoint
+
+class GeographicAddress {
+   id:string
+   role:string
+   type:string
+   streetNr:string
+   streetNrSuffix:string
+   streetNrLast:string
+   streetName:string
+   streetType:string
+   streetSuffix:string
+   locality:string
+   city:string
+   postcode:string
+   stateOrProvince:string
+   country:string
+   addrLine1:string
+   addrLine2:string
+   postCodeExtension:string
+   referenceId:string
+   referenceType:string
+   @type:string
+   @schemaLocation:string
+}
+   GeographicAddress --> "0-1" GeographicSubAddress : GeographicSubAddress
+
+class Place {
+   type:string
+   role:string
+   @type:string
+   @schemaLocation:string
+}
+   Place --> "0-1" GeographicLocation : geoLocation
+   Place --> "0-1" GeographicAddress : address
+   Place --> "0-1" Site : site
+
+class Describing {
+   @type:string
+   @schemaLocation:string
+}
+
+class AlternateProductProposal {
+   @type:string
+   serviceabilityDate:string
+}
+   AlternateProductProposal --> "0-1" ProductSpecificationRef : productSpecificationRef
+
+class ProductRelationship {
+   type:string
+   id:string
+}
+
+class ProductSpecificationRef {
+   id:string
+}
+   ProductSpecificationRef --> "0-1" Describing : describing
+
+class Product {
+   id:string
+   @type:string
+}
+   Product --> "1-1" ProductSpecificationRef : productSpecificationRef
+   Product --> "0-*" ProductRelationship : productRelationship
+   Product --> "0-*" RelatedParty : relatedParty
+   Product --> "0-*" GeographicAddress : geographicAddress
+   Product --> "0-*" GeographicLocation : geographicLocation
+   Product --> "0-*" Site : site
+
+class ProductOfferingQualificationItem {
+   id:string
+   desiredActivationDate:date
+   estimatedResponseDate:date
+   serviceConfidenceReason:string
+   MPOE:boolean
+}
+   ProductOfferingQualificationItem --> "0-1" state : state
+   ProductOfferingQualificationItem --> "0-1" serviceabilityColor : serviceabilityConfidence
+   ProductOfferingQualificationItem --> "0-1" TimeInterval : installationInterval
+   ProductOfferingQualificationItem --> "0-1" Product : product
+   ProductOfferingQualificationItem --> "0-1" ProductOfferingRef : productOfferingRef
+   ProductOfferingQualificationItem --> "0-*" productOfferingQualificationItemRelationship : productOfferingQualificationItemRelationship
+   ProductOfferingQualificationItem --> "0-*" AlternateProductProposal : alternateProductProposal
+   ProductOfferingQualificationItem --> "0-*" TerminationError : terminationError
+
+class ProductOfferingQualification {
+   id:string
+   provideAlternative:boolean
+   expectedResponseDate:date
+   projectId:string
+   expirationDate:date
+   @type:string
+   @schemaLocation:string
+}
+   ProductOfferingQualification --> "0-1" state : state
+   ProductOfferingQualification --> "0-*" RelatedParty : relatedParty
+   ProductOfferingQualification --> "0-*" ProductOfferingQualificationItem : productOfferingQualificationItem
+
+class productOfferingQualificationItemRelationship {
+   type:string
+   id:string
+}
+
+class POSTProductOfferingQualificationItem {
+   id:string
+   desiredActivationDate:date
+}
+   POSTProductOfferingQualificationItem --> "1-1" Product : product
+   POSTProductOfferingQualificationItem --> "0-1" ProductOfferingRef : productOfferingRef
+   POSTProductOfferingQualificationItem --> "0-*" productOfferingQualificationItemRelationship : productOfferingQualificationItemRelationship
+
+class POSTProductOfferingQualification {
+   provideAlternative:boolean
+   expectedResponseDate:date
+   projectId:string
+   @type:string
+   @schemaLocation:string
+}
+   POSTProductOfferingQualification --> "0-*" RelatedParty : relatedParty
+   POSTProductOfferingQualification --> "0-*" POSTProductOfferingQualificationItem : productOfferingQualificationItem
+
+class TimeInterval {
+   amount:int
+}
+   TimeInterval --> "1-1" timeUnit : timeUnit
+
+class ProductOfferingQualificationFindReq {
+   id:string
+   expectedResponseDate:date
+   projectId:string
+}
+   ProductOfferingQualificationFindReq --> "0-1" state : state
+
+@enduml

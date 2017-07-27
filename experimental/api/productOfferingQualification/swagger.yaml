@@ -1,0 +1,788 @@
+---
+swagger: "2.0"
+info:
+  description: "This API is used to provide the ability to determine if service can\
+    \ be delivered to a specific customer site within a Partner’s domain"
+  version: "0.1.0_inProgress"
+  title: "API ProductOfferingQualification"
+host: "api.orange.com"
+basePath: "/"
+schemes:
+- "http"
+consumes:
+- "application/json;charset=utf-8"
+produces:
+- "application/json;charset=utf-8"
+paths:
+  /productOfferingQualification:
+    post:
+      tags:
+      - "productOfferingQualification"
+      operationId: "productOfferingQualificationCreate"
+      summary: "create productOfferingQualification"
+      description: "\n\nSpecific business errors for current operation will be encapsulated\
+        \ in\n\nHTTP Response 422 Unprocessable entity\n\n - 100: A relatedParty -\
+        \ at productOfferingQualification level - with a role 'Buyer' must be provided\n\
+        \   "
+      deprecated: false
+      parameters:
+      - name: "ProductOfferingQualification"
+        required: true
+        in: "body"
+        description: ""
+        schema:
+          $ref: "#/definitions/POSTProductOfferingQualification"
+      responses:
+        201:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/ProductOfferingQualification"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ZError"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ZError"
+        403:
+          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
+            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
+            \ requests"
+          schema:
+            $ref: "#/definitions/ZError"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ZError"
+        408:
+          description: "Request Time-out\n\nList of supported error codes:\n- 63:\
+            \ Request time-out"
+          schema:
+            $ref: "#/definitions/ZError"
+        422:
+          description: "Unprocessable entity\n\nFunctional error\n\nSpecific encapsulated\
+            \ business errors for current operation\n\n - 100: A relatedParty - at\
+            \ productOfferingQualification level - with a role 'Buyer' must be provided\n\
+            \   "
+          schema:
+            $ref: "#/definitions/ZError"
+    get:
+      tags:
+      - "productOfferingQualification"
+      operationId: "productOfferingQualificationFind"
+      summary: "find productOfferingQualification"
+      description: "\n\nSpecific business errors for current operation will be encapsulated\
+        \ in\n\nHTTP Response 422 Unprocessable entity\n"
+      deprecated: false
+      parameters:
+      - name: "state"
+        required: false
+        in: "query"
+        description: ""
+        type: "string"
+      - name: "expectedResponseDate"
+        required: false
+        in: "query"
+        description: ""
+        type: "string"
+      - name: "projectId"
+        required: false
+        in: "query"
+        description: ""
+        type: "string"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/ProductOfferingQualificationFindReq"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ZError"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ZError"
+        403:
+          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
+            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
+            \ requests"
+          schema:
+            $ref: "#/definitions/ZError"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ZError"
+        408:
+          description: "Request Time-out\n\nList of supported error codes:\n- 63:\
+            \ Request time-out"
+          schema:
+            $ref: "#/definitions/ZError"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ZError"
+  /productOfferingQualification/{productOfferingQualificationId}:
+    get:
+      tags:
+      - "productOfferingQualification"
+      operationId: "productOfferingQualificationGet"
+      summary: "get productOfferingQualification"
+      description: "\n\nSpecific business errors for current operation will be encapsulated\
+        \ in\n\nHTTP Response 422 Unprocessable entity\n"
+      deprecated: false
+      parameters:
+      - name: "productOfferingQualificationId"
+        in: "path"
+        required: true
+        type: "string"
+        description: ""
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/ProductOfferingQualification"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ZError"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ZError"
+        403:
+          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
+            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
+            \ requests"
+          schema:
+            $ref: "#/definitions/ZError"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ZError"
+        408:
+          description: "Request Time-out\n\nList of supported error codes:\n- 63:\
+            \ Request time-out"
+          schema:
+            $ref: "#/definitions/ZError"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ZError"
+definitions:
+  serviceabilityColor:
+    description: ""
+    type: "string"
+    enum:
+    - "GREEN"
+    - "RED"
+    - "YELLOW"
+  state:
+    description: ""
+    type: "string"
+    enum:
+    - "UNDER_REVIEW"
+    - "SUBMITTED"
+    - "ACCEPTED"
+    - "COMPLETED"
+    - "REJECTED"
+    - "CANCELLED"
+  timeUnit:
+    description: ""
+    type: "string"
+    enum:
+    - "SECS"
+    - "MINS"
+    - "HOURS"
+    - "BUSINESS_DAYS"
+    - "CALENDAR_DAYS"
+  ZErrorDetail:
+    description: ""
+    required:
+    - "code"
+    - "message"
+    type: "object"
+    properties:
+      code:
+        description: ""
+        type: "integer"
+        format: "int32"
+      message:
+        description: ""
+        type: "string"
+      description:
+        description: ""
+        type: "string"
+      infoURL:
+        description: ""
+        type: "string"
+  ZError:
+    description: ""
+    required:
+    - "code"
+    - "message"
+    type: "object"
+    properties:
+      code:
+        description: ""
+        type: "integer"
+        format: "int32"
+      message:
+        description: ""
+        type: "string"
+      description:
+        description: ""
+        type: "string"
+      infoURL:
+        description: ""
+        type: "string"
+      details:
+        description: ""
+        type: "array"
+        items:
+          $ref: "#/definitions/ZErrorDetail"
+  TerminationError:
+    description: ""
+    type: "object"
+    properties:
+      id:
+        description: ""
+        type: "string"
+      value:
+        description: ""
+        type: "string"
+  RelatedParty:
+    description: ""
+    required:
+    - "name"
+    - "role"
+    - "number"
+    type: "object"
+    properties:
+      id:
+        description: ""
+        type: "string"
+      name:
+        description: ""
+        type: "string"
+      role:
+        description: ""
+        type: "string"
+      number:
+        description: ""
+        type: "string"
+      numberExtension:
+        description: ""
+        type: "string"
+      emailAddress:
+        description: ""
+        type: "string"
+  ProductRelationship:
+    description: ""
+    required:
+    - "type"
+    - "id"
+    type: "object"
+    properties:
+      type:
+        description: ""
+        type: "string"
+      id:
+        description: ""
+        type: "string"
+  ProductOfferingRef:
+    description: ""
+    type: "object"
+    properties:
+      id:
+        description: ""
+        type: "string"
+  Site:
+    description: ""
+    required:
+    - "role"
+    type: "object"
+    properties:
+      id:
+        description: ""
+        type: "string"
+      type:
+        description: ""
+        type: "string"
+      role:
+        description: ""
+        type: "string"
+      '@type':
+        description: ""
+        type: "string"
+      '@schemaLocation':
+        description: ""
+        type: "string"
+      siteCompanyName:
+        description: ""
+        type: "string"
+      siteCustomerName:
+        description: ""
+        type: "string"
+      additionalSiteInformation:
+        description: ""
+        type: "string"
+      siteDescription:
+        description: ""
+        type: "string"
+  GeographicSubAddress:
+    description: ""
+    type: "object"
+    properties:
+      id:
+        description: ""
+        type: "string"
+      subUnitType:
+        description: ""
+        type: "string"
+      subUnitNumber:
+        description: ""
+        type: "string"
+      levelType:
+        description: ""
+        type: "string"
+      levelNumber:
+        description: ""
+        type: "string"
+      buildingName:
+        description: ""
+        type: "string"
+      privateStreetNumber:
+        description: ""
+        type: "string"
+      privateStreetName:
+        description: ""
+        type: "string"
+      '@type':
+        description: ""
+        type: "string"
+      '@schemaLocation':
+        description: ""
+        type: "string"
+  GeographicPoint:
+    description: ""
+    type: "object"
+    properties:
+      spatialRef:
+        description: ""
+        type: "string"
+      x:
+        description: ""
+        type: "string"
+      y:
+        description: ""
+        type: "string"
+  GeographicLocation:
+    description: ""
+    type: "object"
+    properties:
+      geographicPoint:
+        description: ""
+        $ref: "#/definitions/GeographicPoint"
+  GeographicAddress:
+    description: ""
+    required:
+    - "role"
+    type: "object"
+    properties:
+      id:
+        description: ""
+        type: "string"
+      role:
+        description: ""
+        type: "string"
+      type:
+        description: ""
+        type: "string"
+      streetNr:
+        description: ""
+        type: "string"
+      streetNrSuffix:
+        description: ""
+        type: "string"
+      streetNrLast:
+        description: ""
+        type: "string"
+      streetName:
+        description: ""
+        type: "string"
+      streetType:
+        description: ""
+        type: "string"
+      streetSuffix:
+        description: ""
+        type: "string"
+      locality:
+        description: ""
+        type: "string"
+      city:
+        description: ""
+        type: "string"
+      postcode:
+        description: ""
+        type: "string"
+      stateOrProvince:
+        description: ""
+        type: "string"
+      country:
+        description: ""
+        type: "string"
+      addrLine1:
+        description: ""
+        type: "string"
+      addrLine2:
+        description: ""
+        type: "string"
+      postCodeExtension:
+        description: ""
+        type: "string"
+      referenceId:
+        description: ""
+        type: "string"
+      referenceType:
+        description: ""
+        type: "string"
+      GeographicSubAddress:
+        description: ""
+        $ref: "#/definitions/GeographicSubAddress"
+      '@type':
+        description: ""
+        type: "string"
+      '@schemaLocation':
+        description: ""
+        type: "string"
+  Place:
+    description: ""
+    required:
+    - "type"
+    type: "object"
+    properties:
+      type:
+        description: ""
+        type: "string"
+      role:
+        description: ""
+        type: "string"
+      geoLocation:
+        description: ""
+        $ref: "#/definitions/GeographicLocation"
+      address:
+        description: ""
+        $ref: "#/definitions/GeographicAddress"
+      site:
+        description: ""
+        $ref: "#/definitions/Site"
+      '@type':
+        description: ""
+        type: "string"
+      '@schemaLocation':
+        description: ""
+        type: "string"
+  Describing:
+    description: ""
+    type: "object"
+    properties:
+      '@type':
+        description: ""
+        type: "string"
+      '@schemaLocation':
+        description: ""
+        type: "string"
+  AlternateProductProposal:
+    description: ""
+    type: "object"
+    properties:
+      '@type':
+        description: ""
+        type: "string"
+      serviceabilityDate:
+        description: ""
+        type: "string"
+      productSpecificationRef:
+        description: ""
+        $ref: "#/definitions/ProductSpecificationRef"
+  ProductSpecificationRef:
+    description: ""
+    type: "object"
+    properties:
+      id:
+        description: ""
+        type: "string"
+      describing:
+        description: ""
+        $ref: "#/definitions/Describing"
+  Product:
+    description: ""
+    required:
+    - "productSpecificationRef"
+    type: "object"
+    properties:
+      id:
+        description: ""
+        type: "string"
+      '@type':
+        description: ""
+        type: "string"
+      productSpecificationRef:
+        description: ""
+        $ref: "#/definitions/ProductSpecificationRef"
+      productRelationship:
+        description: ""
+        type: "array"
+        items:
+          $ref: "#/definitions/ProductRelationship"
+      relatedParty:
+        description: ""
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedParty"
+      geographicAddress:
+        description: ""
+        type: "array"
+        items:
+          $ref: "#/definitions/GeographicAddress"
+      geographicLocation:
+        description: ""
+        type: "array"
+        items:
+          $ref: "#/definitions/GeographicLocation"
+      site:
+        description: ""
+        type: "array"
+        items:
+          $ref: "#/definitions/Site"
+  ProductOfferingQualificationItem:
+    description: ""
+    required:
+    - "id"
+    type: "object"
+    properties:
+      id:
+        description: ""
+        type: "string"
+      desiredActivationDate:
+        description: ""
+        type: "string"
+        format: "date"
+      state:
+        description: ""
+        $ref: "#/definitions/state"
+      serviceabilityConfidence:
+        description: "The confidence level of the seller to be able to service the\
+          \ request"
+        $ref: "#/definitions/serviceabilityColor"
+      estimatedResponseDate:
+        description: "When the color is Yellow (meaning 'We'll get back to you'),\
+          \ this date indicates when the Seller plans to provide a more complete response."
+        type: "string"
+        format: "date"
+      serviceConfidenceReason:
+        description: "A description of the reason a particular color is being provided.\
+          \ This may include a specific standard reason codes and descriptions."
+        type: "string"
+      installationInterval:
+        description: "An estimate of the number of calendar days until the desired\
+          \ service could be activated."
+        $ref: "#/definitions/TimeInterval"
+      MPOE:
+        description: "Indicates if access to the location is currently Minimum Point\
+          \ Of Entry (MPOE) only. If mpoeOnly is true, this indicates that full access\
+          \ to the location (e.g. sub-unit or suite) has not yet been established.\
+          \ If mpoeOnly is false, this indicates that full access to the location\
+          \ has been (or will be) established."
+        type: "boolean"
+      product:
+        description: ""
+        $ref: "#/definitions/Product"
+      productOfferingRef:
+        description: ""
+        $ref: "#/definitions/ProductOfferingRef"
+      productOfferingQualificationItemRelationship:
+        description: ""
+        type: "array"
+        items:
+          $ref: "#/definitions/productOfferingQualificationItemRelationship"
+      alternateProductProposal:
+        description: ""
+        type: "array"
+        items:
+          $ref: "#/definitions/AlternateProductProposal"
+      terminationError:
+        description: ""
+        type: "array"
+        items:
+          $ref: "#/definitions/TerminationError"
+  ProductOfferingQualification:
+    description: ""
+    required:
+    - "productOfferingQualificationItem"
+    type: "object"
+    properties:
+      id:
+        description: "The Serviceability Request's unique identifier."
+        type: "string"
+      state:
+        description: ""
+        $ref: "#/definitions/state"
+      provideAlternative:
+        description: ""
+        type: "boolean"
+      expectedResponseDate:
+        description: "Corresponds to desiredResponseDate - The date a response for\
+          \ the service request is desired."
+        type: "string"
+        format: "date"
+      projectId:
+        description: "This value MAY be assigned by the Buyer/Seller to identify a\
+          \ project the serviceability request is associated with."
+        type: "string"
+      expirationDate:
+        description: ""
+        type: "string"
+        format: "date"
+      '@type':
+        description: ""
+        type: "string"
+      '@schemaLocation':
+        description: ""
+        type: "string"
+      relatedParty:
+        description: ""
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedParty"
+      productOfferingQualificationItem:
+        description: ""
+        type: "array"
+        items:
+          $ref: "#/definitions/ProductOfferingQualificationItem"
+  productOfferingQualificationItemRelationship:
+    description: ""
+    required:
+    - "type"
+    - "id"
+    type: "object"
+    properties:
+      type:
+        description: ""
+        type: "string"
+      id:
+        description: ""
+        type: "string"
+  POSTProductOfferingQualificationItem:
+    description: ""
+    required:
+    - "id"
+    - "product"
+    type: "object"
+    properties:
+      id:
+        description: ""
+        type: "string"
+      desiredActivationDate:
+        description: ""
+        type: "string"
+        format: "date"
+      product:
+        description: ""
+        $ref: "#/definitions/Product"
+      productOfferingRef:
+        description: ""
+        $ref: "#/definitions/ProductOfferingRef"
+      productOfferingQualificationItemRelationship:
+        description: ""
+        type: "array"
+        items:
+          $ref: "#/definitions/productOfferingQualificationItemRelationship"
+  POSTProductOfferingQualification:
+    description: ""
+    required:
+    - "productOfferingQualificationItem"
+    type: "object"
+    properties:
+      provideAlternative:
+        description: ""
+        type: "boolean"
+      expectedResponseDate:
+        description: "Corresponds to desiredResponseDate - The date a response for\
+          \ the service request is desired."
+        type: "string"
+        format: "date"
+      projectId:
+        description: ""
+        type: "string"
+      '@type':
+        description: ""
+        type: "string"
+      '@schemaLocation':
+        description: ""
+        type: "string"
+      relatedParty:
+        description: ""
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedParty"
+      productOfferingQualificationItem:
+        description: ""
+        type: "array"
+        items:
+          $ref: "#/definitions/POSTProductOfferingQualificationItem"
+  TimeInterval:
+    description: ""
+    required:
+    - "amount"
+    - "timeUnit"
+    type: "object"
+    properties:
+      amount:
+        description: ""
+        type: "integer"
+        format: "int32"
+      timeUnit:
+        description: ""
+        $ref: "#/definitions/timeUnit"
+  ProductOfferingQualificationFindReq:
+    description: ""
+    type: "object"
+    properties:
+      id:
+        description: "The Serviceability Request's unique identifier."
+        type: "string"
+      state:
+        description: ""
+        $ref: "#/definitions/state"
+      expectedResponseDate:
+        description: "Corresponds to desiredResponseDate - The date a response for\
+          \ the service request is desired."
+        type: "string"
+        format: "date"
+      projectId:
+        description: "This value MAY be assigned by the Buyer/Seller to identify a\
+          \ project the serviceability request is associated with."
+        type: "string"
