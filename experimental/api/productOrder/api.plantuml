@@ -1,0 +1,279 @@
+@startuml
+
+enum PriorityType {
+   0
+   1
+   2
+   3
+   4
+}
+enum ActionType {
+   add
+   modify
+   noChange
+   delete
+}
+enum StateType {
+   acknowledge
+   inProgress
+   cancelled
+   completed
+   rejected
+   pending
+   held
+   failed
+   partial
+}
+enum RelationShipType {
+   reliesOn
+   brings
+   hasParent
+   hasChild
+}
+enum PriceType {
+   recuring
+   oneTime
+   usage
+}
+enum OrderActivity {
+   install
+   change
+   disconnect
+}
+enum desiredResponse {
+   Confirmation and Engineering
+   Confirmation
+   None
+}
+enum pricingMethod {
+   Tariff
+   Contract
+   Individual Case Basis
+   Other
+}
+
+class ZErrorDetail {
+   code:int
+   message:string
+   description:string
+   infoURL:string
+}
+
+class ZError {
+   code:int
+   message:string
+   description:string
+   infoURL:string
+}
+   ZError --> "0-*" ZErrorDetail : details
+
+class BillingAccountRef {
+   id:string
+}
+
+class ProductOfferingRef {
+   id:string
+   name:string
+}
+
+class ProductOrder {
+   id:string
+   externalId:string
+   orderDate:dateTime
+   requestedStartDate:dateTime
+   requestedCompletionDate:dateTime
+   completionDate:dateTime
+   expeditePriority:int
+   version:string
+   projectId:string
+   tspRestorationPriority:string
+   @type:string
+   @schemaLocation:string
+}
+   ProductOrder --> "0-1" StateType : state
+   ProductOrder --> "1-1" OrderActivity : orderActivity
+   ProductOrder --> "1-1" desiredResponse : desiredResponses
+   ProductOrder --> "0-*" RelatedParty : relatedParty
+   ProductOrder --> "0-1" Note : note
+   ProductOrder --> "0-*" OrderItem : orderItem
+
+class Note {
+   text:string
+   date:dateTime
+   author:string
+}
+
+class OrderItem {
+   id:string
+   @type:string
+   @schemaLocation:string
+   pricingReference:string
+   pricingTerm:int
+}
+   OrderItem --> "1-1" ActionType : action
+   OrderItem --> "0-1" StateType : state
+   OrderItem --> "0-1" BillingAccountRef : billingAccount
+   OrderItem --> "1-1" ProductOffering : productOffering
+   OrderItem --> "0-1" Product : product
+   OrderItem --> "0-*" OrderItemRelationShip : orderItemRelationship
+   OrderItem --> "0-*" RelatedQualification : qualificationRef
+   OrderItem --> "0-1" pricingMethod : pricingMethod
+
+class ProductOffering {
+   id:string
+}
+
+class Product {
+   id:string
+   @type:string
+}
+   Product --> "0-1" ProductSpecification : productSpecification
+   Product --> "0-*" RelatedParty : relatedParty
+   Product --> "0-*" GeographicAddress : geographicAddress
+   Product --> "0-*" GeographicLocation : geographicLocation
+   Product --> "0-*" Site : site
+   Product --> "0-*" ProductRelationship : productRelationship
+
+class OrderItemRelationShip {
+   id:string
+}
+   OrderItemRelationShip --> "1-1" RelationShipType : type
+
+class ProductRelationship
+   ProductRelationship --> "1-1" RelationShipType : type
+   ProductRelationship --> "1-1" ProductRef : product
+
+class ProductRef {
+   id:string
+}
+
+class RelatedQualification {
+   id:string
+   qualificationItem:string
+}
+
+class RelatedParty {
+   id:string
+   name:string
+   role:string
+   numberExtension:string
+   number:string
+   emailAddress:string
+}
+
+class ProductOrderCreateIN {
+   externalId:string
+   orderDate:dateTime
+   requestedCompletionDate:dateTime
+   requestedStartDate:dateTime
+   expeditePriority:int
+   @type:string
+   @schemaLocation:string
+   version:string
+   projectId:string
+   tspRestorationPriority:string
+}
+   ProductOrderCreateIN --> "0-1" OrderActivity : orderActivity
+   ProductOrderCreateIN --> "0-1" desiredResponse : desiredResponse
+   ProductOrderCreateIN --> "0-*" RelatedParty : relatedParty
+   ProductOrderCreateIN --> "0-1" Note : note
+   ProductOrderCreateIN --> "0-*" OrderItemCreateIn : orderItem
+
+class ProductSpecification {
+   id:string
+}
+   ProductSpecification --> "0-1" Describing : describing
+
+class GeographicSubAddress {
+   id:string
+   subUnitType:string
+   subUnitNumber:string
+   levelType:string
+   levelNumber:string
+   buildingName:string
+   privateStreetNumber:string
+   privateStreetName:string
+   @type:string
+   @schemaLocation:string
+}
+
+class GeographicPoint {
+   spatialRef:string
+   x:string
+   y:string
+}
+
+class GeographicLocation {
+   role:string
+   type:string
+}
+   GeographicLocation --> "0-1" GeographicPoint : geographicPoint
+
+class Site {
+   id:string
+   role:string
+   type:string
+   @type:string
+   @schemaLocation:string
+   siteCompanyName:string
+   siteCustomerName:string
+   additionalSiteInformation:string
+   siteDescription:string
+}
+
+class GeographicAddress {
+   id:string
+   role:string
+   type:string
+   streetNr:string
+   streetNrSuffix:string
+   streetNrLast:string
+   streetNrLastSuffix:string
+   streetName:string
+   streetType:string
+   streetSuffix:string
+   locality:string
+   city:string
+   postcode:string
+   stateOrProvince:string
+   postalCodeExtension:string
+   country:string
+   @type:string
+   @schemaLocation:string
+   formattedAddressLine1:string
+   formattedAddressLine2:string
+   referenceId:string
+   referenceType:string
+}
+   GeographicAddress --> "0-1" GeographicSubAddress : geographicSubAddress
+
+class Describing {
+   @type:string
+   @schemaLocation:string
+}
+
+class OrderItemCreateIn {
+   id:string
+   @type:string
+   @schemaLocation:string
+   pricingReference:string
+   pricingTerm:int
+}
+   OrderItemCreateIn --> "1-1" ActionType : action
+   OrderItemCreateIn --> "0-1" BillingAccountRef : billingAccount
+   OrderItemCreateIn --> "1-1" ProductOffering : productOffering
+   OrderItemCreateIn --> "0-1" Product : product
+   OrderItemCreateIn --> "0-*" OrderItemRelationShip : orderItemRelationship
+   OrderItemCreateIn --> "0-*" RelatedQualification : qualificationRef
+   OrderItemCreateIn --> "0-1" pricingMethod : pricingMethod
+
+class ProductOrderFindResp {
+   id:string
+   externalId:string
+   orderDate:dateTime
+   requestedCompletionDate:dateTime
+   projectId:string
+}
+   ProductOrderFindResp --> "0-1" StateType : state
+
+@enduml
