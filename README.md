@@ -21,9 +21,9 @@ This SDK contains the following items:
     *	api/productOfferingQualification - Contains the API definitions for inter-carrier product offering qualification service
     *	api/site - Contains the API definitions for inter-carrier site validation service
     *	api/productOrder - Contains the API definitions for inter-carrier service ordering capability
-    *	tutorial – Contains example code that demonstrates how a dummy client can use a portal to perform address validation for a service, check specific service availability at that address and finally place the service order.Please note that the API definitions used in the tutorial are an older version and do not match the API definitions under the ‘api’ directory. We welcome your contributions to enhance the example code to use the api definitions under the ‘api’ directory.
-        * tutorial/client – Contains the code for dummy client
-        *	tutorial/server – Contains the code for dummy server
+    *	examples – Contains example code that demonstrates how a dummy client can use a portal to perform address validation for a service, check specific service availability at that address and finally place the service order.Please note that the API definitions used in the tutorial are an older version and do not match the API definitions under the ‘api’ directory. We welcome your contributions to enhance the example code to use the api definitions under the ‘api’ directory.
+        * examples/client – Contains the code for dummy client
+        * examples/server – Contains the code for dummy server
 *	Published - SDK content for that does have associated MEF Interface Profile Specifications
     *	None
 
