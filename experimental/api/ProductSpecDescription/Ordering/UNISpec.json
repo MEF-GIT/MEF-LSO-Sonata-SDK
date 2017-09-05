@@ -1,0 +1,187 @@
+{
+   "title":"UNISpec",
+   "type":"MEF productSpec description",
+   "description":"Description of UNISpec for Ordering",
+   "Required":[
+      "physicalLayer"
+   ],
+   "properties":{
+      "UNI":{
+         "sellerId":{
+            "description":"The circuit identifier that the seller uses to refer to this UNI.",
+            "type":"string"
+         },
+         "buyerId":{
+            "description":"The circuit identifier that the buyer uses to refer to this UNI.",
+            "type":"string"
+         },
+         "physicalLayer":{
+            "description":"This attribute is a list of physical layers, one for each physical link implementing the UNI",
+            "$ref":"#/definitions/physicalLayer"
+         },
+         "synchronousModeEnabled":{
+            "description":"The Synchronous Mode Service Attribute is a list with one item for each of the physical links implementing the UNI. When the value of an item is \"Enabled,\" the bits transmitted from the CEN to the CE on the physical link corresponding to the item can be used by the CE as a bit clock reference",
+            "type":"boolean"
+         },
+         "numberOfLinks":{
+            "description":"A UNI can be implemented with one or more physical links. This attribute specifies the number of such links.",
+            "type":"integer",
+            "format":"int32"
+         },
+         "tokenShareEnabled":{
+            "description":"Identifies whether a given UNI is capable of sharing tokens across Bandwidth Profile Flows in an Envelope.  The default is disabled (\"false\").",
+            "type":"boolean",
+            "default":false
+         },
+         "uniResiliency":{
+            "description":"The UNI Resiliency Service Attribute value can be \"None,\" \"2-Link Aggregation,\" or \"Other.\"",
+            "$ref":"#/definitions/resiliency"
+         },
+         "maxServiceFrameSize":{
+            "description":"The value for the UNI Maximum Service Frame Size is a positive integer in bytes.  The value must be >1522.",
+            "type":"integer",
+            "format":"int32",
+            "minimum":1523
+         },
+         "allToOneBundling":{
+            "description":"When a UNI has All to One Bundling Enabled, all CE-VLAN IDs MUST map to a single EVC/OVC at the UNI. See table 12 in MEF 10.3 for valid combinations of service multiplexing, bundling, and all-to-one bundling attributes.",
+            "type":"boolean",
+            "default":false
+         },
+         "linkOamEnabled":{
+            "description":"When the value of the Link OAM Service Attribute is Enabled, the CEN MUST support Active DTE mode capabilities as specified in clause 57.2.9 of IEEE Std 802.3 – 2012 [3] on each link in the UNI.",
+            "type":"boolean",
+            "default":false
+         },
+         "UniMegEnabled":{
+            "description":"UNI MEG can be either Enabled or Disabled.",
+            "type":"boolean",
+            "default":false
+         },
+         "UniElmiEnabled":{
+            "description":"E-LMI can be either Enabled or Disabled.",
+            "type":"boolean",
+            "default":false
+         },
+         "UniL2CpAddressSet":{
+            "description":"Indicates how to process L2 control protocol messages.",
+            "$ref":"#/definitions/L2CP"
+         },
+         "serviceMultiplexing":{
+            "description":"A UNI with Service Multiplexing Enabled (true)  MUST be able to support multiple EVCs/OVCs. See table 12 in MEF 10.3 for valid combinations of service multiplexing, bundling, and all-to-one bundling attributes.",
+            "type":"boolean",
+            "default":false
+         },
+         "bundling":{
+            "description":"When a UNI has Bundling Enabled, it MUST be able to support more than one CE-VLAN ID mapping to a particular EVC/OVC at the UNI. See table 12 in MEF 10.3 for valid combinations of service multiplexing, bundling, and all-to-one bundling attributes.",
+            "type":"boolean",
+            "default":false
+         },
+         "uniL2cpPeering":{
+            "description":"Can be either an empty list, or a list of entries identifying protocols to be peered where each entry consists of {Destination Address, Protocol Identifier} or {Destination Address, Protocol Identifier, Link Identifier}.",
+            "type":"array",
+            "items":{
+               "$ref":"#/definitions/UniL2cpPeering"
+            }
+         },
+         "maxAggBw":{
+            "description":"The maximum allowable value of the sum of the cir on all bandwidth profiles on this UNI.",
+            "$ref":"#/definitions/informationRate"
+         },
+         "@_type":{
+            "description":"Identifies the extension type",
+            "type":"string"
+         },
+         "@_location":{
+            "description":"Provides extension url",
+            "type":"string"
+         }
+      }
+   },
+   "definitions":{
+      "L2CP":{
+         "description":"",
+         "type":"string",
+         "enum":[
+            "CTA",
+            "CTB",
+            "CTB_2"
+         ]
+      },
+      "resiliency":{
+         "description":"",
+         "type":"string",
+         "enum":[
+            "NONE",
+            "2_LINK_ACTIVE_STANDBY",
+            "ALL_ACTIVE",
+            "OTHER"
+         ]
+      },
+      "physicalLayer":{
+         "description":"",
+         "type":"string",
+         "enum":[
+            "10BASE-T",
+            "100BASE-TX",
+            "100BASE-FX",
+            "1000BASE-T",
+            "1000BASE-SX",
+            "1000BASE-LX",
+            "10GBASE-SR",
+            "10GBASE-SW",
+            "10GBASE-LR",
+            "10GBASE-LW",
+            "10GBASE-ER",
+            "10GBASE-EW"
+         ]
+      },
+      "informationRateUnit":{
+         "description":"",
+         "type":"string",
+         "enum":[
+            "Mbps",
+            "Gbps"
+         ]
+      },
+      "UniL2cpPeering":{
+         "description":"",
+         "type":"object",
+         "properties":{
+            "destAddress":{
+               "description":"",
+               "type":"string"
+            },
+            "protocolId":{
+               "description":"",
+               "type":"string"
+            },
+            "linkId":{
+               "description":"",
+               "type":"string"
+            }
+         }
+      },
+      "informationRate":{
+         "description":"",
+         "required":[
+            "amount",
+            "unit"
+         ],
+         "type":"object",
+         "properties":{
+            "amount":{
+               "description":"",
+               "type":"integer",
+               "format":"int32"
+            },
+            "unit":{
+               "description":"",
+               "$ref":"#/definitions/informationRateUnit"
+            }
+         }
+      }
+   }
+}
+
+}
