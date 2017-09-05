@@ -1,0 +1,79 @@
+{
+   "title":"UNICEEndPointSpec",
+   "type":"MEF productSpec description",
+   "description":"Description of UNICEEndPointSpec for Serviceability",
+   "Required":[
+      ""
+   ],
+   "properties":{
+      "ingressBWProfile":{
+         "description":"",
+         "type":"array",
+         "items":{
+            "$ref":"#/definitions/BandwidthProfile"
+         }
+      },
+      "egressBWProfile":{
+         "description":"",
+         "type":"array",
+         "items":{
+            "$ref":"#/definitions/BandwidthProfile"
+         }
+      },
+      "@type":{
+         "description":"",
+         "type":"string"
+      },
+      "@schemaLocation":{
+         "description":"",
+         "type":"string"
+      }
+   },
+   "definitions":{
+      "informationRateUnit":{
+         "description":"",
+         "type":"string",
+         "enum":[
+            "Mbps",
+            "Gbps"
+         ]
+      },
+      "informationRate":{
+         "description":"",
+         "required":[
+            "amount",
+            "unit"
+         ],
+         "type":"object",
+         "properties":{
+            "amount":{
+               "description":"",
+               "type":"integer",
+               "format":"int32"
+            },
+            "unit":{
+               "description":"",
+               "$ref":"#/definitions/informationRateUnit"
+            }
+         }
+      },
+      "BandwidthProfile":{
+         "description":"",
+         "type":"object",
+         "properties":{
+            "cosId":{
+               "description":"The product's Class of Service, as defined by MEF 23.1.",
+               "type":"string"
+            },
+            "cir":{
+               "description":"The service's bandwidth (e.g. 10Mbps, 100Mbps, 1Gbps, 10Gbps).",
+               "$ref":"#/definitions/informationRate"
+            },
+            "sellerCosName":{
+               "description":"An organization's internal name for a Class of Service. For example, a 'High' CoS may be named 'Real-Time' within a specific organization.",
+               "type":"string"
+            }
+         }
+      }
+   }
+}
