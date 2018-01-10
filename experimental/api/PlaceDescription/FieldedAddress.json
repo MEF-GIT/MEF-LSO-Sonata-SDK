@@ -1,0 +1,141 @@
+{
+   "title":"FieldedAddress",
+   "type":"MEF Fielded Address description",
+   "description":"Description of a fielded address",
+   "Required":[
+      "streetName",
+	  "streetType",
+	  "city",
+	  "stateOrProvince",
+	  "postcode",
+	  "country"
+   ],
+   "properties":{
+      "FieldedAddress":{
+		"streetNr": {
+             "description": "Number identifying a specific property on a public street. It may be combined with streetNrLast for ranged addresses",
+             "type": "string"
+         },
+        "streetNrSuffix": {
+             "description": "The first street number suffix",
+             "type": "string"
+         },
+        "streetNrLast": {
+             "description": "Last number in a range of street numbers allocated to a property",
+             "type": "string"
+         },
+         "streetNrLastSuffix": {
+              "description": "Last street number suffix for a ranged address",
+              "type": "string"
+         },
+         "streetName": {
+             "description": "Name of the street or other street type",
+             "type": "string"
+         },
+         "streetType": {
+             "description": "Alley, avenue, boulevard, brae, crescent, drive, highway, lane, terrace, parade, place, tarn, way, wharf",
+             "type": "string"
+         },
+         "streetSuffix": {
+             "description": "A modifier denoting a relative direction",
+             "type": "string"
+         },
+		 "locality":{
+            "description":"The locality that the address is in",
+            "type":"string"
+         },
+         "city":{
+            "description":"The city that the address is in",
+            "type":"string"
+         },
+		 "stateOrProvince": {
+            "description": "The State or Province that the address is in",
+             "type": "string"
+         },
+		 "postcode": {
+            "description": "Descriptor for a postal delivery area, used to speed and simplify the delivery of mail (also known as zipcode)",
+            "type": "string"
+         },
+		 "postcodeExtension": {
+            "description": "An extension of a postalcode. E.g. the part following the dash in an american urban property address.",
+            "type": "string"
+         },
+         "country": {
+             "description": "Country that the address is in",
+             "type": "string"
+         },
+		 "fieldedSubAddress":{
+            "description":"fielded subAddress",
+            "$ref":"#/definitions/SubAddress"
+         },
+         "siteName":{
+            "description":"A name by which the site is known",
+            "type":"string"
+         },
+         "siteCompanyName":{
+            "description":"The name of the company located at the service site",
+            "type":"string"
+         },
+         "endCustomerName":{
+            "description":"The name of the end (retail) customer.",
+            "type":"string"
+         },
+         "additionalSiteInformation":{
+            "description":"Additional information about the Site or special delivery information",
+            "type":"string"
+         },
+         "siteDescription":{
+            "description":"A description for the service site",
+            "type":"string"
+         }
+      }
+   },
+     "definitions":{
+        "SubAddress": {
+            "description": "It is used for addressing within a property in an urban area (country properties are often defined differently). It may refer to a building, a building cluster, or a floor of a multistory building.",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique Identifier of the subAddress",
+                    "type": "string"
+                },
+                "subUnitType": {
+                    "description": "The type of subunit\ne.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF.",
+                    "type": "string"
+                },
+                "subUnitNumber": {
+                    "description": "The discriminator used for the subunit\noften just a simple number e.g. FLAT 5, may also be a range",
+                    "type": "string"
+                },
+                "levelType": {
+                    "description": "Describes level types within a building",
+                    "type": "string"
+                },
+                "levelNumber": {
+                    "description": "Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT 2",
+                    "type": "string"
+                },
+                "buildingName": {
+                    "description": "Allows for buildings that have well-known names",
+                    "type": "string"
+                },
+                "privateStreetNumber": {
+                    "description": "Private streets numbers internal to a private street",
+                    "type": "string"
+                },
+                "privateStreetName": {
+                    "description": "Private streets internal to a property (e.g. a university) may have internal names that are not recorded by the land title office",
+                    "type": "string"
+                },
+                "@type": {
+                    "description": "",
+                    "type": "string"
+                },
+                "@schemaLocation": {
+                    "description": "",
+                    "type": "string"
+                }
+            }
+        }	 
+	 }
+}
