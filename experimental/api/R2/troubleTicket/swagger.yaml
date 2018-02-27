@@ -1,0 +1,824 @@
+swagger: "2.0"
+info:
+  description: "The scope of this API is to provide the ability for a Service Provider’\
+    s system to create and manage trouble tickets with Partner’s system, over an interface,\
+    \ related to Access E-Line products. The following operations are included in\
+    \ the scope of this project:\n•\tCreate a new trouble ticket\n•\tRetrieve an existing\
+    \ trouble ticket(s)\n•\tPartial modification of an open trouble ticket\n•\tClose\
+    \ an open trouble ticket\n•\tCancel an open trouble ticket\n•\tTrouble ticket\
+    \ related notifications.\nSpecifically, out of scope for this release are the\
+    \ following operations:\n•\tScheduled Maintenance & Outages related notifications\
+    \ and management."
+  version: "1.0.0_inProgress"
+  title: "API TroubleTicket"
+  x-logo:
+    url: "/redoc/logo.png"
+    backgroundColor: "#FFFFFF"
+host: "api.mef.com"
+basePath: "/"
+schemes:
+- "http"
+consumes:
+- "application/json;charset=utf-8"
+produces:
+- "application/json;charset=utf-8"
+tags:
+- name: "TroubleTicket"
+  description: ""
+- name: "Hub"
+  description: ""
+paths:
+  /troubleTicket:
+    post:
+      tags:
+      - "TroubleTicket"
+      operationId: "troubleTicketCreate"
+      summary: "troubleTicketCreate"
+      description: "This operation is used by the service provider to create a trouble\
+        \ ticket in the partner's ticketing system.\n\nSpecific business errors for\
+        \ current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable\
+        \ entity\n"
+      deprecated: false
+      parameters:
+      - name: "TroubleTicket"
+        required: true
+        in: "body"
+        description: ""
+        schema:
+          $ref: "#/definitions/CreateTicket"
+      responses:
+        201:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/TroubleTicket"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        500:
+          description: "Internal Server Error\n\nList of supported error codes:\n\
+            - 1: Internal error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+    get:
+      tags:
+      - "TroubleTicket"
+      operationId: "troubleTicketFind"
+      summary: "troubleTicketFind (list)"
+      description: "This operation allows one to retrieve a list of trouble tickets,\
+        \ based on filtering criteria. Summary data is returned for each ticket.\n\
+        \nSpecific business errors for current operation will be encapsulated in\n\
+        \nHTTP Response 422 Unprocessable entity\n"
+      deprecated: false
+      parameters:
+      - name: "status"
+        required: false
+        in: "query"
+        description: ""
+        type: "string"
+      - name: "severity"
+        required: false
+        in: "query"
+        description: ""
+        type: "string"
+      - name: "creationDateTime.gt"
+        required: false
+        in: "query"
+        description: ""
+        type: "string"
+        format: "date-time"
+      - name: "creationDateTime.lt"
+        required: false
+        in: "query"
+        description: ""
+        type: "string"
+        format: "date-time"
+      - name: "priority"
+        required: false
+        in: "query"
+        description: ""
+        type: "string"
+      - name: "relatedObject"
+        required: false
+        in: "body"
+        description: ""
+        schema:
+          $ref: "#/definitions/RelatedObject"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/TicketSummary"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        500:
+          description: "Internal Server Error\n\nList of supported error codes:\n\
+            - 1: Internal error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+  /troubleTicket/{troubleTicketId}:
+    get:
+      tags:
+      - "TroubleTicket"
+      operationId: "troubleTicketGet"
+      summary: "troubleTicketGet (by id)"
+      description: "This operation is for the retrieval of a single trouble ticket\
+        \ based on a trouble ticket id.\n\nSpecific business errors for current operation\
+        \ will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n"
+      deprecated: false
+      parameters:
+      - name: "troubleTicketId"
+        in: "path"
+        required: true
+        type: "string"
+        description: ""
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/TroubleTicket"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        500:
+          description: "Internal Server Error\n\nList of supported error codes:\n\
+            - 1: Internal error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+    patch:
+      tags:
+      - "TroubleTicket"
+      operationId: "troubleTicketPatch"
+      summary: "troubleTicketUpdate"
+      description: "This operation is used to partially update a trouble ticket.\n\
+        \nSpecific business errors for current operation will be encapsulated in\n\
+        \nHTTP Response 422 Unprocessable entity\n\n - 100: Unauthorized attribute\
+        \ to be modified with current Trouble Ticket status- See MEF documentation\n\
+        \   \n - 101: Status change is not authorized for this Trouble Ticket\n   "
+      deprecated: false
+      parameters:
+      - name: "troubleTicketId"
+        in: "path"
+        required: true
+        type: "string"
+        description: ""
+      - name: "TroubleTicket"
+        required: true
+        in: "body"
+        description: ""
+        schema:
+          $ref: "#/definitions/UpdateTicket"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/TroubleTicket"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error\n\nSpecific encapsulated\
+            \ business errors for current operation\n\n - 100: Unauthorized attribute\
+            \ to be modified with current Trouble Ticket status- See MEF documentation\n\
+            \   \n - 101: Status change is not authorized for this Trouble Ticket\n\
+            \   "
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        500:
+          description: "Internal Server Error\n\nList of supported error codes:\n\
+            - 1: Internal error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+  /hub:
+    post:
+      tags:
+      - "Hub"
+      operationId: "hubCreate"
+      summary: "create hub"
+      description: "\n\nSpecific business errors for current operation will be encapsulated\
+        \ in\n\nHTTP Response 422 Unprocessable entity\n"
+      deprecated: false
+      parameters:
+      - name: "Hub"
+        required: true
+        in: "body"
+        description: ""
+        schema:
+          $ref: "#/definitions/Hub"
+      responses:
+        201:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Hub"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        500:
+          description: "Internal Server Error\n\nList of supported error codes:\n\
+            - 1: Internal error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+    get:
+      tags:
+      - "Hub"
+      operationId: "hubFind"
+      summary: "find hub"
+      description: "\n\nSpecific business errors for current operation will be encapsulated\
+        \ in\n\nHTTP Response 422 Unprocessable entity\n"
+      deprecated: false
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Hub"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        500:
+          description: "Internal Server Error\n\nList of supported error codes:\n\
+            - 1: Internal error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+  /hub/{hubId}:
+    get:
+      tags:
+      - "Hub"
+      operationId: "hubGet"
+      summary: "get hub"
+      description: "\n\nSpecific business errors for current operation will be encapsulated\
+        \ in\n\nHTTP Response 422 Unprocessable entity\n"
+      deprecated: false
+      parameters:
+      - name: "hubId"
+        in: "path"
+        required: true
+        type: "string"
+        description: ""
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Hub"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        500:
+          description: "Internal Server Error\n\nList of supported error codes:\n\
+            - 1: Internal error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+    delete:
+      tags:
+      - "Hub"
+      operationId: "hubDelete"
+      summary: "delete hub"
+      description: "\n\nSpecific business errors for current operation will be encapsulated\
+        \ in\n\nHTTP Response 422 Unprocessable entity\n"
+      deprecated: false
+      parameters:
+      - name: "hubId"
+        in: "path"
+        required: true
+        type: "string"
+        description: ""
+      responses:
+        204:
+          description: "Success"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        500:
+          description: "Internal Server Error\n\nList of supported error codes:\n\
+            - 1: Internal error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+definitions:
+  TicketStatusType:
+    description: "The state of the trouble ticket."
+    type: "string"
+    enum:
+    - "ACKNOWLEDGED"
+    - "IN_PROGRESS"
+    - "RESOLVED"
+    - "CLOSED"
+    - "PENDING"
+    - "CANCELLED"
+    - "CLEARANCE_REJECTED"
+  TroubleSeverity:
+    description: "The severity of the problem, or trouble as reported."
+    type: "string"
+    enum:
+    - "CRITICAL"
+    - "MAJOR"
+    - "MINOR"
+  RequestedStatusType:
+    description: "The status that the service provider is requesting that the trouble\
+      \ ticket be put into."
+    type: "string"
+    enum:
+    - "CANCELLED"
+    - "CLOSED"
+    - "CLEARANCE_REJECTED"
+  PriorityType:
+    description: "The priority assigned to the trouble ticket."
+    type: "string"
+    enum:
+    - "CRITICAL"
+    - "HIGH"
+    - "MEDIUM"
+    - "LOW"
+    - "NA"
+  TroubleType:
+    description: "The type, or categorization, of trouble ticket."
+    type: "string"
+    enum:
+    - "INSTALLATION"
+    - "MAINTENANCE"
+    - "FAILURE"
+    - "ASSISTANCE"
+  ErrorRepresentation:
+    description: "Structure to describe Error"
+    required:
+    - "code"
+    - "reason"
+    type: "object"
+    properties:
+      code:
+        description: "Application related code (as defined in the API or from a common\
+          \ list)"
+        type: "integer"
+        format: "int32"
+      reason:
+        description: "Text that explains the reason for error. This can be shown to\
+          \ a client user."
+        type: "string"
+      message:
+        description: "Text that provide more details and corrective actions related\
+          \ to the error. This can be shown to a client user."
+        type: "string"
+      status:
+        description: "http error code extension like 400-2"
+        type: "integer"
+        format: "int32"
+      referenceError:
+        description: "url pointing to documentation describing the error"
+        type: "string"
+      '@type':
+        description: "The class type of a REST resource."
+        type: "string"
+      '@schemaLocation':
+        description: "it provides a link to the schema describing a REST resource"
+        type: "string"
+  Note:
+    description: "Notes may be attached to the trouble ticket."
+    type: "object"
+    properties:
+      date:
+        description: "The date and the time the note was created."
+        type: "string"
+        format: "date"
+      author:
+        description: "The author of the note."
+        type: "string"
+      text:
+        description: "The text of the note."
+        type: "string"
+  RelatedObject:
+    description: "An object that is related to the trouble ticket such as a bill,\
+      \ a product, etc. The entity against which the ticket is associated."
+    type: "object"
+    properties:
+      involvement:
+        description: "The involvement of the related object in relation to the trouble\
+          \ ticket. For example, it may be a \"ProductInventory\" or \"Bill\" involvement."
+        type: "string"
+      reference:
+        description: "A reference to the related object."
+        type: "string"
+  TroubleTicket:
+    description: "A trouble ticket is a record of an issue that is created, tracked,\
+      \ and managed by a trouble ticket management system."
+    type: "object"
+    properties:
+      id:
+        description: "Unique identifier of the trouble ticket that is set by the partner\
+          \ when the trouble ticket is created."
+        type: "string"
+      href:
+        description: "href of the trouble ticket."
+        type: "string"
+      externalId:
+        description: "Additional identifier coming from an external system. This is\
+          \ set by the Service Provider."
+        type: "string"
+      description:
+        description: "Description of the trouble."
+        type: "string"
+      severity:
+        $ref: "#/definitions/TroubleSeverity"
+      priority:
+        $ref: "#/definitions/PriorityType"
+      type:
+        $ref: "#/definitions/TroubleType"
+      creationDate:
+        description: "The date and time the ticket was created in the trouble ticket\
+          \ system."
+        type: "string"
+        format: "date-time"
+      targetResolutionDate:
+        description: "The targeted resolution date as specified by the partner."
+        type: "string"
+        format: "date-time"
+      status:
+        $ref: "#/definitions/TicketStatusType"
+      resolutionDate:
+        description: "The date and time the trouble ticket was resolved by the partner."
+        type: "string"
+        format: "date-time"
+      note:
+        type: "array"
+        items:
+          $ref: "#/definitions/Note"
+      relatedParty:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedParty"
+      relatedObject:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedObject"
+      statusChange:
+        type: "array"
+        items:
+          $ref: "#/definitions/StatusChange"
+      attachment:
+        type: "array"
+        items:
+          $ref: "#/definitions/Attachment"
+      '@baseType':
+        description: "BaseType of the ticket specialization resource is defined from\
+          \ this API  (must be troubleTicket if used)."
+        type: "string"
+      '@type':
+        description: "Type  of the ticket if specialization is used"
+        type: "string"
+      '@schemaLocation':
+        description: "Target a location where the resource extension are described."
+        type: "string"
+  RelatedParty:
+    description: "A related party is a person or organization that is associated to\
+      \ the trouble ticket. Examples include: Originator, Owner, or Reviser."
+    required:
+    - "id"
+    - "role"
+    - "name"
+    - "number"
+    type: "object"
+    properties:
+      id:
+        description: "The id of the related party."
+        type: "string"
+      href:
+        description: "The href of the related party."
+        type: "string"
+      '@referredType':
+        description: ""
+        type: "string"
+      role:
+        description: "The role played by the related party."
+        type: "string"
+      name:
+        description: "The name of the related party."
+        type: "string"
+      emailAddress:
+        description: "The email address of the related party."
+        type: "string"
+      number:
+        description: "The telephone number of the related party."
+        type: "string"
+      numberExtension:
+        description: "The telephone number extension of the related party."
+        type: "string"
+  Hub:
+    description: "Hubs are used in support of trouble ticket notifications. There\
+      \ is one hub per type of notification."
+    required:
+    - "id"
+    type: "object"
+    properties:
+      id:
+        description: "Unique identifier of the hub"
+        type: "string"
+      query:
+        description: "Attribute selection and search criteria"
+        type: "string"
+      callback:
+        description: "Callback urn, for instance a url."
+        type: "string"
+  Attachment:
+    description: "A file attached to the trouble ticket."
+    type: "object"
+    properties:
+      id:
+        description: "Unique identifier of the attachment."
+        type: "string"
+      href:
+        description: "href of the attachment."
+        type: "string"
+      name:
+        description: "File name of the attachment."
+        type: "string"
+      url:
+        description: "The URL where the attachment is located."
+        type: "string"
+      '@type':
+        description: ""
+        type: "string"
+  StatusChange:
+    description: "Holds the status notification reasons and associated date the status\
+      \ changed."
+    required:
+    - "statusValue"
+    - "statusChangeDate"
+    type: "object"
+    properties:
+      statusValue:
+        description: "The value to which the status changed."
+        type: "string"
+      statusChangeReason:
+        description: "The reason why the status changed."
+        type: "string"
+      statusChangeDate:
+        description: "The date and time the status changed."
+        type: "string"
+        format: "date-time"
+  CreateTicket:
+    description: "Used when creating a trouble ticket."
+    type: "object"
+    properties:
+      externalId:
+        description: "Additional identifier coming from an external system. This is\
+          \ set by the Service Provider."
+        type: "string"
+      description:
+        description: "Description of the trouble."
+        type: "string"
+      severity:
+        $ref: "#/definitions/TroubleSeverity"
+      type:
+        $ref: "#/definitions/TroubleType"
+      priority:
+        $ref: "#/definitions/PriorityType"
+      relatedParty:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedParty"
+      relatedObject:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedObject"
+      note:
+        type: "array"
+        items:
+          $ref: "#/definitions/Note"
+      attachment:
+        type: "array"
+        items:
+          $ref: "#/definitions/Attachment"
+      '@baseType':
+        description: ""
+        type: "string"
+      '@type':
+        description: ""
+        type: "string"
+      '@schemaLocation':
+        description: ""
+        type: "string"
+  UpdateTicket:
+    description: "Used when partially updating a trouble ticket, or in the closing\
+      \ or canceling of a trouble ticket."
+    type: "object"
+    properties:
+      externalId:
+        description: "Additional identifier coming from an external system. This is\
+          \ set by the Service Provider."
+        type: "string"
+      description:
+        description: "Description of the trouble."
+        type: "string"
+      type:
+        $ref: "#/definitions/TroubleType"
+      requestedStatus:
+        $ref: "#/definitions/RequestedStatusType"
+      relatedParty:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedParty"
+      relatedObject:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedObject"
+      note:
+        type: "array"
+        items:
+          $ref: "#/definitions/Note"
+      attachment:
+        type: "array"
+        items:
+          $ref: "#/definitions/Attachment"
+      '@baseType':
+        description: ""
+        type: "string"
+      '@type':
+        description: ""
+        type: "string"
+      '@schemaLocation':
+        description: ""
+        type: "string"
+  TicketSummary:
+    description: "The structure of the summary view of trouble tickets returned from\
+      \ a find trouble ticket request."
+    type: "object"
+    properties:
+      id:
+        description: "Unique identifier of the trouble ticket that is set by the partner\
+          \ when the trouble ticket is created."
+        type: "string"
+      href:
+        description: "href of the trouble ticket."
+        type: "string"
+      severity:
+        $ref: "#/definitions/TroubleSeverity"
+      creationDate:
+        description: "The date and time the ticket was created in the trouble ticket\
+          \ system."
+        type: "string"
+        format: "date-time"
+      targetResolutionDate:
+        description: "The targeted resolution date as specified by the partner."
+        type: "string"
+        format: "date-time"
+      status:
+        $ref: "#/definitions/TicketStatusType"
+      resolutionDate:
+        description: "The date and time the trouble ticket was resolved by the partner."
+        type: "string"
+        format: "date-time"
+      priority:
+        $ref: "#/definitions/PriorityType"
+      relatedObject:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedObject"
