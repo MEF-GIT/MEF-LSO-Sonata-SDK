@@ -1,0 +1,119 @@
+@startuml
+
+enum ProductStatus {
+   ACTIVE
+   PENDING_CHANGE
+   SUSPENDED
+   PENDING_TERMINATE
+   TERMINATED
+}
+enum RelationshipType {
+   RELIES_ON
+   BUNDLED
+   COMES_FROM
+}
+
+class ErrorRepresentation {
+   code:int
+   reason:string
+   message:string
+   status:int
+   referenceError:string
+   @type:string
+   @schemaLocation:string
+}
+
+class Product {
+   id:string
+   href:string
+   startDate:dateTime
+   terminationDate:dateTime
+   @type:string
+   @baseType:string
+   @schemaLocation:string
+}
+   Product --> "1-1" ProductStatus : status
+   Product --> "0-*" Place : place
+   Product --> "0-1" ProductOfferingRef : productOffering
+   Product --> "0-1" ProductSpecificationRef : productSpecification
+   Product --> "0-*" ProductRelationship : productRelationship
+   Product --> "0-*" BillingAccountRef : billingAccount
+   Product --> "0-*" RelatedParty : relatedParty
+   Product --> "0-*" ProductOrderItem : productOrderItem
+
+class ProductOfferingRef {
+   id:string
+}
+
+class ProductSpecificationRef {
+   id:string
+}
+   ProductSpecificationRef --> "0-1" Describing : describing
+
+class ProductRelationship
+   ProductRelationship --> "1-1" RelationshipType : type
+   ProductRelationship --> "1-1" ProductRef : product
+
+class BillingAccountRef {
+   id:string
+}
+
+class RelatedParty {
+   id:string
+   href:string
+   role:string
+   name:string
+   number:string
+   numberExtension:string
+   emailAddress:string
+}
+
+class ProductRef {
+   id:string
+   href:string
+}
+
+class Place {
+   id:string
+   href:string
+   role:string
+   @referredType:string
+   @schemaLocation:string
+}
+
+class ProductOrderItem {
+   id:string
+   href:string
+   productOrderId:string
+}
+
+class Describing {
+   @type:string
+   @schemaLocation:string
+}
+
+class ProductSummary {
+   id:string
+   href:string
+   startDate:dateTime
+}
+   ProductSummary --> "1-1" ProductStatus : status
+   ProductSummary --> "0-1" ProductOfferingRef : productOffering
+   ProductSummary --> "0-1" ProductSpecificationSummary : productSpecification
+
+class ProductSpecificationSummary {
+   id:string
+}
+
+class Hub {
+   id:string
+   query:string
+   callback:string
+}
+
+class PlaceRequest {
+   id:string
+   type:string
+}
+
+@enduml
