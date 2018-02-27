@@ -1,0 +1,317 @@
+
+
+enum OrderItemAction {
+  INSTALL,CHANGE,DISCONNECT,NO_CHANGE
+}
+
+enum OrderStatus {
+  ACKNOWLEDGED,REJECTED,IN_PROGRESS,PENDING,HELD,ASSESSING_CANCELLATION,PENDING_CANCELLATION,CANCELLED,CONFIGURED,CONFIRMED,JEOPARDY,FAILED,PARTIAL,COMPLETED
+}
+
+enum RelationshipType {
+  RELIES_ON,BUNDLED,COMES_FROM
+}
+
+enum OrderActivity {
+  INSTALL,CHANGE,DISCONNECT
+}
+
+enum DesiredOrderResponses {
+  CONFIRMATION_AND_ENGINEERING_DESIGN,CONFIRMATION_ONLY,NONE
+}
+
+enum PricingMethod {
+  TARIFF,CONTRACT,INDIVIDUAL_CASE_BASIS,OTHER
+}
+
+enum OrderItemStatus {
+  ACKNOWLEDGED,REJECTED,IN_PROGRESS,PENDING,HELD,ASSESSING_CANCELLATION,PENDING_CANCELLATION,CANCELLED,CONFIGURED,FAILED,COMPLETED
+}
+
+enum OrderItemRequestedState {
+  CANCELLED
+}
+
+entity BillingAccountRef {
+   id String
+}
+
+entity Place {
+   id String,
+   href String,
+   role String,
+   @referredType String,
+   @schemaLocation String
+}
+
+entity ProductOrder {
+   id String,
+   href String,
+   externalId String,
+   orderDate ZonedDateTime,
+   state OrderStatus,
+   requestedStartDate ZonedDateTime,
+   requestedCompletionDate ZonedDateTime,
+   completionDate ZonedDateTime,
+   expeditePriority Integer,
+   orderActivity OrderActivity,
+   desiredResponses DesiredOrderResponses,
+   orderVersion String,
+   projectId String,
+   tspRestorationPriority String,
+   @type String,
+   @schemaLocation String,
+   @baseType String
+}
+
+relationship OneToOne {
+   ProductOrder{ChannelRef} to ChannelRef,
+   ProductOrder{note} to Note
+}
+
+relationship OneToMany {
+   ProductOrder{relatedParty} to RelatedParty,
+   ProductOrder{relatedParty} to RelatedPartyRef,
+   ProductOrder{orderItem} to OrderItem
+}
+
+entity Note {
+   text String,
+   date ZonedDateTime,
+   author String
+}
+
+entity OrderItem {
+   id String,
+   action OrderItemAction,
+   state OrderItemStatus,
+   pricingMethod PricingMethod,
+   pricingReference String,
+   pricingTerm Integer,
+   @type String,
+   @schemaLocation String
+}
+
+relationship OneToOne {
+   OrderItem{appointment} to AppointmentRef,
+   OrderItem{billingAccount} to BillingAccountRef,
+   OrderItem{productOffering} to ProductOfferingRef,
+   OrderItem{product} to Product,
+   OrderItem{product} to Product,
+   OrderItem{orderItemRelationship} to OrderItemRelationShip
+}
+
+relationship OneToMany {
+   OrderItem{orderItemPrice} to OrderItemPrice,
+   OrderItem{orderItemRelationship} to OrderItemRelationShip,
+   OrderItem{qualification} to QualificationRef
+}
+
+entity ProductOfferingRef {
+   id String
+}
+
+relationship OneToMany {
+   ProductOfferingRef{bundledProductOffering} to ProductOfferingRef
+}
+
+entity Product {
+   id String,
+   @type String
+}
+
+relationship OneToOne {
+   Product{productSpecification} to ProductSpecification
+}
+
+relationship OneToMany {
+   Product{place} to Place,
+   Product{productCharacteristic} to ProductCharacteristic,
+   Product{relatedParty} to RelatedPartyRef,
+   Product{relatedParty} to RelatedParty,
+   Product{productRelationship} to ProductRelationship
+}
+
+entity OrderItemRelationShip {
+   type RelationshipType,
+   id String
+}
+
+entity ProductRelationship {
+   type RelationshipType
+}
+
+relationship OneToOne {
+   ProductRelationship{product} to ProductRef
+}
+
+entity ProductRef {
+   id String
+}
+
+entity Hub {
+   id String,
+   query String,
+   callback String
+}
+
+entity QualificationRef {
+   id String,
+   href String,
+   qualificationItem String,
+   @referredType String
+}
+
+entity RelatedParty {
+   id String,
+   href String,
+   @referredType String,
+   role String,
+   name String,
+   emailAddress String,
+   number String,
+   numberExtension String
+}
+
+entity CreateProductOrder {
+   externalId String,
+   requestedCompletionDate ZonedDateTime,
+   requestedStartDate ZonedDateTime,
+   expeditePriority Integer,
+   @type String,
+   @schemaLocation String,
+   @baseType String,
+   orderActivity OrderActivity,
+   desiredResponse DesiredOrderResponses,
+   orderVersion String,
+   projectId String,
+   tspRestorationPriority String
+}
+
+relationship OneToOne {
+   CreateProductOrder{ChannelRef} to ChannelRef,
+   CreateProductOrder{note} to Note
+}
+
+relationship OneToMany {
+   CreateProductOrder{relatedParty} to RelatedParty,
+   CreateProductOrder{relatedParty} to RelatedPartyRef,
+   CreateProductOrder{orderItem} to OrderItem,
+   CreateProductOrder{orderItem} to CreateOrderItem
+}
+
+entity ProductSpecification {
+   id String
+}
+
+relationship OneToOne {
+   ProductSpecification{describing} to Describing
+}
+
+entity Describing {
+   @type String,
+   @schemaLocation String
+}
+
+entity CreateOrderItem {
+   id String,
+   action OrderItemAction,
+   pricingMethod PricingMethod,
+   pricingReference String,
+   pricingTerm Integer,
+   @type String,
+   @schemaLocation String
+}
+
+relationship OneToOne {
+   CreateOrderItem{appointment} to AppointmentRef,
+   CreateOrderItem{billingAccount} to BillingAccountRef,
+   CreateOrderItem{productOffering} to ProductOfferingRef,
+   CreateOrderItem{product} to Product,
+   CreateOrderItem{product} to Product,
+   CreateOrderItem{orderItemRelationship} to OrderItemRelationShip
+}
+
+relationship OneToMany {
+   CreateOrderItem{orderItemPrice} to OrderItemPrice,
+   CreateOrderItem{orderItemRelationship} to OrderItemRelationShip,
+   CreateOrderItem{qualification} to QualificationRef
+}
+
+entity ProductOrderSummary {
+   id String,
+   externalId String,
+   orderDate ZonedDateTime,
+   state OrderStatus,
+   requestedCompletionDate ZonedDateTime,
+   projectId String
+}
+
+relationship OneToOne {
+   ProductOrderSummary{ChannelRef} to ChannelRef,
+   ProductOrderSummary{note} to Note
+}
+
+relationship OneToMany {
+   ProductOrderSummary{relatedParty} to RelatedPartyRef,
+   ProductOrderSummary{orderItem} to OrderItem
+}
+
+entity CancelOrderResponse {
+   id String,
+   state OrderStatus,
+   cancellationDeniedReason String
+}
+
+entity UpdateOrderItem {
+   id String,
+   action OrderItemAction,
+   requestedState OrderItemRequestedState,
+   pricingMethod PricingMethod,
+   pricingReference String,
+   pricingTerm Integer,
+   @type String,
+   @schemaLocation String
+}
+
+relationship OneToOne {
+   UpdateOrderItem{appointment} to AppointmentRef,
+   UpdateOrderItem{billingAccount} to BillingAccountRef,
+   UpdateOrderItem{productOffering} to ProductOfferingRef,
+   UpdateOrderItem{product} to Product,
+   UpdateOrderItem{product} to Product,
+   UpdateOrderItem{orderItemRelationship} to OrderItemRelationShip
+}
+
+relationship OneToMany {
+   UpdateOrderItem{orderItemPrice} to OrderItemPrice,
+   UpdateOrderItem{orderItemRelationship} to OrderItemRelationShip,
+   UpdateOrderItem{qualification} to QualificationRef
+}
+
+entity UpdateProductOrder {
+   externalId String,
+   requestedCompletionDate ZonedDateTime,
+   requestedStartDate ZonedDateTime,
+   expeditePriority Integer,
+   orderActivity OrderActivity,
+   desiredResponse DesiredOrderResponses,
+   orderVersion String,
+   projectId String,
+   tspRestorationPriority String,
+   @type String,
+   @schemaLocation String,
+   @baseType String
+}
+
+relationship OneToOne {
+   UpdateProductOrder{ChannelRef} to ChannelRef,
+   UpdateProductOrder{note} to Note
+}
+
+relationship OneToMany {
+   UpdateProductOrder{relatedParty} to RelatedParty,
+   UpdateProductOrder{relatedParty} to RelatedPartyRef,
+   UpdateProductOrder{orderItem} to OrderItem,
+   UpdateProductOrder{orderItem} to UpdateOrderItem
+}

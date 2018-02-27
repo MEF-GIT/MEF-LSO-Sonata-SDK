@@ -1,0 +1,1957 @@
+
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "The scope of this API for Phase I  was limited to the ability for a buyer to create an order for an Access E-Line (both port based and VLAN-based) Product, associated UNI CE Endpoint and ENNI CE Endpoint Products, and a stand-alone UNI product, via a Product Order over an interface between two communicating systems. The buyer could also retrieve a single, or set, of Product Orders based upon a specified filter.  \nPhase II introduces the following capabilities to the API:\n•\tChange Order: change an existing Product\n•\tDisconnect Order:  disconnect an existing Product \n•\tCancel Order: cancellation of an inflight-order\n•\tSupport for Order Notifications\n\nFollowing feature will be introduced in next release:\n•\tAmend Order: modification of an inflight-order",
+    "version": "2.0.0_inProgress",
+    "title": "API ProductOrder",
+    "x-logo": {
+      "url": "/redoc/logo.png",
+      "backgroundColor": "#FFFFFF"
+    }
+  },
+  
+  "host": "api.mef.com",
+  "basePath":	"/",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json;charset=utf-8"
+  ],
+  "produces": [
+    "application/json;charset=utf-8"
+  ],
+  "tags": [
+  
+    {
+      "name": "ProductOrder",
+      "description": ""
+    },
+    {
+      "name": "Hub",
+      "description": ""
+    }
+  ],
+  "paths": {
+      "/productOrder": {
+      "post": {
+        "tags": [
+           "ProductOrder"
+        ],        
+        "operationId": "productOrderCreate",
+        "summary": "productOrderCreate",
+        "description": "This operation is used to create an order. Depending on the order activity, one can \"INSTALL\", \"CHANGE\", or \"DISCONNECT\" an associated product.\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n\n - 100: Missing order item (minimum 1)\n   At least one order item must be provided\n - 101: Missing Buyer at order level\n   One and only one related party with a \"Buyer\" role should be provided at the product order level.\n - 102: A relatedParty is at the wrong level\n   The party role provided is not managed - MEF allows to have\n\"Buyer\", \"Seller\", \"Billing Contact\", \"Order Contact\", \"Implementation Contact\", \"Technical Contact\" roles at product order level\n\"UNI Site Contact\", \"UNI Alt Site Contact\", \"ENNI Site Contact\", \"ENNI Alt Site Contact\" at product order item level.\n - 103: Missing Buyer Contact at order level\n   One and only one related party with a \"Order Contact\" role should be provided at the product order level.\nBuyer Contact name & Telephone number must be provided.\n - 104: Missing Buyer Implementation Contact at order level\n   One and only one related party with a \"Implementation Contact\" role should be provided at the product order level.\nImplementation Contact name & Telephone number must be provided.\n - 105: Missing Buyer Technical contact at order level\n   One and only one related party with a \"Technical Contact\" role should be provided at the product order level.\nTechnical Contact name, Telephone number and email address must be provided.\n - 106: Addres information must matches place type\n   If place type is 'formatted address' : addrLine1, postCode, country must be there, addrLine2, locality, postCodeExtension, stateOrProvince  could be there, other address information must not be filled\nIf place type is 'fielded address' : streetName, streetType, postCode must be there, streetNr, streetNrSuffix, streetNrLast, streetSuffix, locality, postCodeExtension, country, stateOrProvince could be there, other address information must not be filled\n - 107: postCode extension needs postcode\n   A postCode extension must not be present whithout a postCode\n - 108: If orderItemAction is not INSTALL, orderItem.product.id is mandatory\n   \n - 109: If orderActivity is set to INSTALL, all orderItemAction must be INSTALL\n   \n - 110: Quote expired\n   ",
+        "deprecated": false,
+        
+        "parameters": [
+          
+          {
+            "name": "ProductOrder",
+            "required": true,
+            "in": "body",
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CreateProductOrder"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ProductOrder"
+            }
+
+          },
+          "400": {
+            
+            "description": "Bad Request\n\nList of supported error codes:\n- 20: Invalid URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string parameter value",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "401": {
+            
+            "description": "Unauthorized\n\nList of supported error codes:\n- 40: Missing credentials\n- 41: Invalid credentials\n- 42: Expired credentials",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "403": {
+            
+            "description": "Forbidden\n\nList of supported error codes:\n- 50: Access denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many requests",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "404": {
+            
+            "description": "Not Found\n\nList of supported error codes:\n- 60: Resource not found",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "405": {
+            
+            "description": "Method Not Allowed\n\nList of supported error codes:\n- 61: Method not allowed",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "408": {
+            
+            "description": "Request Time-out\n\nList of supported error codes:\n- 63: Request time-out",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "422": {
+            
+            "description": "Unprocessable entity\n\nFunctional error\n\nSpecific encapsulated business errors for current operation\n\n - 100: Missing order item (minimum 1)\n   At least one order item must be provided\n - 101: Missing Buyer at order level\n   One and only one related party with a \"Buyer\" role should be provided at the product order level.\n - 102: A relatedParty is at the wrong level\n   The party role provided is not managed - MEF allows to have\n\"Buyer\", \"Seller\", \"Billing Contact\", \"Order Contact\", \"Implementation Contact\", \"Technical Contact\" roles at product order level\n\"UNI Site Contact\", \"UNI Alt Site Contact\", \"ENNI Site Contact\", \"ENNI Alt Site Contact\" at product order item level.\n - 103: Missing Buyer Contact at order level\n   One and only one related party with a \"Order Contact\" role should be provided at the product order level.\nBuyer Contact name & Telephone number must be provided.\n - 104: Missing Buyer Implementation Contact at order level\n   One and only one related party with a \"Implementation Contact\" role should be provided at the product order level.\nImplementation Contact name & Telephone number must be provided.\n - 105: Missing Buyer Technical contact at order level\n   One and only one related party with a \"Technical Contact\" role should be provided at the product order level.\nTechnical Contact name, Telephone number and email address must be provided.\n - 106: Addres information must matches place type\n   If place type is 'formatted address' : addrLine1, postCode, country must be there, addrLine2, locality, postCodeExtension, stateOrProvince  could be there, other address information must not be filled\nIf place type is 'fielded address' : streetName, streetType, postCode must be there, streetNr, streetNrSuffix, streetNrLast, streetSuffix, locality, postCodeExtension, country, stateOrProvince could be there, other address information must not be filled\n - 107: postCode extension needs postcode\n   A postCode extension must not be present whithout a postCode\n - 108: If orderItemAction is not INSTALL, orderItem.product.id is mandatory\n   \n - 109: If orderActivity is set to INSTALL, all orderItemAction must be INSTALL\n   \n - 110: Quote expired\n   ",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "500": {
+            
+            "description": "Internal Server Error\n\nList of supported error codes:\n- 1: Internal error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "503": {
+            
+            "description": "Service Unavailable\n\nList of supported error codes:\n- 5: The service is temporarily unavailable\n- 6:  API is over capacity, retry later !",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+           "ProductOrder"
+        ],        
+        "operationId": "productOrderFind",
+        "summary": "productOrderFind (list)",
+        "description": "This operation is used to retrieve one or more product orders based upon filter criteria specified on input.\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n",
+        "deprecated": false,
+        
+        "parameters": [
+          
+          {
+            "name": "externalId",
+            "required": false,
+            "in": "query",
+            "description": "",
+            
+              "type": "string"
+          },
+          {
+            "name": "orderDate",
+            "required": false,
+            "in": "query",
+            "description": "",
+            
+              "type": "string"
+          },
+          {
+            "name": "state",
+            "required": false,
+            "in": "query",
+            "description": "",
+            
+              "type": "string"
+          },
+          {
+            "name": "requestedCompletionDate",
+            "required": false,
+            "in": "query",
+            "description": "",
+            
+              "type": "string"
+          },
+          {
+            "name": "projectId",
+            "required": false,
+            "in": "query",
+            "description": "",
+            
+              "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+              "$ref": "#/definitions/ProductOrderSummary"
+              }
+            }
+
+          },
+          "400": {
+            
+            "description": "Bad Request\n\nList of supported error codes:\n- 20: Invalid URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string parameter value",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "401": {
+            
+            "description": "Unauthorized\n\nList of supported error codes:\n- 40: Missing credentials\n- 41: Invalid credentials\n- 42: Expired credentials",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "403": {
+            
+            "description": "Forbidden\n\nList of supported error codes:\n- 50: Access denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many requests",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "404": {
+            
+            "description": "Not Found\n\nList of supported error codes:\n- 60: Resource not found",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "405": {
+            
+            "description": "Method Not Allowed\n\nList of supported error codes:\n- 61: Method not allowed",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "408": {
+            
+            "description": "Request Time-out\n\nList of supported error codes:\n- 63: Request time-out",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "422": {
+            
+            "description": "Unprocessable entity\n\nFunctional error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "500": {
+            
+            "description": "Internal Server Error\n\nList of supported error codes:\n- 1: Internal error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "503": {
+            
+            "description": "Service Unavailable\n\nList of supported error codes:\n- 5: The service is temporarily unavailable\n- 6:  API is over capacity, retry later !",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          }
+        }
+      }
+    },
+      "/productOrder/{productOrderId}": {
+      "get": {
+        "tags": [
+           "ProductOrder"
+        ],        
+        "operationId": "productOrderGet",
+        "summary": "productOrderGet (by id)",
+        "description": "This operation is used to retrieve a single product order based upon a specified product order id.\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n",
+        "deprecated": false,
+        
+        "parameters": [
+          
+          {
+            "name": "productOrderId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ProductOrder"
+            }
+
+          },
+          "400": {
+            
+            "description": "Bad Request\n\nList of supported error codes:\n- 20: Invalid URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string parameter value",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "401": {
+            
+            "description": "Unauthorized\n\nList of supported error codes:\n- 40: Missing credentials\n- 41: Invalid credentials\n- 42: Expired credentials",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "403": {
+            
+            "description": "Forbidden\n\nList of supported error codes:\n- 50: Access denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many requests",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "404": {
+            
+            "description": "Not Found\n\nList of supported error codes:\n- 60: Resource not found",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "405": {
+            
+            "description": "Method Not Allowed\n\nList of supported error codes:\n- 61: Method not allowed",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "408": {
+            
+            "description": "Request Time-out\n\nList of supported error codes:\n- 63: Request time-out",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "422": {
+            
+            "description": "Unprocessable entity\n\nFunctional error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "500": {
+            
+            "description": "Internal Server Error\n\nList of supported error codes:\n- 1: Internal error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "503": {
+            
+            "description": "Service Unavailable\n\nList of supported error codes:\n- 5: The service is temporarily unavailable\n- 6:  API is over capacity, retry later !",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          }
+        }
+      }
+    },
+      "/productOrder/{productOrderId}/cancel": {
+      "post": {
+        "tags": [
+           "ProductOrder"
+        ],        
+        "operationId": "productOrderCancel",
+        "summary": "productOrderCancel",
+        "description": "Request to cancel an order submitted by the buyer\nSeller answer with order state (could be CANCELLED, ASSESSING_CANCELLATION or previous order state if seller did not accept cancellation request).\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n",
+        "deprecated": false,
+        
+        "parameters": [
+          
+          {
+            "name": "productOrderId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/CancelOrderResponse"
+            }
+
+          },
+          "400": {
+            
+            "description": "Bad Request\n\nList of supported error codes:\n- 20: Invalid URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string parameter value",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "401": {
+            
+            "description": "Unauthorized\n\nList of supported error codes:\n- 40: Missing credentials\n- 41: Invalid credentials\n- 42: Expired credentials",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "403": {
+            
+            "description": "Forbidden\n\nList of supported error codes:\n- 50: Access denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many requests",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "404": {
+            
+            "description": "Not Found\n\nList of supported error codes:\n- 60: Resource not found",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "405": {
+            
+            "description": "Method Not Allowed\n\nList of supported error codes:\n- 61: Method not allowed",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "408": {
+            
+            "description": "Request Time-out\n\nList of supported error codes:\n- 63: Request time-out",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "422": {
+            
+            "description": "Unprocessable entity\n\nFunctional error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "500": {
+            
+            "description": "Internal Server Error\n\nList of supported error codes:\n- 1: Internal error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "503": {
+            
+            "description": "Service Unavailable\n\nList of supported error codes:\n- 5: The service is temporarily unavailable\n- 6:  API is over capacity, retry later !",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          }
+        }
+      }
+    },
+      "/hub": {
+      "post": {
+        "tags": [
+           "Hub"
+        ],        
+        "operationId": "hubCreate",
+        "summary": "create hub",
+        "description": "\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n",
+        "deprecated": false,
+        
+        "parameters": [
+          
+          {
+            "name": "Hub",
+            "required": true,
+            "in": "body",
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Hub"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Hub"
+            }
+
+          },
+          "400": {
+            
+            "description": "Bad Request\n\nList of supported error codes:\n- 20: Invalid URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string parameter value",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "401": {
+            
+            "description": "Unauthorized\n\nList of supported error codes:\n- 40: Missing credentials\n- 41: Invalid credentials\n- 42: Expired credentials",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "403": {
+            
+            "description": "Forbidden\n\nList of supported error codes:\n- 50: Access denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many requests",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "404": {
+            
+            "description": "Not Found\n\nList of supported error codes:\n- 60: Resource not found",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "405": {
+            
+            "description": "Method Not Allowed\n\nList of supported error codes:\n- 61: Method not allowed",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "408": {
+            
+            "description": "Request Time-out\n\nList of supported error codes:\n- 63: Request time-out",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "422": {
+            
+            "description": "Unprocessable entity\n\nFunctional error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "500": {
+            
+            "description": "Internal Server Error\n\nList of supported error codes:\n- 1: Internal error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "503": {
+            
+            "description": "Service Unavailable\n\nList of supported error codes:\n- 5: The service is temporarily unavailable\n- 6:  API is over capacity, retry later !",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+           "Hub"
+        ],        
+        "operationId": "hubFind",
+        "summary": "find hub",
+        "description": "\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n",
+        "deprecated": false,
+        
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+              "$ref": "#/definitions/Hub"
+              }
+            }
+
+          },
+          "400": {
+            
+            "description": "Bad Request\n\nList of supported error codes:\n- 20: Invalid URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string parameter value",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "401": {
+            
+            "description": "Unauthorized\n\nList of supported error codes:\n- 40: Missing credentials\n- 41: Invalid credentials\n- 42: Expired credentials",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "403": {
+            
+            "description": "Forbidden\n\nList of supported error codes:\n- 50: Access denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many requests",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "404": {
+            
+            "description": "Not Found\n\nList of supported error codes:\n- 60: Resource not found",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "405": {
+            
+            "description": "Method Not Allowed\n\nList of supported error codes:\n- 61: Method not allowed",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "408": {
+            
+            "description": "Request Time-out\n\nList of supported error codes:\n- 63: Request time-out",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "422": {
+            
+            "description": "Unprocessable entity\n\nFunctional error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "500": {
+            
+            "description": "Internal Server Error\n\nList of supported error codes:\n- 1: Internal error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "503": {
+            
+            "description": "Service Unavailable\n\nList of supported error codes:\n- 5: The service is temporarily unavailable\n- 6:  API is over capacity, retry later !",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          }
+        }
+      }
+    },
+      "/hub/{hubId}": {
+      "get": {
+        "tags": [
+           "Hub"
+        ],        
+        "operationId": "hubGet",
+        "summary": "get hub",
+        "description": "\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n",
+        "deprecated": false,
+        
+        "parameters": [
+          
+          {
+            "name": "hubId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Hub"
+            }
+
+          },
+          "400": {
+            
+            "description": "Bad Request\n\nList of supported error codes:\n- 20: Invalid URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string parameter value",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "401": {
+            
+            "description": "Unauthorized\n\nList of supported error codes:\n- 40: Missing credentials\n- 41: Invalid credentials\n- 42: Expired credentials",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "403": {
+            
+            "description": "Forbidden\n\nList of supported error codes:\n- 50: Access denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many requests",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "404": {
+            
+            "description": "Not Found\n\nList of supported error codes:\n- 60: Resource not found",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "405": {
+            
+            "description": "Method Not Allowed\n\nList of supported error codes:\n- 61: Method not allowed",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "408": {
+            
+            "description": "Request Time-out\n\nList of supported error codes:\n- 63: Request time-out",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "422": {
+            
+            "description": "Unprocessable entity\n\nFunctional error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "500": {
+            
+            "description": "Internal Server Error\n\nList of supported error codes:\n- 1: Internal error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "503": {
+            
+            "description": "Service Unavailable\n\nList of supported error codes:\n- 5: The service is temporarily unavailable\n- 6:  API is over capacity, retry later !",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+           "Hub"
+        ],        
+        "operationId": "hubDelete",
+        "summary": "delete hub",
+        "description": "\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n",
+        "deprecated": false,
+        
+        "parameters": [
+          
+          {
+            "name": "hubId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+
+          },
+          "400": {
+            
+            "description": "Bad Request\n\nList of supported error codes:\n- 20: Invalid URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string parameter value",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "401": {
+            
+            "description": "Unauthorized\n\nList of supported error codes:\n- 40: Missing credentials\n- 41: Invalid credentials\n- 42: Expired credentials",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "403": {
+            
+            "description": "Forbidden\n\nList of supported error codes:\n- 50: Access denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many requests",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "404": {
+            
+            "description": "Not Found\n\nList of supported error codes:\n- 60: Resource not found",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "405": {
+            
+            "description": "Method Not Allowed\n\nList of supported error codes:\n- 61: Method not allowed",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "408": {
+            
+            "description": "Request Time-out\n\nList of supported error codes:\n- 63: Request time-out",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "422": {
+            
+            "description": "Unprocessable entity\n\nFunctional error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "500": {
+            
+            "description": "Internal Server Error\n\nList of supported error codes:\n- 1: Internal error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "503": {
+            
+            "description": "Service Unavailable\n\nList of supported error codes:\n- 5: The service is temporarily unavailable\n- 6:  API is over capacity, retry later !",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          }
+        }
+      }
+    }
+  },
+"definitions": {
+  
+    "OrderItemAction": {
+      "description": "An enumeration of valid order item actions",
+      
+      "type": "string",
+      "enum": [
+  	          "INSTALL",
+  	          "CHANGE",
+  	          "DISCONNECT",
+  	          "NO_CHANGE"]
+      
+    },
+    "OrderStatus": {
+      "description": "An enumeration of valid order statuses",
+      
+      "type": "string",
+      "enum": [
+  	          "ACKNOWLEDGED",
+  	          "REJECTED",
+  	          "IN_PROGRESS",
+  	          "PENDING",
+  	          "HELD",
+  	          "ASSESSING_CANCELLATION",
+  	          "PENDING_CANCELLATION",
+  	          "CANCELLED",
+  	          "CONFIGURED",
+  	          "CONFIRMED",
+  	          "JEOPARDY",
+  	          "FAILED",
+  	          "PARTIAL",
+  	          "COMPLETED"]
+      
+    },
+    "RelationshipType": {
+      "description": "Indicates the type of relationship between products.",
+      
+      "type": "string",
+      "enum": [
+  	          "RELIES_ON",
+  	          "BUNDLED",
+  	          "COMES_FROM"]
+      
+    },
+    "OrderActivity": {
+      "description": "The type of order as defined by the business.",
+      
+      "type": "string",
+      "enum": [
+  	          "INSTALL",
+  	          "CHANGE",
+  	          "DISCONNECT"]
+      
+    },
+    "DesiredOrderResponses": {
+      "description": "The kind of responses that the buyer expects to receive from the seller.",
+      
+      "type": "string",
+      "enum": [
+  	          "CONFIRMATION_AND_ENGINEERING_DESIGN",
+  	          "CONFIRMATION_ONLY",
+  	          "NONE"]
+      
+    },
+    "PricingMethod": {
+      "description": "An enumeration of valid pricing methods for ordered items",
+      
+      "type": "string",
+      "enum": [
+  	          "TARIFF",
+  	          "CONTRACT",
+  	          "INDIVIDUAL_CASE_BASIS",
+  	          "OTHER"]
+      
+    },
+    "OrderItemStatus": {
+      "description": "An enumeration of valid order item statuses.",
+      
+      "type": "string",
+      "enum": [
+  	          "ACKNOWLEDGED",
+  	          "REJECTED",
+  	          "IN_PROGRESS",
+  	          "PENDING",
+  	          "HELD",
+  	          "ASSESSING_CANCELLATION",
+  	          "PENDING_CANCELLATION",
+  	          "CANCELLED",
+  	          "CONFIGURED",
+  	          "FAILED",
+  	          "COMPLETED"]
+      
+    },
+    "OrderItemRequestedState": {
+      "description": "The state that the buyer is requesting to put the order item into. The only valid value is \"CANCELLED\".",
+      
+      "type": "string",
+      "enum": [
+  	          "CANCELLED"]
+      
+    },
+
+    "ErrorRepresentation": {
+      "description": "",
+
+      
+      "required": [
+          
+            "code",
+            "reason"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "description": "Application related code (as defined in the API or from a common list)",
+              "type": "integer",
+              "format": "int32"
+        },
+        "reason": {
+          "description": "Text that explains the reason for error. This can be shown to a client user.",
+              "type": "string"
+        },
+        "message": {
+          "description": "Text that provide more details and corrective actions related to the error. This can be shown to a client user.",
+              "type": "string"
+        },
+        "status": {
+          "description": "http error code extension like 400-2",
+              "type": "integer",
+              "format": "int32"
+        },
+        "referenceError": {
+          "description": "url pointing to documentation describing the error",
+              "type": "string"
+        },
+        "@type": {
+          "description": "The class type of a REST resource.",
+              "type": "string"
+        },
+        "@schemaLocation": {
+          "description": "it provides a link to the schema describing a REST resource.",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "BillingAccountRef": {
+      "description": "An arrangement that a customer has with an enterprise that provides products to the customer.",
+
+      
+      "required": [
+          
+            "id"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Identifies the buyer's billing account to which the recurring and non-recurring charges for this order item will be billed.",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "Place": {
+      "description": "Place answers the question \"Where?\" It is an abstract class.",
+
+      
+      "required": [
+          
+            "id",
+            "href",
+            "role"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique identifier of the place.",
+              "type": "string"
+        },
+        "href": {
+          "description": "Reference link to the place",
+              "type": "string"
+        },
+        "role": {
+          "description": "The role that the place plays, e.g. \"Billing Address\", \"UNI Site\", or \"ENNI Site\".",
+              "type": "string"
+        },
+        "@referredType": {
+          "description": "The type to which the place is referring. This may be \"Site\", \"FormattedAddress\", \"FieldedAddress\", \"ReferencedAddress\", or \"GeographicLocation",
+              "type": "string"
+        },
+        "@schemaLocation": {
+          "description": "The pointer where the place description file could be retrieved",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "ProductOrder": {
+      "description": "A ProductOrder is a type of business interaction that is used to procure a Product based upon a Product Offering.",
+
+      
+      "required": [
+          
+            "id",
+            "href",
+            "externalId",
+            "orderDate",
+            "state",
+            "requestedCompletionDate",
+            "orderActivity",
+            "desiredResponses",
+            "orderVersion",
+            "relatedParty",
+            "orderItem"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique (within the ordering domain) identifier for the order that is generated by the seller when the order is initially accepted.",
+              "type": "string"
+        },
+        "href": {
+          "description": "Hyperlink to access the order",
+              "type": "string"
+        },
+        "externalId": {
+          "description": "A number that uniquely identifies an order within the buyer's enterprise.",
+              "type": "string"
+        },
+        "orderDate": {
+          "description": "Date when the order was created. Format is YYYY-MM-DDThh:mmTZD (e.g. 1997-07-16T19:20+01:00)",
+              "type": "string",
+              "format": "date-time"
+        },
+        "state": {
+          
+           "$ref": "#/definitions/OrderStatus"
+        },
+        "requestedStartDate": {
+          "description": "The buyer's requested date that order processing should start. Format is YYYY-MM-DDThh:mmTZD (e.g. 1997-07-16T19:20+01:00).",
+              "type": "string",
+              "format": "date-time"
+        },
+        "requestedCompletionDate": {
+          "description": "Identifies the buyer's desired due date (requested delivery date). Cannot be requested on cancelled orders.  Format is YYYY-MM-DDThh:mmTZD (e.g. 1997-07-16T19:20+01:00).",
+              "type": "string",
+              "format": "date-time"
+        },
+        "completionDate": {
+          "description": "The date the order is completed. Format is YYYY-MM-DDThh:mmTZD (e.g. 1997-07-16T19:20+01:00)",
+              "type": "string",
+              "format": "date-time"
+        },
+        "expeditePriority": {
+          "description": "Indicates that expedited treatment is requested and any charges generated in provisioning this request (e.g., additional engineering charges or labor charges if applicable) will be accepted; optionally, can be used to indicate the assigned priority of this order relative to other orders in the Order Management system. The valid values for this field will be defined by the Seller as part of the contracting or on-boarding process",
+              "type": "integer",
+              "format": "int32"
+        },
+        "orderActivity": {
+          
+           "$ref": "#/definitions/OrderActivity"
+        },
+        "desiredResponses": {
+          
+           "$ref": "#/definitions/DesiredOrderResponses"
+        },
+        "orderVersion": {
+          "description": "The version number that the Buyer uses to refer to this particular version of the order",
+              "type": "string",
+  	
+  	          "default": "1"
+        },
+        "projectId": {
+          "description": "An identifier that is used to group Orders that represent a unit of functionality that is important to a Buyer.  A Project can be used to relate multiple Orders together.",
+              "type": "string"
+        },
+        "tspRestorationPriority": {
+          "description": "Within the United States, indicates the provisioning and restoration priority as defined under the TSP Service Vendor Handbook, The valid values are defined in ATIS OBF document: ATIS-0404001",
+              "type": "string"
+        },
+        "relatedParty": {
+          
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/RelatedParty"
+          }
+        },
+        "note": {
+          
+              "$ref": "#/definitions/Note"
+        },
+        "orderItem": {
+          
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/OrderItem"
+          }
+        },
+        "@type": {
+          "description": "",
+              "type": "string"
+        },
+        "@schemaLocation": {
+          "description": "",
+              "type": "string"
+        },
+        "@baseType": {
+          "description": "",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "Note": {
+      "description": "A note, or set of notes, to be associated to the product order.",
+
+      
+      "required": [
+          
+            "text",
+            "date",
+            "author"
+      ],
+      "type": "object",
+      "properties": {
+        "text": {
+          "description": "The text of the note",
+              "type": "string"
+        },
+        "date": {
+          "description": "The date of the note. Format is YYYY-MM-DDThh:mmTZD (e.g. 1997-07-16T19:20+01:00).",
+              "type": "string",
+              "format": "date-time"
+        },
+        "author": {
+          "description": "The author of the note",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "OrderItem": {
+      "description": "An enumeration of the entities that are part of this order expressed in terms of a Product Offering or a Product (for a change order).",
+
+      
+      "required": [
+          
+            "id",
+            "action",
+            "state"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Identifier of the line item (generally it is a sequence number 01, 02, 03, ...)",
+              "type": "string"
+        },
+        "action": {
+          
+           "$ref": "#/definitions/OrderItemAction"
+        },
+        "state": {
+          
+           "$ref": "#/definitions/OrderItemStatus"
+        },
+        "pricingMethod": {
+          
+           "$ref": "#/definitions/PricingMethod"
+        },
+        "pricingReference": {
+          "description": "The value associated with the Pricing Method selected (e.g. a contract or tariff id)",
+              "type": "string"
+        },
+        "pricingTerm": {
+          "description": "The length of the contract in months",
+              "type": "integer",
+              "format": "int32"
+        },
+        "billingAccount": {
+          
+              "$ref": "#/definitions/BillingAccountRef"
+        },
+        "productOffering": {
+          
+              "$ref": "#/definitions/ProductOfferingRef"
+        },
+        "product": {
+          
+              "$ref": "#/definitions/Product"
+        },
+        "orderItemRelationship": {
+          
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/OrderItemRelationShip"
+          }
+        },
+        "qualification": {
+          
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/QualificationRef"
+          }
+        },
+        "@type": {
+          "description": "Type of productOrder",
+              "type": "string"
+        },
+        "@schemaLocation": {
+          "description": "Target a description file of productOrder extension",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "ProductOfferingRef": {
+      "description": "A product offering defines the commercial terms under which a product specification may be instantiated.",
+
+      
+      "required": [
+          
+            "id"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "A unique product offering identifier. This identifier is provided by the seller and communicated to the buyer",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "Product": {
+      "description": "A Product is an instance of a ProductOffering procured by a Customer.",
+
+      
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique (within the product domain) identifier for the product that is generated by the seller when the product is instantiated.",
+              "type": "string"
+        },
+        "@type": {
+          "description": "Type of Product if specialization of product is used",
+              "type": "string"
+        },
+        "productSpecification": {
+          
+              "$ref": "#/definitions/ProductSpecification"
+        },
+        "place": {
+          
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/Place"
+          }
+        },
+        "relatedParty": {
+          
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/RelatedParty"
+          }
+        },
+        "productRelationship": {
+          
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/ProductRelationship"
+          }
+        }
+      }
+      
+    },
+
+    "OrderItemRelationShip": {
+      "description": "This class allows the ability to associate one order item to another order item.",
+
+      
+      "required": [
+          
+            "type",
+            "id"
+      ],
+      "type": "object",
+      "properties": {
+        "type": {
+          
+           "$ref": "#/definitions/RelationshipType"
+        },
+        "id": {
+          "description": "The id of the targeted order item by the relationship",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "ProductRelationship": {
+      "description": "Indicates a relationship between products.",
+
+      
+      "required": [
+          
+            "type",
+            "product"
+      ],
+      "type": "object",
+      "properties": {
+        "type": {
+          
+           "$ref": "#/definitions/RelationshipType"
+        },
+        "product": {
+          
+              "$ref": "#/definitions/ProductRef"
+        }
+      }
+      
+    },
+
+    "ProductRef": {
+      "description": "",
+
+      
+      "required": [
+          
+            "id"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "Hub": {
+      "description": "",
+
+      
+      "required": [
+          
+            "id",
+            "query",
+            "callback"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "",
+              "type": "string"
+        },
+        "query": {
+          "description": "attribute selection & search criteria",
+              "type": "string"
+        },
+        "callback": {
+          "description": "callback urn, for instance an url http://yourdomain/listener/api/v1/event",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "QualificationRef": {
+      "description": "",
+
+      
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "",
+              "type": "string"
+        },
+        "href": {
+          "description": "",
+              "type": "string"
+        },
+        "qualificationItem": {
+          "description": "",
+              "type": "string"
+        },
+        "@referredType": {
+          "description": "",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "RelatedParty": {
+      "description": "An entity or organization that is involved in the product order, such as the buyer, the seller, the order contact, etc.",
+
+      
+      "required": [
+          
+            "id",
+            "role",
+            "name",
+            "number"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "An identifier of the related party. For the \"buyer\" and \"seller\" id, this is a  Carrier ID number provided by local regulatory entity.  Unique in the local jurisdiction.",
+              "type": "string"
+        },
+        "href": {
+          "description": "Reference link to the party",
+              "type": "string"
+        },
+        "@referredType": {
+          "description": "",
+              "type": "string"
+        },
+        "role": {
+          "description": "MEF: could be \"Buyer\", \"Seller\", \"Billing Contact\", \"Order Contact\", \"Implementation Contact\", \"Technical Contact\", \"UNI Site Contact\", \"UNI Alt Site Contact\", \"ENNI Site Contact\", \"ENNI Alt Site Contact\"",
+              "type": "string"
+        },
+        "name": {
+          "description": "The name of the related party, e.g. \"Jean Pontus\".",
+              "type": "string"
+        },
+        "emailAddress": {
+          "description": "The email address of the related party.",
+              "type": "string"
+        },
+        "number": {
+          "description": "The telephone number of the related party.",
+              "type": "string"
+        },
+        "numberExtension": {
+          "description": "MEF Extension",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "CreateProductOrder": {
+      "description": "A CreateProductOrder object is provided as input to the product order create operation.",
+
+      
+      "required": [
+          
+            "externalId",
+            "requestedCompletionDate",
+            "orderActivity",
+            "desiredResponse",
+            "orderVersion",
+            "relatedParty",
+            "orderItem"
+      ],
+      "type": "object",
+      "properties": {
+        "externalId": {
+          "description": "",
+              "type": "string"
+        },
+        "requestedCompletionDate": {
+          "description": "",
+              "type": "string",
+              "format": "date-time"
+        },
+        "requestedStartDate": {
+          "description": "",
+              "type": "string",
+              "format": "date-time"
+        },
+        "expeditePriority": {
+          "description": "",
+              "type": "integer",
+              "format": "int32"
+        },
+        "@type": {
+          "description": "",
+              "type": "string"
+        },
+        "@schemaLocation": {
+          "description": "",
+              "type": "string"
+        },
+        "@baseType": {
+          "description": "",
+              "type": "string"
+        },
+        "orderActivity": {
+          
+           "$ref": "#/definitions/OrderActivity"
+        },
+        "desiredResponse": {
+          
+           "$ref": "#/definitions/DesiredOrderResponses"
+        },
+        "orderVersion": {
+          "description": "",
+              "type": "string"
+        },
+        "projectId": {
+          "description": "",
+              "type": "string"
+        },
+        "tspRestorationPriority": {
+          "description": "",
+              "type": "string"
+        },
+        "relatedParty": {
+          
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/RelatedParty"
+          }
+        },
+        "note": {
+          
+              "$ref": "#/definitions/Note"
+        },
+        "orderItem": {
+          
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/CreateOrderItem"
+          }
+        }
+      }
+      
+    },
+
+    "ProductSpecification": {
+      "description": "A ProductSpec describes the invariant properties (i.e., features) that a given set of Products MAY have. These properties provide the information needed to plan, construct, allocate, and/or retire the Services and Resources from the operator environment needed to deliver the Product",
+
+      
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "A unique identifier for the product spec, within the product spec domain. It is assigned by the seller and communicated to the buyer at on-boarding time.",
+              "type": "string"
+        },
+        "describing": {
+          
+              "$ref": "#/definitions/Describing"
+        }
+      }
+      
+    },
+
+    "Describing": {
+      "description": "",
+
+      
+      "type": "object",
+      "properties": {
+        "@type": {
+          "description": "",
+              "type": "string"
+        },
+        "@schemaLocation": {
+          "description": "",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "CreateOrderItem": {
+      "description": "A CreateOrderItem object is provided as input to the product order item create operation.",
+
+      
+      "required": [
+          
+            "id",
+            "action",
+            "productOffering"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Identifier of the line item (generally it is a sequence number 01, 02, 03, ...)",
+              "type": "string"
+        },
+        "action": {
+          
+           "$ref": "#/definitions/OrderItemAction"
+        },
+        "pricingMethod": {
+          
+           "$ref": "#/definitions/PricingMethod"
+        },
+        "pricingReference": {
+          "description": "The value associated with the Pricing Method selected (e.g. a contract or tariff id)",
+              "type": "string"
+        },
+        "pricingTerm": {
+          "description": "The length of the contract in months",
+              "type": "integer",
+              "format": "int32"
+        },
+        "billingAccount": {
+          
+              "$ref": "#/definitions/BillingAccountRef"
+        },
+        "productOffering": {
+          
+              "$ref": "#/definitions/ProductOfferingRef"
+        },
+        "product": {
+          
+              "$ref": "#/definitions/Product"
+        },
+        "orderItemRelationship": {
+          
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/OrderItemRelationShip"
+          }
+        },
+        "qualification": {
+          
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/QualificationRef"
+          }
+        },
+        "@type": {
+          "description": "",
+              "type": "string"
+        },
+        "@schemaLocation": {
+          "description": "",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "ProductOrderSummary": {
+      "description": "Structure to define GET without id response. A list of productOrder matching request criteria. Provides Product order summary view.",
+
+      
+      "required": [
+          
+            "id",
+            "externalId",
+            "orderDate",
+            "state",
+            "requestedCompletionDate"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "ID created on repository side (OM system)\nMEF: Unique identifier for the order that is generated by the Seller when the order is initially accepted via an API.",
+              "type": "string"
+        },
+        "externalId": {
+          "description": "ID given by the consumer and only understandable by him (to facilitate his searches afterwards).\nMEF: Buyer Purchase Order Number",
+              "type": "string"
+        },
+        "orderDate": {
+          "description": "Date when the order was created",
+              "type": "string",
+              "format": "date-time"
+        },
+        "state": {
+          
+           "$ref": "#/definitions/OrderStatus"
+        },
+        "requestedCompletionDate": {
+          "description": "Requested delivery date from the requestor perspective",
+              "type": "string",
+              "format": "date-time"
+        },
+        "projectId": {
+          "description": "An identifier that is used to group Orders that represent a unit of functionality that is important to a Buyer. A Project can be used to relate multiple Orders together.",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "CancelOrderResponse": {
+      "description": "Structure to allow Seller to describe to a cancel order request",
+
+      
+      "required": [
+          
+            "id",
+            "state"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "",
+              "type": "string"
+        },
+        "state": {
+          
+           "$ref": "#/definitions/OrderStatus"
+        },
+        "cancellationDeniedReason": {
+          "description": "",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "UpdateOrderItem": {
+      "description": "The update product order structure.",
+
+      
+      "required": [
+          
+            "id",
+            "action"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Identifier of the line item (generally it is a sequence number 01, 02, 03, ...)",
+              "type": "string"
+        },
+        "action": {
+          
+           "$ref": "#/definitions/OrderItemAction"
+        },
+        "requestedState": {
+          
+           "$ref": "#/definitions/OrderItemRequestedState"
+        },
+        "pricingMethod": {
+          
+           "$ref": "#/definitions/PricingMethod"
+        },
+        "pricingReference": {
+          "description": "The value associated with the Pricing Method selected (e.g. a contract or tariff id)",
+              "type": "string"
+        },
+        "pricingTerm": {
+          "description": "The length of the contract in months",
+              "type": "integer",
+              "format": "int32"
+        },
+        "billingAccount": {
+          
+              "$ref": "#/definitions/BillingAccountRef"
+        },
+        "productOffering": {
+          
+              "$ref": "#/definitions/ProductOfferingRef"
+        },
+        "product": {
+          
+              "$ref": "#/definitions/Product"
+        },
+        "orderItemRelationship": {
+          
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/OrderItemRelationShip"
+          }
+        },
+        "qualification": {
+          
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/QualificationRef"
+          }
+        },
+        "@type": {
+          "description": "",
+              "type": "string"
+        },
+        "@schemaLocation": {
+          "description": "",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "UpdateProductOrder": {
+      "description": "",
+
+      
+      "type": "object",
+      "properties": {
+        "externalId": {
+          "description": "",
+              "type": "string"
+        },
+        "requestedCompletionDate": {
+          "description": "",
+              "type": "string",
+              "format": "date-time"
+        },
+        "requestedStartDate": {
+          "description": "",
+              "type": "string",
+              "format": "date-time"
+        },
+        "expeditePriority": {
+          "description": "",
+              "type": "integer",
+              "format": "int32"
+        },
+        "orderActivity": {
+          
+           "$ref": "#/definitions/OrderActivity"
+        },
+        "desiredResponse": {
+          
+           "$ref": "#/definitions/DesiredOrderResponses"
+        },
+        "orderVersion": {
+          "description": "",
+              "type": "string"
+        },
+        "projectId": {
+          "description": "",
+              "type": "string"
+        },
+        "tspRestorationPriority": {
+          "description": "",
+              "type": "string"
+        },
+        "@type": {
+          "description": "",
+              "type": "string"
+        },
+        "@schemaLocation": {
+          "description": "",
+              "type": "string"
+        },
+        "@baseType": {
+          "description": "",
+              "type": "string"
+        },
+        "relatedParty": {
+          
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/RelatedParty"
+          }
+        },
+        "note": {
+          
+              "$ref": "#/definitions/Note"
+        },
+        "orderItem": {
+          
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/UpdateOrderItem"
+          }
+        }
+      }
+      
+    }
+  }
+}
+	
