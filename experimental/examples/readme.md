@@ -1,4 +1,4 @@
-This is an example implementation that demonstrates how a postman client (buyer) can use the APIs to perform address validation, product offering qualification, post and get a product order from a SP (seller) site.  
+This is an example implementation that demonstrates how a postman client (buyer) can use the APIs below to perform address validation, product offering qualification, post and get a product order from a SP (seller) site.  
 
 - POST /addressValidation,
 - POST /productOfferingQualification
@@ -8,9 +8,9 @@ This is an example implementation that demonstrates how a postman client (buyer)
 *2018.01.03*
 
 ---
-- [Address validation](#Address-validation)
-- [ProductOfferingQualification](#productOfferingQualification)
-- [Product order](#Product_order)
+- [Address validation](#Address validation)
+- [ProductOfferingQualification](#ProductOfferingQualification)
+- [Product order](#Product order)
 ---
 
 
