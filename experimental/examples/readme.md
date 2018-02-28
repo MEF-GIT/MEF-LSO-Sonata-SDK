@@ -7,13 +7,6 @@ This is an example implementation that demonstrates how a postman client (buyer)
 
 *2018.01.03*
 
----
-- [Address validation](#Address validation)
-- [ProductOfferingQualification](#ProductOfferingQualification)
-- [Product order](#Product order)
----
-
-
 ## Address validation
 
 ### Usage
