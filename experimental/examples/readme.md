@@ -1,6 +1,4 @@
-# SONATA API
-
-This document describes sample messages to be exchanger between AT&T and Orange for the following API calls:
+This is an example implementation that demonstrates how a postman client (buyer) can use the APIs to perform address validation, product offering qualification, post and get a product order from a SP (seller) site.  
 
 - POST /addressValidation,
 - POST /productOfferingQualification
