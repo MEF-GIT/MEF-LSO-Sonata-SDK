@@ -18,7 +18,7 @@ https://wiki.mef.net/display/CESG/LSO+Sonata
 
 This SDK contains the following items:
 
-*	COPYRIGHT - Copyright 2017 MEF Forum
+*	COPYRIGHT - Copyright 2018 MEF Forum
 *	LICENSE - Contains a copy of the Apache 2.0 license
 *	Experimental - SDK content that does not have associated published MEF Interface Profile Specifications
     *	api/R1/address – Contains the API definitions for Inter-carrier address validation service.
@@ -47,4 +47,4 @@ A reference implementation of the LSO Sonata APIs is expected to be available in
 
 # Copyright
 
-Copyright 2017 MEF Forum
+Copyright 2018 MEF Forum
