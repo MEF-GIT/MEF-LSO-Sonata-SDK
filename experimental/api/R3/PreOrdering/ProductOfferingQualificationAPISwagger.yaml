@@ -1,0 +1,1092 @@
+swagger: "2.0"
+info:
+  description: "This API is used to provide the ability to determine if service can\
+    \ be delivered to a specific customer site within a Partner’s domain"
+  version: "1.0.1_inProgress"
+  title: "API ProductOfferingQualification"
+  x-logo:
+    url: "/redoc/logo.png"
+    backgroundColor: "#FFFFFF"
+host: "serverRoot"
+basePath: "/mef/productOfferingQualificationManagement/v1/"
+schemes:
+- "https"
+produces:
+- "application/json;charset=utf-8"
+tags:
+- name: "ProductOfferingQualification"
+  description: ""
+- name: "Hub"
+  description: ""
+- name: "Notification"
+  description: "Notification class is used to describe structure used for product\
+    \ offering qualification notification (product offering qualification created,\
+    \ product offering qualification state change, product offering qualification\
+    \ attribute value change)"
+paths:
+  /productOfferingQualification:
+    post:
+      tags:
+      - "ProductOfferingQualification"
+      consumes:
+      - "application/json;charset=utf-8"
+      produces:
+      - "application/json;charset=utf-8"
+      operationId: "productOfferingQualificationCreate"
+      summary: "createProductOfferingQualification"
+      description: "This operation handles a serviceability request through the instantiation\
+        \ of a product offering qualification and associated item(s).\n\nSpecific\
+        \ business errors for current operation will be encapsulated in\n\nHTTP Response\
+        \ 422 Unprocessable entity\n\n - 100: A relatedParty - at productOfferingQualification\
+        \ level - with a role 'Buyer' must be provided\n   "
+      deprecated: false
+      parameters:
+      - name: "ProductOfferingQualification"
+        required: true
+        in: "body"
+        description: ""
+        schema:
+          $ref: "#/definitions/POSTProductOfferingQualification"
+      responses:
+        201:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/ProductOfferingQualification"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        403:
+          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
+            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
+            \ requests"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        408:
+          description: "Request Time-out\n\nList of supported error codes:\n- 63:\
+            \ Request time-out"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error\n\nSpecific encapsulated\
+            \ business errors for current operation\n\n - 100: A relatedParty - at\
+            \ productOfferingQualification level - with a role 'Buyer' must be provided\n\
+            \   "
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+    get:
+      tags:
+      - "ProductOfferingQualification"
+      produces:
+      - "application/json;charset=utf-8"
+      operationId: "productOfferingQualificationFind"
+      summary: "retrieveProductOfferingQualifications"
+      description: "This operation is used to retrieve a list of product offering\
+        \ qualifications based on an input filter.\n\nSpecific business errors for\
+        \ current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable\
+        \ entity\n"
+      deprecated: false
+      parameters:
+      - name: "state"
+        required: false
+        in: "query"
+        description: ""
+        type: "string"
+      - name: "expectedResponseDate"
+        required: false
+        in: "query"
+        description: ""
+        type: "string"
+      - name: "projectId"
+        required: false
+        in: "query"
+        description: ""
+        type: "string"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/ProductOfferingQualificationFindReq"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        403:
+          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
+            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
+            \ requests"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        408:
+          description: "Request Time-out\n\nList of supported error codes:\n- 63:\
+            \ Request time-out"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+  /productOfferingQualification/{productOfferingQualificationId}:
+    get:
+      tags:
+      - "ProductOfferingQualification"
+      produces:
+      - "application/json;charset=utf-8"
+      operationId: "productOfferingQualificationGet"
+      summary: "retrieveProductOfferingQualification"
+      description: "This operation retrieves a single product offering qualification\
+        \ based upon on input id.\n\nSpecific business errors for current operation\
+        \ will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n"
+      deprecated: false
+      parameters:
+      - name: "productOfferingQualificationId"
+        in: "path"
+        required: true
+        type: "string"
+        description: ""
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/ProductOfferingQualification"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        403:
+          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
+            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
+            \ requests"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        408:
+          description: "Request Time-out\n\nList of supported error codes:\n- 63:\
+            \ Request time-out"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+  /hub:
+    post:
+      tags:
+      - "Hub"
+      consumes:
+      - "application/json;charset=utf-8"
+      produces:
+      - "application/json;charset=utf-8"
+      operationId: "hubCreate"
+      summary: "hubCreate"
+      description: "Structure used to create a hub (to subscribe to notification)\n\
+        \nSpecific business errors for current operation will be encapsulated in\n\
+        \nHTTP Response 422 Unprocessable entity\n"
+      deprecated: false
+      parameters:
+      - name: "Hub"
+        required: true
+        in: "body"
+        description: ""
+        schema:
+          $ref: "#/definitions/HubInput"
+      responses:
+        201:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Hub"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        403:
+          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
+            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
+            \ requests"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        408:
+          description: "Request Time-out\n\nList of supported error codes:\n- 63:\
+            \ Request time-out"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+    get:
+      tags:
+      - "Hub"
+      produces:
+      - "application/json;charset=utf-8"
+      operationId: "hubFind"
+      summary: "hubFind"
+      description: "This operation retrieves a set of hubs.\n\nSpecific business errors\
+        \ for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable\
+        \ entity\n"
+      deprecated: false
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Hub"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        403:
+          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
+            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
+            \ requests"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        408:
+          description: "Request Time-out\n\nList of supported error codes:\n- 63:\
+            \ Request time-out"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+  /hub/{hubId}:
+    delete:
+      tags:
+      - "Hub"
+      operationId: "hubDelete"
+      summary: "hubDelete"
+      description: "This operation is used to delete a hub.\n\nSpecific business errors\
+        \ for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable\
+        \ entity\n"
+      deprecated: false
+      parameters:
+      - name: "hubId"
+        in: "path"
+        required: true
+        type: "string"
+        description: ""
+      responses:
+        204:
+          description: "Success"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        403:
+          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
+            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
+            \ requests"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        408:
+          description: "Request Time-out\n\nList of supported error codes:\n- 63:\
+            \ Request time-out"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+  /notification/productOfferingQualificationCreationNotification:
+    post:
+      tags:
+      - "Notification"
+      consumes:
+      - "application/json;charset=utf-8"
+      operationId: "notificationProductOfferingQualificationCreationNotification"
+      summary: "Product Offering Qualification Creation Notification structure"
+      description: "Product Offering Qualification Creation Notification structure\
+        \ definition\n\nSpecific business errors for current operation will be encapsulated\
+        \ in\n\nHTTP Response 422 Unprocessable entity\n"
+      deprecated: false
+      parameters:
+      - name: "productOfferingQualificationCreationNotification"
+        required: true
+        in: "body"
+        description: ""
+        schema:
+          $ref: "#/definitions/Event"
+      responses:
+        204:
+          description: "Success"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        403:
+          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
+            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
+            \ requests"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        408:
+          description: "Request Time-out\n\nList of supported error codes:\n- 63:\
+            \ Request time-out"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+  /notification/productOfferingQualificationStateChangeNotification:
+    post:
+      tags:
+      - "Notification"
+      consumes:
+      - "application/json;charset=utf-8"
+      operationId: "notificationProductOfferingQualificationStateChangeNotification"
+      summary: "Product Offering Qualification State Change Notification structure"
+      description: "Product Offering Qualification State Change Notification structure\
+        \ definition\n\nSpecific business errors for current operation will be encapsulated\
+        \ in\n\nHTTP Response 422 Unprocessable entity\n"
+      deprecated: false
+      parameters:
+      - name: "productOfferingQualificationStateChangeNotification"
+        required: true
+        in: "body"
+        description: ""
+        schema:
+          $ref: "#/definitions/Event"
+      responses:
+        204:
+          description: "Success"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        403:
+          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
+            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
+            \ requests"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        408:
+          description: "Request Time-out\n\nList of supported error codes:\n- 63:\
+            \ Request time-out"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+  /notification/productOfferingQualificationAttributeChangeNotification:
+    post:
+      tags:
+      - "Notification"
+      consumes:
+      - "application/json;charset=utf-8"
+      operationId: "notificationProductOfferingQualificationAttributeChangeNotification"
+      summary: "Product Offering Qualification Attribute Change Notification structure"
+      description: "Product Offering Qualification Attribute Change Notification structure\
+        \ defintion\n\nSpecific business errors for current operation will be encapsulated\
+        \ in\n\nHTTP Response 422 Unprocessable entity\n"
+      deprecated: false
+      parameters:
+      - name: "productOfferingQualificationAttributeChangeNotification"
+        required: true
+        in: "body"
+        description: ""
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/EventPlus"
+      responses:
+        204:
+          description: "Success"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        403:
+          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
+            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
+            \ requests"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        408:
+          description: "Request Time-out\n\nList of supported error codes:\n- 63:\
+            \ Request time-out"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+definitions:
+  serviceabilityColor:
+    description: "A color that indicates confidence to service the request."
+    type: "string"
+    enum:
+    - "GREEN"
+    - "RED"
+    - "YELLOW"
+  qualificationState:
+    description: "These values represent the valid states through which the product\
+      \ offering qualification can transition"
+    type: "string"
+    enum:
+    - "UNDER_REVIEW"
+    - "SUBMITTED"
+    - "ACCEPTED"
+    - "COMPLETED"
+    - "REJECTED"
+    - "CANCELLED"
+  timeUnit:
+    description: "Represents a unit of time."
+    type: "string"
+    enum:
+    - "SECS"
+    - "MINS"
+    - "HOURS"
+    - "BUSINESS_DAYS"
+    - "CALENDAR_DAYS"
+  PoqEventType:
+    description: "Indicates the type of product offering qualification event."
+    type: "string"
+    enum:
+    - "POQ_OBJECT_CREATION"
+    - "POQ_STATE_CHANGE"
+    - "POQ_ATTRIBUTE_VALUE_CHANGE"
+  ErrorRepresentation:
+    description: ""
+    required:
+    - "code"
+    - "message"
+    type: "object"
+    properties:
+      code:
+        description: ""
+        type: "integer"
+        format: "int32"
+      reason:
+        description: ""
+        type: "string"
+      message:
+        description: ""
+        type: "string"
+      status:
+        description: ""
+        type: "string"
+      referenceError:
+        description: ""
+        type: "string"
+      '@type':
+        description: ""
+        type: "string"
+      '@schemaLocation':
+        description: ""
+        type: "string"
+  TerminationError:
+    description: ""
+    type: "object"
+    properties:
+      id:
+        description: ""
+        type: "string"
+      value:
+        description: ""
+        type: "string"
+  RelatedPartyRef:
+    description: "An entity or organization that is involved in the product offering\
+      \ qualification. It may be the \"Buyer\", the \"Seller\", or other related party"
+    required:
+    - "role"
+    - "name"
+    - "number"
+    type: "object"
+    properties:
+      id:
+        description: "Id of the party"
+        type: "string"
+      role:
+        description: "Role of the party for this POQ/POQitem"
+        type: "string"
+      name:
+        description: "Name of the party"
+        type: "string"
+      emailAddress:
+        description: "Party email address"
+        type: "string"
+      number:
+        description: "Party phone number"
+        type: "string"
+      numberExtension:
+        description: "Party phone number extension"
+        type: "string"
+      '@referredType':
+        description: "Technical attribute for API extension"
+        type: "string"
+      '@schemaLocation':
+        description: "Technical attribute for API extension"
+        type: "string"
+  ProductOfferingRef:
+    description: "A product offering defines the commercial terms under which a product\
+      \ specification may be instantiated."
+    type: "object"
+    properties:
+      id:
+        description: ""
+        type: "string"
+  Describing:
+    description: ""
+    type: "object"
+    properties:
+      '@type':
+        description: ""
+        type: "string"
+      '@schemaLocation':
+        description: ""
+        type: "string"
+  AlternateProductProposal:
+    description: "If in the request the buyer has requested to have alternate product\
+      \ proposals, then this class represents these proposals."
+    type: "object"
+    properties:
+      '@type':
+        description: ""
+        type: "string"
+      serviceabilityDate:
+        description: ""
+        type: "string"
+      productSpecification:
+        $ref: "#/definitions/ProductSpecificationRef"
+      eligibleProductOffering:
+        type: "array"
+        items:
+          $ref: "#/definitions/ProductOfferingRef"
+  ProductRelationship:
+    description: "Indicates a relationship between products."
+    required:
+    - "type"
+    - "id"
+    type: "object"
+    properties:
+      type:
+        description: ""
+        type: "string"
+      id:
+        description: ""
+        type: "string"
+  ProductSpecificationRef:
+    description: "A ProductSpec describes the invariant properties (i.e., features)\
+      \ that a given set of Products MAY have. These properties provide the information\
+      \ needed to plan, construct, allocate, and/or retire the Services and Resources\
+      \ from the operator environment needed to deliver the Product."
+    type: "object"
+    properties:
+      id:
+        description: ""
+        type: "string"
+      describing:
+        $ref: "#/definitions/Describing"
+  Product:
+    description: "A Product is an instance of a productSpec or a  ProductOffering\
+      \ procured by a Customer."
+    type: "object"
+    properties:
+      id:
+        description: ""
+        type: "string"
+      '@type':
+        description: ""
+        type: "string"
+      productRelationship:
+        type: "array"
+        items:
+          $ref: "#/definitions/ProductRelationship"
+      productSpecification:
+        $ref: "#/definitions/ProductSpecificationRef"
+      relatedParty:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedPartyRef"
+      place:
+        type: "array"
+        items:
+          $ref: "#/definitions/Place"
+  ProductOfferingQualificationItem:
+    description: "A product offering qualification is composed of one or more product\
+      \ offering qualification items, with each item representing serviceability for\
+      \ a given product"
+    required:
+    - "id"
+    - "state"
+    type: "object"
+    properties:
+      id:
+        description: "Id of this POQ item"
+        type: "string"
+      state:
+        $ref: "#/definitions/qualificationState"
+      MPOE:
+        description: "Indicates if access to the location is currently Minimum Point\
+          \ Of Entry (MPOE) only. If mpoeOnly is true, this indicates that full access\
+          \ to the location (e.g. sub-unit or suite) has not yet been established.\
+          \ If mpoeOnly is false, this indicates that full access to the location\
+          \ has been (or will be) established."
+        type: "boolean"
+      serviceabilityConfidence:
+        $ref: "#/definitions/serviceabilityColor"
+      serviceConfidenceReason:
+        description: "A description of the reason a particular color is being provided.\
+          \ This may include a specific standard reason codes and descriptions."
+        type: "string"
+      installationInterval:
+        $ref: "#/definitions/TimeInterval"
+      desiredActivationDate:
+        description: "Desired Activation Date for the product requested in this item"
+        type: "string"
+        format: "date"
+      estimatedResponseDate:
+        description: "When the color is Yellow (meaning 'We'll get back to you'),\
+          \ this date indicates when the Seller plans to provide a more complete response."
+        type: "string"
+        format: "date"
+      product:
+        $ref: "#/definitions/Product"
+      productOffering:
+        $ref: "#/definitions/ProductOfferingRef"
+      eligibleProductOffering:
+        type: "array"
+        items:
+          $ref: "#/definitions/ProductOfferingRef"
+      productOfferingQualificationItemRelationship:
+        type: "array"
+        items:
+          $ref: "#/definitions/productOfferingQualificationItemRelationship"
+      alternateProductProposal:
+        type: "array"
+        items:
+          $ref: "#/definitions/AlternateProductProposal"
+      terminationError:
+        type: "array"
+        items:
+          $ref: "#/definitions/TerminationError"
+  ProductOfferingQualification:
+    description: "The product offering qualification serves as response structure\
+      \ for a serviceability check."
+    required:
+    - "state"
+    - "relatedParty"
+    - "productOfferingQualificationItem"
+    type: "object"
+    properties:
+      id:
+        description: "The Serviceability Request's unique identifier."
+        type: "string"
+      href:
+        description: ""
+        type: "string"
+      state:
+        $ref: "#/definitions/qualificationState"
+      projectId:
+        description: "This value MAY be assigned by the Buyer/Seller to identify a\
+          \ project the serviceability request is associated with."
+        type: "string"
+      provideAlternative:
+        description: ""
+        type: "boolean"
+      expirationDate:
+        description: ""
+        type: "string"
+        format: "date"
+      expectedResponseDate:
+        description: "Corresponds to desiredResponseDate - The date a response for\
+          \ the service request is desired."
+        type: "string"
+        format: "date"
+      '@type':
+        description: ""
+        type: "string"
+      '@schemaLocation':
+        description: ""
+        type: "string"
+      relatedParty:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedPartyRef"
+      productOfferingQualificationItem:
+        type: "array"
+        items:
+          $ref: "#/definitions/ProductOfferingQualificationItem"
+  productOfferingQualificationItemRelationship:
+    description: "The relationship between product offering qualification items."
+    required:
+    - "type"
+    - "id"
+    type: "object"
+    properties:
+      type:
+        description: ""
+        type: "string"
+      id:
+        description: ""
+        type: "string"
+  POSTProductOfferingQualificationItem:
+    description: "This structure serves as a request for a product offering qualification\
+      \ item"
+    required:
+    - "id"
+    - "product"
+    type: "object"
+    properties:
+      id:
+        description: ""
+        type: "string"
+      desiredActivationDate:
+        description: ""
+        type: "string"
+        format: "date"
+      product:
+        $ref: "#/definitions/Product"
+      productOffering:
+        $ref: "#/definitions/ProductOfferingRef"
+      productOfferingQualificationItemRelationship:
+        type: "array"
+        items:
+          $ref: "#/definitions/productOfferingQualificationItemRelationship"
+  POSTProductOfferingQualification:
+    description: "This structure serves as a request for a product offering qualification"
+    required:
+    - "productOfferingQualificationItem"
+    type: "object"
+    properties:
+      provideAlternative:
+        description: ""
+        type: "boolean"
+      expectedResponseDate:
+        description: "Corresponds to desiredResponseDate - The date a response for\
+          \ the service request is desired."
+        type: "string"
+        format: "date"
+      projectId:
+        description: ""
+        type: "string"
+      '@type':
+        description: ""
+        type: "string"
+      '@schemaLocation':
+        description: ""
+        type: "string"
+      relatedParty:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedPartyRef"
+      productOfferingQualificationItem:
+        type: "array"
+        items:
+          $ref: "#/definitions/POSTProductOfferingQualificationItem"
+  TimeInterval:
+    description: "A time interval, e.g.  3 hours, or 5 days."
+    required:
+    - "amount"
+    - "timeUnit"
+    type: "object"
+    properties:
+      amount:
+        description: ""
+        type: "integer"
+        format: "int32"
+      timeUnit:
+        $ref: "#/definitions/timeUnit"
+  ProductOfferingQualificationFindReq:
+    description: ""
+    type: "object"
+    properties:
+      id:
+        description: "The Serviceability Request's unique identifier."
+        type: "string"
+      state:
+        $ref: "#/definitions/qualificationState"
+      expectedResponseDate:
+        description: "Corresponds to desiredResponseDate - The date a response for\
+          \ the service request is desired."
+        type: "string"
+        format: "date"
+      projectId:
+        description: "This value MAY be assigned by the Buyer/Seller to identify a\
+          \ project the serviceability request is associated with."
+        type: "string"
+  Place:
+    description: "Place answers the question \"Where?\" It is an abstract class."
+    required:
+    - "role"
+    type: "object"
+    properties:
+      role:
+        description: "Role of this place"
+        type: "string"
+      id:
+        description: "id of this place"
+        type: "string"
+      href:
+        description: "href to this place resource"
+        type: "string"
+      '@referredType':
+        description: "Technical attribute to manage API extension. In this case @referredType\
+          \ could be valued to FormattedAddress, FieldedAddress, GeographicalSite,\
+          \ GeographicLocation or ReferencedAddress"
+        type: "string"
+      '@schemaLocation':
+        description: "Technical attribute to manage API extension"
+        type: "string"
+  Hub:
+    description: "Sets the communication endpoint address the service instance must\
+      \ use to deliver information about its health state, execution state, failures\
+      \ and metrics."
+    required:
+    - "id"
+    - "callback"
+    - "query"
+    type: "object"
+    properties:
+      id:
+        description: "id of the Hub"
+        type: "string"
+      callback:
+        description: "This callback address is an url. the norification will be sent\
+          \ to this url address"
+        type: "string"
+      query:
+        description: "This attribute is used to define notification type. Example:\
+          \ \",\"query\":”eventType = ProductOfferingQualificationStateChangeNotification”\
+          }"
+        type: "string"
+  HubInput:
+    description: ""
+    required:
+    - "callback"
+    - "query"
+    type: "object"
+    properties:
+      callback:
+        description: "This callback address is an url. the norification will be sent\
+          \ to this url address"
+        type: "string"
+      query:
+        description: "This attribute is used to define notification type. Example:\
+          \ \",\"query\":”eventType = ProductOfferingQualificationStateChangeNotification”\
+          }"
+        type: "string"
+  Event:
+    description: "Event class is used to describe information structure used for notification."
+    required:
+    - "eventId"
+    - "eventType"
+    - "eventTime"
+    - "event"
+    type: "object"
+    properties:
+      eventId:
+        description: ""
+        type: "string"
+      eventType:
+        $ref: "#/definitions/PoqEventType"
+      eventTime:
+        description: ""
+        type: "string"
+        format: "date-time"
+      event:
+        $ref: "#/definitions/PoqEvent"
+  PoqItemEvent:
+    description: "The product offering qualification item event structure that gets\
+      \ passed in the \"event\" of a notification."
+    required:
+    - "id"
+    type: "object"
+    properties:
+      id:
+        description: "Id of this POQ item"
+        type: "string"
+      state:
+        $ref: "#/definitions/qualificationState"
+      serviceabilityConfidence:
+        $ref: "#/definitions/serviceabilityColor"
+      desiredActivationDate:
+        description: "Desired Activation Date for the product requested in this item"
+        type: "string"
+        format: "date"
+      estimatedResponseDate:
+        description: "When the color is Yellow (meaning 'We'll get back to you'),\
+          \ this date indicates when the Seller plans to provide a more complete response."
+        type: "string"
+        format: "date"
+  PoqEvent:
+    description: "The product offering qualification passed as the \"event\" in a\
+      \ notification."
+    required:
+    - "productOfferingQualificationItem"
+    type: "object"
+    properties:
+      id:
+        description: "The Serviceability Request's unique identifier."
+        type: "string"
+      href:
+        description: ""
+        type: "string"
+      state:
+        $ref: "#/definitions/qualificationState"
+      expirationDate:
+        description: ""
+        type: "string"
+        format: "date"
+      expectedResponseDate:
+        description: "Corresponds to desiredResponseDate - The date a response for\
+          \ the service request is desired."
+        type: "string"
+        format: "date"
+      productOfferingQualificationItem:
+        type: "array"
+        items:
+          $ref: "#/definitions/PoqItemEvent"
+  EventPlus:
+    description: "Event class is used to describe information structure used for notification."
+    allOf:
+    - $ref: "#/definitions/Event"
+    - required:
+      - "resourcePath"
+      - "fieldPath"
+      type: "object"
+      properties:
+        resourcePath:
+          description: ""
+          type: "string"
+        fieldPath:
+          description: ""
+          type: "string"
+  Notification:
+    description: "Notification class is used to describe structure used for product\
+      \ offering qualification notification (product offering qualification created,\
+      \ product offering qualification state change, product offering qualification\
+      \ attribute value change)"
+    type: "object"
+    properties: {}
