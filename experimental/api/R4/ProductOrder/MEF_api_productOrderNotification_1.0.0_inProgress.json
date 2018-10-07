@@ -1,0 +1,991 @@
+
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is not the ProductOrder API but the API to manage notification for ProductOrder. This API must be deployed on notification subscriber side (buyer side / listener).",
+    "version": "1.0.0_inProgress",
+    "title": "API ProductOrderNotification",
+    "x-logo": {
+      "url": "/redoc/logo.png",
+      "backgroundColor": "#FFFFFF"
+    }
+  },
+  
+  "host": "serverRoot",
+  "basePath":	"/mef-api/productOrderNotification/v1/",
+  "schemes": [
+    "https"
+  ],
+  "produces": [
+    "application/json;charset=utf-8"
+  ],
+  "tags": [
+  
+    {
+      "name": "Notification",
+      "description": "Notification class is used to describe structure used for product order notification (product order created, product order state change, product order information required, product order attribute value change)"
+    }
+  ],
+  "paths": {
+      "/notification/productOrderCreationNotification": {
+      "post": {
+        "tags": [
+           "Notification"
+        ],
+        "consumes": [
+           "application/json;charset=utf-8"
+        ],        
+        "operationId": "notificationProductOrderCreationNotification",
+        "summary": "Product order creation notification structure",
+        "description": "Product order creation notification structure description\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n",
+        "deprecated": false,
+        
+        "parameters": [
+          
+          {
+            "name": "productOrderCreationNotification",
+            "required": false,
+            "in": "body",
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+
+          },
+          "400": {
+            
+            "description": "Bad Request\n\nList of supported error codes:\n- 20: Invalid URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string parameter value",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "401": {
+            
+            "description": "Unauthorized\n\nList of supported error codes:\n- 40: Missing credentials\n- 41: Invalid credentials\n- 42: Expired credentials",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "403": {
+            
+            "description": "Forbidden\n\nList of supported error codes:\n- 50: Access denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many requests",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "404": {
+            
+            "description": "Not Found\n\nList of supported error codes:\n- 60: Resource not found",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "405": {
+            
+            "description": "Method Not Allowed\n\nList of supported error codes:\n- 61: Method not allowed",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "408": {
+            
+            "description": "Request Time-out\n\nList of supported error codes:\n- 63: Request time-out",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "422": {
+            
+            "description": "Unprocessable entity\n\nFunctional error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "500": {
+            
+            "description": "Internal Server Error\n\nList of supported error codes:\n- 1: Internal error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "503": {
+            
+            "description": "Service Unavailable\n\nList of supported error codes:\n- 5: The service is temporarily unavailable\n- 6: Orange API is over capacity, retry later !",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          }
+        }
+      }
+    },
+      "/notification/productOrderStateChangeNotification": {
+      "post": {
+        "tags": [
+           "Notification"
+        ],
+        "consumes": [
+           "application/json;charset=utf-8"
+        ],        
+        "operationId": "notificationProductOrderStateChangeNotification",
+        "summary": "Product order state change structure",
+        "description": "Product order state change structure description\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n",
+        "deprecated": false,
+        
+        "parameters": [
+          
+          {
+            "name": "productOrderStateChange",
+            "required": true,
+            "in": "body",
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+
+          },
+          "400": {
+            
+            "description": "Bad Request\n\nList of supported error codes:\n- 20: Invalid URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string parameter value",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "401": {
+            
+            "description": "Unauthorized\n\nList of supported error codes:\n- 40: Missing credentials\n- 41: Invalid credentials\n- 42: Expired credentials",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "403": {
+            
+            "description": "Forbidden\n\nList of supported error codes:\n- 50: Access denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many requests",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "404": {
+            
+            "description": "Not Found\n\nList of supported error codes:\n- 60: Resource not found",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "405": {
+            
+            "description": "Method Not Allowed\n\nList of supported error codes:\n- 61: Method not allowed",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "408": {
+            
+            "description": "Request Time-out\n\nList of supported error codes:\n- 63: Request time-out",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "422": {
+            
+            "description": "Unprocessable entity\n\nFunctional error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "500": {
+            
+            "description": "Internal Server Error\n\nList of supported error codes:\n- 1: Internal error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "503": {
+            
+            "description": "Service Unavailable\n\nList of supported error codes:\n- 5: The service is temporarily unavailable\n- 6: Orange API is over capacity, retry later !",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          }
+        }
+      }
+    },
+      "/notification/productOrderAttributeValueChangeNotification": {
+      "post": {
+        "tags": [
+           "Notification"
+        ],
+        "consumes": [
+           "application/json;charset=utf-8"
+        ],        
+        "operationId": "notificationProductOrderAttributeValueChangeNotification",
+        "summary": "Product Order attribute value change structure",
+        "description": "Product Order attribute value change structure description\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n",
+        "deprecated": false,
+        
+        "parameters": [
+          
+          {
+            "name": "productOrderAttributeValueChange",
+            "required": true,
+            "in": "body",
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/EventPlus"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+
+          },
+          "400": {
+            
+            "description": "Bad Request\n\nList of supported error codes:\n- 20: Invalid URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string parameter value",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "401": {
+            
+            "description": "Unauthorized\n\nList of supported error codes:\n- 40: Missing credentials\n- 41: Invalid credentials\n- 42: Expired credentials",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "403": {
+            
+            "description": "Forbidden\n\nList of supported error codes:\n- 50: Access denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many requests",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "404": {
+            
+            "description": "Not Found\n\nList of supported error codes:\n- 60: Resource not found",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "405": {
+            
+            "description": "Method Not Allowed\n\nList of supported error codes:\n- 61: Method not allowed",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "408": {
+            
+            "description": "Request Time-out\n\nList of supported error codes:\n- 63: Request time-out",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "422": {
+            
+            "description": "Unprocessable entity\n\nFunctional error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "500": {
+            
+            "description": "Internal Server Error\n\nList of supported error codes:\n- 1: Internal error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "503": {
+            
+            "description": "Service Unavailable\n\nList of supported error codes:\n- 5: The service is temporarily unavailable\n- 6: Orange API is over capacity, retry later !",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          }
+        }
+      }
+    },
+      "/notification/productOrderInformationRequiredNotification": {
+      "post": {
+        "tags": [
+           "Notification"
+        ],
+        "consumes": [
+           "application/json;charset=utf-8"
+        ],        
+        "operationId": "notificationProductOrderInformationRequiredNotification",
+        "summary": "Product Order information required structure",
+        "description": "Product Order information required structure description\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n",
+        "deprecated": false,
+        
+        "parameters": [
+          
+          {
+            "name": "productOrderInformationRequired",
+            "required": true,
+            "in": "body",
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/EventPlus"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+
+          },
+          "400": {
+            
+            "description": "Bad Request\n\nList of supported error codes:\n- 20: Invalid URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string parameter value",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "401": {
+            
+            "description": "Unauthorized\n\nList of supported error codes:\n- 40: Missing credentials\n- 41: Invalid credentials\n- 42: Expired credentials",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "403": {
+            
+            "description": "Forbidden\n\nList of supported error codes:\n- 50: Access denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many requests",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "404": {
+            
+            "description": "Not Found\n\nList of supported error codes:\n- 60: Resource not found",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "405": {
+            
+            "description": "Method Not Allowed\n\nList of supported error codes:\n- 61: Method not allowed",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "408": {
+            
+            "description": "Request Time-out\n\nList of supported error codes:\n- 63: Request time-out",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "422": {
+            
+            "description": "Unprocessable entity\n\nFunctional error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "500": {
+            
+            "description": "Internal Server Error\n\nList of supported error codes:\n- 1: Internal error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "503": {
+            
+            "description": "Service Unavailable\n\nList of supported error codes:\n- 5: The service is temporarily unavailable\n- 6: Orange API is over capacity, retry later !",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          }
+        }
+      }
+    }
+  },
+"definitions": {
+  
+    "OrderItemAction": {
+      "description": "An enumeration of valid order item actions",
+      
+      "type": "string",
+      "enum": [
+  	          "INSTALL",
+  	          "CHANGE",
+  	          "DISCONNECT",
+  	          "NO_CHANGE"]
+      
+    },
+    "OrderStatus": {
+      "description": "An enumeration of valid order statuses",
+      
+      "type": "string",
+      "enum": [
+  	          "ACKNOWLEDGED",
+  	          "REJECTED",
+  	          "IN_PROGRESS",
+  	          "PENDING",
+  	          "HELD",
+  	          "ASSESSING_CANCELLATION",
+  	          "PENDING_CANCELLATION",
+  	          "CANCELLED",
+  	          "CONFIGURED",
+  	          "CONFIRMED",
+  	          "JEOPARDY",
+  	          "FAILED",
+  	          "PARTIAL",
+  	          "COMPLETED"]
+      
+    },
+    "RelationshipType": {
+      "description": "Indicates the type of relationship between products.",
+      
+      "type": "string",
+      "enum": [
+  	          "RELIES_ON",
+  	          "BUNDLED",
+  	          "COMES_FROM"]
+      
+    },
+    "OrderItemStatus": {
+      "description": "An enumeration of valid order item statuses.",
+      
+      "type": "string",
+      "enum": [
+  	          "ACKNOWLEDGED",
+  	          "REJECTED",
+  	          "IN_PROGRESS",
+  	          "PENDING",
+  	          "HELD",
+  	          "ASSESSING_CANCELLATION",
+  	          "PENDING_CANCELLATION",
+  	          "CANCELLED",
+  	          "CONFIGURED",
+  	          "FAILED",
+  	          "COMPLETED"]
+      
+    },
+    "Severity": {
+      "description": "Severity of the order message",
+      
+      "type": "string",
+      "enum": [
+  	          "ERROR",
+  	          "INFORMATION"]
+      
+    },
+
+    "ErrorRepresentation": {
+      "description": "",
+
+      
+      "required": [
+          
+            "code",
+            "reason"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "description": "Application related code (as defined in the API or from a common list)",
+              "type": "integer",
+              "format": "int32"
+        },
+        "reason": {
+          "description": "Text that explains the reason for error. This can be shown to a client user.",
+              "type": "string"
+        },
+        "message": {
+          "description": "Text that provide more details and corrective actions related to the error. This can be shown to a client user.",
+              "type": "string"
+        },
+        "status": {
+          "description": "http error code extension like 400-2",
+              "type": "integer",
+              "format": "int32"
+        },
+        "referenceError": {
+          "description": "url pointing to documentation describing the error",
+              "type": "string"
+        },
+        "@type": {
+          "description": "The class type of a REST resource.",
+              "type": "string"
+        },
+        "@schemaLocation": {
+          "description": "it provides a link to the schema describing a REST resource.",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "BillingAccountRef": {
+      "description": "An arrangement that a customer has with an enterprise that provides products to the customer.",
+
+      
+      "required": [
+          
+            "id"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Identifies the buyer's billing account to which the recurring and non-recurring charges for this order item will be billed.\nIf the value 'NEW' is provided it means that buyer request a new BAN.",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "Note": {
+      "description": "A note, or set of notes, to be associated to the product order.",
+
+      
+      "required": [
+          
+            "text",
+            "date",
+            "author"
+      ],
+      "type": "object",
+      "properties": {
+        "text": {
+          "description": "The text of the note",
+              "type": "string"
+        },
+        "date": {
+          "description": "The date of the note. Format is YYYY-MM-DDThh:mmTZD (e.g. 1997-07-16T19:20+01:00).",
+              "type": "string",
+              "format": "date-time"
+        },
+        "author": {
+          "description": "The author of the note",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "RelatedParty": {
+      "description": "An entity or organization that is involved in the product order, such as the buyer, the seller, the order contact, etc.",
+
+      
+      "required": [
+          
+            "id",
+            "role",
+            "name",
+            "number"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "An identifier of the related party. For the \"buyer\" and \"seller\" id, this is a  Carrier ID number provided by local regulatory entity.  Unique in the local jurisdiction.",
+              "type": "string"
+        },
+        "href": {
+          "description": "Reference link to the party",
+              "type": "string"
+        },
+        "@referredType": {
+          "description": "",
+              "type": "string"
+        },
+        "role": {
+          "description": "MEF: could be \"Buyer\", \"Seller\", \"Billing Contact\", \"Order Contact\", \"Implementation Contact\", \"Technical Contact\", \"UNI Site Contact\", \"UNI Alt Site Contact\", \"ENNI Site Contact\", \"ENNI Alt Site Contact\"",
+              "type": "string"
+        },
+        "name": {
+          "description": "The name of the related party, e.g. \"Jean Pontus\".",
+              "type": "string"
+        },
+        "emailAddress": {
+          "description": "The email address of the related party.",
+              "type": "string"
+        },
+        "number": {
+          "description": "The telephone number of the related party.",
+              "type": "string"
+        },
+        "numberExtension": {
+          "description": "MEF Extension",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "ProductSpecification": {
+      "description": "A ProductSpec describes the invariant properties (i.e., features) that a given set of Products MAY have. These properties provide the information needed to plan, construct, allocate, and/or retire the Services and Resources from the operator environment needed to deliver the Product",
+
+      
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "A unique identifier for the product spec, within the product spec domain. It is assigned by the seller and communicated to the buyer at on-boarding time.",
+              "type": "string"
+        },
+        "describing": {
+          
+              "$ref": "#/definitions/Describing"
+        }
+      }
+      
+    },
+
+    "Describing": {
+      "description": "",
+
+      
+      "type": "object",
+      "properties": {
+        "@type": {
+          "description": "",
+              "type": "string"
+        },
+        "@schemaLocation": {
+          "description": "",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "OrderMessage": {
+      "description": "An optional array of messages associated with the Order",
+
+      
+      "required": [
+          
+            "messageInformation",
+            "severity"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "description": "The code associated with the Message",
+              "type": "string"
+        },
+        "field": {
+          "description": "The field/attribute on the Order associated with message",
+              "type": "string"
+        },
+        "messageInformation": {
+          "description": "A description of the error condition or information to be conveyed to the Buyer",
+              "type": "string"
+        },
+        "severity": {
+          
+           "$ref": "#/definitions/Severity"
+        },
+        "correctionRequired": {
+          "description": "Indicates whether the Buyer must submit an updated Order to resolve the Error/Jeopardy condition.",
+              "type": "boolean"
+        }
+      }
+      
+    },
+
+    "Notification": {
+      "description": "This class is created only to gather Notification data structure. This structure must be send to the callback url provided in the HUB resource.",
+
+      
+      "type": "object",
+      "properties": {
+      }
+      
+    },
+
+    "ProductOrderEvent": {
+      "description": "ProductOrder structure used for notification",
+
+      
+      "required": [
+          
+            "id",
+            "externalId",
+            "state",
+            "requestedCompletionDate",
+            "orderVersion",
+            "relatedParty",
+            "orderItem"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique (within the ordering domain) identifier for the order that is generated by the seller when the order is initially accepted.",
+              "type": "string"
+        },
+        "externalId": {
+          "description": "A number that uniquely identifies an order within the buyer's enterprise.",
+              "type": "string"
+        },
+        "state": {
+          
+           "$ref": "#/definitions/OrderStatus"
+        },
+        "requestedStartDate": {
+          "description": "The buyer's requested date that order processing should start. Format is YYYY-MM-DDThh:mmTZD (e.g. 1997-07-16T19:20+01:00).",
+              "type": "string",
+              "format": "date-time"
+        },
+        "requestedCompletionDate": {
+          "description": "Identifies the buyer's desired due date (requested delivery date). Cannot be requested on cancelled orders.  Format is YYYY-MM-DDThh:mmTZD (e.g. 1997-07-16T19:20+01:00).",
+              "type": "string",
+              "format": "date-time"
+        },
+        "expectedCompletionDate": {
+          "description": "Expected delivery date amended by the provider",
+              "type": "string",
+              "format": "date-time"
+        },
+        "completionDate": {
+          "description": "The date the order is completed. Format is YYYY-MM-DDThh:mmTZD (e.g. 1997-07-16T19:20+01:00)",
+              "type": "string",
+              "format": "date-time"
+        },
+        "orderVersion": {
+          "description": "The version number that the Buyer uses to refer to this particular version of the order",
+              "type": "string",
+  	
+  	          "default": "1"
+        },
+        "projectId": {
+          "description": "An identifier that is used to group Orders that represent a unit of functionality that is important to a Buyer.  A Project can be used to relate multiple Orders together.",
+              "type": "string"
+        },
+        "relatedParty": {
+          
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/RelatedParty"
+          }
+        },
+        "note": {
+          
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/Note"
+          }
+        },
+        "orderItem": {
+          
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/OrderItemEvent"
+          }
+        },
+        "orderMessage": {
+          
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/OrderMessage"
+          }
+        },
+        "@type": {
+          "description": "",
+              "type": "string"
+        },
+        "@schemaLocation": {
+          "description": "",
+              "type": "string"
+        },
+        "@baseType": {
+          "description": "",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "OrderItemEvent": {
+      "description": "",
+
+      
+      "required": [
+          
+            "id",
+            "action",
+            "state"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Identifier of the line item (generally it is a sequence number 01, 02, 03, ...)",
+              "type": "string"
+        },
+        "action": {
+          
+           "$ref": "#/definitions/OrderItemAction"
+        },
+        "state": {
+          
+           "$ref": "#/definitions/OrderItemStatus"
+        },
+        "billingAccount": {
+          
+              "$ref": "#/definitions/BillingAccountRef"
+        },
+        "product": {
+          
+              "$ref": "#/definitions/ProductEvent"
+        },
+        "@type": {
+          "description": "Type of productOrder",
+              "type": "string"
+        },
+        "@schemaLocation": {
+          "description": "Target a description file of productOrder extension",
+              "type": "string"
+        }
+      }
+      
+    },
+
+    "ProductEvent": {
+      "description": "Product structure used for notification",
+
+      
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique (within the product domain) identifier for the product that is generated by the seller when the product is instantiated.",
+              "type": "string"
+        },
+        "buyerProductId": {
+          "description": "Buyer product Id - informative information",
+              "type": "string"
+        },
+        "productSpecification": {
+          
+              "$ref": "#/definitions/ProductSpecification"
+        },
+        "relatedParty": {
+          
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/RelatedParty"
+          }
+        }
+      }
+      
+    },
+
+    "Event": {
+      "description": "Event class is used to describe information structure used for notification.",
+
+      
+        "discriminator": "eventId",
+      
+      "required": [
+          
+            "eventId",
+            "eventType",
+            "eventTime",
+            "event"
+      ],
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "description": "",
+              "type": "string"
+        },
+        "eventType": {
+          "description": "",
+              "type": "string"
+        },
+        "eventTime": {
+          "description": "",
+              "type": "string",
+              "format": "date-time"
+        },
+        "event": {
+          
+              "$ref": "#/definitions/ProductOrderEvent"
+        }
+      }
+      
+    },
+
+    "EventPlus": {
+      "description": "",
+
+      
+         "allOf": [
+        {
+          "$ref": "#/definitions/Event"
+        },
+        {
+      
+      "required": [
+          
+            "resourcePath",
+            "fieldPath"
+      ],
+      "type": "object",
+      "properties": {
+        "resourcePath": {
+          "description": "",
+              "type": "string"
+        },
+        "fieldPath": {
+          "description": "",
+          "type": "array",
+          "items": {
+              "type": "string"
+          }
+        }
+      }
+      
+      }
+      ]
+    }
+  }
+}
+	
