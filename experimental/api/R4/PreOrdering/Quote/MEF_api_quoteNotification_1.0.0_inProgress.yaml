@@ -490,36 +490,31 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/QuoteItemRelationship"
-  RelatedPartyRef:
-    description: "A related party defines party or party role linked to a quote."
-    required:
-    - "role"
+      relatedPartyRole:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedPartyRole"
+  RelatedParty:
+    description: "A related party defines party linked to a quote."
     type: "object"
     properties:
       id:
         description: "Unique identifier of a related party"
         type: "string"
-      href:
-        description: "Reference of the related party, could be a party reference or\
-          \ a party role reference."
-        type: "string"
       '@referredType':
         description: "Indicates the base (class) type of the party."
-        type: "string"
-      role:
-        description: "Role of the related party"
         type: "string"
       name:
         description: "Name of the related party"
         type: "string"
       emailAddress:
-        description: ""
+        description: "email Address"
         type: "string"
       number:
-        description: ""
+        description: "Telephone number"
         type: "string"
       numberExtension:
-        description: ""
+        description: "Telephone number extension"
         type: "string"
   Product:
     description: "Configure the product characteristics (only configurable characteristics\
@@ -669,6 +664,7 @@ definitions:
     discriminator: "id"
     required:
     - "requestedQuoteCompletionDate"
+    - "relatedPartyRole"
     - "quoteItem"
     type: "object"
     properties:
@@ -715,18 +711,14 @@ definitions:
         format: "date-time"
       validFor:
         $ref: "#/definitions/TimePeriod"
-      relatedParty:
+      relatedPartyRole:
         type: "array"
         items:
-          $ref: "#/definitions/RelatedPartyRef"
+          $ref: "#/definitions/RelatedPartyRole"
       quoteItem:
         type: "array"
         items:
           $ref: "#/definitions/QuoteItem"
-      quoteTotalPrice:
-        type: "array"
-        items:
-          $ref: "#/definitions/QuotePrice"
       '@baseType':
         description: "Indicates the base (class) type of the quote."
         type: "string"
@@ -781,3 +773,23 @@ definitions:
           type: "array"
           items:
             type: "string"
+  RelatedPartyRole:
+    description: "A party role (not a party) playing a role for this quote or quote\
+      \ Item."
+    required:
+    - "role"
+    - "relatedParty"
+    type: "object"
+    properties:
+      id:
+        description: "id of the party role"
+        type: "string"
+      '@referredType':
+        description: "Referred type for this party role\nTechnical attribute"
+        type: "string"
+      role:
+        description: "Role played for this party role. Could be 'buyer’, ‘seller’\
+          \ for example."
+        type: "string"
+      relatedParty:
+        $ref: "#/definitions/RelatedParty"

@@ -794,24 +794,19 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/QualificationRef"
-  RelatedPartyRef:
+      relatedPartyRole:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedPartyRole"
+  RelatedParty:
     description: "A related party defines party or party role linked to a quote."
-    required:
-    - "role"
     type: "object"
     properties:
       id:
         description: "Unique identifier of a related party"
         type: "string"
-      href:
-        description: "Reference of the related party, could be a party reference or\
-          \ a party role reference."
-        type: "string"
       '@referredType':
         description: "Indicates the base (class) type of the party."
-        type: "string"
-      role:
-        description: "Role of the related party"
         type: "string"
       name:
         description: "Name of the related party"
@@ -867,10 +862,6 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/Place"
-      relatedParty:
-        type: "array"
-        items:
-          $ref: "#/definitions/RelatedPartyRef"
   Quote:
     description: "A quote which can be used to negotiate service and product acquisition\
       \ or modification between\na customer and a service provider"
@@ -879,6 +870,7 @@ definitions:
     - "instantSyncQuoting"
     - "quoteLevel"
     - "requestedQuoteCompletionDate"
+    - "relatedPartyRole"
     - "quoteItem"
     type: "object"
     properties:
@@ -942,18 +934,14 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/AgreementRef"
-      relatedParty:
+      relatedPartyRole:
         type: "array"
         items:
-          $ref: "#/definitions/RelatedPartyRef"
+          $ref: "#/definitions/RelatedPartyRole"
       quoteItem:
         type: "array"
         items:
           $ref: "#/definitions/QuoteItem"
-      quoteTotalPrice:
-        type: "array"
-        items:
-          $ref: "#/definitions/QuotePrice"
       '@baseType':
         description: "Indicates the base (class) type of the quote."
         type: "string"
@@ -1155,10 +1143,15 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/Note"
+      relatedPartyRole:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedPartyRole"
   QuotePOSTRequest:
     description: "This structure is used only in the POST operation for the request."
     required:
     - "requestedQuoteCompletionDate"
+    - "relatedPartyRole"
     - "quoteItem"
     type: "object"
     properties:
@@ -1199,10 +1192,10 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/AgreementRef"
-      relatedParty:
+      relatedPartyRole:
         type: "array"
         items:
-          $ref: "#/definitions/RelatedPartyRef"
+          $ref: "#/definitions/RelatedPartyRole"
       quoteItem:
         type: "array"
         items:
@@ -1382,3 +1375,22 @@ definitions:
         type: "string"
       state:
         $ref: "#/definitions/QuoteState"
+  RelatedPartyRole:
+    description: "A party role (not a party) playing a role for this quote or quoteItem."
+    required:
+    - "role"
+    - "relatedParty"
+    type: "object"
+    properties:
+      id:
+        description: "id of the party role"
+        type: "string"
+      '@referredType':
+        description: "Referred type for this party role\nTechnical attribute"
+        type: "string"
+      role:
+        description: "Role played for this party role. Could be 'buyer', 'seller'\
+          \ for example."
+        type: "string"
+      relatedParty:
+        $ref: "#/definitions/RelatedParty"
