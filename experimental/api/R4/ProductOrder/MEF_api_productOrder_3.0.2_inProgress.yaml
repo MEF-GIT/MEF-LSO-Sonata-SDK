@@ -72,7 +72,7 @@ paths:
         \ REJECTED or EXPIRED state\n   \n - 111: Billing Account information must\
         \ not be both at order level and order item level\n   \n - 112: PricingMethod,\
         \ pricing Reference & pricing term attributes  must not be both at order level\
-        \ and order item level\n   \n - 113: Refered Serviceability request is expired\n\
+        \ and order item level\n   \n - 113: Referred Serviceability request is expired\n\
         \   "
       deprecated: false
       parameters:
@@ -160,7 +160,7 @@ paths:
             \ state\n   \n - 111: Billing Account information must not be both at\
             \ order level and order item level\n   \n - 112: PricingMethod, pricing\
             \ Reference & pricing term attributes  must not be both at order level\
-            \ and order item level\n   \n - 113: Refered Serviceability request is\
+            \ and order item level\n   \n - 113: Referred Serviceability request is\
             \ expired\n   "
           schema:
             $ref: "#/definitions/ErrorRepresentation"
@@ -208,47 +208,90 @@ paths:
         in: "query"
         description: "The status of the order"
         type: "string"
-      - name: "buyerRequestedDate"
+      - name: "buyerRequestedDate.gt"
         required: false
         in: "query"
-        description: "Buyer requested date"
+        description: "Buyer requested date greater than"
         type: "string"
         format: "date-time"
-      - name: "orderDate"
+      - name: "buyerRequestedDate.lt"
         required: false
         in: "query"
-        description: "Date when the order was created."
+        description: "Buyer requested date lesser than"
         type: "string"
         format: "date-time"
-      - name: "requestedStartDate"
+      - name: "orderDate.gt"
         required: false
         in: "query"
-        description: "Buyer requested start date"
+        description: "Date when the order was created greater than"
         type: "string"
         format: "date-time"
-      - name: "requestedCompletionDate"
+      - name: "orderDate.lt"
+        required: false
+        in: "query"
+        description: "Date when the order was created lesser than"
+        type: "string"
+        format: "date-time"
+      - name: "requestedStartDate.gt"
+        required: false
+        in: "query"
+        description: "Buyer requested start date greater than"
+        type: "string"
+        format: "date-time"
+      - name: "requestedStartDate.lt"
+        required: false
+        in: "query"
+        description: "Buyer requested start date lesser than"
+        type: "string"
+        format: "date-time"
+      - name: "requestedCompletionDate.gt"
         required: false
         in: "query"
         description: "Identifies the Buyer's desired due date (requested delivery\
-          \ date)."
+          \ date) greater than"
         type: "string"
         format: "date-time"
-      - name: "expectedCompletionDate"
+      - name: "requestedCompletionDate.lt"
         required: false
         in: "query"
-        description: "Seller planned completion date"
+        description: "Identifies the Buyer's desired due date (requested delivery\
+          \ date) lesser than"
         type: "string"
         format: "date-time"
-      - name: "completionDate"
+      - name: "expectedCompletionDate.gt"
         required: false
         in: "query"
-        description: "Effective completion date"
+        description: "Seller planned completion date greater than"
         type: "string"
         format: "date-time"
-      - name: "orderCancellationDate"
+      - name: "expectedCompletionDate.lt"
         required: false
         in: "query"
-        description: "order cancellation date"
+        description: "Seller planned completion date lesser than"
+        type: "string"
+        format: "date-time"
+      - name: "completionDate.gt"
+        required: false
+        in: "query"
+        description: "Effective completion date greater than"
+        type: "string"
+        format: "date-time"
+      - name: "completionDate.lt"
+        required: false
+        in: "query"
+        description: "Effective completion date lesser than"
+        type: "string"
+        format: "date-time"
+      - name: "orderCancellationDate.gt"
+        required: false
+        in: "query"
+        description: "order cancellation date greater than"
+        type: "string"
+        format: "date-time"
+      - name: "orderCancellationDate.lt"
+        required: false
+        in: "query"
+        description: "order cancellation date lesser than"
         type: "string"
         format: "date-time"
       - name: "siteName"
