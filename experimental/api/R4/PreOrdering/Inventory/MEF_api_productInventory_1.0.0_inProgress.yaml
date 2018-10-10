@@ -91,7 +91,9 @@ paths:
         \ instances based upon filter criteria specified on input.\n\nSpecific business\
         \ errors for current operation will be encapsulated in\n\nHTTP Response 422\
         \ Unprocessable entity\n\n - 100: Too many records retrieved - please restrict\
-        \ requested parameter value(s)\n   "
+        \ requested parameter value(s)\n   \n - 101: Incomplete request - if relatedPartyId\
+        \ id filled, role must be filled\n   \n - 102: Incomplete request - if role\
+        \ id filled, relatedPartyRole must be filled\n   "
       deprecated: false
       parameters:
       - name: "status"
@@ -179,7 +181,10 @@ paths:
         422:
           description: "Unprocessable entity\n\nFunctional error\n\nSpecific encapsulated\
             \ business errors for current operation\n\n - 100: Too many records retrieved\
-            \ - please restrict requested parameter value(s)\n   "
+            \ - please restrict requested parameter value(s)\n   \n - 101: Incomplete\
+            \ request - if relatedPartyId id filled, role must be filled\n   \n -\
+            \ 102: Incomplete request - if role id filled, relatedPartyRole must be\
+            \ filled\n   "
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         503:
@@ -527,10 +532,11 @@ definitions:
         description: "Id of this party role"
         type: "string"
       role:
-        description: "Role for  this party for this product"
+        description: "Role for  this party for this product. If provided the relatedPartyId\
+          \ must be as well provided."
         type: "array"
         items:
           type: "string"
       relatedPartyId:
-        description: "party information"
+        description: "party information. If provided the role must be as well provided."
         type: "string"
