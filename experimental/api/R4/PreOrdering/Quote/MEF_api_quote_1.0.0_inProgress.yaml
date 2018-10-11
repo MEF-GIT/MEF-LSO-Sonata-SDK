@@ -623,6 +623,29 @@ definitions:
     - "WEEK"
     - "MONTH"
     - "YEAR"
+  RelationshipType:
+    description: "Relationship type between item or product"
+    type: "string"
+    enum:
+    - "RELIES_ON"
+    - "BUNDLED"
+    - "COMES_FROM"
+  DurationUnit:
+    description: ""
+    type: "string"
+    enum:
+    - "DAY"
+    - "WEEK"
+    - "MONTH"
+    - "YEAR"
+  QuoteItemAction:
+    description: "Quote item action"
+    type: "string"
+    enum:
+    - "INSTALL"
+    - "CHANGE"
+    - "DISCONNECT"
+    - "NO_CHANGE"
   ErrorRepresentation:
     description: "Standard Class used to describe API response error"
     required:
@@ -765,9 +788,7 @@ definitions:
       state:
         $ref: "#/definitions/QuoteItemState"
       action:
-        description: "Action to be perfomed on this quote item (add, modify, remove,\
-          \ etc.)."
-        type: "string"
+        $ref: "#/definitions/QuoteItemAction"
       '@type':
         description: "Indicates the base (class) type of the quote Item."
         type: "string"
@@ -782,6 +803,8 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/QuotePrice"
+      quoteItemTerm:
+        $ref: "#/definitions/ItemTerm"
       quoteItemRelationship:
         type: "array"
         items:
@@ -993,13 +1016,7 @@ definitions:
     type: "object"
     properties:
       type:
-        description: "Type of the product relationship. It can be :\n     - \"bundled\"\
-          \ if the product is a bundle and you want to describe the \"bundled\" products\
-          \ inside this bundle\n     - \"reliesOn\" if the product needs another already\
-          \ owned product to rely on (e.g. an option on an already owned mobile access\
-          \ product)\n\"targets\" or \"isTargeted\" (depending on the way of expressing\
-          \ the link) for any other kind of links that may be useful."
-        type: "string"
+        $ref: "#/definitions/RelationshipType"
       product:
         $ref: "#/definitions/ProductRef"
   QuotePrice:
@@ -1076,7 +1093,9 @@ definitions:
           \ Site\"."
         type: "string"
       '@referredType':
-        description: "Type of Place"
+        description: "The type to which the place is referring. This may be \"Site\"\
+          , \"FormattedAddress\", \"FieldedAddress\", \"ReferencedAddress\", or \"\
+          GeographicLocation"
         type: "string"
       '@schemaLocation':
         description: "Link to the schema describing this REST resource.\nThe MEF place\
@@ -1097,15 +1116,14 @@ definitions:
     description: "Used to describe relationship between quote item. These relationships\
       \ could have an impact on pricing and conditions."
     required:
-    - "id"
     - "type"
+    - "id"
     type: "object"
     properties:
+      type:
+        $ref: "#/definitions/RelationshipType"
       id:
         description: "ID of the related order item (must be in the same quote)."
-        type: "string"
-      type:
-        description: "Relationship type as relies on, bundles, etc..."
         type: "string"
   QuoteItemPOSTRequest:
     description: "This structure is used to describe Quote item only in the POST operation\
@@ -1120,9 +1138,7 @@ definitions:
           \ 01, 02, 03, ...)."
         type: "string"
       action:
-        description: "Action to be perfomed on this quote item (add, modify, remove,\
-          \ etc.)."
-        type: "string"
+        $ref: "#/definitions/QuoteItemAction"
       '@type':
         description: "Indicates the base (class) type of the quote Item."
         type: "string"
@@ -1394,3 +1410,32 @@ definitions:
         type: "string"
       relatedParty:
         $ref: "#/definitions/RelatedParty"
+  Duration:
+    description: "To describe a duration (period of time) with a value and an unit\
+      \ (day, month, etc...)"
+    required:
+    - "value"
+    - "unit"
+    type: "object"
+    properties:
+      value:
+        description: "value of the duration"
+        type: "integer"
+        format: "int32"
+        default: 12
+      unit:
+        $ref: "#/definitions/DurationUnit"
+  ItemTerm:
+    description: "Used to describe a term (also know as commitment) for a quote item"
+    required:
+    - "duration"
+    type: "object"
+    properties:
+      name:
+        description: "Name of the term"
+        type: "string"
+      description:
+        description: "Description of the term"
+        type: "string"
+      duration:
+        $ref: "#/definitions/Duration"

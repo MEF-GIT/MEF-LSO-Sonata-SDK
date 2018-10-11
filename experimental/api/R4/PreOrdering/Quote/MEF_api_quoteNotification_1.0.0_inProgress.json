@@ -470,6 +470,38 @@
   	          "QUOTE_ATTRIBUTE_VALUE_CHANGE_NOTIFICATION"]
       
     },
+    "RelationshipType": {
+      "description": "Relationship type to be used between quote item or product",
+      
+      "type": "string",
+      "enum": [
+  	          "RELIES_ON",
+  	          "BUNDLED",
+  	          "COMES_FROM"]
+      
+    },
+    "DurationUnit": {
+      "description": "Definition of duration unit",
+      
+      "type": "string",
+      "enum": [
+  	          "DAY",
+  	          "WEEK",
+  	          "MONTH",
+  	          "YEAR"]
+      
+    },
+    "QuoteItemAction": {
+      "description": "Quote Item Action",
+      
+      "type": "string",
+      "enum": [
+  	          "INSTALL",
+  	          "CHANGE",
+  	          "DISCONNECT",
+  	          "NO_CHANGE"]
+      
+    },
 
     "ErrorRepresentation": {
       "description": "Class used to describe API response error",
@@ -667,8 +699,8 @@
            "$ref": "#/definitions/QuoteItemState"
         },
         "action": {
-          "description": "Action to be perfomed on this quote item (add, modify, remove, etc.).",
-              "type": "string"
+          
+           "$ref": "#/definitions/QuoteItemAction"
         },
         "@type": {
           "description": "Indicates the base (class) type of the quote Item.",
@@ -692,6 +724,10 @@
           "items": {
               "$ref": "#/definitions/QuotePrice"
           }
+        },
+        "quoteItemTerm": {
+          
+              "$ref": "#/definitions/ItemTerm"
         },
         "quoteItemRelationship": {
           
@@ -945,8 +981,8 @@
               "type": "string"
         },
         "type": {
-          "description": "Relationship type as relies on, bundles, etc...",
-              "type": "string"
+          
+           "$ref": "#/definitions/RelationshipType"
         }
       }
       
@@ -1181,6 +1217,56 @@
         "relatedParty": {
           
               "$ref": "#/definitions/RelatedParty"
+        }
+      }
+      
+    },
+
+    "Duration": {
+      "description": "Duration of a term (value + unit)",
+
+      
+      "required": [
+          
+            "unit",
+            "duration"
+      ],
+      "type": "object",
+      "properties": {
+        "unit": {
+          "description": "",
+              "type": "integer",
+              "format": "int32"
+        },
+        "duration": {
+          
+           "$ref": "#/definitions/DurationUnit"
+        }
+      }
+      
+    },
+
+    "ItemTerm": {
+      "description": "Used to describe a term (also know as commitment) for a quote item",
+
+      
+      "required": [
+          
+            "duration"
+      ],
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Name of the term",
+              "type": "string"
+        },
+        "description": {
+          "description": "Description of the Term",
+              "type": "string"
+        },
+        "duration": {
+          
+              "$ref": "#/definitions/Duration"
         }
       }
       
