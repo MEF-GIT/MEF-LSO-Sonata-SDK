@@ -567,7 +567,7 @@
   },
 "definitions": {
   
-    "serviceabilityColor": {
+    "ServiceabilityColor": {
       "description": "A color that indicates confidence to service the request.",
       
       "type": "string",
@@ -577,20 +577,18 @@
   	          "YELLOW"]
       
     },
-    "qualificationState": {
+    "QualificationState": {
       "description": "These values represent the valid states through which the product offering qualification can transition",
       
       "type": "string",
       "enum": [
-  	          "UNDER_REVIEW",
-  	          "SUBMITTED",
-  	          "ACCEPTED",
-  	          "COMPLETED",
-  	          "REJECTED",
-  	          "CANCELLED"]
+  	          "IN_PROGRESS",
+  	          "READY",
+  	          "EXPIRED",
+  	          "UNABLE_TO_PROVIDE"]
       
     },
-    "timeUnit": {
+    "TimeUnit": {
       "description": "Represents a unit of time.",
       
       "type": "string",
@@ -600,6 +598,16 @@
   	          "HOURS",
   	          "BUSINESS_DAYS",
   	          "CALENDAR_DAYS"]
+      
+    },
+    "RelationshipType": {
+      "description": "Relationship type to be used between POQ item or product",
+      
+      "type": "string",
+      "enum": [
+  	          "RELIES_ON",
+  	          "BUNDLED",
+  	          "COMES_FROM"]
       
     },
 
@@ -777,8 +785,8 @@
       "type": "object",
       "properties": {
         "type": {
-          "description": "Type of relationship",
-              "type": "string"
+          
+           "$ref": "#/definitions/RelationshipType"
         },
         "id": {
           "description": "id of the targeted product",
@@ -859,7 +867,7 @@
         },
         "state": {
           
-           "$ref": "#/definitions/qualificationState"
+           "$ref": "#/definitions/QualificationState"
         },
         "MPOE": {
           "description": "Indicates if access to the location is currently Minimum Point Of Entry (MPOE) only. If mpoeOnly is true, this indicates that full access to the location (e.g. sub-unit or suite) has not yet been established. If mpoeOnly is false, this indicates that full access to the location has been (or will be) established.",
@@ -867,7 +875,7 @@
         },
         "serviceabilityConfidence": {
           
-           "$ref": "#/definitions/serviceabilityColor"
+           "$ref": "#/definitions/ServiceabilityColor"
         },
         "serviceConfidenceReason": {
           "description": "A description of the reason a particular color is being provided. This may include a specific standard reason codes and descriptions.",
@@ -913,7 +921,7 @@
           
           "type": "array",
           "items": {
-              "$ref": "#/definitions/productOfferingQualificationItemRelationship"
+              "$ref": "#/definitions/ProductOfferingQualificationItemRelationship"
           }
         },
         "alternateProductProposal": {
@@ -962,7 +970,7 @@
         },
         "state": {
           
-           "$ref": "#/definitions/qualificationState"
+           "$ref": "#/definitions/QualificationState"
         },
         "projectId": {
           "description": "This value MAY be assigned by the Buyer/Seller to identify a project the serviceability request is associated with.",
@@ -1018,7 +1026,7 @@
       
     },
 
-    "productOfferingQualificationItemRelationship": {
+    "ProductOfferingQualificationItemRelationship": {
       "description": "The relationship between product offering qualification items.",
 
       
@@ -1030,8 +1038,8 @@
       "type": "object",
       "properties": {
         "type": {
-          "description": "Type of POQ relationship",
-              "type": "string"
+          
+           "$ref": "#/definitions/RelationshipType"
         },
         "id": {
           "description": "id of the targeted POQ item",
@@ -1073,7 +1081,7 @@
           
           "type": "array",
           "items": {
-              "$ref": "#/definitions/productOfferingQualificationItemRelationship"
+              "$ref": "#/definitions/ProductOfferingQualificationItemRelationship"
           }
         },
         "relatedPartyRole": {
@@ -1163,7 +1171,7 @@
         },
         "timeUnit": {
           
-           "$ref": "#/definitions/timeUnit"
+           "$ref": "#/definitions/TimeUnit"
         }
       }
       
@@ -1181,7 +1189,7 @@
         },
         "state": {
           
-           "$ref": "#/definitions/qualificationState"
+           "$ref": "#/definitions/QualificationState"
         },
         "requestedResponseDate": {
           "description": "Corresponds to desiredResponseDate - The date a response for the service request is desired.",

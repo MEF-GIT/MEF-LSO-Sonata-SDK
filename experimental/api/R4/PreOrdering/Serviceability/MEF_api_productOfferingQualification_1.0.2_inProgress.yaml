@@ -397,25 +397,23 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
 definitions:
-  serviceabilityColor:
+  ServiceabilityColor:
     description: "A color that indicates confidence to service the request."
     type: "string"
     enum:
     - "GREEN"
     - "RED"
     - "YELLOW"
-  qualificationState:
+  QualificationState:
     description: "These values represent the valid states through which the product\
       \ offering qualification can transition"
     type: "string"
     enum:
-    - "UNDER_REVIEW"
-    - "SUBMITTED"
-    - "ACCEPTED"
-    - "COMPLETED"
-    - "REJECTED"
-    - "CANCELLED"
-  timeUnit:
+    - "IN_PROGRESS"
+    - "READY"
+    - "EXPIRED"
+    - "UNABLE_TO_PROVIDE"
+  TimeUnit:
     description: "Represents a unit of time."
     type: "string"
     enum:
@@ -424,6 +422,13 @@ definitions:
     - "HOURS"
     - "BUSINESS_DAYS"
     - "CALENDAR_DAYS"
+  RelationshipType:
+    description: "Relationship type to be used between POQ item or product"
+    type: "string"
+    enum:
+    - "RELIES_ON"
+    - "BUNDLED"
+    - "COMES_FROM"
   ErrorRepresentation:
     description: "Standard Class used to describe API response error"
     required:
@@ -538,8 +543,7 @@ definitions:
     type: "object"
     properties:
       type:
-        description: "Type of relationship"
-        type: "string"
+        $ref: "#/definitions/RelationshipType"
       id:
         description: "id of the targeted product"
         type: "string"
@@ -589,7 +593,7 @@ definitions:
         description: "Id of this POQ item"
         type: "string"
       state:
-        $ref: "#/definitions/qualificationState"
+        $ref: "#/definitions/QualificationState"
       MPOE:
         description: "Indicates if access to the location is currently Minimum Point\
           \ Of Entry (MPOE) only. If mpoeOnly is true, this indicates that full access\
@@ -598,7 +602,7 @@ definitions:
           \ has been (or will be) established."
         type: "boolean"
       serviceabilityConfidence:
-        $ref: "#/definitions/serviceabilityColor"
+        $ref: "#/definitions/ServiceabilityColor"
       serviceConfidenceReason:
         description: "A description of the reason a particular color is being provided.\
           \ This may include a specific standard reason codes and descriptions."
@@ -629,7 +633,7 @@ definitions:
       productOfferingQualificationItemRelationship:
         type: "array"
         items:
-          $ref: "#/definitions/productOfferingQualificationItemRelationship"
+          $ref: "#/definitions/ProductOfferingQualificationItemRelationship"
       alternateProductProposal:
         type: "array"
         items:
@@ -659,7 +663,7 @@ definitions:
         type: "boolean"
         default: false
       state:
-        $ref: "#/definitions/qualificationState"
+        $ref: "#/definitions/QualificationState"
       projectId:
         description: "This value MAY be assigned by the Buyer/Seller to identify a\
           \ project the serviceability request is associated with."
@@ -699,7 +703,7 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/ProductOfferingQualificationItem"
-  productOfferingQualificationItemRelationship:
+  ProductOfferingQualificationItemRelationship:
     description: "The relationship between product offering qualification items."
     required:
     - "type"
@@ -707,8 +711,7 @@ definitions:
     type: "object"
     properties:
       type:
-        description: "Type of POQ relationship"
-        type: "string"
+        $ref: "#/definitions/RelationshipType"
       id:
         description: "id of the targeted POQ item"
         type: "string"
@@ -734,7 +737,7 @@ definitions:
       productOfferingQualificationItemRelationship:
         type: "array"
         items:
-          $ref: "#/definitions/productOfferingQualificationItemRelationship"
+          $ref: "#/definitions/ProductOfferingQualificationItemRelationship"
       relatedPartyRole:
         type: "array"
         items:
@@ -791,7 +794,7 @@ definitions:
         type: "integer"
         format: "int32"
       timeUnit:
-        $ref: "#/definitions/timeUnit"
+        $ref: "#/definitions/TimeUnit"
   ProductOfferingQualificationFindReq:
     description: "This class is used to describe attribute to be used for requesting\
       \ POQ list (used in the GET by list)"
@@ -801,7 +804,7 @@ definitions:
         description: "The Serviceability Request's unique identifier."
         type: "string"
       state:
-        $ref: "#/definitions/qualificationState"
+        $ref: "#/definitions/QualificationState"
       requestedResponseDate:
         description: "Corresponds to desiredResponseDate - The date a response for\
           \ the service request is desired."
