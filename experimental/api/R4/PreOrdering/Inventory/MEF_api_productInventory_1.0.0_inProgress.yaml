@@ -6,12 +6,12 @@ info:
     \ product inventory attributes, or a specific product instance based upon a product\
     \ identifier."
   version: "1.0.0_inProgress"
-  title: "API ProductInventory"
+  title: "API ProductInventoryManagement"
   x-logo:
     url: "/redoc/logo.png"
     backgroundColor: "#FFFFFF"
 host: "serverRoot"
-basePath: "/mef-api/productInventory/v1/"
+basePath: "/api/mef/productInventoryManagement/v1/"
 schemes:
 - "https"
 produces:
@@ -74,9 +74,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         503:
-          description: "Service Unavailable\n\nList of supported error codes:\n- 5:\
-            \ The service is temporarily unavailable\n- 6: Orange API is over capacity,\
-            \ retry later !"
+          description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
   /product:
@@ -99,8 +97,14 @@ paths:
       - name: "status"
         required: false
         in: "query"
-        description: "The state of the produc"
+        description: "The state of the product"
         type: "string"
+        enum:
+        - "ACTIVE"
+        - "PENDING_CHANGE"
+        - "SUSPENDED"
+        - "PENDING_TERMINATE"
+        - "TERMINATED"
       - name: "productSpecificationId"
         required: false
         in: "query"
@@ -188,9 +192,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         503:
-          description: "Service Unavailable\n\nList of supported error codes:\n- 5:\
-            \ The service is temporarily unavailable\n- 6: Orange API is over capacity,\
-            \ retry later !"
+          description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
 definitions:

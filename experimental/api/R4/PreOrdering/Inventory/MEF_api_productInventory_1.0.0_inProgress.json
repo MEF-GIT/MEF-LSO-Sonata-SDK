@@ -4,7 +4,7 @@
   "info": {
     "description": "The scope of this MEF API is to provide the ability  for a Service Provider’s (Buyer) operational support system to retrieve from a Partner’s (Seller) Inventory management system a set of product instances based upon a filter of product inventory attributes, or a specific product instance based upon a product identifier.",
     "version": "1.0.0_inProgress",
-    "title": "API ProductInventory",
+    "title": "API ProductInventoryManagement",
     "x-logo": {
       "url": "/redoc/logo.png",
       "backgroundColor": "#FFFFFF"
@@ -12,7 +12,7 @@
   },
   
   "host": "serverRoot",
-  "basePath":	"/mef-api/productInventory/v1/",
+  "basePath":	"/api/mef/productInventoryManagement/v1/",
   "schemes": [
     "https"
   ],
@@ -100,7 +100,7 @@
           },
           "503": {
             
-            "description": "Service Unavailable\n\nList of supported error codes:\n- 5: The service is temporarily unavailable\n- 6: Orange API is over capacity, retry later !",
+            "description": "Service Unavailable\n\n",
             "schema": {
             
               "$ref": "#/definitions/ErrorRepresentation"
@@ -128,9 +128,16 @@
             "name": "status",
             "required": false,
             "in": "query",
-            "description": "The state of the produc",
+            "description": "The state of the product",
             
-              "type": "string"
+      "type": "string",
+      "enum": [
+  	          "ACTIVE",
+  	          "PENDING_CHANGE",
+  	          "SUSPENDED",
+  	          "PENDING_TERMINATE",
+  	          "TERMINATED"]
+      
           },
           {
             "name": "productSpecificationId",
@@ -254,7 +261,7 @@
           },
           "503": {
             
-            "description": "Service Unavailable\n\nList of supported error codes:\n- 5: The service is temporarily unavailable\n- 6: Orange API is over capacity, retry later !",
+            "description": "Service Unavailable\n\n",
             "schema": {
             
               "$ref": "#/definitions/ErrorRepresentation"
