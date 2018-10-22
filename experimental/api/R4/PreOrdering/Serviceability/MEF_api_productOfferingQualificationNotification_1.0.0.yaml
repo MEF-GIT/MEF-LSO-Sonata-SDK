@@ -3,13 +3,13 @@ info:
   description: "This is not the ProductOfferingQualification API but the API to manage\
     \ notification for ProductOfferingQualification . This API must be deployed on\
     \ notification subscriber side (buyer side / listener)."
-  version: "1.0.1_inProgress"
+  version: "1.0.0"
   title: "API ProductOfferingQualificationNotification"
   x-logo:
     url: "/redoc/logo.png"
     backgroundColor: "#FFFFFF"
 host: "serverRoot"
-basePath: "/mef/productOfferingQualificationNotification/v1/"
+basePath: "/api/mef/productOfferingQualificationNotification/v1/"
 schemes:
 - "https"
 produces:
@@ -76,6 +76,10 @@ paths:
           description: "Unprocessable entity\n\nFunctional error"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
+        503:
+          description: "Service Unavailable\n\n"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
   /notification/productOfferingQualificationStateChangeNotification:
     post:
       tags:
@@ -129,6 +133,10 @@ paths:
             $ref: "#/definitions/ErrorRepresentation"
         422:
           description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        503:
+          description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
   /notification/productOfferingQualificationAttributeChangeNotification:
@@ -188,25 +196,27 @@ paths:
           description: "Unprocessable entity\n\nFunctional error"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
+        503:
+          description: "Service Unavailable\n\n"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
 definitions:
-  serviceabilityColor:
+  ServiceabilityColor:
     description: "A color that indicates confidence to service the request."
     type: "string"
     enum:
     - "GREEN"
     - "RED"
     - "YELLOW"
-  qualificationState:
+  QualificationState:
     description: "These values represent the valid states through which the product\
       \ offering qualification can transition"
     type: "string"
     enum:
-    - "UNDER_REVIEW"
-    - "SUBMITTED"
-    - "ACCEPTED"
-    - "COMPLETED"
-    - "REJECTED"
-    - "CANCELLED"
+    - "IN_PROGRESS"
+    - "READY"
+    - "EXPIRED"
+    - "UNABLE_TO_PROVIDE"
   PoqEventType:
     description: "Indicates the type of product offering qualification event."
     type: "string"
@@ -278,9 +288,9 @@ definitions:
         description: "Id of this POQ item"
         type: "string"
       state:
-        $ref: "#/definitions/qualificationState"
+        $ref: "#/definitions/QualificationState"
       serviceabilityConfidence:
-        $ref: "#/definitions/serviceabilityColor"
+        $ref: "#/definitions/ServiceabilityColor"
       desiredActivationDate:
         description: "Desired Activation Date for the product requested in this item"
         type: "string"
@@ -299,7 +309,7 @@ definitions:
         description: "Link to the POQ"
         type: "string"
       state:
-        $ref: "#/definitions/qualificationState"
+        $ref: "#/definitions/QualificationState"
       expirationDate:
         description: "Expiration Date for this qualification"
         type: "string"

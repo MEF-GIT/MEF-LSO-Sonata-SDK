@@ -3,8 +3,8 @@
   "swagger": "2.0",
   "info": {
     "description": "This API is used to provide the ability to determine if service can be delivered to a specific customer site within a Partner’s domain",
-    "version": "1.0.2_inProgress",
-    "title": "API ProductOfferingQualification",
+    "version": "1.0.0",
+    "title": "API ProductOfferingQualificationManagement",
     "x-logo": {
       "url": "/redoc/logo.png",
       "backgroundColor": "#FFFFFF"
@@ -12,7 +12,7 @@
   },
   
   "host": "serverRoot",
-  "basePath":	"/mef/productOfferingQualification/v1/",
+  "basePath":	"/api/mef/productOfferingQualificationManagement/v1/",
   "schemes": [
     "https"
   ],
@@ -23,11 +23,11 @@
   
     {
       "name": "ProductOfferingQualification",
-      "description": ""
+      "description": "ProductOfferingQualification (POQ) resource is use in the Serviceability process.  The POQ provides a means to “qualify” a particular Product Offering for a requested criteria."
     },
     {
       "name": "Hub",
-      "description": ""
+      "description": "HUB resource is used to manage notification subscription"
     }
   ],
   "paths": {
@@ -114,6 +114,14 @@
             
               "$ref": "#/definitions/ErrorRepresentation"
             }
+          },
+          "503": {
+            
+            "description": "Service Unavailable\n\n",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
           }
         }
       },
@@ -140,7 +148,7 @@
               "type": "string"
           },
           {
-            "name": "expectedResponseDate",
+            "name": "projectId",
             "required": false,
             "in": "query",
             "description": "",
@@ -148,12 +156,22 @@
               "type": "string"
           },
           {
-            "name": "projectId",
+            "name": "expectedResponseDate.gt",
             "required": false,
             "in": "query",
             "description": "",
             
-              "type": "string"
+              "type": "string",
+              "format": "date-time"
+          },
+          {
+            "name": "expectedResponseDate.lt",
+            "required": false,
+            "in": "query",
+            "description": "",
+            
+              "type": "string",
+              "format": "date-time"
           },
           {
             "name": "offset",
@@ -242,6 +260,14 @@
             
               "$ref": "#/definitions/ErrorRepresentation"
             }
+          },
+          "503": {
+            
+            "description": "Service Unavailable\n\n",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
           }
         }
       }
@@ -320,6 +346,14 @@
           "422": {
             
             "description": "Unprocessable entity\n\nFunctional error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "503": {
+            
+            "description": "Service Unavailable\n\n",
             "schema": {
             
               "$ref": "#/definitions/ErrorRepresentation"
@@ -411,6 +445,14 @@
             
               "$ref": "#/definitions/ErrorRepresentation"
             }
+          },
+          "503": {
+            
+            "description": "Service Unavailable\n\n",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
           }
         }
       },
@@ -480,6 +522,14 @@
           "422": {
             
             "description": "Unprocessable entity\n\nFunctional error",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
+          },
+          "503": {
+            
+            "description": "Service Unavailable\n\n",
             "schema": {
             
               "$ref": "#/definitions/ErrorRepresentation"
@@ -560,6 +610,14 @@
             
               "$ref": "#/definitions/ErrorRepresentation"
             }
+          },
+          "503": {
+            
+            "description": "Service Unavailable\n\n",
+            "schema": {
+            
+              "$ref": "#/definitions/ErrorRepresentation"
+            }
           }
         }
       }
@@ -567,7 +625,7 @@
   },
 "definitions": {
   
-    "serviceabilityColor": {
+    "ServiceabilityColor": {
       "description": "A color that indicates confidence to service the request.",
       
       "type": "string",
@@ -577,20 +635,18 @@
   	          "YELLOW"]
       
     },
-    "qualificationState": {
+    "QualificationState": {
       "description": "These values represent the valid states through which the product offering qualification can transition",
       
       "type": "string",
       "enum": [
-  	          "UNDER_REVIEW",
-  	          "SUBMITTED",
-  	          "ACCEPTED",
-  	          "COMPLETED",
-  	          "REJECTED",
-  	          "CANCELLED"]
+  	          "IN_PROGRESS",
+  	          "READY",
+  	          "EXPIRED",
+  	          "UNABLE_TO_PROVIDE"]
       
     },
-    "timeUnit": {
+    "TimeUnit": {
       "description": "Represents a unit of time.",
       
       "type": "string",
@@ -600,6 +656,16 @@
   	          "HOURS",
   	          "BUSINESS_DAYS",
   	          "CALENDAR_DAYS"]
+      
+    },
+    "RelationshipType": {
+      "description": "Relationship type to be used between POQ item or product",
+      
+      "type": "string",
+      "enum": [
+  	          "RELIES_ON",
+  	          "BUNDLED",
+  	          "COMES_FROM"]
       
     },
 
@@ -777,8 +843,8 @@
       "type": "object",
       "properties": {
         "type": {
-          "description": "Type of relationship",
-              "type": "string"
+          
+           "$ref": "#/definitions/RelationshipType"
         },
         "id": {
           "description": "id of the targeted product",
@@ -859,7 +925,7 @@
         },
         "state": {
           
-           "$ref": "#/definitions/qualificationState"
+           "$ref": "#/definitions/QualificationState"
         },
         "MPOE": {
           "description": "Indicates if access to the location is currently Minimum Point Of Entry (MPOE) only. If mpoeOnly is true, this indicates that full access to the location (e.g. sub-unit or suite) has not yet been established. If mpoeOnly is false, this indicates that full access to the location has been (or will be) established.",
@@ -867,7 +933,7 @@
         },
         "serviceabilityConfidence": {
           
-           "$ref": "#/definitions/serviceabilityColor"
+           "$ref": "#/definitions/ServiceabilityColor"
         },
         "serviceConfidenceReason": {
           "description": "A description of the reason a particular color is being provided. This may include a specific standard reason codes and descriptions.",
@@ -880,12 +946,7 @@
         "desiredActivationDate": {
           "description": "Desired Activation Date for the product requested in this item",
               "type": "string",
-              "format": "date"
-        },
-        "estimatedResponseDate": {
-          "description": "When the color is Yellow (meaning 'We'll get back to you'), this date indicates when the Seller plans to provide a more complete response.",
-              "type": "string",
-              "format": "date"
+              "format": "date-time"
         },
         "product": {
           
@@ -913,7 +974,7 @@
           
           "type": "array",
           "items": {
-              "$ref": "#/definitions/productOfferingQualificationItemRelationship"
+              "$ref": "#/definitions/ProductOfferingQualificationItemRelationship"
           }
         },
         "alternateProductProposal": {
@@ -962,7 +1023,7 @@
         },
         "state": {
           
-           "$ref": "#/definitions/qualificationState"
+           "$ref": "#/definitions/QualificationState"
         },
         "projectId": {
           "description": "This value MAY be assigned by the Buyer/Seller to identify a project the serviceability request is associated with.",
@@ -1018,7 +1079,7 @@
       
     },
 
-    "productOfferingQualificationItemRelationship": {
+    "ProductOfferingQualificationItemRelationship": {
       "description": "The relationship between product offering qualification items.",
 
       
@@ -1030,8 +1091,8 @@
       "type": "object",
       "properties": {
         "type": {
-          "description": "Type of POQ relationship",
-              "type": "string"
+          
+           "$ref": "#/definitions/RelationshipType"
         },
         "id": {
           "description": "id of the targeted POQ item",
@@ -1073,7 +1134,7 @@
           
           "type": "array",
           "items": {
-              "$ref": "#/definitions/productOfferingQualificationItemRelationship"
+              "$ref": "#/definitions/ProductOfferingQualificationItemRelationship"
           }
         },
         "relatedPartyRole": {
@@ -1163,7 +1224,7 @@
         },
         "timeUnit": {
           
-           "$ref": "#/definitions/timeUnit"
+           "$ref": "#/definitions/TimeUnit"
         }
       }
       
@@ -1181,7 +1242,7 @@
         },
         "state": {
           
-           "$ref": "#/definitions/qualificationState"
+           "$ref": "#/definitions/QualificationState"
         },
         "requestedResponseDate": {
           "description": "Corresponds to desiredResponseDate - The date a response for the service request is desired.",
@@ -1219,7 +1280,7 @@
               "type": "string"
         },
         "@referredType": {
-          "description": "Technical attribute to manage API extension. In this case @referredType could be valued to FormattedAddress, FieldedAddress, GeographicalSite, GeographicLocation or ReferencedAddress",
+          "description": "Technical attribute to manage API extension. In this case @referredType could be valued to FormattedAddress, FieldedAddress, GeographicSite, GeographicLocation or ReferencedAddress",
               "type": "string"
         },
         "@schemaLocation": {

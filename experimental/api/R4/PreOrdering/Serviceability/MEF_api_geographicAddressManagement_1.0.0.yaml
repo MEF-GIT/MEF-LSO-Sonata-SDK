@@ -1,41 +1,52 @@
 swagger: "2.0"
 info:
-  description: ""
-  version: "2.0.0_inProgress"
-  title: "API Address"
+  description: "The Geographic Address API provides a standardized client interface\
+    \ to an Address management system. It allows looking for worldwide addresses.\n\
+    It can also be used to validate geographic address data, to be sure that it corresponds\
+    \ to a real address.\n\nGeographicSubAddress is not used in this release"
+  version: "1.0.0"
+  title: "API GeographicAddressManagement"
   x-logo:
     url: "/redoc/logo.png"
     backgroundColor: "#FFFFFF"
-host: "api.orange.com"
-basePath: "/"
+host: "serverRoot"
+basePath: "/api/mef/geographicAddressManagement/v1/"
 schemes:
-- "http"
+- "https"
 produces:
 - "application/json;charset=utf-8"
 tags:
-- name: "Address"
-  description: ""
-- name: "AddressValidation"
-  description: ""
-- name: "SubAddress"
-  description: ""
+- name: "GeographicAddress"
+  description: "Geographic address describe an geographic address with usual parameters\
+    \ as street, postcode, county, etc... information"
+- name: "GeographicAddressValidation"
+  description: "geographic Address Validation - resource used to perform an address\
+    \ validation: the requester provide an address description and in the response\
+    \ he will get a validation of his address or alternate address proposal or information\
+    \ that this address description is not corresponding to server existing address.\
+    \ All address here a geographical."
+- name: "GeographicSubAddress"
+  description: "A geographical SubAddress allows to provide additional information\
+    \ to a geographical address (building, floor, wharf, uni etc...).\n\nGeographicSubAddress\
+    \ is not used in this release"
 paths:
-  /address/{addressId}:
+  /geographicAddress/{geographicAddressId}:
     get:
       tags:
-      - "Address"
+      - "GeographicAddress"
       produces:
       - "application/json;charset=utf-8"
       operationId: "geographicAddressGet"
       summary: "retrieveAddress"
-      description: "Retrieves an address using its unique ID. This ID should be retrieve\
-        \ either using the address completion process (cf. completion), or in another\
-        \ API of the ecosystem (serviceability, quote, productOrder, etc.)\n\nSpecific\
-        \ business errors for current operation will be encapsulated in\n\nHTTP Response\
-        \ 422 Unprocessable entity\n"
+      description: "The Buyer would like to retrieve the information for a single\
+        \ address based upon an address id. This id should be retrieve either using\
+        \ the address completion process (cf. completion), or in another API of the\
+        \ ecosystem (serviceability, quote, productOrder, etc.)\n\nSpecific business\
+        \ errors for current operation will be encapsulated in\n\nHTTP Response 422\
+        \ Unprocessable entity\n"
       deprecated: false
       parameters:
-      - name: "addressId"
+      - name: "geographicAddressId"
         in: "path"
         required: true
         type: "string"
@@ -84,24 +95,22 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         503:
-          description: "Service Unavailable\n\nList of supported error codes:\n- 5:\
-            \ The service is temporarily unavailable\n- 6: Orange API is over capacity,\
-            \ retry later !"
+          description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
-  /addressValidation:
+  /geographicAddressValidation:
     post:
       tags:
-      - "AddressValidation"
+      - "GeographicAddressValidation"
       consumes:
       - "application/json;charset=utf-8"
       produces:
       - "application/json;charset=utf-8"
-      operationId: "addressValidationCreate"
+      operationId: "geographicAddressValidationCreate"
       summary: "validateAddress"
-      description: "This operation is used to verify by the seller an address submitted\
-        \ as input by the buyer.\n\nSpecific business errors for current operation\
-        \ will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n"
+      description: "A request initiated by the Buyer to validate an address of a given\
+        \ location.\n\nSpecific business errors for current operation will be encapsulated\
+        \ in\n\nHTTP Response 422 Unprocessable entity\n"
       deprecated: false
       parameters:
       - name: "addressValidationRequest"
@@ -109,12 +118,12 @@ paths:
         in: "body"
         description: ""
         schema:
-          $ref: "#/definitions/AddressValidationRequest"
+          $ref: "#/definitions/GeographicAddressValidationRequest"
       responses:
         201:
           description: "Success"
           schema:
-            $ref: "#/definitions/AddressValidation"
+            $ref: "#/definitions/GeographicAddressValidation"
         400:
           description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
             \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
@@ -154,9 +163,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         503:
-          description: "Service Unavailable\n\nList of supported error codes:\n- 5:\
-            \ The service is temporarily unavailable\n- 6: Orange API is over capacity,\
-            \ retry later !"
+          description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
 definitions:
@@ -175,26 +182,29 @@ definitions:
     type: "object"
     properties:
       code:
-        description: ""
+        description: "Application related code (as defined in the API or from a common\
+          \ list)"
         type: "integer"
         format: "int32"
       reason:
-        description: ""
+        description: "Text that explains the reason for error. This can be shown to\
+          \ a client user."
         type: "string"
       message:
-        description: ""
+        description: "Text that provide more details and corrective actions related\
+          \ to the error. This can be shown to a client user."
         type: "string"
       status:
-        description: ""
+        description: "http error code extension like 400-2"
         type: "string"
       referenceError:
-        description: ""
+        description: "url pointing to documentation describing the error"
         type: "string"
       '@type':
-        description: ""
+        description: "The class type of a REST resource."
         type: "string"
       '@schemaLocation':
-        description: ""
+        description: "it provides a link to the schema describing a REST resource."
         type: "string"
   GeoPoint:
     description: "A GeoPoint defines a geographic point through coordinates."
@@ -209,17 +219,17 @@ definitions:
       y:
         description: "y coordinate (usually longitude)"
         type: "string"
-  GeoLocation:
-    description: "A GeoLocation allows describing through coordinate(s) a point, a\
-      \ line or a space"
+  GeographicLocation:
+    description: "A GeographicLocation allows describing through coordinate(s) a point,\
+      \ a line or a space"
     type: "object"
     properties:
       geoPoint:
         type: "array"
         items:
           $ref: "#/definitions/GeoPoint"
-  GeoLocationRef:
-    description: "Reference a GeoLocation with an id and a href"
+  GeographicLocationRef:
+    description: "Reference a GeographicLocation with an id and a href"
     type: "object"
     properties:
       id:
@@ -228,7 +238,7 @@ definitions:
       href:
         description: "Href pointing to the GeoLocation"
         type: "string"
-  SubAddress:
+  GeographicSubAddress:
     description: "It is used for addressing within a property in an urban area (country\
       \ properties are often defined differently). It may refer to a building, a building\
       \ cluster, or a floor of a multistory building."
@@ -263,10 +273,10 @@ definitions:
           \ have internal names that are not recorded by the land title office"
         type: "string"
       '@type':
-        description: ""
+        description: "Technical attribute to extend this class"
         type: "string"
       '@schemaLocation':
-        description: ""
+        description: "Technical attribute to extend this class"
         type: "string"
   GeographicAddress:
     description: "An address is a structured textual way of describing how to find\
@@ -319,32 +329,35 @@ definitions:
         description: "Country that the address is in"
         type: "string"
       geographicLocation:
-        $ref: "#/definitions/GeoLocation"
+        $ref: "#/definitions/GeographicLocation"
       addrLine1:
-        description: ""
+        description: "A formatted address line that contains a non-fielded street\
+          \ address."
         type: "string"
       addrLine2:
-        description: ""
+        description: "A formatted address line that contains a non-fielded street\
+          \ address, sub-address (e.g. Suite number), etc."
         type: "string"
       postCodeExtension:
-        description: ""
+        description: "The four-digit extension on an American postal code, what comes\
+          \ after the hyphen when specified."
         type: "string"
       referenceId:
-        description: ""
+        description: "Id of a reference address"
         type: "string"
       referenceType:
-        description: ""
+        description: "Type of a reference address"
         type: "string"
       '@type':
-        description: ""
+        description: "Technical attribute to extend this class"
         type: "string"
       '@schemaLocation':
-        description: ""
+        description: "Technical attribute to extend this class"
         type: "string"
-  AddressValidation:
+  GeographicAddressValidation:
     description: "Resource used to support a request for a validation address : check\
-      \ if an address described by values attributes exists)\nIf exist, id is provided\n\
-      if not, alternate address(es) could be provided"
+      \ if a geographic address described by values attributes exists)\nIf exist,\
+      \ id is provided\nif not, alternate address(es) could be provided"
     type: "object"
     properties:
       id:
@@ -370,8 +383,8 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/GeographicAddress"
-  AddressValidationRequest:
-    description: "Structure used to describe an address validation request"
+  GeographicAddressValidationRequest:
+    description: "Structure used to describe a geographic address validation request"
     type: "object"
     properties:
       provideaAlternative:
@@ -379,9 +392,9 @@ definitions:
           \ addresses must be provided in case of partial or fail result"
         type: "boolean"
       validAddress:
-        $ref: "#/definitions/AddressRequestValidation"
-  AddressRequestValidation:
-    description: "Structure used to request address validation"
+        $ref: "#/definitions/GeographicAddressRequestValidation"
+  GeographicAddressRequestValidation:
+    description: "Structure used to request geographic address validation"
     type: "object"
     properties:
       streetNr:
@@ -426,7 +439,9 @@ definitions:
       country:
         description: "Country that the address is in"
         type: "string"
-      geoLocationRef:
-        $ref: "#/definitions/GeoLocationRef"
-      geoLocation:
-        $ref: "#/definitions/GeoLocation"
+      geographicLocationRef:
+        $ref: "#/definitions/GeographicLocationRef"
+      geographicLocation:
+        $ref: "#/definitions/GeographicLocation"
+      geographicSubAddress:
+        $ref: "#/definitions/GeographicSubAddress"

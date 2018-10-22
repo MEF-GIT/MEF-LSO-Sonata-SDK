@@ -2,19 +2,19 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "API to manage Site",
-    "version": "1.0.0_inProgress",
-    "title": "API Site",
+    "description": "API to manage GeographicSite",
+    "version": "1.0.0",
+    "title": "API GeographicSiteManagement",
     "x-logo": {
       "url": "/redoc/logo.png",
       "backgroundColor": "#FFFFFF"
     }
   },
   
-  "host": "api.orange.com",
-  "basePath":	"/",
+  "host": "serverRoot",
+  "basePath":	"/api/mef/geographicSiteManagement/v1/",
   "schemes": [
-    "http"
+    "https"
   ],
   "produces": [
     "application/json;charset=utf-8"
@@ -22,21 +22,21 @@
   "tags": [
   
     {
-      "name": "Site",
-      "description": ""
+      "name": "GeographicSite",
+      "description": "Geographic Site resource"
     }
   ],
   "paths": {
-      "/site": {
+      "/geographicSite": {
       "get": {
         "tags": [
-           "Site"
+           "GeographicSite"
         ],
         "produces": [
            "application/json;charset=utf-8"
         ],        
-        "operationId": "siteFind",
-        "summary": "retrieveSites",
+        "operationId": "geographicSiteFind",
+        "summary": "retrieveGeographicSites",
         "description": "List of criterias to be used as well as syntax of site summary retrieved in the response is aligned with MEF requirements\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n\n - 100: Too many records retrieved - please restrict requested parameter value(s)\n   ",
         "deprecated": false,
         
@@ -46,15 +46,22 @@
             "name": "status",
             "required": false,
             "in": "query",
-            "description": "",
+            "description": "Status of the site",
             
-              "type": "string"
+      "type": "string",
+      "enum": [
+  	          "PLANNED",
+  	          "CANCELLED",
+  	          "UNDER_CONSTRUCTION",
+  	          "EXISTING",
+  	          "FORMER"]
+      
           },
           {
             "name": "siteCompanyName",
             "required": false,
             "in": "query",
-            "description": "",
+            "description": "The name of the company that is located at the service location. This may be different from the name of the Buyer that ordered services at that site",
             
               "type": "string"
           },
@@ -62,7 +69,7 @@
             "name": "siteCustomerName",
             "required": false,
             "in": "query",
-            "description": "",
+            "description": "The customer name at a site where the service will be/are/were delivered",
             
               "type": "string"
           },
@@ -70,7 +77,7 @@
             "name": "geographicAddress.streetNr",
             "required": false,
             "in": "query",
-            "description": "",
+            "description": "Street Nr of the geographic site address",
             
               "type": "string"
           },
@@ -78,7 +85,7 @@
             "name": "geographicAddress.streetName",
             "required": false,
             "in": "query",
-            "description": "",
+            "description": "Street Name of the geographic site address",
             
               "type": "string"
           },
@@ -86,7 +93,7 @@
             "name": "geographicAddress.streetType",
             "required": false,
             "in": "query",
-            "description": "",
+            "description": "Street Type of the geographic site address",
             
               "type": "string"
           },
@@ -94,7 +101,7 @@
             "name": "geographicAddress.city",
             "required": false,
             "in": "query",
-            "description": "",
+            "description": "City of the geographic site address",
             
               "type": "string"
           },
@@ -102,7 +109,7 @@
             "name": "geographicAddress.postcode",
             "required": false,
             "in": "query",
-            "description": "",
+            "description": "Postcode of the geographic site address",
             
               "type": "string"
           },
@@ -110,7 +117,7 @@
             "name": "geographicAddress.country",
             "required": false,
             "in": "query",
-            "description": "",
+            "description": "Country of the geographic site address",
             
               "type": "string"
           }
@@ -121,7 +128,7 @@
             "schema": {
               "type": "array",
               "items": {
-              "$ref": "#/definitions/SiteFindResp"
+              "$ref": "#/definitions/GeographicSiteFindResp"
               }
             }
 
@@ -176,7 +183,7 @@
           },
           "503": {
             
-            "description": "Service Unavailable\n\nList of supported error codes:\n- 5: The service is temporarily unavailable\n- 6: Orange API is over capacity, retry later !",
+            "description": "Service Unavailable\n\n",
             "schema": {
             
               "$ref": "#/definitions/ErrorRepresentation"
@@ -185,17 +192,17 @@
         }
       }
     },
-      "/site/{siteId}": {
+      "/geographicSite/{siteId}": {
       "get": {
         "tags": [
-           "Site"
+           "GeographicSite"
         ],
         "produces": [
            "application/json;charset=utf-8"
         ],        
-        "operationId": "siteGet",
+        "operationId": "geographicSiteGet",
         "summary": "retrieveSite",
-        "description": "This operation retrieves a single site based upon on input id.\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n",
+        "description": "This operation retrieves a single geographicSite based upon on input id.\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n",
         "deprecated": false,
         
         "parameters": [
@@ -212,7 +219,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/Site"
+              "$ref": "#/definitions/GeographicSite"
             }
 
           },
@@ -266,7 +273,7 @@
           },
           "503": {
             
-            "description": "Service Unavailable\n\nList of supported error codes:\n- 5: The service is temporarily unavailable\n- 6: Orange API is over capacity, retry later !",
+            "description": "Service Unavailable\n\n",
             "schema": {
             
               "$ref": "#/definitions/ErrorRepresentation"
@@ -279,15 +286,15 @@
 "definitions": {
   
     "Status": {
-      "description": "",
+      "description": "Status of a geographical site",
       
       "type": "string",
       "enum": [
-  	          "Planned",
-  	          "Cancelled",
-  	          "UnderConstruction",
-  	          "Existing",
-  	          "Former"]
+  	          "PLANNED",
+  	          "CANCELLED",
+  	          "UNDER_CONSTRUCTION",
+  	          "EXISTING",
+  	          "FORMER"]
       
     },
 
@@ -303,32 +310,32 @@
       "type": "object",
       "properties": {
         "code": {
-          "description": "",
+          "description": "Application related code (as defined in the API or from a common list)",
               "type": "integer",
               "format": "int32"
         },
         "reason": {
-          "description": "",
+          "description": "Text that explains the reason for error. This can be shown to a client user.",
               "type": "string"
         },
         "message": {
-          "description": "",
+          "description": "Text that provide more details and corrective actions related to the error. This can be shown to a client user.",
               "type": "string"
         },
         "status": {
-          "description": "",
+          "description": "http error code extension like 400-2",
               "type": "string"
         },
         "referenceError": {
-          "description": "",
+          "description": "url pointing to documentation describing the error",
               "type": "string"
         },
         "@type": {
-          "description": "",
+          "description": "The class type of a REST resource.",
               "type": "string"
         },
         "@schemaLocation": {
-          "description": "",
+          "description": "it provides a link to the schema describing a REST resource.",
               "type": "string"
         }
       }
@@ -336,57 +343,61 @@
     },
 
     "GeographicAddress": {
-      "description": "",
+      "description": "An address is a structured textual way of describing how to find a Property in an urban area (country properties are often defined differently)",
 
       
       "type": "object",
       "properties": {
         "id": {
-          "description": "",
+          "description": "Unique identifier of the address",
               "type": "string"
         },
         "streetNr": {
-          "description": "",
+          "description": "Number identifying a specific property on a public street. It may be combined with streetNrLast for ranged addresses",
               "type": "string"
         },
         "streetNrSuffix": {
-          "description": "",
+          "description": "The first street number suffix",
               "type": "string"
         },
         "streetNrLast": {
-          "description": "",
+          "description": "Last number in a range of street numbers allocated to a property",
               "type": "string"
         },
         "streetName": {
-          "description": "",
+          "description": "Name of the street or other street type",
+              "type": "string"
+        },
+        "streetNrLastSuffix": {
+          "description": "Last street number suffix for a ranged address",
               "type": "string"
         },
         "streetType": {
-          "description": "",
+          "description": "Alley, avenue, boulevard, brae, crescent, drive, highway, lane, terrace, parade, place, tarn, way, wharf",
               "type": "string"
         },
         "streetSuffix": {
-          "description": "",
+          "description": "A modifier denoting a relative direction",
               "type": "string"
         },
         "locality": {
-          "description": "",
+          "description": "An area of defined or undefined boundaries within a local authority or other legislatively defined area, usually rural or semi-rural in nature.” [ANZLIC-STREET], or a suburb \"a bounded locality within a city, town or shire principally of urban character \" [ANZLICSTREET]",
               "type": "string"
         },
         "city": {
-          "description": "",
+          "description": "City that the address is in",
               "type": "string"
         },
         "postcode": {
-          "description": "",
+          "description": "Descriptor for a postal delivery area, used to speed and simplify the delivery of mail (also known as zipcode)",
               "type": "string"
         },
         "stateOrProvince": {
-          "description": "",
+          "description": "The State or Province that the address is in",
               "type": "string"
         },
         "country": {
-          "description": "",
+          "description": "Country that the address is in",
               "type": "string"
         },
         "geographicSubAddress": {
@@ -398,39 +409,39 @@
               "$ref": "#/definitions/GeographicLocation"
         },
         "addrLine1": {
-          "description": "",
+          "description": "A formatted address line that contains a non-fielded street address.",
               "type": "string"
         },
         "addrLine2": {
-          "description": "",
+          "description": "A formatted address line that contains a non-fielded street address, sub-address (e.g. Suite number), etc.",
               "type": "string"
         },
         "postCodeExtension": {
-          "description": "",
+          "description": "The four-digit extension on an American postal code, what comes after the hyphen when specified.",
               "type": "string"
         },
         "referenceId": {
-          "description": "",
+          "description": "A reference to an address by id; this would include such things CLLI Codes or Seller-assigned address identifiers.",
               "type": "string"
         },
         "referenceType": {
-          "description": "",
+          "description": "A reference type of an address id",
               "type": "string"
         },
         "@type": {
-          "description": "",
+          "description": "Technical attribute to extend this class",
               "type": "string"
         },
         "@schemaLocation": {
-          "description": "",
+          "description": "Technical attribute to extend this class",
               "type": "string"
         }
       }
       
     },
 
-    "Site": {
-      "description": "",
+    "GeographicSite": {
+      "description": "Designated as a Site in TS.\nA physical place within an addressable location that has relevance to a service or a product, or an instance thereof.",
 
       
       "type": "object",
@@ -464,37 +475,37 @@
               "type": "string"
         },
         "additionnalSiteInformation": {
-          "description": "",
+          "description": "The additional site information",
               "type": "string"
         },
         "@type": {
-          "description": "",
+          "description": "Technical attribute to extend this class",
               "type": "string"
         },
         "@schemaLocation": {
-          "description": "",
+          "description": "Technical attribute to extend this class",
               "type": "string"
         }
       }
       
     },
 
-    "GeographicPoint": {
-      "description": "",
+    "GeoPoint": {
+      "description": "A GeoPoint defines a geographic point through coordinates.",
 
       
       "type": "object",
       "properties": {
         "spatialRef": {
-          "description": "",
+          "description": "Geocoding referential",
               "type": "string"
         },
         "x": {
-          "description": "",
+          "description": "x coordinate (usually latitude)",
               "type": "string"
         },
         "y": {
-          "description": "",
+          "description": "y coordinate (usually longitude)",
               "type": "string"
         }
       }
@@ -502,7 +513,7 @@
     },
 
     "GeographicLocation": {
-      "description": "",
+      "description": "A GeographicLocation allows describing through coordinate(s) a point, a line or a space",
 
       
       "type": "object",
@@ -511,7 +522,7 @@
           
           "type": "array",
           "items": {
-              "$ref": "#/definitions/GeographicPoint"
+              "$ref": "#/definitions/GeoPoint"
           }
         }
       }
@@ -519,49 +530,49 @@
     },
 
     "GeographicSubAddress": {
-      "description": "",
+      "description": "Geographic subAddress description",
 
       
       "type": "object",
       "properties": {
         "id": {
-          "description": "",
+          "description": "Id of the subAddress",
               "type": "string"
         },
         "subUnitType": {
-          "description": "",
+          "description": "The type of subunit\ne.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF.",
               "type": "string"
         },
         "subUnitNumber": {
-          "description": "",
+          "description": "The discriminator used for the subunit\noften just a simple number e.g. FLAT 5, may also be a range",
               "type": "string"
         },
         "levelType": {
-          "description": "",
+          "description": "Describes level types within a building",
               "type": "string"
         },
         "levelNumber": {
-          "description": "",
+          "description": "Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT 2",
               "type": "string"
         },
         "buildingName": {
-          "description": "",
+          "description": "Allows for buildings that have well-known names",
               "type": "string"
         },
         "privateStreetNumber": {
-          "description": "",
+          "description": "Private streets numbers internal to a private street",
               "type": "string"
         },
         "privateStreetName": {
-          "description": "",
+          "description": "Private streets internal to a property (e.g. a university) may have internal names that are not recorded by the land title office",
               "type": "string"
         },
         "@type": {
-          "description": "",
+          "description": "Technical attribute to extend this class",
               "type": "string"
         },
         "@schemaLocation": {
-          "description": "",
+          "description": "Technical attribute to extend this class",
               "type": "string"
         }
       }
@@ -569,47 +580,47 @@
     },
 
     "GeographicAddressFindResp": {
-      "description": "",
+      "description": "Structure used to describe geographic address in response to GET geographicalSite",
 
       
       "type": "object",
       "properties": {
         "streetNr": {
-          "description": "",
+          "description": "Number identifying a specific property on a public street. It may be combined with streetNrLast for ranged addresses",
               "type": "string"
         },
         "streetName": {
-          "description": "",
+          "description": "Name of the street or other street type",
               "type": "string"
         },
         "streetType": {
-          "description": "",
+          "description": "Alley, avenue, boulevard, brae, crescent, drive, highway, lane, terrace, parade, place, tarn, way, wharf",
               "type": "string"
         },
         "city": {
-          "description": "",
+          "description": "City that the address is in",
               "type": "string"
         },
         "postcode": {
-          "description": "",
+          "description": "Descriptor for a postal delivery area, used to speed and simplify the delivery of mail (also known as zipcode)",
               "type": "string"
         },
         "country": {
-          "description": "",
+          "description": "Country that the address is in",
               "type": "string"
         }
       }
       
     },
 
-    "SiteFindResp": {
-      "description": "",
+    "GeographicSiteFindResp": {
+      "description": "Technical structure to provide site list retrieve in the GET operation",
 
       
       "type": "object",
       "properties": {
         "id": {
-          "description": "",
+          "description": "id of the site. This is coud be used in other API as a place",
               "type": "string"
         },
         "status": {
@@ -617,11 +628,11 @@
            "$ref": "#/definitions/Status"
         },
         "siteCompanyName": {
-          "description": "",
+          "description": "The name of the company that is located at the service location. This may be different from the name of the Buyer that ordered services at that site",
               "type": "string"
         },
         "siteCustomerName": {
-          "description": "",
+          "description": "The customer name at a site where the service will be/are/were delivered",
               "type": "string"
         },
         "geographicAddress": {

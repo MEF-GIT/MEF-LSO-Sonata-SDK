@@ -2,22 +2,24 @@ swagger: "2.0"
 info:
   description: "This API is used to provide the ability to determine if service can\
     \ be delivered to a specific customer site within a Partner’s domain"
-  version: "1.0.2_inProgress"
-  title: "API ProductOfferingQualification"
+  version: "1.0.0"
+  title: "API ProductOfferingQualificationManagement"
   x-logo:
     url: "/redoc/logo.png"
     backgroundColor: "#FFFFFF"
 host: "serverRoot"
-basePath: "/mef/productOfferingQualification/v1/"
+basePath: "/api/mef/productOfferingQualificationManagement/v1/"
 schemes:
 - "https"
 produces:
 - "application/json;charset=utf-8"
 tags:
 - name: "ProductOfferingQualification"
-  description: ""
+  description: "ProductOfferingQualification (POQ) resource is use in the Serviceability\
+    \ process.  The POQ provides a means to “qualify” a particular Product Offering\
+    \ for a requested criteria."
 - name: "Hub"
-  description: ""
+  description: "HUB resource is used to manage notification subscription"
 paths:
   /productOfferingQualification:
     post:
@@ -86,6 +88,10 @@ paths:
             \ Product must be provided for a POQItem\n   "
           schema:
             $ref: "#/definitions/ErrorRepresentation"
+        503:
+          description: "Service Unavailable\n\n"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
     get:
       tags:
       - "ProductOfferingQualification"
@@ -105,16 +111,23 @@ paths:
         in: "query"
         description: ""
         type: "string"
-      - name: "expectedResponseDate"
-        required: false
-        in: "query"
-        description: ""
-        type: "string"
       - name: "projectId"
         required: false
         in: "query"
         description: ""
         type: "string"
+      - name: "expectedResponseDate.gt"
+        required: false
+        in: "query"
+        description: ""
+        type: "string"
+        format: "date-time"
+      - name: "expectedResponseDate.lt"
+        required: false
+        in: "query"
+        description: ""
+        type: "string"
+        format: "date-time"
       - name: "offset"
         required: false
         in: "query"
@@ -178,6 +191,10 @@ paths:
             \ - please restrict requested parameter value(s)\n   "
           schema:
             $ref: "#/definitions/ErrorRepresentation"
+        503:
+          description: "Service Unavailable\n\n"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
   /productOfferingQualification/{productOfferingQualificationId}:
     get:
       tags:
@@ -232,6 +249,10 @@ paths:
             $ref: "#/definitions/ErrorRepresentation"
         422:
           description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        503:
+          description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
   /hub:
@@ -293,6 +314,10 @@ paths:
           description: "Unprocessable entity\n\nFunctional error"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
+        503:
+          description: "Service Unavailable\n\n"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
     get:
       tags:
       - "Hub"
@@ -342,6 +367,10 @@ paths:
             $ref: "#/definitions/ErrorRepresentation"
         422:
           description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        503:
+          description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
   /hub/{hubId}:
@@ -396,26 +425,28 @@ paths:
           description: "Unprocessable entity\n\nFunctional error"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
+        503:
+          description: "Service Unavailable\n\n"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
 definitions:
-  serviceabilityColor:
+  ServiceabilityColor:
     description: "A color that indicates confidence to service the request."
     type: "string"
     enum:
     - "GREEN"
     - "RED"
     - "YELLOW"
-  qualificationState:
+  QualificationState:
     description: "These values represent the valid states through which the product\
       \ offering qualification can transition"
     type: "string"
     enum:
-    - "UNDER_REVIEW"
-    - "SUBMITTED"
-    - "ACCEPTED"
-    - "COMPLETED"
-    - "REJECTED"
-    - "CANCELLED"
-  timeUnit:
+    - "IN_PROGRESS"
+    - "READY"
+    - "EXPIRED"
+    - "UNABLE_TO_PROVIDE"
+  TimeUnit:
     description: "Represents a unit of time."
     type: "string"
     enum:
@@ -424,6 +455,13 @@ definitions:
     - "HOURS"
     - "BUSINESS_DAYS"
     - "CALENDAR_DAYS"
+  RelationshipType:
+    description: "Relationship type to be used between POQ item or product"
+    type: "string"
+    enum:
+    - "RELIES_ON"
+    - "BUNDLED"
+    - "COMES_FROM"
   ErrorRepresentation:
     description: "Standard Class used to describe API response error"
     required:
@@ -538,8 +576,7 @@ definitions:
     type: "object"
     properties:
       type:
-        description: "Type of relationship"
-        type: "string"
+        $ref: "#/definitions/RelationshipType"
       id:
         description: "id of the targeted product"
         type: "string"
@@ -589,7 +626,7 @@ definitions:
         description: "Id of this POQ item"
         type: "string"
       state:
-        $ref: "#/definitions/qualificationState"
+        $ref: "#/definitions/QualificationState"
       MPOE:
         description: "Indicates if access to the location is currently Minimum Point\
           \ Of Entry (MPOE) only. If mpoeOnly is true, this indicates that full access\
@@ -598,7 +635,7 @@ definitions:
           \ has been (or will be) established."
         type: "boolean"
       serviceabilityConfidence:
-        $ref: "#/definitions/serviceabilityColor"
+        $ref: "#/definitions/ServiceabilityColor"
       serviceConfidenceReason:
         description: "A description of the reason a particular color is being provided.\
           \ This may include a specific standard reason codes and descriptions."
@@ -608,12 +645,7 @@ definitions:
       desiredActivationDate:
         description: "Desired Activation Date for the product requested in this item"
         type: "string"
-        format: "date"
-      estimatedResponseDate:
-        description: "When the color is Yellow (meaning 'We'll get back to you'),\
-          \ this date indicates when the Seller plans to provide a more complete response."
-        type: "string"
-        format: "date"
+        format: "date-time"
       product:
         $ref: "#/definitions/Product"
       productOffering:
@@ -629,7 +661,7 @@ definitions:
       productOfferingQualificationItemRelationship:
         type: "array"
         items:
-          $ref: "#/definitions/productOfferingQualificationItemRelationship"
+          $ref: "#/definitions/ProductOfferingQualificationItemRelationship"
       alternateProductProposal:
         type: "array"
         items:
@@ -659,7 +691,7 @@ definitions:
         type: "boolean"
         default: false
       state:
-        $ref: "#/definitions/qualificationState"
+        $ref: "#/definitions/QualificationState"
       projectId:
         description: "This value MAY be assigned by the Buyer/Seller to identify a\
           \ project the serviceability request is associated with."
@@ -699,7 +731,7 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/ProductOfferingQualificationItem"
-  productOfferingQualificationItemRelationship:
+  ProductOfferingQualificationItemRelationship:
     description: "The relationship between product offering qualification items."
     required:
     - "type"
@@ -707,8 +739,7 @@ definitions:
     type: "object"
     properties:
       type:
-        description: "Type of POQ relationship"
-        type: "string"
+        $ref: "#/definitions/RelationshipType"
       id:
         description: "id of the targeted POQ item"
         type: "string"
@@ -734,7 +765,7 @@ definitions:
       productOfferingQualificationItemRelationship:
         type: "array"
         items:
-          $ref: "#/definitions/productOfferingQualificationItemRelationship"
+          $ref: "#/definitions/ProductOfferingQualificationItemRelationship"
       relatedPartyRole:
         type: "array"
         items:
@@ -791,7 +822,7 @@ definitions:
         type: "integer"
         format: "int32"
       timeUnit:
-        $ref: "#/definitions/timeUnit"
+        $ref: "#/definitions/TimeUnit"
   ProductOfferingQualificationFindReq:
     description: "This class is used to describe attribute to be used for requesting\
       \ POQ list (used in the GET by list)"
@@ -801,7 +832,7 @@ definitions:
         description: "The Serviceability Request's unique identifier."
         type: "string"
       state:
-        $ref: "#/definitions/qualificationState"
+        $ref: "#/definitions/QualificationState"
       requestedResponseDate:
         description: "Corresponds to desiredResponseDate - The date a response for\
           \ the service request is desired."
@@ -829,8 +860,8 @@ definitions:
         type: "string"
       '@referredType':
         description: "Technical attribute to manage API extension. In this case @referredType\
-          \ could be valued to FormattedAddress, FieldedAddress, GeographicalSite,\
-          \ GeographicLocation or ReferencedAddress"
+          \ could be valued to FormattedAddress, FieldedAddress, GeographicSite, GeographicLocation\
+          \ or ReferencedAddress"
         type: "string"
       '@schemaLocation':
         description: "Technical attribute to manage API extension"

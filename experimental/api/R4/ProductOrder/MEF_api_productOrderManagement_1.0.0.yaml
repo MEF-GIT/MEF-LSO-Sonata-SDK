@@ -7,13 +7,13 @@ info:
     \n The buyer could also retrieve a single, or set, of Product Orders based upon\
     \ a specified filter.  \n\nFollowing feature will be introduced in next release:\n\
     •\tAmend Order: modification of an inflight-order"
-  version: "3.0.2_inProgress"
-  title: "API ProductOrder"
+  version: "1.0.0"
+  title: "API ProductOrderManagement"
   x-logo:
     url: "/redoc/logo.png"
     backgroundColor: "#FFFFFF"
 host: "serverRoot"
-basePath: "/mef-api/productOrder/v1/"
+basePath: "/api/mef/productOrderManagement/v1/"
 schemes:
 - "https"
 produces:
@@ -170,9 +170,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         503:
-          description: "Service Unavailable\n\nList of supported error codes:\n- 5:\
-            \ The service is temporarily unavailable\n- 6: Orange API is over capacity,\
-            \ retry later !"
+          description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
     get:
@@ -397,9 +395,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         503:
-          description: "Service Unavailable\n\nList of supported error codes:\n- 5:\
-            \ The service is temporarily unavailable\n- 6: Orange API is over capacity,\
-            \ retry later !"
+          description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
   /productOrder/{productOrderId}:
@@ -469,9 +465,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         503:
-          description: "Service Unavailable\n\nList of supported error codes:\n- 5:\
-            \ The service is temporarily unavailable\n- 6: Orange API is over capacity,\
-            \ retry later !"
+          description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
   /productOrder/cancel:
@@ -551,9 +545,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         503:
-          description: "Service Unavailable\n\nList of supported error codes:\n- 5:\
-            \ The service is temporarily unavailable\n- 6: Orange API is over capacity,\
-            \ retry later !"
+          description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
   /hub:
@@ -626,9 +618,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         503:
-          description: "Service Unavailable\n\nList of supported error codes:\n- 5:\
-            \ The service is temporarily unavailable\n- 6: Orange API is over capacity,\
-            \ retry later !"
+          description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
     get:
@@ -692,9 +682,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         503:
-          description: "Service Unavailable\n\nList of supported error codes:\n- 5:\
-            \ The service is temporarily unavailable\n- 6: Orange API is over capacity,\
-            \ retry later !"
+          description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
   /hub/{hubId}:
@@ -759,9 +747,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         503:
-          description: "Service Unavailable\n\nList of supported error codes:\n- 5:\
-            \ The service is temporarily unavailable\n- 6: Orange API is over capacity,\
-            \ retry later !"
+          description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
 definitions:
@@ -1424,7 +1410,6 @@ definitions:
     - "externalId"
     - "orderDate"
     - "state"
-    - "requestedCompletionDate"
     type: "object"
     properties:
       id:
@@ -1442,15 +1427,6 @@ definitions:
         format: "date-time"
       state:
         $ref: "#/definitions/OrderStatus"
-      requestedCompletionDate:
-        description: "Requested delivery date from the requestor perspective"
-        type: "string"
-        format: "date-time"
-      projectId:
-        description: "An identifier that is used to group Orders that represent a\
-          \ unit of functionality that is important to a Buyer. A Project can be used\
-          \ to relate multiple Orders together."
-        type: "string"
   CancelOrderResponse:
     description: "Structure to allow Seller to answer to a cancel order request"
     required:

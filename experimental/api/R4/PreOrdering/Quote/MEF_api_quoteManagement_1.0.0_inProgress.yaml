@@ -2,12 +2,12 @@ swagger: "2.0"
 info:
   description: "Quote Management\nMEF-LSO Sonata API"
   version: "1.0.0_inProgress"
-  title: "API Quote"
+  title: "API QuoteManagement"
   x-logo:
     url: "/redoc/logo.png"
     backgroundColor: "#FFFFFF"
 host: "serverRoot"
-basePath: "/mef/quote/v1/"
+basePath: "/api/mef/quoteManagement/v1/"
 schemes:
 - "https"
 produces:
@@ -34,7 +34,14 @@ paths:
       description: "This operation is used to create a new quote (V1.0) or a new version\
         \ of an existing quote (Vn.n n=> 1)\n\nSpecific business errors for current\
         \ operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n\
-        \n - 100: Not able to provide Quote with Sync response\n   "
+        \n - 101: A relatedPartyRole for Buyer role must be provided\n   \n - 102:\
+        \ A relatedPartyRole for Seller role must be provided\n   \n - 103: A relatedPartyRole\
+        \ is incomplete (must have partyRole.id or role.id+relatedParty)\n   \n -\
+        \ 104: A relatedParty is incomplete (must have a party.id or a party.name)\n\
+        \   \n - 105: Qualification Id provided did not exist or expired\n   \n -\
+        \ 106: At least a productOffering Id or a product.id or a productSpec.id must\
+        \ be provided in quote item\n   \n - 107: inconsistency between  requestedQuoteCompletionDate\
+        \ and expectedFulfillmentStartDate\n   "
       deprecated: false
       parameters:
       - name: "Quote"
@@ -79,8 +86,15 @@ paths:
             $ref: "#/definitions/ErrorRepresentation"
         422:
           description: "Unprocessable entity\n\nFunctional error\n\nSpecific encapsulated\
-            \ business errors for current operation\n\n - 100: Not able to provide\
-            \ Quote with Sync response\n   "
+            \ business errors for current operation\n\n - 101: A relatedPartyRole\
+            \ for Buyer role must be provided\n   \n - 102: A relatedPartyRole for\
+            \ Seller role must be provided\n   \n - 103: A relatedPartyRole is incomplete\
+            \ (must have partyRole.id or role.id+relatedParty)\n   \n - 104: A relatedParty\
+            \ is incomplete (must have a party.id or a party.name)\n   \n - 105: Qualification\
+            \ Id provided did not exist or expired\n   \n - 106: At least a productOffering\
+            \ Id or a product.id or a productSpec.id must be provided in quote item\n\
+            \   \n - 107: inconsistency between  requestedQuoteCompletionDate and\
+            \ expectedFulfillmentStartDate\n   "
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         500:
@@ -89,9 +103,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         503:
-          description: "Service Unavailable\n\nList of supported error codes:\n- 5:\
-            \ The service is temporarily unavailable\n- 6: Orange API is over capacity,\
-            \ retry later !"
+          description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
     get:
@@ -115,12 +127,6 @@ paths:
         description: "ID given by the consumer and only understandable by him (to\
           \ facilitate his searches afterwards)"
         type: "string"
-      - name: "quoteDate"
-        required: false
-        in: "query"
-        description: "Date when the quote was created"
-        type: "string"
-        format: "date-time"
       - name: "state"
         required: false
         in: "query"
@@ -143,18 +149,36 @@ paths:
         - "BUDGETARY"
         - "INDICATIVE"
         - "FIRM"
-      - name: "quoteCompletionDate"
-        required: false
-        in: "query"
-        description: ""
-        type: "string"
-        format: "date-time"
       - name: "projectId"
         required: false
         in: "query"
         description: "This value MAY be assigned by the Buyer/Seller to identify a\
           \ project the quoting request is associated with."
         type: "string"
+      - name: "quoteDate.gt"
+        required: false
+        in: "query"
+        description: "Date when the quote was created - greater than"
+        type: "string"
+        format: "date-time"
+      - name: "quoteDate.lt"
+        required: false
+        in: "query"
+        description: "Date when the quote was created - lower than"
+        type: "string"
+        format: "date-time"
+      - name: "quoteCompletionDate.gt"
+        required: false
+        in: "query"
+        description: "Date when the quote was completed -  greater than"
+        type: "string"
+        format: "date-time"
+      - name: "quoteCompletionDate.lt"
+        required: false
+        in: "query"
+        description: "Date when the quote was completed -  lower than"
+        type: "string"
+        format: "date-time"
       - name: "offset"
         required: false
         in: "query"
@@ -224,9 +248,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         503:
-          description: "Service Unavailable\n\nList of supported error codes:\n- 5:\
-            \ The service is temporarily unavailable\n- 6: Orange API is over capacity,\
-            \ retry later !"
+          description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
   /quote/{id}:
@@ -292,9 +314,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         503:
-          description: "Service Unavailable\n\nList of supported error codes:\n- 5:\
-            \ The service is temporarily unavailable\n- 6: Orange API is over capacity,\
-            \ retry later !"
+          description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
   /quote/requestStateChange:
@@ -370,9 +390,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         503:
-          description: "Service Unavailable\n\nList of supported error codes:\n- 5:\
-            \ The service is temporarily unavailable\n- 6: Orange API is over capacity,\
-            \ retry later !"
+          description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
   /hub:
@@ -441,9 +459,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         503:
-          description: "Service Unavailable\n\nList of supported error codes:\n- 5:\
-            \ The service is temporarily unavailable\n- 6: Orange API is over capacity,\
-            \ retry later !"
+          description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
     get:
@@ -508,9 +524,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         503:
-          description: "Service Unavailable\n\nList of supported error codes:\n- 5:\
-            \ The service is temporarily unavailable\n- 6: Orange API is over capacity,\
-            \ retry later !"
+          description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
   /hub/{hubId}:
@@ -571,9 +585,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         503:
-          description: "Service Unavailable\n\nList of supported error codes:\n- 5:\
-            \ The service is temporarily unavailable\n- 6: Orange API is over capacity,\
-            \ retry later !"
+          description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
 definitions:
@@ -890,6 +902,7 @@ definitions:
       \ or modification between\na customer and a service provider"
     discriminator: "id"
     required:
+    - "state"
     - "instantSyncQuoting"
     - "quoteLevel"
     - "requestedQuoteCompletionDate"
@@ -1389,13 +1402,11 @@ definitions:
       quoteEffectiveStateChangeDate:
         description: "Cancellation or rejection date (effective)"
         type: "string"
+        format: "date-time"
       state:
         $ref: "#/definitions/QuoteState"
   RelatedPartyRole:
     description: "A party role (not a party) playing a role for this quote or quoteItem."
-    required:
-    - "role"
-    - "relatedParty"
     type: "object"
     properties:
       id:
