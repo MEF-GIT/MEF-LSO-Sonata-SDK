@@ -4,8 +4,6 @@ This repository contains the MEF LSO Sonata SDK. It includes API definitions for
 *  Product Order
 *  Product Offering Qualification
 *	Product Inventory
-*	Trouble Ticket
-*	Event
 *  JSON representations for Product Spec description for Ordering & Serviceability
 *  JSON representations for Place description
 
