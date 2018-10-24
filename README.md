@@ -42,7 +42,8 @@ A reference implementation of the LSO Sonata APIs is expected to be available in
 
 ## Precedents
 Any developer intending to use the materials in this repository should first thoroughly read, review and understand the following materials:
-*  [https.google.com]
+*  https://www.mef.net/resources/technical-specifications/download?id=44&fileid=file1
+
 
 
 # Disclaimer & Copyright
