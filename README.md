@@ -2,10 +2,13 @@
 
 This repository contains the MEF LSO Sonata SDK. It includes API definitions for the following functional areas:
 
+*  Serviceability (Address/Site validation and Product Offering Qualification)
+*  Product Quote
 *  Product Order
-*  Product Offering Qualification
 *  Product Inventory
-*  JSON representations for Product Spec description for Ordering & Serviceability
+
+It also holds Payload Descriptions for the following structures that are used with these APIs
+*  JSON representations for Product Spec descriptions (initially for MEF Access Eline services)
 *  JSON representations for Place description
 
 The MEF LSO Sonata SDK is released under the Apache 2.0 license.
@@ -14,6 +17,7 @@ More information about the LSO Sonata API reference point can be found here:
 https://wiki.mef.net/display/CESG/LSO+Sonata
 
 ## Maturity Level
+These files are in the ## Working Draft ## state.  This implies that they have not yet successfully completed the review cycles and approvals necessary to achieve the status as a MEF standard.  
 
 ## Contents
 
