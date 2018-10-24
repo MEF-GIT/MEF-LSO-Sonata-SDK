@@ -42,13 +42,17 @@ A reference implementation of the LSO Sonata APIs is expected to be available in
 
 ## Precedents
 Any developer intending to use the materials in this repository should first thoroughly read, review and understand the following materials:
-*  [MEF 55: Lifecycle Service Orchestration (LSO): Reference Architecture and Framework](https://www.mef.net/resources/technical-specifications/download?id=44&fileid=file1)
-*  [MEF 55.0.1: Amendment to MEF55: Operational Threads](https://www.mef.net/resources/technical-specifications/download?id=99&fileid=file1)
-*  [MEF50.1: MEF Services Lifecycle Process Flows](https://www.mef.net/resources/technical-specifications/download?id=96&fileid=file1)
-*  [Serviceability Management Technical Specification](https://wiki.mef.net/download/attachments/75990189/Serviceability%20Technical%20Specification.docx?api=v2) This document is in final ballot
-
-
-
+*  [MEF 55: Lifecycle Service Orchestration (LSO): Reference Architecture and Framework](https://www.mef.net/resources/technical-specifications/download?id=44&fileid=file1) This document is a ratified MEF standard.
+*  [MEF 55.0.1: Amendment to MEF55: Operational Threads](https://www.mef.net/resources/technical-specifications/download?id=99&fileid=file1) This document is a ratified MEF standard.
+*  [MEF50.1: MEF Services Lifecycle Process Flows](https://www.mef.net/resources/technical-specifications/download?id=96&fileid=file1) This document is a ratified MEF standard.
+*  [Serviceability Management Technical Specification](https://wiki.mef.net/download/attachments/75990189/Serviceability%20Technical%20Specification.docx?api=v2) This document is in final ballot to become a MEF standard.
+*  [Quote Management Technical Specification](https://wiki.mef.net) This document is in final ballot to become a MEF standard.
+*  [Ethernet Ordering Technical Specification](https://wiki.mef.net) This document is in final ballot to become a MEF standard.
+*  [Inventory Management Technical Specification](https://wiki.mef.net) This document is in final ballot to become a MEF standard.
+*  [API Developer Guide: Serviceability](https://wiki.mef.net) This document is a working draft and is subject to change.
+*  [API Developer Guide: Quote Management](https://wiki.mef.net) This document is a working draft and is subject to change.
+*  [API Developer Guide: Product Order Management](https://wiki.mef.net) This document is a working draft and is subject to change.
+*  [API Developer Guide: Product Inventory Management](https://wiki.mef.net) This document is a working draft and is subject to change.
 
 # Disclaimer & Copyright
 
