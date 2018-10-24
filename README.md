@@ -1,9 +1,10 @@
 # MEF-LSO-Sonata-SDK
 
 This repository contains the MEF LSO Sonata SDK. It includes API definitions for the following functional areas:
+
 *  Product Order
 *  Product Offering Qualification
-*	Product Inventory
+*  Product Inventory
 *  JSON representations for Product Spec description for Ordering & Serviceability
 *  JSON representations for Place description
 
@@ -21,13 +22,16 @@ This SDK contains the following items:
 *	COPYRIGHT - Copyright 2018 MEF Forum
 *	LICENSE - Contains a copy of the Apache 2.0 license
 *  README - This file
-*  PlaceDescription – Contains reference JSON schemas for place description.
-*  ProductSpecDescription – Contains reference JSON schemas for product specification description.
-*  Inventory -
-*  Quote -
-*  Serviceability - 
-*  ProductOrder - Contains the API definitions for inter-carrier service ordering capability.
-*  old - Contains previous LSO Sonata API work (now superseded)
+*  payload_description - Common descriptors are found in this directory
+	*  PlaceDescription – Contains reference JSON schemas for place description.
+	*  ProductSpecDescription – Contains reference JSON schemas for product specification description.
+*  api - Definitions of the API are found in this directory
+	*  Inventory -
+	*  Quote -
+	*  Serviceability - 
+	*  ProductOrder - Contains the API definitions for inter-carrier service ordering capability.
+
+All supersceded files can be found in the Git history, if needed.
 
 ## Reference Implementations
 A reference implementation of the LSO Sonata APIs is expected to be available in the future. Please contact Pascal (pascal@mef.net) for more information.
