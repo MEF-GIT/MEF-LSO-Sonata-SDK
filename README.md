@@ -42,7 +42,11 @@ A reference implementation of the LSO Sonata APIs is expected to be available in
 
 ## Precedents
 Any developer intending to use the materials in this repository should first thoroughly read, review and understand the following materials:
-*  https://www.mef.net/resources/technical-specifications/download?id=44&fileid=file1
+*  [MEF 55: Lifecycle Service Orchestration (LSO): Reference Architecture and Framework](https://www.mef.net/resources/technical-specifications/download?id=44&fileid=file1)
+*  [MEF 55.0.1: Amendment to MEF55: Operational Threads](https://www.mef.net/resources/technical-specifications/download?id=99&fileid=file1)
+*  [MEF50.1: MEF Services Lifecycle Process Flows](https://www.mef.net/resources/technical-specifications/download?id=96&fileid=file1)
+*  [Serviceability Management Technical Specification](https://wiki.mef.net/download/attachments/75990189/Serviceability%20Technical%20Specification.docx?api=v2) This document is in final ballot
+
 
 
 
