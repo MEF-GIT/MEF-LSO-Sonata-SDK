@@ -17,7 +17,7 @@ More information about the LSO Sonata API reference point can be found here:
 https://wiki.mef.net/display/CESG/LSO+Sonata
 
 ## Maturity Level
-These files are in the ## Working Draft ## state.  This implies that they have not yet successfully completed the review cycles and approvals necessary to achieve the status as a MEF standard.  
+These files are in the Working Draft state.  It is work in progress and is subject to change.  This work has not yet successfully completed the review cycles and approvals necessary to achieve the status as a MEF standard.  The MEF is making these publicly available at this time to invite wider industry review.
 
 ## Contents
 
@@ -40,7 +40,10 @@ All supersceded files can be found in the Git history, if needed.
 ## Reference Implementations
 A reference implementation of the LSO Sonata APIs is expected to be available in the future. Please contact Pascal (pascal@mef.net) for more information.
 
-## Related Projects
+## Precedents
+Any developer intending to use the materials in this repository should first thoroughly read, review and understand the following materials:
+*  [https.google.com]
+
 
 # Disclaimer & Copyright
 
