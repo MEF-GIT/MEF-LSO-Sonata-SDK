@@ -1,0 +1,836 @@
+swagger: "2.0"
+info:
+  description: "This is not quote API but Quote notification API. This API must be\
+    \ deployed on client/subscriber side to receive notification"
+  version: "1.0.0"
+  title: "API QuoteNotification"
+  x-logo:
+    url: "/redoc/logo.png"
+    backgroundColor: "#FFFFFF"
+host: "serverRoot"
+basePath: "/mef/quoteNotification/v1/"
+schemes:
+- "https"
+produces:
+- "application/json;charset=utf-8"
+tags:
+- name: "Notification"
+  description: "Notification class is used to describe structure used for quote notification\
+    \ (quote created, quote state change, quote information required, quote attribute\
+    \ value change"
+paths:
+  /notification/quoteCreationNotification:
+    post:
+      tags:
+      - "Notification"
+      consumes:
+      - "application/json;charset=utf-8"
+      operationId: "notificationQuoteCreationNotification"
+      summary: "Quote creation notification structure"
+      description: "Quote creation notification structure definition\n\nSpecific business\
+        \ errors for current operation will be encapsulated in\n\nHTTP Response 422\
+        \ Unprocessable entity\n"
+      deprecated: false
+      parameters:
+      - name: "quoteCreationNotification"
+        required: true
+        in: "body"
+        description: ""
+        schema:
+          $ref: "#/definitions/Event"
+      responses:
+        204:
+          description: "Success"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        403:
+          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
+            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
+            \ requests"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        405:
+          description: "Method Not Allowed\n\nList of supported error codes:\n- 61:\
+            \ Method not allowed"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        500:
+          description: "Internal Server Error\n\nList of supported error codes:\n\
+            - 1: Internal error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        503:
+          description: "Service Unavailable\n\n"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+  /notification/quoteStateChangeNotification:
+    post:
+      tags:
+      - "Notification"
+      consumes:
+      - "application/json;charset=utf-8"
+      operationId: "notificationQuoteStateChangeNotification"
+      summary: "Quote state change notification structure"
+      description: "Quote state change notification structure description\n\nSpecific\
+        \ business errors for current operation will be encapsulated in\n\nHTTP Response\
+        \ 422 Unprocessable entity\n"
+      deprecated: false
+      parameters:
+      - name: "quoteStateChangeNotification"
+        required: true
+        in: "body"
+        description: ""
+        schema:
+          $ref: "#/definitions/Event"
+      responses:
+        204:
+          description: "Success"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        403:
+          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
+            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
+            \ requests"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        405:
+          description: "Method Not Allowed\n\nList of supported error codes:\n- 61:\
+            \ Method not allowed"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        500:
+          description: "Internal Server Error\n\nList of supported error codes:\n\
+            - 1: Internal error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        503:
+          description: "Service Unavailable\n\n"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+  /notification/quoteInformationRequiredNotification:
+    post:
+      tags:
+      - "Notification"
+      consumes:
+      - "application/json;charset=utf-8"
+      operationId: "notificationQuoteInformationRequiredNotification"
+      summary: "Quote information required notification structure"
+      description: "Quote information required notification structure description.\n\
+        Attribute resourcePatch allows to target quote but also quoteItem - example:\
+        \ resourcePath\":\"/quote/42/quoteItem/3\" is the item #3 of quote #42\nAttribute\
+        \ fieldPath allows to target missing information: fieldPath\":\"missing=quote.relatedParty.Role.value&party.id=46\"\
+        \ means role information is missing for party 46.\n\nSpecific business errors\
+        \ for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable\
+        \ entity\n"
+      deprecated: false
+      parameters:
+      - name: "quoteInformationRequiredNotification"
+        required: true
+        in: "body"
+        description: ""
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/EventPlus"
+      responses:
+        204:
+          description: "Success"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        403:
+          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
+            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
+            \ requests"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        405:
+          description: "Method Not Allowed\n\nList of supported error codes:\n- 61:\
+            \ Method not allowed"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        500:
+          description: "Internal Server Error\n\nList of supported error codes:\n\
+            - 1: Internal error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        503:
+          description: "Service Unavailable\n\n"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+  /notification/quoteAttributeValueChangeNotification:
+    post:
+      tags:
+      - "Notification"
+      consumes:
+      - "application/json;charset=utf-8"
+      operationId: "notificationQuoteAttributeValueChangeNotification"
+      summary: "Quote attribute value change notification structure"
+      description: "Quote attribute value change notification structure description.\n\
+        Attribute resourcePatch allows to target quote but also quoteItem - example:\
+        \ resourcePath\":\"/quote/42/quoteItem/3\" is the item #3 of quote #42\nAttribute\
+        \ fieldPath allows to target attribute with value changed.\n\nSpecific business\
+        \ errors for current operation will be encapsulated in\n\nHTTP Response 422\
+        \ Unprocessable entity\n"
+      deprecated: false
+      parameters:
+      - name: "quoteAttributeValueChangeNotification"
+        required: true
+        in: "body"
+        description: ""
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/EventPlus"
+      responses:
+        204:
+          description: "Success"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        403:
+          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
+            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
+            \ requests"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        405:
+          description: "Method Not Allowed\n\nList of supported error codes:\n- 61:\
+            \ Method not allowed"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        500:
+          description: "Internal Server Error\n\nList of supported error codes:\n\
+            - 1: Internal error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        503:
+          description: "Service Unavailable\n\n"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+definitions:
+  QuoteState:
+    description: ""
+    type: "string"
+    enum:
+    - "IN_PROGRESS"
+    - "READY"
+    - "CANCELLED"
+    - "REJECTED"
+    - "ACCEPTED"
+    - "EXPIRED"
+    - "UNABLE_TO_PROVIDE"
+  QuoteItemState:
+    description: ""
+    type: "string"
+    enum:
+    - "IN_PROGRESS"
+    - "UNABLE_TO_PROVIDE"
+    - "READY"
+    - "ABANDONED"
+  QuoteLevel:
+    description: ""
+    type: "string"
+    enum:
+    - "BUDGETARY"
+    - "INDICATIVE"
+    - "FIRM"
+  QuoteEventType:
+    description: "Type of the Event"
+    type: "string"
+    enum:
+    - "QUOTE_CREATION_NOTIFICATION"
+    - "QUOTE_STATE_CHANGE_NOTIFICATION"
+    - "QUOTE_INFORMATION_REQUIRED_NOTIFICATION"
+    - "QUOTE_ATTRIBUTE_VALUE_CHANGE_NOTIFICATION"
+  RelationshipType:
+    description: "Relationship type to be used between quote item or product"
+    type: "string"
+    enum:
+    - "RELIES_ON"
+    - "BUNDLED"
+    - "COMES_FROM"
+  DurationUnit:
+    description: "Definition of duration unit"
+    type: "string"
+    enum:
+    - "DAY"
+    - "WEEK"
+    - "MONTH"
+    - "YEAR"
+  QuoteItemAction:
+    description: "Quote Item Action"
+    type: "string"
+    enum:
+    - "INSTALL"
+    - "CHANGE"
+    - "DISCONNECT"
+    - "NO_CHANGE"
+  ErrorRepresentation:
+    description: "Class used to describe API response error"
+    required:
+    - "code"
+    - "reason"
+    type: "object"
+    properties:
+      code:
+        description: "Application related code (as defined in the API or from a common\
+          \ list)"
+        type: "integer"
+        format: "int32"
+      reason:
+        description: "Text that explains the reason for error. This can be shown to\
+          \ a client user."
+        type: "string"
+      message:
+        description: "Text that provide mode details and corrective actions related\
+          \ to the error.  This can be shown to a client user."
+        type: "string"
+      status:
+        description: "Http error code extension like 400-2 for example"
+        type: "string"
+      referenceError:
+        description: "url pointing to documentation describing the error"
+        type: "string"
+      '@type':
+        description: "Type of the REST resource"
+        type: "string"
+      '@schemaLocation':
+        description: "Link to the schema describing the REST resource"
+        type: "string"
+  TimePeriod:
+    description: "Indicates a time period for validity."
+    required:
+    - "startDate"
+    - "endDate"
+    type: "object"
+    properties:
+      startDate:
+        description: "Quote valid from"
+        type: "string"
+        format: "date-time"
+      endDate:
+        description: "Quote valid to"
+        type: "string"
+        format: "date-time"
+  PriceAlteration:
+    description: "Is an amount, usually of money, that modifies the price charged\
+      \ for an order item"
+    required:
+    - "priceType"
+    type: "object"
+    properties:
+      name:
+        description: "A short descriptive name such as \"Monthly discount\"."
+        type: "string"
+      description:
+        description: "A narrative that explains in detail the semantics of this order\
+          \ item price alteration."
+        type: "string"
+      priceType:
+        description: "A category that describes the price such as recurring, one time\
+          \ and usage."
+        type: "string"
+      unitOfMeasure:
+        description: "Could be minutes, GB..."
+        type: "string"
+      recurringChargePeriod:
+        description: "Could be month, week..."
+        type: "string"
+      percentage:
+        description: ""
+        type: "number"
+        format: "float"
+      price:
+        $ref: "#/definitions/Price"
+      applicationDuration:
+        description: "Duration during which the alteration applies on the order item\
+          \ price (for instance 2 months free of charge for the recurring charge)."
+        type: "integer"
+        format: "int32"
+      priority:
+        description: "Priority level for applying this alteration among all the defined\
+          \ alterations on the order item price"
+        type: "integer"
+        format: "int32"
+      '@type':
+        description: "Indicates the (class) type of the price alteration"
+        type: "string"
+      '@schemaLocation':
+        description: "Link to the schema describing this REST resource"
+        type: "string"
+  Price:
+    description: "Provides all amounts (tax included, duty free, tax rate), used Money\
+      \ structure for currency"
+    type: "object"
+    properties:
+      taxIncludedAmount:
+        $ref: "#/definitions/Money"
+      dutyFreeAmount:
+        $ref: "#/definitions/Money"
+      taxRate:
+        description: "Tax rate"
+        type: "number"
+        format: "float"
+      percentage:
+        description: "Percentage to apply only for ProdOfferPriceAlteration"
+        type: "number"
+        format: "float"
+      priceRange:
+        $ref: "#/definitions/PriceRange"
+      '@type':
+        description: "Indicates the (class) type of the price"
+        type: "string"
+      '@schemaLocation':
+        description: "Link to the schema describing this REST resource"
+        type: "string"
+      priceVariation:
+        description: "priceVariation allows to describe a variation on the price for\
+          \ budgetary or indicative quote.\nIt is understood as a percentage.\nA 25\
+          \ here means that Amount provided could be +/- 25% less or more."
+        type: "number"
+        format: "float"
+  QuoteItem:
+    description: "A quote items describe an action to be performed on a productOffering\
+      \ or a product in order to get pricing elements and condition"
+    required:
+    - "id"
+    - "state"
+    - "action"
+    type: "object"
+    properties:
+      id:
+        description: "Identifier of the quote item (generally it is a sequence number\
+          \ 01, 02, 03, ...)."
+        type: "string"
+      state:
+        $ref: "#/definitions/QuoteItemState"
+      action:
+        $ref: "#/definitions/QuoteItemAction"
+      '@type':
+        description: "Indicates the base (class) type of the quote Item."
+        type: "string"
+      '@schemaLocation':
+        description: "Link to the schema describing this REST resource"
+        type: "string"
+      productOffering:
+        $ref: "#/definitions/ProductOfferingRef"
+      product:
+        $ref: "#/definitions/Product"
+      quoteItemPrice:
+        type: "array"
+        items:
+          $ref: "#/definitions/QuotePrice"
+      quoteItemTerm:
+        $ref: "#/definitions/ItemTerm"
+      quoteItemRelationship:
+        type: "array"
+        items:
+          $ref: "#/definitions/QuoteItemRelationship"
+      relatedPartyRole:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedPartyRole"
+  RelatedParty:
+    description: "A related party defines party linked to a quote."
+    type: "object"
+    properties:
+      id:
+        description: "Unique identifier of a related party"
+        type: "string"
+      '@referredType':
+        description: "Indicates the base (class) type of the party."
+        type: "string"
+      name:
+        description: "Name of the related party"
+        type: "string"
+      emailAddress:
+        description: "email Address"
+        type: "string"
+      number:
+        description: "Telephone number"
+        type: "string"
+      numberExtension:
+        description: "Telephone number extension"
+        type: "string"
+  Product:
+    description: "Configure the product characteristics (only configurable characteristics\
+      \ and necessary only if a non default value is selected) and/or identify the\
+      \ product that needs to be modified/deleted"
+    required:
+    - "href"
+    - "id"
+    type: "object"
+    properties:
+      href:
+        description: "Reference of the product"
+        type: "string"
+      id:
+        description: "Unique identifier of the product"
+        type: "string"
+      productSpecification:
+        $ref: "#/definitions/ProductSpecificationRef"
+  ProductOfferingRef:
+    description: "A product offering represents entities that are orderable from the\
+      \ provider of the catalog, this resource includes pricing information"
+    required:
+    - "id"
+    type: "object"
+    properties:
+      id:
+        description: "Unique identifier of the product offering"
+        type: "string"
+      href:
+        description: "Reference of the product offering"
+        type: "string"
+      name:
+        description: "Name of the product offering."
+        type: "string"
+      '@referredType':
+        description: "Indicate the class (type) of product offering."
+        type: "string"
+  QuotePrice:
+    description: "Description of price and discount awarded."
+    required:
+    - "priceType"
+    type: "object"
+    properties:
+      priceType:
+        description: "indicate if the price is for recurrent or no-recurrent charge"
+        type: "string"
+      recurringChargePeriod:
+        description: "Used for recurring charge to indicate period (month, week, etc..)"
+        type: "string"
+      unitOfMeasure:
+        description: "Unit of Measure if price depending on it (Gb, SMS volume, etc..)."
+        type: "string"
+      name:
+        description: "Name of the quote /quote item price"
+        type: "string"
+      description:
+        description: "Description of the quote/quote item price."
+        type: "string"
+      '@type':
+        description: "Indicates the base (class) type of the quote price"
+        type: "string"
+      '@schemaLocation':
+        description: "link to the schema describing this REST resource"
+        type: "string"
+      price:
+        $ref: "#/definitions/Price"
+      priceAlteration:
+        type: "array"
+        items:
+          $ref: "#/definitions/PriceAlteration"
+  ProductSpecificationRef:
+    description: "A ProductSpecification is a detailed description of a tangible or\
+      \ intangible object made available externally in the form of a ProductOffering\
+      \ to customers or other parties playing a party role."
+    discriminator: "id"
+    type: "object"
+    properties:
+      id:
+        description: "Unique identifier of the product specification"
+        type: "string"
+      href:
+        description: "Reference of the product specification"
+        type: "string"
+      version:
+        description: "Version of the product specification"
+        type: "string"
+      name:
+        description: "Name of the product specification"
+        type: "string"
+      describing:
+        $ref: "#/definitions/Describing"
+  Money:
+    description: "A base / value business entity used to represent money"
+    required:
+    - "value"
+    - "unit"
+    type: "object"
+    properties:
+      value:
+        description: "A positive floating point number"
+        type: "number"
+        format: "float"
+      unit:
+        description: "Currency (ISO4217 norm uses 3 letters to define the currency"
+        type: "string"
+  Describing:
+    description: "Target to the schema describing the product spec resource (and type)"
+    type: "object"
+    properties:
+      '@type':
+        description: "Indicates the (class) type of resource"
+        type: "string"
+      '@schemaLocation':
+        description: "This field provided a link to the schema describing this REST\
+          \ resource."
+        type: "string"
+  QuoteItemRelationship:
+    description: "Used to describe relationship between quote item. These relationships\
+      \ could have an impact on pricing and conditions."
+    required:
+    - "id"
+    - "type"
+    type: "object"
+    properties:
+      id:
+        description: "ID of the related order item (must be in the same quote)."
+        type: "string"
+      type:
+        $ref: "#/definitions/RelationshipType"
+  PriceRange:
+    description: "PriceRange class allows to describe a range of price (Min/Max) for\
+      \ budgetary or indicative quote."
+    type: "object"
+    properties:
+      minTaxIncludedAmount:
+        $ref: "#/definitions/Money"
+      maxTaxIncludedAmount:
+        $ref: "#/definitions/Money"
+      minDutyFreeAmount:
+        $ref: "#/definitions/Money"
+      maxDutyFreeAmount:
+        $ref: "#/definitions/Money"
+  QuoteSummaryView:
+    description: "Quote Summary view is provided in the response of the GET(LIST)\
+      \ quote. Only a subset of information are provided."
+    discriminator: "id"
+    required:
+    - "requestedQuoteCompletionDate"
+    - "relatedPartyRole"
+    - "quoteItem"
+    type: "object"
+    properties:
+      id:
+        description: "ID attributed by quoting system"
+        type: "string"
+      href:
+        description: "Hyperlink to access the quote"
+        type: "string"
+      externalId:
+        description: "ID given by the consumer and only understandable by him (to\
+          \ facilitate his searches afterwards)"
+        type: "string"
+      quoteLevel:
+        $ref: "#/definitions/QuoteLevel"
+      category:
+        description: "Used to categorize the quote from a business perspective that\
+          \ can be useful for the CRM system (e.g. “enterprise”, “residential”, ...)"
+        type: "string"
+      state:
+        $ref: "#/definitions/QuoteState"
+      quoteDate:
+        description: "Date when the quote was created"
+        type: "string"
+        format: "date-time"
+      requestedQuoteCompletionDate:
+        description: "This is the date wished by the requester to have the quote completed\
+          \ (meaning priced)"
+        type: "string"
+        format: "date-time"
+      expectedQuoteCompletionDate:
+        description: "This is the date filled by the seller to indicate expected quote\
+          \ completion date."
+        type: "string"
+        format: "date"
+      expectedFulfillmentStartDate:
+        description: "This is the date wished by the requester to have the requested\
+          \ quote item(s) delivered"
+        type: "string"
+        format: "date"
+      effectiveQuoteCompletionDate:
+        description: "Date when the quoted was Cancelled or Rejected or Accepted"
+        type: "string"
+        format: "date-time"
+      validFor:
+        $ref: "#/definitions/TimePeriod"
+      relatedPartyRole:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedPartyRole"
+      quoteItem:
+        type: "array"
+        items:
+          $ref: "#/definitions/QuoteItem"
+      '@baseType':
+        description: "Indicates the base (class) type of the quote."
+        type: "string"
+      '@type':
+        description: "Indicates the (class) type of the quote."
+        type: "string"
+      '@schemaLocation':
+        description: "Link to the schema describing the REST resource."
+        type: "string"
+  Notification:
+    description: "This class is created only to gather Notification data structure.\
+      \ This structure must be send to the callback url provided in the HUB resource."
+    type: "object"
+    properties: {}
+  Event:
+    description: "Event class is used to describe information structure used for notification."
+    discriminator: "eventId"
+    required:
+    - "eventId"
+    - "eventTime"
+    - "eventType"
+    - "event"
+    type: "object"
+    properties:
+      eventId:
+        description: "Id of the event"
+        type: "string"
+      eventTime:
+        description: "Datetime when the event occurred"
+        type: "string"
+        format: "date-time"
+      eventType:
+        $ref: "#/definitions/QuoteEventType"
+      event:
+        $ref: "#/definitions/QuoteSummaryView"
+  EventPlus:
+    description: "EventPlus class is used to extend information structure used for\
+      \ notification (adding resource & field paths)"
+    allOf:
+    - $ref: "#/definitions/Event"
+    - required:
+      - "resourcePath"
+      - "fieldPath"
+      type: "object"
+      properties:
+        resourcePath:
+          description: "Path to the resource (where an information is required or\
+            \ an attribute changed value)"
+          type: "string"
+        fieldPath:
+          description: "Path to the field which has value changed or information required"
+          type: "array"
+          items:
+            type: "string"
+  RelatedPartyRole:
+    description: "A party role (not a party) playing a role for this quote or quote\
+      \ Item."
+    required:
+    - "role"
+    - "relatedParty"
+    type: "object"
+    properties:
+      id:
+        description: "id of the party role"
+        type: "string"
+      '@referredType':
+        description: "Referred type for this party role\nTechnical attribute"
+        type: "string"
+      role:
+        description: "Role played for this party role. Could be 'buyer’, ‘seller’\
+          \ for example."
+        type: "string"
+      relatedParty:
+        $ref: "#/definitions/RelatedParty"
+  Duration:
+    description: "Duration of a term (value + unit)"
+    required:
+    - "unit"
+    - "duration"
+    type: "object"
+    properties:
+      unit:
+        description: ""
+        type: "integer"
+        format: "int32"
+      duration:
+        $ref: "#/definitions/DurationUnit"
+  ItemTerm:
+    description: "Used to describe a term (also know as commitment) for a quote item"
+    required:
+    - "duration"
+    type: "object"
+    properties:
+      name:
+        description: "Name of the term"
+        type: "string"
+      description:
+        description: "Description of the Term"
+        type: "string"
+      duration:
+        $ref: "#/definitions/Duration"
