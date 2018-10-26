@@ -31,7 +31,7 @@ This SDK contains the following items:
 	*  Quote -
 	*  Serviceability - 
 	*  ProductOrder - Contains the API definitions for inter-carrier service ordering capability.
-*  documentation - This contains the documents required to review as part of this API that have not fully completed the standards process and are thus not publicly available on the MEF website.
+*  documentation - This contains the documents required to review as part of this API that have not fully completed the standards process and are thus not publicly available on the MEF website.  The user is encouraged to review documents in the order of the links below rather than going into this directory.
 
 All supersceded files can be found in the Git history, if needed.
 
@@ -42,14 +42,13 @@ Any developer intending to use the materials in this repository should first tho
 *  [MEF 55.0.1: Amendment to MEF55: Operational Threads](https://www.mef.net/resources/technical-specifications/download?id=99&fileid=file1) This document is a ratified MEF standard.
 *  [MEF 50.1: MEF Services Lifecycle Process Flows](https://www.mef.net/resources/technical-specifications/download?id=96&fileid=file1) This document is a ratified MEF standard.
 *  [Serviceability Management Technical Specification](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/blob/working-draft/documentation/Serviceability%20Technical%20Specification.pdf) This document is in final ballot to become a MEF standard.
-) This document is in final ballot to become a MEF standard.
-*  [Quote Management Technical Specification](https://wiki.mef.net/download/attachments/75990189/Quote%20Technical%20Specification.docx?api=v2) This document is in final ballot to become a MEF standard.
-*  [Ethernet Ordering Technical Specification](https://wiki.mef.net/download/attachments/82222506/L67002_001_MEF57.1_LB_Kaplan.pdf?version=1&modificationDate=1537985603000&api=v2) This document is in final ballot to become a MEF standard.
-*  [Inventory Management Technical Specification](https://wiki.mef.net/download/attachments/75990189/Product%20Inventory%20Technical%20Specification.docx?api=v2) This document is in final ballot to become a MEF standard.
-*  [API Developer Guide: Serviceability](https://wiki.mef.net/download/attachments/75990189/Serviceability%20API%20Developer%20Guide.docx?api=v2) This document is a working draft and is subject to change.
-*  [API Developer Guide: Quote Management](https://wiki.mef.net/download/attachments/75990189/Quote%20%20API%20Developer%20Guide.docx?api=v2) This document is a working draft and is subject to change.
-*  [API Developer Guide: Product Order Management](https://wiki.mef.net/download/attachments/75990189/Product%20Ordering%20API%20Developer%20%20Guide.docx?api=v2) This document is a working draft and is subject to change.
-*  [API Developer Guide: Product Inventory Management](https://wiki.mef.net/download/attachments/75990189/Product%20Inventory%20Technical%20Specification.docx?api=v2) This document is a working draft and is subject to change.
+*  [Quote Management Technical Specification](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/blob/working-draft/documentation/Quote%20Technical%20Specification.pdf) This document is in final ballot to become a MEF standard.
+*  [Ethernet Ordering Technical Specification](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/blob/working-draft/documentation/Ordering%20Technical%20Specificaiton%20(MEF57.1_LB).pdf) This document is in final ballot to become a MEF standard.
+*  [Inventory Management Technical Specification](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/blob/working-draft/documentation/Product%20Inventory%20Technical%20Specification.pdf) This document is in final ballot to become a MEF standard.
+*  [API Developer Guide: Serviceability](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/blob/working-draft/documentation/Serviceability%20API%20Developer%20Guide.pdf) This document is a working draft and is subject to change.
+*  [API Developer Guide: Quote Management](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/blob/working-draft/documentation/Quote%20API%20Developer%20Guide.pdf) This document is a working draft and is subject to change.
+*  [API Developer Guide: Product Order Management](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/blob/working-draft/documentation/Product%20Ordering%20API%20Developer%20%20Guide.pdf) This document is a working draft and is subject to change.
+*  [API Developer Guide: Product Inventory Management](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/blob/working-draft/documentation/Product%20Inventory%20API%20Developer%20Guide.pdf) This document is a working draft and is subject to change.
 
 ## Questions and Feedback
 Questions and Feedback should be directed to LSO-Sonata@mef.net.  All artifacts included in this repository have line numbers.  When referring to specific content in any of these artifacts, please quote the line numbers to which you are referring.
