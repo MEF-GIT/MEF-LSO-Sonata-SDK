@@ -31,6 +31,7 @@ This SDK contains the following items:
 	*  Quote -
 	*  Serviceability - 
 	*  ProductOrder - Contains the API definitions for inter-carrier service ordering capability.
+*  documentation - This contains the documents required to review as part of this API that have not fully completed the standards process and are thus not publicly available on the MEF website.
 
 All supersceded files can be found in the Git history, if needed.
 
