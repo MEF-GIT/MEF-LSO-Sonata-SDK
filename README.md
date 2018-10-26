@@ -41,7 +41,8 @@ Any developer intending to use the materials in this repository should first tho
 *  [MEF 55: Lifecycle Service Orchestration (LSO): Reference Architecture and Framework](https://www.mef.net/resources/technical-specifications/download?id=44&fileid=file1) This document is a ratified MEF standard.
 *  [MEF 55.0.1: Amendment to MEF55: Operational Threads](https://www.mef.net/resources/technical-specifications/download?id=99&fileid=file1) This document is a ratified MEF standard.
 *  [MEF 50.1: MEF Services Lifecycle Process Flows](https://www.mef.net/resources/technical-specifications/download?id=96&fileid=file1) This document is a ratified MEF standard.
-*  [Serviceability Management Technical Specification](https://wiki.mef.net/download/attachments/75990189/Serviceability%20Technical%20Specification.docx?api=v2) This document is in final ballot to become a MEF standard.
+*  [Serviceability Management Technical Specification](MEF-LSO-Sonata-SDK/documentation/Serviceability Technical Specification.pdf) This document is in final ballot to become a MEF standard.
+) This document is in final ballot to become a MEF standard.
 *  [Quote Management Technical Specification](https://wiki.mef.net/download/attachments/75990189/Quote%20Technical%20Specification.docx?api=v2) This document is in final ballot to become a MEF standard.
 *  [Ethernet Ordering Technical Specification](https://wiki.mef.net/download/attachments/82222506/L67002_001_MEF57.1_LB_Kaplan.pdf?version=1&modificationDate=1537985603000&api=v2) This document is in final ballot to become a MEF standard.
 *  [Inventory Management Technical Specification](https://wiki.mef.net/download/attachments/75990189/Product%20Inventory%20Technical%20Specification.docx?api=v2) This document is in final ballot to become a MEF standard.
