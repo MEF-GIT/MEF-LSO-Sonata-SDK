@@ -119,7 +119,7 @@
         ],        
         "operationId": "productFind",
         "summary": "productFind (list) - retrieve product list with summary view",
-        "description": "This operation is used to retrieve one or more product inventory instances based upon filter criteria specified on input.\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n\n - 100: Too many records retrieved - please restrict requested parameter value(s)\n   \n - 101: Incomplete request - if relatedPartyId id filled, role must be filled\n   \n - 102: Incomplete request - if role id filled, relatedPartyRole must be filled\n   ",
+        "description": "This operation is used to retrieve one or more product inventory instances based upon filter criteria specified on input.\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n\n - 100: Too many records retrieved - please restrict requested parameter value(s)\n   \n - 103: Incomplete request - If place.id is filled, place.type must be filled\n   \n - 104: Incomplete request - If place.type is filled, place.id must be filled\n   \n - 105: Incomplete request - If partyRole.role is filled, partyRole.relatedPartyId must be filled\n   \n - 106: Incomplete request - If partyRole.relatedPartyId is filled, partyRole.role must be filled\n   ",
         "deprecated": false,
         
         "parameters": [
@@ -128,7 +128,7 @@
             "name": "status",
             "required": false,
             "in": "query",
-            "description": "The state of the product",
+            "description": "The status of the product",
             
       "type": "string",
       "enum": [
@@ -156,24 +156,6 @@
               "type": "string"
           },
           {
-            "name": "partyRole",
-            "required": false,
-            "in": "body",
-            "description": "A reference to a related party role",
-            "schema": {
-              "$ref": "#/definitions/PartyRoleRequest"
-            }
-          },
-          {
-            "name": "place",
-            "required": false,
-            "in": "body",
-            "description": "A reference to a place that contains an id and type",
-            "schema": {
-              "$ref": "#/definitions/PlaceRequest"
-            }
-          },
-          {
             "name": "buyerProductId",
             "required": false,
             "in": "query",
@@ -194,6 +176,46 @@
             "required": false,
             "in": "query",
             "description": "Requested number of resources to be provided in response requested by client",
+            
+              "type": "string"
+          },
+          {
+            "name": "place.id",
+            "required": false,
+            "in": "query",
+            "description": "",
+            
+              "type": "string"
+          },
+          {
+            "name": "place.type",
+            "required": false,
+            "in": "query",
+            "description": "",
+            
+              "type": "string"
+          },
+          {
+            "name": "partyRole.id",
+            "required": false,
+            "in": "query",
+            "description": "",
+            
+              "type": "string"
+          },
+          {
+            "name": "partyRole.role",
+            "required": false,
+            "in": "query",
+            "description": "",
+            
+              "type": "string"
+          },
+          {
+            "name": "partyRole.relatedPartyId",
+            "required": false,
+            "in": "query",
+            "description": "",
             
               "type": "string"
           }
@@ -253,7 +275,7 @@
           },
           "422": {
             
-            "description": "Unprocessable entity\n\nFunctional error\n\nSpecific encapsulated business errors for current operation\n\n - 100: Too many records retrieved - please restrict requested parameter value(s)\n   \n - 101: Incomplete request - if relatedPartyId id filled, role must be filled\n   \n - 102: Incomplete request - if role id filled, relatedPartyRole must be filled\n   ",
+            "description": "Unprocessable entity\n\nFunctional error\n\nSpecific encapsulated business errors for current operation\n\n - 100: Too many records retrieved - please restrict requested parameter value(s)\n   \n - 103: Incomplete request - If place.id is filled, place.type must be filled\n   \n - 104: Incomplete request - If place.type is filled, place.id must be filled\n   \n - 105: Incomplete request - If partyRole.role is filled, partyRole.relatedPartyId must be filled\n   \n - 106: Incomplete request - If partyRole.relatedPartyId is filled, partyRole.role must be filled\n   ",
             "schema": {
             
               "$ref": "#/definitions/ErrorRepresentation"
