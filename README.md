@@ -13,9 +13,6 @@ It also holds Payload Descriptions for the following structures that are used wi
 
 The MEF LSO Sonata SDK is released under the Apache 2.0 license.
 
-More information about the LSO Sonata API reference point can be found here:
-https://wiki.mef.net/display/CESG/LSO+Sonata
-
 ## Maturity Level
 These files are in the Working Draft state.  It is work in progress and is subject to change.  This work has not yet successfully completed the review cycles and approvals necessary to achieve the status as a MEF standard.  The MEF is making these publicly available at this time to invite wider industry review.
 
@@ -37,8 +34,6 @@ This SDK contains the following items:
 
 All supersceded files can be found in the Git history, if needed.
 
-## Reference Implementations
-A reference implementation of the LSO Sonata APIs is expected to be available in the future. Please contact Pascal (pascal@mef.net) for more information.
 
 ## Precedents
 Any developer intending to use the materials in this repository should first thoroughly read, review and understand the following materials:
@@ -53,6 +48,9 @@ Any developer intending to use the materials in this repository should first tho
 *  [API Developer Guide: Quote Management](https://wiki.mef.net/download/attachments/75990189/Quote%20%20API%20Developer%20Guide.docx?api=v2) This document is a working draft and is subject to change.
 *  [API Developer Guide: Product Order Management](https://wiki.mef.net/download/attachments/75990189/Product%20Ordering%20API%20Developer%20%20Guide.docx?api=v2) This document is a working draft and is subject to change.
 *  [API Developer Guide: Product Inventory Management](https://wiki.mef.net/download/attachments/75990189/Product%20Inventory%20Technical%20Specification.docx?api=v2) This document is a working draft and is subject to change.
+
+## Questions and Feedback
+Questions and Feedback should be directed to LSO-Sonata@mef.net.  All artifacts included in this repository have line numbers.  When referring to specific content in any of these artifacts, please quote the line numbers to which you are referring.
 
 # Disclaimer & Copyright
 
