@@ -44,7 +44,7 @@
         ],        
         "operationId": "productOrderCreate",
         "summary": "productOrderCreate",
-        "description": "This operation is used to create an order. Depending on the order activity, one can \"INSTALL\", \"CHANGE\", or \"DISCONNECT\" an associated product.\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n\n - 100: Missing order item (minimum 1)\n   At least one order item must be provided\n - 101: Missing Buyer at order level\n   One and only one related partyRole with a \"Buyer\" role should be provided at the product order level.\n - 114: Missing Seller at order level\n   One and only one related partyRole with a \"Seller\" role should be provided at the product order level.\n - 102: A relatedParty is at the wrong level\n   The partyRole provided is not managed - MEF allows to have\n\"Buyer\", \"Seller\", \"Billing Contact\", \"Order Contact\", \"Implementation Contact\", \"Technical Contact\" roles at product order level\n\"UNI Site Contact\", \"UNI Alt Site Contact\", \"ENNI Site Contact\", \"ENNI Alt Site Contact\" at product order item level.\n - 103: Missing Buyer Contact at order level\n   One and only one related partyRole with a \"Order Contact\" role should be provided at the product order level.\nBuyer Contact name & Telephone number must be provided.\n - 104: Missing Buyer Implementation Contact at order level\n   One and only one related partyRole with a \"Implementation Contact\" role should be provided at the product order level.\nImplementation Contact name & Telephone number must be provided.\n - 105: Missing Buyer Technical contact at order level\n   One and only one related partyRole with a \"Technical Contact\" role should be provided at the product order level.\nTechnical Contact name, Telephone number and email address must be provided.\n - 106: Addres information must matches place type\n   If place type is 'formatted address' : addrLine1, postCode, country must be there, addrLine2, locality, postCodeExtension, stateOrProvince  could be there, other address information must not be filled\nIf place type is 'fielded address' : streetName, streetType, postCode must be there, streetNr, streetNrSuffix, streetNrLast, streetSuffix, locality, postCodeExtension, country, stateOrProvince could be there, other address information must not be filled\n - 107: postCode extension needs postcode\n   A postCode extension must not be present whithout a postCode\n - 108: If orderItemAction is not INSTALL, orderItem.product.id is mandatory\n   \n - 109: If orderActivity is set to INSTALL, all orderItemAction must be INSTALL\n   \n - 110: Refered quote is not in a 'ordereable' state (Quote is in CANCELLED, UNABLE TO PROVIDE, REJECTED or EXPIRED state\n   \n - 111: Billing Account information must not be both at order level and order item level\n   \n - 112: PricingMethod, pricing Reference & pricing term attributes  must not be both at order level and order item level\n   \n - 113: Referred Serviceability request is expired\n   ",
+        "description": "This operation is used to create an order. Depending on the order activity, one can \"INSTALL\", \"CHANGE\", or \"DISCONNECT\" an associated product.\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n\n - 100: Missing order item (minimum 1)\n   At least one order item must be provided\n - 101: Missing Buyer at order level\n   One and only one related partyRole with a \"Buyer\" role should be provided at the product order level.\n - 114: Missing Seller at order level\n   One and only one related partyRole with a \"Seller\" role should be provided at the product order level.\n - 102: A relatedParty is at the wrong level\n   The partyRole provided is not at the correct level - MEF allows to have\n\"Buyer\", \"Seller\", \"Billing Contact\", \"Order Contact\", \"Implementation Contact\", \"Technical Contact\" roles at product order level and \"UNI Site Contact\", \"UNI Alt Site Contact\", \"ENNI Site Contact\", \"ENNI Alt Site Contact\" at product order item level.\n - 103: Missing Buyer Order Contact at order level\n   One and only one related partyRole with a \"Order Contact\" role should be provided at the product order level.\nBuyer Order Contact name & Telephone number must be provided.\n - 104: Missing Buyer Implementation Contact at order level\n   One and only one related partyRole with a \"Implementation Contact\" role should be provided at the product order level.\nImplementation Contact name & Telephone number must be provided.\n - 105: Missing Buyer Technical contact at order level\n   One and only one related partyRole with a \"Technical Contact\" role should be provided at the product order level.\nTechnical Contact name, Telephone number and email address must be provided.\n - 106: Address information must match place type\n   If place type is 'Formatted address' : addrLine1, postCode, country must be there, addrLine2, locality, postCodeExtension, stateOrProvince  could be there, but other address information must not be filled\nIf place type is 'Fielded address' : streetName, streetType, postCode must be there, streetNr, streetNrSuffix, streetNrLast, streetSuffix, locality, postCodeExtension, country, stateOrProvince could be there,but other address information must not be filled\n - 107: postCode extension requires postcode value to be filled\n   A postCode extension must not be present without a postcode being present\n - 108: Product id is required for all OrderItem Actions other than INSTALL\n   If orderItemAction is not INSTALL, orderItem.product.id is mandatory\n - 109: Order Activity must match all OrderItem Actions for INSTALL\n   If orderActivity is set to INSTALL, all orderItemAction must be INSTALL\n - 110: Referred quote cannot be used for ordering due to its status\n   Quote cannot be used in the order if its status is in CANCELLED, UNABLE TO PROVIDE, REJECTED or EXPIRED state.\n - 111: Billing Account information must not be both at order level and order item level\n   Billing Account must not be present both at order header level and order item level.\n - 112: PricingMethod, pricing Reference & pricing term attributes  must not be both at order level and order item level\n   Pricing data  must not be present both at order header level and order item level.\n - 113: Referred Serviceability request is expired\n   Serviceability information are expired.",
         "deprecated": false,
         
         "parameters": [
@@ -117,7 +117,7 @@
           },
           "422": {
             
-            "description": "Unprocessable entity\n\nFunctional error\n\nSpecific encapsulated business errors for current operation\n\n - 100: Missing order item (minimum 1)\n   At least one order item must be provided\n - 101: Missing Buyer at order level\n   One and only one related partyRole with a \"Buyer\" role should be provided at the product order level.\n - 114: Missing Seller at order level\n   One and only one related partyRole with a \"Seller\" role should be provided at the product order level.\n - 102: A relatedParty is at the wrong level\n   The partyRole provided is not managed - MEF allows to have\n\"Buyer\", \"Seller\", \"Billing Contact\", \"Order Contact\", \"Implementation Contact\", \"Technical Contact\" roles at product order level\n\"UNI Site Contact\", \"UNI Alt Site Contact\", \"ENNI Site Contact\", \"ENNI Alt Site Contact\" at product order item level.\n - 103: Missing Buyer Contact at order level\n   One and only one related partyRole with a \"Order Contact\" role should be provided at the product order level.\nBuyer Contact name & Telephone number must be provided.\n - 104: Missing Buyer Implementation Contact at order level\n   One and only one related partyRole with a \"Implementation Contact\" role should be provided at the product order level.\nImplementation Contact name & Telephone number must be provided.\n - 105: Missing Buyer Technical contact at order level\n   One and only one related partyRole with a \"Technical Contact\" role should be provided at the product order level.\nTechnical Contact name, Telephone number and email address must be provided.\n - 106: Addres information must matches place type\n   If place type is 'formatted address' : addrLine1, postCode, country must be there, addrLine2, locality, postCodeExtension, stateOrProvince  could be there, other address information must not be filled\nIf place type is 'fielded address' : streetName, streetType, postCode must be there, streetNr, streetNrSuffix, streetNrLast, streetSuffix, locality, postCodeExtension, country, stateOrProvince could be there, other address information must not be filled\n - 107: postCode extension needs postcode\n   A postCode extension must not be present whithout a postCode\n - 108: If orderItemAction is not INSTALL, orderItem.product.id is mandatory\n   \n - 109: If orderActivity is set to INSTALL, all orderItemAction must be INSTALL\n   \n - 110: Refered quote is not in a 'ordereable' state (Quote is in CANCELLED, UNABLE TO PROVIDE, REJECTED or EXPIRED state\n   \n - 111: Billing Account information must not be both at order level and order item level\n   \n - 112: PricingMethod, pricing Reference & pricing term attributes  must not be both at order level and order item level\n   \n - 113: Referred Serviceability request is expired\n   ",
+            "description": "Unprocessable entity\n\nFunctional error\n\nSpecific encapsulated business errors for current operation\n\n - 100: Missing order item (minimum 1)\n   At least one order item must be provided\n - 101: Missing Buyer at order level\n   One and only one related partyRole with a \"Buyer\" role should be provided at the product order level.\n - 114: Missing Seller at order level\n   One and only one related partyRole with a \"Seller\" role should be provided at the product order level.\n - 102: A relatedParty is at the wrong level\n   The partyRole provided is not at the correct level - MEF allows to have\n\"Buyer\", \"Seller\", \"Billing Contact\", \"Order Contact\", \"Implementation Contact\", \"Technical Contact\" roles at product order level and \"UNI Site Contact\", \"UNI Alt Site Contact\", \"ENNI Site Contact\", \"ENNI Alt Site Contact\" at product order item level.\n - 103: Missing Buyer Order Contact at order level\n   One and only one related partyRole with a \"Order Contact\" role should be provided at the product order level.\nBuyer Order Contact name & Telephone number must be provided.\n - 104: Missing Buyer Implementation Contact at order level\n   One and only one related partyRole with a \"Implementation Contact\" role should be provided at the product order level.\nImplementation Contact name & Telephone number must be provided.\n - 105: Missing Buyer Technical contact at order level\n   One and only one related partyRole with a \"Technical Contact\" role should be provided at the product order level.\nTechnical Contact name, Telephone number and email address must be provided.\n - 106: Address information must match place type\n   If place type is 'Formatted address' : addrLine1, postCode, country must be there, addrLine2, locality, postCodeExtension, stateOrProvince  could be there, but other address information must not be filled\nIf place type is 'Fielded address' : streetName, streetType, postCode must be there, streetNr, streetNrSuffix, streetNrLast, streetSuffix, locality, postCodeExtension, country, stateOrProvince could be there,but other address information must not be filled\n - 107: postCode extension requires postcode value to be filled\n   A postCode extension must not be present without a postcode being present\n - 108: Product id is required for all OrderItem Actions other than INSTALL\n   If orderItemAction is not INSTALL, orderItem.product.id is mandatory\n - 109: Order Activity must match all OrderItem Actions for INSTALL\n   If orderActivity is set to INSTALL, all orderItemAction must be INSTALL\n - 110: Referred quote cannot be used for ordering due to its status\n   Quote cannot be used in the order if its status is in CANCELLED, UNABLE TO PROVIDE, REJECTED or EXPIRED state.\n - 111: Billing Account information must not be both at order level and order item level\n   Billing Account must not be present both at order header level and order item level.\n - 112: PricingMethod, pricing Reference & pricing term attributes  must not be both at order level and order item level\n   Pricing data  must not be present both at order header level and order item level.\n - 113: Referred Serviceability request is expired\n   Serviceability information are expired.",
             "schema": {
             
               "$ref": "#/definitions/ErrorRepresentation"
@@ -1135,7 +1135,7 @@
     },
 
     "BillingAccountRef": {
-      "description": "An arrangement that a customer has with an enterprise that provides products to the customer.",
+      "description": "References the billing  arrangement that a buyer has with a seller that provides products to the customer.",
 
       
       "required": [
@@ -1145,7 +1145,7 @@
       "type": "object",
       "properties": {
         "id": {
-          "description": "Identifies the buyer's billing account to which the recurring and non-recurring charges for this order item will be billed.\nIf the value 'NEW' is provided it means that buyer request a new BAN.",
+          "description": "Identifies the buyer’s billing account to which the recurring and non-recurring charges for this order or order item will be billed.\nIf the value ‘NEW’ is provided it means that buyer request a new BAN.",
               "type": "string"
         },
         "billingContact": {
@@ -1264,7 +1264,7 @@
               "format": "date-time"
         },
         "expeditePriority": {
-          "description": "Indicates that expedited treatment is requested and any charges generated in provisioning this request (e.g., additional engineering charges or labor charges if applicable) will be accepted.",
+          "description": "Indicates that expedited treatment is requested and any charges generated in provisioning this request (e.g., additional engineering charges or labor charges if applicable) will be accepted by the buyer.",
               "type": "boolean"
         },
         "priority": {
@@ -1287,7 +1287,7 @@
   	          "default": "1"
         },
         "projectId": {
-          "description": "An identifier that is used to group Orders that represent a unit of functionality that is important to a Buyer.  A Project can be used to relate multiple Orders together.",
+          "description": "An identifier that is used to group Orders that is important to the Buyer. A ProjectId can be used to relate multiple Orders together",
               "type": "string"
         },
         "tspRestorationPriority": {
@@ -1303,7 +1303,7 @@
            "$ref": "#/definitions/PricingMethod"
         },
         "pricingReference": {
-          "description": "The value associated with the Pricing Method selected (e.g. a contract or tariff id).",
+          "description": "The identifier references the previously agreed upon pricing terms, as applicable, based on the pricingMethod (e.g. a contract id or tariff id.",
               "type": "string"
         },
         "pricingTerm": {
@@ -1417,7 +1417,7 @@
            "$ref": "#/definitions/PricingMethod"
         },
         "pricingReference": {
-          "description": "The value associated with the Pricing Method selected (e.g. a contract or tariff id)",
+          "description": "The identifier references the previously agreed upon pricing terms, as applicable, based on the pricingMethod (e.g. a contract id or tariff id.",
               "type": "string"
         },
         "pricingTerm": {
@@ -1710,7 +1710,7 @@
               "format": "date-time"
         },
         "expeditePriority": {
-          "description": "Indicates that expedited treatment is requested and any charges generated in provisioning this request (e.g., additional engineering charges or labor charges if applicable) will be accepted.",
+          "description": "Indicates that expedited treatment is requested and any charges generated in provisioning this request (e.g., additional engineering charges or labor charges if applicable) will be accepted by the buyer.",
               "type": "boolean"
         },
         "priority": {
@@ -1731,7 +1731,7 @@
               "type": "string"
         },
         "projectId": {
-          "description": "An identifier that is used to group Orders that represent a unit of functionality that is important to a Buyer. A Project can be used to relate multiple Orders together.",
+          "description": "An identifier that is used to group Orders that is important to the Buyer. A ProjectId can be used to relate multiple Orders together.",
               "type": "string"
         },
         "tspRestorationPriority": {
@@ -1759,7 +1759,7 @@
            "$ref": "#/definitions/PricingMethod"
         },
         "pricingReference": {
-          "description": "The value associated with the Pricing Method selected (e.g. a contract or tariff id).",
+          "description": "The identifier references the previously agreed upon pricing terms, as applicable, based on the pricingMethod (e.g. a contract id or tariff id.",
               "type": "string"
         },
         "pricingTerm": {
@@ -1857,7 +1857,7 @@
            "$ref": "#/definitions/PricingMethod"
         },
         "pricingReference": {
-          "description": "The value associated with the Pricing Method selected (e.g. a contract or tariff id)",
+          "description": "The identifier references the previously agreed upon pricing terms, as applicable, based on the pricingMethod (e.g. a contract id or tariff id.",
               "type": "string"
         },
         "pricingTerm": {
