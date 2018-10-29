@@ -1,5 +1,11 @@
 # MEF-LSO-Sonata-SDK
 
+## Download Link
+
+Download the entire repository by clicking [here](https://mef.net/2018-dev-preview).
+
+## Overview
+
 This repository contains the MEF LSO Sonata SDK. It includes API definitions for the following functional areas:
 
 *  Serviceability (Address/Site validation and Product Offering Qualification)
@@ -20,8 +26,8 @@ These files are in the Working Draft state.  It is work in progress and is subje
 
 This SDK contains the following items:
 
-*	COPYRIGHT - Copyright 2018 MEF Forum
-*	LICENSE - Contains a copy of the Apache 2.0 license
+* COPYRIGHT - Copyright 2018 MEF Forum
+* LICENSE - Contains a copy of the Apache 2.0 license
 *  README - This file
 *  payload_description - Common descriptors are found in this directory
 	*  PlaceDescription – Contains reference JSON schemas for place description.
@@ -34,7 +40,6 @@ This SDK contains the following items:
 *  documentation - This contains the documents required to review as part of this API that have not fully completed the standards process and are thus not publicly available on the MEF website.  The user is encouraged to review documents in the order of the links below rather than going into this directory.
 
 All superseded files can be found in the Git history, if needed.
-
 
 ## Precedents
 Any developer intending to use the materials in this repository should first thoroughly read, review and understand the following materials:
