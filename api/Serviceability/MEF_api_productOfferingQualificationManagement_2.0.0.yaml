@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
-  description: "This API is used to provide the ability to determine if service can\
-    \ be delivered to a specific customer site within a Partner’s domain\n\n"
+  description: "This API is used to determine whether it is feasible for the Seller\
+    \ to deliver a particular Product to a particular geographic location.\n\n"
   version: "2.0.0_inProgress"
   title: "API ProductOfferingQualificationManagement"
   x-logo:
@@ -16,10 +16,10 @@ produces:
 tags:
 - name: "ProductOfferingQualification"
   description: "ProductOfferingQualification (POQ) resource is use in the Serviceability\
-    \ process.  The POQ provides a means to “qualify” a particular Product Offering\
-    \ for a requested criteria."
+    \ process.  The POQ provides a means to determine whether it is feasible for the\
+    \ Seller to deliver a particular Product to a particular geographic location."
 - name: "Hub"
-  description: "HUB resource is used to manage notification subscription"
+  description: "HUB resource is used to manage notification subscription for POQ."
 paths:
   /productOfferingQualification:
     post:
@@ -30,9 +30,11 @@ paths:
       produces:
       - "application/json;charset=utf-8"
       operationId: "productOfferingQualificationCreate"
-      summary: "createProductOfferingQualification"
-      description: "This operation handles a serviceability request through the instantiation\
-        \ of a product offering qualification and associated item(s)."
+      summary: "create a ProductOfferingQualification"
+      description: "A request initiated by the Buyer to determine whether the Seller\
+        \ can feasibly deliver a particular Product (or Products) to a specific set\
+        \ of geographic locations specified by a set of Site/Address filter criteria.\
+        \ The Seller also provides estimated time intervals to complete these deliveries. "
       deprecated: false
       parameters:
       - name: "ProductOfferingQualification"
@@ -80,7 +82,13 @@ paths:
             \ 100\nmessage: A relatedParty - at productOfferingQualification level\
             \ - with a role 'Buyer' must be provided\ndescription: \n\n\n - code:\
             \ 101\nmessage: A least a productOffering OR a productSpecification OR\
-            \ a Product must be provided for a POQItem\ndescription: "
+            \ a Product must be provided for a POQItem\ndescription: \n\n\n - code:\
+            \ 102\nmessage: Provided Product Offering Identifier is unknown\ndescription:\
+            \ \n\n\n - code: 103\nmessage: Provided Product Specification Identifier\
+            \ is unknown\ndescription: \n\n\n - code: 104\nmessage: Provided Product\
+            \ Identifier is unknown\ndescription: \n\n\n - code: 105\nmessage: The\
+            \ place information provided are invalid\ndescription: \n\n\n - code:\
+            \ 106\nmessage: A least one date provided is invalid\ndescription: "
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         503:
@@ -93,31 +101,34 @@ paths:
       produces:
       - "application/json;charset=utf-8"
       operationId: "productOfferingQualificationFind"
-      summary: "retrieveProductOfferingQualifications"
-      description: "This operation is used to retrieve a list of product offering\
-        \ qualifications based on an input filter."
+      summary: "retrieve a list of ProductOfferingQualifications based on a set of\
+        \ criteria"
+      description: "The Buyer requests a list of POQs (in any state) from the Seller\
+        \ based on a set of POQ filter criteria.  For each POQ returned, the Seller\
+        \ also provides a POQ Identifier that uniquely identifies this POQ within\
+        \ the Seller. "
       deprecated: false
       parameters:
       - name: "state"
         required: false
         in: "query"
-        description: ""
+        description: "State of the POQ to be retrieeved"
         type: "string"
       - name: "projectId"
         required: false
         in: "query"
-        description: ""
+        description: "Identifier of buyer project associated to POQ"
         type: "string"
       - name: "expectedResponseDate.gt"
         required: false
         in: "query"
-        description: ""
+        description: "POQ expected response date is after this date"
         type: "string"
         format: "date-time"
       - name: "expectedResponseDate.lt"
         required: false
         in: "query"
-        description: ""
+        description: "POQ expected response date is before this date"
         type: "string"
         format: "date-time"
       - name: "offset"
@@ -194,9 +205,9 @@ paths:
       produces:
       - "application/json;charset=utf-8"
       operationId: "productOfferingQualificationGet"
-      summary: "retrieveProductOfferingQualification"
-      description: "This operation retrieves a single product offering qualification\
-        \ based upon on input id."
+      summary: "retrieve a ProductOfferingQualification based on its id"
+      description: "The Buyer requests the full details of a single Product Offering\
+        \ Qualification based on a POQ identifier. "
       deprecated: false
       parameters:
       - name: "ProductOfferingQualificationId"
@@ -256,7 +267,10 @@ paths:
       - "application/json;charset=utf-8"
       operationId: "hubCreate"
       summary: "hubCreate"
-      description: "Structure used to create a hub (to subscribe to notification)"
+      description: "A request initiated by the Buyer to instruct the Seller to send\
+        \ notifications of POQ state changes in the event the Seller uses the Deferred\
+        \ Response pattern to respond to a Create Product Offering Qualifica-tion\
+        \ request."
       deprecated: false
       parameters:
       - name: "Hub"
@@ -505,6 +519,7 @@ definitions:
       \ qualification. It may be the \"Buyer\", the \"Seller\", or other related party"
     required:
     - "name"
+    - "role"
     - "number"
     type: "object"
     properties:
@@ -514,6 +529,12 @@ definitions:
       name:
         description: "Name of the party"
         type: "string"
+      role:
+        description: "Role for this party for this product offering qualification\
+          \  (as “Technical contact” or “Implementation Contact” for example)"
+        type: "array"
+        items:
+          type: "string"
       number:
         description: "Party phone number"
         type: "string"
@@ -527,8 +548,12 @@ definitions:
         description: "Technical attribute for API extension"
         type: "string"
   ProductOfferingRef:
-    description: "A product offering defines the commercial terms under which a product\
-      \ specification may be instantiated."
+    description: "The commercial and technical details of a Product sold by a particular\
+      \ Seller.  A Product Offering defines all of the commercial terms and, through\
+      \ association with a particular Product Specification, defines all the technical\
+      \ attributes and behaviors of the Product. A Product Offering may constrain\
+      \ the allowable set of configurable technical attributes and/or behaviors specified\
+      \ in the associated Product Specification."
     type: "object"
     properties:
       id:
@@ -568,19 +593,18 @@ definitions:
     description: "Indicates a relationship between products."
     required:
     - "type"
-    - "id"
+    - "product"
     type: "object"
     properties:
       type:
-        $ref: "#/definitions/RelationshipType"
-      id:
-        description: "id of the targeted product"
+        description: "Indicates whether the product is \"bundled\", \"relies on\"\
+          , or \"comesFrom\" another product."
         type: "string"
+      product:
+        $ref: "#/definitions/ProductRef"
   ProductSpecificationRef:
-    description: "A ProductSpec describes the invariant properties (i.e., features)\
-      \ that a given set of Products MAY have. These properties provide the information\
-      \ needed to plan, construct, allocate, and/or retire the Services and Resources\
-      \ from the operator environment needed to deliver the Product."
+    description: "A structured set of well-defined technical attributes and/or behaviors\
+      \ that are used to construct a Product Offering for sale to a market."
     type: "object"
     properties:
       id:
@@ -589,8 +613,9 @@ definitions:
       describing:
         $ref: "#/definitions/Describing"
   Product:
-    description: "A Product is an instance of a productSpec or a  ProductOffering\
-      \ procured by a Customer."
+    description: "One or more services sold to a Buyer by a Seller.  A particular\
+      \ Product Offering defines the technical and commercial attributes and behav-iors\
+      \ of a Product."
     type: "object"
     properties:
       id:
@@ -610,9 +635,11 @@ definitions:
         items:
           $ref: "#/definitions/Place"
   ProductOfferingQualificationItem:
-    description: "A product offering qualification is composed of one or more product\
-      \ offering qualification items, with each item representing serviceability for\
-      \ a given product"
+    description: "An individual article included in a POQ that describes a Product\
+      \ of a particular type (Product Offering) being delivered to a specific geographical\
+      \ location.  The objective is to determine if it is feasible for the Seller\
+      \ to deliver this item as described and for the Seller to inform the Buyer of\
+      \ the estimated time interval to complete this delivery."
     required:
     - "id"
     - "state"
@@ -645,10 +672,10 @@ definitions:
         $ref: "#/definitions/Product"
       productOffering:
         $ref: "#/definitions/ProductOfferingRef"
-      relatedPartyRole:
+      relatedParty:
         type: "array"
         items:
-          $ref: "#/definitions/PartyRole"
+          $ref: "#/definitions/RelatedParty"
       eligibleProductOffering:
         type: "array"
         items:
@@ -670,11 +697,11 @@ definitions:
         type: "string"
         format: "date-time"
   ProductOfferingQualification:
-    description: "The product offering qualification serves as response structure\
-      \ for a serviceability check."
+    description: "A grouping of POQ Items formulated into a request made by a Buyer\
+      \ to a Seller"
     required:
     - "state"
-    - "relatedPartyRole"
+    - "relatedParty"
     - "productOfferingQualificationItem"
     type: "object"
     properties:
@@ -718,16 +745,17 @@ definitions:
       '@schemaLocation':
         description: "Technical attribute to extend the class"
         type: "string"
-      relatedPartyRole:
+      relatedParty:
         type: "array"
         items:
-          $ref: "#/definitions/PartyRole"
+          $ref: "#/definitions/RelatedParty"
       productOfferingQualificationItem:
         type: "array"
         items:
           $ref: "#/definitions/ProductOfferingQualificationItem"
   ProductOfferingQualificationItemRelationship:
-    description: "The relationship between product offering qualification items."
+    description: "The relationship between product offering qualification items that\
+      \ can be used to validate business rules between POQ Items"
     required:
     - "type"
     - "id"
@@ -740,7 +768,11 @@ definitions:
         type: "string"
   POSTProductOfferingQualificationItem:
     description: "This structure serves as a request for a product offering qualification\
-      \ item"
+      \ item\nAn individual article included in a POQ that describes a Product of\
+      \ a particular type (Product Offering) being delivered to a specific geographical\
+      \ location.  The objective is to determine if it is feasible for the Seller\
+      \ to deliver this item as described and for the Seller to inform the Buyer of\
+      \ the estimated time interval to complete this delivery."
     required:
     - "id"
     - "product"
@@ -759,15 +791,17 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/ProductOfferingQualificationItemRelationship"
-      relatedPartyRole:
+      relatedParty:
         type: "array"
         items:
-          $ref: "#/definitions/PartyRole"
+          $ref: "#/definitions/RelatedParty"
   POSTProductOfferingQualification:
-    description: "This structure serves as a request for a product offering qualification"
+    description: "This structure serves as a request for a product offering qualification.\n\
+      A POQ is a grouping of POQ Items formulated into a request made by a Buyer to\
+      \ a Seller"
     required:
+    - "relatedParty"
     - "productOfferingQualificationItem"
-    - "relatedPartyRole"
     type: "object"
     properties:
       provideAlternative:
@@ -789,14 +823,14 @@ definitions:
         description: "This value MAY be assigned by the Buyer/Seller to identify a\
           \ project the qualification request is associated with."
         type: "string"
+      relatedParty:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedParty"
       productOfferingQualificationItem:
         type: "array"
         items:
           $ref: "#/definitions/POSTProductOfferingQualificationItem"
-      relatedPartyRole:
-        type: "array"
-        items:
-          $ref: "#/definitions/PartyRole"
       '@type':
         description: "Technical attribute to extend this class"
         type: "string"
@@ -896,24 +930,18 @@ definitions:
           \ \",\"query\":”eventType = ProductOfferingQualificationStateChangeNotification”\
           }"
         type: "string"
-  PartyRole:
-    description: "This is a party role assigned for this POQ or a POQItem"
+  ProductRef:
+    description: "Reference to an existing product in the inventory"
     required:
-    - "@referredType"
-    - "role"
-    - "relatedParty"
+    - "id"
     type: "object"
     properties:
       id:
-        description: "id of the partyRole (not party id)"
+        description: "id of the product (provided by the seller)"
         type: "string"
-      '@referredType':
-        description: "Technical attribute to extend this class"
+      href:
+        description: "hyerplink to the product in the inventory"
         type: "string"
-      role:
-        description: "The role that the related party plays. It may be one of the\
-          \ following : \"Buyer\", \"Seller\", \"Order Contact\", \"Technical Contact\"\
-          , \"Implementation Contact\""
+      buyerProductId:
+        description: "Targeted Buyer product id - Informative"
         type: "string"
-      relatedParty:
-        $ref: "#/definitions/RelatedParty"
