@@ -1,0 +1,512 @@
+swagger: "2.0"
+info:
+  description: "The scope of this MEF API is to provide the ability  for a Service\
+    \ Provider’s (Buyer) operational support system to retrieve from a Partner’s (Seller)\
+    \ Inventory management system a set of product instances based upon a filter of\
+    \ product inventory attributes, or a specific product instance based upon a product\
+    \ identifier.\n\n"
+  version: "2.0.0_inProgress"
+  title: "API ProductInventoryManagement"
+  x-logo:
+    url: "/redoc/logo.png"
+    backgroundColor: "#FFFFFF"
+host: "serverRoot"
+basePath: "/api/mef/productInventoryManagement/v2/"
+schemes:
+- "https"
+produces:
+- "application/json;charset=utf-8"
+tags:
+- name: "Product"
+  description: "Specific implementation of a Product Offering or Product Specification\
+    \ dedicated to the benefit of a party."
+paths:
+  /product/{ProductId}:
+    get:
+      tags:
+      - "Product"
+      produces:
+      - "application/json;charset=utf-8"
+      operationId: "productGet"
+      summary: "productGet (by id) - retrieve one product with all information"
+      description: "The Buyer requests the details associated with a single Product\
+        \ based on a Product Identifier."
+      deprecated: false
+      parameters:
+      - name: "ProductId"
+        required: true
+        in: "path"
+        description: ""
+        type: "string"
+      responses:
+        200:
+          description: "Ok"
+          schema:
+            $ref: "#/definitions/Product"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        403:
+          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
+            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
+            \ requests"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        503:
+          description: "Service Unavailable\n\n"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+  /product:
+    get:
+      tags:
+      - "Product"
+      produces:
+      - "application/json;charset=utf-8"
+      operationId: "productFind"
+      summary: "productFind (list) - retrieve product list with summary view"
+      description: "The Buyer requests a list of Products from the Seller based on\
+        \ filter criteria."
+      deprecated: false
+      parameters:
+      - name: "status"
+        required: false
+        in: "query"
+        description: "The status of the product"
+        type: "string"
+        enum:
+        - "ACTIVE"
+        - "PENDING_CHANGE"
+        - "SUSPENDED"
+        - "PENDING_TERMINATE"
+        - "TERMINATED"
+      - name: "productSpecificationId"
+        required: false
+        in: "query"
+        description: "A reference to a product spec by id"
+        type: "string"
+      - name: "productOfferingId"
+        required: false
+        in: "query"
+        description: "A reference to a product offering by id"
+        type: "string"
+      - name: "buyerProductId"
+        required: false
+        in: "query"
+        description: "A reference to the buyerProductId provided in the order"
+        type: "string"
+      - name: "offset"
+        required: false
+        in: "query"
+        description: "Requested index for start of resources to be provided in response\
+          \ requested by client"
+        type: "string"
+      - name: "limit"
+        required: false
+        in: "query"
+        description: "Requested number of resources to be provided in response requested\
+          \ by client"
+        type: "string"
+      - name: "place.id"
+        required: false
+        in: "query"
+        description: ""
+        type: "string"
+      - name: "place.type"
+        required: false
+        in: "query"
+        description: ""
+        type: "string"
+      - name: "buyerId"
+        required: false
+        in: "query"
+        description: "Identifier of the party who role is buyer."
+        type: "string"
+      responses:
+        200:
+          description: "Ok"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/ProductSummary"
+          headers:
+            X-Total_Count:
+              description: "The total number of matching resources"
+              type: "string"
+            X-Result-Count:
+              description: "The number of resources retrieved in the response"
+              type: "string"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        403:
+          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
+            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
+            \ requests"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error\n\n\n \n\n\n - code:\
+            \ 100\nmessage: Too many records retrieved - please restrict requested\
+            \ parameter value(s)\ndescription: \n\n\n - code: 103\nmessage: Incomplete\
+            \ request - If place.id is filled, place.type must be filled\ndescription:\
+            \ \n\n\n - code: 104\nmessage: Incomplete request - If place.type is filled,\
+            \ place.id must be filled\ndescription: \n\n\n - code: 105\nmessage: Incomplete\
+            \ request - If partyRole.role is filled, partyRole.relatedPartyId must\
+            \ be filled\ndescription: \n\n\n - code: 106\nmessage: Incomplete request\
+            \ - If partyRole.relatedPartyId is filled, partyRole.role must be filled\n\
+            description: "
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        503:
+          description: "Service Unavailable\n\n"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+definitions:
+  ProductStatus:
+    description: "The state of the product in accordance with the product lifecycle."
+    type: "string"
+    enum:
+    - "ACTIVE"
+    - "PENDING_CHANGE"
+    - "SUSPENDED"
+    - "PENDING_TERMINATE"
+    - "TERMINATED"
+  RelationshipType:
+    description: "The type of relationship between products."
+    type: "string"
+    enum:
+    - "RELIES_ON"
+    - "BUNDLED"
+    - "COMES_FROM"
+  ErrorRepresentation:
+    description: "Class used to describe API response error"
+    required:
+    - "code"
+    - "reason"
+    type: "object"
+    properties:
+      code:
+        description: "Application related code (as defined in the API or from a common\
+          \ list)"
+        type: "integer"
+        format: "int32"
+      reason:
+        description: "Text that explains the reason for error. This can be shown to\
+          \ a client user."
+        type: "string"
+      message:
+        description: "Text that provide more details and corrective actions related\
+          \ to the error. This can be shown to a client user."
+        type: "string"
+      status:
+        description: "http error code extension like 400-2"
+        type: "integer"
+        format: "int32"
+      referenceError:
+        description: "url pointing to documentation describing the error"
+        type: "string"
+      '@type':
+        description: "The class type of a REST resource\nTechnical attribute to extend\
+          \ this class"
+        type: "string"
+      '@schemaLocation':
+        description: "it provides a link to the schema describing a REST resource\n\
+          Technical attribute to extend this class"
+        type: "string"
+  Product:
+    description: "One or more services sold to a Buyer by a Seller.  A particular\
+      \ Product Offering defines the technical and commercial attributes and behav-iors\
+      \ of a Product."
+    required:
+    - "id"
+    - "status"
+    - "startDate"
+    type: "object"
+    properties:
+      id:
+        description: "Unique identifier of the product in the product domain."
+        type: "string"
+      href:
+        description: "Reference of the product (link)"
+        type: "string"
+      status:
+        $ref: "#/definitions/ProductStatus"
+      buyerProductId:
+        description: "This identifier is optionally provided during the Product ordering\
+          \ and stored for informative purpose in the Seller inventory."
+        type: "string"
+      startDate:
+        description: "Start date is when the product instance is created in the inventory\
+          \ database with a timestamp."
+        type: "string"
+        format: "date-time"
+      terminationDate:
+        description: "Termination date (commercial) is when the product has been terminated\
+          \ (when the disconnect in the product order has been processed). Timestamp\
+          \ of when the status changes to terminated."
+        type: "string"
+        format: "date-time"
+      place:
+        type: "array"
+        items:
+          $ref: "#/definitions/Place"
+      productOffering:
+        $ref: "#/definitions/ProductOfferingRef"
+      productSpecification:
+        $ref: "#/definitions/ProductSpecificationRef"
+      productRelationship:
+        type: "array"
+        items:
+          $ref: "#/definitions/ProductRelationship"
+      billingAccount:
+        type: "array"
+        items:
+          $ref: "#/definitions/BillingAccountRef"
+      relatedParty:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedParty"
+      productOrder:
+        type: "array"
+        items:
+          $ref: "#/definitions/ProductOrderRef"
+      '@type':
+        description: "The type of product if specialization"
+        type: "string"
+      '@baseType':
+        description: "the Base Type of the product if specialization.\nThis is a technical\
+          \ attribute to extend this class."
+        type: "string"
+      '@schemaLocation':
+        description: "A pointer to a file describing extension attributes (if used).\n\
+          This is a technical attribute to extend this class."
+        type: "string"
+  ProductOfferingRef:
+    description: "The commercial and technical details of a Product sold by a particular\
+      \ Seller.  A Product Offering defines all of the commercial terms and, through\
+      \ association with a particular Product Specification, defines all the technical\
+      \ attributes and behaviors of the Product. A Product Offering may constrain\
+      \ the allowable set of configurable technical attributes and/or behaviors specified\
+      \ in the associated Product Specification"
+    required:
+    - "id"
+    type: "object"
+    properties:
+      id:
+        description: "A unique product offering identifier. This identifier is provided\
+          \ by the seller and communicated to the buyer during the on-boarding process."
+        type: "string"
+  ProductSpecificationRef:
+    description: "A structured set of well-defined technical attributes and/or behaviors\
+      \ that are used to construct a Product Offering for sale to a market."
+    required:
+    - "id"
+    type: "object"
+    properties:
+      id:
+        description: "A unique identifier of the product spec."
+        type: "string"
+      describing:
+        $ref: "#/definitions/Describing"
+  ProductRelationship:
+    description: "A product has relationships to other products."
+    required:
+    - "type"
+    - "product"
+    type: "object"
+    properties:
+      type:
+        description: "Indicates whether the type of relationship is \"bundled\", \"\
+          reliesOn\", or \"comesFrom\""
+        type: "string"
+      product:
+        $ref: "#/definitions/ProductRef"
+  BillingAccountRef:
+    description: "An arrangement that a customer has with an enterprise that provides\
+      \ products to the customer."
+    required:
+    - "id"
+    type: "object"
+    properties:
+      id:
+        description: "An unique identifier of the billing account"
+        type: "string"
+  RelatedParty:
+    description: "An entity or organization that is related to the product, such as\
+      \ the buyer, the seller, etc."
+    required:
+    - "id"
+    - "role"
+    - "name"
+    - "number"
+    type: "object"
+    properties:
+      id:
+        description: "A unique identifier of the related party."
+        type: "string"
+      role:
+        description: "Role for this party for this product (as “Technical contact”\
+          \ or \"Implementation Contact\" for example)"
+        type: "array"
+        items:
+          type: "string"
+      name:
+        description: "Name of the related party"
+        type: "string"
+      number:
+        description: "The telephone number of the related party."
+        type: "string"
+      numberExtension:
+        description: "The telephone extension of the related party."
+        type: "string"
+      emailAddress:
+        description: "The email address of the related party."
+        type: "string"
+      '@referredType':
+        description: "Technical attribute to extend API"
+        type: "string"
+  ProductRef:
+    description: "Product reference used to describe product relationship."
+    required:
+    - "id"
+    type: "object"
+    properties:
+      id:
+        description: "Unique identifier of the product"
+        type: "string"
+      href:
+        description: "Reference of the product"
+        type: "string"
+      buyerProductId:
+        description: "Targeted Buyer product id - Informative"
+        type: "string"
+  Place:
+    description: "Place associated with the product"
+    required:
+    - "id"
+    - "role"
+    - "@referredType"
+    type: "object"
+    properties:
+      id:
+        description: "Unique identifier of the place."
+        type: "string"
+      href:
+        description: "href of the place"
+        type: "string"
+      role:
+        description: "The role that the place plays, e.g. \"Billing Address\", \"\
+          UNI Site\", or \"ENNI Site\"."
+        type: "string"
+      '@referredType':
+        description: "A specialization of the place class. The type to which the place\
+          \ is referring. This may be \"Site\", \"FormattedAddress\", \"FieldedAddress\"\
+          , \"ReferencedAddress\", or \"GeographicLocation\"."
+        type: "string"
+      '@schemaLocation':
+        description: "A target to the file describing the place (JSON places files\
+          \ are described here: https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/tree/master/experimental/api/PlaceDescription\
+          \ )"
+        type: "string"
+  ProductOrderRef:
+    description: "A reference to a productOrder and optionally to an order item."
+    required:
+    - "id"
+    - "orderItemId"
+    type: "object"
+    properties:
+      id:
+        description: "Identifier of the productOrder(provided by the seller)"
+        type: "string"
+      href:
+        description: "Hyperlink to the productOrder"
+        type: "string"
+      orderItemId:
+        description: "Identifier of the line item (generally it is a sequence number\
+          \ 01, 02, 03, ...)"
+        type: "string"
+  Describing:
+    description: "Technical structure to describe productSpecification"
+    required:
+    - "@type"
+    - "@schemaLocation"
+    type: "object"
+    properties:
+      '@type':
+        description: "Type of the resource"
+        type: "string"
+      '@schemaLocation':
+        description: "An URL to target a description file"
+        type: "string"
+  ProductSummary:
+    description: "Class used to provide product overview retrieved in GET (by list)\
+      \ operation"
+    required:
+    - "id"
+    - "status"
+    type: "object"
+    properties:
+      id:
+        description: "Unique identifier of the product"
+        type: "string"
+      href:
+        description: "Reference of the product"
+        type: "string"
+      status:
+        $ref: "#/definitions/ProductStatus"
+      startDate:
+        description: "The date from which the product starts"
+        type: "string"
+        format: "date-time"
+      productOffering:
+        $ref: "#/definitions/ProductOfferingRef"
+      productSpecification:
+        $ref: "#/definitions/ProductSpecificationSummary"
+      buyerProductId:
+        description: "This identifier is optionally provided during the product ordering\
+          \ and stored for informative purpose in the seller inventory"
+        type: "string"
+  ProductSpecificationSummary:
+    description: "Technical class to provide productSpecification id in the summary\
+      \ view"
+    required:
+    - "id"
+    type: "object"
+    properties:
+      id:
+        description: "Unique identifier of the product specification"
+        type: "string"
