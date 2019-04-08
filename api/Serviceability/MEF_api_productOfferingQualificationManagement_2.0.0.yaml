@@ -872,6 +872,7 @@ definitions:
   Place:
     description: "Place defines the places where the products qualification must be\
       \ done."
+    discriminator: "@type"
     required:
     - "role"
     type: "object"
@@ -885,13 +886,10 @@ definitions:
       href:
         description: "href to this place resource"
         type: "string"
-      '@referredType':
+      '@type':
         description: "Technical attribute to manage API extension. In this case @referredType\
           \ could be valued to FormattedAddress, FieldedAddress, GeographicSite, GeographicLocation\
           \ or ReferencedAddress"
-        type: "string"
-      '@schemaLocation':
-        description: "Technical attribute to manage API extension"
         type: "string"
   Hub:
     description: "This resource is used to manage notification subscription."
@@ -945,3 +943,201 @@ definitions:
       buyerProductId:
         description: "Targeted Buyer product id - Informative"
         type: "string"
+  SubUnit:
+    description: ""
+    required:
+    - "subUnitType"
+    - "subUnitIdentifier"
+    type: "object"
+    properties:
+      subUnitType:
+        description: "The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,\
+          \ UNIT, WHARF."
+        type: "string"
+      subUnitIdentifier:
+        description: "The discriminator used for the subunit, often just a simple\
+          \ number but may also be a range."
+        type: "string"
+  SubAdress:
+    description: ""
+    type: "object"
+    properties:
+      id:
+        description: "Unique Identifier of the subAddress"
+        type: "string"
+      subUnit:
+        type: "array"
+        items:
+          $ref: "#/definitions/SubUnit"
+      levelType:
+        description: "Describes level types within a building"
+        type: "string"
+      levelNumber:
+        description: "Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT\
+          \ 2"
+        type: "string"
+      buildingName:
+        description: "Allows for buildings that have well-known names"
+        type: "string"
+      privateStreetNumber:
+        description: "Private streets numbers internal to a private street"
+        type: "string"
+      privateStreetName:
+        description: "\"Private streets internal to a property (e.g. a university)\
+          \ may have internal names that are not recorded by the land title office"
+        type: "string"
+      '@type':
+        description: "Technical attribute to exend this class if needed"
+        type: "string"
+      '@schemaLocation':
+        description: "Technical attribute to exend this class if needed (JSON schema\
+          \ locator)"
+        type: "string"
+  FieldedAdress:
+    description: "A type of Address that has a discrete field and value for each type\
+      \ of boundary or identifier down to the lowest level of detail. For example\
+      \ “street number” is one field, “street name” is another field, etc."
+    allOf:
+    - $ref: "#/definitions/Place"
+    - required:
+      - "streetType"
+      - "city"
+      - "stateOrProvince"
+      - "postcode"
+      - "country"
+      type: "object"
+      properties:
+        streetNr:
+          description: "Number identifying a specific property on a public street.\
+            \ It may be combined with streetNrLast for ranged addresses"
+          type: "string"
+        streetNrSuffix:
+          description: "The first street number suffix"
+          type: "string"
+        streetNrLast:
+          description: "Last number in a range of street numbers allocated to a property"
+          type: "string"
+        streetNrLastSuffix:
+          description: "Last street number suffix for a ranged address"
+          type: "string"
+        streetName:
+          description: "Name of the street or other street type"
+          type: "string"
+        streetType:
+          description: "Alley, avenue, boulevard, brae, crescent, drive, highway,\
+            \ lane, terrace, parade, place, tarn, way, wharf"
+          type: "string"
+        streetSuffix:
+          description: "A modifier denoting a relative direction"
+          type: "string"
+        locality:
+          description: "The locality that the address is in"
+          type: "string"
+        city:
+          description: "The city that the address is in"
+          type: "string"
+        stateOrProvince:
+          description: "The State or Province that the address is in"
+          type: "string"
+        postcode:
+          description: "Descriptor for a postal delivery area, used to speed and simplify\
+            \ the delivery of mail (also known as zipcode)"
+          type: "string"
+        postcodeExtension:
+          description: "An extension of a postal code. E.g. the part following the\
+            \ dash in an american urban property address"
+          type: "string"
+        country:
+          description: "Country that the address is in"
+          type: "string"
+        fieldedSubAddress:
+          $ref: "#/definitions/SubAdress"
+  FormattedAddress:
+    description: "A type of Address that has discrete fields for each type of boundary\
+      \ or identifier with the exception of street and more specific location details,\
+      \ which are combined into a maximum of two strings based on local postal addressing\
+      \ conventions."
+    allOf:
+    - $ref: "#/definitions/Place"
+    - required:
+      - "addrLine1"
+      - "city"
+      - "stateOrProvince"
+      - "postcode"
+      - "country"
+      type: "object"
+      properties:
+        addrLine1:
+          description: "The first address line in a formatted address"
+          type: "string"
+        addrLine2:
+          description: "The second address line in a formatted address"
+          type: "string"
+        locality:
+          description: "An area of defined or undefined boundaries within a local\
+            \ authority or other legislatively defined area, usually rural or semi\
+            \ rural in nature"
+          type: "string"
+        city:
+          description: "The city that the address is in"
+          type: "string"
+        stateOrProvince:
+          description: "The State or Province that the address is in"
+          type: "string"
+        postcode:
+          description: "Descriptor for a postal delivery area, used to speed and simplify\
+            \ the delivery of mail (also known as ZIP code)"
+          type: "string"
+        postcodeExtension:
+          description: "An extension of a postal code. E.g. the part following the\
+            \ dash in an American urban property address"
+          type: "string"
+        country:
+          description: "Country that the address is in"
+          type: "string"
+  ReferencedAddress:
+    description: "A globally unique identifier controlled by a generally accepted\
+      \ independent administrative authority that specifies a fixed geographical location."
+    allOf:
+    - $ref: "#/definitions/Place"
+    - required:
+      - "referenceType"
+      - "referenceId"
+      type: "object"
+      properties:
+        referenceType:
+          description: "The type of the reference. For North American providers this\
+            \ would normally be CLLI"
+          type: "string"
+        referenceId:
+          description: "A reference to an address by id; this would include such things\
+            \ as CLLI Codes, or Seller-assigned address identifiers"
+          type: "string"
+  GeographicPoint:
+    description: ""
+    required:
+    - "latitude"
+    - "longitude"
+    type: "object"
+    properties:
+      latitude:
+        description: "The latitude expressed in decimal degrees format"
+        type: "string"
+      longitude:
+        description: "The longitude expressed in decimal degrees format"
+        type: "string"
+  GeographicLocation:
+    description: "A set of coordinates (typically including latitude and longitude)\
+      \ that describes a particular loca-tion on earth."
+    allOf:
+    - $ref: "#/definitions/Place"
+    - required:
+      - "spatialRef"
+      - "geographicPoint"
+      type: "object"
+      properties:
+        spatialRef:
+          description: "The spatial reference system used to determine the coordinates"
+          type: "string"
+        geographicPoint:
+          $ref: "#/definitions/GeographicPoint"
