@@ -1,7 +1,12 @@
 swagger: "2.0"
 info:
-  description: "This API is used to determine whether it is feasible for the Seller\
-    \ to deliver a particular Product to a particular geographic location.\n\n"
+  description: "**ProductOfferingQualification Management**\n\nMEF-LSO SonataProductOfferingQualification\
+    \ API allows to determine whether it is feasible for the Seller to deliver a particular\
+    \ Product to a particular geographic location. \n\nFollowing operations are managed:\n\
+    - Register for POQ Notifications\n- Create Product Offering Qualification\n- Retrieve\
+    \ POQ List\n- Retrieve POQ by Identifier\n(note: POQ Notification are described\
+    \ in a separate swagger)\n\nProductOfferingQualification  API has been designed\
+    \ by MEF Sonata team and used TMF 679 as template.\n\n\n"
   version: "2.0.0_inProgress"
   title: "API ProductOfferingQualificationManagement"
   x-logo:
@@ -575,20 +580,17 @@ definitions:
       \ proposals, then this class represents these proposals."
     type: "object"
     properties:
-      serviceabilityDate:
-        description: "Date the alternate product will be available"
-        type: "string"
       productSpecification:
         $ref: "#/definitions/ProductSpecificationRef"
       eligibleProductOffering:
         type: "array"
         items:
           $ref: "#/definitions/ProductOfferingRef"
+      installationInterval:
+        $ref: "#/definitions/TimeInterval"
       '@type':
         description: "Technical attribute to extend the class."
         type: "string"
-      installationInterval:
-        $ref: "#/definitions/TimeInterval"
   ProductRelationship:
     description: "Indicates a relationship between products."
     required:
@@ -739,12 +741,6 @@ definitions:
         description: "Effective date seller provides qualification result."
         type: "string"
         format: "date-time"
-      '@type':
-        description: "Technical attribute to extend the class"
-        type: "string"
-      '@schemaLocation':
-        description: "Technical attribute to extend the class"
-        type: "string"
       relatedParty:
         type: "array"
         items:
@@ -753,6 +749,12 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/ProductOfferingQualificationItem"
+      '@type':
+        description: "Technical attribute to extend the class"
+        type: "string"
+      '@schemaLocation':
+        description: "Technical attribute to extend the class"
+        type: "string"
   ProductOfferingQualificationItemRelationship:
     description: "The relationship between product offering qualification items that\
       \ can be used to validate business rules between POQ Items"

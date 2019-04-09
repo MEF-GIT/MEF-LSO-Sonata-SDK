@@ -1,6 +1,11 @@
 swagger: "2.0"
 info:
-  description: "API to manage GeographicSite\n\n"
+  description: "**Geographic Site Management**\n\nThis API allows to retrieve a list\
+    \ of Geographic site and to get all information for one geographic site.\n\nA\
+    \ geographic site is a  fixed physical location at which a Product can be installed.\
+    \  Its location can be described either with geocodes (Lat/Long information) or\
+    \ by association with an Address or Address Reference.  \n\nGeographic Site API\
+    \ has been designed by MEF Sonata team and used TMF 674 as template.\n\n"
   version: "2.0.0_inProgress"
   title: "API GeographicSiteManagement"
   x-logo:
@@ -53,6 +58,12 @@ paths:
         in: "query"
         description: "The customer name at a site where the service will be/are/were\
           \ delivered"
+        type: "string"
+      - name: "geographicAddress.id"
+        required: false
+        in: "query"
+        description: "Identifier of a geographic address (from the seller). It could\
+          \ be any type of address reference (fielded, formatted, referenced, geoCode)"
         type: "string"
       - name: "geographicAddress.streetNr"
         required: false
@@ -298,12 +309,6 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/RelatedParty"
-      '@type':
-        description: "Technical attribute to extend this class"
-        type: "string"
-      '@schemaLocation':
-        description: "Technical attribute to extend this class"
-        type: "string"
       formattedAdress:
         $ref: "#/definitions/FormattedAddress"
       fieldedAddress:
@@ -312,6 +317,12 @@ definitions:
         $ref: "#/definitions/GeographicLocation"
       referencedAddress:
         $ref: "#/definitions/ReferencedAddress"
+      '@type':
+        description: "Technical attribute to extend this class"
+        type: "string"
+      '@schemaLocation':
+        description: "Technical attribute to extend this class"
+        type: "string"
   GeographicAddressFindResp:
     description: "Structure used to describe geographic address in response to GET\
       \ geographicalSite"
