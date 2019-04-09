@@ -1,10 +1,11 @@
 swagger: "2.0"
 info:
-  description: "The scope of this MEF API is to provide the ability  for a Service\
-    \ Provider’s (Buyer) operational support system to retrieve from a Partner’s (Seller)\
-    \ Inventory management system a set of product instances based upon a filter of\
-    \ product inventory attributes, or a specific product instance based upon a product\
-    \ identifier.\n\n"
+  description: "**Product Inventory Management**\n\nThe scope of this MEF API is to\
+    \ provide the ability  for a Service Provider’s (Buyer) operational support system\
+    \ to retrieve from a Partner’s (Seller) Inventory management system a set of product\
+    \ instances based upon a filter of product inventory attributes, or a specific\
+    \ product instance based upon a product identifier.\n\n\nProduct Inventory API\
+    \ has been designed by MEF Sonata team and used TMF 637 as template.\n\n"
   version: "2.0.0_inProgress"
   title: "API ProductInventoryManagement"
   x-logo:
@@ -30,7 +31,7 @@ paths:
       operationId: "productGet"
       summary: "productGet (by id) - retrieve one product with all information"
       description: "The Buyer requests the details associated with a single Product\
-        \ based on a Product Identifier."
+        \ based on a Seller Product Identifier."
       deprecated: false
       parameters:
       - name: "ProductId"
@@ -125,15 +126,10 @@ paths:
         description: "Requested number of resources to be provided in response requested\
           \ by client"
         type: "string"
-      - name: "place.id"
+      - name: "geographicalSite.id"
         required: false
         in: "query"
-        description: ""
-        type: "string"
-      - name: "place.type"
-        required: false
-        in: "query"
-        description: ""
+        description: "A site identifier which is associated to the product"
         type: "string"
       - name: "buyerId"
         required: false
@@ -205,13 +201,20 @@ definitions:
     - "SUSPENDED"
     - "PENDING_TERMINATE"
     - "TERMINATED"
-  RelationshipType:
-    description: "The type of relationship between products."
+  PriceType:
+    description: ""
     type: "string"
     enum:
-    - "RELIES_ON"
-    - "BUNDLED"
-    - "COMES_FROM"
+    - "RECURRING"
+    - "NON_RECURRING"
+  ChargePeriod:
+    description: ""
+    type: "string"
+    enum:
+    - "DAY"
+    - "WEEK"
+    - "MONTH"
+    - "YEAR"
   ErrorRepresentation:
     description: "Class used to describe API response error"
     required:
@@ -280,10 +283,10 @@ definitions:
           \ of when the status changes to terminated."
         type: "string"
         format: "date-time"
-      place:
+      site:
         type: "array"
         items:
-          $ref: "#/definitions/Place"
+          $ref: "#/definitions/GeographicSite"
       productOffering:
         $ref: "#/definitions/ProductOfferingRef"
       productSpecification:
@@ -304,6 +307,10 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/ProductOrderRef"
+      productPrice:
+        type: "array"
+        items:
+          $ref: "#/definitions/ProductPrice"
       '@type':
         description: "The type of product if specialization"
         type: "string"
@@ -399,6 +406,39 @@ definitions:
       '@referredType':
         description: "Technical attribute to extend API"
         type: "string"
+  ProductPrice:
+    description: "Price of the product"
+    required:
+    - "name"
+    type: "object"
+    properties:
+      priceType:
+        $ref: "#/definitions/PriceType"
+      recurringChargePeriod:
+        $ref: "#/definitions/ChargePeriod"
+      name:
+        description: "A short descriptive name such as \"Subscription price\""
+        type: "string"
+      description:
+        description: "A narrative that explains in detail the semantics of this product\
+          \ price"
+        type: "string"
+      price:
+        $ref: "#/definitions/Price"
+      '@type':
+        description: "A technical attribute to extend the class"
+        type: "string"
+  Price:
+    description: "Provides pre tax amount for a product"
+    required:
+    - "preTaxAmount"
+    type: "object"
+    properties:
+      preTaxAmount:
+        $ref: "#/definitions/Money"
+      '@type':
+        description: "Technical attribute to extend this class"
+        type: "string"
   ProductRef:
     description: "Product reference used to describe product relationship."
     required:
@@ -414,8 +454,8 @@ definitions:
       buyerProductId:
         description: "Targeted Buyer product id - Informative"
         type: "string"
-  Place:
-    description: "Place related with the product"
+  GeographicSite:
+    description: "A geographic site related to the product."
     required:
     - "id"
     - "role"
@@ -423,19 +463,20 @@ definitions:
     type: "object"
     properties:
       id:
-        description: "Unique identifier of the place."
+        description: "Unique identifier of the Site."
         type: "string"
       href:
-        description: "href of the place"
+        description: "href of the Site"
         type: "string"
       role:
-        description: "The role that the place plays, e.g. \"Billing Address\", \"\
-          UNI Site\", or \"ENNI Site\"."
+        description: "The role that the Site plays, e.g. \"Billing Address\", \"UNI\
+          \ Site\", or \"ENNI Site\"."
         type: "string"
       '@type':
-        description: "A specialization of the place class. The type to which the place\
-          \ is referring. This may be \"GeographicSite\", \"FormattedAddress\", \"\
-          FieldedAddress\", \"ReferencedAddress\", or \"GeographicLocation\"."
+        description: "A technical attribute to extend the class. As of now no extension"
+        type: "string"
+      siteName:
+        description: "Name of the Site"
         type: "string"
   ProductOrderRef:
     description: "A reference to a productOrder and optionally to an order item."
@@ -505,210 +546,17 @@ definitions:
       id:
         description: "Unique identifier of the product specification"
         type: "string"
-  SubUnit:
-    description: ""
+  Money:
+    description: "base / value business entity used to represent money"
     required:
-    - "subUnitType"
-    - "subUnitIdentifier"
+    - "value"
+    - "unit"
     type: "object"
     properties:
-      subUnitType:
-        description: "The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,\
-          \ UNIT, WHARF."
+      value:
+        description: "A positive floating point number"
+        type: "number"
+        format: "float"
+      unit:
+        description: "Currency (ISO4217 norm uses 3 letters to define the currency"
         type: "string"
-      subUnitIdentifier:
-        description: "The discriminator used for the subunit, often just a simple\
-          \ number but may also be a range."
-        type: "string"
-  SubAdress:
-    description: ""
-    type: "object"
-    properties:
-      id:
-        description: "Unique Identifier of the subAddress"
-        type: "string"
-      subUnit:
-        type: "array"
-        items:
-          $ref: "#/definitions/SubUnit"
-      levelType:
-        description: "Describes level types within a building"
-        type: "string"
-      levelNumber:
-        description: "Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT\
-          \ 2"
-        type: "string"
-      buildingName:
-        description: "Allows for buildings that have well-known names"
-        type: "string"
-      privateStreetNumber:
-        description: "Private streets numbers internal to a private street"
-        type: "string"
-      privateStreetName:
-        description: "\"Private streets internal to a property (e.g. a university)\
-          \ may have internal names that are not recorded by the land title office"
-        type: "string"
-      '@type':
-        description: "Technical attribute to exend this class if needed"
-        type: "string"
-      '@schemaLocation':
-        description: "Technical attribute to exend this class if needed (JSON schema\
-          \ locator)"
-        type: "string"
-  FieldedAdress:
-    description: "A type of Address that has a discrete field and value for each type\
-      \ of boundary or identifier down to the lowest level of detail. For example\
-      \ “street number” is one field, “street name” is another field, etc."
-    allOf:
-    - $ref: "#/definitions/Place"
-    - required:
-      - "streetType"
-      - "city"
-      - "stateOrProvince"
-      - "postcode"
-      - "country"
-      type: "object"
-      properties:
-        streetNr:
-          description: "Number identifying a specific property on a public street.\
-            \ It may be combined with streetNrLast for ranged addresses"
-          type: "string"
-        streetNrSuffix:
-          description: "The first street number suffix"
-          type: "string"
-        streetNrLast:
-          description: "Last number in a range of street numbers allocated to a property"
-          type: "string"
-        streetNrLastSuffix:
-          description: "Last street number suffix for a ranged address"
-          type: "string"
-        streetName:
-          description: "Name of the street or other street type"
-          type: "string"
-        streetType:
-          description: "Alley, avenue, boulevard, brae, crescent, drive, highway,\
-            \ lane, terrace, parade, place, tarn, way, wharf"
-          type: "string"
-        streetSuffix:
-          description: "A modifier denoting a relative direction"
-          type: "string"
-        locality:
-          description: "The locality that the address is in"
-          type: "string"
-        city:
-          description: "The city that the address is in"
-          type: "string"
-        stateOrProvince:
-          description: "The State or Province that the address is in"
-          type: "string"
-        postcode:
-          description: "Descriptor for a postal delivery area, used to speed and simplify\
-            \ the delivery of mail (also known as zipcode)"
-          type: "string"
-        postcodeExtension:
-          description: "An extension of a postal code. E.g. the part following the\
-            \ dash in an american urban property address"
-          type: "string"
-        country:
-          description: "Country that the address is in"
-          type: "string"
-        fieldedSubAddress:
-          $ref: "#/definitions/SubAdress"
-  FormattedAddress:
-    description: "A type of Address that has discrete fields for each type of boundary\
-      \ or identifier with the exception of street and more specific location details,\
-      \ which are combined into a maximum of two strings based on local postal addressing\
-      \ conventions."
-    allOf:
-    - $ref: "#/definitions/Place"
-    - required:
-      - "addrLine1"
-      - "city"
-      - "stateOrProvince"
-      - "postcode"
-      - "country"
-      type: "object"
-      properties:
-        addrLine1:
-          description: "The first address line in a formatted address"
-          type: "string"
-        addrLine2:
-          description: "The second address line in a formatted address"
-          type: "string"
-        locality:
-          description: "An area of defined or undefined boundaries within a local\
-            \ authority or other legislatively defined area, usually rural or semi\
-            \ rural in nature"
-          type: "string"
-        city:
-          description: "The city that the address is in"
-          type: "string"
-        stateOrProvince:
-          description: "The State or Province that the address is in"
-          type: "string"
-        postcode:
-          description: "Descriptor for a postal delivery area, used to speed and simplify\
-            \ the delivery of mail (also known as ZIP code)"
-          type: "string"
-        postcodeExtension:
-          description: "An extension of a postal code. E.g. the part following the\
-            \ dash in an American urban property address"
-          type: "string"
-        country:
-          description: "Country that the address is in"
-          type: "string"
-  ReferencedAddress:
-    description: "A globally unique identifier controlled by a generally accepted\
-      \ independent administrative authority that specifies a fixed geographical location."
-    allOf:
-    - $ref: "#/definitions/Place"
-    - required:
-      - "referenceType"
-      - "referenceId"
-      type: "object"
-      properties:
-        referenceType:
-          description: "The type of the reference. For North American providers this\
-            \ would normally be CLLI"
-          type: "string"
-        referenceId:
-          description: "A reference to an address by id; this would include such things\
-            \ as CLLI Codes, or Seller-assigned address identifiers"
-          type: "string"
-  GeographicPoint:
-    description: ""
-    required:
-    - "latitude"
-    - "longitude"
-    type: "object"
-    properties:
-      latitude:
-        description: "The latitude expressed in decimal degrees format"
-        type: "string"
-      longitude:
-        description: "The longitude expressed in decimal degrees format"
-        type: "string"
-  GeographicLocation:
-    description: "A set of coordinates (typically including latitude and longitude)\
-      \ that describes a particular loca-tion on earth."
-    allOf:
-    - $ref: "#/definitions/Place"
-    - required:
-      - "spatialRef"
-      - "geographicPoint"
-      type: "object"
-      properties:
-        spatialRef:
-          description: "The spatial reference system used to determine the coordinates"
-          type: "string"
-        geographicPoint:
-          $ref: "#/definitions/GeographicPoint"
-  GeographicSite:
-    description: "A geographic site related to the product."
-    allOf:
-    - $ref: "#/definitions/Place"
-    - type: "object"
-      properties:
-        siteName:
-          description: ""
-          type: "string"
