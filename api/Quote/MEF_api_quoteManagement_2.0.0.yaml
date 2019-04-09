@@ -1,6 +1,21 @@
 swagger: "2.0"
 info:
-  description: "Quote Management\nMEF-LSO Sonata API\n\n"
+  description: "**Quote Management**\nMEF-LSO Sonata Quote API allows to manage quote\
+    \ request & completion management between **Seller** and **Buyer**. \n\nQuote\
+    \ API has been designed by MEF Sonata team and used TMF 648 as template.\n\nIn\
+    \ particular 3 types of quote are managed:\n- Budgetary Quote: A quote that is\
+    \ provided quickly and with very little analysis such that the Buyer can get an\
+    \ idea of how much the requested product offering could cost. \n\n- Indicative\
+    \ Quote :A quote that is provided to the Buyer based on some, but not a complete,\
+    \ pre-order analysis.  At this stage there is further analysis that the Seller\
+    \ can (and is will-ing) to undertake to provide a committed or firm price, but\
+    \ the Seller needs some time to complete this.  Order-ing may be possible based\
+    \ on the indicative quote with some stipulations as to how cost identified uncovered\
+    \ during delivering.  Some fees on an indicative quote may be firm.\n\n- Firm\
+    \ quote: A quote provided to the Buyer based on as rigorous a pre-order analysis\
+    \ as the Seller is willing to carry out.  All fees specified on a firm quote are\
+    \ committed and thus cannot be modified or more charges added through the ordering\
+    \ process unless there are changes in the Buyer requirements.   \n\n"
   version: "2.0.0_inProgress"
   title: "API QuoteManagement"
   x-logo:
@@ -691,83 +706,16 @@ definitions:
         description: "Quote valid to"
         type: "string"
         format: "date-time"
-  PriceAlteration:
-    description: "Is an amount, usually of money, that modifies the price charged\
-      \ for a quote item"
-    required:
-    - "name"
-    - "priceType"
-    type: "object"
-    properties:
-      name:
-        description: "A short descriptive name such as \"Monthly discount\"."
-        type: "string"
-      description:
-        description: "A narrative that explains in detail the semantics of this order\
-          \ item price alteration."
-        type: "string"
-      priceType:
-        $ref: "#/definitions/PriceType"
-      unitOfMeasure:
-        description: "Could be minutes, GB..."
-        type: "string"
-      recurringChargePeriod:
-        $ref: "#/definitions/ChargePeriod"
-      applicationDuration:
-        description: "Duration during which the alteration applies on the order item\
-          \ price (for instance 2 months free of charge for the recurring charge)."
-        type: "integer"
-        format: "int32"
-      priority:
-        description: "Priority level for applying this alteration among all the defined\
-          \ alterations on the order item price"
-        type: "integer"
-        format: "int32"
-      percentage:
-        description: "Used when the discount is defined by a percentage - example:\
-          \ 10% off"
-        type: "number"
-        format: "float"
-      price:
-        $ref: "#/definitions/Price"
-      '@type':
-        description: "Indicates the (class) type of the price alteration\nCould be\
-          \ used to extend priceAlteration Class"
-        type: "string"
-      '@schemaLocation':
-        description: "Link to the schema describing this REST resource\nCould be used\
-          \ to extend priceAlteration Class"
-        type: "string"
   Price:
-    description: "Provides all amounts (tax included, duty free, tax rate), used Money\
-      \ structure for currency"
-    required:
-    - "taxRate"
-    - "taxIncludedAmount"
-    - "dutyFreeAmount"
+    description: "Provides price amount (before tax) - Money structure is used"
     type: "object"
     properties:
-      taxRate:
-        description: "Tax rate"
-        type: "number"
-        format: "float"
-      taxIncludedAmount:
-        $ref: "#/definitions/Money"
-      dutyFreeAmount:
+      preTaxAmount:
         $ref: "#/definitions/Money"
       priceRange:
         $ref: "#/definitions/PriceRange"
-      priceVariation:
-        description: "priceVariation allows to describe a variation on the price for\
-          \ budgetary or indicative quote.\nIt is understood as a percentage.\nA 25\
-          \ here means that Amount provided could be +/- 25% less or more."
-        type: "number"
-        format: "float"
       '@type':
         description: "Indicates the (class) type of the price"
-        type: "string"
-      '@schemaLocation':
-        description: "Link to the schema describing this REST resource"
         type: "string"
   QuoteItem:
     description: "A quote items describe an action to be performed on a productOffering\
@@ -1034,15 +982,14 @@ definitions:
     description: "Description of price and discount awarded."
     required:
     - "priceType"
+    - "name"
+    - "price"
     type: "object"
     properties:
       priceType:
         $ref: "#/definitions/PriceType"
       recurringChargePeriod:
         $ref: "#/definitions/ChargePeriod"
-      unitOfMeasure:
-        description: "Unit of Measure if price depending on it (Gb, SMS volume, etc..)."
-        type: "string"
       name:
         description: "Name of the quote /quote item price"
         type: "string"
@@ -1052,15 +999,8 @@ definitions:
       '@type':
         description: "Indicates the base (class) type of the quote price"
         type: "string"
-      '@schemaLocation':
-        description: "link to the schema describing this REST resource"
-        type: "string"
       price:
         $ref: "#/definitions/Price"
-      priceAlteration:
-        type: "array"
-        items:
-          $ref: "#/definitions/PriceAlteration"
   ProductSpecificationRef:
     description: "A structured set of well-defined technical attributes and/or behaviors\
       \ that are used to construct a Product Offering for sale to a market."
@@ -1307,15 +1247,14 @@ definitions:
   PriceRange:
     description: "PriceRange class allows to describe a range of price (Min/Max) for\
       \ budgetary or indicative quote."
+    required:
+    - "minPreTaxAmount"
+    - "maxPreTaxAmount"
     type: "object"
     properties:
-      minTaxIncludedAmount:
+      minPreTaxAmount:
         $ref: "#/definitions/Money"
-      maxTaxIncludedAmount:
-        $ref: "#/definitions/Money"
-      minDutyFreeAmount:
-        $ref: "#/definitions/Money"
-      maxDutyFreeAmount:
+      maxPreTaxAmount:
         $ref: "#/definitions/Money"
   QuoteSummaryView:
     description: "Quote Summary view is provided in the response of the GET(LIST)\
