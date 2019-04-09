@@ -1,12 +1,14 @@
 swagger: "2.0"
 info:
-  description: "The scope of this API  introduces the following capabilities to the\
-    \ API:\n•\tInstall order: request for new product\n•\tChange Order: change an\
-    \ existing Product\n•\tDisconnect Order:  disconnect an existing Product \n•\t\
-    Cancel Order: cancellation of an inflight-order\n•\tSupport for Order Notifications\n\
-    \n The buyer could also retrieve a single, or set, of Product Orders based upon\
-    \ a specified filter.  \n\nFollowing feature will be introduced in next release:\n\
-    •\tAmend Order: modification of an inflight-order\n\n"
+  description: "**Product Order Management**\n\nThe scope of this API  introduces\
+    \ the following capabilities to the API:\n•\tInstall order: request for new product\n\
+    •\tChange Order: change an existing Product\n•\tDisconnect Order:  disconnect\
+    \ an existing Product \n•\tCancel Order: cancellation of an inflight-order\n•\t\
+    Support for Order Notifications\n\nThe buyer could also retrieve a single, or\
+    \ set, of Product Orders based upon a specified filter.  \n\nFollowing feature\
+    \ will be introduced in next release:\n•\tAmend Order: modification of an inflight-order\n\
+    \nProduct Order API has been designed by MEF Sonata team and used TMF 622 as template.\n\
+    \n"
   version: "2.0.0_inProgress"
   title: "API ProductOrderManagement"
   x-logo:
@@ -783,6 +785,20 @@ definitions:
     - "CONFIGURED"
     - "FAILED"
     - "COMPLETED"
+  PriceType:
+    description: "Type of price (as of now only recurring and non-recurring are managed)"
+    type: "string"
+    enum:
+    - "RECURRING"
+    - "NON-RECURRING"
+  ChargePeriod:
+    description: "Used to describe a charge period for recurring one"
+    type: "string"
+    enum:
+    - "DAY"
+    - "WEEK"
+    - "MONTH"
+    - "YEAR"
   ErrorRepresentation:
     description: "Class used to describe API response error"
     required:
@@ -1059,6 +1075,10 @@ definitions:
         format: "int32"
       billingAccount:
         $ref: "#/definitions/BillingAccountRef"
+      orderItemPrice:
+        type: "array"
+        items:
+          $ref: "#/definitions/OrderItemPrice"
       productOffering:
         $ref: "#/definitions/ProductOfferingRef"
       relatedParty:
@@ -1080,6 +1100,31 @@ definitions:
         type: "string"
       '@schemaLocation':
         description: "Target a description file of productOrder extension"
+        type: "string"
+  OrderItemPrice:
+    description: "Structure used to define a product price.\nAn order item could have\
+      \ 0-* order item price."
+    required:
+    - "priceType"
+    - "name"
+    - "price"
+    type: "object"
+    properties:
+      priceType:
+        $ref: "#/definitions/PriceType"
+      recurringChargePeriod:
+        $ref: "#/definitions/ChargePeriod"
+      name:
+        description: "Name of the product price"
+        type: "string"
+      description:
+        description: "A narrative that explains in detail the semantics of yhis order\
+          \ item price"
+        type: "string"
+      price:
+        $ref: "#/definitions/Price"
+      '@type':
+        description: "Technical attribute to extend the class"
         type: "string"
   ProductOfferingRef:
     description: "The commercial and technical details of a Product sold by a particular\
@@ -1184,6 +1229,17 @@ definitions:
         type: "string"
       callback:
         description: "callback urn, for instance an url http://yourdomain/listener/api/v1/event"
+        type: "string"
+  Price:
+    description: "Provides pre tax amount for a product"
+    required:
+    - "preTaxAmount"
+    type: "object"
+    properties:
+      preTaxAmount:
+        $ref: "#/definitions/Money"
+      '@type':
+        description: "Technical attribute to extend the class."
         type: "string"
   QualificationRef:
     description: "Using to refer a serviceability request previously done"
@@ -1385,6 +1441,10 @@ definitions:
         format: "int32"
       billingAccount:
         $ref: "#/definitions/BillingAccountRef"
+      orderItemPrice:
+        type: "array"
+        items:
+          $ref: "#/definitions/OrderItemPrice"
       productOffering:
         $ref: "#/definitions/ProductOfferingRef"
       relatedParty:
@@ -1801,3 +1861,17 @@ definitions:
           type: "string"
         geographicPoint:
           $ref: "#/definitions/GeographicPoint"
+  Money:
+    description: "base / value business entity used to represent money"
+    required:
+    - "value"
+    - "unit"
+    type: "object"
+    properties:
+      value:
+        description: "A positive floating point number"
+        type: "number"
+        format: "float"
+      unit:
+        description: "Currency (ISO4217 norm uses 3 letters to define the currency"
+        type: "string"
