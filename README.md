@@ -24,7 +24,6 @@ This SDK contains the following items:
 *	LICENSE - Contains a copy of the Apache 2.0 license
 *  README - This file
 *  payload_description - Common descriptors are found in this directory
-	*  PlaceDescription – Contains reference JSON schemas for place description.
 	*  ProductSpecDescription – Contains reference JSON schemas for product specification description.
 *  api - Definitions of the API are found in this directory
 	*  Inventory -
