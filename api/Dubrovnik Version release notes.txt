@@ -3,6 +3,58 @@ Dubrovnik - release notes
 ==============================================================
 
 -------------------------------------------------------------- 
+MEF_api_GeographicAddressManagement
+Version: 2.0.0
+
+Global corrections & completions of classes/attributes description
+
+#15 - Update Geographic Address resource to distinctly identify the Formatted Address vs Fielded Address vs AddressReference vs Geolocation instead of combining all in response
+Done for GeographicAddress and GeographicAddressValidation resources.
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/15#issue-416713498
+
+#18 - Expand geographicAddress Validation to subAddress
+Address Validation query should include sub-address information.
+The subAddress informations are optional.
+If provided the validation must be down to the subAddress. If seller not able to validate subAddress but only address this will be an alternate address in the response.
+
+#AddressValidation only cover fielded address and formatted Address.
+
+-------------------------------------------------------------- 
+-------------------------------------------------------------- 
+MEF_api_GeographicSiteManagement
+Version: 2.0.0
+
+Global corrections & completions of classes/attributes description
+
+#36 - Add relatedParty in GeographicalSite aligned with all other API. 
+Merge partyRole and relatedParty in one class: relatedParty
+Add an array of role
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/36#issue-421086038
+The structure will be: 
+
+  "relatedParty": [
+    {
+      "id": "string",
+      "role": [
+        "string"
+      ],
+      "name": "string",
+      "emailAddress": "string",
+      "number": "string",
+      "numberExtension": "string",
+      "@referredType": "string"
+    }
+  ],
+
+#12 - Address.id added as a input parameter to retrieve a list of site(s)
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/12#issue-392728976
+
+#15 - Update Geographic Site resource to distinctly identify the Formatted Address vs Fielded Addresss vs AddessReference vs Geolocation instead of combining all in response
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/15#issue-416713498
+
+
+-------------------------------------------------------------- 
+-------------------------------------------------------------- 
 MEF_api_ProductOfferingQualificationManagement
 Version: 2.0.0
 
@@ -10,6 +62,8 @@ Global corrections & completions of classes/attributes description
 
 #38 - Remove desiredActivationDate in POQ request to avoid any confusion from Buyer regarding POQ result
 https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/38#issue-425473125
+
+# - added an action at POQ item level to bee ablee to request qualification for change or termination.
 
 #29 – remove the expirationDate in the header of the POQ + add at POQitem a guaranteeDate
 https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/29#issue-416778649
@@ -56,7 +110,7 @@ The structure will be:
 #23 : All 'place' structures (formatted address, fielded Address, geographical location & referenced address) are embedded in thee swagger. place.@type is used as disciminator.
 https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/23#issue-416734028
 
-
+-------------------------------------------------------------- 
 -------------------------------------------------------------- 
 MEF_api_QuoteManagement
 Version: 2.0.0
@@ -70,6 +124,8 @@ https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/31#issue-416780771
 https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/24#issue-416736713
 
 #32 - Provide a capability for buyer to ask for a maximum term in the request
+Requests feature a requestedQuoteItemTerm (max term asked by the buyer)
+Response feature a requestedQuoteItemTerm (max term asked by the buyer) + quoteItemTerm (seller proposal)
 https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/32#issue-416781296
 
 #40 - Align Product Relationship structure to be the same in all API:
@@ -113,9 +169,10 @@ https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/41#issue-428874733
 #23 : All 'place' structures (formatted address, fielded Address, geographical location & referenced address) are embedded in thee swagger. place.@type is used as disciminator.
 https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/23#issue-416734028
 
-#22: Update of productRelationshion structure in order to ba the same than one used in all other SONATA API
+#22: Update of productRelationshion structure in order to be the same than one used in all other SONATA API
 https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/22#issue-416733446
 
+-------------------------------------------------------------- 
 -------------------------------------------------------------- 
 MEF_api_ProductOrderManagement
 Version: 2.0.0
@@ -169,52 +226,6 @@ https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/23#issue-416734028
 
 
 -------------------------------------------------------------- 
-MEF_api_GeographicSiteManagement
-Version: 2.0.0
-
-Global corrections & completions of classes/attributes description
-
-#36 - Add relatedPArty in GeographicalSite aligned with all other API. 
-Merge partyRole and relatedParty in one class: relatedPrty
-Add an array of role
-https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/36#issue-421086038
-The structure will be: 
-
-  "relatedParty": [
-    {
-      "id": "string",
-      "role": [
-        "string"
-      ],
-      "name": "string",
-      "emailAddress": "string",
-      "number": "string",
-      "numberExtension": "string",
-      "@referredType": "string"
-    }
-  ],
-
-#12 - Address.id added as a input parameter to retrieve a list of stite(s)
-https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/12#issue-392728976
-
-#15 - Update Geographic Site resource to distinctly identify the Formatted Address vs Fielded Addresss vs AddessReference vs Geolocation instead of combining all in response
-https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/15#issue-416713498
-
--------------------------------------------------------------- 
-MEF_api_GeographicAddressManagement
-Version: 2.0.0
-
-Global corrections & completions of classes/attributes description
-
-#15 - Update Geographic Address resource to distinctly identify the Formatted Address vs Fielded Addresss vs AddessReference vs Geolocation instead of combining all in response
-Done for GeographicAddress and GeographicAddressValidation resources.
-https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/15#issue-416713498
-
-#18 - Expand geographicAddress Validation to subAddress
-Address Validation query should include sub-address information.
-The subAddress informations are optionnal.
-If provided the validation must be down to the subAddress. If seller not able to validate subAddress but only address this will be an alternate adress in the response.
-
 -------------------------------------------------------------- 
 MEF_api_ProductInventoryManagement
 Version: 2.0.0
@@ -266,3 +277,7 @@ https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/21#issue-416731951
 
 #33 Align pricing attributes in ProductOrder/Inventory API with Quote structure 
 https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/33#issue-416788539
+
+#42 Retrieve all Products from the Product Inventory related to Product with ID
+Added a filter criteria to GET /product endpoint to allow a query to retrieve all Product records with a Product Relationship to a specified Product.
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/42#issue-431618706
