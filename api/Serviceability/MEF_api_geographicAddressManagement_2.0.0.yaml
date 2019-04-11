@@ -317,11 +317,11 @@ definitions:
           \ addresses must be provided in case of partial or fail result"
         type: "boolean"
       validAddress:
-        $ref: "#/definitions/GeographicAddress"
+        $ref: "#/definitions/GeographicAddressResponseValidation"
       alternateAddress:
         type: "array"
         items:
-          $ref: "#/definitions/GeographicAddress"
+          $ref: "#/definitions/GeographicAddressResponseValidation"
   GeographicAddressValidationRequest:
     description: "Structure used to describe a geographic address validation request"
     type: "object"
@@ -340,10 +340,6 @@ definitions:
         $ref: "#/definitions/FormattedAddressRequest"
       fieldedAddress:
         $ref: "#/definitions/FieldedAddressRequest"
-      geographicLocation:
-        $ref: "#/definitions/GeographicLocationRequest"
-      referencedAddress:
-        $ref: "#/definitions/ReferencedAddressRequest"
   ReferencedAddress:
     description: "A globally unique identifier controlled by a generally accepted\
       \ independent administrative authority that specifies a fixed geographical location."
@@ -570,35 +566,6 @@ definitions:
       country:
         description: "Country that the address is in"
         type: "string"
-  GeographicLocationRequest:
-    description: "A set of coordinates (typically including latitude and longitude)\
-      \ that describes a particular location on earth."
-    required:
-    - "spatialRef"
-    - "geographicPoint"
-    type: "object"
-    properties:
-      spatialRef:
-        description: "The spatial reference system used to determine the coordinates"
-        type: "string"
-      geographicPoint:
-        type: "array"
-        items:
-          $ref: "#/definitions/GeographicPoint"
-  ReferencedAddressRequest:
-    description: "A globally unique identifier controlled by a generally accepted\
-      \ independent administrative authority that specifies a fixed geographical location."
-    required:
-    - "referenceId"
-    - "referenceType"
-    type: "object"
-    properties:
-      referenceId:
-        description: "Id of a reference address"
-        type: "string"
-      referenceType:
-        description: "Type of a reference address"
-        type: "string"
   GeographicSubAddressRequest:
     description: "It is used for addressing within a property in an urban area (country\
       \ properties are often defined differently). It may refer to a building, a building\
@@ -626,6 +593,24 @@ definitions:
         description: "Private streets internal to a property (e.g. a university) may\
           \ have internal names that are not recorded by the land title office"
         type: "string"
+      '@type':
+        description: "Technical attribute to extend this class"
+        type: "string"
+      '@schemaLocation':
+        description: "Technical attribute to extend this class"
+        type: "string"
+  GeographicAddressResponseValidation:
+    description: "An address is a structured textual way of describing how to find\
+      \ a Property in an urban area (country properties are often defined differently)"
+    type: "object"
+    properties:
+      id:
+        description: "Unique identifier of the address"
+        type: "string"
+      fieldedAddress:
+        $ref: "#/definitions/FieldedAddress"
+      formattedAddress:
+        $ref: "#/definitions/FormattedAddress"
       '@type':
         description: "Technical attribute to extend this class"
         type: "string"

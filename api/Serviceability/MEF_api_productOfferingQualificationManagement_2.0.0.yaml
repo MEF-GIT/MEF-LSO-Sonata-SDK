@@ -670,6 +670,10 @@ definitions:
         type: "string"
       installationInterval:
         $ref: "#/definitions/TimeInterval"
+      guaranteedUntilDate:
+        description: "Date until seller is guaranted the qualification result."
+        type: "string"
+        format: "date-time"
       product:
         $ref: "#/definitions/Product"
       productOffering:
@@ -694,10 +698,6 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/TerminationError"
-      guaranteeDate:
-        description: "Date until seller is guaranted the qualification result."
-        type: "string"
-        format: "date-time"
   ProductOfferingQualification:
     description: "A grouping of POQ Items formulated into a request made by a Buyer\
       \ to a Seller"
@@ -960,8 +960,10 @@ definitions:
         description: "The discriminator used for the subunit, often just a simple\
           \ number but may also be a range."
         type: "string"
-  SubAdress:
-    description: ""
+  GeographicSubAddress:
+    description: "It is used for addressing within a property in an urban area (country\
+      \ properties are often defined differently). It may refer to a building, a building\
+      \ cluster, or a floor of a multistory building."
     type: "object"
     properties:
       id:
@@ -995,7 +997,7 @@ definitions:
         description: "Technical attribute to exend this class if needed (JSON schema\
           \ locator)"
         type: "string"
-  FieldedAdress:
+  FieldedAddress:
     description: "A type of Address that has a discrete field and value for each type\
       \ of boundary or identifier down to the lowest level of detail. For example\
       \ “street number” is one field, “street name” is another field, etc."
@@ -1052,8 +1054,8 @@ definitions:
         country:
           description: "Country that the address is in"
           type: "string"
-        fieldedSubAddress:
-          $ref: "#/definitions/SubAdress"
+        geographicSubAddress:
+          $ref: "#/definitions/GeographicSubAddress"
   FormattedAddress:
     description: "A type of Address that has discrete fields for each type of boundary\
       \ or identifier with the exception of street and more specific location details,\
