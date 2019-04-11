@@ -137,7 +137,13 @@ paths:
             \ be both at order level and order item level\ndescription: Pricing data\
             \  must not be present both at order header level and order item level.\n\
             \n\n - code: 113\nmessage: Referred Serviceability request is expired\n\
-            description: Serviceability information are expired."
+            description: Serviceability information are expired.\n\n\n - code: 114\n\
+            message: A reccuring price is mentionned without a charge period.\ndescription:\
+            \ \n\n\n - code: 115\nmessage: Referred Quote is not existing\ndescription:\
+            \ \n\n\n - code: 116\nmessage: Referred ProductOfferingQualification is\
+            \ not existing\ndescription: \n\n\n - code: 117\nmessage: Product /item\
+            \ relationship is missing\ndescription: \n\n\n - code: 118\nmessage: Product\
+            \ Id refered in a relationship is not existing\ndescription: "
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         500:
@@ -1678,8 +1684,10 @@ definitions:
         description: "The discriminator used for the subunit, often just a simple\
           \ number but may also be a range."
         type: "string"
-  SubAdress:
-    description: ""
+  GeographicSubAddress:
+    description: "It is used for addressing within a property in an urban area (country\
+      \ properties are often defined differently). It may refer to a building, a building\
+      \ cluster, or a floor of a multistory building."
     type: "object"
     properties:
       id:
@@ -1713,7 +1721,7 @@ definitions:
         description: "Technical attribute to exend this class if needed (JSON schema\
           \ locator)"
         type: "string"
-  FieldedAdress:
+  FieldedAddress:
     description: "A type of Address that has a discrete field and value for each type\
       \ of boundary or identifier down to the lowest level of detail.  For example\
       \  “street number” is one field, “street name” is another field, etc."
@@ -1770,8 +1778,8 @@ definitions:
         country:
           description: "Country that the address is in"
           type: "string"
-        fieldedSubAddress:
-          $ref: "#/definitions/SubAdress"
+        GeographicSubAddress:
+          $ref: "#/definitions/GeographicSubAddress"
   FormattedAddress:
     description: "A type of Address that has discrete fields for each type of boundary\
       \ or identifier with the exception of street and more specific location details,\
