@@ -101,7 +101,7 @@ paths:
       produces:
       - "application/json;charset=utf-8"
       operationId: "geographicAddressValidationCreate"
-      summary: "validateAddress"
+      summary: "validate a Geographic Address"
       description: "The Buyer sends Address information known to the Buyer to the\
         \ Seller.  The Seller re-sponds with a list of Addresses known to the Seller\
         \ that likely match the Address infor-mation sent by the Buyer.  For each\
@@ -114,7 +114,7 @@ paths:
         in: "body"
         description: ""
         schema:
-          $ref: "#/definitions/GeographicAddressValidationRequest"
+          $ref: "#/definitions/GeographicAddressValidation_Create"
       responses:
         201:
           description: "Created"
@@ -317,12 +317,12 @@ definitions:
           \ addresses must be provided in case of partial or fail result"
         type: "boolean"
       validAddress:
-        $ref: "#/definitions/GeographicAddressResponseValidation"
+        $ref: "#/definitions/GeographicAddressSellerResponse"
       alternateAddress:
         type: "array"
         items:
-          $ref: "#/definitions/GeographicAddressResponseValidation"
-  GeographicAddressValidationRequest:
+          $ref: "#/definitions/GeographicAddressSellerResponse"
+  GeographicAddressValidation_Create:
     description: "Structure used to describe a geographic address validation request"
     type: "object"
     properties:
@@ -331,9 +331,9 @@ definitions:
           \ addresses must be provided in case of partial or fail result"
         type: "boolean"
       validAddress:
-        $ref: "#/definitions/GeographicAddressRequestValidation"
-  GeographicAddressRequestValidation:
-    description: "Structure used to request geographic address validation"
+        $ref: "#/definitions/GeographicAddressRequestBuyerInput"
+  GeographicAddressRequestBuyerInput:
+    description: "Structure used by the buyer to request geographic address validation"
     type: "object"
     properties:
       formattedAddress:
@@ -599,7 +599,7 @@ definitions:
       '@schemaLocation':
         description: "Technical attribute to extend this class"
         type: "string"
-  GeographicAddressResponseValidation:
+  GeographicAddressSellerResponse:
     description: "An address is a structured textual way of describing how to find\
       \ a Property in an urban area (country properties are often defined differently)"
     type: "object"

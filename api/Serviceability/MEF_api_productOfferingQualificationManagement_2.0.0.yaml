@@ -47,7 +47,7 @@ paths:
         in: "body"
         description: ""
         schema:
-          $ref: "#/definitions/POSTProductOfferingQualification"
+          $ref: "#/definitions/ProductOfferingQualification_Create"
       responses:
         201:
           description: "Created"
@@ -154,7 +154,7 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/ProductOfferingQualificationFindReq"
+              $ref: "#/definitions/ProductOfferingQualification_Find"
           headers:
             X-Total-Count:
               description: "The total number of matching resources"
@@ -441,7 +441,7 @@ definitions:
     - "GREEN"
     - "RED"
     - "YELLOW"
-  QualificationState:
+  ProductOfferingQualificationStateType:
     description: "These values represent the valid states through which the product\
       \ offering qualification can transition"
     type: "string"
@@ -467,8 +467,8 @@ definitions:
     - "RELIES_ON"
     - "BUNDLED"
     - "COMES_FROM"
-  POQItemAction:
-    description: ""
+  ProductActionType:
+    description: "Action to be performed on the Product"
     type: "string"
     enum:
     - "INSTALL"
@@ -635,7 +635,7 @@ definitions:
       place:
         type: "array"
         items:
-          $ref: "#/definitions/Place"
+          $ref: "#/definitions/RelatedPlaceReforValue"
   ProductOfferingQualificationItem:
     description: "An individual article included in a POQ that describes a Product\
       \ of a particular type (Product Offering) being delivered to a specific geographical\
@@ -652,9 +652,9 @@ definitions:
         description: "Id of this POQ item"
         type: "string"
       state:
-        $ref: "#/definitions/QualificationState"
+        $ref: "#/definitions/ProductOfferingQualificationStateType"
       action:
-        $ref: "#/definitions/POQItemAction"
+        $ref: "#/definitions/ProductActionType"
       MPOE:
         description: "Indicates if access to the location is currently Minimum Point\
           \ Of Entry (MPOE) only. If mpoeOnly is true, this indicates that full access\
@@ -719,7 +719,7 @@ definitions:
         type: "boolean"
         default: false
       state:
-        $ref: "#/definitions/QualificationState"
+        $ref: "#/definitions/ProductOfferingQualificationStateType"
       projectId:
         description: "This value MAY be assigned by the Buyer/Seller to identify a\
           \ project the serviceability request is associated with."
@@ -768,7 +768,7 @@ definitions:
       id:
         description: "id of the targeted POQ item"
         type: "string"
-  POSTProductOfferingQualificationItem:
+  ProductOfferingQualificationItem_Create:
     description: "This structure serves as a request for a product offering qualification\
       \ item\nAn individual article included in a POQ that describes a Product of\
       \ a particular type (Product Offering) being delivered to a specific geographical\
@@ -784,7 +784,7 @@ definitions:
         description: "Id of the productOfferingQualification item"
         type: "string"
       action:
-        $ref: "#/definitions/POQItemAction"
+        $ref: "#/definitions/ProductActionType"
       product:
         $ref: "#/definitions/Product"
       productOffering:
@@ -797,7 +797,7 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/RelatedParty"
-  POSTProductOfferingQualification:
+  ProductOfferingQualification_Create:
     description: "This structure serves as a request for a product offering qualification.\n\
       A POQ is a grouping of POQ Items formulated into a request made by a Buyer to\
       \ a Seller"
@@ -832,7 +832,7 @@ definitions:
       productOfferingQualificationItem:
         type: "array"
         items:
-          $ref: "#/definitions/POSTProductOfferingQualificationItem"
+          $ref: "#/definitions/ProductOfferingQualificationItem_Create"
       '@type':
         description: "Technical attribute to extend this class"
         type: "string"
@@ -852,7 +852,7 @@ definitions:
         format: "int32"
       timeUnit:
         $ref: "#/definitions/TimeUnit"
-  ProductOfferingQualificationFindReq:
+  ProductOfferingQualification_Find:
     description: "This class is used to describe attribute to be used for requesting\
       \ POQ list (used in the GET by list)"
     type: "object"
@@ -861,7 +861,7 @@ definitions:
         description: "The Serviceability Request's unique identifier."
         type: "string"
       state:
-        $ref: "#/definitions/QualificationState"
+        $ref: "#/definitions/ProductOfferingQualificationStateType"
       requestedResponseDate:
         description: "Corresponds to desiredResponseDate - The date a response for\
           \ the service request is desired."
@@ -871,7 +871,7 @@ definitions:
         description: "This value MAY be assigned by the Buyer/Seller to identify a\
           \ project the serviceability request is associated with."
         type: "string"
-  Place:
+  RelatedPlaceReforValue:
     description: "Place defines the places where the products qualification must be\
       \ done."
     discriminator: "@type"
@@ -1002,7 +1002,7 @@ definitions:
       \ of boundary or identifier down to the lowest level of detail. For example\
       \ “street number” is one field, “street name” is another field, etc."
     allOf:
-    - $ref: "#/definitions/Place"
+    - $ref: "#/definitions/RelatedPlaceReforValue"
     - required:
       - "streetType"
       - "city"
@@ -1062,7 +1062,7 @@ definitions:
       \ which are combined into a maximum of two strings based on local postal addressing\
       \ conventions."
     allOf:
-    - $ref: "#/definitions/Place"
+    - $ref: "#/definitions/RelatedPlaceReforValue"
     - required:
       - "addrLine1"
       - "city"
@@ -1103,7 +1103,7 @@ definitions:
     description: "A globally unique identifier controlled by a generally accepted\
       \ independent administrative authority that specifies a fixed geographical location."
     allOf:
-    - $ref: "#/definitions/Place"
+    - $ref: "#/definitions/RelatedPlaceReforValue"
     - required:
       - "referenceType"
       - "referenceId"
@@ -1134,7 +1134,7 @@ definitions:
     description: "A set of coordinates (typically including latitude and longitude)\
       \ that describes a particular loca-tion on earth."
     allOf:
-    - $ref: "#/definitions/Place"
+    - $ref: "#/definitions/RelatedPlaceReforValue"
     - required:
       - "spatialRef"
       - "geographicPoint"
