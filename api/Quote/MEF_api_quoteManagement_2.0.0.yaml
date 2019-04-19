@@ -54,7 +54,7 @@ paths:
         in: "body"
         description: ""
         schema:
-          $ref: "#/definitions/QuotePOSTRequest"
+          $ref: "#/definitions/Quote_Create"
       responses:
         201:
           description: "Created"
@@ -205,7 +205,7 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/QuoteSummaryView"
+              $ref: "#/definitions/Quote_Find"
           headers:
             X-Total-Count:
               description: "Total number of items matching criteria"
@@ -588,7 +588,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
 definitions:
-  QuoteState:
+  QuoteStateType:
     description: "Valid quote state enumeration"
     type: "string"
     enum:
@@ -600,7 +600,7 @@ definitions:
     - "EXPIRED"
     - "UNABLE_TO_PROVIDE"
     - "INSUFICIENT_INFORMATION_PROVIDED"
-  QuoteItemState:
+  QuoteItemStateType:
     description: "Valid quote item state enumeration"
     type: "string"
     enum:
@@ -651,8 +651,8 @@ definitions:
     - "WEEK"
     - "MONTH"
     - "YEAR"
-  QuoteItemAction:
-    description: "Quote item action"
+  ProductActionType:
+    description: "Action to be performed on the product"
     type: "string"
     enum:
     - "INSTALL"
@@ -732,9 +732,9 @@ definitions:
           \ 01, 02, 03, ...)."
         type: "string"
       state:
-        $ref: "#/definitions/QuoteItemState"
+        $ref: "#/definitions/QuoteItemStateType"
       action:
-        $ref: "#/definitions/QuoteItemAction"
+        $ref: "#/definitions/ProductActionType"
       '@type':
         description: "Indicates the base (class) type of the quote Item."
         type: "string"
@@ -764,7 +764,7 @@ definitions:
       qualification:
         type: "array"
         items:
-          $ref: "#/definitions/QualificationRef"
+          $ref: "#/definitions/ProductOfferingQualificationRef"
       relatedParty:
         type: "array"
         items:
@@ -839,7 +839,7 @@ definitions:
       place:
         type: "array"
         items:
-          $ref: "#/definitions/Place"
+          $ref: "#/definitions/RelatedPlaceRefOrValue"
   Quote:
     description: "A quote which can be used to negotiate service and product acquisition\
       \ or modification between\na customer and a service provider"
@@ -872,7 +872,7 @@ definitions:
         description: "Description of the quote"
         type: "string"
       state:
-        $ref: "#/definitions/QuoteState"
+        $ref: "#/definitions/QuoteStateType"
       quoteDate:
         description: "Date when the quote was created"
         type: "string"
@@ -1029,7 +1029,7 @@ definitions:
       unit:
         description: "Currency (ISO4217 norm uses 3 letters to define the currency"
         type: "string"
-  Place:
+  RelatedPlaceRefOrValue:
     description: "Place defines the places where the quoted products are sold or delivered"
     discriminator: "@type"
     required:
@@ -1073,7 +1073,7 @@ definitions:
       id:
         description: "ID of the related order item (must be in the same quote)."
         type: "string"
-  QuoteItemPOSTRequest:
+  QuoteItem_Create:
     description: "This structure is used to describe Quote item only in the POST operation\
       \ for the request."
     required:
@@ -1086,7 +1086,7 @@ definitions:
           \ 01, 02, 03, ...)."
         type: "string"
       action:
-        $ref: "#/definitions/QuoteItemAction"
+        $ref: "#/definitions/ProductActionType"
       '@type':
         description: "Indicates the base (class) type of the quote Item."
         type: "string"
@@ -1100,7 +1100,7 @@ definitions:
       product:
         $ref: "#/definitions/Product"
       qualification:
-        $ref: "#/definitions/QualificationRef"
+        $ref: "#/definitions/ProductOfferingQualificationRef"
       quoteItemRelationship:
         type: "array"
         items:
@@ -1113,7 +1113,7 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/RelatedParty"
-  QuotePOSTRequest:
+  Quote_Create:
     description: "This structure is used only in the POST operation for the request."
     required:
     - "requestedQuoteCompletionDate"
@@ -1165,7 +1165,7 @@ definitions:
       quoteItem:
         type: "array"
         items:
-          $ref: "#/definitions/QuoteItemPOSTRequest"
+          $ref: "#/definitions/QuoteItem_Create"
       '@baseType':
         description: "Indicates the base (class) type of the quote."
         type: "string"
@@ -1227,7 +1227,7 @@ definitions:
       buyerProductId:
         description: "Targeted Buyer product id - Informative"
         type: "string"
-  QualificationRef:
+  ProductOfferingQualificationRef:
     description: "Reference to productOfferingQualification previously done to check\
       \ requested product serviceability"
     required:
@@ -1259,7 +1259,7 @@ definitions:
         $ref: "#/definitions/Money"
       maxPreTaxAmount:
         $ref: "#/definitions/Money"
-  QuoteSummaryView:
+  Quote_Find:
     description: "Quote Summary view is provided in the response of the GET(LIST)\
       \ quote. Only a subset of information are provided."
     discriminator: "id"
@@ -1287,7 +1287,7 @@ definitions:
         type: "string"
         format: "date-time"
       state:
-        $ref: "#/definitions/QuoteState"
+        $ref: "#/definitions/QuoteStateType"
       projectId:
         description: "This value MAY be assigned by the Buyer/Seller to identify a\
           \ project the quoting request is associated with."
@@ -1346,7 +1346,7 @@ definitions:
         type: "string"
         format: "date-time"
       state:
-        $ref: "#/definitions/QuoteState"
+        $ref: "#/definitions/QuoteStateType"
   Duration:
     description: "To describe a duration (period of time) with a value and an unit\
       \ (day, month, etc...)"
@@ -1433,7 +1433,7 @@ definitions:
       \ of boundary or identifier down to the lowest level of detail. For example\
       \ “street number” is one field, “street name” is another field, etc."
     allOf:
-    - $ref: "#/definitions/Place"
+    - $ref: "#/definitions/RelatedPlaceRefOrValue"
     - required:
       - "streetType"
       - "city"
@@ -1493,7 +1493,7 @@ definitions:
       \ which are combined into a maximum of two strings based on local postal addressing\
       \ conventions."
     allOf:
-    - $ref: "#/definitions/Place"
+    - $ref: "#/definitions/RelatedPlaceRefOrValue"
     - required:
       - "addrLine1"
       - "city"
@@ -1534,7 +1534,7 @@ definitions:
     description: "A globally unique identifier controlled by a generally accepted\
       \ independent administrative authority that specifies a fixed geographical location."
     allOf:
-    - $ref: "#/definitions/Place"
+    - $ref: "#/definitions/RelatedPlaceRefOrValue"
     - required:
       - "referenceType"
       - "referenceId"
@@ -1565,7 +1565,7 @@ definitions:
     description: "A set of coordinates (typically including latitude and longitude)\
       \ that describes a particular loca-tion on earth."
     allOf:
-    - $ref: "#/definitions/Place"
+    - $ref: "#/definitions/RelatedPlaceRefOrValue"
     - required:
       - "spatialRef"
       - "geographicPoint"
