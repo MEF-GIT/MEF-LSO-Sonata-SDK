@@ -25,6 +25,10 @@ tags:
   description: "Product Order resource"
 - name: "Hub"
   description: "Hub resource to manage notification subscription"
+- name: "CancelProductOrder"
+  description: "Request to cancel an order submitted by the buyer.\n\nSeller answers\
+    \ with a cancel order request state + order state (could be CANCELLED, ASSESSING_CANCELLATION\
+    \ or previous order state if seller did not accept cancellation request)."
 paths:
   /productOrder:
     post:
@@ -35,7 +39,7 @@ paths:
       produces:
       - "application/json;charset=utf-8"
       operationId: "productOrderCreate"
-      summary: "productOrderCreate"
+      summary: "Create a product order"
       description: "This operation is used to create an order. Depending on the order\
         \ activity, one can \"INSTALL\", \"CHANGE\", or \"DISCONNECT\" an associated\
         \ product."
@@ -46,7 +50,7 @@ paths:
         in: "body"
         description: ""
         schema:
-          $ref: "#/definitions/CreateProductOrder"
+          $ref: "#/definitions/ProductOrder_Create"
       responses:
         201:
           description: "Created"
@@ -161,7 +165,7 @@ paths:
       produces:
       - "application/json;charset=utf-8"
       operationId: "productOrderFind"
-      summary: "productOrderFind (list)"
+      summary: "Find a list of product order(s)"
       description: "This operation is used to retrieve one or more product orders\
         \ based upon filter criteria specified on input."
       deprecated: false
@@ -384,7 +388,7 @@ paths:
       produces:
       - "application/json;charset=utf-8"
       operationId: "productOrderGet"
-      summary: "productOrderGet (by id)"
+      summary: "Get a product order (by id)"
       description: "This operation is used to retrieve a single product order based\
         \ upon a specified product order id."
       deprecated: false
@@ -446,82 +450,6 @@ paths:
           description: "Service Unavailable\n\n"
           schema:
             $ref: "#/definitions/ErrorRepresentation"
-  /productOrder/cancel:
-    post:
-      tags:
-      - "ProductOrder"
-      consumes:
-      - "application/json;charset=utf-8"
-      produces:
-      - "application/json;charset=utf-8"
-      operationId: "productOrderCancel"
-      summary: "productOrderCancel"
-      description: "Request to cancel an order submitted by the buyer\nSeller answer\
-        \ with order state (could be CANCELLED, ASSESSING_CANCELLATION or previous\
-        \ order state if seller did not accept cancellation request)."
-      deprecated: false
-      parameters:
-      - name: "CancelOrder"
-        required: true
-        in: "body"
-        description: ""
-        schema:
-          $ref: "#/definitions/CancelOrderRequest"
-      responses:
-        201:
-          description: "Created"
-          schema:
-            $ref: "#/definitions/CancelOrderResponse"
-        400:
-          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
-            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
-            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
-            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
-            \ parameter value"
-          schema:
-            $ref: "#/definitions/ErrorRepresentation"
-        401:
-          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
-            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
-          schema:
-            $ref: "#/definitions/ErrorRepresentation"
-        403:
-          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
-            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
-            \ requests"
-          schema:
-            $ref: "#/definitions/ErrorRepresentation"
-        404:
-          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
-            \ not found"
-          schema:
-            $ref: "#/definitions/ErrorRepresentation"
-        405:
-          description: "Method Not Allowed\n\nList of supported error codes:\n- 61:\
-            \ Method not allowed"
-          schema:
-            $ref: "#/definitions/ErrorRepresentation"
-        408:
-          description: "Request Time-out\n\nList of supported error codes:\n- 63:\
-            \ Request time-out"
-          schema:
-            $ref: "#/definitions/ErrorRepresentation"
-        422:
-          description: "Unprocessable entity\n\nFunctional error\n\n\n \n\n\n - code:\
-            \ 100\nmessage: externalId must be provided\ndescription: \n\n\n - code:\
-            \ 101\nmessage: externalId does not match productOrderId\ndescription:\
-            \ \n\n\n - code: 102\nmessage: version does not match\ndescription: "
-          schema:
-            $ref: "#/definitions/ErrorRepresentation"
-        500:
-          description: "Internal Server Error\n\nList of supported error codes:\n\
-            - 1: Internal error"
-          schema:
-            $ref: "#/definitions/ErrorRepresentation"
-        503:
-          description: "Service Unavailable\n\n"
-          schema:
-            $ref: "#/definitions/ErrorRepresentation"
   /hub:
     post:
       tags:
@@ -531,7 +459,7 @@ paths:
       produces:
       - "application/json;charset=utf-8"
       operationId: "hubCreate"
-      summary: "create Hub"
+      summary: "Create a Hub"
       description: "Structure used to create a hub (to subscribe to notification)"
       deprecated: false
       parameters:
@@ -599,7 +527,7 @@ paths:
       produces:
       - "application/json;charset=utf-8"
       operationId: "hubFind"
-      summary: "find Hub"
+      summary: "Find a list of Hub"
       description: "Find Hub"
       deprecated: false
       responses:
@@ -661,7 +589,7 @@ paths:
       tags:
       - "Hub"
       operationId: "hubDelete"
-      summary: "Delete Hub"
+      summary: "Delete a Hub"
       description: "Delete Hub"
       deprecated: false
       parameters:
@@ -673,6 +601,226 @@ paths:
       responses:
         204:
           description: "No Content"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        403:
+          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
+            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
+            \ requests"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        405:
+          description: "Method Not Allowed\n\nList of supported error codes:\n- 61:\
+            \ Method not allowed"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        408:
+          description: "Request Time-out\n\nList of supported error codes:\n- 63:\
+            \ Request time-out"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        500:
+          description: "Internal Server Error\n\nList of supported error codes:\n\
+            - 1: Internal error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        503:
+          description: "Service Unavailable\n\n"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+  /cancelProductOrder:
+    post:
+      tags:
+      - "CancelProductOrder"
+      consumes:
+      - "application/json;charset=utf-8"
+      produces:
+      - "application/json;charset=utf-8"
+      operationId: "cancelProductOrderCreate"
+      summary: "Create product order cancellation request"
+      description: "This operation allows buyer to request a product order cancellation\
+        \ request "
+      deprecated: false
+      parameters:
+      - name: "CancelProductOrder"
+        required: true
+        in: "body"
+        description: ""
+        schema:
+          $ref: "#/definitions/CancelProductOrder_Create"
+      responses:
+        201:
+          description: "Created"
+          schema:
+            $ref: "#/definitions/CancelProductOrder"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        403:
+          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
+            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
+            \ requests"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        405:
+          description: "Method Not Allowed\n\nList of supported error codes:\n- 61:\
+            \ Method not allowed"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        408:
+          description: "Request Time-out\n\nList of supported error codes:\n- 63:\
+            \ Request time-out"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error\n\n\n \n\n\n - code:\
+            \ 100\nmessage: externalId must be provided\ndescription: \n\n\n - code:\
+            \ 101\nmessage: externalId does not match productOrderId\ndescription:\
+            \ \n\n\n - code: 102\nmessage: Product order state is not compliant with\
+            \ this request\ndescription: "
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        500:
+          description: "Internal Server Error\n\nList of supported error codes:\n\
+            - 1: Internal error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        503:
+          description: "Service Unavailable\n\n"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+    get:
+      tags:
+      - "CancelProductOrder"
+      produces:
+      - "application/json;charset=utf-8"
+      operationId: "cancelProductOrderFind"
+      summary: "Find a lost of product order cancellation request(s)"
+      description: "This operation allows buyer to retrieve a list of product order\
+        \ cancellation request"
+      deprecated: false
+      parameters:
+      - name: "productOrderId"
+        required: false
+        in: "query"
+        description: ""
+        type: "string"
+      - name: "productOrderExternalId"
+        required: false
+        in: "query"
+        description: ""
+        type: "string"
+      responses:
+        200:
+          description: "Ok"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/CancelProductOrder"
+        400:
+          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
+            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
+            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
+            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
+            \ parameter value"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        401:
+          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
+            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        403:
+          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
+            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
+            \ requests"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        404:
+          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
+            \ not found"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        405:
+          description: "Method Not Allowed\n\nList of supported error codes:\n- 61:\
+            \ Method not allowed"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        408:
+          description: "Request Time-out\n\nList of supported error codes:\n- 63:\
+            \ Request time-out"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        422:
+          description: "Unprocessable entity\n\nFunctional error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        500:
+          description: "Internal Server Error\n\nList of supported error codes:\n\
+            - 1: Internal error"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+        503:
+          description: "Service Unavailable\n\n"
+          schema:
+            $ref: "#/definitions/ErrorRepresentation"
+  /cancelProductOrder/{CancelProductOrderId}:
+    get:
+      tags:
+      - "CancelProductOrder"
+      produces:
+      - "application/json;charset=utf-8"
+      operationId: "cancelProductOrderGet"
+      summary: "Get a product order cancellation request (by id)"
+      description: "This operation allows buyer to retrieve one product order cancellation\
+        \ request"
+      deprecated: false
+      parameters:
+      - name: "CancelProductOrderId"
+        required: true
+        in: "path"
+        description: ""
+        type: "string"
+      responses:
+        200:
+          description: "Ok"
+          schema:
+            $ref: "#/definitions/CancelProductOrder"
         400:
           description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
             \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
@@ -736,8 +884,8 @@ definitions:
     - "INSTALL"
     - "CHANGE"
     - "DISCONNECT"
-  OrderItemAction:
-    description: "An enumeration of valid order item actions"
+  ProductActionType:
+    description: "An enumeration of valid product actions"
     type: "string"
     enum:
     - "INSTALL"
@@ -758,8 +906,8 @@ definitions:
     enum:
     - "ERROR"
     - "INFORMATION"
-  OrderStatus:
-    description: "An enumeration of valid order statuses"
+  ProductOrderStateType:
+    description: "An enumeration of valid order states"
     type: "string"
     enum:
     - "ACKNOWLEDGED"
@@ -776,7 +924,7 @@ definitions:
     - "FAILED"
     - "PARTIAL"
     - "COMPLETED"
-  OrderItemStatus:
+  ProductOrderItemStateType:
     description: "An enumeration of valid order item statuses."
     type: "string"
     enum:
@@ -805,6 +953,14 @@ definitions:
     - "WEEK"
     - "MONTH"
     - "YEAR"
+  TaskStateType:
+    description: ""
+    type: "string"
+    enum:
+    - "ACKNOWLEDGED"
+    - "IN_PROGRESS"
+    - "DONE"
+    - "TERMINATED_WITH_ERROR"
   ErrorRepresentation:
     description: "Class used to describe API response error"
     required:
@@ -852,7 +1008,7 @@ definitions:
         type: "string"
       billingContact:
         $ref: "#/definitions/Contact"
-  Place:
+  RelatedPlaceReforValue:
     description: "Place defines the places where the ordered products are sold or\
       \ delivered.\nThis is an abstract class that allow to define a role for a defined\
       \ location structure: fielded address, formatted address, geocode, service site\
@@ -936,7 +1092,7 @@ definitions:
         type: "string"
         format: "date-time"
       state:
-        $ref: "#/definitions/OrderStatus"
+        $ref: "#/definitions/ProductOrderStateType"
       requestedStartDate:
         description: "The buyer's requested date that order processing should start.\
           \ Format is YYYY-MM-DDThh:mmTZD (e.g. 1997-07-16T19:20+01:00)."
@@ -957,10 +1113,13 @@ definitions:
           \ (e.g. 1997-07-16T19:20+01:00)"
         type: "string"
         format: "date-time"
-      orderCancellationDate:
+      cancellationDate:
         description: "Identifies the date the Seller canceled the Order"
         type: "string"
         format: "date-time"
+      cancellationReason:
+        description: "Indicates reason why buyer requested cancellation"
+        type: "string"
       expeditePriority:
         description: "Indicates that expedited treatment is requested and any charges\
           \ generated in provisioning this request (e.g., additional engineering charges\
@@ -1065,9 +1224,9 @@ definitions:
           \ 01, 02, 03, ...)"
         type: "string"
       action:
-        $ref: "#/definitions/OrderItemAction"
+        $ref: "#/definitions/ProductActionType"
       state:
-        $ref: "#/definitions/OrderItemStatus"
+        $ref: "#/definitions/ProductOrderItemStateType"
       pricingMethod:
         $ref: "#/definitions/PricingMethod"
       pricingReference:
@@ -1168,7 +1327,7 @@ definitions:
       place:
         type: "array"
         items:
-          $ref: "#/definitions/Place"
+          $ref: "#/definitions/RelatedPlaceReforValue"
       productRelationship:
         type: "array"
         items:
@@ -1301,7 +1460,7 @@ definitions:
       '@referredType':
         description: "Technical attribute to extend the API"
         type: "string"
-  CreateProductOrder:
+  ProductOrder_Create:
     description: "A CreateProductOrder object is provided as input to the product\
       \ order create operation."
     required:
@@ -1396,7 +1555,7 @@ definitions:
       orderItem:
         type: "array"
         items:
-          $ref: "#/definitions/CreateOrderItem"
+          $ref: "#/definitions/ProductOrderItem_Create"
   ProductSpecificationRef:
     description: "A structured set of well-defined technical attributes and/or behaviors\
       \ that are used to construct a Product Offering for sale to a market."
@@ -1419,9 +1578,9 @@ definitions:
       '@schemaLocation':
         description: "URL targeting where product description is stored"
         type: "string"
-  CreateOrderItem:
-    description: "A CreateOrderItem object is provided as input to the product order\
-      \ item create operation."
+  ProductOrderItem_Create:
+    description: "A ProductOrderItem_Create object is provided as input to the product\
+      \ order item create operation."
     required:
     - "id"
     - "action"
@@ -1433,7 +1592,7 @@ definitions:
           \ 01, 02, 03, ...)"
         type: "string"
       action:
-        $ref: "#/definitions/OrderItemAction"
+        $ref: "#/definitions/ProductActionType"
       pricingMethod:
         $ref: "#/definitions/PricingMethod"
       pricingReference:
@@ -1497,64 +1656,46 @@ definitions:
         type: "string"
         format: "date-time"
       state:
-        $ref: "#/definitions/OrderStatus"
-  CancelOrderResponse:
+        $ref: "#/definitions/ProductOrderStateType"
+  CancelProductOrder:
     description: "Structure to allow Seller to answer to a cancel order request"
     required:
     - "id"
     - "state"
+    - "requestedCancellationDate"
+    - "productOrder"
     type: "object"
     properties:
       id:
-        description: "Unique identifier for the order that is generated by the Seller\
-          \ when the order is initially accepted via an API."
+        description: "Unique identifier for the order cancellation request that is\
+          \ generated by the Seller when the order cancellation is accepted via an\
+          \ API. This is not the order id."
+        type: "string"
+      href:
+        description: "Hyperlink to access order cancellation request.This is not a\
+          \ product order href."
         type: "string"
       state:
-        $ref: "#/definitions/OrderStatus"
-      cancellationDeniedReason:
-        description: "If seller denied cancellation request he could here provide\
-          \ reason for this denial"
-        type: "string"
-      '@type':
-        description: "Technical attribute to extend this class."
-        type: "string"
-      '@schemaLocation':
-        description: "Technical attribute to extend this class."
-        type: "string"
-  CancelOrderRequest:
-    description: "Structure to allow buyer to request a order cancellation"
-    required:
-    - "id"
-    - "orderCancellationDate"
-    type: "object"
-    properties:
-      id:
-        description: "Unique identifier for the order that is generated by the Seller\
-          \ when the order is initially accepted via an API.\nThis id must be provided\
-          \ to cancel the order."
-        type: "string"
-      externalId:
-        description: "A number that uniquely identifies an order within the Buyer's\
-          \ enterprise.\nMust be provided if provided when the order was initially\
-          \ accepted"
-        type: "string"
-      orderVersion:
-        description: "The version number that the Buyer uses to refer to this particular\
-          \ version of the order"
-        type: "string"
-      orderCancellationDate:
-        description: "Identifies the date the Seller cancelled the Order"
+        $ref: "#/definitions/TaskStateType"
+      requestedCancellationDate:
+        description: "Identifies the date the Seller cancelled the Order."
         type: "string"
         format: "date-time"
       cancellationReason:
         description: "An optional free-form text field for the Seller to provide additional\
-          \ information regarding the reason for the cancellation"
+          \ information regarding the reason for the cancellation."
         type: "string"
+      cancellationDeniedReason:
+        description: "If seller denied cancellation request he could here provide\
+          \ reason for this denial"
+        type: "string"
+      productOrder:
+        $ref: "#/definitions/ProductOrderRefCancel"
       '@type':
-        description: "Technical attribute to extend the API"
+        description: "Technical attribute to extend this class."
         type: "string"
       '@schemaLocation':
-        description: "Technical attribute to extend the API"
+        description: "Technical attribute to extend this class."
         type: "string"
   OrderMessage:
     description: "An optional array of messages associated with the Order"
@@ -1615,28 +1756,6 @@ definitions:
         description: "This attribute is the callback url where event will be sent\
           \ when occurs, for instance an url http://yourdomain/listener/api/v1/event"
         type: "string"
-  PartyRole:
-    description: "This is a party role assigned for this productOrder or for a product"
-    required:
-    - "role"
-    - "relatedParty"
-    type: "object"
-    properties:
-      id:
-        description: "id of the partyRole (not party id)"
-        type: "string"
-      '@referredType':
-        description: "Technical attribute to extend API"
-        type: "string"
-      role:
-        description: "The role that the related party plays. It may be one of the\
-          \ following : \"Buyer\", \"Seller\", \"Billing Contact\", \"Order Contact\"\
-          , \"Technical Contact\", \"Implementation Contact\", \"UNI Site Contact\"\
-          , \"UNI Alt Site Contact\" , \"ENNI Site Contact\", \"ENNI Alt Site Contact\"\
-          ."
-        type: "string"
-      relatedParty:
-        $ref: "#/definitions/RelatedParty"
   Contact:
     description: "Contact allow to capture contact information. It is used to capture\
       \ billing account contact information"
@@ -1726,7 +1845,7 @@ definitions:
       \ of boundary or identifier down to the lowest level of detail.  For example\
       \  “street number” is one field, “street name” is another field, etc."
     allOf:
-    - $ref: "#/definitions/Place"
+    - $ref: "#/definitions/RelatedPlaceReforValue"
     - required:
       - "streetType"
       - "city"
@@ -1786,7 +1905,7 @@ definitions:
       \ which are combined into a maximum of two strings based on local postal addressing\
       \ conventions."
     allOf:
-    - $ref: "#/definitions/Place"
+    - $ref: "#/definitions/RelatedPlaceReforValue"
     - required:
       - "addrLine1"
       - "city"
@@ -1827,7 +1946,7 @@ definitions:
     description: "A globally unique identifier controlled by a generally accepted\
       \ independent administrative authority that specifies a fixed geographical location."
     allOf:
-    - $ref: "#/definitions/Place"
+    - $ref: "#/definitions/RelatedPlaceReforValue"
     - required:
       - "referenceType"
       - "referenceId"
@@ -1858,7 +1977,7 @@ definitions:
     description: "A set of coordinates (typically including latitude and longitude)\
       \ that describes a particular loca-tion on earth."
     allOf:
-    - $ref: "#/definitions/Place"
+    - $ref: "#/definitions/RelatedPlaceReforValue"
     - required:
       - "spatialRef"
       - "geographicPoint"
@@ -1882,4 +2001,54 @@ definitions:
         format: "float"
       unit:
         description: "Currency (ISO4217 norm uses 3 letters to define the currency"
+        type: "string"
+  ProductOrderRefCancel:
+    description: "A reference to a product order used to perform cancellation request."
+    required:
+    - "id"
+    type: "object"
+    properties:
+      id:
+        description: "Unique (within the ordering domain) identifier for the order\
+          \ that is generated by the seller when the order is initially accepted."
+        type: "string"
+      href:
+        description: "Hyperlink to access the order"
+        type: "string"
+      externalId:
+        description: "A number that uniquely identifies an order within the buyer's\
+          \ enterprise.\nMust be provided if provided when the order was initially\
+          \ accepted"
+        type: "string"
+      state:
+        $ref: "#/definitions/ProductOrderStateType"
+      version:
+        description: "The version number that the Buyer uses to refer to this particular\
+          \ version of the order.\nThis not checked for conformance (informative information)"
+        type: "string"
+      '@referredType':
+        description: "Technical attribute to extend the API"
+        type: "string"
+  CancelProductOrder_Create:
+    description: ""
+    required:
+    - "requestedCancellationDate"
+    - "productOrder"
+    type: "object"
+    properties:
+      requestedCancellationDate:
+        description: "Identifies the date the Seller cancelled the Order."
+        type: "string"
+        format: "date-time"
+      cancellationReason:
+        description: "An optional free-form text field for the Seller to provide additional\
+          \ information regarding the reason for the cancellation."
+        type: "string"
+      productOrder:
+        $ref: "#/definitions/ProductOrderRefCancel"
+      '@type':
+        description: "Technical attribute to extend this class."
+        type: "string"
+      '@schemaLocation':
+        description: "Technical attribute to extend this class."
         type: "string"
