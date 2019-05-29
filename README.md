@@ -68,4 +68,4 @@ The receipt or any use of this document or its contents does not in any way crea
 
 Implementation or use of specific MEF standards, specifications, or recommendations will be voluntary, and no Member shall be obliged to implement them by virtue of participation in MEF Forum. MEF is a non-profit international organization to enable the development and worldwide adoption of agile, assured and orchestrated network services. MEF does not, expressly or otherwise, endorse or promote any specific products or services.
 
-© MEF Forum 2018. All Rights Reserved.
+© MEF Forum 2019. All Rights Reserved.
