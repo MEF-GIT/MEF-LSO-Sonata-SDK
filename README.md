@@ -1,4 +1,4 @@
-# MEF-LSO-Sonata-SDK
+# MEF-LSO-Sonata-SDK (R3)
 
 This repository contains the MEF LSO Sonata SDK. It includes API definitions for the following functional areas:
 
