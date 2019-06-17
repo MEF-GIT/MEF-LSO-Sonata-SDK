@@ -2,7 +2,7 @@
 
 This repository contains the MEF LSO Sonata SDK. It includes API definitions for the following functional areas:
 
-*  Serviceability (Address/Site validation and Product Offering Qualification)
+*  Serviceability (Address, Service Site, and Product Offering Qualification Management)
 *  Product Quote
 *  Product Order
 *  Product Inventory
