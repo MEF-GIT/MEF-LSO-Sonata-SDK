@@ -34,9 +34,9 @@ This SDK contains the following items:
 		* Determine whether it is feasible for the Seller to deliver a particular Product with a given configuration to a particular geographic location if applicable.
 	*  ProductOrder - Contains the API definitions for inter-carrier service ordering capability.
 *  documentation - This contains the draft standards of the Business Requirements and Use Cases for
-	* Address, Service Site, and Product Offering Qualification Management (MEF 79)
-	* Product Order Management (MEF 80)
-	* Product Inventry Management (MEF 81)
+	* Address, Service Site, and Product Offering Qualification Management (MEF 79 Draft (R2))
+	* Product Order Management (MEF 80 Draft (R2))
+	* Product Inventry Management (MEF 81 Draft (R2))
 
 All superseded files can be found in the Git history, if needed.
 
