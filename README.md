@@ -44,7 +44,7 @@ All superseded files can be found in the Git history, if needed.
 Any developer intending to use the materials in this repository should first thoroughly read, review and understand the following materials:
 *  [MEF 55: Lifecycle Service Orchestration (LSO): Reference Architecture and Framework](documentation/MEF_55.pdf) This document is a ratified MEF standard.
 *  [MEF 55.0.1: Amendment to MEF 55: Operational Threads](documentation/MEF_55.0.1.pdf) This document is a ratified MEF standard.
-*  [MEF 55.0.2: Amendment to MEF 55: TOSCA Services Templates]((documentation/MEF_55.0.2.pdf) This document is a ratified MEF standard.
+*  [MEF 55.0.2: Amendment to MEF 55: TOSCA Services Templates](documentation/MEF_55.0.2.pdf) This document is a ratified MEF standard.
 *  [MEF 50.1: MEF Services Lifecycle Process Flows](documentation/MEF_50.1.pdf) This document is a ratified MEF standard.
 *  [MEF 79 Draft (R2): Address, Service Site, and Product Offering Qualification Management](documentation/MEF_79_Draft_(R2).pdf)
 *  [MEF 80 Draft (R2): Quote Management](documentation/MEF_80_Draft_(R2).pdf)
