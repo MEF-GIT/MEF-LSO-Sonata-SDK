@@ -8,13 +8,13 @@ This repository contains the MEF LSO Sonata SDK. It includes API definitions for
 *  Product Inventory
 
 It also holds Payload Descriptions for the following structures that are used with these APIs
-*  JSON representations for Product Spec descriptions (initially for MEF Access Eline services)
-*  JSON representations for Place description
+*  JSON representations for Product Spec descriptions (initially for MEF Access E-Line services)
+*  JSON representations for the UNI attributes (sourced from MEF 57.1)
 
 The MEF LSO Sonata SDK is released under the Apache 2.0 license.
 
 ## Maturity Level
-These files are in the Working Draft state.  It is work in progress and is subject to change.  This work has not yet successfully completed the review cycles and approvals necessary to achieve the status as a MEF standard.  The MEF is making these publicly available at this time to invite wider industry review.
+These APIs files are evolving and subject to change.  They are derived from documents that are either ratified standards, or draft standards that have not yet completed the review cycles and approvals necessary to achieve the status as a MEF standard.  The MEF is making these publicly available at this time to invite wider industry review.
 
 ## Contents
 
