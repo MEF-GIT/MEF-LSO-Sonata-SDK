@@ -42,14 +42,14 @@ All superseded files can be found in the Git history, if needed.
 
 ## Precedents
 Any developer intending to use the materials in this repository should first thoroughly read, review and understand the following materials:
-*  [MEF 55: Lifecycle Service Orchestration (LSO): Reference Architecture and Framework](documentation/MEF_55.pdf) This document is a ratified MEF standard.
-*  [MEF 55.0.1: Amendment to MEF 55: Operational Threads](documentation/MEF_55.0.1.pdf) This document is a ratified MEF standard.
-*  [MEF 55.0.2: Amendment to MEF 55: TOSCA Services Templates](documentation/MEF_55.0.2.pdf) This document is a ratified MEF standard.
-*  [MEF 50.1: MEF Services Lifecycle Process Flows](documentation/MEF_50.1.pdf) This document is a ratified MEF standard.
-*  [MEF 79 Draft (R2): Address, Service Site, and Product Offering Qualification Management](documentation/MEF_79_Draft_(R2).pdf)
-*  [MEF 80 Draft (R2): Quote Management](documentation/MEF_80_Draft_(R2).pdf)
-*  [MEF 81 Draft (R2): Product Inventory Management](MEF_81_Draft_(R2).pdf)
-*  [MEF 57.1: Ethernet Ordering Technical Standard - Business Requirements and Use Cases](documentation/MEF_57.1.pdf) This document is a ratified MEF standard.
+*  [MEF 55: Lifecycle Service Orchestration (LSO): Reference Architecture and Framework](documentation/MEF%2055%20-%20LSO%20Reference%20Architecture%20and%20Framework.pdf) This document is a ratified MEF standard.
+*  [MEF 55.0.1: Amendment to MEF 55: Operational Threads](documentation/MEF%2055.0.1%20-%20Operational%20Threads.pdf) This document is a ratified MEF standard.
+*  [MEF 55.0.2: Amendment to MEF 55: TOSCA Services Templates](documentation/MEF%2055.0.2%20-%20TOSCA%20Service%20Templates.pdf) This document is a ratified MEF standard.
+*  [MEF 50.1: MEF Services Lifecycle Process Flows](documentation/MEF%2050.1%20-%20MEF%20Services%20Lifecycle%20Process%20Flows.pdf) This document is a ratified MEF standard.
+*  [MEF 79 Draft (R2): Address, Service Site, and Product Offering Qualification Management](documentation/MEF%2079%20Draft%20(R2)%20-%20Address%2C%20Service%20Site%2C%20and%20Product%20Offering%20Qualification%20Management.pdf)
+*  [MEF 80 Draft (R2): Quote Management](documentation/MEF%2080%20Draft%20(R2)%20-%20Quote%20Management.pdf)
+*  [MEF 81 Draft (R2): Product Inventory Management](documentation/MEF%2081%20Draft%20(R2)%20-%20Product%20Inventory%20Management.pdf)
+*  [MEF 57.1: Ethernet Ordering Technical Standard - Business Requirements and Use Cases](documentation/MEF%2057.1%20-%20Ethernet%20Ordering%20Technical%20Specification%20-%20Business%20Requirements%20and%20Use%20Cases.pdf) This document is a ratified MEF standard.
 
 ## Questions and Feedback
 Questions and Feedback should be directed to LSO-Sonata@mef.net.  All artifacts included in this repository have line numbers.  When referring to specific content in any of these artifacts, please quote the line numbers to which you are referring.
