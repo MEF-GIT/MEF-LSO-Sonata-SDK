@@ -2,52 +2,54 @@
 
 This repository contains the MEF LSO Sonata SDK. It includes API definitions for the following functional areas:
 
-*  Serviceability (Address/Site validation and Product Offering Qualification)
+*  Serviceability (Address, Service Site, and Product Offering Qualification Management)
 *  Product Quote
 *  Product Order
 *  Product Inventory
 
 It also holds Payload Descriptions for the following structures that are used with these APIs
-*  JSON representations for Product Spec descriptions (initially for MEF Access Eline services)
-*  JSON representations for Place description
+*  JSON representations for Product Spec descriptions (initially for MEF Access E-Line services)
+*  JSON representations for the UNI attributes (sourced from MEF 57.1)
 
 The MEF LSO Sonata SDK is released under the Apache 2.0 license.
 
 ## Maturity Level
-These files are in the Working Draft state.  It is work in progress and is subject to change.  This work has not yet successfully completed the review cycles and approvals necessary to achieve the status as a MEF standard.  The MEF is making these publicly available at this time to invite wider industry review.
+The API files contained in this SDK are evolving and subject to change.  They are based on documents that are either ratified standards, or draft standards that have not yet completed the review cycles and approvals necessary to achieve the status as a MEF standard.  MEF is making these publicly available at this time to invite wider industry review.
 
 ## Contents
 
 This SDK contains the following items:
 
-*	COPYRIGHT - Copyright 2018 MEF Forum
-*	LICENSE - Contains a copy of the Apache 2.0 license
+*  COPYRIGHT - Copyright 2019 MEF Forum
+*  LICENSE - Contains a copy of the Apache 2.0 license
 *  README - This file
 *  payload_description - Common descriptors are found in this directory
 	*  ProductSpecDescription – Contains reference JSON schemas for product specification description.
 *  api - Definitions of the API are found in this directory
-	*  Inventory -
-	*  Quote -
-	*  Serviceability - 
+	*  Inventory - Contains the API definitions necessary for inter-carrier retrieval  of  Product  Inventory
+	*  Quote - Contains the API definitions for inter-carrier service quotation capability
+	*  Serviceability - Contains the API definitions that allow the Service Provider, or Buyer to:
+		* Retrieve Address information including exact formats for Addresses known to the Seller
+		* Retrieve Service Site information including exact formats for Service Sites known to the Seller
+		* Determine whether it is feasible for the Seller to deliver a particular Product with a given configuration to a particular geographic location if applicable.
 	*  ProductOrder - Contains the API definitions for inter-carrier service ordering capability.
-*  documentation - This contains the documents required to review as part of this API that have not fully completed the standards process and are thus not publicly available on the MEF website.  The user is encouraged to review documents in the order of the links below rather than going into this directory.
+*  documentation - This contains the draft standards of the Business Requirements and Use Cases for
+	* Address, Service Site, and Product Offering Qualification Management (MEF 79 Draft (R2))
+	* Product Order Management (MEF 80 Draft (R2))
+	* Product Inventry Management (MEF 81 Draft (R2))
 
 All superseded files can be found in the Git history, if needed.
 
-
 ## Precedents
 Any developer intending to use the materials in this repository should first thoroughly read, review and understand the following materials:
-*  [MEF 55: Lifecycle Service Orchestration (LSO): Reference Architecture and Framework](https://www.mef.net/resources/technical-specifications/download?id=44&fileid=file1) This document is a ratified MEF standard.
-*  [MEF 55.0.1: Amendment to MEF55: Operational Threads](https://www.mef.net/resources/technical-specifications/download?id=99&fileid=file1) This document is a ratified MEF standard.
-*  [MEF 50.1: MEF Services Lifecycle Process Flows](https://www.mef.net/resources/technical-specifications/download?id=96&fileid=file1) This document is a ratified MEF standard.
-*  [Serviceability Management Technical Specification](documentation/Serviceability%20Technical%20Specification.pdf) This document is in final ballot to become a MEF standard.
-*  [Quote Management Technical Specification](documentation/Quote%20Technical%20Specification.pdf) This document is in final ballot to become a MEF standard.
-*  [Ethernet Ordering Technical Specification](documentation/Ordering%20Technical%20Specificaiton%20(MEF57.1_LB).pdf) This document is in final ballot to become a MEF standard.
-*  [Inventory Management Technical Specification](documentation/Product%20Inventory%20Technical%20Specification.pdf) This document is in final ballot to become a MEF standard.
-*  [API Developer Guide: Serviceability](documentation/Serviceability%20API%20Developer%20Guide.pdf) This document is a working draft and is subject to change.
-*  [API Developer Guide: Quote Management](documentation/Quote%20API%20Developer%20Guide.pdf) This document is a working draft and is subject to change.
-*  [API Developer Guide: Product Order Management](documentation/Product%20Ordering%20API%20Developer%20%20Guide.pdf) This document is a working draft and is subject to change.
-*  [API Developer Guide: Product Inventory Management](documentation/Product%20Inventory%20API%20Developer%20Guide.pdf) This document is a working draft and is subject to change.
+*  [MEF 55: Lifecycle Service Orchestration (LSO): Reference Architecture and Framework](documentation/MEF%2055%20-%20LSO%20Reference%20Architecture%20and%20Framework.pdf) This document is a ratified MEF standard.
+*  [MEF 55.0.1: Amendment to MEF 55: Operational Threads](documentation/MEF%2055.0.1%20-%20Operational%20Threads.pdf) This document is a ratified MEF standard.
+*  [MEF 55.0.2: Amendment to MEF 55: TOSCA Services Templates](documentation/MEF%2055.0.2%20-%20TOSCA%20Service%20Templates.pdf) This document is a ratified MEF standard.
+*  [MEF 50.1: MEF Services Lifecycle Process Flows](documentation/MEF%2050.1%20-%20MEF%20Services%20Lifecycle%20Process%20Flows.pdf) This document is a ratified MEF standard.
+*  [MEF 79 Draft (R2): Address, Service Site, and Product Offering Qualification Management](documentation/MEF%2079%20Draft%20(R2)%20-%20Address%2C%20Service%20Site%2C%20and%20Product%20Offering%20Qualification%20Management.pdf)
+*  [MEF 80 Draft (R2): Quote Management](documentation/MEF%2080%20Draft%20(R2)%20-%20Quote%20Management.pdf)
+*  [MEF 81 Draft (R2): Product Inventory Management](documentation/MEF%2081%20Draft%20(R2)%20-%20Product%20Inventory%20Management.pdf)
+*  [MEF 57.1: Ethernet Ordering Technical Standard - Business Requirements and Use Cases](documentation/MEF%2057.1%20-%20Ethernet%20Ordering%20Technical%20Specification%20-%20Business%20Requirements%20and%20Use%20Cases.pdf) This document is a ratified MEF standard.
 
 ## Questions and Feedback
 Questions and Feedback should be directed to LSO-Sonata@mef.net.  All artifacts included in this repository have line numbers.  When referring to specific content in any of these artifacts, please quote the line numbers to which you are referring.
