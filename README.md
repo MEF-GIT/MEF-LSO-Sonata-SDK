@@ -36,7 +36,7 @@ This SDK contains the following items:
 *  documentation - This contains the draft standards of the Business Requirements and Use Cases for
 	* Address, Service Site, and Product Offering Qualification Management (MEF 79 Draft (R2))
 	* Product Order Management (MEF 80 Draft (R2))
-	* Product Inventry Management (MEF 81 Draft (R2))
+	* Product Inventory Management (MEF 81 Draft (R2))
 
 All superseded files can be found in the Git history, if needed.
 
