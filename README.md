@@ -1,6 +1,10 @@
-# MEF-LSO-Sonata-SDK (R3)
+# MEF-LSO-Sonata-SDK (R4)
 
-This repository contains the MEF LSO Sonata SDK. It includes API definitions for the following functional areas:
+This repository contains the MEF LSO Sonata SDK.
+
+This SDK release aligns the API schemas and definitions for Serviceability (Address Validation, Site Queries, Product Offering Qualification) and Product Inventory to the latest versions of MEF 79 and MEF 81 Draft Standards. In addition, the API schemas and definitions for Product Order are aligned with the new version of other Sonata APIs. The latest versions of MEF 79 and MEF 81 Draft Standards are included.
+
+MEF LSO Sonata SDK includes API definitions for the following functional areas:
 
 *  Serviceability (Address, Service Site, and Product Offering Qualification Management)
 *  Product Quote
@@ -12,6 +16,10 @@ It also holds Payload Descriptions for the following structures that are used wi
 *  JSON representations for the UNI attributes (sourced from MEF 57.1)
 
 The MEF LSO Sonata SDK is released under the Apache 2.0 license.
+
+More information about the LSO Sonata API reference point can be found here:
+
+https://wiki.mef.net/display/CESG/LSO+Sonata
 
 ## Maturity Level
 The API files contained in this SDK are evolving and subject to change.  They are based on documents that are either ratified standards, or draft standards that have not yet completed the review cycles and approvals necessary to achieve the status as a MEF standard.  MEF is making these publicly available at this time to invite wider industry review.
@@ -34,9 +42,9 @@ This SDK contains the following items:
 		* Determine whether it is feasible for the Seller to deliver a particular Product with a given configuration to a particular geographic location if applicable.
 	*  ProductOrder - Contains the API definitions for inter-carrier service ordering capability.
 *  documentation - This contains the draft standards of the Business Requirements and Use Cases for
-	* Address, Service Site, and Product Offering Qualification Management (MEF 79 Draft (R2))
+	* Address, Service Site, and Product Offering Qualification Management (MEF 79 Draft (R3))
 	* Product Order Management (MEF 80 Draft (R2))
-	* Product Inventory Management (MEF 81 Draft (R2))
+	* Product Inventory Management (MEF 81 Draft (R3))
 
 All superseded files can be found in the Git history, if needed.
 
@@ -46,9 +54,9 @@ Any developer intending to use the materials in this repository should first tho
 *  [MEF 55.0.1: Amendment to MEF 55: Operational Threads](documentation/MEF%2055.0.1%20-%20Operational%20Threads.pdf) This document is a ratified MEF standard.
 *  [MEF 55.0.2: Amendment to MEF 55: TOSCA Services Templates](documentation/MEF%2055.0.2%20-%20TOSCA%20Service%20Templates.pdf) This document is a ratified MEF standard.
 *  [MEF 50.1: MEF Services Lifecycle Process Flows](documentation/MEF%2050.1%20-%20MEF%20Services%20Lifecycle%20Process%20Flows.pdf) This document is a ratified MEF standard.
-*  [MEF 79 Draft (R2): Address, Service Site, and Product Offering Qualification Management](documentation/MEF%2079%20Draft%20(R2)%20-%20Address%2C%20Service%20Site%2C%20and%20Product%20Offering%20Qualification%20Management.pdf)
+*  [MEF 79 Draft (R3): Address, Service Site, and Product Offering Qualification Management](documentation/MEF%2079%20Draft%20(R3)%20-%20Address%2C%20Service%20Site%2C%20and%20Product%20Offering%20Qualification%20Management.pdf)
 *  [MEF 80 Draft (R2): Quote Management](documentation/MEF%2080%20Draft%20(R2)%20-%20Quote%20Management.pdf)
-*  [MEF 81 Draft (R2): Product Inventory Management](documentation/MEF%2081%20Draft%20(R2)%20-%20Product%20Inventory%20Management.pdf)
+*  [MEF 81 Draft (R3): Product Inventory Management](documentation/MEF%2081%20Draft%20(R3)%20-%20Product%20Inventory%20Management.pdf)
 *  [MEF 57.1: Ethernet Ordering Technical Standard - Business Requirements and Use Cases](documentation/MEF%2057.1%20-%20Ethernet%20Ordering%20Technical%20Specification%20-%20Business%20Requirements%20and%20Use%20Cases.pdf) This document is a ratified MEF standard.
 
 ## Questions and Feedback

@@ -6,13 +6,13 @@ info:
     \  Its location can be described either with geocodes (Lat/Long information) or\
     \ by association with an Address or Address Reference.  \n\nGeographic Site API\
     \ has been designed by MEF Sonata team and used TMF 674 as template.\n\n"
-  version: "2.0.0"
+  version: "3.0.0"
   title: "API GeographicSiteManagement"
   x-logo:
     url: "/redoc/logo.png"
     backgroundColor: "#FFFFFF"
 host: "serverRoot"
-basePath: "/api/mef/geographicSiteManagement/v1/"
+basePath: "/api/mef/geographicSiteManagement/v3/"
 schemes:
 - "https"
 produces:
@@ -41,23 +41,47 @@ paths:
         description: "Status of the site"
         type: "string"
         enum:
-        - "PLANNED"
-        - "CANCELLED"
-        - "UNDER_CONSTRUCTION"
-        - "EXISTING"
-        - "FORMER"
+        - "planned"
+        - "cancelled"
+        - "underConstruction"
+        - "existing"
+        - "former"
       - name: "siteCompanyName"
         required: false
         in: "query"
-        description: "The name of the company that is located at the service location.\
-          \ This may be different from the name of the Buyer that ordered services\
-          \ at that site"
+        description: "The name of the company that is the administrative authority\
+          \ (e.g. controls access) for this Service Site. (For example, the building\
+          \ owner)"
         type: "string"
       - name: "siteCustomerName"
         required: false
         in: "query"
-        description: "The customer name at a site where the service will be/are/were\
-          \ delivered"
+        description: "The name of the company that is the administrative authority\
+          \ for the space within this Service Site. (For example, the company leasing\
+          \ space in a multi-tenant building)."
+        type: "string"
+      - name: "siteDescription"
+        required: false
+        in: "query"
+        description: "A textual description of the Service Site."
+        type: "string"
+      - name: "siteType"
+        required: false
+        in: "query"
+        description: "This defines whether a Service Site is public or private."
+        type: "string"
+      - name: "siteName"
+        required: false
+        in: "query"
+        description: "A name commonly used by people to refer to this Service Site."
+        type: "string"
+      - name: "siteContactName"
+        required: false
+        in: "query"
+        description: "Identifies the name of the person or organization at the specific\
+          \ site location that is the local contact. This contact will primarily be\
+          \ used for gaining access to the site.\nFiltering is done on the name of\
+          \ the relatedParty which has role ‘Site Contact’ in the Site record."
         type: "string"
       - name: "geographicAddress.id"
         required: false
@@ -203,11 +227,11 @@ definitions:
     description: "Status of a geographical site"
     type: "string"
     enum:
-    - "PLANNED"
-    - "CANCELLED"
-    - "UNDER_CONSTRUCTION"
-    - "EXISTING"
-    - "FORMER"
+    - "planned"
+    - "cancelled"
+    - "underConstruction"
+    - "existing"
+    - "former"
   ErrorRepresentation:
     description: "Class used to describe API response error"
     required:
@@ -271,7 +295,7 @@ definitions:
         description: "Phone number Extension."
         type: "string"
       '@referredType':
-        description: "Technical attribute to extend the API"
+        description: "Allow to specify the party type like Organization or Individual"
         type: "string"
   GeographicSite:
     description: "Designated as Service Site in TS.\nA fixed physical location at\
@@ -305,6 +329,20 @@ definitions:
       additionnalSiteInformation:
         description: "Additional site information"
         type: "string"
+      siteType:
+        description: "This defines whether a Service Site is public or private.  “\
+          PUBLIC” means that the existence of this Service Site is public information.\
+          \  A meet-me-room in a hosted data center facility (where all interconnects\
+          \ between parties take place) is an example of a public Service Site.  A\
+          \ shared facility in the basement of a multi-tenant business building where\
+          \ all interconnects between parties take place is another example of a public\
+          \ Service Site.  “PRIVATE” means that the existence of this Service Site\
+          \ is on a need-to-know basis.  A wiring closet set up inside a customer\
+          \ facility just to connect two parties is an example of a private Service\
+          \ Site. For “PRIVATE” sites, the Seller does not return any information\
+          \ regarding the existence of this Service Site unless it has been established\
+          \ that this Buyer is authorized to obtain this information."
+        type: "string"
       relatedParty:
         type: "array"
         items:
@@ -328,27 +366,10 @@ definitions:
       \ geographicalSite"
     type: "object"
     properties:
-      streetNr:
-        description: "Number identifying a specific property on a public street. It\
-          \ may be combined with streetNrLast for ranged addresses"
-        type: "string"
-      streetName:
-        description: "Name of the street or other street type"
-        type: "string"
-      streetType:
-        description: "Alley, avenue, boulevard, brae, crescent, drive, highway, lane,\
-          \ terrace, parade, place, tarn, way, wharf"
-        type: "string"
-      city:
-        description: "City that the address is in"
-        type: "string"
-      postcode:
-        description: "Descriptor for a postal delivery area, used to speed and simplify\
-          \ the delivery of mail (also known as zipcode)"
-        type: "string"
-      country:
-        description: "Country that the address is in"
-        type: "string"
+      fieldedAddress:
+        $ref: "#/definitions/FieldedAddress"
+      formattedAddress:
+        $ref: "#/definitions/FormattedAddress"
   GeographicSiteFindResp:
     description: "Technical structure to provide site list retrieve in the GET operation"
     type: "object"
@@ -359,16 +380,30 @@ definitions:
       status:
         $ref: "#/definitions/Status"
       siteCompanyName:
-        description: "The name of the company that is located at the service location.\
-          \ This may be different from the name of the Buyer that ordered services\
-          \ at that site"
+        description: "The name of the company that is the administrative authority\
+          \ (e.g. controls access) for this Service Site. (For example, the building\
+          \ owner)"
         type: "string"
       siteCustomerName:
-        description: "The customer name at a site where the service will be/are/were\
-          \ delivered"
+        description: "The name of the company that is the administrative authority\
+          \ for the space within this Service Site. (For example, the company leasing\
+          \ space in a multi-tenant building)."
         type: "string"
       geographicAddress:
         $ref: "#/definitions/GeographicAddressFindResp"
+      siteName:
+        description: "A name commonly used by people to refer to this Service Site."
+        type: "string"
+      siteDescription:
+        description: "A textual description of the Service Site."
+        type: "string"
+      siteType:
+        description: "This defines whether a Service Site is public or private."
+        type: "string"
+      siteContactName:
+        description: "Name of the relatedParty which has role 'Site Contact' in the\
+          \ Site record."
+        type: "string"
   SubUnit:
     description: ""
     required:

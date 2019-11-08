@@ -7,13 +7,13 @@ info:
     \ POQ List\n- Retrieve POQ by Identifier\n(note: POQ Notification are described\
     \ in a separate swagger)\n\nProductOfferingQualification  API has been designed\
     \ by MEF Sonata team and used TMF 679 as template.\n\n\n"
-  version: "2.0.0"
+  version: "3.0.1"
   title: "API ProductOfferingQualificationManagement"
   x-logo:
     url: "/redoc/logo.png"
     backgroundColor: "#FFFFFF"
 host: "serverRoot"
-basePath: "/api/mef/productOfferingQualificationManagement/v2/"
+basePath: "/api/mef/productOfferingQualificationManagement/v3/"
 schemes:
 - "https"
 produces:
@@ -85,15 +85,17 @@ paths:
         422:
           description: "Unprocessable entity\n\nFunctional error\n\n\n \n\n\n - code:\
             \ 100\nmessage: A relatedParty - at productOfferingQualification level\
-            \ - with a role 'Buyer' must be provided\ndescription: \n\n\n - code:\
-            \ 101\nmessage: A least a productOffering OR a productSpecification OR\
-            \ a Product must be provided for a POQItem\ndescription: \n\n\n - code:\
-            \ 102\nmessage: Provided Product Offering Identifier is unknown\ndescription:\
-            \ \n\n\n - code: 103\nmessage: Provided Product Specification Identifier\
-            \ is unknown\ndescription: \n\n\n - code: 104\nmessage: Provided Product\
-            \ Identifier is unknown\ndescription: \n\n\n - code: 105\nmessage: The\
-            \ place information provided are invalid\ndescription: \n\n\n - code:\
-            \ 106\nmessage: A least one date provided is invalid\ndescription: "
+            \ - with a role 'Buyer' must be provided (including contact information)\n\
+            description: \n\n\n - code: 101\nmessage: A least a productOffering OR\
+            \ a productSpecification OR a Product must be provided for a POQItem\n\
+            description: \n\n\n - code: 102\nmessage: Provided Product Offering Identifier\
+            \ is unknown\ndescription: \n\n\n - code: 103\nmessage: Provided Product\
+            \ Specification Identifier is unknown\ndescription: \n\n\n - code: 104\n\
+            message: Provided Product Identifier is unknown\ndescription: \n\n\n -\
+            \ code: 105\nmessage: The place information provided are invalid\ndescription:\
+            \ \n\n\n - code: 106\nmessage: A least one date provided is invalid\n\
+            description: \n\n\n - code: 107\nmessage: Incorrect related party role\
+            \ provided\ndescription: "
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         503:
@@ -124,13 +126,13 @@ paths:
         in: "query"
         description: "Identifier of buyer project associated to POQ"
         type: "string"
-      - name: "expectedResponseDate.gt"
+      - name: "requestedResponseDate.gt"
         required: false
         in: "query"
         description: "POQ expected response date is after this date"
         type: "string"
         format: "date-time"
-      - name: "expectedResponseDate.lt"
+      - name: "requestedResponseDate.lt"
         required: false
         in: "query"
         description: "POQ expected response date is before this date"
@@ -438,43 +440,52 @@ definitions:
     description: "A color that indicates confidence to service the request."
     type: "string"
     enum:
-    - "GREEN"
-    - "RED"
-    - "YELLOW"
+    - "green"
+    - "red"
+    - "yellow"
   ProductOfferingQualificationStateType:
     description: "These values represent the valid states through which the product\
       \ offering qualification can transition"
     type: "string"
     enum:
-    - "IN_PROGRESS"
-    - "READY"
-    - "EXPIRED"
-    - "UNABLE_TO_PROVIDE"
-    - "INSUFICIENT_INFORMATION_PROVIDED"
+    - "done"
+    - "terminatedWithError.unableToProvide"
+    - "terminatedWithError.insufficientInformationProvided"
+    - "inProgress"
   TimeUnit:
     description: "Represents a unit of time."
     type: "string"
     enum:
-    - "SECS"
-    - "MINS"
-    - "HOURS"
-    - "BUSINESS_DAYS"
-    - "CALENDAR_DAYS"
+    - "calendarDays"
+    - "calendarHours"
+    - "calendarMinutes"
+    - "businessDays"
+    - "businessHours"
+    - "businessMinutes"
   RelationshipType:
     description: "Relationship type to be used between POQ item or product"
     type: "string"
     enum:
-    - "RELIES_ON"
-    - "BUNDLED"
-    - "COMES_FROM"
+    - "reliesOn"
+    - "bundled"
+    - "comesFrom"
   ProductActionType:
     description: "Action to be performed on the Product"
     type: "string"
     enum:
-    - "INSTALL"
-    - "CHANGE"
-    - "DISCONNECT"
-    - "NO_CHANGE"
+    - "add"
+    - "change"
+    - "remove"
+    - "noChange"
+  ProductOfferingQualificationItemStateType:
+    description: "POQ item states - The specific states are managed by the Seller\
+      \ based on its processing and/or based on Buyer's action."
+    type: "string"
+    enum:
+    - "done"
+    - "terminatedWithError.unableToProvide"
+    - "terminatedWithError.insufficientInformationProvided"
+    - "inProgress"
   ErrorRepresentation:
     description: "Standard Class used to describe API response error"
     required:
@@ -502,7 +513,8 @@ definitions:
         description: "url pointing to documentation describing the error"
         type: "string"
       '@type':
-        description: "Type of the REST resource Used to extend Error class"
+        description: "When\_sub-classing,\_this\_defines\_the\_sub-class\_entity\_\
+          name"
         type: "string"
       '@schemaLocation':
         description: "Link to the schema describing the REST resource Used to extend\
@@ -531,6 +543,7 @@ definitions:
       id:
         description: "Id of the party"
         type: "string"
+        maxLength: 45
       name:
         description: "Name of the party"
         type: "string"
@@ -549,8 +562,11 @@ definitions:
       emailAddress:
         description: "Party email address"
         type: "string"
+      '@type':
+        description: "When sub-classing, this defines the sub-class entity name"
+        type: "string"
       '@referredType':
-        description: "Technical attribute for API extension"
+        description: "The actual type of the target instance when needed for disambiguation."
         type: "string"
   ProductOfferingRef:
     description: "The commercial and technical details of a Product sold by a particular\
@@ -563,6 +579,10 @@ definitions:
     properties:
       id:
         description: "id of a productOffering"
+        type: "string"
+      '@referredType':
+        description: "The\_actual\_type\_of\_the\_target\_instance\_when\_needed\_\
+          for\_disambiguation."
         type: "string"
   Describing:
     description: "Target to the schema describing the product spec resource (and type)"
@@ -578,8 +598,13 @@ definitions:
   AlternateProductProposal:
     description: "If in the request the buyer has requested to have alternate product\
       \ proposals, then this class represents these proposals."
+    required:
+    - "id"
     type: "object"
     properties:
+      id:
+        description: "Identifier of the Product Offering Qualification alternate proposal"
+        type: "string"
       productSpecification:
         $ref: "#/definitions/ProductSpecificationRef"
       eligibleProductOffering:
@@ -599,9 +624,7 @@ definitions:
     type: "object"
     properties:
       type:
-        description: "Indicates whether the product is \"bundled\", \"relies on\"\
-          , or \"comesFrom\" another product."
-        type: "string"
+        $ref: "#/definitions/RelationshipType"
       product:
         $ref: "#/definitions/ProductRef"
   ProductSpecificationRef:
@@ -614,9 +637,13 @@ definitions:
         type: "string"
       describing:
         $ref: "#/definitions/Describing"
+      '@referredType':
+        description: "The\_actual\_type\_of\_the\_target\_instance\_when\_needed\_\
+          for\_disambiguation."
+        type: "string"
   Product:
     description: "One or more services sold to a Buyer by a Seller.  A particular\
-      \ Product Offering defines the technical and commercial attributes and behav-iors\
+      \ Product Offering defines the technical and commercial attributes and behaviors\
       \ of a Product."
     type: "object"
     properties:
@@ -636,6 +663,10 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/RelatedPlaceReforValue"
+      '@type':
+        description: "When\_sub-classing,\_this\_defines\_the\_sub-class\_entity\_\
+          name"
+        type: "string"
   ProductOfferingQualificationItem:
     description: "An individual article included in a POQ that describes a Product\
       \ of a particular type (Product Offering) being delivered to a specific geographical\
@@ -652,7 +683,7 @@ definitions:
         description: "Id of this POQ item"
         type: "string"
       state:
-        $ref: "#/definitions/ProductOfferingQualificationStateType"
+        $ref: "#/definitions/ProductOfferingQualificationItemStateType"
       action:
         $ref: "#/definitions/ProductActionType"
       serviceabilityConfidence:
@@ -691,10 +722,19 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/TerminationError"
+      stateChange:
+        type: "array"
+        items:
+          $ref: "#/definitions/StateChange"
+      '@type':
+        description: "When\_sub-classing,\_this\_defines\_the\_sub-class\_entity\_\
+          name"
+        type: "string"
   ProductOfferingQualification:
     description: "A grouping of POQ Items formulated into a request made by a Buyer\
       \ to a Seller"
     required:
+    - "id"
     - "state"
     - "relatedParty"
     - "productOfferingQualificationItem"
@@ -742,8 +782,14 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/ProductOfferingQualificationItem"
+        minItems: 1
+      stateChange:
+        type: "array"
+        items:
+          $ref: "#/definitions/StateChange"
       '@type':
-        description: "Technical attribute to extend the class"
+        description: "When\_sub-classing,\_this\_defines\_the\_sub-class\_entity\_\
+          name"
         type: "string"
       '@schemaLocation':
         description: "Technical attribute to extend the class"
@@ -774,7 +820,8 @@ definitions:
     type: "object"
     properties:
       id:
-        description: "Id of the productOfferingQualification item"
+        description: "Id of the productOfferingQualification item.\nThis id must be\
+          \ unique within POQ create request"
         type: "string"
       action:
         $ref: "#/definitions/ProductActionType"
@@ -790,6 +837,10 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/RelatedParty"
+      '@type':
+        description: "When\_sub-classing,\_this\_defines\_the\_sub-class\_entity\_\
+          name"
+        type: "string"
   ProductOfferingQualification_Create:
     description: "This structure serves as a request for a product offering qualification.\n\
       A POQ is a grouping of POQ Items formulated into a request made by a Buyer to\
@@ -826,8 +877,10 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/ProductOfferingQualificationItem_Create"
+        minItems: 1
       '@type':
-        description: "Technical attribute to extend this class"
+        description: "When\_sub-classing,\_this\_defines\_the\_sub-class\_entity\_\
+          name"
         type: "string"
       '@schemaLocation':
         description: "Technical attribute to extend this class"
@@ -872,17 +925,24 @@ definitions:
     - "role"
     type: "object"
     properties:
-      role:
-        description: "Role of this place"
-        type: "string"
       id:
         description: "id of this place"
         type: "string"
+        maxLength: 45
       href:
         description: "href to this place resource"
         type: "string"
+      role:
+        description: "Role of this place"
+        type: "string"
       '@type':
-        description: "Technical attribute to manage API extension. In this case @referredType\
+        description: "When\_sub-classing,\_this\_defines\_the\_sub-class\_entity\_\
+          name.\nUsed when place is described by value (litterally)\nCould be valued\
+          \ to FormattedAddress, FieldedAddress,  GeographicLocation or ReferencedAddress"
+        type: "string"
+      '@referredType':
+        description: "The\_actual\_type\_of\_the\_target\_instance\_when\_needed\_\
+          for\_disambiguation.\nUsed when place is described by reference\n@referredType\
           \ could be valued to FormattedAddress, FieldedAddress, GeographicSite, GeographicLocation\
           \ or ReferencedAddress"
         type: "string"
@@ -938,6 +998,9 @@ definitions:
       buyerProductId:
         description: "Targeted Buyer product id - Informative"
         type: "string"
+      '@referredType':
+        description: "The actual type of the target instance when needed for disambiguation."
+        type: "string"
   SubUnit:
     description: ""
     required:
@@ -949,10 +1012,12 @@ definitions:
         description: "The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,\
           \ UNIT, WHARF."
         type: "string"
+        maxLength: 25
       subUnitIdentifier:
         description: "The discriminator used for the subunit, often just a simple\
           \ number but may also be a range."
         type: "string"
+        maxLength: 10
   GeographicSubAddress:
     description: "It is used for addressing within a property in an urban area (country\
       \ properties are often defined differently). It may refer to a building, a building\
@@ -969,22 +1034,28 @@ definitions:
       levelType:
         description: "Describes level types within a building"
         type: "string"
+        maxLength: 25
       levelNumber:
         description: "Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT\
           \ 2"
         type: "string"
+        maxLength: 25
       buildingName:
         description: "Allows for buildings that have well-known names"
         type: "string"
+        maxLength: 60
       privateStreetNumber:
         description: "Private streets numbers internal to a private street"
         type: "string"
+        maxLength: 10
       privateStreetName:
         description: "\"Private streets internal to a property (e.g. a university)\
           \ may have internal names that are not recorded by the land title office"
         type: "string"
+        maxLength: 60
       '@type':
-        description: "Technical attribute to exend this class if needed"
+        description: "When\_sub-classing,\_this\_defines\_the\_sub-class\_entity\_\
+          name"
         type: "string"
       '@schemaLocation':
         description: "Technical attribute to exend this class if needed (JSON schema\
@@ -1008,45 +1079,58 @@ definitions:
           description: "Number identifying a specific property on a public street.\
             \ It may be combined with streetNrLast for ranged addresses"
           type: "string"
+          maxLength: 10
         streetNrSuffix:
           description: "The first street number suffix"
           type: "string"
+          maxLength: 10
         streetNrLast:
           description: "Last number in a range of street numbers allocated to a property"
           type: "string"
+          maxLength: 10
         streetNrLastSuffix:
           description: "Last street number suffix for a ranged address"
           type: "string"
+          maxLength: 10
         streetName:
           description: "Name of the street or other street type"
           type: "string"
+          maxLength: 60
         streetType:
           description: "Alley, avenue, boulevard, brae, crescent, drive, highway,\
             \ lane, terrace, parade, place, tarn, way, wharf"
           type: "string"
+          maxLength: 25
         streetSuffix:
           description: "A modifier denoting a relative direction"
           type: "string"
+          maxLength: 2
         locality:
           description: "The locality that the address is in"
           type: "string"
+          maxLength: 50
         city:
           description: "The city that the address is in"
           type: "string"
+          maxLength: 50
         stateOrProvince:
           description: "The State or Province that the address is in"
           type: "string"
+          maxLength: 50
         postcode:
           description: "Descriptor for a postal delivery area, used to speed and simplify\
             \ the delivery of mail (also known as zipcode)"
           type: "string"
+          maxLength: 6
         postcodeExtension:
           description: "An extension of a postal code. E.g. the part following the\
             \ dash in an american urban property address"
           type: "string"
+          maxLength: 4
         country:
           description: "Country that the address is in"
           type: "string"
+          maxLength: 50
         geographicSubAddress:
           $ref: "#/definitions/GeographicSubAddress"
   FormattedAddress:
@@ -1067,31 +1151,39 @@ definitions:
         addrLine1:
           description: "The first address line in a formatted address"
           type: "string"
+          maxLength: 25
         addrLine2:
           description: "The second address line in a formatted address"
           type: "string"
+          maxLength: 25
         locality:
           description: "An area of defined or undefined boundaries within a local\
             \ authority or other legislatively defined area, usually rural or semi\
             \ rural in nature"
           type: "string"
+          maxLength: 50
         city:
           description: "The city that the address is in"
           type: "string"
+          maxLength: 50
         stateOrProvince:
           description: "The State or Province that the address is in"
           type: "string"
+          maxLength: 50
         postcode:
           description: "Descriptor for a postal delivery area, used to speed and simplify\
             \ the delivery of mail (also known as ZIP code)"
           type: "string"
+          maxLength: 6
         postcodeExtension:
           description: "An extension of a postal code. E.g. the part following the\
             \ dash in an American urban property address"
           type: "string"
+          maxLength: 4
         country:
           description: "Country that the address is in"
           type: "string"
+          maxLength: 50
   ReferencedAddress:
     description: "A globally unique identifier controlled by a generally accepted\
       \ independent administrative authority that specifies a fixed geographical location."
@@ -1138,3 +1230,17 @@ definitions:
           type: "string"
         geographicPoint:
           $ref: "#/definitions/GeographicPoint"
+  StateChange:
+    description: "Holds the state notification reasons and associated date the state\
+      \ changed, populated by the server"
+    type: "object"
+    properties:
+      changeDate:
+        description: ""
+        type: "string"
+        format: "date-time"
+      changeReason:
+        description: ""
+        type: "string"
+      state:
+        $ref: "#/definitions/ProductOfferingQualificationStateType"

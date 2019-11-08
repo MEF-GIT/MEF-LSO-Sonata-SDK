@@ -1,0 +1,250 @@
+LSO SONATA APIs
+R4 release notes
+==============================================================
+
+-------------------------------------------------------------- 
+MEF_api_GeographicAddressManagement
+Version: 3.0.0
+
+Global corrections & completions of classes/attributes description
+
+#46 - Rename attributes in GeographicAddressValidation resource: validAddress to requestedAddress, alternateAddress to verifiedAddress.
+It changes API behaviour from previous version. The buyer request an address to be validated in the requestedAddress attribute and seller will keep this address in this attribute + add validated&alternate address in verifiedAddress 
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/46#issuecomment-531154501
+
+#59 - Remove provideAlternative attribute in GeographicAddressValidation resource
+
+#61 - Add an hasPublicSite boolean in GeographicAddress & GeographicAddressValidation resource.
+It will allow seller to specify that a public site is available at this address.
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/61#issue-493223223
+
+#62 - Add an allowsNewSite boolean in GeographicAddress & GeographicAddressValidation resource.
+It will allow seller to specify that it is possible to add new site at this address.
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/62#issue-493224285
+
+#63 - Add boolean isBestMatch attribute in GeographicAddressValidation response - mandatory
+For each Address returned, this attribute specifies if the Seller believes this is the best match to the Buyer specified Address. Setting this to TRUE also represents that the Seller believes this is likely a direct match to the Buyer Specified Address.
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/63#issue-493234286
+
+#64 - Add a business error for AdressValidation if too many addresses match
+Add a 422 + 100 error. Seller will trigger this error if buyer did not provide enough address information --> too many addresses match in seller database.
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/64#issue-493236251
+
+#73 - Remove status attribute in GeographicAddressValidation resource
+
+-------------------------------------------------------------- 
+-------------------------------------------------------------- 
+MEF_api_GeographicSiteManagement
+Version: 3.0.0
+
+Global corrections & completions of classes/attributes description
+
+#65 - Add a siteType attribute in GeographicalSite
+Add a siteType to define whether a Service Site is public or private. String. Expected values: PUBLIC, PRIVATE. Not defined as an enum.
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/65#issue-493239553
+
+#66 - In GeographicSite GET by list add following attributes in request & response: siteDescription, siteName, siteType & siteContactName
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/66#issue-493276708
+
+#68 - Add fieldedAddress & formattedAdress attributes in GET GeographicSite response
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/68#issue-493383001
+
+-------------------------------------------------------------- 
+-------------------------------------------------------------- 
+MEF_api_ProductOfferingQualificationManagement
+Version: 3.0.1
+
+Global corrections & completions of classes/attributes description
+
+#69 - Align POQ & POQ Item state with MEF79
+    "ProductOfferingQualificationStateType": {
+      "description": "These values represent the valid states through which the product offering qualification can transition",
+    
+      "type": "string",
+      "enum": [
+        "done",
+        "terminatedWithError.unableToProvide",
+        "terminatedWithError.insufficientInformationProvided",
+        "inProgress"]
+    
+    },
+
+#70 - Aligne timeUnit with MEF79 enum values
+    "TimeUnit": {
+      "description": "Represents a unit of time.",
+    
+      "type": "string",
+      "enum": [
+        "calendarDays",
+        "calendarHours",
+        "calendarMinutes",
+        "businessDays",
+        "businessHours",
+        "businessMinutes"]
+    
+    },
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/70#issue-493740382
+
+#71 - Add an id attribute for AlternateProductProposal in POQ Item proposal
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/71#issue-493740826
+
+#72 - Align POQ GET by list filtering criterias with MEF79
+Change request criterias: remove expectedResponseDate lt & gt. Add requestedResponseDate lt & gt.
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/72#issue-493741150
+
+#105 - Add StateChange structure for POQ & POQ Item to retrieve state history
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/105#issue-501969103
+
+Changed state in stateChange structure - use an enum and not a string
+
+Updated 422-100 error description when contact information not provided in POQ
+
+The id attribute in POQ made mandatory
+
+Set the minimum number of elements to 1 for POQ Item
+
+Description of POQ Item id updated with information that id should be unique within POQ create request
+
+RelationshipType enum used for productRelationship
+
+Add 422-107 error code for incorrect related party role provided in POQ
+
+-------------------------------------------------------------- 
+-------------------------------------------------------------- 
+MEF_api_ProductOfferingQualificationNotification
+Version: 3.0.0
+
+Global corrections & completions of classes/attributes description
+
+Remove productOfferingQualificationAttributeChangeNotification resource
+
+#69 - Align POQ & POQ Item state with MEF79
+    "QualificationState": {
+    "description": "These values represent the valid states through which the product offering qualification can transition",
+    
+      "type": "string",
+      "enum": [
+        "inProgress",
+        "done",
+        "terminatedWithError.unableToProvide",
+        "terminatedWithError.insufficientInformationProvided"]
+    
+    },
+
+PoqEventType enum values adjusted
+    "PoqEventType": {
+    "description": "Indicates the type of product offering qualification event.",
+    
+      "type": "string",
+      "enum": [
+        "ProductOfferingQualificationCreateEventNotification",
+        "ProductOfferingQualificationStateChangeEventNotification"]
+    
+    },
+
+-------------------------------------------------------------- 
+-------------------------------------------------------------- 
+MEF_api_QuoteManagement
+Version: 2.0.0
+
+-------------------------------------------------------------- 
+-------------------------------------------------------------- 
+MEF_api_ProductOrderManagement
+Version: 3.0.0
+
+Global corrections & completions of classes/attributes description
+
+#51 - Set the minimum number of elements to 1 for orderItem
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/51#issue-469394086
+
+#54 - Add empty GeographicSite structure to resolve Site value used as @type for RelatedPlaceReforValue
+A small technical issue with the schema. When we choose "Site" as a @type for "RelatedPlaceReforValue", there is no "Site" object so the discriminator fails to resolve.
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/54#issuecomment-523525703
+
+#55 - The streetName attribute in FieldedAddress made mandatory
+The field 'streetName' should be made mandatory/required in the schema. Just like the other mandatory/required fields of a FieldedAddress (streetType, city, stateOrProvince, postcode and country).
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/55#issue-479082351
+
+#56 - 422-106 Error Code - Error description when place type is 'Formatted Address' updated to call out proper manadatory attributes
+The mandatory/required fields called out in the error message when the place type is 'Formatted Address' do not match those set as mandatory/required in the schema. The error description should be updated as follows: If place type is 'Formatted Address' : addrLine1, city, stateOrProvince, postCode and country must be there...
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/56#issue-479092879
+
+
+#57 - 422-106 Error Code - Error description when place type is 'Fielded Address' updated to call out proper manadatory attributes
+The mandatory/required fields called out in the error message when the place type is 'Fielded Address' do not match those set as mandatory/required in the schema. The error description should be updated as follows: If place type is 'Fielded Address' : streetName, streetType, city, stateOrProvince, postCode and country must be there...
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/57#issue-479093425
+
+#78 - Align Order Item price with Product price in Product Inventory (MEF81)
+Add a price unitOfMeasure in the orderItemPrice structure
+Add a taxRate attribute
+Add a taxIncludedAmount structure (value + unit)
+Rename preTaxAmount to dutyFreeAmount
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/78#issue-493748955
+
+#123 - Add StateChange structure for Order & Order Item to retrieve state history
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/123#issue-511274084
+
+Align with 3.0 version of other Sonata APIs - renamed state names
+
+Align productActionType enum values for productOrder APIs with POQ API
+
+-------------------------------------------------------------- 
+-------------------------------------------------------------- 
+MEF_api_ProductOrderNotification
+Version: 3.0.0
+
+Global corrections & completions of classes/attributes description
+
+Align state with productOrder API for productOrderState & productOrderStateItem
+
+Align enum class name with productOrder API for ProductActionType, ProductOrderItemStateType & ProductOrderStateType
+
+Align productActionType enum values for productOrder APIs with POQ API
+
+-------------------------------------------------------------- 
+-------------------------------------------------------------- 
+MEF_api_ProductInventoryManagement
+Version: 3.0.0
+
+Global corrections & completions of classes/attributes description
+
+#75 - Add GET (by list) product inventory filtering criteria
+Add a request parameter startDate.lt and indicate this is to request lesser than Initial order Completion Date
+Add a request parameter startDate.gt and indicate this is to request greater than Initial order Completion Date
+Add a request parameter lastUpdateDate.lt and indicate this is to request lesser than the last update Date
+Add a request parameter lastUpdateDate.gt and indicate this is to request greater than  last update Date
+Add a request parameter BillingAccountId
+Add a request parameter ProductOrderId
+Correct geographicalSite.id to geographicalSiteId
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/75#issue-493744782
+
+#76 - Align product state with MEF 81
+    "ProductStatus": {
+      "description": "The state of the product in accordance with the product lifecycle.",
+    
+      "type": "string",
+      "enum": [
+        "active",
+        "suspended",
+        "activePendingTerminate",
+        "terminated",
+        "pendingActive",
+        "suspendedPendingTerminate"]
+    
+    },
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/76#issue-493745320
+
+#77 - Add an Agreement structure with id, name & path
+
+#78 - Align Product price with MEF81
+Add a price unitOfMeasure in the productPrice structure
+Add a taxRate attribute
+Add a taxIncludedAmount structure (value + unit)
+Rename preTaxAmount to dutyFreeAmount
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/78#issue-493748955
+
+#85 - Add a productTerm structure in product inventory to provide information related to product commitment term
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/85#issue-501949228
+
+#124 - Add StatusChange structure for Product to log status change
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/124#issue-511402550

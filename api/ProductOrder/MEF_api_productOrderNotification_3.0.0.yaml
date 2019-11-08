@@ -2,14 +2,14 @@ swagger: "2.0"
 info:
   description: "This is not the ProductOrder API but the API to manage notification\
     \ for ProductOrder. This API must be deployed on notification subscriber side\
-    \ (buyer side / listener)."
-  version: "1.0.0"
+    \ (buyer side / listener).\n\n"
+  version: "3.0.0"
   title: "API ProductOrderNotification"
   x-logo:
     url: "/redoc/logo.png"
     backgroundColor: "#FFFFFF"
 host: "serverRoot"
-basePath: "/mef-api/productOrderNotification/v1/"
+basePath: "/api/mef/productOrderNotification/v3/"
 schemes:
 - "https"
 produces:
@@ -28,9 +28,7 @@ paths:
       - "application/json;charset=utf-8"
       operationId: "notificationProductOrderCreationNotification"
       summary: "Product order creation notification structure"
-      description: "Product order creation notification structure description\n\n\
-        Specific business errors for current operation will be encapsulated in\n\n\
-        HTTP Response 422 Unprocessable entity\n"
+      description: "Product order creation notification structure description"
       deprecated: false
       parameters:
       - name: "productOrderCreationNotification"
@@ -41,7 +39,7 @@ paths:
           $ref: "#/definitions/Event"
       responses:
         204:
-          description: "Success"
+          description: "No Content"
         400:
           description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
             \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
@@ -97,9 +95,7 @@ paths:
       - "application/json;charset=utf-8"
       operationId: "notificationProductOrderStateChangeNotification"
       summary: "Product order state change structure"
-      description: "Product order state change structure description\n\nSpecific business\
-        \ errors for current operation will be encapsulated in\n\nHTTP Response 422\
-        \ Unprocessable entity\n"
+      description: "Product order state change structure description"
       deprecated: false
       parameters:
       - name: "productOrderStateChange"
@@ -110,7 +106,7 @@ paths:
           $ref: "#/definitions/Event"
       responses:
         204:
-          description: "Success"
+          description: "No Content"
         400:
           description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
             \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
@@ -166,9 +162,7 @@ paths:
       - "application/json;charset=utf-8"
       operationId: "notificationProductOrderAttributeValueChangeNotification"
       summary: "Product Order attribute value change structure"
-      description: "Product Order attribute value change structure description\n\n\
-        Specific business errors for current operation will be encapsulated in\n\n\
-        HTTP Response 422 Unprocessable entity\n"
+      description: "Product Order attribute value change structure description"
       deprecated: false
       parameters:
       - name: "productOrderAttributeValueChange"
@@ -179,7 +173,7 @@ paths:
           $ref: "#/definitions/EventPlus"
       responses:
         204:
-          description: "Success"
+          description: "No Content"
         400:
           description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
             \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
@@ -235,9 +229,7 @@ paths:
       - "application/json;charset=utf-8"
       operationId: "notificationProductOrderInformationRequiredNotification"
       summary: "Product Order information required structure"
-      description: "Product Order information required structure description\n\nSpecific\
-        \ business errors for current operation will be encapsulated in\n\nHTTP Response\
-        \ 422 Unprocessable entity\n"
+      description: "Product Order information required structure description"
       deprecated: false
       parameters:
       - name: "productOrderInformationRequired"
@@ -248,7 +240,7 @@ paths:
           $ref: "#/definitions/EventPlus"
       responses:
         204:
-          description: "Success"
+          description: "No Content"
         400:
           description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
             \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
@@ -297,70 +289,70 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
 definitions:
-  OrderItemAction:
+  ProductActionType:
     description: "An enumeration of valid order item actions"
     type: "string"
     enum:
-    - "INSTALL"
-    - "CHANGE"
-    - "DISCONNECT"
-    - "NO_CHANGE"
-  OrderStatus:
-    description: "An enumeration of valid order statuses"
+    - "add"
+    - "change"
+    - "remove"
+    - "noChange"
+  ProductOrderStateType:
+    description: "An enumeration of valid order states"
     type: "string"
     enum:
-    - "ACKNOWLEDGED"
-    - "REJECTED"
-    - "IN_PROGRESS"
-    - "PENDING"
-    - "HELD"
-    - "ASSESSING_CANCELLATION"
-    - "PENDING_CANCELLATION"
-    - "CANCELLED"
-    - "CONFIGURED"
-    - "CONFIRMED"
-    - "JEOPARDY"
-    - "FAILED"
-    - "PARTIAL"
-    - "COMPLETED"
+    - "completed"
+    - "partial"
+    - "failed"
+    - "inProgress.jeopardy"
+    - "inProgress.confirmed"
+    - "inProgress.configured"
+    - "cancelled"
+    - "pendingCancellation"
+    - "assessingCancellation"
+    - "held"
+    - "pending"
+    - "inProgress"
+    - "rejected"
+    - "acknowledged"
   RelationshipType:
     description: "Indicates the type of relationship between products."
     type: "string"
     enum:
-    - "RELIES_ON"
-    - "BUNDLED"
-    - "COMES_FROM"
-  OrderItemStatus:
-    description: "An enumeration of valid order item statuses."
+    - "reliesOn"
+    - "bundled"
+    - "comesFrom"
+  ProductOrderItemStateType:
+    description: "An enumeration of valid order item states."
     type: "string"
     enum:
-    - "ACKNOWLEDGED"
-    - "REJECTED"
-    - "IN_PROGRESS"
-    - "PENDING"
-    - "HELD"
-    - "ASSESSING_CANCELLATION"
-    - "PENDING_CANCELLATION"
-    - "CANCELLED"
-    - "CONFIGURED"
-    - "FAILED"
-    - "COMPLETED"
+    - "acknowledged"
+    - "rejected"
+    - "inProgress"
+    - "pending"
+    - "held"
+    - "assessingCancellation"
+    - "pendingCancellation"
+    - "cancelled"
+    - "inProgress.configured"
+    - "failed"
+    - "completed"
   Severity:
     description: "Severity of the order message"
     type: "string"
     enum:
-    - "ERROR"
-    - "INFORMATION"
+    - "error"
+    - "information"
   ProductOrderEventType:
     description: "Product Order event type"
     type: "string"
     enum:
-    - "PRODUCT_ORDER_CREATION_NOTIFICATION"
-    - "PRODUCT_ORDER_ATTRIBUTE_VALUE_CHANGE_NOTIFICATION"
-    - "PRODUCT_ORDER_STATE_CHANGE_NOTIFICATION"
-    - "PRODUCT_ORDER_INFORMATION_REQUIRED_NOTIFICATION"
+    - "productOrderCreationNotification"
+    - "productOrderAttributeValueChangeNotification"
+    - "productOrderStateChangeNotification"
+    - "productOrderInformationRequiredNotification"
   ErrorRepresentation:
-    description: ""
+    description: "Representation of an error."
     required:
     - "code"
     - "reason"
@@ -534,7 +526,7 @@ definitions:
           \ enterprise."
         type: "string"
       state:
-        $ref: "#/definitions/OrderStatus"
+        $ref: "#/definitions/ProductOrderStateType"
       requestedStartDate:
         description: "The buyer's requested date that order processing should start.\
           \ Format is YYYY-MM-DDThh:mmTZD (e.g. 1997-07-16T19:20+01:00)."
@@ -603,9 +595,9 @@ definitions:
           \ 01, 02, 03, ...)"
         type: "string"
       action:
-        $ref: "#/definitions/OrderItemAction"
+        $ref: "#/definitions/ProductActionType"
       state:
-        $ref: "#/definitions/OrderItemStatus"
+        $ref: "#/definitions/ProductOrderItemStateType"
       billingAccount:
         $ref: "#/definitions/BillingAccountRef"
       product:
