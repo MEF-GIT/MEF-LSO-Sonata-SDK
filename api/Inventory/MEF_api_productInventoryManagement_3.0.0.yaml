@@ -6,13 +6,13 @@ info:
     \ instances based upon a filter of product inventory attributes, or a specific\
     \ product instance based upon a product identifier.\n\n\nProduct Inventory API\
     \ has been designed by MEF Sonata team and used TMF 637 as template.\n\n"
-  version: "2.0.0"
+  version: "3.0.0"
   title: "API ProductInventoryManagement"
   x-logo:
     url: "/redoc/logo.png"
     backgroundColor: "#FFFFFF"
 host: "serverRoot"
-basePath: "/api/mef/productInventoryManagement/v2/"
+basePath: "/api/mef/productInventoryManagement/v3/"
 schemes:
 - "https"
 produces:
@@ -99,11 +99,12 @@ paths:
         description: "The status of the product"
         type: "string"
         enum:
-        - "ACTIVE"
-        - "PENDING_CHANGE"
-        - "SUSPENDED"
-        - "PENDING_TERMINATE"
-        - "TERMINATED"
+        - "active"
+        - "suspended"
+        - "activePendingTerminate"
+        - "terminated"
+        - "pendingActive"
+        - "suspendedPendingTerminate"
       - name: "productSpecificationId"
         required: false
         in: "query"
@@ -119,7 +120,7 @@ paths:
         in: "query"
         description: "A reference to the buyerProductId provided in the order"
         type: "string"
-      - name: "geographicalSite.id"
+      - name: "geographicalSiteId"
         required: false
         in: "query"
         description: "A site identifier which is associated to the product"
@@ -131,6 +132,44 @@ paths:
           \ Product Relationship to a specified Product.\nE.g. All Products related\
           \ to Product with ID 5"
         type: "string"
+      - name: "billingAccountId"
+        required: false
+        in: "query"
+        description: "The Billing Account associated with the Product."
+        type: "string"
+      - name: "productOrderId"
+        required: false
+        in: "query"
+        description: "Identifies Product Order(s) associated with the Product"
+        type: "string"
+      - name: "startDate.lt"
+        required: false
+        in: "query"
+        description: "Less than the date that is the initial install date for the\
+          \ Product"
+        type: "string"
+        format: "date-time"
+      - name: "startDate.gt"
+        required: false
+        in: "query"
+        description: "Greater than the date that is the initial install date for the\
+          \ Product"
+        type: "string"
+        format: "date-time"
+      - name: "lastUpdateDate.lt"
+        required: false
+        in: "query"
+        description: "Less than date that the last change affecting this Product was\
+          \ completed"
+        type: "string"
+        format: "date-time"
+      - name: "lastUpdateDate.gt"
+        required: false
+        in: "query"
+        description: "Greater than the date that the last change affecting this Product\
+          \ was complet-ed"
+        type: "string"
+        format: "date-time"
       - name: "offset"
         required: false
         in: "query"
@@ -203,25 +242,26 @@ definitions:
     description: "The state of the product in accordance with the product lifecycle."
     type: "string"
     enum:
-    - "ACTIVE"
-    - "PENDING_CHANGE"
-    - "SUSPENDED"
-    - "PENDING_TERMINATE"
-    - "TERMINATED"
+    - "active"
+    - "suspended"
+    - "activePendingTerminate"
+    - "terminated"
+    - "pendingActive"
+    - "suspendedPendingTerminate"
   PriceType:
     description: ""
     type: "string"
     enum:
-    - "RECURRING"
-    - "NON_RECURRING"
+    - "recurring"
+    - "nonRecurring"
   ChargePeriod:
     description: ""
     type: "string"
     enum:
-    - "DAY"
-    - "WEEK"
-    - "MONTH"
-    - "YEAR"
+    - "day"
+    - "week"
+    - "month"
+    - "year"
   ErrorRepresentation:
     description: "Class used to describe API response error"
     required:
@@ -321,6 +361,18 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/ProductPrice"
+      agreement:
+        type: "array"
+        items:
+          $ref: "#/definitions/Agreement"
+      productTerm:
+        type: "array"
+        items:
+          $ref: "#/definitions/ProductTerm"
+      statusChange:
+        type: "array"
+        items:
+          $ref: "#/definitions/StatusChange"
       '@type':
         description: "The type of product if specialization"
         type: "string"
@@ -433,22 +485,58 @@ definitions:
         description: "A narrative that explains in detail the semantics of this product\
           \ price"
         type: "string"
+      unitOfMeasure:
+        description: "Unit of Measure, if price depends on it (like Gb for example)"
+        type: "string"
       price:
         $ref: "#/definitions/Price"
       '@type':
         description: "A technical attribute to extend the class"
         type: "string"
-  Price:
-    description: "Provides pre tax amount for a product"
+  Agreement:
+    description: "Agreement reference. An agreement represents a contract or arrangement,\
+      \ either written or verbal and sometimes enforceable by law, such as a service\
+      \ level agreement or a customer price agreement."
     required:
-    - "preTaxAmount"
+    - "id"
     type: "object"
     properties:
-      preTaxAmount:
+      id:
+        description: "Unique identifier of the agreement"
+        type: "string"
+      name:
+        description: "Name of the agreement"
+        type: "string"
+      path:
+        description: "A URI/URL to where the agreement resides."
+        type: "string"
+  Price:
+    description: "Provides pre tax amount for a product"
+    type: "object"
+    properties:
+      dutyFreeAmount:
         $ref: "#/definitions/Money"
+      taxIncludedAmount:
+        $ref: "#/definitions/Money"
+      taxRate:
+        description: "Applied tax rate on amount"
+        type: "number"
+        format: "float"
       '@type':
         description: "Technical attribute to extend this class"
         type: "string"
+  TimePeriod:
+    description: "Indicates a time period for validity."
+    type: "object"
+    properties:
+      startDateTime:
+        description: ""
+        type: "string"
+        format: "date-time"
+      endDateTime:
+        description: ""
+        type: "string"
+        format: "date-time"
   ProductRef:
     description: "Product reference used to describe product relationship."
     required:
@@ -570,3 +658,42 @@ definitions:
       unit:
         description: "Currency (ISO4217 norm uses 3 letters to define the currency"
         type: "string"
+  ProductTerm:
+    description: "Indicate a commitment term associated to the product"
+    type: "object"
+    properties:
+      name:
+        description: "Name of the commitment"
+        type: "string"
+      description:
+        description: "Description of the commitment"
+        type: "string"
+      duration:
+        $ref: "#/definitions/Quantity"
+      validFor:
+        $ref: "#/definitions/TimePeriod"
+  Quantity:
+    description: "An amount in a given unit"
+    type: "object"
+    properties:
+      amount:
+        description: "Numeric value in a given unit"
+        type: "number"
+        format: "float"
+      units:
+        description: "Unit"
+        type: "string"
+  StatusChange:
+    description: "Holds the status modification reasons and associated date the status\
+      \ changed, populated by the server"
+    type: "object"
+    properties:
+      changeDate:
+        description: "Date when the state changed"
+        type: "string"
+        format: "date-time"
+      changeReason:
+        description: "Raison for which the state changed"
+        type: "string"
+      status:
+        $ref: "#/definitions/ProductStatus"

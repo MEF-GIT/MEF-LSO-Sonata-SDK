@@ -3,7 +3,7 @@
     "swagger": "2.0",
     "info": {
     "description": "**Product Order Management**\n\nThe scope of this API  introduces the following capabilities to the API:\n•\tInstall order: request for new product\n•\tChange Order: change an existing Product\n•\tDisconnect Order:  disconnect an existing Product \n•\tCancel Order: cancellation of an inflight-order\n•\tSupport for Order Notifications\n\nThe buyer could also retrieve a single, or set, of Product Orders based upon a specified filter.  \n\nFollowing feature will be introduced in next release:\n•\tAmend Order: modification of an inflight-order\n\nProduct Order API has been designed by MEF Sonata team and used TMF 622 as template.\n\n",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "title": "API ProductOrderManagement",
     "x-logo": {
     "url": "/redoc/logo.png",
@@ -11,9 +11,10 @@
     }
     },
     
-      "host": "serverRoot",
-      "basePath":	"/api/mef/productOrderManagement/v2/",
-      "schemes": [
+    
+    "host": "serverRoot",
+    "basePath": "/api/mef/productOrderManagement/v3/",
+    "schemes": [
       "https"
       ],
     "produces": [
@@ -38,13 +39,13 @@
       "/productOrder": {
     "post": {
     "tags": [
-    "ProductOrder"
+    "ProductOrder"   
     ],
         "consumes": [
-           "application/json;charset=utf-8"
+	    "application/json;charset=utf-8"
     ],
         "produces": [
-           "application/json;charset=utf-8"
+	    "application/json;charset=utf-8"
       ],
     "operationId": "productOrderCreate",
     "summary": "Create a product order",
@@ -121,7 +122,7 @@
       },
       "422": {
       
-          "description": "Unprocessable entity\n\nFunctional error\n\n\n \n\n\n - code: 100\nmessage: Missing order item (minimum 1)\ndescription: At least one order item must be provided\n\n\n - code: 101\nmessage: Missing Buyer at order level\ndescription: One and only one related partyRole with a \"Buyer\" role should be provided at the product order level.\n\n\n - code: 114\nmessage: Missing Seller at order level\ndescription: One and only one related partyRole with a \"Seller\" role should be provided at the product order level.\n\n\n - code: 102\nmessage: A relatedParty is at the wrong level\ndescription: The partyRole provided is not at the correct level - MEF allows to have\n\"Buyer\", \"Seller\", \"Billing Contact\", \"Order Contact\", \"Implementation Contact\", \"Technical Contact\" roles at product order level and \"UNI Site Contact\", \"UNI Alt Site Contact\", \"ENNI Site Contact\", \"ENNI Alt Site Contact\" at product order item level.\n\n\n - code: 103\nmessage: Missing Buyer Order Contact at order level\ndescription: One and only one related partyRole with a \"Order Contact\" role should be provided at the product order level.\nBuyer Order Contact name & Telephone number must be provided.\n\n\n - code: 104\nmessage: Missing Buyer Implementation Contact at order level\ndescription: One and only one related partyRole with a \"Implementation Contact\" role should be provided at the product order level.\nImplementation Contact name & Telephone number must be provided.\n\n\n - code: 105\nmessage: Missing Buyer Technical contact at order level\ndescription: One and only one related partyRole with a \"Technical Contact\" role should be provided at the product order level.\nTechnical Contact name, Telephone number and email address must be provided.\n\n\n - code: 106\nmessage: Address information must match place type\ndescription: If place type is 'Formatted address' : addrLine1, postCode, country must be there, addrLine2, locality, postCodeExtension, stateOrProvince  could be there, but other address information must not be filled\nIf place type is 'Fielded address' : streetName, streetType, postCode must be there, streetNr, streetNrSuffix, streetNrLast, streetSuffix, locality, postCodeExtension, country, stateOrProvince could be there,but other address information must not be filled\n\n\n - code: 107\nmessage: postCode extension requires postcode value to be filled\ndescription: A postCode extension must not be present without a postcode being present\n\n\n - code: 108\nmessage: Product id is required for all OrderItem Actions other than INSTALL\ndescription: If orderItemAction is not INSTALL, orderItem.product.id is mandatory\n\n\n - code: 109\nmessage: Order Activity must match all OrderItem Actions for INSTALL\ndescription: If orderActivity is set to INSTALL, all orderItemAction must be INSTALL\n\n\n - code: 110\nmessage: Referred quote cannot be used for ordering due to its status\ndescription: Quote cannot be used in the order if its status is in CANCELLED, UNABLE TO PROVIDE, REJECTED or EXPIRED state.\n\n\n - code: 111\nmessage: Billing Account information must not be both at order level and order item level\ndescription: Billing Account must not be present both at order header level and order item level.\n\n\n - code: 112\nmessage: PricingMethod, pricing Reference & pricing term attributes  must not be both at order level and order item level\ndescription: Pricing data  must not be present both at order header level and order item level.\n\n\n - code: 113\nmessage: Referred Serviceability request is expired\ndescription: Serviceability information are expired.\n\n\n - code: 114\nmessage: A reccuring price is mentionned without a charge period.\ndescription: \n\n\n - code: 115\nmessage: Referred Quote is not existing\ndescription: \n\n\n - code: 116\nmessage: Referred ProductOfferingQualification is not existing\ndescription: \n\n\n - code: 117\nmessage: Product /item relationship is missing\ndescription: \n\n\n - code: 118\nmessage: Product Id refered in a relationship is not existing\ndescription: ",
+          "description": "Unprocessable entity\n\nFunctional error\n\n\n \n\n\n - code: 100\nmessage: Missing order item (minimum 1)\ndescription: At least one order item must be provided\n\n\n - code: 101\nmessage: Missing Buyer at order level\ndescription: One and only one related partyRole with a \"Buyer\" role should be provided at the product order level.\n\n\n - code: 114\nmessage: Missing Seller at order level\ndescription: One and only one related partyRole with a \"Seller\" role should be provided at the product order level.\n\n\n - code: 102\nmessage: A relatedParty is at the wrong level\ndescription: The partyRole provided is not at the correct level - MEF allows to have\n\"Buyer\", \"Seller\", \"Billing Contact\", \"Order Contact\", \"Implementation Contact\", \"Technical Contact\" roles at product order level and \"UNI Site Contact\", \"UNI Alt Site Contact\", \"ENNI Site Contact\", \"ENNI Alt Site Contact\" at product order item level.\n\n\n - code: 103\nmessage: Missing Buyer Order Contact at order level\ndescription: One and only one related partyRole with a \"Order Contact\" role should be provided at the product order level.\nBuyer Order Contact name & Telephone number must be provided.\n\n\n - code: 104\nmessage: Missing Buyer Implementation Contact at order level\ndescription: One and only one related partyRole with a \"Implementation Contact\" role should be provided at the product order level.\nImplementation Contact name & Telephone number must be provided.\n\n\n - code: 105\nmessage: Missing Buyer Technical contact at order level\ndescription: One and only one related partyRole with a \"Technical Contact\" role should be provided at the product order level.\nTechnical Contact name, Telephone number and email address must be provided.\n\n\n - code: 106\nmessage: Address information must match place type\ndescription: If place type is 'Formatted Address' : addrLine1, city, stateOrProvince, postCode and country must be there.\nIf place type is 'Fielded Address' : streetName, streetType, city, stateOrProvince, postCode and country must be there.\n\n\n - code: 107\nmessage: postCode extension requires postcode value to be filled\ndescription: A postCode extension must not be present without a postcode being present\n\n\n - code: 108\nmessage: Product id is required for all OrderItem Actions other than INSTALL\ndescription: If orderItemAction is not INSTALL, orderItem.product.id is mandatory\n\n\n - code: 109\nmessage: Order Activity must match all OrderItem Actions for INSTALL\ndescription: If orderActivity is set to INSTALL, all orderItemAction must be INSTALL\n\n\n - code: 110\nmessage: Referred quote cannot be used for ordering due to its status\ndescription: Quote cannot be used in the order if its status is in CANCELLED, UNABLE TO PROVIDE, REJECTED or EXPIRED state.\n\n\n - code: 111\nmessage: Billing Account information must not be both at order level and order item level\ndescription: Billing Account must not be present both at order header level and order item level.\n\n\n - code: 112\nmessage: PricingMethod, pricing Reference & pricing term attributes  must not be both at order level and order item level\ndescription: Pricing data  must not be present both at order header level and order item level.\n\n\n - code: 113\nmessage: Referred Serviceability request is expired\ndescription: Serviceability information are expired.\n\n\n - code: 114\nmessage: A reccuring price is mentionned without a charge period.\ndescription: \n\n\n - code: 115\nmessage: Referred Quote is not existing\ndescription: \n\n\n - code: 116\nmessage: Referred ProductOfferingQualification is not existing\ndescription: \n\n\n - code: 117\nmessage: Product /item relationship is missing\ndescription: \n\n\n - code: 118\nmessage: Product Id refered in a relationship is not existing\ndescription: ",
       "schema": {
       
     "$ref": "#/definitions/ErrorRepresentation"
@@ -147,10 +148,10 @@
     },
     "get": {
     "tags": [
-    "ProductOrder"
+    "ProductOrder"   
     ],
         "produces": [
-           "application/json;charset=utf-8"
+	    "application/json;charset=utf-8"
       ],
     "operationId": "productOrderFind",
     "summary": "Find a list of product order(s)",
@@ -165,7 +166,8 @@
     "in": "query",
     "description": "A Party Role played by an Individual or an Organization that buys products and services from a Seller. Specifically, the ID of the Service Provider (Buyer) organization placing the order.",
     
-    "type": "string"
+    "type": "string",
+    "maxLength": 25
     },
     {
     "name": "sellerId",
@@ -173,7 +175,8 @@
     "in": "query",
     "description": "A Party Role played by an organization that provides products and services to a Buyer.\nSpecifically, the ID of the Partner/Access Provider (Seller) organization receiving the order.",
     
-    "type": "string"
+    "type": "string",
+    "maxLength": 25
     },
     {
     "name": "state",
@@ -315,7 +318,8 @@
     "in": "query",
     "description": "A name by which the site is known.",
     
-    "type": "string"
+    "type": "string",
+    "maxLength": 60
     },
     {
     "name": "siteCompanyName",
@@ -339,7 +343,8 @@
     "in": "query",
     "description": "An identifier that is used to group Orders that represent a unit of functionality that is important to a Buyer.",
     
-    "type": "string"
+    "type": "string",
+    "maxLength": 16
     },
     {
     "name": "externalId",
@@ -347,7 +352,8 @@
     "in": "query",
     "description": "A number that uniquely identifies an order within the Buyer's enterprise.",
     
-    "type": "string"
+    "type": "string",
+    "maxLength": 16
     },
     {
     "name": "offset",
@@ -467,10 +473,10 @@
       "/productOrder/{ProductOrderId}": {
     "get": {
     "tags": [
-    "ProductOrder"
+    "ProductOrder"   
     ],
         "produces": [
-           "application/json;charset=utf-8"
+	    "application/json;charset=utf-8"
       ],
     "operationId": "productOrderGet",
     "summary": "Get a product order (by id)",
@@ -574,13 +580,13 @@
       "/hub": {
     "post": {
     "tags": [
-    "Hub"
+    "Hub"   
     ],
         "consumes": [
-           "application/json;charset=utf-8"
+	    "application/json;charset=utf-8"
     ],
         "produces": [
-           "application/json;charset=utf-8"
+	    "application/json;charset=utf-8"
       ],
     "operationId": "hubCreate",
     "summary": "Create a Hub",
@@ -683,10 +689,10 @@
     },
     "get": {
     "tags": [
-    "Hub"
+    "Hub"   
     ],
         "produces": [
-           "application/json;charset=utf-8"
+	    "application/json;charset=utf-8"
       ],
     "operationId": "hubFind",
     "summary": "Find a list of Hub",
@@ -782,7 +788,7 @@
       "/hub/{HubId}": {
     "delete": {
     "tags": [
-    "Hub"
+    "Hub"   
     ],
     "operationId": "hubDelete",
     "summary": "Delete a Hub",
@@ -883,13 +889,13 @@
       "/cancelProductOrder": {
     "post": {
     "tags": [
-    "CancelProductOrder"
+    "CancelProductOrder"   
     ],
         "consumes": [
-           "application/json;charset=utf-8"
+	    "application/json;charset=utf-8"
     ],
         "produces": [
-           "application/json;charset=utf-8"
+	    "application/json;charset=utf-8"
       ],
     "operationId": "cancelProductOrderCreate",
     "summary": "Create product order cancellation request",
@@ -992,10 +998,10 @@
     },
     "get": {
     "tags": [
-    "CancelProductOrder"
+    "CancelProductOrder"   
     ],
         "produces": [
-           "application/json;charset=utf-8"
+	    "application/json;charset=utf-8"
       ],
     "operationId": "cancelProductOrderFind",
     "summary": "Find a lost of product order cancellation request(s)",
@@ -1110,10 +1116,10 @@
       "/cancelProductOrder/{CancelProductOrderId}": {
     "get": {
     "tags": [
-    "CancelProductOrder"
+    "CancelProductOrder"   
     ],
         "produces": [
-           "application/json;charset=utf-8"
+	    "application/json;charset=utf-8"
       ],
     "operationId": "cancelProductOrderGet",
     "summary": "Get a product order cancellation request (by id)",
@@ -1222,9 +1228,9 @@
     
       "type": "string",
       "enum": [
-        "CONFIRMATION_AND_ENGINEERING_DESIGN",
-        "CONFIRMATION_ONLY",
-        "NONE"]
+        "confirmationAndEngineeringDesign",
+        "confirmationOnly",
+        "none"]
     
     },
     "OrderActivity": {
@@ -1232,9 +1238,9 @@
     
       "type": "string",
       "enum": [
-        "INSTALL",
-        "CHANGE",
-        "DISCONNECT"]
+        "install",
+        "change",
+        "disconnect"]
     
     },
     "ProductActionType": {
@@ -1242,10 +1248,10 @@
     
       "type": "string",
       "enum": [
-        "INSTALL",
-        "CHANGE",
-        "DISCONNECT",
-        "NO_CHANGE"]
+        "install",
+        "change",
+        "disconnect",
+        "noChange"]
     
     },
     "PricingMethod": {
@@ -1253,10 +1259,10 @@
     
       "type": "string",
       "enum": [
-        "TARIFF",
-        "CONTRACT",
-        "INDIVIDUAL_CASE_BASIS",
-        "OTHER"]
+        "tariff",
+        "contract",
+        "individualCaseBasis",
+        "other"]
     
     },
     "Severity": {
@@ -1264,8 +1270,8 @@
     
       "type": "string",
       "enum": [
-        "ERROR",
-        "INFORMATION"]
+        "error",
+        "information"]
     
     },
     "ProductOrderStateType": {
@@ -1273,20 +1279,20 @@
     
       "type": "string",
       "enum": [
-        "ACKNOWLEDGED",
-        "REJECTED",
-        "IN_PROGRESS",
-        "PENDING",
-        "HELD",
-        "ASSESSING_CANCELLATION",
-        "PENDING_CANCELLATION",
-        "CANCELLED",
-        "CONFIGURED",
-        "CONFIRMED",
-        "JEOPARDY",
-        "FAILED",
-        "PARTIAL",
-        "COMPLETED"]
+        "acknowledged",
+        "rejected",
+        "inProgress",
+        "pending",
+        "held",
+        "assessingCancellation",
+        "pendingCancellation",
+        "cancelled",
+        "inProgress.configured",
+        "inProgress.confirmed",
+        "inProgress.jeopardy",
+        "failed",
+        "partial",
+        "completed"]
     
     },
     "ProductOrderItemStateType": {
@@ -1294,17 +1300,17 @@
     
       "type": "string",
       "enum": [
-        "ACKNOWLEDGED",
-        "REJECTED",
-        "IN_PROGRESS",
-        "PENDING",
-        "HELD",
-        "ASSESSING_CANCELLATION",
-        "PENDING_CANCELLATION",
-        "CANCELLED",
-        "CONFIGURED",
-        "FAILED",
-        "COMPLETED"]
+        "acknowledged",
+        "rejected",
+        "inProgress",
+        "pending",
+        "held",
+        "assesssingCancellation",
+        "pendingCancellation",
+        "cancelled",
+        "inProgress.configured",
+        "failed",
+        "completed"]
     
     },
     "PriceType": {
@@ -1312,8 +1318,8 @@
     
       "type": "string",
       "enum": [
-        "RECURRING",
-        "NON-RECURRING"]
+        "recurring",
+        "nonRecurring"]
     
     },
     "ChargePeriod": {
@@ -1321,10 +1327,10 @@
     
       "type": "string",
       "enum": [
-        "DAY",
-        "WEEK",
-        "MONTH",
-        "YEAR"]
+        "day",
+        "week",
+        "month",
+        "year"]
     
     },
     "TaskStateType": {
@@ -1332,10 +1338,10 @@
     
       "type": "string",
       "enum": [
-        "ACKNOWLEDGED",
-        "IN_PROGRESS",
-        "DONE",
-        "TERMINATED_WITH_ERROR"]
+        "acknowledged",
+        "inProgress",
+        "done",
+        "terminatedWithError"]
     
     },    
 
@@ -1488,7 +1494,8 @@
     },
     "externalId": {
     "description": "A number that uniquely identifies an order within the buyer's enterprise.",
-    "type": "string"
+    "type": "string",
+    "maxLength": 16
     },
     "orderDate": {
     "description": "Date when the order was created by seller. Format is YYYY-MM-DDThh:mmTZD (e.g. 1997-07-16T19:20+01:00)",
@@ -1554,19 +1561,23 @@
     "description": "The version number that the Buyer uses to refer to this particular version of the order",
     "type": "string",
     
-      "default": "1"
+      "default": "1",
+    "maxLength": 2
     },
     "projectId": {
     "description": "An identifier that is used to group Orders that is important to the Buyer. A ProjectId can be used to relate multiple Orders together",
-    "type": "string"
+    "type": "string",
+    "maxLength": 16
     },
     "tspRestorationPriority": {
     "description": "Within the United States, indicates the provisioning and restoration priority as defined under the TSP Service Vendor Handbook, The valid values are defined in ATIS OBF document: ATIS-0404001",
-    "type": "string"
+    "type": "string",
+    "maxLength": 12
     },
     "relatedBuyerPON": {
     "description": "Related Buyer Purchase Order Number (RPON)",
-    "type": "string"
+    "type": "string",
+    "maxLength": 16
     },
     "pricingMethod": {
     
@@ -1574,12 +1585,15 @@
     },
     "pricingReference": {
     "description": "The identifier references the previously agreed upon pricing terms, as applicable, based on the pricingMethod (e.g. a contract id or tariff id.",
-    "type": "string"
+    "type": "string",
+    "maxLength": 25
     },
     "pricingTerm": {
     "description": "The length of the contract in months.",
     "type": "integer",
-    "format": "int32"
+    "format": "int32",
+    "maximum": 999,
+    "minimum": 0
     },
     "billingAccount": {
     
@@ -1604,13 +1618,21 @@
     "type": "array",
     "items": {
     "$ref": "#/definitions/OrderItem"
-    }
+    },
+    "minItems": 1
     },
     "orderMessage": {
     
     "type": "array",
     "items": {
     "$ref": "#/definitions/OrderMessage"
+    }
+    },
+    "stateChange": {
+    
+    "type": "array",
+    "items": {
+    "$ref": "#/definitions/StateChange"
     }
     },
     "@type": {
@@ -1652,7 +1674,8 @@
     },
     "author": {
     "description": "The author of the note",
-    "type": "string"
+    "type": "string",
+    "maxLength": 50
     }
     }
     
@@ -1735,6 +1758,13 @@
     "quote": {
     
     "$ref": "#/definitions/QuoteRef"
+    },
+    "stateChange": {
+    
+    "type": "array",
+    "items": {
+    "$ref": "#/definitions/StateChange"
+    }
     },
     "@type": {
     "description": "Type of productOrder",
@@ -1863,7 +1893,8 @@
     },
     "id": {
     "description": "The id of the targeted order item by the relationship",
-    "type": "string"
+    "type": "string",
+    "maxLength": 4
     },
     "productOrderId": {
     "description": "Id of another product order if this relationship is between two distinct orders.",
@@ -1951,18 +1982,33 @@
     },    
 
     "Price": {
-    "description": "Provides pre tax amount for a product",
+    "description": "Provides pre tax & tax included amount for an ordered product",
 
     
     "required": [
     
-      "preTaxAmount"
+      "taxIncludedAmount",
+      "dutyFreeAmount",
+      "taxRate"
     ],
     "type": "object",
     "properties": {
-    "preTaxAmount": {
+    "taxIncludedAmount": {
     
     "$ref": "#/definitions/Money"
+    },
+    "dutyFreeAmount": {
+    
+    "$ref": "#/definitions/Money"
+    },
+    "taxRate": {
+    "description": "",
+    "type": "number",
+    "format": "float"
+    },
+    "unitOfMesure": {
+    "description": "",
+    "type": "string"
     },
     "@type": {
     "description": "Technical attribute to extend the class.",
@@ -2013,30 +2059,36 @@
     "properties": {
     "id": {
     "description": "An identifier of the related party. For the \"buyer\" and \"seller\" id, this is a  Carrier ID number provided by local regulatory entity.  Unique in the local jurisdiction.",
-    "type": "string"
+    "type": "string",
+    "maxLength": 25
     },
     "role": {
     "description": "Role payed by this party for this Order/OrderItem. It could be at : BuyerOrderContact (header), BuyerImplementationContact, BuyerTechnicalContact, UNISiteContact (item), AlternateSiteContact, Buyer (header), Seller(header), ENNISiteContact(item), ENNIAlternateSiteContact(item)",
     "type": "array",
     "items": {
-    "type": "string"
+    "type": "string",
+    "maxLength": 50
     }
     },
     "name": {
     "description": "The name of the related party, e.g. \"Jean Pontus\".",
-    "type": "string"
+    "type": "string",
+    "maxLength": 50
     },
     "emailAddress": {
     "description": "The email address of the related party.",
-    "type": "string"
+    "type": "string",
+    "maxLength": 60
     },
     "number": {
     "description": "The telephone number of the related party.",
-    "type": "string"
+    "type": "string",
+    "maxLength": 15
     },
     "numberExtension": {
     "description": "Phone number Extension",
-    "type": "string"
+    "type": "string",
+    "maxLength": 15
     },
     "@referredType": {
     "description": "Technical attribute to extend the API",
@@ -2065,7 +2117,8 @@
     "properties": {
     "externalId": {
     "description": "Buyer Purchase Order Number: A number that uniquely identifies an order within the Buyer's enterprise",
-    "type": "string"
+    "type": "string",
+    "maxLength": 16
     },
     "buyerRequestDate": {
     "description": "Date when the order was submitted by the Buyer to the Seller",
@@ -2101,19 +2154,23 @@
     },
     "orderVersion": {
     "description": "Buyer Order Version: The version number that the Buyer uses to refer to this particular version of the order.",
-    "type": "string"
+    "type": "string",
+    "maxLength": 2
     },
     "projectId": {
     "description": "An identifier that is used to group Orders that is important to the Buyer. A ProjectId can be used to relate multiple Orders together.",
-    "type": "string"
+    "type": "string",
+    "maxLength": 16
     },
     "tspRestorationPriority": {
     "description": "Within the United States, indicates the provisioning and restoration priority as defined under the TSP Service Vendor Handbook.",
-    "type": "string"
+    "type": "string",
+    "maxLength": 12
     },
     "relatedBuyerPON": {
     "description": "Related Buyer Purchase Order Number (RPON) - Identifies the Buyer Purchase Order Number that is related to this order.",
-    "type": "string"
+    "type": "string",
+    "maxLength": 16
     },
     "@type": {
     "description": "Technical attribute to extend API",
@@ -2133,12 +2190,15 @@
     },
     "pricingReference": {
     "description": "The identifier references the previously agreed upon pricing terms, as applicable, based on the pricingMethod (e.g. a contract id or tariff id.",
-    "type": "string"
+    "type": "string",
+    "maxLength": 25
     },
     "pricingTerm": {
     "description": "The length of the contract in months",
     "type": "integer",
-    "format": "int32"
+    "format": "int32",
+    "maximum": 999,
+    "minimum": 0
     },
     "billingAccount": {
     
@@ -2163,7 +2223,8 @@
     "type": "array",
     "items": {
     "$ref": "#/definitions/ProductOrderItem_Create"
-    }
+    },
+    "minItems": 1
     }
     }
     
@@ -2219,7 +2280,8 @@
     "properties": {
     "id": {
     "description": "Identifier of the line item (generally it is a sequence number 01, 02, 03, ...)",
-    "type": "string"
+    "type": "string",
+    "maxLength": 4
     },
     "action": {
     
@@ -2231,12 +2293,15 @@
     },
     "pricingReference": {
     "description": "The identifier references the previously agreed upon pricing terms, as applicable, based on the pricingMethod (e.g. a contract id or tariff id.",
-    "type": "string"
+    "type": "string",
+    "maxLength": 25
     },
     "pricingTerm": {
     "description": "The length of the contract in months",
     "type": "integer",
-    "format": "int32"
+    "format": "int32",
+    "maximum": 999,
+    "minimum": 0
     },
     "billingAccount": {
     
@@ -2247,7 +2312,8 @@
     "type": "array",
     "items": {
     "$ref": "#/definitions/OrderItemPrice"
-    }
+    },
+    "minItems": 1
     },
     "productOffering": {
     
@@ -2310,7 +2376,8 @@
     },
     "externalId": {
     "description": "ID given by the consumer and only understandable by him (to facilitate his searches afterwards).\nMEF: Buyer Purchase Order Number",
-    "type": "string"
+    "type": "string",
+    "maxLength": 16
     },
     "orderDate": {
     "description": "Date when the order was created",
@@ -2392,15 +2459,18 @@
     "properties": {
     "code": {
     "description": "The code associated with the Message",
-    "type": "string"
+    "type": "string",
+    "maxLength": 12
     },
     "field": {
     "description": "The field/attribute on the Order associated with message",
-    "type": "string"
+    "type": "string",
+    "maxLength": 100
     },
     "messageInformation": {
     "description": "A description of the error condition or information to be conveyed to the Buyer",
-    "type": "string"
+    "type": "string",
+    "maxLength": 150
     },
     "severity": {
     
@@ -2594,6 +2664,7 @@
     
     "required": [
     
+      "streetName",
       "streetType",
       "city",
       "stateOrProvince",
@@ -2900,6 +2971,47 @@
     "@schemaLocation": {
     "description": "Technical attribute to extend this class.",
     "type": "string"
+    }
+    }
+    
+    },    
+
+    "GeographicSite": {
+    "description": "A fixed physical location at which a Product can be installed.",
+
+    
+      "allOf": [
+      {
+      "$ref": "#/definitions/RelatedPlaceReforValue"
+      },
+      {
+    
+    "type": "object",
+    "properties": {
+    }
+    
+      }
+      ]
+    },    
+
+    "StateChange": {
+    "description": "Holds the state notification reasons and associated date the state changed, populated by the server",
+
+    
+    "type": "object",
+    "properties": {
+    "changeDate": {
+    "description": "",
+    "type": "string",
+    "format": "date-time"
+    },
+    "changeReason": {
+    "description": "",
+    "type": "string"
+    },
+    "state": {
+    
+    "$ref": "#/definitions/ProductOrderStateType"
     }
     }
     

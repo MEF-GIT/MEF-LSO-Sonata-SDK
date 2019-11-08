@@ -2,14 +2,14 @@ swagger: "2.0"
 info:
   description: "This is not the ProductOfferingQualification API but the API to manage\
     \ notification for ProductOfferingQualification . This API must be deployed on\
-    \ notification subscriber side (buyer side / listener)."
-  version: "1.0.0"
+    \ notification subscriber side (buyer side / listener).\n\n"
+  version: "3.0.0"
   title: "API ProductOfferingQualificationNotification"
   x-logo:
     url: "/redoc/logo.png"
     backgroundColor: "#FFFFFF"
 host: "serverRoot"
-basePath: "/api/mef/productOfferingQualificationNotification/v1/"
+basePath: "/api/mef/productOfferingQualificationNotification/v3/"
 schemes:
 - "https"
 produces:
@@ -30,8 +30,7 @@ paths:
       operationId: "notificationProductOfferingQualificationCreationNotification"
       summary: "Product Offering Qualification Creation Notification structure"
       description: "Product Offering Qualification Creation Notification structure\
-        \ definition\n\nSpecific business errors for current operation will be encapsulated\
-        \ in\n\nHTTP Response 422 Unprocessable entity\n"
+        \ definition"
       deprecated: false
       parameters:
       - name: "productOfferingQualificationCreationNotification"
@@ -42,7 +41,7 @@ paths:
           $ref: "#/definitions/Event"
       responses:
         204:
-          description: "Success"
+          description: "No Content"
         400:
           description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
             \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
@@ -89,8 +88,7 @@ paths:
       operationId: "notificationProductOfferingQualificationStateChangeNotification"
       summary: "Product Offering Qualification State Change Notification structure"
       description: "Product Offering Qualification State Change Notification structure\
-        \ definition\n\nSpecific business errors for current operation will be encapsulated\
-        \ in\n\nHTTP Response 422 Unprocessable entity\n"
+        \ definition"
       deprecated: false
       parameters:
       - name: "productOfferingQualificationStateChangeNotification"
@@ -101,68 +99,7 @@ paths:
           $ref: "#/definitions/Event"
       responses:
         204:
-          description: "Success"
-        400:
-          description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
-            \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
-            \ body field\n- 24: Invalid body field\n- 25: Missing header\n- 26: Invalid\
-            \ header value\n- 27: Missing query-string parameter\n- 28: Invalid query-string\
-            \ parameter value"
-          schema:
-            $ref: "#/definitions/ErrorRepresentation"
-        401:
-          description: "Unauthorized\n\nList of supported error codes:\n- 40: Missing\
-            \ credentials\n- 41: Invalid credentials\n- 42: Expired credentials"
-          schema:
-            $ref: "#/definitions/ErrorRepresentation"
-        403:
-          description: "Forbidden\n\nList of supported error codes:\n- 50: Access\
-            \ denied\n- 51: Forbidden requester\n- 52: Forbidden user\n- 53: Too many\
-            \ requests"
-          schema:
-            $ref: "#/definitions/ErrorRepresentation"
-        404:
-          description: "Not Found\n\nList of supported error codes:\n- 60: Resource\
-            \ not found"
-          schema:
-            $ref: "#/definitions/ErrorRepresentation"
-        408:
-          description: "Request Time-out\n\nList of supported error codes:\n- 63:\
-            \ Request time-out"
-          schema:
-            $ref: "#/definitions/ErrorRepresentation"
-        422:
-          description: "Unprocessable entity\n\nFunctional error"
-          schema:
-            $ref: "#/definitions/ErrorRepresentation"
-        503:
-          description: "Service Unavailable\n\n"
-          schema:
-            $ref: "#/definitions/ErrorRepresentation"
-  /notification/productOfferingQualificationAttributeChangeNotification:
-    post:
-      tags:
-      - "Notification"
-      consumes:
-      - "application/json;charset=utf-8"
-      operationId: "notificationProductOfferingQualificationAttributeChangeNotification"
-      summary: "Product Offering Qualification Attribute Change Notification structure"
-      description: "Product Offering Qualification Attribute Change Notification structure\
-        \ defintion\n\nSpecific business errors for current operation will be encapsulated\
-        \ in\n\nHTTP Response 422 Unprocessable entity\n"
-      deprecated: false
-      parameters:
-      - name: "productOfferingQualificationAttributeChangeNotification"
-        required: true
-        in: "body"
-        description: ""
-        schema:
-          type: "array"
-          items:
-            $ref: "#/definitions/EventPlus"
-      responses:
-        204:
-          description: "Success"
+          description: "No Content"
         400:
           description: "Bad Request\n\nList of supported error codes:\n- 20: Invalid\
             \ URL parameter value\n- 21: Missing body\n- 22: Invalid body\n- 23: Missing\
@@ -205,25 +142,24 @@ definitions:
     description: "A color that indicates confidence to service the request."
     type: "string"
     enum:
-    - "GREEN"
-    - "RED"
-    - "YELLOW"
+    - "green"
+    - "yellow"
+    - "red"
   QualificationState:
     description: "These values represent the valid states through which the product\
       \ offering qualification can transition"
     type: "string"
     enum:
-    - "IN_PROGRESS"
-    - "READY"
-    - "EXPIRED"
-    - "UNABLE_TO_PROVIDE"
+    - "inProgress"
+    - "done"
+    - "terminatedWithError.unableToProvide"
+    - "terminatedWithError.insufficientInformationProvided"
   PoqEventType:
     description: "Indicates the type of product offering qualification event."
     type: "string"
     enum:
-    - "POQ_OBJECT_CREATION"
-    - "POQ_STATE_CHANGE"
-    - "POQ_ATTRIBUTE_VALUE_CHANGE"
+    - "ProductOfferingQualificationCreateEventNotification"
+    - "ProductOfferingQualificationStateChangeEventNotification"
   ErrorRepresentation:
     description: "Standard Class used to describe API response error"
     required:
@@ -298,8 +234,6 @@ definitions:
   PoqEvent:
     description: "The product offering qualification passed as the \"event\" in a\
       \ notification."
-    required:
-    - "productOfferingQualificationItem"
     type: "object"
     properties:
       id:
@@ -308,25 +242,6 @@ definitions:
       href:
         description: "Link to the POQ"
         type: "string"
-      state:
-        $ref: "#/definitions/QualificationState"
-      expirationDate:
-        description: "Expiration Date for this qualification"
-        type: "string"
-        format: "date-time"
-      requestedResponseDate:
-        description: "Corresponds to desiredResponseDate - The date a response for\
-          \ the service request is desired."
-        type: "string"
-        format: "date-time"
-      expectedResponseDate:
-        description: "The date the seller is expected to provide qualification result."
-        type: "string"
-        format: "date-time"
-      productOfferingQualificationItem:
-        type: "array"
-        items:
-          $ref: "#/definitions/PoqItemEvent"
   EventPlus:
     description: "Event class is used to describe information structure used for notification."
     allOf:

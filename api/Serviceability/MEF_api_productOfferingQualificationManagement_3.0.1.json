@@ -3,7 +3,7 @@
     "swagger": "2.0",
     "info": {
     "description": "**ProductOfferingQualification Management**\n\nMEF-LSO SonataProductOfferingQualification API allows to determine whether it is feasible for the Seller to deliver a particular Product to a particular geographic location. \n\nFollowing operations are managed:\n- Register for POQ Notifications\n- Create Product Offering Qualification\n- Retrieve POQ List\n- Retrieve POQ by Identifier\n(note: POQ Notification are described in a separate swagger)\n\nProductOfferingQualification  API has been designed by MEF Sonata team and used TMF 679 as template.\n\n\n",
-    "version": "2.0.0",
+    "version": "3.0.1",
     "title": "API ProductOfferingQualificationManagement",
     "x-logo": {
     "url": "/redoc/logo.png",
@@ -11,9 +11,10 @@
     }
     },
     
-      "host": "serverRoot",
-      "basePath":	"/api/mef/productOfferingQualificationManagement/v2/",
-      "schemes": [
+    
+    "host": "serverRoot",
+    "basePath": "/api/mef/productOfferingQualificationManagement/v3/",
+    "schemes": [
       "https"
       ],
     "produces": [
@@ -34,13 +35,13 @@
       "/productOfferingQualification": {
     "post": {
     "tags": [
-    "ProductOfferingQualification"
+    "ProductOfferingQualification"   
     ],
         "consumes": [
-           "application/json;charset=utf-8"
+	    "application/json;charset=utf-8"
     ],
         "produces": [
-           "application/json;charset=utf-8"
+	    "application/json;charset=utf-8"
       ],
     "operationId": "productOfferingQualificationCreate",
     "summary": "Create a ProductOfferingQualification",
@@ -109,7 +110,7 @@
       },
       "422": {
       
-          "description": "Unprocessable entity\n\nFunctional error\n\n\n \n\n\n - code: 100\nmessage: A relatedParty - at productOfferingQualification level - with a role 'Buyer' must be provided\ndescription: \n\n\n - code: 101\nmessage: A least a productOffering OR a productSpecification OR a Product must be provided for a POQItem\ndescription: \n\n\n - code: 102\nmessage: Provided Product Offering Identifier is unknown\ndescription: \n\n\n - code: 103\nmessage: Provided Product Specification Identifier is unknown\ndescription: \n\n\n - code: 104\nmessage: Provided Product Identifier is unknown\ndescription: \n\n\n - code: 105\nmessage: The place information provided are invalid\ndescription: \n\n\n - code: 106\nmessage: A least one date provided is invalid\ndescription: ",
+          "description": "Unprocessable entity\n\nFunctional error\n\n\n \n\n\n - code: 100\nmessage: A relatedParty - at productOfferingQualification level - with a role 'Buyer' must be provided (including contact information)\ndescription: \n\n\n - code: 101\nmessage: A least a productOffering OR a productSpecification OR a Product must be provided for a POQItem\ndescription: \n\n\n - code: 102\nmessage: Provided Product Offering Identifier is unknown\ndescription: \n\n\n - code: 103\nmessage: Provided Product Specification Identifier is unknown\ndescription: \n\n\n - code: 104\nmessage: Provided Product Identifier is unknown\ndescription: \n\n\n - code: 105\nmessage: The place information provided are invalid\ndescription: \n\n\n - code: 106\nmessage: A least one date provided is invalid\ndescription: \n\n\n - code: 107\nmessage: Incorrect related party role provided\ndescription: ",
       "schema": {
       
     "$ref": "#/definitions/ErrorRepresentation"
@@ -127,10 +128,10 @@
     },
     "get": {
     "tags": [
-    "ProductOfferingQualification"
+    "ProductOfferingQualification"   
     ],
         "produces": [
-           "application/json;charset=utf-8"
+	    "application/json;charset=utf-8"
       ],
     "operationId": "productOfferingQualificationFind",
     "summary": "Retrieve a list of ProductOfferingQualifications based on a set of criteria",
@@ -156,7 +157,7 @@
     "type": "string"
     },
     {
-    "name": "expectedResponseDate.gt",
+    "name": "requestedResponseDate.gt",
     "required": false,
     "in": "query",
     "description": "POQ expected response date is after this date",
@@ -165,7 +166,7 @@
     "format": "date-time"
     },
     {
-    "name": "expectedResponseDate.lt",
+    "name": "requestedResponseDate.lt",
     "required": false,
     "in": "query",
     "description": "POQ expected response date is before this date",
@@ -275,10 +276,10 @@
       "/productOfferingQualification/{ProductOfferingQualificationId}": {
     "get": {
     "tags": [
-    "ProductOfferingQualification"
+    "ProductOfferingQualification"   
     ],
         "produces": [
-           "application/json;charset=utf-8"
+	    "application/json;charset=utf-8"
       ],
     "operationId": "productOfferingQualificationGet",
     "summary": "Get a ProductOfferingQualification based on its id",
@@ -366,13 +367,13 @@
       "/hub": {
     "post": {
     "tags": [
-    "Hub"
+    "Hub"   
     ],
         "consumes": [
-           "application/json;charset=utf-8"
+	    "application/json;charset=utf-8"
     ],
         "produces": [
-           "application/json;charset=utf-8"
+	    "application/json;charset=utf-8"
       ],
     "operationId": "hubCreate",
     "summary": "hubCreate",
@@ -459,10 +460,10 @@
     },
     "get": {
     "tags": [
-    "Hub"
+    "Hub"   
     ],
         "produces": [
-           "application/json;charset=utf-8"
+	    "application/json;charset=utf-8"
       ],
     "operationId": "hubFind",
     "summary": "hubFind",
@@ -542,7 +543,7 @@
       "/hub/{HubId}": {
     "delete": {
     "tags": [
-    "Hub"
+    "Hub"   
     ],
     "operationId": "hubDelete",
     "summary": "hubDelete",
@@ -632,9 +633,9 @@
     
       "type": "string",
       "enum": [
-        "GREEN",
-        "RED",
-        "YELLOW"]
+        "green",
+        "red",
+        "yellow"]
     
     },
     "ProductOfferingQualificationStateType": {
@@ -642,11 +643,10 @@
     
       "type": "string",
       "enum": [
-        "IN_PROGRESS",
-        "READY",
-        "EXPIRED",
-        "UNABLE_TO_PROVIDE",
-        "INSUFICIENT_INFORMATION_PROVIDED"]
+        "done",
+        "terminatedWithError.unableToProvide",
+        "terminatedWithError.insufficientInformationProvided",
+        "inProgress"]
     
     },
     "TimeUnit": {
@@ -654,11 +654,12 @@
     
       "type": "string",
       "enum": [
-        "SECS",
-        "MINS",
-        "HOURS",
-        "BUSINESS_DAYS",
-        "CALENDAR_DAYS"]
+        "calendarDays",
+        "calendarHours",
+        "calendarMinutes",
+        "businessDays",
+        "businessHours",
+        "businessMinutes"]
     
     },
     "RelationshipType": {
@@ -666,9 +667,9 @@
     
       "type": "string",
       "enum": [
-        "RELIES_ON",
-        "BUNDLED",
-        "COMES_FROM"]
+        "reliesOn",
+        "bundled",
+        "comesFrom"]
     
     },
     "ProductActionType": {
@@ -676,10 +677,21 @@
     
       "type": "string",
       "enum": [
-        "INSTALL",
-        "CHANGE",
-        "DISCONNECT",
-        "NO_CHANGE"]
+        "add",
+        "change",
+        "remove",
+        "noChange"]
+    
+    },
+    "ProductOfferingQualificationItemStateType": {
+    "description": "POQ item states - The specific states are managed by the Seller based on its processing and/or based on Buyer's action.",
+    
+      "type": "string",
+      "enum": [
+        "done",
+        "terminatedWithError.unableToProvide",
+        "terminatedWithError.insufficientInformationProvided",
+        "inProgress"]
     
     },    
 
@@ -716,7 +728,7 @@
     "type": "string"
     },
     "@type": {
-    "description": "Type of the REST resource Used to extend Error class",
+    "description": "When sub-classing, this defines the sub-class entity name",
     "type": "string"
     },
     "@schemaLocation": {
@@ -759,7 +771,8 @@
     "properties": {
     "id": {
     "description": "Id of the party",
-    "type": "string"
+    "type": "string",
+    "maxLength": 45
     },
     "name": {
     "description": "Name of the party",
@@ -784,8 +797,12 @@
     "description": "Party email address",
     "type": "string"
     },
+    "@type": {
+    "description": "When sub-classing, this defines the sub-class entity name",
+    "type": "string"
+    },
     "@referredType": {
-    "description": "Technical attribute for API extension",
+    "description": "The actual type of the target instance when needed for disambiguation.",
     "type": "string"
     }
     }
@@ -800,6 +817,10 @@
     "properties": {
     "id": {
     "description": "id of a productOffering",
+    "type": "string"
+    },
+    "@referredType": {
+    "description": "The actual type of the target instance when needed for disambiguation.",
     "type": "string"
     }
     }
@@ -828,8 +849,16 @@
     "description": "If in the request the buyer has requested to have alternate product proposals, then this class represents these proposals.",
 
     
+    "required": [
+    
+      "id"
+    ],
     "type": "object",
     "properties": {
+    "id": {
+    "description": "Identifier of the Product Offering Qualification alternate proposal",
+    "type": "string"
+    },
     "productSpecification": {
     
     "$ref": "#/definitions/ProductSpecificationRef"
@@ -865,8 +894,8 @@
     "type": "object",
     "properties": {
     "type": {
-    "description": "Indicates whether the product is \"bundled\", \"relies on\", or \"comesFrom\" another product.",
-    "type": "string"
+    
+    "$ref": "#/definitions/RelationshipType"
     },
     "product": {
     
@@ -889,13 +918,17 @@
     "describing": {
     
     "$ref": "#/definitions/Describing"
+    },
+    "@referredType": {
+    "description": "The actual type of the target instance when needed for disambiguation.",
+    "type": "string"
     }
     }
     
     },    
 
     "Product": {
-    "description": "One or more services sold to a Buyer by a Seller.  A particular Product Offering defines the technical and commercial attributes and behav-iors of a Product.",
+    "description": "One or more services sold to a Buyer by a Seller.  A particular Product Offering defines the technical and commercial attributes and behaviors of a Product.",
 
     
     "type": "object",
@@ -925,6 +958,10 @@
     "items": {
     "$ref": "#/definitions/RelatedPlaceReforValue"
     }
+    },
+    "@type": {
+    "description": "When sub-classing, this defines the sub-class entity name",
+    "type": "string"
     }
     }
     
@@ -948,7 +985,7 @@
     },
     "state": {
     
-    "$ref": "#/definitions/ProductOfferingQualificationStateType"
+    "$ref": "#/definitions/ProductOfferingQualificationItemStateType"
     },
     "action": {
     
@@ -1013,6 +1050,17 @@
     "items": {
     "$ref": "#/definitions/TerminationError"
     }
+    },
+    "stateChange": {
+    
+    "type": "array",
+    "items": {
+    "$ref": "#/definitions/StateChange"
+    }
+    },
+    "@type": {
+    "description": "When sub-classing, this defines the sub-class entity name",
+    "type": "string"
     }
     }
     
@@ -1024,6 +1072,7 @@
     
     "required": [
     
+      "id",
       "state",
       "relatedParty",
       "productOfferingQualificationItem"
@@ -1083,10 +1132,18 @@
     "type": "array",
     "items": {
     "$ref": "#/definitions/ProductOfferingQualificationItem"
+    },
+    "minItems": 1
+    },
+    "stateChange": {
+    
+    "type": "array",
+    "items": {
+    "$ref": "#/definitions/StateChange"
     }
     },
     "@type": {
-    "description": "Technical attribute to extend the class",
+    "description": "When sub-classing, this defines the sub-class entity name",
     "type": "string"
     },
     "@schemaLocation": {
@@ -1132,7 +1189,7 @@
     "type": "object",
     "properties": {
     "id": {
-    "description": "Id of the productOfferingQualification item",
+    "description": "Id of the productOfferingQualification item.\nThis id must be unique within POQ create request",
     "type": "string"
     },
     "action": {
@@ -1160,6 +1217,10 @@
     "items": {
     "$ref": "#/definitions/RelatedParty"
     }
+    },
+    "@type": {
+    "description": "When sub-classing, this defines the sub-class entity name",
+    "type": "string"
     }
     }
     
@@ -1209,10 +1270,11 @@
     "type": "array",
     "items": {
     "$ref": "#/definitions/ProductOfferingQualificationItem_Create"
-    }
+    },
+    "minItems": 1
     },
     "@type": {
-    "description": "Technical attribute to extend this class",
+    "description": "When sub-classing, this defines the sub-class entity name",
     "type": "string"
     },
     "@schemaLocation": {
@@ -1286,20 +1348,25 @@
     ],
     "type": "object",
     "properties": {
-    "role": {
-    "description": "Role of this place",
-    "type": "string"
-    },
     "id": {
     "description": "id of this place",
-    "type": "string"
+    "type": "string",
+    "maxLength": 45
     },
     "href": {
     "description": "href to this place resource",
     "type": "string"
     },
+    "role": {
+    "description": "Role of this place",
+    "type": "string"
+    },
     "@type": {
-    "description": "Technical attribute to manage API extension. In this case @referredType could be valued to FormattedAddress, FieldedAddress, GeographicSite, GeographicLocation or ReferencedAddress",
+    "description": "When sub-classing, this defines the sub-class entity name.\nUsed when place is described by value (litterally)\nCould be valued to FormattedAddress, FieldedAddress,  GeographicLocation or ReferencedAddress",
+    "type": "string"
+    },
+    "@referredType": {
+    "description": "The actual type of the target instance when needed for disambiguation.\nUsed when place is described by reference\n@referredType could be valued to FormattedAddress, FieldedAddress, GeographicSite, GeographicLocation or ReferencedAddress",
     "type": "string"
     }
     }
@@ -1378,6 +1445,10 @@
     "buyerProductId": {
     "description": "Targeted Buyer product id - Informative",
     "type": "string"
+    },
+    "@referredType": {
+    "description": "The actual type of the target instance when needed for disambiguation.",
+    "type": "string"
     }
     }
     
@@ -1396,11 +1467,13 @@
     "properties": {
     "subUnitType": {
     "description": "The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF.",
-    "type": "string"
+    "type": "string",
+    "maxLength": 25
     },
     "subUnitIdentifier": {
     "description": "The discriminator used for the subunit, often just a simple number but may also be a range.",
-    "type": "string"
+    "type": "string",
+    "maxLength": 10
     }
     }
     
@@ -1425,26 +1498,31 @@
     },
     "levelType": {
     "description": "Describes level types within a building",
-    "type": "string"
+    "type": "string",
+    "maxLength": 25
     },
     "levelNumber": {
     "description": "Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT 2",
-    "type": "string"
+    "type": "string",
+    "maxLength": 25
     },
     "buildingName": {
     "description": "Allows for buildings that have well-known names",
-    "type": "string"
+    "type": "string",
+    "maxLength": 60
     },
     "privateStreetNumber": {
     "description": "Private streets numbers internal to a private street",
-    "type": "string"
+    "type": "string",
+    "maxLength": 10
     },
     "privateStreetName": {
     "description": "\"Private streets internal to a property (e.g. a university) may have internal names that are not recorded by the land title office",
-    "type": "string"
+    "type": "string",
+    "maxLength": 60
     },
     "@type": {
-    "description": "Technical attribute to exend this class if needed",
+    "description": "When sub-classing, this defines the sub-class entity name",
     "type": "string"
     },
     "@schemaLocation": {
@@ -1477,55 +1555,68 @@
     "properties": {
     "streetNr": {
     "description": "Number identifying a specific property on a public street. It may be combined with streetNrLast for ranged addresses",
-    "type": "string"
+    "type": "string",
+    "maxLength": 10
     },
     "streetNrSuffix": {
     "description": "The first street number suffix",
-    "type": "string"
+    "type": "string",
+    "maxLength": 10
     },
     "streetNrLast": {
     "description": "Last number in a range of street numbers allocated to a property",
-    "type": "string"
+    "type": "string",
+    "maxLength": 10
     },
     "streetNrLastSuffix": {
     "description": "Last street number suffix for a ranged address",
-    "type": "string"
+    "type": "string",
+    "maxLength": 10
     },
     "streetName": {
     "description": "Name of the street or other street type",
-    "type": "string"
+    "type": "string",
+    "maxLength": 60
     },
     "streetType": {
     "description": "Alley, avenue, boulevard, brae, crescent, drive, highway, lane, terrace, parade, place, tarn, way, wharf",
-    "type": "string"
+    "type": "string",
+    "maxLength": 25
     },
     "streetSuffix": {
     "description": "A modifier denoting a relative direction",
-    "type": "string"
+    "type": "string",
+    "maxLength": 2
     },
     "locality": {
     "description": "The locality that the address is in",
-    "type": "string"
+    "type": "string",
+    "maxLength": 50
     },
     "city": {
     "description": "The city that the address is in",
-    "type": "string"
+    "type": "string",
+    "maxLength": 50
     },
     "stateOrProvince": {
     "description": "The State or Province that the address is in",
-    "type": "string"
+    "type": "string",
+    "maxLength": 50
     },
     "postcode": {
     "description": "Descriptor for a postal delivery area, used to speed and simplify the delivery of mail (also known as zipcode)",
-    "type": "string"
+    "type": "string",
+    "maxLength": 6
     },
     "postcodeExtension": {
     "description": "An extension of a postal code. E.g. the part following the dash in an american urban property address",
-    "type": "string"
+    "type": "string",
+    "maxLength": 4
     },
     "country": {
     "description": "Country that the address is in",
-    "type": "string"
+    "type": "string",
+    "maxLength": 50
     },
     "geographicSubAddress": {
     
@@ -1559,35 +1650,43 @@
     "properties": {
     "addrLine1": {
     "description": "The first address line in a formatted address",
-    "type": "string"
+    "type": "string",
+    "maxLength": 25
     },
     "addrLine2": {
     "description": "The second address line in a formatted address",
-    "type": "string"
+    "type": "string",
+    "maxLength": 25
     },
     "locality": {
     "description": "An area of defined or undefined boundaries within a local authority or other legislatively defined area, usually rural or semi rural in nature",
-    "type": "string"
+    "type": "string",
+    "maxLength": 50
     },
     "city": {
     "description": "The city that the address is in",
-    "type": "string"
+    "type": "string",
+    "maxLength": 50
     },
     "stateOrProvince": {
     "description": "The State or Province that the address is in",
-    "type": "string"
+    "type": "string",
+    "maxLength": 50
     },
     "postcode": {
     "description": "Descriptor for a postal delivery area, used to speed and simplify the delivery of mail (also known as ZIP code)",
-    "type": "string"
+    "type": "string",
+    "maxLength": 6
     },
     "postcodeExtension": {
     "description": "An extension of a postal code. E.g. the part following the dash in an American urban property address",
-    "type": "string"
+    "type": "string",
+    "maxLength": 4
     },
     "country": {
     "description": "Country that the address is in",
-    "type": "string"
+    "type": "string",
+    "maxLength": 50
     }
     }
     
@@ -1678,6 +1777,29 @@
     
       }
       ]
+    },    
+
+    "StateChange": {
+    "description": "Holds the state notification reasons and associated date the state changed, populated by the server",
+
+    
+    "type": "object",
+    "properties": {
+    "changeDate": {
+    "description": "",
+    "type": "string",
+    "format": "date-time"
+    },
+    "changeReason": {
+    "description": "",
+    "type": "string"
+    },
+    "state": {
+    
+    "$ref": "#/definitions/ProductOfferingQualificationStateType"
+    }
+    }
+    
     }
     }
     }

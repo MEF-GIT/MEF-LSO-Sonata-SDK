@@ -6,13 +6,13 @@ info:
     \ validation request to get a valid address description and id from seller\n\n\
     Geographic Address API has been designed by MEF Sonata team and used TMF 673 as\
     \ template.\n\n\n\n"
-  version: "2.0.0"
+  version: "3.0.0"
   title: "API GeographicAddressManagement"
   x-logo:
     url: "/redoc/logo.png"
     backgroundColor: "#FFFFFF"
 host: "serverRoot"
-basePath: "/api/mef/geographicAddressManagement/v1/"
+basePath: "/api/mef/geographicAddressManagement/v3/"
 schemes:
 - "https"
 produces:
@@ -150,7 +150,9 @@ paths:
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         422:
-          description: "Unprocessable entity\n\nFunctional error"
+          description: "Unprocessable entity\n\nFunctional error\n\n\n \n\n\n - code:\
+            \ 100\nmessage: Too many addresses match - please re-try with more attribute\
+            \ values restriction\ndescription: "
           schema:
             $ref: "#/definitions/ErrorRepresentation"
         500:
@@ -167,9 +169,9 @@ definitions:
     description: "Validation Result"
     type: "string"
     enum:
-    - "SUCCESS"
-    - "FAILS"
-    - "PARTIAL"
+    - "success"
+    - "fails"
+    - "partial"
   ErrorRepresentation:
     description: "Class used to describe API response error"
     required:
@@ -278,6 +280,18 @@ definitions:
       id:
         description: "Unique identifier of the address"
         type: "string"
+      hasPublicSite:
+        description: "This attribute specifies if that Address contains Service Sites\
+          \ that are public such as Meet-Me-Rooms at an interconnect location or a\
+          \ shared telecom room in the basement of a multi-tenant building."
+        type: "boolean"
+      allowsNewSite:
+        description: "This attribute specifies if a Buyer must use one of the known\
+          \ existing Service Sites at this location for any Products delivered to\
+          \ this Address.  For example, if a particular building owner mandated that\
+          \ all interconnects be done in a shared Public Meet-Me-Room, this attribute\
+          \ would be set to False for that Address."
+        type: "boolean"
       fieldedAddress:
         $ref: "#/definitions/FieldedAddress"
       geographicLocation:
@@ -296,15 +310,13 @@ definitions:
     description: "Resource used to support a request for a validation address : check\
       \ if a geographic address described by values attributes exists)\nIf exist,\
       \ id is provided\nif not, alternate address(es) could be provided"
+    required:
+    - "requestedAddress"
     type: "object"
     properties:
       id:
         description: "Unique identifier of the Address Validation (Not an address\
           \ id !!)"
-        type: "string"
-      status:
-        description: "Status of the address validation (inProgress, terminatedWithErrror,\
-          \ done)."
         type: "string"
       validationDate:
         description: "Date when the address validation is performed"
@@ -312,25 +324,19 @@ definitions:
         format: "date-time"
       validationResult:
         $ref: "#/definitions/ValidationResult"
-      provideaAlternative:
-        description: "Indicator provided by the requester to specify if alternate\
-          \ addresses must be provided in case of partial or fail result"
-        type: "boolean"
-      validAddress:
-        $ref: "#/definitions/GeographicAddressSellerResponse"
-      alternateAddress:
+      requestedAddress:
+        $ref: "#/definitions/GeographicAddressRequestBuyerInput"
+      verifiedAddress:
         type: "array"
         items:
           $ref: "#/definitions/GeographicAddressSellerResponse"
   GeographicAddressValidation_Create:
     description: "Structure used to describe a geographic address validation request"
+    required:
+    - "requestedAddress"
     type: "object"
     properties:
-      provideaAlternative:
-        description: "Indicator provided by the requester to specify if alternate\
-          \ addresses must be provided in case of partial or fail result"
-        type: "boolean"
-      validAddress:
+      requestedAddress:
         $ref: "#/definitions/GeographicAddressRequestBuyerInput"
   GeographicAddressRequestBuyerInput:
     description: "Structure used by the buyer to request geographic address validation"
@@ -602,11 +608,31 @@ definitions:
   GeographicAddressSellerResponse:
     description: "An address is a structured textual way of describing how to find\
       \ a Property in an urban area (country properties are often defined differently)"
+    required:
+    - "isBestMatch"
     type: "object"
     properties:
       id:
         description: "Unique identifier of the address"
         type: "string"
+      hasPublicSite:
+        description: "This attribute specifies if that Address contains Service Sites\
+          \ that are public such as Meet-Me-Rooms at an interconnect location or a\
+          \ shared telecom room in the basement of a multi-tenant building"
+        type: "boolean"
+      allowsNewSite:
+        description: "This attribute specifies if a Buyer must use one of the known\
+          \ existing Service Sites at this location for any Products delivered to\
+          \ this Address.  For example, if a particular building owner mandated that\
+          \ all interconnects be done in a shared Public Meet-Me-Room, this attribute\
+          \ would be set to False for that Address."
+        type: "boolean"
+      isBestMatch:
+        description: "For each Address returned, this attribute specifies if the Seller\
+          \ believes this is the best match to the Buyer specified Address.  Setting\
+          \ this to TRUE also represents that the Seller believes this is likely a\
+          \ direct match to the Buyer Specified Address."
+        type: "boolean"
       fieldedAddress:
         $ref: "#/definitions/FieldedAddress"
       formattedAddress:
