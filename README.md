@@ -17,10 +17,6 @@ It also holds Payload Descriptions for the following structures that are used wi
 
 The MEF LSO Sonata SDK is released under the Apache 2.0 license.
 
-More information about the LSO Sonata API reference point can be found here:
-
-https://wiki.mef.net/display/CESG/LSO+Sonata
-
 ## Maturity Level
 The API files contained in this SDK are evolving and subject to change.  They are based on documents that are either ratified standards, or draft standards that have not yet completed the review cycles and approvals necessary to achieve the status as a MEF standard.  MEF is making these publicly available at this time to invite wider industry review.
 
