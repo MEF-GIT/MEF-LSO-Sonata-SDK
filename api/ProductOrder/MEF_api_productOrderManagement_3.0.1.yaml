@@ -9,7 +9,7 @@ info:
     \ will be introduced in next release:\n•\tAmend Order: modification of an inflight-order\n\
     \nProduct Order API has been designed by MEF Sonata team and used TMF 622 as template.\n\
     \n"
-  version: "3.0.0"
+  version: "3.0.1"
   title: "API ProductOrderManagement"
   x-logo:
     url: "/redoc/logo.png"
@@ -174,7 +174,6 @@ paths:
           \ buys products and services from a Seller. Specifically, the ID of the\
           \ Service Provider (Buyer) organization placing the order."
         type: "string"
-        maxLength: 25
       - name: "sellerId"
         required: false
         in: "query"
@@ -182,7 +181,6 @@ paths:
           \ and services to a Buyer.\nSpecifically, the ID of the Partner/Access Provider\
           \ (Seller) organization receiving the order."
         type: "string"
-        maxLength: 25
       - name: "state"
         required: false
         in: "query"
@@ -279,7 +277,6 @@ paths:
         in: "query"
         description: "A name by which the site is known."
         type: "string"
-        maxLength: 60
       - name: "siteCompanyName"
         required: false
         in: "query"
@@ -298,14 +295,12 @@ paths:
         description: "An identifier that is used to group Orders that represent a\
           \ unit of functionality that is important to a Buyer."
         type: "string"
-        maxLength: 16
       - name: "externalId"
         required: false
         in: "query"
         description: "A number that uniquely identifies an order within the Buyer's\
           \ enterprise."
         type: "string"
-        maxLength: 16
       - name: "offset"
         required: false
         in: "query"
@@ -1083,7 +1078,6 @@ definitions:
         description: "A number that uniquely identifies an order within the buyer's\
           \ enterprise."
         type: "string"
-        maxLength: 16
       orderDate:
         description: "Date when the order was created by seller. Format is YYYY-MM-DDThh:mmTZD\
           \ (e.g. 1997-07-16T19:20+01:00)"
@@ -1145,22 +1139,18 @@ definitions:
           \ version of the order"
         type: "string"
         default: "1"
-        maxLength: 2
       projectId:
         description: "An identifier that is used to group Orders that is important\
           \ to the Buyer. A ProjectId can be used to relate multiple Orders together"
         type: "string"
-        maxLength: 16
       tspRestorationPriority:
         description: "Within the United States, indicates the provisioning and restoration\
           \ priority as defined under the TSP Service Vendor Handbook, The valid values\
           \ are defined in ATIS OBF document: ATIS-0404001"
         type: "string"
-        maxLength: 12
       relatedBuyerPON:
         description: "Related Buyer Purchase Order Number (RPON)"
         type: "string"
-        maxLength: 16
       pricingMethod:
         $ref: "#/definitions/PricingMethod"
       pricingReference:
@@ -1168,13 +1158,10 @@ definitions:
           \ terms, as applicable, based on the pricingMethod (e.g. a contract id or\
           \ tariff id."
         type: "string"
-        maxLength: 25
       pricingTerm:
         description: "The length of the contract in months."
         type: "integer"
         format: "int32"
-        maximum: 999
-        minimum: 0
       billingAccount:
         $ref: "#/definitions/BillingAccountRef"
       relatedParty:
@@ -1225,7 +1212,6 @@ definitions:
       author:
         description: "The author of the note"
         type: "string"
-        maxLength: 50
   OrderItem:
     description: "An enumeration of the entities that are part of this order expressed\
       \ in terms of a Product Offering or a Product (for a change order)."
@@ -1366,7 +1352,6 @@ definitions:
       id:
         description: "The id of the targeted order item by the relationship"
         type: "string"
-        maxLength: 4
       productOrderId:
         description: "Id of another product order if this relationship is between\
           \ two distinct orders."
@@ -1469,7 +1454,6 @@ definitions:
           seller\" id, this is a  Carrier ID number provided by local regulatory entity.\
           \  Unique in the local jurisdiction."
         type: "string"
-        maxLength: 25
       role:
         description: "Role payed by this party for this Order/OrderItem. It could\
           \ be at : BuyerOrderContact (header), BuyerImplementationContact, BuyerTechnicalContact,\
@@ -1478,23 +1462,19 @@ definitions:
         type: "array"
         items:
           type: "string"
-          maxLength: 50
+        minItems: 1
       name:
         description: "The name of the related party, e.g. \"Jean Pontus\"."
         type: "string"
-        maxLength: 50
       emailAddress:
         description: "The email address of the related party."
         type: "string"
-        maxLength: 60
       number:
         description: "The telephone number of the related party."
         type: "string"
-        maxLength: 15
       numberExtension:
         description: "Phone number Extension"
         type: "string"
-        maxLength: 15
       '@referredType':
         description: "Technical attribute to extend the API"
         type: "string"
@@ -1516,7 +1496,6 @@ definitions:
         description: "Buyer Purchase Order Number: A number that uniquely identifies\
           \ an order within the Buyer's enterprise"
         type: "string"
-        maxLength: 16
       buyerRequestDate:
         description: "Date when the order was submitted by the Buyer to the Seller"
         type: "string"
@@ -1549,22 +1528,18 @@ definitions:
         description: "Buyer Order Version: The version number that the Buyer uses\
           \ to refer to this particular version of the order."
         type: "string"
-        maxLength: 2
       projectId:
         description: "An identifier that is used to group Orders that is important\
           \ to the Buyer. A ProjectId can be used to relate multiple Orders together."
         type: "string"
-        maxLength: 16
       tspRestorationPriority:
         description: "Within the United States, indicates the provisioning and restoration\
           \ priority as defined under the TSP Service Vendor Handbook."
         type: "string"
-        maxLength: 12
       relatedBuyerPON:
         description: "Related Buyer Purchase Order Number (RPON) - Identifies the\
           \ Buyer Purchase Order Number that is related to this order."
         type: "string"
-        maxLength: 16
       '@type':
         description: "Technical attribute to extend API"
         type: "string"
@@ -1581,13 +1556,10 @@ definitions:
           \ terms, as applicable, based on the pricingMethod (e.g. a contract id or\
           \ tariff id."
         type: "string"
-        maxLength: 25
       pricingTerm:
         description: "The length of the contract in months"
         type: "integer"
         format: "int32"
-        maximum: 999
-        minimum: 0
       billingAccount:
         $ref: "#/definitions/BillingAccountRef"
       relatedParty:
@@ -1638,7 +1610,6 @@ definitions:
         description: "Identifier of the line item (generally it is a sequence number\
           \ 01, 02, 03, ...)"
         type: "string"
-        maxLength: 4
       action:
         $ref: "#/definitions/ProductActionType"
       pricingMethod:
@@ -1648,12 +1619,10 @@ definitions:
           \ terms, as applicable, based on the pricingMethod (e.g. a contract id or\
           \ tariff id."
         type: "string"
-        maxLength: 25
       pricingTerm:
         description: "The length of the contract in months"
         type: "integer"
         format: "int32"
-        maximum: 999
         minimum: 0
       billingAccount:
         $ref: "#/definitions/BillingAccountRef"
@@ -1703,7 +1672,6 @@ definitions:
         description: "ID given by the consumer and only understandable by him (to\
           \ facilitate his searches afterwards).\nMEF: Buyer Purchase Order Number"
         type: "string"
-        maxLength: 16
       orderDate:
         description: "Date when the order was created"
         type: "string"
@@ -1760,16 +1728,13 @@ definitions:
       code:
         description: "The code associated with the Message"
         type: "string"
-        maxLength: 12
       field:
         description: "The field/attribute on the Order associated with message"
         type: "string"
-        maxLength: 100
       messageInformation:
         description: "A description of the error condition or information to be conveyed\
           \ to the Buyer"
         type: "string"
-        maxLength: 150
       severity:
         $ref: "#/definitions/Severity"
       correctionRequired:

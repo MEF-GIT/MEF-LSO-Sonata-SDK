@@ -3,7 +3,7 @@
     "swagger": "2.0",
     "info": {
     "description": "**Product Order Management**\n\nThe scope of this API  introduces the following capabilities to the API:\n•\tInstall order: request for new product\n•\tChange Order: change an existing Product\n•\tDisconnect Order:  disconnect an existing Product \n•\tCancel Order: cancellation of an inflight-order\n•\tSupport for Order Notifications\n\nThe buyer could also retrieve a single, or set, of Product Orders based upon a specified filter.  \n\nFollowing feature will be introduced in next release:\n•\tAmend Order: modification of an inflight-order\n\nProduct Order API has been designed by MEF Sonata team and used TMF 622 as template.\n\n",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "title": "API ProductOrderManagement",
     "x-logo": {
     "url": "/redoc/logo.png",
@@ -166,8 +166,7 @@
     "in": "query",
     "description": "A Party Role played by an Individual or an Organization that buys products and services from a Seller. Specifically, the ID of the Service Provider (Buyer) organization placing the order.",
     
-    "type": "string",
-    "maxLength": 25
+    "type": "string"
     },
     {
     "name": "sellerId",
@@ -175,8 +174,7 @@
     "in": "query",
     "description": "A Party Role played by an organization that provides products and services to a Buyer.\nSpecifically, the ID of the Partner/Access Provider (Seller) organization receiving the order.",
     
-    "type": "string",
-    "maxLength": 25
+    "type": "string"
     },
     {
     "name": "state",
@@ -318,8 +316,7 @@
     "in": "query",
     "description": "A name by which the site is known.",
     
-    "type": "string",
-    "maxLength": 60
+    "type": "string"
     },
     {
     "name": "siteCompanyName",
@@ -343,8 +340,7 @@
     "in": "query",
     "description": "An identifier that is used to group Orders that represent a unit of functionality that is important to a Buyer.",
     
-    "type": "string",
-    "maxLength": 16
+    "type": "string"
     },
     {
     "name": "externalId",
@@ -352,8 +348,7 @@
     "in": "query",
     "description": "A number that uniquely identifies an order within the Buyer's enterprise.",
     
-    "type": "string",
-    "maxLength": 16
+    "type": "string"
     },
     {
     "name": "offset",
@@ -1494,8 +1489,7 @@
     },
     "externalId": {
     "description": "A number that uniquely identifies an order within the buyer's enterprise.",
-    "type": "string",
-    "maxLength": 16
+    "type": "string"
     },
     "orderDate": {
     "description": "Date when the order was created by seller. Format is YYYY-MM-DDThh:mmTZD (e.g. 1997-07-16T19:20+01:00)",
@@ -1561,23 +1555,19 @@
     "description": "The version number that the Buyer uses to refer to this particular version of the order",
     "type": "string",
     
-      "default": "1",
-    "maxLength": 2
+      "default": "1"
     },
     "projectId": {
     "description": "An identifier that is used to group Orders that is important to the Buyer. A ProjectId can be used to relate multiple Orders together",
-    "type": "string",
-    "maxLength": 16
+    "type": "string"
     },
     "tspRestorationPriority": {
     "description": "Within the United States, indicates the provisioning and restoration priority as defined under the TSP Service Vendor Handbook, The valid values are defined in ATIS OBF document: ATIS-0404001",
-    "type": "string",
-    "maxLength": 12
+    "type": "string"
     },
     "relatedBuyerPON": {
     "description": "Related Buyer Purchase Order Number (RPON)",
-    "type": "string",
-    "maxLength": 16
+    "type": "string"
     },
     "pricingMethod": {
     
@@ -1585,15 +1575,12 @@
     },
     "pricingReference": {
     "description": "The identifier references the previously agreed upon pricing terms, as applicable, based on the pricingMethod (e.g. a contract id or tariff id.",
-    "type": "string",
-    "maxLength": 25
+    "type": "string"
     },
     "pricingTerm": {
     "description": "The length of the contract in months.",
     "type": "integer",
-    "format": "int32",
-    "maximum": 999,
-    "minimum": 0
+    "format": "int32"
     },
     "billingAccount": {
     
@@ -1674,8 +1661,7 @@
     },
     "author": {
     "description": "The author of the note",
-    "type": "string",
-    "maxLength": 50
+    "type": "string"
     }
     }
     
@@ -1893,8 +1879,7 @@
     },
     "id": {
     "description": "The id of the targeted order item by the relationship",
-    "type": "string",
-    "maxLength": 4
+    "type": "string"
     },
     "productOrderId": {
     "description": "Id of another product order if this relationship is between two distinct orders.",
@@ -2059,36 +2044,31 @@
     "properties": {
     "id": {
     "description": "An identifier of the related party. For the \"buyer\" and \"seller\" id, this is a  Carrier ID number provided by local regulatory entity.  Unique in the local jurisdiction.",
-    "type": "string",
-    "maxLength": 25
+    "type": "string"
     },
     "role": {
     "description": "Role payed by this party for this Order/OrderItem. It could be at : BuyerOrderContact (header), BuyerImplementationContact, BuyerTechnicalContact, UNISiteContact (item), AlternateSiteContact, Buyer (header), Seller(header), ENNISiteContact(item), ENNIAlternateSiteContact(item)",
     "type": "array",
     "items": {
-    "type": "string",
-    "maxLength": 50
-    }
+    "type": "string"
+    },
+    "minItems": 1
     },
     "name": {
     "description": "The name of the related party, e.g. \"Jean Pontus\".",
-    "type": "string",
-    "maxLength": 50
+    "type": "string"
     },
     "emailAddress": {
     "description": "The email address of the related party.",
-    "type": "string",
-    "maxLength": 60
+    "type": "string"
     },
     "number": {
     "description": "The telephone number of the related party.",
-    "type": "string",
-    "maxLength": 15
+    "type": "string"
     },
     "numberExtension": {
     "description": "Phone number Extension",
-    "type": "string",
-    "maxLength": 15
+    "type": "string"
     },
     "@referredType": {
     "description": "Technical attribute to extend the API",
@@ -2117,8 +2097,7 @@
     "properties": {
     "externalId": {
     "description": "Buyer Purchase Order Number: A number that uniquely identifies an order within the Buyer's enterprise",
-    "type": "string",
-    "maxLength": 16
+    "type": "string"
     },
     "buyerRequestDate": {
     "description": "Date when the order was submitted by the Buyer to the Seller",
@@ -2154,23 +2133,19 @@
     },
     "orderVersion": {
     "description": "Buyer Order Version: The version number that the Buyer uses to refer to this particular version of the order.",
-    "type": "string",
-    "maxLength": 2
+    "type": "string"
     },
     "projectId": {
     "description": "An identifier that is used to group Orders that is important to the Buyer. A ProjectId can be used to relate multiple Orders together.",
-    "type": "string",
-    "maxLength": 16
+    "type": "string"
     },
     "tspRestorationPriority": {
     "description": "Within the United States, indicates the provisioning and restoration priority as defined under the TSP Service Vendor Handbook.",
-    "type": "string",
-    "maxLength": 12
+    "type": "string"
     },
     "relatedBuyerPON": {
     "description": "Related Buyer Purchase Order Number (RPON) - Identifies the Buyer Purchase Order Number that is related to this order.",
-    "type": "string",
-    "maxLength": 16
+    "type": "string"
     },
     "@type": {
     "description": "Technical attribute to extend API",
@@ -2190,15 +2165,12 @@
     },
     "pricingReference": {
     "description": "The identifier references the previously agreed upon pricing terms, as applicable, based on the pricingMethod (e.g. a contract id or tariff id.",
-    "type": "string",
-    "maxLength": 25
+    "type": "string"
     },
     "pricingTerm": {
     "description": "The length of the contract in months",
     "type": "integer",
-    "format": "int32",
-    "maximum": 999,
-    "minimum": 0
+    "format": "int32"
     },
     "billingAccount": {
     
@@ -2280,8 +2252,7 @@
     "properties": {
     "id": {
     "description": "Identifier of the line item (generally it is a sequence number 01, 02, 03, ...)",
-    "type": "string",
-    "maxLength": 4
+    "type": "string"
     },
     "action": {
     
@@ -2293,14 +2264,12 @@
     },
     "pricingReference": {
     "description": "The identifier references the previously agreed upon pricing terms, as applicable, based on the pricingMethod (e.g. a contract id or tariff id.",
-    "type": "string",
-    "maxLength": 25
+    "type": "string"
     },
     "pricingTerm": {
     "description": "The length of the contract in months",
     "type": "integer",
     "format": "int32",
-    "maximum": 999,
     "minimum": 0
     },
     "billingAccount": {
@@ -2376,8 +2345,7 @@
     },
     "externalId": {
     "description": "ID given by the consumer and only understandable by him (to facilitate his searches afterwards).\nMEF: Buyer Purchase Order Number",
-    "type": "string",
-    "maxLength": 16
+    "type": "string"
     },
     "orderDate": {
     "description": "Date when the order was created",
@@ -2459,18 +2427,15 @@
     "properties": {
     "code": {
     "description": "The code associated with the Message",
-    "type": "string",
-    "maxLength": 12
+    "type": "string"
     },
     "field": {
     "description": "The field/attribute on the Order associated with message",
-    "type": "string",
-    "maxLength": 100
+    "type": "string"
     },
     "messageInformation": {
     "description": "A description of the error condition or information to be conveyed to the Buyer",
-    "type": "string",
-    "maxLength": 150
+    "type": "string"
     },
     "severity": {
     
