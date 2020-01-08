@@ -55,6 +55,21 @@ Any developer intending to use the materials in this repository should first tho
 *  [MEF 81 Draft (R3): Product Inventory Management](documentation/MEF%2081%20Draft%20(R3)%20-%20Product%20Inventory%20Management.pdf)
 *  [MEF 57.1: Ethernet Ordering Technical Standard - Business Requirements and Use Cases](documentation/MEF%2057.1%20-%20Ethernet%20Ordering%20Technical%20Specification%20-%20Business%20Requirements%20and%20Use%20Cases.pdf) This document is a ratified MEF standard.
 
+## Reference Implementations
+
+**1) LSO Sonata APIs (older version) implementation on Buyer side - contributed by Amdocs**
+
+   The example implementation of MEF LSO Sonata APIs on Buyer side provided by Amdocs. This example code is part of the solution between a Tier1 North American operator, Amdocs and a UK provider that was put into production in April 2019 to enable the automated ordering of Ethernet services.
+   
+   This LSO Sonata reference implementation is available on GitHub for MEF Members:
+
+   https://github.com/MEF-GIT/Example-LSO-Sonata-Buyer-Implementation
+   
+   **NOTE:** If you are a MEF Member, please update your MEF wiki profile with your GitHub account name. Access to this repository is periodically updated with provided GitHub accounts. Additionally contact the [LSO Developer Community Manager](mailto:community_manager@mef.net) to request the immediate access.
+   
+   **NOTE:** This example LSO Sonata implementation does not provide an executable or runnable project and it is based on the older APIs version published in the "2018-dev-preview" release of the LSO Sonata SDK which is available here:
+   https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/releases/tag/2018-dev-preview
+
 ## Questions and Feedback
 Questions and Feedback should be directed to LSO-Sonata@mef.net.  All artifacts included in this repository have line numbers.  When referring to specific content in any of these artifacts, please quote the line numbers to which you are referring.
 
