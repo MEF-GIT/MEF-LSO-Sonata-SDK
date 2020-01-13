@@ -1,10 +1,10 @@
 {
    "title":"ELineSpec",
    "description":"Description of ELineSpec for Ordering - source 57.1",
-   "Required":[
-   ],
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$id": "ELine",
+  "type": "object",
    "properties":{
-      "ELine":{
          "sVlanId":{
             "description":"The S-VLAN ID to be used for this service.",
             "type":"integer",
@@ -16,7 +16,7 @@
             "format":"int32",
             "maximum":1526
          },
-         "colorFowardingEnabled":{
+         "colorForwardingEnabled": {
             "description":"Color Forwarding is an OVC attribute defining the relationship between the color on an egress ENNI frame and the color of the corresponding ingress ENNI Frame or Service Frame. For ordering, this attribute identifies if the Buyer requests Color Forwarding",
             "type":"boolean",
             "default":false
@@ -27,29 +27,21 @@
 		},
 		"ENNIIngressBWProfile":{
          "description":"The ingress bandwidth profile at ENNI",
+         "type": "array",
          "items":{
             "$ref":"#/definitions/BandwidthProfile"
          }
 		},
 		"UNIIngressBWProfile":{
          "description":"The ingress bandwidth profile at UNI",
+         "type": "array",
          "items":{
             "$ref":"#/definitions/BandwidthProfile"
-         }
-		},
-         "@type":{
-            "description":"Identifies the extension type",
-            "type":"string"
-         },
-         "@schemaLocation":{
-            "description":"Provides extension url",
-            "type":"string"
          }
       }
    },
    "definitions":{
 		"informationRateUnit":{
-			"description":"",
 			"type":"string",
 			"enum":[
 				"Mbps",
@@ -57,7 +49,6 @@
 			]
 		},
 		"informationRate":{
-			"description":"",
 			"required":[
 				"amount",
 				"unit"
@@ -76,7 +67,6 @@
 			}
 		},
 		"BandwidthProfile":{
-         "description":"",
          "type":"object",
          "properties":{
             "cir":{
