@@ -373,6 +373,8 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/StatusChange"
+      characteristics:
+        $ref: '#/definitions/ProductCharacteristics'
       '@type':
         description: "The type of product if specialization"
         type: "string"
@@ -384,6 +386,17 @@ definitions:
         description: "A pointer to a file describing extension attributes (if used).\n\
           This is a technical attribute to extend this class."
         type: "string"
+  ProductCharacteristics:
+    title: ProductCharacteristics
+    type: object
+    discriminator: '@type'
+    properties:
+      '@type':
+        type: string
+      '@schemaLocation':
+        type: string
+    required:
+      - '@type'
   ProductOfferingRef:
     description: "The commercial and technical details of a Product sold by a particular\
       \ Seller.  A Product Offering defines all of the commercial terms and, through\

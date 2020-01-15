@@ -527,6 +527,9 @@
     "$ref": "#/definitions/StatusChange"
     }
     },
+    "characteristics": {
+      "$ref": "#/definitions/ProductCharacteristics"
+    },
     "@type": {
     "description": "The type of product if specialization",
     "type": "string"
@@ -541,8 +544,23 @@
     }
     }
     
-    },    
-
+    },
+    "ProductCharacteristics": {
+      "title": "ProductCharacteristics",
+      "type": "object",
+      "discriminator": "@type",
+      "properties": {
+        "@type": {
+          "type": "string"
+        },
+        "@schemaLocation": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "@type"
+      ]
+    },
     "ProductOfferingRef": {
     "description": "The commercial and technical details of a Product sold by a particular Seller.  A Product Offering defines all of the commercial terms and, through association with a particular Product Specification, defines all the technical attributes and behaviors of the Product. A Product Offering may constrain the allowable set of configurable technical attributes and/or behaviors specified in the associated Product Specification",
 
