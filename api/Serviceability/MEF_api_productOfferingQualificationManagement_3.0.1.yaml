@@ -663,10 +663,23 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/RelatedPlaceReforValue"
+      characteristics:
+        $ref: '#/definitions/ProductCharacteristics'
       '@type':
         description: "When\_sub-classing,\_this\_defines\_the\_sub-class\_entity\_\
           name"
         type: "string"
+  ProductCharacteristics:
+    title: ProductCharacteristics
+    type: object
+    discriminator: '@type'
+    properties:
+      '@type':
+        type: string
+      '@schemaLocation':
+        type: string
+    required:
+      - '@type'
   ProductOfferingQualificationItem:
     description: "An individual article included in a POQ that describes a Product\
       \ of a particular type (Product Offering) being delivered to a specific geographical\
