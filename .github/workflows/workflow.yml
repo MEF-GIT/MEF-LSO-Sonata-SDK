@@ -1,0 +1,45 @@
+name: PRs
+on: pull_request
+
+jobs:
+  validation:
+    runs-on: ubuntu-latest
+    container: wallies/lint-validator
+    steps:
+    - uses: actions/checkout@v2
+    - name: yamlint
+      run: |
+            for file in $(find . -type f -name "*.yaml"); do
+              yamllint -c .yamllint $file
+              if [ "$?" != "0" ]; then
+                echo "${file} Failed"
+                export FAILED=1
+              fi
+            done
+            if [[ "${FAILED}" -eq 1 ]]; then
+              exit 1
+            fi
+    - name: jsonlint
+      run: |
+            for file in $(find . -type f -name "*.json"); do
+              jsonlint -q $file
+              if [ "$?" != "0" ]; then
+                echo "${file} Failed"
+                export FAILED=1
+              fi
+            done
+            if [[ "${FAILED}" -eq 1 ]]; then
+              exit 1
+            fi
+    - name: openapi-validator
+      run: |
+            for file in $(find . -type f -name "*.json" -o -name '*.yaml'); do
+              swagger-cli validate $file
+              if [ "$?" != "0" ]; then
+                echo "${file} Failed"
+                export FAILED=1
+              fi
+            done
+            if [[ "${FAILED}" -eq 1 ]]; then
+              exit 1
+            fi
