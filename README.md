@@ -1,24 +1,55 @@
 # MEF-LSO-Sonata-SDK (Release Candidate 5)
 
 This repository contains the MEF LSO Sonata SDK.
+It includes API definitions for the following functional areas:
 
-This SDK release aligns the API schemas and definitions for Serviceability (Address Validation, Site Queries, Product Offering Qualification) and Product Inventory to the latest versions of MEF 79 and MEF 81 Draft Standards. In addition, the API schemas and definitions for Product Order are aligned with the new version of other Sonata APIs. The latest versions of MEF 79 and MEF 81 Draft Standards are included.
+* Serviceability (Address, Service Site, and Product Offering Qualification Management)
+* Product Quote
+* Product Order
+* Product Inventory
 
-MEF LSO Sonata SDK includes API definitions for the following functional areas:
+It also provides Product Specification for Access ELine as delivered by MEF W106
 
-*  Serviceability (Address, Service Site, and Product Offering Qualification Management)
-*  Product Quote
-*  Product Order
-*  Product Inventory
+## High level release notes
 
-It also holds Payload Descriptions for the following structures that are used with these APIs
-*  JSON representations for Product Spec descriptions (initially for MEF Access E-Line services)
-*  JSON representations for the UNI attributes (sourced from MEF 57.1)
+* *MEF W87 - LSO Sonata Product Offering Qualification API - Developer Guide.* The first of a series of developer guides that explain the details of MEF API usage, process flows and the pattern resulting from the combining of the TMF-based envelope with Product Specifications. It comes with the update of POQ API Specification.
+
+* *MEF W106 - LSO Sonata Product Specification - Access E-Line* which includes JSON schemas and the Requirements document.
+
+* Update of all of LSO Sonata APIs:
+  * Use of TM Forum tooling based on Domain Context Specialisation rules to ensure alignment with TM Forum APIs (see [MEF-TMF-ONAP-Collaboration](https://wiki.mef.net/pages/viewpage.action?pageId=106608028))
+  * Introduction of envelope-payload and product characteristic patterns as described in MEF W87
+  * Bug fixes and improvements
 
 The MEF LSO Sonata SDK is released under the Apache 2.0 license.
 
 ## Maturity Level
 The API files contained in this SDK are evolving and subject to change.  They are based on documents that are either ratified standards, or draft standards that have not yet completed the review cycles and approvals necessary to achieve the status as a MEF standard.  MEF is making these publicly available at this time to invite wider industry review.
+
+The maturity per functionality presents as follows:
+
+* Address Validation, Site Query:
+  * Business Requirements MEF 79 - **Published Standard**
+  * Developer Guide - **none**
+  * API - **work in progress**
+* Product Offering Qualification:
+  * Business Requirements MEF 79 - **Published Standard**
+  * Developer Guide - MEF W87 - **work in progress - closed resolution of CfC#1**
+  * API - MEF W87 - **work in progress - closed resolution of CfC#1**
+* Quote:
+  * Business Requirements - MEF W80 - **Draft (R7)**
+  * Developer Guide - **open project, not yet included**
+  * API - **work in progress, aligned with MEF W80 Draft (R)**
+* Order:
+  * Business Requirements - MEF 57.1 - **Published Standard** (the next version MEF W57.2 is being finalized)
+  * Developer Guide - **none**
+  * API - **work in progress**
+* Inventory:
+  * Business Requirements - MEF 81, MEF 81.0.1 **Published Standard**
+  * Developer Guide - **none**
+  * API - **work in progress**
+  
+For details on the maturity map and a roadmap for future releases please refer to [LSO Sonata SDK Home Page](https://wiki.mef.net/display/CESG/LSO+Sonata+SDK) on MEF WIKI.
 
 ## Contents
 
@@ -50,10 +81,14 @@ Any developer intending to use the materials in this repository should first tho
 *  [MEF 55.0.1: Amendment to MEF 55: Operational Threads](documentation/MEF%2055.0.1%20-%20Operational%20Threads.pdf) This document is a ratified MEF standard.
 *  [MEF 55.0.2: Amendment to MEF 55: TOSCA Services Templates](documentation/MEF%2055.0.2%20-%20TOSCA%20Service%20Templates.pdf) This document is a ratified MEF standard.
 *  [MEF 50.1: MEF Services Lifecycle Process Flows](documentation/MEF%2050.1%20-%20MEF%20Services%20Lifecycle%20Process%20Flows.pdf) This document is a ratified MEF standard.
-*  [MEF 79 Draft (R3): Address, Service Site, and Product Offering Qualification Management](documentation/MEF%2079%20Draft%20(R3)%20-%20Address%2C%20Service%20Site%2C%20and%20Product%20Offering%20Qualification%20Management.pdf)
-*  [MEF 80 Draft (R2): Quote Management](documentation/MEF%2080%20Draft%20(R2)%20-%20Quote%20Management.pdf)
-*  [MEF 81 Draft (R3): Product Inventory Management](documentation/MEF%2081%20Draft%20(R3)%20-%20Product%20Inventory%20Management.pdf)
 *  [MEF 57.1: Ethernet Ordering Technical Standard - Business Requirements and Use Cases](documentation/MEF%2057.1%20-%20Ethernet%20Ordering%20Technical%20Specification%20-%20Business%20Requirements%20and%20Use%20Cases.pdf) This document is a ratified MEF standard.
+*  [MEF 79: Address, Service Site, and Product Offering Qualification Management](documentation/MEF%2079%20-%20Address%2C%20Service%20Site%2C%20and%20Product%20Offering%20Qualification%20Management.pdf) This document is a ratified MEF standard.
+*  [MEF 79.0.1 Draft (R2) - Amendment to MEF 79 Address, Service Site, and Product Offering Qualification Management Requirements and Use Cases](documentation/MEF%2079.0.1%20Draft%20(R2)%20-%20Amendment%20to%20MEF%2079%20Address,%20Service%20Site,%20and%20Product%20Offering%20Qualification%20Management%20Requirements%20and%20Use%20Cases.pdf)
+*  [MEF 80 Draft (R7): Quote Management](documentation/MEF%2080%20Draft%20(R7)%20-%20Quote%20Management.pdf)
+*  [MEF 81: Product Inventory Management](documentation/MEF%2081%20-%20Product%20Inventory%20Management.pdf)
+*  [MEF 81.0.1: Amandment to MEF81 Product Inventory Management](documentation/MEF%2081.0.1%20-%20Amandment%20to%20MEF81%20Product%20Inventory%20Management.pdf)
+* [MEF W87: LSO Sonata Product Offering Qualification API - Developer Guide](TODO)
+* [MEF W106: LSO Sonata Product Specification - Access E-Line](TODO)
 
 ## Reference Implementations
 
@@ -65,7 +100,7 @@ Any developer intending to use the materials in this repository should first tho
 
    https://github.com/MEF-GIT/Example-LSO-Sonata-Buyer-Implementation
    
-   **NOTE:** If you are a MEF Member, please update your MEF wiki profile with your GitHub account name. Access to this repository is periodically updated with provided GitHub accounts. Additionally contact the [LSO Developer Community Manager](mailto:community_manager@mef.net) to request the immediate access.
+   **NOTE:** If you are a MEF Member, please follow: [How do I get access to MEF GitHub?](https://wiki.mef.net/pages/viewpage.action?pageId=106624756)
    
    **NOTE:** This example LSO Sonata implementation does not provide an executable or runnable project and it is based on the older APIs version published in the "2018-dev-preview" release of the LSO Sonata SDK which is available here:
    https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/releases/tag/2018-dev-preview
@@ -89,4 +124,4 @@ The receipt or any use of this document or its contents does not in any way crea
 
 Implementation or use of specific MEF standards, specifications, or recommendations will be voluntary, and no Member shall be obliged to implement them by virtue of participation in MEF Forum. MEF is a non-profit international organization to enable the development and worldwide adoption of agile, assured and orchestrated network services. MEF does not, expressly or otherwise, endorse or promote any specific products or services.
 
-© MEF Forum 2019. All Rights Reserved.
+© MEF Forum 2020. All Rights Reserved.
