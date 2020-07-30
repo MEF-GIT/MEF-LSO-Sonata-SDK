@@ -1,0 +1,322 @@
+swagger: '2.0'
+info:
+  description: 
+    This is Quote notification API. This API must be deployed on client/subscriber (Buyer) side to receive notification.
+        
+    This version builds on the Quote Management Requirements and Use Cases MEF W80 Draft Standard (R7).
+    Quote API has been designed by MEF basing on TMF 648 rel 19.0.1 (v4.0.0).
+
+  version: 5.0.0-RC
+  title: API Quote Notification
+  x-logo:
+    url: /redoc/logo.png
+    backgroundColor: '#FFFFFF'
+host: serverRoot
+basePath: /mefApi/sonata/quoteNotification/v5/
+schemes:
+  - https
+produces:
+  - application/json;charset=utf-8
+tags:
+  - name: Notification
+    description: 'Notification class is used to describe structure used for quote notification (quote created, quote state change, quote information required, quote attribute value change'
+paths:
+  /listener/quoteCreateEvent:
+    post:
+      tags:
+        - Notification listeners
+      consumes:
+        - application/json;charset=utf-8
+      operationId: listenToQuoteCreateEvent
+      summary: Quote Creation Notification endpoint
+      description: |
+        This endpoint is used to receive notifications on Quote creation
+      deprecated: false
+      parameters:
+        - name: data
+          required: true
+          in: body
+          description: ''
+          schema:
+            $ref: '#/definitions/Event'
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: |-
+            Bad Request
+          schema:
+            $ref: "#/definitions/Error400"
+        "401":
+          description: |-
+            Unauthorized
+          schema:
+            $ref: "#/definitions/Error401"
+        "403":
+          description: |-
+            Forbidden
+          schema:
+            $ref: "#/definitions/Error403"
+        "408":
+          description: |-
+            Request Time-out
+          schema:
+            $ref: "#/definitions/Error408"
+        "500":
+          description: |-
+            Internal Server Error
+          schema:
+            $ref: "#/definitions/Error500"
+  /listener/quoteStateChangeEvent:
+    post:
+      tags:
+        - Notification listeners
+      consumes:
+        - application/json;charset=utf-8
+      operationId: listenToQuoteStateChangeEvent
+      summary: Quote State Change Notification endpoint
+      description: |
+        This endpoint is used to receive notifications on Quote state change
+      deprecated: false
+      parameters:
+        - name: data
+          required: true
+          in: body
+          description: ''
+          schema:
+            $ref: '#/definitions/Event'
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: |-
+            Bad Request
+          schema:
+            $ref: "#/definitions/Error400"
+        "401":
+          description: |-
+            Unauthorized
+          schema:
+            $ref: "#/definitions/Error401"
+        "403":
+          description: |-
+            Forbidden
+          schema:
+            $ref: "#/definitions/Error403"
+        "408":
+          description: |-
+            Request Time-out
+          schema:
+            $ref: "#/definitions/Error408"
+        "500":
+          description: |-
+            Internal Server Error
+          schema:
+            $ref: "#/definitions/Error500"
+  /listener/quoteLevelChangeEvent:
+    post:
+      tags:
+        - Notification listeners
+      consumes:
+        - application/json;charset=utf-8
+      operationId: listenToQuoteLevelChangeEvent
+      summary: Quote Level Change Notification endpoint
+      description: |
+        This endpoint is used to receive notifications on Quote level change
+      deprecated: false
+      parameters:
+        - name: data
+          required: true
+          in: body
+          description: ''
+          schema:
+            $ref: '#/definitions/Event'
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: |-
+            Bad Request
+          schema:
+            $ref: "#/definitions/Error400"
+        "401":
+          description: |-
+            Unauthorized
+          schema:
+            $ref: "#/definitions/Error401"
+        "403":
+          description: |-
+            Forbidden
+          schema:
+            $ref: "#/definitions/Error403"
+        "408":
+          description: |-
+            Request Time-out
+          schema:
+            $ref: "#/definitions/Error408"
+        "500":
+          description: |-
+            Internal Server Error
+          schema:
+            $ref: "#/definitions/Error500"
+definitions:
+  QuoteEventType:
+    description: Type of the Event
+    type: string
+    enum:
+      - quoteCreateEvent
+      - quoteStateChangeEvent
+      - quoteLevelChangeEvent
+  QuoteEvent:
+    description: The identifier of the Quote being subject of this event.
+    required:
+      - id
+    type: object
+    properties:
+      id:
+        description: ID attributed by quoting system
+        type: string
+      href:
+        description: Hyperlink to access the quote
+        type: string
+  Event:
+    description: Event class is used to describe information structure used for notification.
+    required:
+      - eventId
+      - eventTime
+      - eventType
+      - event
+    type: object
+    properties:
+      eventId:
+        description: Id of the event
+        type: string
+      eventTime:
+        description: Datetime when the event occurred
+        type: string
+        format: date-time
+      eventType:
+        $ref: '#/definitions/QuoteEventType'
+      event:
+        $ref: '#/definitions/QuoteEvent'
+  Error:
+    description: |
+      Standard Class used to describe API response error
+      Not intended to be use directly only via specialization which defines a code
+    type: object
+    required:
+      - reason
+    properties:
+      reason:
+        type: string
+        description: Explanation of the reason for the error which can be shown to a client user.
+        maxLength: 255
+      message:
+        type: string
+        description: >-
+          Text that provides more details and corrective actions related to the
+          error. This can be shown to a client user.
+      status:
+        type: string
+        description: HTTP Error code extension
+      referenceError:
+        type: string
+        format: uri
+        description: URI of documentation describing the error.
+  Error400:
+    description: |-
+      Bad Request
+    allOf:
+      - $ref: "#/definitions/Error"
+      - type: object 
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |- 
+              List of supported error codes:
+              - missingQueryParameter: Missing query-string parameter
+              - missingQueryValue: Invalid query-string parameter value
+              - invalidQuery: Invalid Query
+              - invalidBody: Invalid body
+            type: string
+            enum:
+              - missingQueryParameter
+              - missingQueryValue
+              - invalidQuery
+              - invalidBody
+  Error401:
+    description: |-
+      Unauthorized
+    allOf:
+      - $ref: "#/definitions/Error"
+      - type: object 
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |- 
+              List of supported error codes:
+              - missingCredentials: Missing credentials
+              - invalidCredentials: Invalid OR expired credentials
+            type: string
+            enum:
+             - missingCredentials
+             - invalidCredentials
+  Error403:
+    description: |-
+      Forbidden
+    allOf:
+      - $ref: "#/definitions/Error"
+      - type: object 
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |- 
+              List of supported error codes:
+              - accessDenied: Access denied
+              - forbiddenRequester: Forbidden requester
+              - tooManyUsers: Too many users
+            type: string
+            enum:
+             - accessDenied
+             - forbiddenRequester
+             - tooManyUsers
+  Error408:
+    description: |-
+      Request Time-out
+    allOf:
+      - $ref: "#/definitions/Error"
+      - type: object 
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |- 
+              List of supported error codes:
+              - timeOut: Request Time-out
+            type: string
+            enum:
+             - timeOut
+  Error500:
+    description: |-
+      Internal Server Error
+    allOf:
+      - $ref: "#/definitions/Error"
+      - type: object 
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |- 
+              List of supported error codes:
+              - internalError: Internal server error
+            type: string
+            enum:
+             - internalError
