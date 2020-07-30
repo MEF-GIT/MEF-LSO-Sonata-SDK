@@ -1,4 +1,4 @@
-# MEF-LSO-Sonata-SDK (R4)
+# MEF-LSO-Sonata-SDK (Release Candidate 5)
 
 This repository contains the MEF LSO Sonata SDK.
 
