@@ -1,0 +1,49 @@
+{
+"title": "JSON Schema accessElineEnni - Quote, updated: 2020730 ( #2 )",
+"description": "MEF Forum LSO Sonata Product Schema for Access E-Line Enni - Function: Quote",
+"$schema": "http://json-schema.org/draft-04/schema#",
+"$id": "accessElineEnniQuote",
+"type": "object",
+"properties": {
+            "enniService": {
+                "description": "ENNI Service Attributes - MEF 26.2 §13",
+                "$ref": "#/definitions/objEnniService" }
+        },
+"required": ["enniService"],
+"definitions": {
+    "objEnniService": {
+        "type": "object",
+        "description": "For each instance of an ENNI, there are multiple sets of ENNI Service Attributes. The value for each ENNI Service Attribute in a set for an Operator CEN is specific to a SP/SO that is using the ENNI per Section 8.11. Each such value is agreed to by the SP/SO and the Operator.",
+        "properties": {
+            "sVlanIdControl": {
+                "description": "S-VLAN ID Control - MEF 26.2 §13.2",
+                "enum": ["FULL", "PARTIAL"] },
+            "maximumNumberOfOvcs": {
+                "description": "Maximum Number of OVCs - MEF 26.2 §13.3",
+                "type": "integer", "minimum": 1, "maximum": 4095 },
+            "enniTokenShare": {
+                "description": "ENNI Token Share - MEF 26.2 §13.5",
+                "enum": ["ENABLED", "DISABLED"] },
+            "enniEnvelopes": {
+                "description": "ENNI Envelopes - MEF 26.2 §13.6",
+                "type": "array", "minItems": 1, 
+                "items": { 
+                    "$ref": "#/definitions/objEnvelope" }
+                }
+        }
+    },
+    "objEnvelope": {
+        "type": "object",
+        "description": "Bandwidth Profiles are organized into Envelopes. Multiple Bandwidth Profiles in an envelope can share bandwidth resources. Each Envelope has a name and a flag (CF0) that indicates whether unused green tokens are discarded or converted to yellow tokens.",
+        "properties": {
+            "name": {
+                "description": "The name of the Envelope",
+                "type": "string", "maxLength": 45 },
+            "cf0": {
+                "description": "Envelope Coupling Flag indicates how unused tokens at the lowest level are handled.",
+                "type": "integer", "minimum": 0, "maximum": 1 }
+        },
+        "required": ["name", "cf0"]
+    }
+  }
+}

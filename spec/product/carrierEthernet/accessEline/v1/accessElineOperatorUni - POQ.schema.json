@@ -1,0 +1,236 @@
+{
+"title": "JSON Schema accessElineOperatorUni - POQ, updated: 2020730 ( #2 )",
+"description": "MEF Forum LSO Sonata Product Schema for Access E-Line OperatorUni - Function: POQ",
+"$schema": "http://json-schema.org/draft-04/schema#",
+"$id": "accessElineOperatorUniPOQ",
+"type": "object",
+"properties": {
+            "physicalLayer": {
+                "description": "Operator UNI Physical Layer - MEF 26.2 §14.2",
+                "type": "array", "minItems": 1, "maxItems": 8, 
+                "items": { 
+                    "type": "string", "pattern": "[0-9]+[G]?BASE-[A-Z0-9]{1,2}$" }
+                },
+            "connectorType": {
+                "description": "Operator UNI Connector Type - No reference. Should be in a future rev of MEF 26.x",
+                "type": "array", "minItems": 1, "maxItems": 8, 
+                "items": { 
+                    "enum": ["SC", "LC", "RJ45", "OTHER"] }
+                },
+            "synchronousMode": {
+                "description": "Operator UNI Synchronous Mode - MEF 26.2 §14.3",
+                "enum": ["ENABLED", "DISABLED"] },
+            "numberOfLinks": {
+                "description": "Operator UNI Number of Links - MEF 26.2 §14.4",
+                "type": "number", "minimum": 1, "maximum": 8 },
+            "linkAggregation": {
+                "description": "Operator UNI Link Aggregation - MEF 26.2 §14.5",
+                "enum": ["NONE", "2_LINK_ACTIVE_STANDBY", "ALL_ACTIVE", "OTHER"] },
+            "portConversation": {
+                "description": "Operator UNI Port Conversation ID to Aggregation Link Map - MEF 26.2 §14.6 and 802.1AX-2014 § 6.6.2.1",
+                "$ref": "#/definitions/objConvToAggLink" },
+            "maximumServiceFrameSize": {
+                "description": "Operator UNI Maximum Service Frame Size - MEF 26.2 §14.8",
+                "type": "number", "minimum": 1522 },
+            "defaultCeVlanId": {
+                "description": "Operator UNI Default CE-VLAN ID - MEF 26.2 §14.9",
+                "type": "integer", "minimum": 1, "maximum": 4094 },
+            "maximumNumberOfOvcEndPoints": {
+                "description": "Operator UNI Maximum Number of OVC End Points - MEF 26.2 §14.10",
+                "type": "integer", "minimum": 1, "maximum": 4094 },
+            "maximumNumberOfCeVlanIdsPerOvcEndPoint": {
+                "description": "Operator UNI Maximum Number of CE-VLAN IDs per OVC End Point - MEF 26.2 §14.11",
+                "type": "integer", "minimum": 1, "maximum": 4094 },
+            "ingressBandwidthProfile": {
+                "description": "Operator UNI Ingress Bandwidth Profile per UNI - MEF 26.2 §14.12",
+                "OneOf": [
+                                {"$ref": "#/definitions/objBWP"},
+                                {"$ref": "#/definitions/objDisabled"}] },
+            "egressBandwidthProfile": {
+                "description": "Operator UNI Egress Bandwidth Profile per UNI - MEF 26.2 §14.13",
+                "OneOf": [
+                                {"$ref": "#/definitions/objBWP"},
+                                {"$ref": "#/definitions/objDisabled"}] },
+            "linkOAM": {
+                "description": "Operator UNI Link OAM - MEF 26.2 §14.14",
+                "enum": ["ENABLED", "DISABLED"] },
+            "meg": {
+                "description": "Operator UNI MEG - MEF 26.2 §14.15",
+                "enum": ["ENABLED", "DISABLED"] },
+            "lagLinkMeg": {
+                "description": "Operator UNI LAG Link MEG - MEF 26.2 §14.16",
+                "enum": ["ENABLED", "DISABLED"] },
+            "tokenShare": {
+                "description": "Operator UNI Token Share - MEF 26.2 §14.18",
+                "enum": ["ENABLED", "DISABLED"] },
+            "envelopes": {
+                "description": "Operator UNI Envelopes - MEF 26.2 §14.19",
+                "type": "array", "minItems": 0, 
+                "items": { 
+                    "$ref": "#/definitions/objEnvelope" }
+                },
+            "l2cpAddressSet": {
+                "description": "Operator UNI L2CP Address Set - MEF 26.2 §14.20",
+                "enum": ["CTA", "CTB", "CTB2"] },
+            "l2cpPeering": {
+                "description": "Operator UNI L2CP Peering - MEF 26.2 §14.21",
+                "type": "array", "minItems": 0, 
+                "items": { 
+                    "$ref": "#/definitions/objL2cpIdentifer" }
+                }
+        },
+"required": ["physicalLayer", "connectorType", "numberOfLinks"],
+"definitions": {
+    "objBWP": {
+        "type": "object",
+        "description": "The MEF Bandwidth Profile 11-tuple as described in MEF 10.4 section 12.1.2. (MEF 10.4 actually defines a 10-tuple where Envelope Name and Rank are a single attribute).",
+        "properties": {
+            "cir": {
+                "description": "The Committed Information Rate for the BWP",
+                "type": "integer", "minimum": 0 },
+            "cirmax": {
+                "description": "The Maximum Committed Information Rate for the BWP",
+                "type": "integer", "minimum": 0 },
+            "cbs": {
+                "description": "The depth in bytes of the Committed Token Bucket",
+                "type": "integer", "minimum": 4000 },
+            "eir": {
+                "description": "The Excess Information Rate for the Bandwidth Profile",
+                "type": "integer", "minimum": 0 },
+            "eirmax": {
+                "description": "The Maximum Excess Information Rate for the Bandwidth Profile",
+                "type": "integer", "minimum": 0 },
+            "ebs": {
+                "description": "The depth in bytes of the Excess Token Bucket",
+                "type": "integer", "minimum": 4000 },
+            "cf": {
+                "description": "Do overflow tokens at this level flow down to the next committed bucket or to the corresponding excess bucket?",
+                "type": "number", "minimum": 0, "maximum": 1 },
+            "cm": {
+                "description": "Does the policer consider the color marking in the incoming frame?",
+                "enum": ["COLOR_BLIND", "COLOR_AWARE"] },
+            "envelopeName": {
+                "description": "The name of the envelope that this Bandwidth Profile resides in.",
+                "type": "string", "maxLength": 45 },
+            "envelopeRank": {
+                "description": "The rank in the envelope of this BWP",
+                "type": "integer", "minimum": 1 },
+            "offset": {
+                "description": "A number of bytes (positive or negative) to include in the Bandwidth Profile calculation to account for headers.",
+                "type": "integer" }
+        },
+        "required": ["cm", "envelopeName", "envelopeRank"]
+    },
+    "objEnvelope": {
+        "type": "object",
+        "description": "Bandwidth Profiles are organized into Envelopes. Multiple Bandwidth Profiles in an envelope can share bandwidth resources. Each Envelope has a name and a flag (CF0) that indicates whether unused green tokens are discarded or converted to yellow tokens.",
+        "properties": {
+            "name": {
+                "description": "The name of the Envelope",
+                "type": "string", "maxLength": 45 },
+            "cf0": {
+                "description": "Envelope Coupling Flag indicates how unused tokens at the lowest level are handled.",
+                "type": "integer", "minimum": 0, "maximum": 1 }
+        },
+        "required": ["name", "cf0"]
+    },
+    "objConvToAggLink": {
+        "type": "object",
+        "description": "2-tuple {x,y} where x is a VLAN or range of VLANs and y is a list of Link Aggregation Links. This is used in the Port Conversation to Aggregation Link Map for the Operator UNI and ENNI.",
+        "properties": {
+            "vlans": {
+                "description": "VLAN Range - 802.1AX-2014 §6.6.2.1",
+                "$ref": "#/definitions/objVlanRange" },
+            "aggLinkList": {
+                "description": "Aggregation Link List - 802.1AX-2014 §6.6.2.1",
+                "type": "array", "minItems": 1, "maxItems": 8, "uniqueItems": true, 
+                "items": { 
+                    "type": "integer", "minimum": 1, "maximum": 8 }
+                }
+        },
+        "required": ["vlans", "aggLinkList"]
+    },
+    "objVlanRange": {
+        "type": "object",
+        "description": "A range of VLANs allowing three forms: x, x → x, and x → y",
+        "properties": {
+            "start": {
+                "description": "The starting VLAN of the range or the only VLAN",
+                "type": "integer", "minimum": 1, "maximum": 4094 },
+            "end": {
+                "description": "The final VLAN in the range",
+                "type": "integer", "minimum": 1, "maximum": 4094 }
+        },
+        "required": ["start"]
+    },
+    "objL2cpIdentifer": {
+        "type": "object",
+        "description": "This describes an L2CP as a MAC Address and Protocol Identifier as described in MEF 45.1 section 8.2.",
+        "properties": {
+            "macAddr": {
+                "description": "The MAC Address of the L2CP to be peered.",
+                "type": "string", "pattern": "[0-9a-f][0-9a-f]([-][0-9a-f][0-9a-f]){5}" },
+            "protocolIdentifier": {
+                "description": "The protocol identifier field for identifying L2CP Protocols to Peer.",
+                "$ref": "#/definitions/objL2cpProtocolIdentifier" }
+        },
+        "required": ["macAddr", "protocolIdentifier"]
+    },
+    "objL2cpProtocolIdentifier": {
+        "type": "object",
+        "description": "This is one of:  EtherType (four hex digits), (2) LLC (2 hex digits), or (3) EtherType/Subtype (4 hex digits and 2 hex digits)",
+        "properties": {
+            "protoID": {
+                "description": "The EtherType or LLC Address or EtherType/SubType",
+                "OneOf": [
+                                {"$ref": "#/definitions/objEtherType"},
+                                {"$ref": "#/definitions/objLLC"},
+                                {"$ref": "#/definitions/objEtherTypeSubType"}] }
+        },
+        "required": ["protoID"]
+    },
+    "objEtherType": {
+        "type": "object",
+        "description": "4 hex digits, 0xDDDD",
+        "properties": {
+            "etherType": {
+                "description": "4 hex digits 0xDDDD",
+                "type": "string", "pattern": "[0][x][0-9a-f]{4}" }
+        },
+        "required": ["etherType"]
+    },
+    "objLLC": {
+        "type": "object",
+        "description": "2 hex digits, 0xDD",
+        "properties": {
+            "llc": {
+                "description": "2 hex digits 0xDD",
+                "type": "string", "pattern": "[0][x][0-9a-f]{2}" }
+        },
+        "required": ["llc"]
+    },
+    "objEtherTypeSubType": {
+        "type": "object",
+        "description": "This is a two-tuple consisting of an Ethernet Type 0xDDDD and a SubType 0xDD",
+        "properties": {
+            "etherType": {
+                "description": "An Ethertype 0xFFFF",
+                "type": "string", "pattern": "[0][x][0-9a-f]{4}" },
+            "subType": {
+                "description": "An EtherType SubType 0xDD",
+                "type": "string", "pattern": "[0][x][0-9a-f]{2}" }
+        },
+        "required": ["etherType", "subType"]
+    },
+    "objDisabled": {
+        "type": "object",
+        "description": "An object that includes a single property, the constant DISABLED",
+        "properties": {
+            "constantDisabled": {
+                "description": "",
+                "enum": ["DISABLED"] }
+        },
+        "required": ["constantDisabled"]
+    }
+  }
+}

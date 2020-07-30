@@ -1,0 +1,206 @@
+{
+"title": "JSON Schema accessElineEnni - Inventory, updated: 2020730 ( #2 )",
+"description": "MEF Forum LSO Sonata Product Schema for Access E-Line Enni - Function: Inventory",
+"$schema": "http://json-schema.org/draft-04/schema#",
+"$id": "accessElineEnniInventory",
+"type": "object",
+"properties": {
+            "enniService": {
+                "description": "ENNI Service Attributes - MEF 26.2 §13",
+                "$ref": "#/definitions/objEnniService" },
+            "enniCommon": {
+                "description": "ENNI Common Attributes - MEF 26.2 §9",
+                "$ref": "#/definitions/objEnniCommon" },
+            "enniMultilateral": {
+                "description": "Operator Multilateral - MEF 26.2 §10",
+                "$ref": "#/definitions/objOperatorMultilateral" }
+        },
+"required": ["enniService", "enniCommon", "enniMultilateral"],
+"definitions": {
+    "objEnniService": {
+        "type": "object",
+        "description": "For each instance of an ENNI, there are multiple sets of ENNI Service Attributes. The value for each ENNI Service Attribute in a set for an Operator CEN is specific to a SP/SO that is using the ENNI per Section 8.11. Each such value is agreed to by the SP/SO and the Operator.",
+        "properties": {
+            "sVlanIdControl": {
+                "description": "S-VLAN ID Control - MEF 26.2 §13.2",
+                "enum": ["FULL", "PARTIAL"] },
+            "maximumNumberOfOvcs": {
+                "description": "Maximum Number of OVCs - MEF 26.2 §13.3",
+                "type": "integer", "minimum": 1, "maximum": 4095 },
+            "maximumNumberOfOvcEndPointsPerOvc": {
+                "description": "Maximum Number of OVC End Points per OVC - MEF 26.2 §13.4",
+                "type": "integer", "minimum": 1, "maximum": 4094 },
+            "enniTokenShare": {
+                "description": "ENNI Token Share - MEF 26.2 §13.5",
+                "enum": ["ENABLED", "DISABLED"] },
+            "enniEnvelopes": {
+                "description": "ENNI Envelopes - MEF 26.2 §13.6",
+                "type": "array", "minItems": 1, 
+                "items": { 
+                    "$ref": "#/definitions/objEnvelope" }
+                }
+        },
+        "required": ["sVlanIdControl", "maximumNumberOfOvcs", "maximumNumberOfOvcEndPointsPerOvc", "enniTokenShare", "enniEnvelopes"]
+    },
+    "objEnniCommon": {
+        "type": "object",
+        "description": "Technical details that need to be agreed to by Operators in order for their CENs to be interconnected to form an ENNI",
+        "properties": {
+            "peeringIdentifier": {
+                "description": "ENNI Peering Identifier Common Attribute - MEF 26.2 §9.1",
+                "type": "string", "maxLength": 45 },
+            "physicalLayer": {
+                "description": "ENNI Physical Layer Common Attribute - MEF 26.2 §9.2",
+                "type": "array", "minItems": 1, "maxItems": 8, 
+                "items": { 
+                    "type": "string", "pattern": "[0-9]+[G]?BASE-[A-Z0-9]{1,2}$" }
+                },
+            "connectorType": {
+                "description": "ENNI Connector Type - No reference. Should be in a future rev of MEF 26.x",
+                "type": "array", "minItems": 1, "maxItems": 8, 
+                "items": { 
+                    "enum": ["SC", "LC", "RJ45", "OTHER"] }
+                },
+            "numberOfLinks": {
+                "description": "ENNI Number of Links Common Attribute - MEF 26.2 §9.4",
+                "type": "integer", "minimum": 1, "maximum": 8 },
+            "linkAggregation": {
+                "description": "ENNI Link Aggregation Common Attribute - MEF 26.2 §9.5",
+                "enum": ["NONE", "2_LINK_ACTIVE_STANDBY", "ALL_ACTIVE", "OTHER"] },
+            "portConversation": {
+                "description": "ENNI Port Conversation ID to Aggregation Link Map Common Attribute - MEF 26.2 §9.6",
+                "$ref": "#/definitions/objConvToAggLink" },
+            "meg": {
+                "description": "ENNI MEG Common Attribute - MEF 26.2 §9.7",
+                "enum": ["ENABLED", "DISABLED"] },
+            "lagLinkMeg": {
+                "description": "ENNI LAG Link MEG Common Attribute - MEF 26.2 §9.8",
+                "enum": ["ENABLED", "DISABLED"] },
+            "linkOAM": {
+                "description": "ENNI Link OAM Common Attribute - MEF 26.2 §9.9",
+                "enum": ["ENABLED", "DISABLED"] }
+        },
+        "required": ["peeringIdentifier", "physicalLayer", "connectorType", "numberOfLinks", "linkAggregation", "portConversation", "meg", "lagLinkMeg", "linkOAM"]
+    },
+    "objOperatorMultilateral": {
+        "type": "object",
+        "description": "An Operator Multilateral Attribute is a behavior of a single Operator CEN at an ENNI that is externally visible to a Service Provider or Super Operator using that CEN and ENNI and/or to peer Operators operating CENs on the other side of the ENNI. An Operator Multilateral Attribute has the same value for all Service Providers or Super Operators using that CEN and ENNI to whom the behavior is externally visible.",
+        "properties": {
+            "l2cpPeering": {
+                "description": "ENNI L2CP Peering Multilateral Attribute - MEF 26.2 §10.1 and  MEF 45 §8.2",
+                "type": "array", "minItems": 0, 
+                "items": { 
+                    "$ref": "#/definitions/objL2cpIdentifer" }
+                },
+            "taggedL2cpFrameProcessing": {
+                "description": "ENNI Tagged L2CP Frame Processing Multilateral Attribute - MEF 26.2 §10.2 and MEF 45 §8.3",
+                "enum": ["802_1_COMPLIANT", "802_1_NON_COMPLIANT"] },
+            "maximumFrameSizeMultilateral": {
+                "description": "ENNI Maximum Frame Size Multilateral Attribute - MEF 26.2 §10.3",
+                "type": "integer", "minimum": 1526 }
+        },
+        "required": ["l2cpPeering", "taggedL2cpFrameProcessing", "maximumFrameSizeMultilateral"]
+    },
+    "objEnvelope": {
+        "type": "object",
+        "description": "Bandwidth Profiles are organized into Envelopes. Multiple Bandwidth Profiles in an envelope can share bandwidth resources. Each Envelope has a name and a flag (CF0) that indicates whether unused green tokens are discarded or converted to yellow tokens.",
+        "properties": {
+            "name": {
+                "description": "The name of the Envelope",
+                "type": "string", "maxLength": 45 },
+            "cf0": {
+                "description": "Envelope Coupling Flag indicates how unused tokens at the lowest level are handled.",
+                "type": "integer", "minimum": 0, "maximum": 1 }
+        },
+        "required": ["name", "cf0"]
+    },
+    "objConvToAggLink": {
+        "type": "object",
+        "description": "2-tuple {x,y} where x is a VLAN or range of VLANs and y is a list of Link Aggregation Links. This is used in the Port Conversation to Aggregation Link Map for the Operator UNI and ENNI.",
+        "properties": {
+            "vlans": {
+                "description": "VLAN Range - 802.1AX-2014 §6.6.2.1",
+                "$ref": "#/definitions/objVlanRange" },
+            "aggLinkList": {
+                "description": "Aggregation Link List - 802.1AX-2014 §6.6.2.1",
+                "type": "array", "minItems": 1, "maxItems": 8, "uniqueItems": true, 
+                "items": { 
+                    "type": "integer", "minimum": 1, "maximum": 8 }
+                }
+        },
+        "required": ["vlans", "aggLinkList"]
+    },
+    "objVlanRange": {
+        "type": "object",
+        "description": "A range of VLANs allowing three forms: x, x → x, and x → y",
+        "properties": {
+            "start": {
+                "description": "The starting VLAN of the range or the only VLAN",
+                "type": "integer", "minimum": 1, "maximum": 4094 },
+            "end": {
+                "description": "The final VLAN in the range",
+                "type": "integer", "minimum": 1, "maximum": 4094 }
+        },
+        "required": ["start"]
+    },
+    "objL2cpIdentifer": {
+        "type": "object",
+        "description": "This describes an L2CP as a MAC Address and Protocol Identifier as described in MEF 45.1 section 8.2.",
+        "properties": {
+            "macAddr": {
+                "description": "The MAC Address of the L2CP to be peered.",
+                "type": "string", "pattern": "[0-9a-f][0-9a-f]([-][0-9a-f][0-9a-f]){5}" },
+            "protocolIdentifier": {
+                "description": "The protocol identifier field for identifying L2CP Protocols to Peer.",
+                "$ref": "#/definitions/objL2cpProtocolIdentifier" }
+        },
+        "required": ["macAddr", "protocolIdentifier"]
+    },
+    "objL2cpProtocolIdentifier": {
+        "type": "object",
+        "description": "This is one of:  EtherType (four hex digits), (2) LLC (2 hex digits), or (3) EtherType/Subtype (4 hex digits and 2 hex digits)",
+        "properties": {
+            "protoID": {
+                "description": "The EtherType or LLC Address or EtherType/SubType",
+                "OneOf": [
+                                {"$ref": "#/definitions/objEtherType"},
+                                {"$ref": "#/definitions/objLLC"},
+                                {"$ref": "#/definitions/objEtherTypeSubType"}] }
+        },
+        "required": ["protoID"]
+    },
+    "objEtherType": {
+        "type": "object",
+        "description": "4 hex digits, 0xDDDD",
+        "properties": {
+            "etherType": {
+                "description": "4 hex digits 0xDDDD",
+                "type": "string", "pattern": "[0][x][0-9a-f]{4}" }
+        },
+        "required": ["etherType"]
+    },
+    "objLLC": {
+        "type": "object",
+        "description": "2 hex digits, 0xDD",
+        "properties": {
+            "llc": {
+                "description": "2 hex digits 0xDD",
+                "type": "string", "pattern": "[0][x][0-9a-f]{2}" }
+        },
+        "required": ["llc"]
+    },
+    "objEtherTypeSubType": {
+        "type": "object",
+        "description": "This is a two-tuple consisting of an Ethernet Type 0xDDDD and a SubType 0xDD",
+        "properties": {
+            "etherType": {
+                "description": "An Ethertype 0xFFFF",
+                "type": "string", "pattern": "[0][x][0-9a-f]{4}" },
+            "subType": {
+                "description": "An EtherType SubType 0xDD",
+                "type": "string", "pattern": "[0][x][0-9a-f]{2}" }
+        },
+        "required": ["etherType", "subType"]
+    }
+  }
+}
