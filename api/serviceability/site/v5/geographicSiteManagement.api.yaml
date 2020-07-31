@@ -509,23 +509,21 @@ definitions:
       - private
   MEFSubUnit:
     type: object
-    description: |-
-      Representation of a MEFSubUnit 
-      It is used for describing subunit within a sub-address  e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF.
     required:
       - subUnitNumber
       - subUnitType
     properties:
       subUnitNumber:
         type: string
-        description: |-
-          the discriminator used for the subunit
-          often just a simple number e.g. FLAT 5, may also be a range
+        description: >-
+          The discriminator used for the subunit, often just a simple number but
+          may also be a range.
       subUnitType:
         type: string
-        description: |-
-          the type of subunit
-          e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF
+        description: >-
+          The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT,
+          WHARF.
+    description: Allows for sub unit identification
   RelatedPartyValue:
     type: object
     description: Entity reference. A related party defines party or party role linked to a specific entity.
@@ -553,17 +551,25 @@ definitions:
       - '@type'
       - role
     discriminator: '@type'
-    description: 'Related Entity reference. A related place defines a place described by reference or by value linked to a specific entity. The polymorphic attributes @type, @schemaLocation & @referredType are related to the place entity and not the RelatedPlaceRefOrValue class itself'
     properties:
-      role:
-        type: string
       '@schemaLocation':
         type: string
         format: uri
-        description: A URI to a JSON-Schema file that defines additional attributes and relationships
+        description: >-
+          A URI to a JSON-Schema file that defines additional attributes and
+          relationships.
+          May be used to define additional related place types.
+          Usage of this attribute must be agreed between Buyer and Seller.
       '@type':
         type: string
-        description: 'When sub-classing, this defines the sub-class Extensible name'
+        description: >
+          This filed is used as discriminator and is used between different
+          place representations. This type might discriminate for additional related place as defined
+          in '@schemaLocation'.
+      role:
+        type: string
+        description: Role of this place
+    description: 'Related Entity reference. A related place defines a place described by reference or by value linked to a specific entity. The polymorphic attributes @type, @schemaLocation & @referredType are related to the place entity and not the RelatedPlaceRefOrValue class itself'
   Error:
     description: |
       Standard Class used to describe API response error

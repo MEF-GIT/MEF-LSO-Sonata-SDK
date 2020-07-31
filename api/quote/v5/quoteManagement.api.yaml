@@ -694,8 +694,6 @@ definitions:
           - addrLine1
           - city
           - country
-          - postcode
-          - stateOrProvince
         properties:
           addrLine1:
             type: string
@@ -735,34 +733,40 @@ definitions:
       postal addressing conventions.
   GeographicSubAddress:
     type: object
-    description: |-
-      Additional fields used to specify an address, as detailed as possible.
     properties:
+      buildingName:
+        type: string
+        description: > 
+          Allows for identification of places that require building name 
+          as part of addressing information
       id:
         type: string
         description: Unique Identifier of the subAddress
-      buildingName:
-        type: string
-        description: allows for buildings that have well-known names
       levelNumber:
         type: string
-        description: 'used where a level type may be repeated e.g. BASEMENT 1, BASEMENT 2'
+        description: 'Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT 2'
       levelType:
         type: string
-        description: describes level types within a building
+        description: Describes level types within a building
       privateStreetName:
         type: string
-        description: private streets internal to a property (e.g. a university) may have internal names that are not recorded by the land title office.
+        description: >-
+          "Private streets internal to a property (e.g. a university) may have
+          internal names that are not recorded by the land title office
       privateStreetNumber:
         type: string
-        description: private streets numbers internal to a private street
+        description: Private streets numbers internal to a private street
       subUnit:
         type: array
+        description: >-
+          Representation of a MEFSubUnit
+
+          It is used for describing subunit within a subaddress  e.g.BERTH,
+          FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF.
         items:
           $ref: '#/definitions/MEFSubUnit'
-        description: |-
-          Representation of a MEFSubUnit 
-          It is used for describing subunit within a subaddress  e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF.
+    description: >-
+      Additional fields used to specify an address, as detailed as possible.
   MEFBuyerQuoteLevel:
     type: string
     description: 'An indication of whether the Buyer’s Quote Request is for a Budgetary or Firm Quote Level. Set by the Buyer. Buyer Requested Quote Level contains the possible values and may be set by the Buyer on the Request. All Quote Items in a Quote have the same Quote Level. '
@@ -785,42 +789,35 @@ definitions:
       - month
       - year
   MEFGeographicLocation:
-    type: object
-    description: A set of coordinates (typically including latitude and longitude) that describes a particular location on earth.
-    required:
-      - geographicPoint
-      - spatialRef
-    properties:
-      id:
-        type: string
-        description: Unique identifier of the place
-      href:
-        type: string
-        description: Unique reference of the place
-      name:
-        type: string
-        description: 'A user-friendly name for the place, such as [Paris Store], [London Store], [Main Home]'
-      spatialRef:
-        type: string
-        description: The spatial reference system used to determine the coordinates
-      geographicPoint:
-        $ref: '#/definitions/MEFGeographicPoint'
-      '@type':
-        type: string
-        description: 'When sub-classing, this defines the sub-class entity name'
+    allOf:
+      - $ref: '#/definitions/RelatedPlaceRefOrValue'
+      - type: object
+        required:
+          - geographicPoint
+          - spatialRef
+        properties:
+          geographicPoint:
+            description: The spatial reference system used to determine the coordinates
+            $ref: '#/definitions/MEFGeographicPoint'
+          spatialRef:
+            type: string
+            description: The spatial reference system used to determine the coordinates
+    description: >-
+      A set of coordinates (typically including latitude and longitude) that
+      describes a particular location on earth.
   MEFGeographicPoint:
     type: object
-    description: A MEFGeographicPoint defines a geographic point through coordinates.
+    required:
+      - 'x'
+      - 'y'
     properties:
-      x:
+      'x':
         type: string
-        description: x coordinate (usually latitude)
+        description: The latitude expressed in the format specified by the `spacialRef`
       'y':
         type: string
-        description: y coordinate (usually longitude)
-      '@type':
-        type: string
-        description: 'When sub-classing, this defines the sub-class entity name'
+        description: The longitude expressed in the format specified by the `spacialRef`
+    description: A MEFGeographicPoint defines a geographic point through coordinates.
   MEFItemTerm_Buyer:
     type: object
     description: Holds the MEF Quote extension
@@ -1047,26 +1044,21 @@ definitions:
       changed, populated by the Seller.
   MEFSubUnit:
     type: object
-    description: |-
-      Representation of a MEFSubUnit 
-      It is used for describing subunit within a subaddress  e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF.
     required:
       - subUnitNumber
       - subUnitType
     properties:
       subUnitNumber:
         type: string
-        description: |-
-          the discriminator used for the subunit
-          often just a simple number e.g. FLAT 5, may also be a range
+        description: >-
+          The discriminator used for the subunit, often just a simple number but
+          may also be a range.
       subUnitType:
         type: string
-        description: |-
-          the type of subunit
-          e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF
-      '@type':
-        type: string
-        description: 'When sub-classing, this defines the sub-class entity name'
+        description: >-
+          The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT,
+          WHARF.
+    description: Allows for sub unit identification
   Money:
     type: object
     description: A base / value business entity used to represent money
