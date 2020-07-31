@@ -1,0 +1,243 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class BillingAccountRef {
+
+    id*: string 
+}
+
+
+
+class Describing {
+
+    @type: string 
+    @schemaLocation: string 
+}
+
+
+
+class Error400 {
+
+    code*: string 
+}
+Error <|-- Error400
+
+
+
+class Error401 {
+
+    code*: string 
+}
+Error <|-- Error401
+
+
+
+class Error403 {
+
+    code*: string 
+}
+Error <|-- Error403
+
+
+
+class Error422 {
+
+    code*: string 
+    propertyPath: string 
+}
+Error <|-- Error422
+
+
+
+class Error500 {
+
+    code*: string 
+}
+Error <|-- Error500
+
+
+
+class Error503 {
+
+    code*: string 
+}
+Error <|-- Error503
+
+
+
+class Error {
+
+    reason*: string 
+    message: string 
+    status: string 
+    referenceError: uri 
+}
+
+
+
+class EventPlus {
+
+    resourcePath*: string 
+    fieldPath*: string[] 
+}
+Event <|-- EventPlus
+
+
+
+class Event {
+
+    eventId*: string 
+    eventType*: ProductOrderEventType 
+    eventTime*: date-time 
+}
+
+Event *-->"1" ProductOrderEvent : event
+
+
+class Note {
+
+    text*: string 
+    date*: date-time 
+    author*: string 
+}
+
+
+
+class Notification {
+
+}
+
+
+
+class OrderItemEvent {
+
+    id*: string 
+    action*: ProductActionType 
+    state*: ProductOrderItemStateType 
+    @type: string 
+    @schemaLocation: string 
+}
+
+OrderItemEvent *--> BillingAccountRef : billingAccount
+OrderItemEvent *--> ProductEvent : product
+
+
+class OrderMessage {
+
+    code: string 
+    field: string 
+    messageInformation*: string 
+    severity*: Severity 
+    correctionRequired: boolean 
+}
+
+
+
+class ProductEvent {
+
+    id: string 
+    buyerProductId: string 
+}
+
+ProductEvent *--> ProductSpecification : productSpecification
+ProductEvent *-->"*" RelatedParty : relatedParty
+
+
+class ProductOrderEvent {
+
+    id*: string 
+    externalId*: string 
+    state*: ProductOrderStateType 
+    requestedStartDate: date-time 
+    requestedCompletionDate*: date-time 
+    expectedCompletionDate: date-time 
+    completionDate: date-time 
+    orderVersion*: string 
+    projectId: string 
+    @type: string 
+    @schemaLocation: string 
+    @baseType: string 
+}
+
+ProductOrderEvent *-->"1..*" RelatedParty : relatedParty
+ProductOrderEvent *-->"*" Note : note
+ProductOrderEvent *-->"1..*" OrderItemEvent : orderItem
+ProductOrderEvent *-->"*" OrderMessage : orderMessage
+
+
+class ProductSpecification {
+
+    id: string 
+}
+
+ProductSpecification *--> Describing : describing
+
+
+class RelatedParty {
+
+    id*: string 
+    href: string 
+    @referredType: string 
+    role*: string 
+    name*: string 
+    emailAddress: string 
+    number*: string 
+    numberExtension: string 
+}
+
+
+
+enum ProductActionType {
+
+    add
+    change
+    remove
+    noChange
+}
+enum ProductOrderStateType {
+
+    completed
+    partial
+    failed
+    inProgress.jeopardy
+    inProgress.confirmed
+    inProgress.configured
+    cancelled
+    pendingCancellation
+    assessingCancellation
+    held
+    pending
+    inProgress
+    rejected
+    acknowledged
+}
+enum ProductOrderItemStateType {
+
+    acknowledged
+    rejected
+    inProgress
+    pending
+    held
+    assessingCancellation
+    pendingCancellation
+    cancelled
+    inProgress.configured
+    failed
+    completed
+}
+enum Severity {
+
+    error
+    information
+}
+enum ProductOrderEventType {
+
+    productOrderCreateEvent
+    productOrderAttributeValueChangeEvent
+    productOrderStateChangeEvent
+    productOrderInformationRequiredEvent
+}
+@enduml

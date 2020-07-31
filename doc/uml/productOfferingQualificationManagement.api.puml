@@ -1,0 +1,434 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class AlternateProductOfferingProposal {
+
+    id*: string 
+}
+
+AlternateProductOfferingProposal *-->"1" MEFProductExtension : alternateProduct
+AlternateProductOfferingProposal *-->"1" ProductOfferingRef : alternateProductOffering
+AlternateProductOfferingProposal *-->"1" TimeInterval : installationInterval
+
+
+class Error400 {
+
+    code*: string 
+}
+Error <|-- Error400
+
+
+
+class Error401 {
+
+    code*: string 
+}
+Error <|-- Error401
+
+
+
+class Error403 {
+
+    code*: string 
+}
+Error <|-- Error403
+
+
+
+class Error404 {
+
+    code*: string 
+}
+Error <|-- Error404
+
+
+
+class Error422 {
+
+    code*: string 
+    propertyPath: string 
+}
+Error <|-- Error422
+
+
+
+class Error500 {
+
+    code*: string 
+}
+Error <|-- Error500
+
+
+
+class Error501 {
+
+    code*: string 
+}
+Error <|-- Error501
+
+
+
+class Error {
+
+    message: string 
+    reason*: string 
+    referenceError: uri 
+    status: string 
+}
+
+
+
+class EventSubscription {
+
+    callback*: string 
+    id*: string 
+    query: string 
+}
+
+
+
+class EventSubscriptionInput {
+
+    callback*: string 
+    query: string 
+}
+
+
+
+class FieldedAddress {
+
+    city*: string 
+    country*: string 
+    locality: string 
+    postcode: string 
+    postcodeExtension: string 
+    stateOrProvince: string 
+    streetName*: string 
+    streetNr: string 
+    streetNrLast: string 
+    streetNrLastSuffix: string 
+    streetNrSuffix: string 
+    streetSuffix: string 
+    streetType: string 
+}
+RelatedPlaceRefOrValue <|-- FieldedAddress
+
+FieldedAddress *--> GeographicSubAddress : geographicSubAddress
+
+
+class FormattedAddress {
+
+    addrLine1*: string 
+    addrLine2: string 
+    city*: string 
+    country*: string 
+    locality: string 
+    postcode: string 
+    postcodeExtension: string 
+    stateOrProvince: string 
+}
+RelatedPlaceRefOrValue <|-- FormattedAddress
+
+
+
+class GeographicSubAddress {
+
+    buildingName: string 
+    id: string 
+    levelNumber: string 
+    levelType: string 
+    privateStreetName: string 
+    privateStreetNumber: string 
+}
+
+GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+
+
+class GlobalAddressId {
+
+    externalReferenceId*: string 
+    externalReferenceType*: string 
+}
+RelatedPlaceRefOrValue <|-- GlobalAddressId
+
+
+
+class MEFGeographicLocation {
+
+    spatialRef*: string 
+}
+RelatedPlaceRefOrValue <|-- MEFGeographicLocation
+
+MEFGeographicLocation *-->"1" MEFGeographicPoint : geographicPoint
+
+
+class MEFGeographicPoint {
+
+    x*: string 
+    y*: string 
+}
+
+
+
+class MEFPOQItemStateChange {
+
+    changeDate*: date-time 
+    changeReason: string 
+    state*: MEFPOQItemTaskStateType 
+}
+
+
+
+class MEFPOQStateChange {
+
+    changeDate*: date-time 
+    changeReason: string 
+    state*: MEFPOQTaskStateType 
+}
+
+
+
+class MEFProductConfiguration {
+
+    @schemaLocation: uri 
+    @type*: string 
+}
+
+
+
+class MEFProductExtension {
+
+}
+
+MEFProductExtension *--> MEFProductConfiguration : productConfiguration
+
+
+class MEFProductRefOrValue {
+
+    href: string 
+    id: string 
+    @type*: string 
+}
+
+MEFProductRefOrValue *-->"*" RelatedPlaceRefOrValue : place
+MEFProductRefOrValue *--> MEFProductConfiguration : productConfiguration
+MEFProductRefOrValue *-->"*" ProductRelationship : productRelationship
+MEFProductRefOrValue *--> ProductSpecificationRef : productSpecification
+
+
+class MEFSubUnit {
+
+    subUnitNumber*: string 
+    subUnitType*: string 
+}
+
+
+
+class PlaceRef {
+
+    @referredType*: string 
+    href: string 
+    id*: string 
+}
+RelatedPlaceRefOrValue <|-- PlaceRef
+
+
+
+class ProductOfferingQualification {
+
+    effectiveQualificationDate: date-time 
+    expectedPOQCompletionDate: date-time 
+    href: string 
+    id*: string 
+    state*: MEFPOQTaskStateType 
+}
+ProductOfferingQualification_Common <|-- ProductOfferingQualification
+
+ProductOfferingQualification *-->"1..*" ProductOfferingQualificationItem : productOfferingQualificationItem
+ProductOfferingQualification *-->"*" MEFPOQStateChange : stateChange
+
+
+class ProductOfferingQualificationItem {
+
+    guaranteedUntilDate: date-time 
+    serviceConfidenceReason: string 
+    serviceabilityConfidence: MEFServiceabilityColor 
+    state*: MEFPOQItemTaskStateType 
+}
+ProductOfferingQualificationItem_Common <|-- ProductOfferingQualificationItem
+
+ProductOfferingQualificationItem *-->"*" AlternateProductOfferingProposal : alternateProductOfferingProposal
+ProductOfferingQualificationItem *--> TimeInterval : installationInterval
+ProductOfferingQualificationItem *-->"*" MEFPOQItemStateChange : stateChange
+ProductOfferingQualificationItem *-->"*" TerminationError : terminationError
+
+
+class ProductOfferingQualificationItem_Common {
+
+    action*: ProductActionType 
+    expectedActivationDate: date-time 
+    id*: string 
+}
+
+ProductOfferingQualificationItem_Common *-->"1" MEFProductRefOrValue : product
+ProductOfferingQualificationItem_Common *--> ProductOfferingRef : productOffering
+ProductOfferingQualificationItem_Common *-->"*" QualificationItemRelationship : qualificationItemRelationship
+ProductOfferingQualificationItem_Common *-->"*" RelatedPartyValue : relatedParty
+
+
+class QualificationItemRelationship {
+
+    id*: string 
+    relationshipType*: string 
+}
+
+
+
+class TerminationError {
+
+    id: string 
+    value: string 
+}
+
+
+
+class TimeInterval {
+
+    amount*: integer 
+    timeUnit*: TimeUnit 
+}
+
+
+
+enum MEFServiceabilityColor {
+
+    green
+    yellow
+    red
+}
+class ProductOfferingQualification_Create {
+
+}
+ProductOfferingQualification_Common <|-- ProductOfferingQualification_Create
+
+ProductOfferingQualification_Create *-->"1..*" ProductOfferingQualificationItem_Create : productOfferingQualificationItem
+
+
+enum MEFPOQTaskStateType {
+
+    accepted
+    terminatedWithError
+    inProgress
+    done.unableToProvide
+    done
+}
+class ProductOfferingQualificationItem_Create {
+
+}
+ProductOfferingQualificationItem_Common <|-- ProductOfferingQualificationItem_Create
+
+
+
+class ProductOfferingQualification_Common {
+
+    buyerId: string 
+    instantSyncQualification: boolean 
+    projectId: string 
+    provideAlternative: boolean 
+    requestedPOQCompletionDate: date-time 
+    sellerId: string 
+}
+
+ProductOfferingQualification_Common *-->"1..*" RelatedPartyValue : relatedParty
+
+
+class ProductOfferingQualification_Find {
+
+    id*: string 
+    projectId: string 
+    requestedPOQCompletionDate: date 
+    state*: MEFPOQTaskStateType 
+}
+
+
+
+class ProductOfferingRef {
+
+    @referredType: string 
+    href: string 
+    id*: string 
+    name: string 
+}
+
+
+
+class ProductRelationship {
+
+    @referredType: string 
+    href: string 
+    id*: string 
+    groupingKey: string 
+    name: string 
+    relationshipType*: string 
+}
+
+
+
+class ProductSpecificationRef {
+
+    @referredType: string 
+    href: string 
+    id*: string 
+    name: string 
+}
+
+
+
+class RelatedPartyValue {
+
+    @type: string 
+    emailAddress*: string 
+    name*: string 
+    number*: string 
+    numberExtension: string 
+    role*: string 
+}
+
+
+
+class RelatedPlaceRefOrValue {
+
+    @schemaLocation: uri 
+    @type*: string 
+    role*: string 
+}
+
+
+
+enum MEFPOQItemTaskStateType {
+
+    accepted
+    terminatedWithError
+    inProgress
+    done.abandoned
+    done
+}
+enum TimeUnit {
+
+    calendarDays
+    calendarHours
+    calendarMinutes
+    businessDays
+    businessHours
+    businessMinutes
+}
+enum ProductActionType {
+
+    add
+    modify
+    delete
+}
+@enduml

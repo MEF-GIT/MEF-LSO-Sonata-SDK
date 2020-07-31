@@ -924,7 +924,20 @@ definitions:
       - disconnect
   MEFQuoteItemStateType:
     type: string
-    description: Possible values for the status of a MEF Quote
+    description: |
+      Possible values for the status of a QuoteItem.
+      Following mapping has been used between `MEFQuoteItemStateType` and MEF 80:
+      
+      | QuoteItemStateType                       | MEF 80                            |
+      | ---------------------------------------- | --------------------------------- |
+      | approved                                 | ANSWERED or ORDERABLE             |
+      | approved.orderableAlternate              | ORDERABLE_ALTERNATE               |
+      | inProgress                               | IN_PROGRESS                       |
+      | rejected                                 | ABANDONED                         |
+      | rejected.insufficientInformationProvided | INSUFFICIENT_INFORMATION_PROVIDED |
+      | rejected.unableToProvide                 | UNABLE_TO_PROVIDE                 |
+      | pending                                  |                                   |
+      
     enum:
       - approved
       - approved.orderableAlternate
@@ -995,7 +1008,25 @@ definitions:
         description: 'When sub-classing, this defines the sub-class Extensible name'
   MEFQuoteStateType:
     type: string
-    description: Possible values for the status of a MEF Quote
+    description: |
+     Possible values for the status of a Quote.
+     Following mapping has been used between `MEFQuoteStateType` and MEF 80:
+
+      | QuoteStateType                            | MEF 80                            |
+      | ----------------------------------------- | --------------------------------- |
+      | accepted                                  | ACCEPTED                          |
+      | approved                                  | ORDERABLE                         |
+      | approved.answered                         | ANSWERED                          |
+      | approved.orderableAlternate               | ORDERABLE_ALTERNATE               |
+      | cancelled                                 | CANCELLED                         |
+      | cancelled.insufficientInformationProvided | INSUFFICIENT_INFORMATION_PROVIDED |
+      | cancelled.unableToProvide                 | UNABLE_TO_PROVIDE                 |
+      | inProgress                                | IN_PROGRESS                       |
+      | inProgress.draft                          | IN_PROGRESS_DRAFT                 |
+      | rejected                                  | REJECTED                          |
+      | rejected.expired                          | EXPIRED                           |
+      | pending                                   |                                   |
+
     enum:
       - accepted
       - approved
