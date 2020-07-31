@@ -10,22 +10,22 @@ It includes API definitions for the following functional areas:
 
 It also provides Product Specification for Access ELine as delivered by MEF W106
 
-## High level release notes
+## High-level release notes
 
-* *MEF W87 - LSO Sonata Product Offering Qualification API - Developer Guide.* The first of a series of developer guides that explain the details of MEF API usage, process flows and the pattern resulting from the combining of the TMF-based envelope with Product Specifications. It comes with the update of POQ API Specification.
+* *MEF W87 - LSO Sonata Product Offering Qualification API - Developer Guide.* The first of a series of developer guides that explain the details of MEF API usage, process flows, and the pattern resulting from the combining of the TMF-based envelope with Product Specifications. It comes with the update of POQ API Specification.
 
 * *MEF W106 - LSO Sonata Product Specification - Access E-Line* which includes JSON schemas and the Requirements document.
 
 * Update of all of LSO Sonata APIs:
   * Use of TM Forum tooling based on Domain Context Specialization rules to ensure alignment with TM Forum APIs (see [MEF-TMF-ONAP-Collaboration](https://wiki.mef.net/pages/viewpage.action?pageId=106608028))
   * Introduction of envelope-payload and product characteristic patterns as described in MEF W87
-  * Bug fixes and improvements
+  * [Bug fixes and improvements](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/projects/4)
 
-The MEF LSO Sonata SDK is released under the Apache 2.0 license.
+* Static binding of envelope APIs with Product Specification payloads.
 
 ## Maturity Level
 
-The API files contained in this SDK are evolving and subject to change.  They are based on documents that are either ratified standards, or draft standards that have not yet completed the review cycles and approvals necessary to achieve the status as a MEF standard.  MEF is making these publicly available at this time to invite wider industry review.
+The API files contained in this SDK are evolving and subject to change.  They are based on documents that are either ratified standards or draft standards that have not yet completed the review cycles and approvals necessary to achieve the status as a MEF standard.  MEF is making these publicly available at this time to invite wider industry review.
 
 The maturity per functionality presents as follows:
 
@@ -65,22 +65,24 @@ This SDK contains the following items:
   * `inventory` - Contains the API definitions necessary for inter-carrier retrieval  of  Product  Inventory
   * `order` - Contains the API definitions for inter-carrier service ordering capability.
   * `quote` - Contains the API definitions for inter-carrier service quotation capability
-  * `serviceability` - Contains the APIs that allow the Service Provider, or Buyer to perform:
+  * `serviceability` - Contains the APIs that allow the Service Provider or Buyer to perform:
     * `address` - Retrieve Address information including exact formats for Addresses known to the Seller
     * `offeringQualification` - Determine whether it is feasible for the Seller to deliver a particular Product with a given configuration to a particular geographic location if applicable.
     * `site` - Retrieve Service Site information including exact formats for Service Sites known to the Seller
 * `doc` - All related standards and Developer Guides.
   * `product/carrierEthernet/accessELine` - Contains reference JSON schemas for Access ELine delivered by MEF W106
   * `serviceability/offeringQualification` - MEF W87 Developer Guide
-  * `standards` - the rest of documents and standards.
+  * `standards` - The rest of documents and standards.
+  * `uml` - A collection of UML diagrams generated from all of the API files.
+* `staticBinding` - Contains static bindings of envelope APIs with Product Specification payloads. It comes in OpenAPI 3.0.
 
 **NOTE:** Please note the Readme files in particular directories that provide more detailed information about corresponding functionalities.  
 
-All superseded files can be found in the Git history, if needed.
+All superseded files can be found in the Git history if needed.
 
 ## Precedents
 
-Any developer intending to use the materials in this repository should first thoroughly read, review and understand the following materials:
+Any developer intending to use the materials in this repository should first thoroughly read, review, and understand the following materials:
 
 * [MEF 55: Lifecycle Service Orchestration (LSO): Reference Architecture and Framework](doc/standards/MEF%2055%20-%20LSO%20Reference%20Architecture%20and%20Framework.pdf) This document is a ratified MEF standard.
 * [MEF 55.0.1: Amendment to MEF 55: Operational Threads](doc/standards/MEF%2055.0.1%20-%20Operational%20Threads.pdf) This document is a ratified MEF standard.
@@ -95,14 +97,20 @@ Any developer intending to use the materials in this repository should first tho
 * [MEF W87: LSO Sonata Product Offering Qualification API - Developer Guide](doc/serviceability/offeringQualification/v5/MEF_W87.md)
 * [MEF W106: LSO Sonata Product Specification - Access E-Line](doc/product/carrierEthernet/accessELine/v1/MEF_W106.md)
 
-## Issues, questions and Feedback
+## Issues, questions, and Feedback
 
-Issues should be reported with use of GitHub issues.
+Issues should be reported with the use of GitHub issues.
 Questions and feedback should be asked either at [Sonata SDK Community](https://github.com/orgs/MEF-GIT/teams/mef-lso-sonata-sdk-community) or directly to community_manager@mef.net.
 
 **NOTE:** All artifacts included in this repository have line numbers.  When referring to specific content in any of these artifacts, please quote the line numbers to which you are referring.
 
-# Disclaimer & Copyright
+The MEF LSO Sonata SDK is released under the Apache 2.0 license.
+
+## Copyright
+
+© MEF Forum 2020. All Rights Reserved.
+
+## Disclaimer
 
 The information in this publication is freely available for reproduction and use by any recipient and is believed to be accurate as of its publication date. Such information is subject to change without notice and MEF Forum (MEF) is not responsible for any errors. MEF does not assume responsibility to update or correct any information in this publication. No representation or warranty, expressed or implied, is made by MEF concerning the completeness, accuracy, or applicability of any information contained herein and no liability of any kind shall be assumed by MEF as a result of reliance upon such information.
 
@@ -116,6 +124,4 @@ The receipt or any use of this document or its contents does not in any way crea
 
 (c) any form of relationship between any MEF member and the recipient or user of this document.
 
-Implementation or use of specific MEF standards, specifications, or recommendations will be voluntary, and no Member shall be obliged to implement them by virtue of participation in MEF Forum. MEF is a non-profit international organization to enable the development and worldwide adoption of agile, assured and orchestrated network services. MEF does not, expressly or otherwise, endorse or promote any specific products or services.
-
-© MEF Forum 2020. All Rights Reserved.
+Implementation or use of specific MEF standards, specifications, or recommendations will be voluntary, and no Member shall be obliged to implement them by virtue of participation in MEF Forum. MEF is a non-profit international organization to enable the development and worldwide adoption of agile, assured, and orchestrated network services. MEF does not, expressly or otherwise, endorse or promote any specific products or services.
