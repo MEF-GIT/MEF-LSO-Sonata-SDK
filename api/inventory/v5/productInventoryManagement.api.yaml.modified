@@ -1,0 +1,2457 @@
+---
+openapi: "3.0.1"
+info:
+  title: "API Product Inventory Management"
+  description: |
+    **ProductInventory Management**
+
+    The scope of this MEF API is to provide the ability  for a Service Provider’s (Buyer) operational support system to retrieve from a Partner’s (Seller) Inventory management system a set of product instances based upon a filter of product inventory attributes, or a specific product instance based upon a product identifier.Product Inventory API used TMF 637 as template.
+  version: "5.0.0-RC"
+servers:
+- url: "https://serverRoot/mefApi/sonata/productInventory/v5/"
+tags:
+- name: "product"
+- name: "events subscription"
+paths:
+  /product:
+    get:
+      tags:
+      - "product"
+      summary: "List or find Product objects"
+      description: "This operation list or find Product entities"
+      operationId: "listProduct"
+      parameters:
+      - name: "buyerId"
+        in: "query"
+        description: "Identifier of the party who role is buyer."
+        schema:
+          type: "string"
+      - name: "status"
+        in: "query"
+        description: "The status of the product"
+        schema:
+          type: "string"
+          enum:
+          - "active"
+          - "suspended"
+          - "activePendingTerminate"
+          - "terminated"
+          - "pendingActive"
+          - "suspendedPendingTerminate"
+      - name: "productSpecificationId"
+        in: "query"
+        description: "A reference to a product spec by id"
+        schema:
+          type: "string"
+      - name: "productOfferingId"
+        in: "query"
+        description: "A reference to a product offering by id"
+        schema:
+          type: "string"
+      - name: "buyerProductId"
+        in: "query"
+        description: "A reference to the buyerProductId provided in the order"
+        schema:
+          type: "string"
+      - name: "geographicalSiteId"
+        in: "query"
+        description: "A site identifier which is associated to the product"
+        schema:
+          type: "string"
+      - name: "relatedProductId"
+        in: "query"
+        description: |-
+          This criteria allows to retrieve all Product records with a Product Relationship to a specified Product.
+          E.g. All Products related to Product with ID 5
+        schema:
+          type: "string"
+      - name: "billingAccountId"
+        in: "query"
+        description: "The Billing Account associated with the Product."
+        schema:
+          type: "string"
+      - name: "productOrderId"
+        in: "query"
+        description: "Identifies Product Order(s) associated with the Product"
+        schema:
+          type: "string"
+      - name: "startDate.lt"
+        in: "query"
+        description: "Less than the date that is the initial install date for the\
+          \ Product"
+        schema:
+          type: "string"
+          format: "date-time"
+      - name: "startDate.gt"
+        in: "query"
+        description: "Greater than the date that is the initial install date for the\
+          \ Product"
+        schema:
+          type: "string"
+          format: "date-time"
+      - name: "lastUpdateDate.lt"
+        in: "query"
+        description: "Less than date that the last change affecting this Product was\
+          \ completed"
+        schema:
+          type: "string"
+          format: "date-time"
+      - name: "lastUpdateDate.gt"
+        in: "query"
+        description: "Greater than the date that the last change affecting this Product\
+          \ was completed"
+        schema:
+          type: "string"
+          format: "date-time"
+      - name: "offset"
+        in: "query"
+        description: "Requested index for start of resources to be provided in response\
+          \ requested by client"
+        schema:
+          type: "string"
+      - name: "limit"
+        in: "query"
+        description: "Requested number of resources to be provided in response requested\
+          \ by client"
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "Success"
+          headers:
+            X-Pagination-Throttled:
+              description: |
+                Used to indicate that result page was throttled to maximum possible size  and there are additional results that can be fetched
+              schema:
+                type: "boolean"
+            X-Total-Count:
+              description: "Total number of items matching criteria"
+              schema:
+                type: "integer"
+            X-Result-Count:
+              description: "Actual number of items returned in the response body"
+              schema:
+                type: "integer"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/MEFProductSummary"
+        "400":
+          description: "Bad Request"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error400"
+        "401":
+          description: "Unauthorized"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error401"
+        "403":
+          description: "Forbidden"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error403"
+        "500":
+          description: "Internal Server Error"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error500"
+  /product/{id}:
+    get:
+      tags:
+      - "product"
+      summary: "Retrieves a Product by ID"
+      description: "This operation retrieves a Product entity. Attribute selection\
+        \ is enabled for all first level attributes."
+      operationId: "retrieveProduct"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Identifier of the Product"
+        required: true
+        schema:
+          type: "string"
+      - name: "fields"
+        in: "query"
+        description: "Comma-separated properties to provide in response"
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "400":
+          description: "Bad Request"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error400"
+        "401":
+          description: "Unauthorized"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error401"
+        "403":
+          description: "Forbidden"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error403"
+        "404":
+          description: "Not Found"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error404"
+        "500":
+          description: "Internal Server Error"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error500"
+components:
+  schemas:
+    AgreementRef:
+      required:
+      - "id"
+      type: "object"
+      properties:
+        path:
+          type: "string"
+          description: "A URI/URL to where the agreement resides."
+        name:
+          type: "string"
+          description: "Name of the agreement"
+        id:
+          type: "string"
+          description: "unique identifier"
+      description: "Agreement reference. An agreement represents a contract or arrangement,\
+        \ either written or verbal and sometimes enforceable by law, such as a service\
+        \ level agreement or a customer price agreement. An agreement involves a number\
+        \ of other business entities, such as products, services, and resources and/or\
+        \ their specifications."
+    BillingAccountRef:
+      required:
+      - "id"
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "Unique identifier of the billing account"
+      description: "BillingAccount reference. A BillingAccount is a detailed description\
+        \ of a bill structure."
+    MEFProductConfiguration:
+      required:
+      - "@type"
+      type: "object"
+      properties:
+        '@baseType':
+          type: "string"
+          description: "When sub-classing, this defines the super-class"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class Extensible name"
+        '@schemaLocation':
+          type: "string"
+          description: "A URI to a JSON-Schema file that defines additional attributes\
+            \ and relationships"
+          format: "uri"
+      description: "MEF Product payload"
+      discriminator:
+        propertyName: "@type"
+    MEFProductOrderItemRef:
+      required:
+      - "id"
+      - "orderItemId"
+      type: "object"
+      properties:
+        orderItemId:
+          type: "string"
+          description: "Identifier of the line item (generally it is a sequence number\
+            \ 01, 02, 03, ...)"
+        id:
+          type: "string"
+          description: "Identifier of the productOrder(provided by the seller"
+        href:
+          type: "string"
+          description: "Hyperlink to the productOrder"
+      description: "A reference to a product order and product order item."
+    MEFProductStatusType:
+      type: "string"
+      properties: {}
+      description: "Possible values for the status of a MEF product"
+      enum:
+      - "pendingActive"
+      - "active"
+      - "activePendingTerminate"
+      - "suspendedPendingTerminate"
+      - "terminated"
+      - "suspended"
+    MEFProductStateChange:
+      required:
+      - "changeDate"
+      - "state"
+      type: "object"
+      properties:
+        changeReason:
+          type: "string"
+          description: "The reason why the State changed."
+        changeDate:
+          type: "string"
+          description: "The date and time the State changed."
+          format: "date-time"
+        state:
+          $ref: "#/components/schemas/MEFProductStatusType"
+      description: "Holds the reached state, reasons and associated date the Quote\
+        \ state changed, populated by the Seller."
+    Money:
+      required:
+      - "unit"
+      - "value"
+      type: "object"
+      properties:
+        unit:
+          type: "string"
+          description: "Currency (ISO4217 norm uses 3 letters to define the currency)"
+        value:
+          type: "number"
+          description: "A positive floating point number"
+          format: "float"
+      description: "A base / value business entity used to represent money"
+    Price:
+      type: "object"
+      properties:
+        taxRate:
+          type: "number"
+          description: "Tax rate"
+          format: "float"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class entity name"
+        taxIncludedAmount:
+          $ref: "#/components/schemas/Money"
+        dutyFreeAmount:
+          $ref: "#/components/schemas/Money"
+      description: "Provides all amounts (tax included, duty free, tax rate), used\
+        \ currency and percentage to apply for Price Alteration."
+    Product:
+      required:
+      - "id"
+      - "startDate"
+      - "status"
+      type: "object"
+      properties:
+        productSpecification:
+          $ref: "#/components/schemas/ProductSpecificationRef"
+        agreement:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/AgreementRef"
+        relatedSite:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/RelatedGeographicSite"
+        productOffering:
+          $ref: "#/components/schemas/ProductOfferingRef"
+        lastUpdateDate:
+          type: "string"
+          description: "Latest date when the product has been updated."
+          format: "date-time"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class entity name"
+        stateChange:
+          type: "array"
+          description: "State change for the Product"
+          items:
+            $ref: "#/components/schemas/MEFProductStateChange"
+        billingAccount:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/BillingAccountRef"
+        productOrderItem:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/MEFProductOrderItemRef"
+        productTerm:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ProductTerm"
+        relatedParty:
+          type: "array"
+          description: "Party playing a role for this Product"
+          items:
+            $ref: "#/components/schemas/RelatedPartyValue"
+        terminationDate:
+          type: "string"
+          description: "Is the date when the product was terminated. MEF: Termination\
+            \ date (commercial) is when the product has been terminated (when the\
+            \ disconnect in the product order has been processed)."
+          format: "date-time"
+        '@baseType':
+          type: "string"
+          description: "When sub-classing, this defines the super-class"
+        buyerProductId:
+          type: "string"
+          description: "Buyer identifier of the product"
+        productRelationship:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ProductRelationship"
+        id:
+          type: "string"
+          description: "Unique identifier of the product"
+        href:
+          type: "string"
+          description: "Reference of the product"
+        MEFProductConfiguration:
+          $ref: "#/components/schemas/MEFProductConfiguration"
+        '@schemaLocation':
+          type: "string"
+          description: "A URI to a JSON-Schema file that defines additional attributes\
+            \ and relationships"
+          format: "uri"
+        startDate:
+          type: "string"
+          description: "Is the date from which the product starts. MEF: Start date\
+            \ is when the product is active for the first time (when the install in\
+            \ the product order has been processed)."
+          format: "date-time"
+        productPrice:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ProductPrice"
+        status:
+          $ref: "#/components/schemas/MEFProductStatusType"
+      description: "A product is realized as one or more service(s) and / or resource(s)."
+    ProductOfferingRef:
+      required:
+      - "id"
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "unique identifier"
+      description: "ProductOffering reference. A product offering represents entities\
+        \ that are orderable from the provider of the catalog, this resource includes\
+        \ pricing information."
+    ProductPrice:
+      required:
+      - "price"
+      - "priceType"
+      type: "object"
+      properties:
+        unitOfMeasure:
+          type: "string"
+          description: "Could be minutes, GB..."
+        price:
+          $ref: "#/components/schemas/Price"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class entity name"
+        name:
+          type: "string"
+          description: "A short descriptive name such as \"Subscription price\"."
+        priceType:
+          type: "string"
+          description: "A category that describes the price, such as recurring, discount,\
+            \ allowance, penalty, and so forth."
+        description:
+          type: "string"
+          description: "A narrative that explains in detail the semantics of this\
+            \ product price."
+        recurringChargePeriod:
+          type: "string"
+          description: "Could be month, week..."
+      description: "An amount, usually of money, that represents the actual price\
+        \ paid by a Customer for a purchase, a rent or a lease of a Product. The price\
+        \ is valid for a defined period of time."
+    ProductRelationship:
+      required:
+      - "id"
+      - "relationshipType"
+      type: "object"
+      properties:
+        relationshipType:
+          type: "string"
+          description: "Type of the product relationship, such as [bundled] if the\
+            \ product is a bundle and you want to describe the bundled products inside\
+            \ this bundle; [reliesOn] if the product needs another already owned product\
+            \ to rely on (e.g. an option on an already owned mobile access product)\
+            \ [targets] or [isTargeted] (depending on the way of expressing the link)\
+            \ for any other kind of links that may be useful"
+        buyerProductId:
+          type: "string"
+          description: "Buyer identifier of the product"
+        name:
+          type: "string"
+          description: "Name of the related entity."
+        id:
+          type: "string"
+          description: "unique identifier"
+        href:
+          type: "string"
+          description: "Hyperlink reference"
+      description: "Linked products to the one instantiate, such as [bundled] if the\
+        \ product is a bundle and you want to describe the bundled products inside\
+        \ this bundle; [reliesOn] if the product needs another already owned product\
+        \ to rely on (e.g. an option on an already owned mobile access product) [targets]\
+        \ or [isTargeted] (depending on the way of expressing the link) for any other\
+        \ kind of links that may be useful"
+    ProductSpecificationRef:
+      required:
+      - "id"
+      type: "object"
+      properties:
+        '@referredType':
+          type: "string"
+          description: "The actual type of the target instance when needed for disambiguation."
+        targetProductSchema:
+          $ref: "#/components/schemas/TargetProductSchema"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class Extensible name"
+        name:
+          type: "string"
+          description: "Name of the related entity."
+        id:
+          type: "string"
+          description: "unique identifier"
+        href:
+          type: "string"
+          description: "Hyperlink reference"
+        '@schemaLocation':
+          type: "string"
+          description: "A URI to a JSON-Schema file that defines additional attributes\
+            \ and relationships"
+          format: "uri"
+      description: "Product specification reference: A ProductSpecification is a detailed\
+        \ description of a tangible or intangible object made available externally\
+        \ in the form of a ProductOffering to customers or other parties playing a\
+        \ party role."
+    MEFProductSummary:
+      required:
+      - "id"
+      - "status"
+      type: "object"
+      properties:
+        productSpecification:
+          $ref: "#/components/schemas/MEFProductSpecificationSummary"
+        productOffering:
+          $ref: "#/components/schemas/ProductOfferingRef"
+        buyerProductId:
+          type: "string"
+          description: "This identifier is optionally provided during the product\
+            \ ordering and stored for informative purpose in the seller inventory"
+        id:
+          type: "string"
+          description: "Unique identifier of the product"
+        href:
+          type: "string"
+          description: "Reference of the product"
+        startDate:
+          type: "string"
+          description: "The date from which the product starts"
+          format: "date-time"
+        status:
+          $ref: "#/components/schemas/MEFProductStatusType"
+      description: "Class used to provide product overview retrieved in GET (by list)\
+        \ operation"
+    MEFProductSpecificationSummary:
+      required:
+      - "id"
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "Unique identifier of the product specification"
+      description: "Technical class to provide productSpecification id in the summary\
+        \ view"
+    ProductTerm:
+      type: "object"
+      properties:
+        duration:
+          $ref: "#/components/schemas/Quantity"
+        validFor:
+          $ref: "#/components/schemas/TimePeriod"
+        name:
+          type: "string"
+          description: "Name of the productTerm"
+        description:
+          type: "string"
+          description: "Description of the productTerm"
+      description: "Description of a productTerm linked to this product. This represent\
+        \ a commitment with a duration"
+    Quantity:
+      required:
+      - "amount"
+      - "units"
+      type: "object"
+      properties:
+        amount:
+          type: "number"
+          description: "Numeric value in a given unit"
+          format: "float"
+          default: 1.0
+        units:
+          type: "string"
+          description: "Unit"
+      description: "An amount in a given unit"
+    RelatedGeographicSite:
+      required:
+      - "id"
+      - "role"
+      type: "object"
+      properties:
+        role:
+          type: "string"
+          description: "Role of the geographic site, such as: [home delivery], [shop\
+            \ retrieval]) MEF: The role that the Site plays, e.g. Billing Address,\
+            \ UNI Site, or ENNI Site."
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class entity name"
+        id:
+          type: "string"
+          description: "Unique identifier of the geographic site"
+        href:
+          type: "string"
+          description: "Unique reference of the geographic site"
+      description: "A  Geographic Site  and an associated role as installation address,\
+        \ delivery address, etc...."
+    RelatedPartyValue:
+      required:
+      - "name"
+      - "number"
+      - "role"
+      type: "object"
+      properties:
+        number:
+          type: "string"
+          description: "Party phone number"
+        emailAddress:
+          type: "string"
+          description: "Party email address"
+        role:
+          type: "string"
+        '@type':
+          type: "string"
+          description: "enum : individual, organization - by default it is individual"
+        name:
+          type: "string"
+          description: "Name of the related entity."
+        numberExtension:
+          type: "string"
+          description: "Party phone number extension"
+      description: "Entity reference. A related party defines party or party role\
+        \ linked to a specific entity."
+    TargetProductSchema:
+      required:
+      - "@schemaLocation"
+      - "@type"
+      type: "object"
+      properties:
+        '@baseType':
+          type: "string"
+          description: "When sub-classing, this defines the super-class"
+        '@type':
+          type: "string"
+          description: "Class type of the target product"
+        '@schemaLocation':
+          type: "string"
+          description: "This field provides a link to the schema describing the target\
+            \ product"
+          format: "uri"
+      description: "The reference object to the schema and type of target product\
+        \ which is described by product specification"
+    TimePeriod:
+      type: "object"
+      properties:
+        startDateTime:
+          type: "string"
+          description: "Start of the time period, using IETC-RFC-3339 format. If you\
+            \ define a start, you must also define an end"
+          format: "date-time"
+          example:
+            offset:
+              totalSeconds: 0
+              id: "Z"
+              rules:
+                fixedOffset: true
+                transitions: []
+                transitionRules: []
+            nano: 520000000
+            year: 1985
+            monthValue: 4
+            dayOfMonth: 12
+            hour: 23
+            minute: 20
+            second: 50
+            month: "APRIL"
+            dayOfWeek: "FRIDAY"
+            dayOfYear: 102
+        endDateTime:
+          type: "string"
+          description: "End of the time period, using IETC-RFC-3339 format"
+          format: "date-time"
+          example:
+            offset:
+              totalSeconds: 0
+              id: "Z"
+              rules:
+                fixedOffset: true
+                transitions: []
+                transitionRules: []
+            nano: 520000000
+            year: 1985
+            monthValue: 4
+            dayOfMonth: 12
+            hour: 23
+            minute: 20
+            second: 50
+            month: "APRIL"
+            dayOfWeek: "FRIDAY"
+            dayOfYear: 102
+      description: "A period of time, either as a deadline (endDateTime only) a startDateTime\
+        \ only, or both"
+    Error:
+      required:
+      - "reason"
+      type: "object"
+      properties:
+        reason:
+          maxLength: 255
+          type: "string"
+          description: "Explanation of the reason for the error which can be shown\
+            \ to a client user."
+        message:
+          type: "string"
+          description: "Text that provides more details and corrective actions related\
+            \ to the error. This can be shown to a client user."
+        referenceError:
+          type: "string"
+          description: "URI of documentation describing the error."
+          format: "uri"
+        status:
+          type: "string"
+          description: "HTTP Error code extension"
+      description: |
+        Standard Class used to describe API response error
+        Not intended to be use directly only via specialization which defines a code
+    Error400:
+      properties: {}
+      description: "Bad Request"
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/Error"
+      - $ref: "#/components/schemas/Error400_allOf"
+    Error401:
+      properties: {}
+      description: "Unauthorized"
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/Error"
+      - $ref: "#/components/schemas/Error401_allOf"
+    Error403:
+      properties: {}
+      description: "Forbidden"
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/Error"
+      - $ref: "#/components/schemas/Error403_allOf"
+    Error404:
+      properties: {}
+      description: "Resource for the requested path not found"
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/Error"
+      - $ref: "#/components/schemas/Error404_allOf"
+    Error500:
+      properties: {}
+      description: "Internal Server Error"
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/Error"
+      - $ref: "#/components/schemas/Error500_allOf"
+    TimeAndDate:
+      type: "object"
+      properties:
+        hour:
+          type: "integer"
+          description: "Denotes the hour."
+        month:
+          type: "integer"
+          description: "Denotes the month."
+        year:
+          type: "integer"
+          description: "Denotes the year."
+        day:
+          type: "integer"
+          description: "Denotes the day."
+        minute:
+          type: "integer"
+          description: "Denotes the minute."
+        second:
+          type: "integer"
+          description: "Denotes the second."
+      description: "This data type is for Time and Date in UTC. Used for CarrierEthernetSls\
+        \ startTime attribute."
+    OneWayHighLossIntervalPmMetric:
+      type: "object"
+      properties:
+        oneWayHighLossIntervalsObjective:
+          type: "integer"
+        orderedPairs:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+      description: "Data type representing One-way Consecutive High Loss Intervals\
+        \ Performance Metric. Reference MEF 10.4 Section 8.8.9 One-way Consecutive\
+        \ High Loss Intervals Performance Metric and MEF 26.2 Section 12.13.9 One-way\
+        \ Consecutive High Loss Intervals Performance Metric."
+    OneWayCompositePmMetric:
+      type: "object"
+      properties:
+        oneWayIfdvThreshold:
+          $ref: "#/components/schemas/Time"
+        cpmObjective:
+          $ref: "#/components/schemas/Percentage"
+        compositeFrameDelay:
+          maximum: 1
+          minimum: 0
+          type: "integer"
+          description: "Composite indicator for One-way Frame Delay equal to 0 or\
+            \ 1."
+        compositeFrameDelayVariation:
+          type: "integer"
+          description: "Composite indicator for One-way Frame Delay Variation equal\
+            \ to 0 or 1."
+        oneWayFdThreshold:
+          $ref: "#/components/schemas/Time"
+        compositeFrameLoss:
+          maximum: 1
+          minimum: 0
+          type: "integer"
+          description: "Composite indicator for One-way Frame Loss equal to 0 or 1."
+        orderedPairs:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+        compositePerformanceIndicatorThreshold:
+          type: "number"
+          description: "Composite Performance Indicator threshold which if exceeded\
+            \ suggests an unacceptable time interval."
+      description: "Data type representing One-way Composite Performance Metric. Reference\
+        \ MEF 10.4 Section 8.8.10 One-way Composite Performance Metric."
+    objEtherTypeSubType:
+      required:
+      - "etherType"
+      - "subType"
+      type: "object"
+      properties:
+        etherType:
+          pattern: "[0][x][0-9a-f]{4}"
+          type: "string"
+          description: "An Ethertype 0xFFFF"
+        subType:
+          pattern: "[0][x][0-9a-f]{2}"
+          type: "string"
+          description: "An EtherType SubType 0xDD"
+      description: "This is a two-tuple consisting of an Ethernet Type 0xDDDD and\
+        \ a SubType 0xDD"
+    objAll:
+      required:
+      - "constantAll"
+      type: "object"
+      properties:
+        constantAll:
+          $ref: "#/components/schemas/ConstantAll"
+      description: "An object that includes a single property, the constant ALL"
+    OneWayGroupAvailabilityPmMetric:
+      type: "object"
+      properties:
+        minimumNumberOfSetsAvailableK:
+          minimum: 1
+          type: "integer"
+        oneWayGroupAvailabilityObjective:
+          $ref: "#/components/schemas/Percentage"
+        setOfOrderedPairs:
+          minItems: 1
+          type: "array"
+          items:
+            $ref: "#/components/schemas/SetOfOrderedPairs"
+      description: "Data type representing One-way Group Availability Performance\
+        \ Metric. Reference MEF 10.4 Section 8.8.11 One-way Group Availability Performance\
+        \ Metric and MEF 26.2 Section 12.13.10 One-way Group Availability Performance\
+        \ Metric."
+    OneWayAvailabilityPmMetric:
+      type: "object"
+      properties:
+        oneWayAvailabilityObjective:
+          $ref: "#/components/schemas/Percentage"
+        orderedPairs:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+      description: "Data type representing One-way Availability Performance Metric.\
+        \ Reference MEF 10.4 Section 8.8.7 One-way Availability Performance Metric\
+        \ and MEF 26.2 Section 12.13.7 One-way Availability Performance Metric."
+    SlsCosNameEntry:
+      type: "object"
+      properties:
+        thresholdC:
+          type: "number"
+          description: "Denotes the threshold for PM, used to determine whether a\
+            \ given time interval delta t has high loss."
+        slsObjectiveAndParameterList:
+          minItems: 0
+          type: "array"
+          items:
+            $ref: "#/components/schemas/SlsObjectiveAndParameters"
+        consecutiveIntervalN:
+          type: "integer"
+          description: "This attribute denotes n, used to identify how many consecutive\
+            \ delta-T intervals must have high loss to trigger a change in Availability."
+        deltaT:
+          type: "integer"
+          description: "This attribute denotes the delta-T, a time interval in seconds,\
+            \ smaller than T (SLS time period)."
+        cosName:
+          type: "string"
+          description: "Class of Service name."
+      description: "The SlsCosNameEntry data type represents the CoS Name entry consisting\
+        \ of a list of 5-tuples of the form <CoS Name, deltat, C, n, PM> where CoS\
+        \ Name as Class of Service Name, deltat as a small time interval, C as a threshold\
+        \ and n to identify consecutive deltat for high loss interval and PM is a\
+        \ non-empty list where each element in the list consists of Performance Metrics.\
+        \ The SlsCosNameEntry data type is associated with EVC or OVC and SlsObjectiveAndParameters.\
+        \ Reference MEF 10.4 Section 8.8 EVC Service Level Specification Service Attribute\
+        \ and MEF 26.2 Section 12.13 OVC Service Level Specification Service Attribute."
+    objCosBWP:
+      required:
+      - "cosBWP"
+      - "cosName"
+      type: "object"
+      properties:
+        cosBWP:
+          description: "The Bandwidth Profile (or DISABLED)"
+          $ref: "#/components/schemas/cosBWP_oneOf"
+        cosName:
+          type: "string"
+          description: "The Name of the Class of Service that this BWP is applied\
+            \ to."
+      description: "2-tuple {CoS Name, Bandwidth Profile}. A list of these is used\
+        \ in the OVC End Point Service Attribute: Ingress Bandwidth Profile per Class\
+        \ of Service Name."
+    Percentage:
+      maximum: 100
+      minimum: 0
+      type: "number"
+      properties: {}
+    objCcDeiList:
+      required:
+      - "ccDeiList"
+      type: "object"
+      properties:
+        ccDeiList:
+          minItems: 1
+          uniqueItems: true
+          type: "array"
+          description: "If the OVC Egress Map includes CC → DEI, there must be an\
+            \ entry in the list for each Class of Service Name in the OVC List of\
+            \ Class of Service Names."
+          items:
+            $ref: "#/components/schemas/objCcDei"
+      description: "This is a list of 1...n CCDEI Objects. One for each Class of Service."
+    objCosPCPList:
+      required:
+      - "cosPCPList"
+      type: "object"
+      properties:
+        cosPCPList:
+          maxItems: 8
+          minItems: 8
+          type: "array"
+          description: "List of 8 CoS Name to PCP values"
+          items:
+            $ref: "#/components/schemas/objCosPcpMapEntry"
+      description: "A list of 8 2-tuples {PCP value, CoS Name or DISCARD}. A PCP value\
+        \ of 0 is used for Untagged Frame. This is consistent with D11 in MEF 26.2."
+    objL2cpProtocolIdentifier:
+      required:
+      - "protoID"
+      type: "object"
+      properties:
+        protoID:
+          description: "The EtherType or LLC Address or EtherType/SubType"
+          $ref: "#/components/schemas/protoID_oneOf"
+      description: "This is one of:  EtherType (four hex digits), (2) LLC (2 hex digits),\
+        \ or (3) EtherType/Subtype (4 hex digits and 2 hex digits)"
+    accessElineOvcInventory:
+      properties: {}
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/MEFProductConfiguration"
+      - $ref: "#/components/schemas/accessElineOvcInventory_allOf"
+    OneWayMeanFrameDelayRangePmMetric:
+      type: "object"
+      properties:
+        oneWayFdrPercentile:
+          $ref: "#/components/schemas/Percentage"
+        oneWayFdrObjective:
+          $ref: "#/components/schemas/Time"
+        orderedPairs:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+      description: "Data type representing One-way Frame Delay Range Performance Metric.\
+        \ Reference MEF 10.4 Section 8.8.4 One-way Frame Delay Range Performance Metric\
+        \ and MEF 26.2 Section 12.13.4 One-way Frame Delay Range Performance Metric."
+    objEnniService:
+      required:
+      - "enniEnvelopes"
+      - "enniTokenShare"
+      - "maximumNumberOfOvcEndPointsPerOvc"
+      - "maximumNumberOfOvcs"
+      - "sVlanIdControl"
+      type: "object"
+      properties:
+        maximumNumberOfOvcs:
+          maximum: 4095
+          minimum: 1
+          type: "integer"
+          description: "Maximum Number of OVCs - MEF 26.2 §13.3"
+        maximumNumberOfOvcEndPointsPerOvc:
+          maximum: 4094
+          minimum: 1
+          type: "integer"
+          description: "Maximum Number of OVC End Points per OVC - MEF 26.2 §13.4"
+        enniEnvelopes:
+          minItems: 1
+          type: "array"
+          description: "ENNI Envelopes - MEF 26.2 §13.6"
+          items:
+            $ref: "#/components/schemas/objEnvelope"
+        enniTokenShare:
+          $ref: "#/components/schemas/EnniTokenShare"
+        sVlanIdControl:
+          $ref: "#/components/schemas/SVlanIdControl"
+      description: "For each instance of an ENNI, there are multiple sets of ENNI\
+        \ Service Attributes. The value for each ENNI Service Attribute in a set for\
+        \ an Operator CEN is specific to a SP/SO that is using the ENNI per Section\
+        \ 8.11. Each such value is agreed to by the SP/SO and the Operator."
+    objCosL2cp:
+      required:
+      - "l2cpCosName"
+      - "l2cpIdentifier"
+      type: "object"
+      properties:
+        l2cpIdentifier:
+          $ref: "#/components/schemas/objL2cpProtocolIdentifier"
+        l2cpCosName:
+          type: "string"
+          description: "CoS Name String to associate with the L2CP"
+      description: "2-tuple {L2CP Ident, CoS Name}"
+    SlsObjectiveAndParameters:
+      type: "object"
+      properties:
+        oneWayMeanFrameDelayRangePmMetric:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "Pointer to One-way Frame Delay Range Performance Management\
+            \ Metric."
+          items:
+            $ref: "#/components/schemas/OneWayMeanFrameDelayRangePmMetric"
+        oneWayAvailabilityPmMetric:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "Pointer to One-way Availability Performance Management Metric."
+          items:
+            $ref: "#/components/schemas/OneWayAvailabilityPmMetric"
+        oneWayCompositePmMetric:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "Pointer to One-way Composite Performance Management Metric."
+          items:
+            $ref: "#/components/schemas/OneWayCompositePmMetric"
+        oneWayFrameDelayPmMetric:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "Pointer to One-way Frame Delay Performance Management Metric."
+          items:
+            $ref: "#/components/schemas/OneWayFrameDelayPmMetric"
+        oneWayInterFrameDelayVariationPmMetric:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "Pointer to One-way Inter-Frame Delay Variation Performance\
+            \ Management Metric."
+          items:
+            $ref: "#/components/schemas/OneWayInterFrameDelayVariationPmMetric"
+        oneWayFrameLossRatioPmMetric:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "Pointer to One-way Frame Loss Ratio Performance Management\
+            \ Metric."
+          items:
+            $ref: "#/components/schemas/OneWayFrameLossRatioPmMetric"
+        oneWayMeanFrameDelayPmMetric:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "Pointer to One-way Mean Frame Delay Performance Management\
+            \ Metric."
+          items:
+            $ref: "#/components/schemas/OneWayMeanFrameDelayPmMetric"
+        oneWayHighLossIntervalPmMetric:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "Pointer to One-way High Loss Interval Performance Management\
+            \ Metric."
+          items:
+            $ref: "#/components/schemas/OneWayHighLossIntervalPmMetric"
+        oneWayGroupAvailabilityPmMetric:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "Pointer to One-way Group Availability Performance Management\
+            \ Metric."
+          items:
+            $ref: "#/components/schemas/OneWayGroupAvailabilityPmMetric"
+        oneWayConsecutiveHighLossIntervalPmMetric:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "Pointer to One-way Consecutive High Loss Interval Performance\
+            \ Management Metric."
+          items:
+            $ref: "#/components/schemas/OneWayConsecutiveHighLossIntervalPmMetric"
+      description: "The Service Level Specification (SLS) is the technical details\
+        \ of the service level, in terms of Performance Objectives, agreed between\
+        \ the Service Provider and the Subscriber (or Operator) as part of the Service\
+        \ Level Agreement.  A given SLS might contain 0, 1, or more Performance Objectives\
+        \ for each Performance Metric. The SlsObjectiveAndParameters data type associating\
+        \ the set of performance parameters such as FD, MFD, FDR, IFDV, FLR, Availability,\
+        \ HILI, CHLI, Composite and Group Availablity for Ordered Pairs. Reference\
+        \ MEF 10.4 Section 8.8 EVC Service Level Specification Service Attribute and\
+        \ MEF 26.2 Section 12.13 OVC Service Level Specification Service Attribute."
+    objCosFromOvcEp:
+      required:
+      - "field_F"
+      - "l2cp_P"
+      - "map_M"
+      type: "object"
+      properties:
+        map_M:
+          type: "string"
+          description: "The single CoS at this OVC EP"
+        field_F:
+          $ref: "#/components/schemas/Field_F"
+        l2cp_P:
+          $ref: "#/components/schemas/objCosL2cp"
+      description: "Ingress CoS is specified as {F,M,P}. This is when F=OVC_EP. "
+    objCosDscpMap:
+      type: "object"
+      properties:
+        dscpValueCoSList:
+          minItems: 1
+          type: "array"
+          description: "This is a list of DSCP to CoS Map Entries: {ipv4DSCPs, ipv6DSCPs,\
+            \ CoSName}"
+          items:
+            $ref: "#/components/schemas/objCosDscpMapEntry"
+        notIP:
+          type: "string"
+          description: "This is the CoS value for packets that are not IP packets\
+            \ when CoS is determined from DSCP"
+        otherIPv6:
+          type: "string"
+          description: "This is the CoS value for IPv6 packets with DSCP values other\
+            \ than those listed."
+        otherIPv4:
+          type: "string"
+          description: "This is the CoS value for IPv4 packets with DSCP values other\
+            \ than those listed."
+      description: "This is a list of CoS to DSCP Map Entries followed by items for\
+        \ Not an IP Packet and All Other Values."
+    objLinkDepth:
+      required:
+      - "lagDepth"
+      - "vlanID"
+      type: "object"
+      properties:
+        vlanID:
+          maximum: 4094
+          minimum: 1
+          type: "integer"
+          description: "The VLAN ID"
+        lagDepth:
+          maximum: 8
+          minimum: 1
+          type: "integer"
+          description: "The number of Link Aggreation links available to the VLAN"
+      description: "A 2-tuple {SVID, Depth} that indicates at the ENNI how many LAG\
+        \ links can be used by the SVID. It indicates the level of resiliency to use\
+        \ for the SVID at the ENNI."
+    objCnPcp:
+      required:
+      - "cosname"
+      - "pcp"
+      type: "object"
+      properties:
+        cosname:
+          type: "string"
+          description: "A class of service name from the OVC List of Class of Service\
+            \ Names Service Attribute"
+        pcp:
+          $ref: "#/components/schemas/Pcp"
+      description: "One of the possible values for the OVC Egress Map. This indicates\
+        \ that the Class of Service is mapped to the PCP field of the Egress Frame.\
+        \ Note that the Enums used for the PCP values include DISCARD as a value."
+    objBWP:
+      required:
+      - "cm"
+      - "envelopeName"
+      - "envelopeRank"
+      type: "object"
+      properties:
+        eirmax:
+          minimum: 0
+          type: "integer"
+          description: "The Maximum Excess Information Rate for the Bandwidth Profile"
+        envelopeRank:
+          minimum: 1
+          type: "integer"
+          description: "The rank in the envelope of this BWP"
+        envelopeName:
+          maxLength: 45
+          type: "string"
+          description: "The name of the envelope that this Bandwidth Profile resides\
+            \ in."
+        cf:
+          maximum: 1
+          minimum: 0
+          type: "number"
+          description: "Do overflow tokens at this level flow down to the next committed\
+            \ bucket or to the corresponding excess bucket?"
+        cirmax:
+          minimum: 0
+          type: "integer"
+          description: "The Maximum Committed Information Rate for the BWP"
+        offset:
+          type: "integer"
+          description: "A number of bytes (positive or negative) to include in the\
+            \ Bandwidth Profile calculation to account for headers."
+        cbs:
+          minimum: 4000
+          type: "integer"
+          description: "The depth in bytes of the Committed Token Bucket"
+        ebs:
+          minimum: 4000
+          type: "integer"
+          description: "The depth in bytes of the Excess Token Bucket"
+        cm:
+          $ref: "#/components/schemas/Cm"
+        cir:
+          minimum: 0
+          type: "integer"
+          description: "The Committed Information Rate for the BWP"
+        eir:
+          minimum: 0
+          type: "integer"
+          description: "The Excess Information Rate for the Bandwidth Profile"
+      description: "The MEF Bandwidth Profile 11-tuple as described in MEF 10.4 section\
+        \ 12.1.2. (MEF 10.4 actually defines a 10-tuple where Envelope Name and Rank\
+        \ are a single attribute)."
+    objCcPcpList:
+      required:
+      - "ccPcpList"
+      type: "object"
+      properties:
+        ccPcpList:
+          minItems: 1
+          uniqueItems: true
+          type: "array"
+          description: "If the OVC Egress Map includes CC → PCP, there must be an\
+            \ entry in the list for each Class of Service Name in the OVC List of\
+            \ Class of Service Names."
+          items:
+            $ref: "#/components/schemas/objCcPcp"
+      description: "This is a list of 1...n CCPCP Objects. One for each Class of Service."
+    objCosDscpMapEntry:
+      required:
+      - "cosName"
+      type: "object"
+      properties:
+        ipv4List:
+          $ref: "#/components/schemas/objDscpValues"
+        ipv6List:
+          $ref: "#/components/schemas/objDscpValues"
+        cosName:
+          type: "string"
+      description: "This is a 3-tuple {ipv4list, ipv6list, cosName}"
+    OrderedPair:
+      type: "object"
+      properties:
+        toUni:
+          type: "string"
+          description: "NOTE: Need to point to schema reference."
+        fromUni:
+          type: "string"
+          description: "NOTE: Need to point to schema reference."
+        uuid:
+          type: "string"
+          description: "Unique identifier for Ordered Pair."
+      description: "The OrderedPair data type is an ordered pair of EVC/OVC End Points\
+        \ for a specific performance metric for one way direction. It is associated\
+        \ with one way performance metrics and a pair of  CarrierEthernetServiceEndPoints."
+    OneWayMeanFrameDelayPmMetric:
+      type: "object"
+      properties:
+        oneWayMfdObjective:
+          $ref: "#/components/schemas/Time"
+        orderedPairs:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+      description: "Data type representing One-way Mean Frame Delay Performance Metric.\
+        \ Reference MEF 10.4 Section 8.8.3 One-way Mean Frame Delay Performance Metric\
+        \ and MEF 26.2 Section 12.13.3 One-way Mean Frame Delay Performance Metric."
+    objVlanMap:
+      required:
+      - "vlanMap"
+      type: "object"
+      properties:
+        vlanMap:
+          description: "Either ALL for a port-based service or a list of VLAN Ranges"
+          $ref: "#/components/schemas/vlanMap_oneOf"
+      description: "Used to specify which C-VLANs or S-VLANs are mapped to an Interface.\
+        \ It is either {ALL} (for port-based service) or a {list of VLAN ranges}"
+    objSaLimit:
+      required:
+      - "interval"
+      - "numAddr"
+      type: "object"
+      properties:
+        numAddr:
+          type: "integer"
+          description: "The number of MAC source addresses that can be learned in\
+            \ the time interval."
+        interval:
+          minimum: 1
+          type: "integer"
+          description: "The time interval in seconds over which the source address\
+            \ limit is evaluated"
+      description: "2-tuple to encode the Source Address limit and time interval"
+    objEnvelope:
+      required:
+      - "cf0"
+      - "name"
+      type: "object"
+      properties:
+        name:
+          maxLength: 45
+          type: "string"
+          description: "The name of the Envelope"
+        cf0:
+          maximum: 1
+          minimum: 0
+          type: "integer"
+          description: "Envelope Coupling Flag indicates how unused tokens at the\
+            \ lowest level are handled."
+      description: "Bandwidth Profiles are organized into Envelopes. Multiple Bandwidth\
+        \ Profiles in an envelope can share bandwidth resources. Each Envelope has\
+        \ a name and a flag (CF0) that indicates whether unused green tokens are discarded\
+        \ or converted to yellow tokens."
+    accessElineEnniInventory:
+      properties: {}
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/MEFProductConfiguration"
+      - $ref: "#/components/schemas/accessElineEnniInventory_allOf"
+    objLLC:
+      required:
+      - "llc"
+      type: "object"
+      properties:
+        llc:
+          pattern: "[0][x][0-9a-f]{2}"
+          type: "string"
+          description: "2 hex digits 0xDD"
+      description: "2 hex digits, 0xDD"
+    objDscpValues:
+      type: "object"
+      properties:
+        dscpValues:
+          minItems: 1
+          uniqueItems: true
+          type: "array"
+          description: "A list of unique 6-bit (0-63) values"
+          items:
+            maximum: 63
+            minimum: 0
+            type: "integer"
+      description: "A list of 6 bit values"
+    objCcPcp:
+      required:
+      - "cosname"
+      - "pcpgreen"
+      - "pcpyellow"
+      type: "object"
+      properties:
+        cosname:
+          type: "string"
+          description: "A class of service name from the OVC List of Class of Service\
+            \ Names Service Attribute"
+        pcpgreen:
+          $ref: "#/components/schemas/Pcpgreen"
+        pcpyellow:
+          $ref: "#/components/schemas/Pcpyellow"
+      description: "One of the possible values for the OVC Egress Map. This indicates\
+        \ that the Class of Service and Color are mapped to the PCP field of the Egress\
+        \ Frame. Note that the Enums used for the PCP values include DISCARD as a\
+        \ value."
+    OneWayInterFrameDelayVariationPmMetric:
+      type: "object"
+      properties:
+        oneWayIfdvPercentile:
+          $ref: "#/components/schemas/Percentage"
+        oneWayIfdvObjective:
+          $ref: "#/components/schemas/Time"
+        timeDuration:
+          $ref: "#/components/schemas/Time"
+        orderedPairs:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+      description: "Data type representing One-way Inter-Frame Delay Performance Metric.\
+        \ Reference MEF 10.4 Section 8.8.5 One-way InterFrame Delay Performance Metric\
+        \ and MEF 26.2 Section 12.13.5 One-way Inter-Frame Delay Performance Metric."
+    objL2cpIdentifer:
+      required:
+      - "macAddr"
+      - "protocolIdentifier"
+      type: "object"
+      properties:
+        protocolIdentifier:
+          $ref: "#/components/schemas/objL2cpProtocolIdentifier"
+        macAddr:
+          pattern: "[0-9a-f][0-9a-f]([-][0-9a-f][0-9a-f]){5}"
+          type: "string"
+          description: "The MAC Address of the L2CP to be peered."
+      description: "This describes an L2CP as a MAC Address and Protocol Identifier\
+        \ as described in MEF 45.1 section 8.2."
+    objOvcEgressMapItems:
+      type: "object"
+      properties:
+        cnpcp:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "This allows specification of either 0 or 1 mappings of a list\
+            \ of Class of Service name into PCP."
+          items:
+            $ref: "#/components/schemas/objCnPcpList"
+        ccdei:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "This allows specification of either 0 or 1 mappings of a list\
+            \ of Class of Service names/color into DEI."
+          items:
+            $ref: "#/components/schemas/objCcDeiList"
+        ccpcp:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "This allows specification of either 0 or 1 mappings of a list\
+            \ of Class of Service name/DEI into PCP."
+          items:
+            $ref: "#/components/schemas/objCcPcpList"
+      description: "This object allows specification of the various ways to fill in\
+        \ the OVC Egress Map."
+    objVlanRangeList:
+      required:
+      - "vlanRangeList"
+      type: "object"
+      properties:
+        vlanRangeList:
+          minItems: 1
+          type: "array"
+          description: "A list of VLAN ranges"
+          items:
+            $ref: "#/components/schemas/objVlanRange"
+      description: "A list of {VLAN Ranges} used in the VLAN Map"
+    Time:
+      type: "object"
+      properties:
+        number:
+          type: "number"
+          description: "Time as a float."
+        unit:
+          $ref: "#/components/schemas/Unit"
+      description: "A data type used to represent time in various units."
+    objCosFromStagPcp:
+      required:
+      - "field_F"
+      - "l2cp_P"
+      - "map_M"
+      type: "object"
+      properties:
+        map_M:
+          $ref: "#/components/schemas/objCosPCPList"
+        field_F:
+          $ref: "#/components/schemas/objCosFromStagPcpField_F"
+        l2cp_P:
+          $ref: "#/components/schemas/objCosL2cp"
+      description: "Ingress CoS is specified as {F,M,P}. This is when F=S_TAG_PCP. "
+    objConvToAggLink:
+      required:
+      - "aggLinkList"
+      - "vlans"
+      type: "object"
+      properties:
+        vlans:
+          $ref: "#/components/schemas/objVlanRange"
+        aggLinkList:
+          maxItems: 8
+          minItems: 1
+          uniqueItems: true
+          type: "array"
+          description: "Aggregation Link List - 802.1AX-2014 §6.6.2.1"
+          items:
+            maximum: 8
+            minimum: 1
+            type: "integer"
+      description: "2-tuple {x,y} where x is a VLAN or range of VLANs and y is a list\
+        \ of Link Aggregation Links. This is used in the Port Conversation to Aggregation\
+        \ Link Map for the Operator UNI and ENNI."
+    objCosFromDscp:
+      required:
+      - "field_F"
+      - "l2cp_P"
+      - "map_M"
+      type: "object"
+      properties:
+        map_M:
+          $ref: "#/components/schemas/objCosDscpMap"
+        field_F:
+          $ref: "#/components/schemas/objCosFromDscpField_F"
+        l2cp_P:
+          $ref: "#/components/schemas/objCosL2cp"
+      description: "Ingress CoS is specified as {F,M,P}. This is when F=DSCP. "
+    objOperatorMultilateral:
+      required:
+      - "l2cpPeering"
+      - "maximumFrameSizeMultilateral"
+      - "taggedL2cpFrameProcessing"
+      type: "object"
+      properties:
+        l2cpPeering:
+          minItems: 0
+          type: "array"
+          description: "ENNI L2CP Peering Multilateral Attribute - MEF 26.2 §10.1\
+            \ and  MEF 45 §8.2"
+          items:
+            $ref: "#/components/schemas/objL2cpIdentifer"
+        taggedL2cpFrameProcessing:
+          $ref: "#/components/schemas/TaggedL2cpFrameProcessing"
+        maximumFrameSizeMultilateral:
+          minimum: 1526
+          type: "integer"
+          description: "ENNI Maximum Frame Size Multilateral Attribute - MEF 26.2\
+            \ §10.3"
+      description: "An Operator Multilateral Attribute is a behavior of a single Operator\
+        \ CEN at an ENNI that is externally visible to a Service Provider or Super\
+        \ Operator using that CEN and ENNI and/or to peer Operators operating CENs\
+        \ on the other side of the ENNI. An Operator Multilateral Attribute has the\
+        \ same value for all Service Providers or Super Operators using that CEN and\
+        \ ENNI to whom the behavior is externally visible."
+    OneWayFrameLossRatioPmMetric:
+      type: "object"
+      properties:
+        oneWayFrameLossRatioObjective:
+          $ref: "#/components/schemas/Percentage"
+        orderedPairs:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+      description: "Data type representing One-way Frame Loss Ratio Performance Metric.\
+        \ Reference MEF 10.4 Section 8.8.6 One-way Frame Loss Ratio Performance Metric\
+        \ and MEF 26.2 Section 12.13.6 One-way Frame Loss Performance Metric."
+    OneWayFrameDelayPmMetric:
+      type: "object"
+      properties:
+        oneWayFdObjective:
+          $ref: "#/components/schemas/Time"
+        oneWayFdPercentile:
+          $ref: "#/components/schemas/Percentage"
+        orderedPairList:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+      description: "Data type representing One-way Frame Delay Performance Metric.\
+        \ Reference MEF 10.4 Section 8.8.2 One-way Frame Delay Performance Metric\
+        \ and MEF 26.2 Section 12.13.2 One-way Frame Delay Performance Metric."
+    TimeIntervalT:
+      type: "object"
+      properties:
+        number:
+          type: "integer"
+          description: "This denotes the value (for the unit)."
+        unit:
+          $ref: "#/components/schemas/TimeIntervalTUnit"
+      description: "This attribute sets the time interval to evaluate the performance\
+        \ for the SLS.  All performances of this SLS use the same time interval T,\
+        \ which itself may not be constrained, e.g., 1 month."
+    objVlanRange:
+      required:
+      - "start"
+      type: "object"
+      properties:
+        start:
+          maximum: 4094
+          minimum: 1
+          type: "integer"
+          description: "The starting VLAN of the range or the only VLAN"
+        end:
+          maximum: 4094
+          minimum: 1
+          type: "integer"
+          description: "The final VLAN in the range"
+      description: "A range of VLANs allowing three forms: x, x → x, and x → y"
+    OneWayConsecutiveHighLossIntervalPmMetric:
+      type: "object"
+      properties:
+        consecutiveNumberP:
+          type: "integer"
+        oneWayChliObjective:
+          type: "integer"
+        orderedPairs:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+      description: "Data type representing One-way Consecutive High Loss Intervals\
+        \ Performance Metric. Reference MEF 10.4 Section 8.8.9 One-way Consecutive\
+        \ High Loss Intervals Performance Metric and MEF 26.2 Section 12.13.9 One-way\
+        \ Consecutive High Loss Intervals Performance Metric."
+    objOvcEP:
+      required:
+      - "aggregationLinkDepth"
+      - "egressMap"
+      - "ingressBandwidthProfilePerClassOfServiceName"
+      - "ingressBandwidthProfilePerEndPoint"
+      - "ingressClassOfServiceMap"
+      - "maintenanceEndPointList"
+      - "megIntermediatePoint"
+      - "ovcEndPointMap"
+      - "sourceAddressMacLimit"
+      type: "object"
+      properties:
+        sourceAddressMacLimit:
+          $ref: "#/components/schemas/objSaLimit"
+        aggregationLinkDepth:
+          $ref: "#/components/schemas/objLinkDepth"
+        egressMap:
+          $ref: "#/components/schemas/objOvcEgressMapItems"
+        megIntermediatePoint:
+          $ref: "#/components/schemas/MegIntermediatePoint"
+        ovcEndPointMap:
+          $ref: "#/components/schemas/objVlanMap"
+        ingressBandwidthProfilePerEndPoint:
+          description: "Ingress Bandwidth Profile per OVC End Point - MEF 26.2 §16.10"
+          $ref: "#/components/schemas/ingressBandwidthProfilePerEndPoint_oneOf"
+        ingressBandwidthProfilePerClassOfServiceName:
+          maxItems: 8
+          minItems: 0
+          type: "array"
+          description: "Ingress Bandwidth Profile per Class of Service Name - MEF\
+            \ 26.2 §16.12"
+          items:
+            $ref: "#/components/schemas/objCosBWP"
+        ingressClassOfServiceMap:
+          description: "OVC End Point Class of Service Identifier - MEF 26.2 §16.6"
+          $ref: "#/components/schemas/ingressClassOfServiceMap_oneOf"
+        maintenanceEndPointList:
+          maxItems: 7
+          minItems: 0
+          type: "array"
+          description: "OVC End Point Maintenance End Point List - MEF 26.2 §16.17"
+          items:
+            $ref: "#/components/schemas/objMEPspec"
+      description: "An OVC End Point is a logical entity at a given External Interface\
+        \ that is associated with a distinct set of frames passing over that External\
+        \ Interface. The OVC End Point is actually one of the Common Objects, but\
+        \ it is listed directly after the OVC because it is an integral component\
+        \ of the OVC."
+    objEtherType:
+      required:
+      - "etherType"
+      type: "object"
+      properties:
+        etherType:
+          pattern: "[0][x][0-9a-f]{4}"
+          type: "string"
+          description: "4 hex digits 0xDDDD"
+      description: "4 hex digits, 0xDDDD"
+    objCosPcpMapEntry:
+      required:
+      - "pcpCosName"
+      - "pcpVal"
+      type: "object"
+      properties:
+        pcpVal:
+          maximum: 7
+          minimum: 0
+          type: "integer"
+          description: "A value 0 to 7"
+        pcpCosName:
+          type: "string"
+          description: "A CoS Name or DISCARD"
+      description: "2-tuple {PCP, CoSName} that maps a CoS Name or DISCARD to a PCP. "
+    objSLS:
+      type: "object"
+      properties:
+        slsCosNameEntry:
+          minItems: 1
+          type: "array"
+          description: "Pointer to SlsCosNameEntry."
+          items:
+            $ref: "#/components/schemas/SlsCosNameEntry"
+        timeInterval:
+          $ref: "#/components/schemas/TimeIntervalT"
+        startTime:
+          $ref: "#/components/schemas/TimeAndDate"
+      description: "Data type that represents Carrier Ethernet Service Level Specification\
+        \ that provides a list of Performance Metrics where each item in the list\
+        \ includes the parameters and performance objective for the given Performance\
+        \ Metric. It is associated with EVC or OVC and a list of SlsCosNameEntry(s).\
+        \ Reference MEF 10.4 Section 8.8 EVC Service Specification Service Attribute\
+        \ and MEF 26.2 Section 12.13 OVC Service Level Specification Service Attribute."
+    objDisabled:
+      required:
+      - "constantDisabled"
+      type: "object"
+      properties:
+        constantDisabled:
+          $ref: "#/components/schemas/ConstantDisabled"
+      description: "An object that includes a single property, the constant DISABLED"
+    objCosFromCtagPcp:
+      required:
+      - "field_F"
+      - "l2cp_P"
+      - "map_M"
+      type: "object"
+      properties:
+        map_M:
+          $ref: "#/components/schemas/objCosPCPList"
+        field_F:
+          $ref: "#/components/schemas/objCosFromCtagPcpField_F"
+        l2cp_P:
+          $ref: "#/components/schemas/objCosL2cp"
+      description: "Ingress CoS is specified as {F,M,P}. This is when F=C_TAG_PCP. "
+    SetOfOrderedPairs:
+      type: "object"
+      properties:
+        orderedPairsList:
+          minItems: 1
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+      description: "Data type representing a set of Ordered Pairs."
+    objEnniCommon:
+      required:
+      - "connectorType"
+      - "lagLinkMeg"
+      - "linkAggregation"
+      - "linkOAM"
+      - "meg"
+      - "numberOfLinks"
+      - "peeringIdentifier"
+      - "physicalLayer"
+      - "portConversation"
+      type: "object"
+      properties:
+        connectorType:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ConnectorType"
+        numberOfLinks:
+          maximum: 8
+          minimum: 1
+          type: "integer"
+          description: "ENNI Number of Links Common Attribute - MEF 26.2 §9.4"
+        physicalLayer:
+          maxItems: 8
+          minItems: 1
+          type: "array"
+          description: "ENNI Physical Layer Common Attribute - MEF 26.2 §9.2"
+          items:
+            pattern: "[0-9]+[G]?BASE-[A-Z0-9]{1,2}$"
+            type: "string"
+        portConversation:
+          $ref: "#/components/schemas/objConvToAggLink"
+        peeringIdentifier:
+          maxLength: 45
+          type: "string"
+          description: "ENNI Peering Identifier Common Attribute - MEF 26.2 §9.1"
+        lagLinkMeg:
+          $ref: "#/components/schemas/LagLinkMeg"
+        linkOAM:
+          $ref: "#/components/schemas/LinkOAM"
+        meg:
+          $ref: "#/components/schemas/Meg"
+        linkAggregation:
+          $ref: "#/components/schemas/LinkAggregation"
+      description: "Technical details that need to be agreed to by Operators in order\
+        \ for their CENs to be interconnected to form an ENNI"
+    accessElineOperatorUniInventory:
+      properties: {}
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/MEFProductConfiguration"
+      - $ref: "#/components/schemas/accessElineOperatorUniInventory_allOf"
+    objCnPcpList:
+      required:
+      - "cnPcpList"
+      type: "object"
+      properties:
+        cnPcpList:
+          minItems: 1
+          uniqueItems: true
+          type: "array"
+          description: "If the OVC Egress Map includes CN → PCP, there must be an\
+            \ entry in the list for each Class of Service Name in the OVC List of\
+            \ Class of Service Names."
+          items:
+            $ref: "#/components/schemas/objCnPcp"
+      description: "This is a list of 1...n CNPCP Objects. One for each Class of Service."
+    objCcDei:
+      required:
+      - "cosname"
+      - "deigreen"
+      - "deiyellow"
+      type: "object"
+      properties:
+        deiyellow:
+          $ref: "#/components/schemas/Deiyellow"
+        deigreen:
+          $ref: "#/components/schemas/Deigreen"
+        cosname:
+          type: "string"
+          description: "A class of service name from the OVC List of Class of Service\
+            \ Names Service Attribute"
+      description: "One of the possible values for the OVC Egress Map. This indicates\
+        \ that the Color is mapped to the DEI field of the Egress Frame. Note that\
+        \ the Enums used for the DEI values include DISCARD as a value."
+    objMEPspec:
+      required:
+      - "megLevel"
+      - "mepDirection"
+      type: "object"
+      properties:
+        megLevel:
+          maximum: 7
+          minimum: 0
+          type: "integer"
+          description: "The MEG level"
+        mepDirection:
+          $ref: "#/components/schemas/MepDirection"
+      description: "A 2-tuple for a MEP at an interface containing MEG level and direction"
+    cosBWP_oneOf:
+      properties: {}
+      description: "The Bandwidth Profile (or DISABLED)"
+      oneOf:
+      - properties: {}
+        $ref: "#/components/schemas/objBWP"
+      - properties: {}
+        $ref: "#/components/schemas/objDisabled"
+    protoID_oneOf:
+      properties: {}
+      description: "The EtherType or LLC Address or EtherType/SubType"
+      oneOf:
+      - properties: {}
+        $ref: "#/components/schemas/objEtherType"
+      - properties: {}
+        $ref: "#/components/schemas/objLLC"
+      - properties: {}
+        $ref: "#/components/schemas/objEtherTypeSubType"
+    vlanMap_oneOf:
+      properties: {}
+      description: "Either ALL for a port-based service or a list of VLAN Ranges"
+      oneOf:
+      - properties: {}
+        $ref: "#/components/schemas/objVlanRangeList"
+      - properties: {}
+        $ref: "#/components/schemas/objAll"
+    ingressBandwidthProfilePerEndPoint_oneOf:
+      properties: {}
+      description: "Ingress Bandwidth Profile per OVC End Point - MEF 26.2 §16.10"
+      oneOf:
+      - properties: {}
+        $ref: "#/components/schemas/objBWP"
+      - properties: {}
+        $ref: "#/components/schemas/objDisabled"
+    ingressClassOfServiceMap_oneOf:
+      properties: {}
+      description: "OVC End Point Class of Service Identifier - MEF 26.2 §16.6"
+      oneOf:
+      - properties: {}
+        $ref: "#/components/schemas/objCosFromOvcEp"
+      - properties: {}
+        $ref: "#/components/schemas/objCosFromStagPcp"
+      - properties: {}
+        $ref: "#/components/schemas/objCosFromCtagPcp"
+      - properties: {}
+        $ref: "#/components/schemas/objCosFromDscp"
+    ingressBandwidthProfile_oneOf:
+      properties: {}
+      description: "Operator UNI Ingress Bandwidth Profile per UNI - MEF 26.2 §14.12"
+      oneOf:
+      - properties: {}
+        $ref: "#/components/schemas/objBWP"
+      - properties: {}
+        $ref: "#/components/schemas/objDisabled"
+    egressBandwidthProfile_oneOf:
+      properties: {}
+      description: "Operator UNI Egress Bandwidth Profile per UNI - MEF 26.2 §14.13"
+      oneOf:
+      - properties: {}
+        $ref: "#/components/schemas/objBWP"
+      - properties: {}
+        $ref: "#/components/schemas/objDisabled"
+    Code:
+      type: "string"
+      description: |-
+        List of supported error codes:
+        - missingQueryParameter: Missing query-string parameter
+        - missingQueryValue: Invalid query-string parameter value
+        - invalidQuery: Invalid Query
+        - invalidBody: Invalid body
+      enum:
+      - "missingQueryParameter"
+      - "missingQueryValue"
+      - "invalidQuery"
+      - "invalidBody"
+    Error401Code:
+      type: "string"
+      description: |-
+        List of supported error codes:
+        - missingCredentials: Missing credentials
+        - invalidCredentials: Invalid OR expired credentials
+      enum:
+      - "missingCredentials"
+      - "invalidCredentials"
+    Error403Code:
+      type: "string"
+      description: |-
+        List of supported error codes:
+        - accessDenied: Access denied
+        - forbiddenRequester: Forbidden requester
+        - tooManyUsers: Too many users
+      enum:
+      - "accessDenied"
+      - "forbiddenRequester"
+      - "tooManyUsers"
+    Error404Code:
+      type: "string"
+      description: |-
+        List of supported error codes:
+        - notFound: Resource not found
+      enum:
+      - "notFound"
+    Error500Code:
+      type: "string"
+      description: |-
+        List of supported error codes:
+        - internalError: Internal server error
+      enum:
+      - "internalError"
+    ConstantAll:
+      type: "string"
+      enum:
+      - "ALL"
+    CeVlanIdPreservation:
+      type: "string"
+      description: "OVC CE-VLAN ID Preservation - MEF 26.2 §12.7"
+      enum:
+      - "PRESERVE"
+      - "STRIP"
+      - "RETAIN"
+    CTagPcpPreservation:
+      type: "string"
+      description: "OVC CE-VLAN PCP Preservation - MEF 26.2 §12.8"
+      enum:
+      - "ENABLED"
+      - "DISABLED"
+    CTagDeiPreservation:
+      type: "string"
+      description: "OVC CE-VLAN DEI Preservation - MEF 26.2 §12.9"
+      enum:
+      - "ENABLED"
+      - "DISABLED"
+    L2cpAddressSet:
+      type: "string"
+      description: "OVC L2CP Address Set - MEF 45 §8.1 and MEF 26.2 §12.16"
+      enum:
+      - "CTA"
+      - "CTB"
+      - "CTB2"
+    EnniTokenShare:
+      type: "string"
+      description: "ENNI Token Share - MEF 26.2 §13.5"
+      enum:
+      - "ENABLED"
+      - "DISABLED"
+    SVlanIdControl:
+      type: "string"
+      description: "S-VLAN ID Control - MEF 26.2 §13.2"
+      enum:
+      - "FULL"
+      - "PARTIAL"
+    Field_F:
+      type: "string"
+      description: "The field that indicates CoS = OVC EP."
+      enum:
+      - "OVC_EP"
+    Pcp:
+      type: "string"
+      description: "A PCP value (0-7) or DISCARD"
+      enum:
+      - "0"
+      - "1"
+      - "2"
+      - "3"
+      - "4"
+      - "5"
+      - "6"
+      - "7"
+      - "DISCARD"
+    Cm:
+      type: "string"
+      description: "Does the policer consider the color marking in the incoming frame?"
+      enum:
+      - "COLOR_BLIND"
+      - "COLOR_AWARE"
+    Pcpgreen:
+      type: "string"
+      description: "A PCP value (0-7) or DISCARD to use for Green frames"
+      enum:
+      - "0"
+      - "1"
+      - "2"
+      - "3"
+      - "4"
+      - "5"
+      - "6"
+      - "7"
+      - "DISCARD"
+    Pcpyellow:
+      type: "string"
+      description: "A PCP value (0-7) or DISCARD to use for Yellow frames"
+      enum:
+      - "0"
+      - "1"
+      - "2"
+      - "3"
+      - "4"
+      - "5"
+      - "6"
+      - "7"
+      - "DISCARD"
+    Unit:
+      type: "string"
+      description: "Time units as set of enumerations."
+      enum:
+      - "nanoSeconds"
+      - "microSeconds"
+      - "milliSeconds"
+      - "seconds"
+      - "minutes"
+      - "hours"
+      - "days"
+      - "weeks"
+      - "months"
+      - "years"
+    objCosFromStagPcpField_F:
+      type: "string"
+      description: "The Field that indicates CoS is S-Tag PCP."
+      enum:
+      - "S_TAG_PCP"
+    objCosFromDscpField_F:
+      type: "string"
+      description: "The Field that indicates CoS is DSCP."
+      enum:
+      - "DSCP"
+    TaggedL2cpFrameProcessing:
+      type: "string"
+      description: "ENNI Tagged L2CP Frame Processing Multilateral Attribute - MEF\
+        \ 26.2 §10.2 and MEF 45 §8.3"
+      enum:
+      - "802_1_COMPLIANT"
+      - "802_1_NON_COMPLIANT"
+    TimeIntervalTUnit:
+      type: "string"
+      description: "Time interval unit."
+      enum:
+      - "second"
+      - "minute"
+      - "hour"
+      - "day"
+      - "month"
+      - "week"
+      - "year"
+    MegIntermediatePoint:
+      type: "string"
+      description: "OVC End Point MIP - MEF 26.2 §16.16"
+      enum:
+      - "ENABLED"
+      - "DISABLED"
+    ConstantDisabled:
+      type: "string"
+      enum:
+      - "DISABLED"
+    objCosFromCtagPcpField_F:
+      type: "string"
+      description: "The Field that indicates CoS is C-Tag PCP."
+      enum:
+      - "C_TAG_PCP"
+    ConnectorType:
+      type: "string"
+      enum:
+      - "SC"
+      - "LC"
+      - "RJ45"
+      - "OTHER"
+    LagLinkMeg:
+      type: "string"
+      description: "ENNI LAG Link MEG Common Attribute - MEF 26.2 §9.8"
+      enum:
+      - "ENABLED"
+      - "DISABLED"
+    LinkOAM:
+      type: "string"
+      description: "ENNI Link OAM Common Attribute - MEF 26.2 §9.9"
+      enum:
+      - "ENABLED"
+      - "DISABLED"
+    Meg:
+      type: "string"
+      description: "ENNI MEG Common Attribute - MEF 26.2 §9.7"
+      enum:
+      - "ENABLED"
+      - "DISABLED"
+    LinkAggregation:
+      type: "string"
+      description: "ENNI Link Aggregation Common Attribute - MEF 26.2 §9.5"
+      enum:
+      - "NONE"
+      - "2_LINK_ACTIVE_STANDBY"
+      - "ALL_ACTIVE"
+      - "OTHER"
+    accessElineOperatorUniInventoryConnectorType:
+      type: "string"
+      enum:
+      - "SC"
+      - "LC"
+      - "RJ45"
+      - "OTHER"
+    accessElineOperatorUniInventoryLagLinkMeg:
+      type: "string"
+      description: "Operator UNI LAG Link MEG - MEF 26.2 §14.16"
+      enum:
+      - "ENABLED"
+      - "DISABLED"
+    accessElineOperatorUniInventoryL2cpAddressSet:
+      type: "string"
+      description: "Operator UNI L2CP Address Set - MEF 26.2 §14.20"
+      enum:
+      - "CTA"
+      - "CTB"
+      - "CTB2"
+    accessElineOperatorUniInventoryLinkOAM:
+      type: "string"
+      description: "Operator UNI Link OAM - MEF 26.2 §14.14"
+      enum:
+      - "ENABLED"
+      - "DISABLED"
+    accessElineOperatorUniInventoryMeg:
+      type: "string"
+      description: "Operator UNI MEG - MEF 26.2 §14.15"
+      enum:
+      - "ENABLED"
+      - "DISABLED"
+    SynchronousMode:
+      type: "string"
+      description: "Operator UNI Synchronous Mode - MEF 26.2 §14.3"
+      enum:
+      - "ENABLED"
+      - "DISABLED"
+    accessElineOperatorUniInventoryLinkAggregation:
+      type: "string"
+      description: "Operator UNI Link Aggregation - MEF 26.2 §14.5"
+      enum:
+      - "NONE"
+      - "2_LINK_ACTIVE_STANDBY"
+      - "ALL_ACTIVE"
+      - "OTHER"
+    TokenShare:
+      type: "string"
+      description: "Operator UNI Token Share - MEF 26.2 §14.18"
+      enum:
+      - "ENABLED"
+      - "DISABLED"
+    Deiyellow:
+      type: "string"
+      description: "A DEI value (0 or 1 or DISCARD) to use for Yellow frames"
+      enum:
+      - "0"
+      - "1"
+      - "DISCARD"
+    Deigreen:
+      type: "string"
+      description: "A DEI value (0 or 1 or DISCARD) to use for Green frames"
+      enum:
+      - "0"
+      - "1"
+      - "DISCARD"
+    MepDirection:
+      type: "string"
+      description: "Indicates whether this is an Up MEP or Down MEP"
+      enum:
+      - "UP"
+      - "DOWN"
+    Error400_allOf:
+      required:
+      - "code"
+      type: "object"
+      properties:
+        code:
+          $ref: "#/components/schemas/Code"
+    Error401_allOf:
+      required:
+      - "code"
+      type: "object"
+      properties:
+        code:
+          $ref: "#/components/schemas/Error401Code"
+    Error403_allOf:
+      required:
+      - "code"
+      type: "object"
+      properties:
+        code:
+          $ref: "#/components/schemas/Error403Code"
+    Error404_allOf:
+      required:
+      - "code"
+      type: "object"
+      properties:
+        code:
+          $ref: "#/components/schemas/Error404Code"
+    Error500_allOf:
+      required:
+      - "code"
+      type: "object"
+      properties:
+        code:
+          $ref: "#/components/schemas/Error500Code"
+    accessElineOvcInventory_allOf:
+      title: "JSON Schema accessElineOvc - Inventory, updated: 2020730 ( #2 )"
+      required:
+      - "availableMegLevel"
+      - "cTagDeiPreservation"
+      - "cTagPcpPreservation"
+      - "carrierEthernetSls"
+      - "ceVlanIdPreservation"
+      - "enniEP"
+      - "l2cpAddressSet"
+      - "listOfClassOfServiceNames"
+      - "maximumFrameSize"
+      - "uniEP"
+      type: "object"
+      properties:
+        ceVlanIdPreservation:
+          $ref: "#/components/schemas/CeVlanIdPreservation"
+        cTagPcpPreservation:
+          $ref: "#/components/schemas/CTagPcpPreservation"
+        cTagDeiPreservation:
+          $ref: "#/components/schemas/CTagDeiPreservation"
+        enniEP:
+          $ref: "#/components/schemas/objOvcEP"
+        listOfClassOfServiceNames:
+          maxItems: 8
+          minItems: 1
+          uniqueItems: true
+          type: "array"
+          description: "OVC List of Class of Service Names - MEF 26.2 §12.12"
+          items:
+            type: "string"
+        availableMegLevel:
+          maximum: 6
+          minimum: 0
+          type: "number"
+          description: "OVC Available MEG Level - MEF 26.2 §12.15"
+        l2cpAddressSet:
+          $ref: "#/components/schemas/L2cpAddressSet"
+        carrierEthernetSls:
+          $ref: "#/components/schemas/objSLS"
+        maximumFrameSize:
+          minimum: 1526
+          type: "integer"
+          description: "OVC Maximum Frame Size - MEF 26.2 §12.6"
+        uniEP:
+          $ref: "#/components/schemas/objOvcEP"
+      description: "MEF Forum LSO Sonata Product Schema for Access E-Line Ovc - Function:\
+        \ Inventory"
+    accessElineEnniInventory_allOf:
+      title: "JSON Schema accessElineEnni - Inventory, updated: 2020730 ( #2 )"
+      required:
+      - "enniCommon"
+      - "enniMultilateral"
+      - "enniService"
+      type: "object"
+      properties:
+        enniMultilateral:
+          $ref: "#/components/schemas/objOperatorMultilateral"
+        enniService:
+          $ref: "#/components/schemas/objEnniService"
+        enniCommon:
+          $ref: "#/components/schemas/objEnniCommon"
+      description: "MEF Forum LSO Sonata Product Schema for Access E-Line Enni - Function:\
+        \ Inventory"
+    accessElineOperatorUniInventory_allOf:
+      title: "JSON Schema accessElineOperatorUni - Inventory, updated: 2020730 ( #2\
+        \ )"
+      required:
+      - "connectorType"
+      - "defaultCeVlanId"
+      - "egressBandwidthProfile"
+      - "envelopes"
+      - "ingressBandwidthProfile"
+      - "l2cpAddressSet"
+      - "l2cpPeering"
+      - "lagLinkMeg"
+      - "linkAggregation"
+      - "linkOAM"
+      - "maximumNumberOfCeVlanIdsPerOvcEndPoint"
+      - "maximumNumberOfOvcEndPoints"
+      - "maximumServiceFrameSize"
+      - "meg"
+      - "numberOfLinks"
+      - "physicalLayer"
+      - "portConversation"
+      - "synchronousMode"
+      - "tokenShare"
+      type: "object"
+      properties:
+        connectorType:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/accessElineOperatorUniInventoryConnectorType"
+        numberOfLinks:
+          maximum: 8
+          minimum: 1
+          type: "number"
+          description: "Operator UNI Number of Links - MEF 26.2 §14.4"
+        defaultCeVlanId:
+          maximum: 4094
+          minimum: 1
+          type: "integer"
+          description: "Operator UNI Default CE-VLAN ID - MEF 26.2 §14.9"
+        physicalLayer:
+          maxItems: 8
+          minItems: 1
+          type: "array"
+          description: "Operator UNI Physical Layer - MEF 26.2 §14.2"
+          items:
+            pattern: "[0-9]+[G]?BASE-[A-Z0-9]{1,2}$"
+            type: "string"
+        portConversation:
+          $ref: "#/components/schemas/objConvToAggLink"
+        ingressBandwidthProfile:
+          description: "Operator UNI Ingress Bandwidth Profile per UNI - MEF 26.2\
+            \ §14.12"
+          $ref: "#/components/schemas/ingressBandwidthProfile_oneOf"
+        maximumNumberOfCeVlanIdsPerOvcEndPoint:
+          maximum: 4094
+          minimum: 1
+          type: "integer"
+          description: "Operator UNI Maximum Number of CE-VLAN IDs per OVC End Point\
+            \ - MEF 26.2 §14.11"
+        lagLinkMeg:
+          $ref: "#/components/schemas/accessElineOperatorUniInventoryLagLinkMeg"
+        l2cpAddressSet:
+          $ref: "#/components/schemas/accessElineOperatorUniInventoryL2cpAddressSet"
+        linkOAM:
+          $ref: "#/components/schemas/accessElineOperatorUniInventoryLinkOAM"
+        meg:
+          $ref: "#/components/schemas/accessElineOperatorUniInventoryMeg"
+        synchronousMode:
+          $ref: "#/components/schemas/SynchronousMode"
+        linkAggregation:
+          $ref: "#/components/schemas/accessElineOperatorUniInventoryLinkAggregation"
+        maximumNumberOfOvcEndPoints:
+          maximum: 4094
+          minimum: 1
+          type: "integer"
+          description: "Operator UNI Maximum Number of OVC End Points - MEF 26.2 §\
+            14.10"
+        egressBandwidthProfile:
+          description: "Operator UNI Egress Bandwidth Profile per UNI - MEF 26.2 §\
+            14.13"
+          $ref: "#/components/schemas/egressBandwidthProfile_oneOf"
+        l2cpPeering:
+          minItems: 0
+          type: "array"
+          description: "Operator UNI L2CP Peering - MEF 26.2 §14.21"
+          items:
+            $ref: "#/components/schemas/objL2cpIdentifer"
+        tokenShare:
+          $ref: "#/components/schemas/TokenShare"
+        maximumServiceFrameSize:
+          minimum: 1522
+          type: "number"
+          description: "Operator UNI Maximum Service Frame Size - MEF 26.2 §14.8"
+        envelopes:
+          minItems: 0
+          type: "array"
+          description: "Operator UNI Envelopes - MEF 26.2 §14.19"
+          items:
+            $ref: "#/components/schemas/objEnvelope"
+      description: "MEF Forum LSO Sonata Product Schema for Access E-Line OperatorUni\
+        \ - Function: Inventory"
