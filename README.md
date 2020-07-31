@@ -82,22 +82,27 @@ All superseded files can be found in the Git history, if needed.
 
 Any developer intending to use the materials in this repository should first thoroughly read, review and understand the following materials:
 
-* [MEF 55: Lifecycle Service Orchestration (LSO): Reference Architecture and Framework](documentation/MEF%2055%20-%20LSO%20Reference%20Architecture%20and%20Framework.pdf) This document is a ratified MEF standard.
-* [MEF 55.0.1: Amendment to MEF 55: Operational Threads](documentation/MEF%2055.0.1%20-%20Operational%20Threads.pdf) This document is a ratified MEF standard.
-* [MEF 55.0.2: Amendment to MEF 55: TOSCA Services Templates](documentation/MEF%2055.0.2%20-%20TOSCA%20Service%20Templates.pdf) This document is a ratified MEF standard.
-* [MEF 50.1: MEF Services Lifecycle Process Flows](documentation/MEF%2050.1%20-%20MEF%20Services%20Lifecycle%20Process%20Flows.pdf) This document is a ratified MEF standard.
-* [MEF 57.1: Ethernet Ordering Technical Standard - Business Requirements and Use Cases](documentation/MEF%2057.1%20-%20Ethernet%20Ordering%20Technical%20Specification%20-%20Business%20Requirements%20and%20Use%20Cases.pdf) This document is a ratified MEF standard.
-* [MEF 79: Address, Service Site, and Product Offering Qualification Management](documentation/MEF%2079%20-%20Address%2C%20Service%20Site%2C%20and%20Product%20Offering%20Qualification%20Management.pdf) This document is a ratified MEF standard.
-* [MEF 79.0.1 (LB) - Amendment to MEF 79 Address, Service Site, and Product Offering Qualification Management Requirements and Use Cases](documentation/MEF%2079.0.1%20(LB)%20-%20Amendment%20to%20MEF%2079%20Address,%20Service%20Site,%20and%20Product%20Offering%20Qualification%20Management%20Requirements%20and%20Use%20Cases.pdf)
-* [MEF 80 Draft (R7): Quote Management](documentation/MEF%2080%20Draft%20(R7)%20-%20Quote%20Management.pdf)
-* [MEF 81: Product Inventory Management](documentation/MEF%2081%20-%20Product%20Inventory%20Management.pdf)
-* [MEF 81.0.1: Amendment to MEF81 Product Inventory Management](documentation/MEF%2081.0.1%20-%20Amandment%20to%20MEF81%20Product%20Inventory%20Management.pdf)
+* [MEF 55: Lifecycle Service Orchestration (LSO): Reference Architecture and Framework](doc/standards/MEF%2055%20-%20LSO%20Reference%20Architecture%20and%20Framework.pdf) This document is a ratified MEF standard.
+* [MEF 55.0.1: Amendment to MEF 55: Operational Threads](doc/standards/MEF%2055.0.1%20-%20Operational%20Threads.pdf) This document is a ratified MEF standard.
+* [MEF 55.0.2: Amendment to MEF 55: TOSCA Services Templates](doc/standards/MEF%2055.0.2%20-%20TOSCA%20Service%20Templates.pdf) This document is a ratified MEF standard.
+* [MEF 50.1: MEF Services Lifecycle Process Flows](doc/standards/MEF%2050.1%20-%20MEF%20Services%20Lifecycle%20Process%20Flows.pdf) This document is a ratified MEF standard.
+* [MEF 57.1: Ethernet Ordering Technical Standard - Business Requirements and Use Cases](doc/standards/MEF%2057.1%20-%20Ethernet%20Ordering%20Technical%20Specification%20-%20Business%20Requirements%20and%20Use%20Cases.pdf) This document is a ratified MEF standard.
+* [MEF 79: Address, Service Site, and Product Offering Qualification Management](doc/standards/MEF%2079%20-%20Address,%20Service%20Site,%20and%20Product%20Offering%20Qualification%20Management.pdf) This document is a ratified MEF standard.
+* [MEF 79.0.1 (LB) - Amendment to MEF 79 Address, Service Site, and Product Offering Qualification Management Requirements and Use Cases](doc/standards/MEF%2079.0.1%20(LB)%20-%20Amendment%20to%20MEF%2079%20Address,%20Service%20Site,%20and%20Product%20Offering%20Qualification%20Management%20Requirements%20and%20Use%20Cases.pdf)
+* [MEF 80 Draft (R7): Quote Management](doc/standards/MEF%2080%20Draft%20(R7)%20-%20Quote%20Management.pdf)
+* [MEF 81: Product Inventory Management](doc/standards/MEF%2081%20-%20Product%20Inventory%20Management.pdf)
+* [MEF 81.0.1: Amendment to MEF81 Product Inventory Management](doc/standards/MEF%2081.0.1%20-%20Amandment%20to%20MEF81%20Product%20Inventory%20Management.pdf)
 * [MEF W87: LSO Sonata Product Offering Qualification API - Developer Guide](doc/serviceability/offeringQualification/v5/MEF_W87.md)
 * [MEF W106: LSO Sonata Product Specification - Access E-Line](doc/product/carrierEthernet/accessELine/v1/MEF_W106.md)
 
-## Questions and Feedback
+## Issues, questions and Feedback
 
-Questions and Feedback should be directed to community_manager@mef.net.  All artifacts included in this repository have line numbers.  When referring to specific content in any of these artifacts, please quote the line numbers to which you are referring.
+Issues should be reported with use of GitHub issues.
+Questions and feedback should be asked either at [Sonata SDK Community](https://github.com/orgs/MEF-GIT/teams/mef-lso-sonata-sdk-community) or directly to community_manager@mef.net.
+
+**NOTE:** All artifacts included in this repository have line numbers.  When referring to specific content in any of these artifacts, please quote the line numbers to which you are referring.
+
+Any is
 
 # Disclaimer & Copyright
 
