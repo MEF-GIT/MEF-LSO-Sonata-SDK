@@ -1,0 +1,1476 @@
+swagger: '2.0'
+info:
+  description: >
+    **ProductOfferingQualification Management**
+
+
+    The Product Offering Qualification (POQ) Management API allows a Buyer to
+    check whether the Seller is able to deliver a product or set of products 
+    from among their product offerings at the geographic address or a service site 
+    specified by the Buyer; or modify a previously purchased product.
+
+    The following operations are managed:
+
+    - Register for POQ Notifications
+    - Create Product Offering Qualification
+    - Retrieve POQ List
+    - Retrieve POQ by Identifier
+
+    (note: POQ Notification are described in a separate swagger)
+    
+    The ProductOfferingQualification API used TMF 679 (v4.0) as a template.
+
+  version: 5.0.0-RC
+  title: API Product Offering Qualification Management
+host: serverRoot
+basePath: /mefApi/sonata/productOfferingQualification/v5/
+tags:
+  - name: productOfferingQualification
+  - name: events subscription
+schemes:
+  - https
+consumes:
+  - application/json;charset=utf-8
+produces:
+  - application/json;charset=utf-8
+paths:
+  /hub:
+    post:
+      tags:
+        - events subscription
+      summary: Allows a Buyer to register to POQ state change notifications
+      description: >-
+        A request initiated by the Buyer to instruct the Seller to send
+        notifications of POQ state changes in the event the Seller uses the
+        Deferred Response pattern to respond to a Create Product Offering
+        Qualification request. Reference: MEF 79 (Sn 8.3)
+      operationId: registerListener
+      parameters:
+        - in: body
+          name: data
+          description: Data containing the callback endpoint to deliver the information
+          required: true
+          schema:
+            $ref: '#/definitions/EventSubscriptionInput'
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/EventSubscription'
+        '400':
+          description: |-
+            Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: |-
+            Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+        '403':
+          description: |-
+            Forbidden
+          schema:
+            $ref: '#/definitions/Error403'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Error404'
+        '500':
+          description: |-
+            Internal Server Error
+          schema:
+            $ref: '#/definitions/Error500'
+        '501':
+          description: |-
+            Method not implemented. Used in case Seller is not supporting Notification mechanism
+          schema:
+            $ref: '#/definitions/Error501'
+  '/hub/{id}':
+    delete:
+      tags:
+        - events subscription
+      summary: Unregister a listener
+      description: |
+        This operation is used to delete a hub. 
+        Reference: MEF 79 (Sn 8.3)
+      operationId: unregisterListener
+      parameters:
+        - name: id
+          in: path
+          description: Identifier of a hub
+          required: true
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: |-
+            Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: |-
+            Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+        '403':
+          description: |-
+            Forbidden
+          schema:
+            $ref: '#/definitions/Error403'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Error404'
+        '500':
+          description: |-
+            Internal Server Error
+          schema:
+            $ref: '#/definitions/Error500'
+        '501':
+          description: |-
+            Method not implemented. Used in case Seller is not supporting Notification mechanism
+          schema:
+            $ref: '#/definitions/Error501'
+  /productOfferingQualification:
+    get:
+      tags:
+        - productOfferingQualification
+      summary: >- 
+        Retrieve a list of ProductOfferingQualifications based on a set of
+        criteria
+      description: >-
+        The Buyer requests a list of POQs from the Seller based on a set of POQ
+        filter criteria (as described in MEF79).  For each POQ returned, the
+        Seller also provides a POQ Identifier that uniquely identifies this POQ
+        within the Seller. The order of the elements returned to the Buyer  is
+        defined by the Seller (e.g. natural order) and does not change between
+        the pages.
+      operationId: listProductOfferingQualification
+      produces:
+        - application/json;charset=utf-8
+      parameters:
+        - name: state
+          in: query
+          description: >-
+            State of the POQ to be retrieved. See
+            `MEFPOQStateChange` definition for details
+          required: false
+          type: string
+          enum:
+            - accepted
+            - terminatedWithError
+            - inProgress
+            - done.unableToProvide
+            - done            
+        - name: projectId
+          in: query
+          description: Identifier of buyer project associated to POQ
+          required: false
+          type: string
+        - name: requestedPOQCompletionDate.gt
+          in: query
+          description: POQ expected response date is strictly after this date
+          required: false
+          type: string
+          format: date-time
+        - name: requestedPOQCompletionDate.lt
+          in: query
+          description: POQ expected response date is strictly before this date
+          required: false
+          type: string
+          format: date-time
+        - name: buyerId
+          in: query
+          description: >- 
+            The unique identifier of the organization that is acting as
+            the Buyer in this transaction
+          required: false
+          type: string
+        - name: sellerId
+          in: query
+          description: >- 
+            The unique identifier of the organization that is acting as
+            the Seller in this transaction
+          required: false
+          type: string
+        - name: offset
+          in: query
+          description: >-
+            Requested index for start of POQ to be provided in response
+            requested by client
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: >-
+            Requested number of POQ to be provided in response requested by
+            client
+          required: false
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Ok
+          headers:
+            X-Result-Count:
+              type: integer
+              description: The number of POQ retrieved in the response
+            X-Total-Count:
+              type: integer
+              description: The total number of matching POQ
+            X-Pagination-Throttled:
+              type: boolean
+              description: >
+                Used to indicate that result page was throttled to maximum possible size 
+                and there are additional results that can be fetched
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ProductOfferingQualification_Find'
+        '400':
+          description: |-
+            Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: |-
+            Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+        '403':
+          description: |-
+            Forbidden
+          schema:
+            $ref: '#/definitions/Error403'
+        '500':
+          description: |-
+            Internal Server Error
+          schema:
+            $ref: '#/definitions/Error500'
+    post:
+      tags:
+        - productOfferingQualification
+      summary: Send request to perform product offering qualification
+      description: >-
+        A request initiated by the Buyer to determine whether the Seller is able
+        to deliver a product or set of products from among their product
+        offerings, at the Buyer's location(s); or modify a previously purchased
+        product. The Seller also provides estimated time intervals to complete
+        these deliveries. Reference: MEF 79 (Sn 8.4).
+      operationId: createProductOfferingQualification
+      parameters:
+        - in: body
+          name: productOfferingQualification
+          description: >-
+            POQ content provided by the Buyer. See definition's description for
+            details.
+          required: true
+          schema:
+            $ref: '#/definitions/ProductOfferingQualification_Create'
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/ProductOfferingQualification'
+        '400':
+          description: |-
+            Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: |-
+            Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+        '403':
+          description: |-
+            Forbidden
+          schema:
+            $ref: '#/definitions/Error403'
+        '422':
+          description: |-
+            Unprocessable entity due to business validation problems in the POQ or one of the POQ items
+          schema:
+              type: array
+              items:
+                $ref: '#/definitions/Error422'
+        '500':
+          description: |-
+            Internal Server Error
+          schema:
+            $ref: '#/definitions/Error500'
+  '/productOfferingQualification/{id}':
+    get:
+      tags:
+        - productOfferingQualification
+      summary: Retrieves a ProductOfferingQualification by ID
+      description: >-
+        The Buyer requests the full details of a single Product Offering 
+        Qualification based on a POQ identifier returned from 
+        the POQ create (`createProductOfferingQualification`) or POQ find (`listProductOfferingQualification`)
+      operationId: retrieveProductOfferingQualification
+      parameters:
+        - name: id
+          in: path
+          description: POQ identifier (matches `ProductOfferingQualification.id`)
+          required: true
+          type: string
+        - name: fields
+          in: query
+          description: Comma-separated properties to provide in response
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/ProductOfferingQualification'
+        '400':
+          description: |-
+            Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: |-
+            Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+        '403':
+          description: |-
+            Forbidden
+          schema:
+            $ref: '#/definitions/Error403'
+        '404':
+          description: >-
+            Not Found
+          schema:
+            $ref: '#/definitions/Error404'
+        '500':
+          description: |-
+            Internal Server Error
+          schema:
+            $ref: '#/definitions/Error500'
+definitions:
+  AlternateProductOfferingProposal:
+    type: object
+    required:
+      - alternateProduct
+      - id
+      - alternateProductOffering
+      - installationInterval
+    properties:
+      alternateProduct:
+        description: Alternate product proposal
+        $ref: '#/definitions/MEFProductExtension'
+      alternateProductOffering:
+        description: Alternate product offering proposal
+        $ref: '#/definitions/ProductOfferingRef'
+      id:
+        type: string
+        description: Identifier of the Product Offering Qualification alternate proposal.
+      installationInterval:
+        description: Installation interval time
+        $ref: '#/definitions/TimeInterval'
+    description: >+
+      If in the request the buyer has requested to have alternate product
+      proposals, then this class represent a single proposal. All properties are
+      assigned by the Seller.
+
+      Reference: MEF 79 (Sn 8.4.3.2)
+  Error:
+    description: |
+      Standard Class used to describe API response error
+      Not intended to be use directly only via specialization which defines a code
+    type: object
+    required:
+      - reason
+    properties:
+      message:
+        type: string
+        description: >-
+          Text that provide mode details and corrective actions related to the
+          error. This can be shown to a client user.
+      reason:
+        type: string
+        description: >-
+          Text that explains the reason for error. This can be shown to a client
+          user.
+        maxLength: 255
+      referenceError:
+        type: string
+        format: uri
+        description: url pointing to documentation describing the error
+      status:
+        type: string
+        description: Http error code extension like 400-2 for example
+  Error400:
+    description: |-
+      Bad Request
+    allOf:
+      - $ref: "#/definitions/Error"
+      - type: object 
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |- 
+              List of supported error codes:
+              - missingQueryParameter: Missing query-string parameter
+              - missingQueryValue: Invalid query-string parameter value
+              - invalidQuery
+              - invalidBody: Invalid body
+            type: string
+            enum:
+             - missingQueryParameter
+             - missingQueryValue
+             - invalidQuery
+             - invalidBody
+  Error401:
+    description: |-
+      Unauthorized
+    allOf:
+      - $ref: "#/definitions/Error"
+      - type: object 
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |- 
+              List of supported error codes:
+              - missingCredentials: Missing credentials
+              - invalidCredentials: Invalid OR expired credentials
+            type: string
+            enum:
+             - missingCredentials
+             - invalidCredentials
+  Error403:
+    description: |-
+      Forbidden
+    allOf:
+      - $ref: "#/definitions/Error"
+      - type: object 
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |- 
+              List of supported error codes:
+              - accessDenied: Access denied
+              - forbiddenRequester: Forbidden requester
+              - tooManyUsers: Too many users
+            type: string
+            enum:
+             - accessDenied
+             - forbiddenRequester
+             - tooManyUsers
+  Error404:
+    description: |-
+      Resource for the requested path not found
+    allOf:
+      - $ref: "#/definitions/Error"
+      - type: object 
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |- 
+              List of supported error codes:
+              - notFound: Resource not found
+            type: string
+            enum:
+             - notFound
+
+  Error422:
+    description: |-
+      Unprocessable entity due to a business validation problem
+    allOf:
+      - $ref: "#/definitions/Error"
+      - type: object 
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |
+              List of supported error codes:
+                - missingProperty: the property the Seller has expected is not present in the payload
+                - invalidValue: the property has an incorrect value
+                - invalidFormat: the property value does not comply to expected value format
+                - referenceNotFound: the object referenced by the property cannot be identified in the Seller system
+                - unexpectedProperty: additional property, not expected by the Seller has been provided
+                - otherIssue: other problem was identified (detailed information provided in a reason)
+            type: string
+            enum:
+              - missingProperty
+              - invalidValue
+              - invalidFormat
+              - referenceNotFound
+              - unexpectedProperty
+              - otherIssue
+          propertyPath:
+            type: string
+            description: |
+              A pointer to a particular property of the payload that caused the validation issue.
+              Defined using JsonPath format (https://goessner.net/articles/JsonPath/).
+  Error500:
+    description: |-
+      Internal Server Error
+    allOf:
+      - $ref: "#/definitions/Error"
+      - type: object 
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |- 
+              List of supported error codes:
+              - internalError: Internal server error
+            type: string
+            enum:
+             - internalError
+  Error501:
+    description: |-
+      Not Implemented
+    allOf:
+      - $ref: "#/definitions/Error"
+      - type: object 
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |- 
+              List of supported error codes:
+              - notImplemented: Method not supported by the server
+            type: string
+            enum:
+             - notImplemented
+  FieldedAddress:
+    allOf:
+      - $ref: '#/definitions/RelatedPlaceRefOrValue'
+      - type: object
+        required:
+          - city
+          - country
+          - streetName
+        properties:
+          city:
+            type: string
+            description: The city that the address is in
+          country:
+            type: string
+            description: Country that the address is in
+          geographicSubAddress:
+            $ref: '#/definitions/GeographicSubAddress'
+          locality:
+            type: string
+            description: The locality that the address is in
+          postcode:
+            type: string
+            description: >-
+              Descriptor for a postal delivery area, used to speed and simplify
+              the delivery of mail (also known as zip code)
+              MEF 79 defines it as required however as in certain countries it is not used we make it optional in API.
+          postcodeExtension:
+            type: string
+            description: >-
+              An extension of a postal code. E.g. the part following the dash in
+              an american urban property address
+          stateOrProvince:
+            type: string
+            description: The State or Province that the address is in
+          streetName:
+            type: string
+            description: Name of the street or other street type
+          streetNr:
+            type: string
+            description: >-
+              Number identifying a specific property on a public street. It may
+              be combined with streetNrLast for ranged addresses.
+              MEF 79 defines it as required however as in certain countries it is not used we make it optional in API.
+          streetNrLast:
+            type: string
+            description: Last number in a range of street numbers allocated to a property
+          streetNrLastSuffix:
+            type: string
+            description: Last street number suffix for a ranged address
+          streetNrSuffix:
+            type: string
+            description: The first street number suffix
+          streetSuffix:
+            type: string
+            description: A modifier denoting a relative direction
+          streetType:
+            type: string
+            description: >-
+              Alley, avenue, boulevard, brae, crescent, drive, highway, lane,
+              terrace, parade, place, tarn, way, wharf
+    description: >-
+      A type of Address that has a discrete field and value for each type of
+      boundary or identifier down to the lowest level of detail. For example
+      "street number" is one field, "street name" is another field, etc.
+      Reference: MEF 79 (Sn 8.9.2.1)
+  FormattedAddress:
+    allOf:
+      - $ref: '#/definitions/RelatedPlaceRefOrValue'
+      - type: object
+        required:
+          - addrLine1
+          - city
+          - country
+        properties:
+          addrLine1:
+            type: string
+            description: The first address line in a formatted address
+          addrLine2:
+            type: string
+            description: The second address line in a formatted address
+          city:
+            type: string
+            description: The city that the address is in
+          country:
+            type: string
+            description: Country that the address is in
+          locality:
+            type: string
+            description: >-
+              An area of defined or undefined boundaries within a local
+              authority or other legislatively defined area, usually rural or
+              semi-rural in nature
+          postcode:
+            type: string
+            description: >-
+              Descriptor for a postal delivery area, used to speed and simplify
+              the delivery of mail (also known as ZIP code)
+          postcodeExtension:
+            type: string
+            description: >-
+              An extension of a postal code. E.g. the part following the dash in
+              an US urban property address
+          stateOrProvince:
+            type: string
+            description: The State or Province that the address is in
+    description: >-
+      A type of Address that has discrete fields for each type of boundary or
+      identifier with the exception of street and more specific location
+      details, which are combined into a maximum of two strings based on local
+      postal addressing conventions. Reference: MEF 79 (Sn 8.9.3)
+  MEFGeographicLocation:
+    allOf:
+      - $ref: '#/definitions/RelatedPlaceRefOrValue'
+      - type: object
+        required:
+          - geographicPoint
+          - spatialRef
+        properties:
+          geographicPoint:
+            description: The spatial reference system used to determine the coordinates
+            $ref: '#/definitions/MEFGeographicPoint'
+          spatialRef:
+            type: string
+            description: The spatial reference system used to determine the coordinates
+    description: >-
+      A set of coordinates (typically including latitude and longitude) that
+      describes a particular location on earth. Reference: MEF 79 (Sn 8.9.5)
+  MEFGeographicPoint:
+    type: object
+    required:
+      - 'x'
+      - 'y'
+    properties:
+      'x':
+        type: string
+        description: The latitude expressed in the format specified by the `spacialRef`
+      'y':
+        type: string
+        description: The longitude expressed in the format specified by the `spacialRef`
+    description: A MEFGeographicPoint defines a geographic point through coordinates.
+  GeographicSubAddress:
+    type: object
+    properties:
+      buildingName:
+        type: string
+        description: > 
+          Allows for identification of places that require building name 
+          as part of addressing information
+      id:
+        type: string
+        description: Unique Identifier of the subAddress
+      levelNumber:
+        type: string
+        description: 'Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT 2'
+      levelType:
+        type: string
+        description: Describes level types within a building
+      privateStreetName:
+        type: string
+        description: >-
+          "Private streets internal to a property (e.g. a university) may have
+          internal names that are not recorded by the land title office
+      privateStreetNumber:
+        type: string
+        description: Private streets numbers internal to a private street
+      subUnit:
+        type: array
+        description: >-
+          Representation of a MEFSubUnit
+
+          It is used for describing subunit within a subaddress  e.g.BERTH,
+          FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF.
+        items:
+          $ref: '#/definitions/MEFSubUnit'
+    description: >-
+      Additional fields used to specify an address, as detailed as possible.
+  EventSubscription:
+    type: object
+    required:
+      - callback
+      - id
+    properties:
+      callback:
+        type: string
+        description: >-
+          The value provided by the Buyer in `EventSubscriptionInput` during notification registration
+      id:
+        type: string
+        description: An identifier of the Hub assigned by the Seller when resource is created
+      query:
+        type: string
+        description: >-
+          The value provided by the Buyer in `EventSubscriptionInput` during notification registration
+    description: |
+      This resource is used to manage notification subscription.
+      Reference: MEF 79 (Sn 8.3)
+  EventSubscriptionInput:
+    type: object
+    required:
+      - callback
+    properties:
+      callback:
+        type: string
+        description: >-
+          This callback value must be set to *host* property from Buyer ProductOfferingQualification Notification API
+          This property is appended with an appropriate base path and notification resource path to construct 
+          an URL to which notification is sent.
+      query:
+        type: string
+        description: >-
+          This attribute is used to define notification registration constraints. Example:
+          "query":"eventType = ProductOfferingQualificationStateChangeNotification"
+    description: This class is used to request a HUB creation - Used in the POST operation.
+  MEFProductConfiguration:
+    type: object
+    discriminator: '@type'
+    required:
+      - '@type'
+    properties:
+      '@schemaLocation':
+        type: string
+        format: uri
+        description: >-
+          A URI to a JSON-Schema file that defines additional attributes and
+          relationships
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class Extensible name'
+    description: >-
+      MEFProductConfiguration is used as an extension point for MEF specific product/service payload. 
+      The `@type` attribute is used as a discriminator
+  PlaceRef:
+    allOf:
+      - $ref: '#/definitions/RelatedPlaceRefOrValue'
+      - type: object
+        required:
+          - id
+          - '@referredType'
+        properties:
+          '@referredType':
+            type: string
+            description: The actual type of the target instance when needed for disambiguation.
+          href:
+            type: string
+            description: >+
+              Hyperlink to the referenced place
+              Hyperlink MAY be used by the Seller in responses  
+              Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request
+          id:
+            type: string
+            description: >-
+              Identifier of the referenced place. This identifier is assigned
+              during successful address validation request (Sonata Geographic
+              Address Management API)
+    description: >
+      A reference to a place resource available through Sonata addressing
+      validation API.
+
+      This type should be use to represent Service Site Identifier from MEF 79
+      (Table 21).
+  ProductActionType:
+    type: string
+    description: |
+      Action to be performed on the Product Item. The action types are described
+      in MEF 79 (Sn 8.4.1.1).
+
+      The following mapping has been used between `ProductActionType` and MEF 79:
+
+      | ProductActionType | MEF 79     |
+      |------------------ | ---------- |
+      | add               | INSTALL    |
+      | modify            | CHANGE     |
+      | delete            | DISCONNECT |
+
+    enum:
+      - add
+      - modify
+      - delete
+  ProductOfferingQualification:
+    allOf:
+      - $ref: '#/definitions/ProductOfferingQualification_Common'
+      - type: object
+        required:
+          - id
+          - productOfferingQualificationItem
+          - state
+        properties:
+          effectiveQualificationDate:
+            type: string
+            format: date-time
+            description: Effective date the Seller provides qualification result.
+          expectedPOQCompletionDate:
+            type: string
+            format: date-time
+            description: The date the Seller is expected to provide qualification result.
+          href:
+            type: string
+            description: >+
+              Hyperlink representing this POQ resource
+              Hyperlink MAY be used by the Seller in responses  
+          id:
+            type: string
+            description: >-
+              The Serviceability Request's unique identifier assigned by the
+              Seller.
+          productOfferingQualificationItem:
+            type: array
+            description: >-
+              One or more of Product Offering Qualification Items.
+            items:
+              $ref: '#/definitions/ProductOfferingQualificationItem'
+            minItems: 1
+          state:
+            description: >-
+              State of the productOfferingQualification defined in the state
+              engine
+            $ref: '#/definitions/MEFPOQTaskStateType'
+          stateChange:
+            type: array
+            description: >
+              A log of all state transitions for the POQ.  If the log is used
+              the most recent item's state must be in sync with `state` property
+              value
+            items:
+              $ref: '#/definitions/MEFPOQStateChange'
+    description: >+
+      Represents a response to the Buyer POQ inquiry.
+      
+      Reference MEF 79 (Sn 8.7 and 8.4.3).
+  ProductOfferingQualificationItem:
+    allOf:
+      - $ref: '#/definitions/ProductOfferingQualificationItem_Common'
+      - type: object
+        required:
+          - state
+        properties:
+          alternateProductOfferingProposal:
+            type: array
+            items:
+              $ref: '#/definitions/AlternateProductOfferingProposal'
+          guaranteedUntilDate:
+            type: string
+            format: date-time
+            description: Date until the Seller is guaranteed the qualification result.
+          installationInterval:
+            description: Installation interval time
+            $ref: '#/definitions/TimeInterval'
+          serviceConfidenceReason:
+            type: string
+            description: >-
+              A description of the reason a particular color is being provided.
+              This may include specific standard reason codes and
+              descriptions.
+          serviceabilityConfidence:
+            description: >-
+              The level of confidence of the Seller to be able to service the request.
+            $ref: '#/definitions/MEFServiceabilityColor'
+          state:
+            description: >-
+              State of the productOfferingQualification item defined in the
+              state engine
+            $ref: '#/definitions/MEFPOQItemTaskStateType'
+          stateChange:
+            type: array
+            description: >
+              A log of all state transitions for the POQ.  If the log is used
+              the most recent item's state must be in sync with `state` property
+              value
+            items:
+              $ref: '#/definitions/MEFPOQItemStateChange'
+          terminationError:
+            type: array
+            items:
+              $ref: '#/definitions/TerminationError'
+    description: >-
+      An individual article included in a POQ that describes a Product of a
+      particular type (Product Offering) being delivered to a specific
+      geographical location.  The objective is to determine if it is feasible
+      for the Seller to deliver this item as described and for the Seller to
+      inform the Buyer of the estimated time interval to complete this delivery.
+
+      Reference: MEF 79 (Sn 8.4.3.1)
+  QualificationItemRelationship:
+    type: object
+    required:
+      - id
+      - relationshipType
+    properties:
+      id:
+        type: string
+        description: An identifier of the targeted POQ item within the same POQ request
+      relationshipType:
+        type: string
+        description: >
+          One of the relationship types defined in the Product Specification. For example: "relies on".
+    description: >-
+      The relationship between product offering qualification items that can be
+      used to validate business rules between POQ Items
+  MEFPOQItemTaskStateType:
+    type: string
+    description: |
+      POQ item states - The specific states are managed by the Seller based on
+      its processing and/or based on the Buyer's action.
+
+      The following mapping has been used between `ProductOfferingQualificationStateType` and MEF 79 (Sn 9.2):
+
+      | ProductOfferingQualificationStateType               | MEF 79                             |
+      |---------------------------------------------------- | ---------------------------------- |
+      | accepted                                            | N/A                                |
+      | done                                                | READY                              |
+      | done.abandoned                                      | ABANDONED                          |
+      | terminatedWithError                                 | INSUFFICIENT_INFORMATION_PROVIDED  |
+      | inProgress                                          | IN_PROGRESS                        |
+
+    enum:
+      - accepted
+      - terminatedWithError
+      - inProgress
+      - done.abandoned
+      - done
+  ProductOfferingQualificationItem_Create:
+    allOf:
+      - $ref: '#/definitions/ProductOfferingQualificationItem_Common'
+      - type: object
+    description: >-
+      This structure serves as a request for a product offering qualification
+      item.
+
+      A product qualification item is an individual article included in a POQ
+      that describes a Product of a particular type (Product Offering) being
+      delivered to the geographic address  or a service site specified by the
+      Buyer.
+
+      The objective is to determine if it is feasible for the Seller to deliver
+      this item as described and for the Seller to inform the Buyer of the
+      estimated time interval to complete this delivery.
+
+      Reference: MEF 79 (Sn 8.4.1.1)
+  MEFPOQTaskStateType:
+    type: string
+    description: |
+      These values represent the valid states through which the product offering
+      qualification can transition.
+
+      The following mapping has been used between
+      `ProductOfferingQualificationStateType` and MEF 79 (Sn 9.1):
+
+
+      | ProductOfferingQualificationStateType               | MEF 79                             |
+      |---------------------------------------------------- | ---------------------------------- |
+      | accepted                                            | N/A                                |
+      | done                                                | READY                              |
+      | done.unableToProvide                                | UNABLE_TO_PROVIDE                  |
+      | terminatedWithError                                 | INSUFFICIENT_INFORMATION_PROVIDED  |
+      | inProgress                                          | IN_PROGRESS                        |
+      
+    enum:
+      - accepted
+      - terminatedWithError
+      - inProgress
+      - done.unableToProvide
+      - done
+  ProductOfferingQualification_Create:
+    allOf:
+      - $ref: '#/definitions/ProductOfferingQualification_Common'
+      - type: object
+        required:
+          - productOfferingQualificationItem
+        properties:
+          productOfferingQualificationItem:
+            type: array
+            description: A non-empty list of POQ items
+            items:
+              $ref: '#/definitions/ProductOfferingQualificationItem_Create'
+            minItems: 1
+    description: >+
+      Represents a request formulated by the Buyer
+      that is composed of product offering qualification items.
+      
+      Reference: MEF 79 (Sn 8.4)
+  ProductOfferingQualification_Find:
+    type: object
+    required:
+      - id
+      - requestedResponseDate
+      - state
+    properties:
+      id:
+        type: string
+        description: The POQ Request's unique identifier.
+      projectId:
+        type: string
+        description: >-
+          This value MAY be assigned by the Buyer/Seller to identify a project
+          the serviceability request is associated with.
+      requestedPOQCompletionDate:
+        type: string
+        format: date
+        description: >-
+          The latest date a the POQ completion is expected.
+      state:
+        $ref: '#/definitions/MEFPOQTaskStateType'
+        description: Current state of the POQ
+    description: >+
+      This class represent a single list item for the response of `listProductOfferingQualification` operation. 
+
+      Reference: MEF 79 (Sn 8.6)
+  ProductOfferingRef:
+    type: object
+    required:
+      - id
+    properties:
+      '@referredType':
+        type: string
+        description: The actual type of the target instance when needed for disambiguation.
+      href:
+        type: string
+        description: >+
+          Hyperlink to a Product Offering in Sellers catalog.
+          In case Seller is not providing a catalog capabilities this field is not used. 
+          The catalog API definition is provided by the Seller to the Buyer during onboarding
+          Hyperlink MAY be used by the Seller in responses  
+          Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request
+      id:
+        type: string
+        description: id of a Product Offering.
+      name:
+        type: string
+        description: Name of the related entity.
+    description: >-
+      A reference to a Product Offering offered by the Seller to the Buyer.  A
+      Product Offering contains the commercial and technical details of a
+      Product sold by a particular Seller. A Product Offering defines all of the
+      commercial terms and, through association with a particular Product
+      Specification, defines all the technical attributes and behaviors of the
+      Product. A Product Offering may constrain the allowable set of
+      configurable technical attributes and/or behaviors specified in the
+      associated Product Specification.
+  MEFProductExtension:
+    type: object
+    properties:
+      productConfiguration:
+        description: >-
+          MEFProductConfiguration is used to get MEF specific product/service
+          payload. the @type is used a a discriminator.
+        $ref: '#/definitions/MEFProductConfiguration'
+    description: >-
+      One or more services sold to a Buyer by a Seller.  A particular Product
+      Offering defines the technical and commercial attributes and behaviors of
+      a Product.
+  MEFProductRefOrValue:
+    type: object
+    required:
+      - '@type'
+    properties:
+      href:
+        type: string
+        description: >+
+              Hyperlink to the product in Seller's inventory that is the qualification's subject.
+              Hyperlink MAY be used by the Seller in responses  
+              Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request
+      id:
+        type: string
+        description: >
+          The unique identifier of an in-service Product that is the qualification's subject. 
+          This field MUST be populated if an item `action` is either `modify` or `delete`. 
+          This field MUST NOT be populated if an item `action` is `add`.
+      place:
+        type: array
+        items:
+          $ref: '#/definitions/RelatedPlaceRefOrValue'
+      productConfiguration:
+        description: >-
+          MEFProductConfiguration is used to get MEF specific product/service
+          payload. the @type is used a a discriminator.
+        $ref: '#/definitions/MEFProductConfiguration'
+      productRelationship:
+        type: array
+        items:
+          $ref: '#/definitions/ProductRelationship'
+      productSpecification:
+        $ref: '#/definitions/ProductSpecificationRef'
+      '@type':
+          description: Should tak a value of 'MEFProductRefOrValue' to conform to DCS rules
+          type: string
+    description: >-
+      One or more services sold to a Buyer by a Seller.  A particular Product
+      Offering defines the technical and commercial attributes and behaviors of
+      a Product.
+  ProductRelationship:
+    type: object
+    required:
+      - id
+      - relationshipType
+    properties:
+      '@referredType':
+        type: string
+        description: The actual type of the target instance when needed for disambiguation.
+      href:
+        type: string
+        description: >+
+              Hyperlink to the product in Seller's inventory that is referenced
+              Hyperlink MAY be used by the Seller in responses  
+              Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request
+      id:
+        type: string
+        description: unique identifier of a Product that is referenced
+      groupingKey:
+        type: string
+        description: |
+          Related Product Identifier list is constructed from product ids having the same groupingKey and relationshipType.
+          Reference: MEF 79.0.1 (Sn 7)
+      name:
+        type: string
+        description: Name of the related entity.
+      relationshipType:
+        type: string
+        description: >-
+          One of the relationship types defined in the Product Specification. For example: "relies on".
+    description: Indicates a relationship between products.
+  ProductSpecificationRef:
+    type: object
+    required:
+      - id
+    properties:
+      '@referredType':
+        type: string
+        description: The actual type of the target instance when needed for disambiguation.
+      href:
+        type: string
+        description: >+
+          Hyperlink to a Product Specification in Sellers catalog.
+          In case Seller is not providing a catalog capability this field is not used. 
+          The catalog API definition is provided by the Seller to Buyer during onboarding.
+          Hyperlink MAY be used by the Seller in responses  
+          Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request
+      id:
+        type: string
+        description: Unique identifier of the product specification
+      name:
+        type: string
+        description: Name of the related entity.
+    description: >-
+      A reference to a structured set of well-defined technical attributes and/or behaviors
+      that are used to construct a Product Offering for sale to a market.
+  GlobalAddressId:
+    allOf:
+      - $ref: '#/definitions/RelatedPlaceRefOrValue'
+      - type: object
+        required:
+          - externalReferenceId
+          - externalReferenceType
+        properties:
+          externalReferenceId:
+            type: string
+            description: >-
+              A reference to an address by id; this would include such things as
+              CLLI (Common Language Location Identifier) code
+          externalReferenceType:
+            type: string
+            description: >-
+              The type of the reference. For North American providers this would
+              normally be CLLI (Common Language Location Identifier) code
+    description: >-
+      A globally unique identifier controlled by a generally accepted
+      independent administrative authority that specifies a fixed geographical
+      location. Reference: MEF 79 (Sn 8.9.4)
+  RelatedPartyValue:
+    type: object
+    required:
+      - name
+      - number
+      - role
+      - emailAddress
+    properties:
+      '@type':
+        type: string
+        description: > 
+          An indicator of whether role is an individual or organizational. If not specified assumed individual
+        enum:
+          - individual
+          - organization
+      emailAddress:
+        type: string
+        description: Party email address
+      name:
+        type: string
+        description: Name of the party
+      number:
+        type: string
+        description: Party phone number
+      numberExtension:
+        type: string
+        description: Party phone number extension
+      role:
+        type: string
+    description: >-
+      An entity or organization that is involved in the product offering
+      qualification. It may be the Buyer, the Seller, or other related party
+      Reference: MEF 79 (Sn 8.11)
+  RelatedPlaceRefOrValue:
+    type: object
+    required:
+      - '@type'
+      - role
+    discriminator: '@type'
+    properties:
+      '@schemaLocation':
+        type: string
+        format: uri
+        description: >-
+          A URI to a JSON-Schema file that defines additional attributes and
+          relationships.
+          May be used to define additional related place types.
+          Usage of this attribute must be agreed between Buyer and Seller.
+      '@type':
+        type: string
+        description: >
+          This filed is used as discriminator and is used between different
+          place representations. This type might discriminate for additional related place as defined
+          in '@schemaLocation'.
+      role:
+        type: string
+        description: Role of this place
+    description: Place defines the places where the products qualification must be done.
+  MEFServiceabilityColor:
+    type: string
+    description: |
+      A color that indicates confidence to service the request.
+
+      Mapping between `ServiceabilityColor` and POQ Confidence Level:
+      | ServiceabilityColor      | MEF 79       | MEF 79 semantics |
+      |------------------------- | ------------ | -----------------|
+      | green                    | GREEN        |  The Seller has high confidence that this Product can be delivered |
+      | yellow                   | YELLOW       |  The Seller believes they can deliver the Product but is not highly confident |
+      | red                      | RED          |  The Seller cannot deliver the Product as specified.  |
+      
+      Reference: MEF 79 (Sn 8.4.3.1)
+    enum:
+      - green
+      - yellow
+      - red
+  MEFPOQItemStateChange:
+    type: object
+    required:
+    - changeDate
+    - state
+    properties:
+      changeDate:
+        type: string
+        format: date-time
+        description: The date on when the state was reached
+      changeReason:
+        type: string
+        description: Additional comment related to state change
+      state:
+        description: A state reached at change date
+        $ref: '#/definitions/MEFPOQItemTaskStateType'
+    description: >-
+      Holds the reached state, reasons, and associated date the POQ state
+      changed, populated by the Seller.
+  MEFPOQStateChange:
+    type: object
+    required:
+    - changeDate
+    - state
+    properties:
+      changeDate:
+        type: string
+        format: date-time
+        description: The date on when the state was reached
+      changeReason:
+        type: string
+        description: Additional comment related to state change
+      state:
+        description: A state reached at change date
+        $ref: '#/definitions/MEFPOQTaskStateType'
+    description: >-
+      Holds the reached state, reasons, and associated date the POQ state
+      changed, populated by the Seller.
+  MEFSubUnit:
+    type: object
+    required:
+      - subUnitNumber
+      - subUnitType
+    properties:
+      subUnitNumber:
+        type: string
+        description: >-
+          The discriminator used for the subunit, often just a simple number but
+          may also be a range.
+      subUnitType:
+        type: string
+        description: >-
+          The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT,
+          WHARF.
+    description: Allows for sub unit identification
+  TerminationError:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Id of the termination error
+      value:
+        type: string
+        description: Value (text) for the termination error
+    description: >-
+      Termination error may be provided if seller is unable to perform
+      qualification Reference: MEF 79 (Sn 8.4.3.1)
+  TimeInterval:
+    type: object
+    required:
+      - amount
+      - timeUnit
+    properties:
+      amount:
+        type: integer
+        description: An interval value
+      timeUnit:
+        description: An interval value type
+        $ref: '#/definitions/TimeUnit'
+    description: 'A time interval, e.g.  3 hours, or 5 days.'
+  TimeUnit:
+    type: string
+    description: |
+      Represents a unit of time.
+      Reference: MEF 79 (Sn 8.4.3.1/8.4.3.2)
+    enum:
+      - calendarDays
+      - calendarHours
+      - calendarMinutes
+      - businessDays
+      - businessHours
+      - businessMinutes
+  ProductOfferingQualificationItem_Common:
+    type: object
+    required:
+      - action
+      - id
+      - product
+    properties:
+      action:
+        description: >-
+          Action to be qualified
+        $ref: '#/definitions/ProductActionType'
+      expectedActivationDate:
+        type: string
+        format: date-time
+        description: >-
+          Date when the requester look for productOfferingQualification
+          activation
+      id:
+        type: string
+        description: Id of this POQ item which is unique within the POQ.
+      product:
+        description: Product Description
+        $ref: '#/definitions/MEFProductRefOrValue'
+      productOffering:
+        $ref: '#/definitions/ProductOfferingRef'
+      qualificationItemRelationship:
+        type: array
+        items:
+          $ref: '#/definitions/QualificationItemRelationship'
+      relatedParty:
+        type: array
+        description: Party playing a role for this qualification (as requester for example)
+        items:
+          $ref: '#/definitions/RelatedPartyValue'
+    description: >
+      Common attributes shared between a POQ request and response.  These
+      attributes are provided by the Buyer and must not be modified by the
+      Seller.
+  ProductOfferingQualification_Common:
+    type: object
+    required:
+      - relatedParty
+    properties:
+      buyerId:
+        type: string
+        description: >+
+          The unique identifier of the organization that is acting as the
+          customer in this transaction.
+          MUST be specified in the POQ request only when the requester represents more than one Buyer.
+
+          Reference: MEF 79 (Sn 8.8)
+      instantSyncQualification:
+        type: boolean
+        description: >-
+          If this flag is set to Yes, Buyer requests to have an instant
+          qualification to be provided in operation POST response
+        default: false
+      projectId:
+        type: string
+        description: >-
+          This value MAY be assigned by the Buyer/Seller to identify a project
+          the serviceability request is associated with.
+      provideAlternative:
+        type: boolean
+        description: >-
+          Allows the Buyer to indicate if he is willing to
+          get an alternate proposal if requested product not available.
+        default: false
+      relatedParty:
+        type: array
+        description: Party playing a role for this qualification (as requester for example)
+        items:
+          $ref: '#/definitions/RelatedPartyValue'
+      requestedPOQCompletionDate:
+        type: string
+        format: date-time
+        description: >-
+          The latest date a the POQ completion is expected.
+          
+      sellerId:
+        type: string
+        description: >+
+          The unique identifier of the organization that is acting as the
+          supplier in this transaction. 
+          MUST be specified in the POQ request only when responding entity represents more than one Seller.
+
+          Reference: MEF 79 (Sn 8.8)

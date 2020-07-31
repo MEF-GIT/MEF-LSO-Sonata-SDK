@@ -1,0 +1,140 @@
+@startuml
+
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor<<API>> Black
+}
+
+hide  <<API>> stereotype
+
+class MEFProductConfiguration<<API>> {
+
+    @type*: string 
+    @schemaLocation: uri 
+}
+
+class accessElineOperatorUniPOQ {
+
+    connectorType*: ConnectorType[] 
+    numberOfLinks: number 
+    defaultCeVlanId: integer 
+    physicalLayer*: string[] 
+    maximumNumberOfCeVlanIdsPerOvcEndPoint: integer 
+    lagLinkMeg: LagLinkMeg 
+    l2cpAddressSet: L2cpAddressSet 
+    linkOAM: LinkOAM 
+    meg: Meg 
+    synchronousMode: SynchronousMode 
+    linkAggregation: LinkAggregation 
+    maximumNumberOfOvcEndPoints: integer 
+    tokenShare: TokenShare 
+    maximumServiceFrameSize: number 
+}
+MEFProductConfiguration <|-- accessElineOperatorUniPOQ
+
+accessElineOperatorUniPOQ *--> objConvToAggLink : portConversation
+accessElineOperatorUniPOQ *--> ingressBandwidthProfile_oneOf : ingressBandwidthProfile
+accessElineOperatorUniPOQ *--> egressBandwidthProfile_oneOf : egressBandwidthProfile
+accessElineOperatorUniPOQ *-->"*" objL2cpIdentifer : l2cpPeering
+accessElineOperatorUniPOQ *-->"*" objEnvelope : envelopes
+
+class ingressBandwidthProfile_oneOf <<Virtual>> {
+
+}
+
+ingressBandwidthProfile_oneOf --|> objBWP
+ingressBandwidthProfile_oneOf --|> objDisabled
+
+class egressBandwidthProfile_oneOf <<Virtual>> {
+
+}
+
+egressBandwidthProfile_oneOf --|> objBWP
+egressBandwidthProfile_oneOf --|> objDisabled
+
+
+class objBWP {
+
+    eirmax: integer 
+    envelopeRank*: integer 
+    envelopeName*: string 
+    cf: number 
+    cirmax: integer 
+    offset: integer 
+    cbs: integer 
+    ebs: integer 
+    cm*: Cm 
+    cir: integer 
+    eir: integer 
+}
+
+class objDisabled {
+
+    constantDisabled*: ConstantDisabled 
+}
+
+enum Cm {
+
+    COLOR_BLIND
+    COLOR_AWARE
+}
+
+enum ConstantDisabled {
+
+    DISABLED
+}
+
+enum ConnectorType {
+
+    SC
+    LC
+    RJ45
+    OTHER
+}
+
+enum L2cpAddressSet {
+
+    CTA
+    CTB
+    CTB2
+}
+
+enum LagLinkMeg {
+
+    ENABLED
+    DISABLED
+}
+
+enum LinkAggregation {
+
+    NONE
+    2_LINK_ACTIVE_STANDBY
+    ALL_ACTIVE
+    OTHER
+}
+
+enum LinkOAM {
+
+    ENABLED
+    DISABLED
+}
+
+enum Meg {
+
+    ENABLED
+    DISABLED
+}
+
+enum SynchronousMode {
+
+    ENABLED
+    DISABLED
+}
+
+enum TokenShare {
+
+    ENABLED
+    DISABLED
+}
+
+@enduml
