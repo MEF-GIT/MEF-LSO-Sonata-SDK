@@ -3,7 +3,7 @@
 Whole API is crafted with the use of TMF tooling. At this moment some descriptions might differ from previous version.
 The details of descriptions will be worked on during the MEF 115 Quote Management Developer Guide project and will be updated in next release.
 
-The API is based on newest TMF 648 rel 19.0.1 (v4.0.0). The rules of Domain Context Specialization were followed. DCS rule are developed by the [MEF-TMF-ONAP-Collaboration](https://wiki.mef.net/pages/viewpage.action?pageId=106608028) project and ensure API compliance.
+The API is based on newest TMF 648 rel. 19.0 (v4.0.0). The rules of Domain Context Specialization were followed. DCS rules are developed by the [MEF-TMF-ONAP-Collaboration](https://wiki.mef.net/pages/viewpage.action?pageId=106608028) project and ensure API compliance.
 
 The list below highlights discrepancies between current version and:
 
@@ -94,5 +94,34 @@ Errors:
 
 • (MEF, TMF) Introduced a pattern of subclassing per error code.
 
-
 ## GitHub Issues:
+
+### Global
+
+* Introduce new PlaceReforValue specialization: PlaceRef
+CHanges introduced as described #149
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/149
+* Define several business errors 'behind' HTTP 422 #26
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/26
+* Align API Error Code #127
+* https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/127
+
+
+### Order specific
+
+#### Bugs
+
+* Product.id should not be required on Quote INSTALL #146
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/146
+
+* QuoteItem refers to Array/one POQ - inconsistency in definitions #145 
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/145
+
+* Error Code 109 #154
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/154
+
+#### Improvements
+
+* Add INSUFICIENT_INFORMATION_PROVIDED statr for quote #44
+https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/issues/44
+
