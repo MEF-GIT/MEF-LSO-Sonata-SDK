@@ -1,0 +1,276 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class AgreementRef {
+
+    id*: string 
+    name: string 
+    path: string 
+}
+
+
+
+class BillingAccountRef {
+
+    id*: string 
+}
+
+
+
+class Error400 {
+
+    code*: string 
+}
+Error <|-- Error400
+
+
+
+class Error401 {
+
+    code*: string 
+}
+Error <|-- Error401
+
+
+
+class Error403 {
+
+    code*: string 
+}
+Error <|-- Error403
+
+
+
+class Error404 {
+
+    code*: string 
+}
+Error <|-- Error404
+
+
+
+class Error500 {
+
+    code*: string 
+}
+Error <|-- Error500
+
+
+
+class Error {
+
+    reason*: string 
+    message: string 
+    status: string 
+    referenceError: uri 
+}
+
+
+
+class MEFProductConfiguration {
+
+    @baseType: string 
+    @schemaLocation: uri 
+    @type*: string 
+}
+
+
+
+class MEFProductOrderItemRef {
+
+    id*: string 
+    href: string 
+    orderItemId*: string 
+}
+
+
+
+class MEFProductSpecificationSummary {
+
+    id*: string 
+}
+
+
+
+class MEFProductStateChange {
+
+    changeDate*: date-time 
+    changeReason: string 
+    state*: MEFProductStatusType 
+}
+
+
+
+class MEFProductSummary {
+
+    id*: string 
+    href: string 
+    status*: MEFProductStatusType 
+    startDate: date-time 
+    buyerProductId: string 
+}
+
+MEFProductSummary *--> ProductOfferingRef : productOffering
+MEFProductSummary *--> MEFProductSpecificationSummary : productSpecification
+
+
+class Money {
+
+    unit*: string 
+    value*: float 
+}
+
+
+
+class Price {
+
+    taxRate: float 
+    @type: string 
+}
+
+Price *--> Money : dutyFreeAmount
+Price *--> Money : taxIncludedAmount
+
+
+class Product {
+
+    id*: string 
+    href: string 
+    buyerProductId: string 
+    lastUpdateDate: date-time 
+    startDate*: date-time 
+    terminationDate: date-time 
+    status*: MEFProductStatusType 
+    @baseType: string 
+    @schemaLocation: uri 
+    @type: string 
+}
+
+Product *--> MEFProductConfiguration : MEFProductConfiguration
+Product *-->"*" AgreementRef : agreement
+Product *-->"*" BillingAccountRef : billingAccount
+Product *--> ProductOfferingRef : productOffering
+Product *-->"*" MEFProductOrderItemRef : productOrderItem
+Product *-->"*" ProductPrice : productPrice
+Product *-->"*" ProductRelationship : productRelationship
+Product *--> ProductSpecificationRef : productSpecification
+Product *-->"*" ProductTerm : productTerm
+Product *-->"*" RelatedPartyValue : relatedParty
+Product *-->"*" RelatedGeographicSite : relatedSite
+Product *-->"*" MEFProductStateChange : stateChange
+
+
+class ProductOfferingRef {
+
+    id*: string 
+}
+
+
+
+class ProductPrice {
+
+    description: string 
+    name: string 
+    priceType*: string 
+    recurringChargePeriod: string 
+    unitOfMeasure: string 
+    @type: string 
+}
+
+ProductPrice *-->"1" Price : price
+
+
+class ProductRelationship {
+
+    id*: string 
+    href: string 
+    buyerProductId: string 
+    name: string 
+    relationshipType*: string 
+}
+
+
+
+class ProductSpecificationRef {
+
+    id*: string 
+    href: string 
+    name: string 
+    @schemaLocation: uri 
+    @type: string 
+    @referredType: string 
+}
+
+ProductSpecificationRef *--> TargetProductSchema : targetProductSchema
+
+
+class ProductTerm {
+
+    description: string 
+    name: string 
+}
+
+ProductTerm *--> Quantity : duration
+ProductTerm *--> TimePeriod : validFor
+
+
+class Quantity {
+
+    amount*: float 
+    units*: string 
+}
+
+
+
+class RelatedGeographicSite {
+
+    id*: string 
+    href: string 
+    role*: string 
+    @type: string 
+}
+
+
+
+class RelatedPartyValue {
+
+    emailAddress: string 
+    name*: string 
+    number*: string 
+    numberExtension: string 
+    role*: string 
+    @type: string 
+}
+
+
+
+class TargetProductSchema {
+
+    @baseType: string 
+    @schemaLocation*: uri 
+    @type*: string 
+}
+
+
+
+class TimePeriod {
+
+    endDateTime: date-time 
+    startDateTime: date-time 
+}
+
+
+
+enum MEFProductStatusType {
+
+    pendingActive
+    active
+    activePendingTerminate
+    suspendedPendingTerminate
+    terminated
+    suspended
+}
+@enduml

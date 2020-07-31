@@ -1,0 +1,33 @@
+@startuml
+
+
+skinparam activity {
+    BackgroundColor White
+    BorderColor Black
+}
+
+start
+if(initial validation succesful?) then (yes)
+    :accepted;
+    if(instant qualification requested?) then (yes)
+        if(sufficient information?) then (yes)
+            :done;
+        else (no)
+            :terminatedWithError;
+        endif
+    else (no)
+        :inProgress;
+        if(insufficient information \n for at least one POQ item?) then (yes)
+            :terminatedWithError;
+        elseif(all items done?) then (yes)
+            :done;
+        else (no)
+            :done
+            .unableToProvide;
+        endif
+    endif
+
+    stop
+else (no)
+    stop
+@enduml

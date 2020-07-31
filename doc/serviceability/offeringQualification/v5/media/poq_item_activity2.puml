@@ -1,0 +1,31 @@
+@startuml
+
+
+skinparam activity {
+    BackgroundColor White
+    BorderColor Black
+}
+
+start
+if(initial validation succesful?) then (yes)
+    :accepted;
+    if(instant qualification requested?) then (yes)
+        :inProgress;
+    else (no)
+    endif
+    
+    if(any other item failed?) then (yes)
+        :done
+        .abandoned;
+    else (no)
+        if(sufficient information?) then (yes)
+            :done;
+        else (no)
+            :terminatedWithError;
+        endif
+    endif
+    stop
+else (no)
+    stop
+
+@enduml

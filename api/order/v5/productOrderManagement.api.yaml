@@ -1,0 +1,2032 @@
+swagger: '2.0'
+info:
+  title: API Product Ordering Management
+  description: "**Product Ordering Management**\n\nThe scope of this API  introduces the following capabilities to the API:\n•\tInstall order: request for new product\n•\tChange Order: change an existing Product\n•\tDisconnect Order:  disconnect an existing Product \n•\tCancel Order: cancellation of an inflight-order\n•\tSupport for Order Notifications\n\nThe buyer could also retrieve a single, or set, of Product Orders based upon a specified filter.  \n\nFollowing feature will be introduced in next release:\n•\tAmend Order: modification of an inflight-order\n\nProduct Order API used TMF 622 as template."
+  version: 5.0.0-RC
+host: serverRoot
+basePath: /mefApi/sonata/productOrderingManagement/v5/
+schemes:
+  - https
+consumes:
+  - application/json;charset=utf-8
+produces:
+  - application/json;charset=utf-8
+tags:
+  - name: productOrder
+  - name: cancelProductOrder
+  - name: events subscription
+paths:
+  /productOrder:
+    get:
+      operationId: listProductOrder
+      summary: List or find ProductOrder objects
+      description: This operation list or find ProductOrder entities
+      tags:
+        - productOrder
+      parameters:
+        - name: buyerId
+          required: false
+          in: query
+          description: 'A Party Role played by an Individual or an Organization that buys products and services from a Seller. Specifically, the ID of the Service Provider (Buyer) organization placing the order.'
+          type: string
+        - name: sellerId
+          required: false
+          in: query
+          description: |-
+            A Party Role played by an organization that provides products and services to a Buyer.
+            Specifically, the ID of the Partner/Access Provider (Seller) organization receiving the order.
+          type: string
+        - name: state
+          required: false
+          in: query
+          description: The status of the order
+          type: string
+        - name: buyerRequestedDate.gt
+          required: false
+          in: query
+          description: Buyer requested date greater than
+          type: string
+          format: date-time
+        - name: buyerRequestedDate.lt
+          required: false
+          in: query
+          description: Buyer requested date lesser than
+          type: string
+          format: date-time
+        - name: orderDate.gt
+          required: false
+          in: query
+          description: Date when the order was created greater than
+          type: string
+          format: date-time
+        - name: orderDate.lt
+          required: false
+          in: query
+          description: Date when the order was created lesser than
+          type: string
+          format: date-time
+        - name: requestedStartDate.gt
+          required: false
+          in: query
+          description: Buyer requested start date greater than
+          type: string
+          format: date-time
+        - name: requestedStartDate.lt
+          required: false
+          in: query
+          description: Buyer requested start date lesser than
+          type: string
+          format: date-time
+        - name: requestedCompletionDate.gt
+          required: false
+          in: query
+          description: Identifies the Buyer's desired due date (requested delivery date) greater than
+          type: string
+          format: date-time
+        - name: requestedCompletionDate.lt
+          required: false
+          in: query
+          description: Identifies the Buyer's desired due date (requested delivery date) lesser than
+          type: string
+          format: date-time
+        - name: expectedCompletionDate.gt
+          required: false
+          in: query
+          description: Seller planned completion date greater than
+          type: string
+          format: date-time
+        - name: expectedCompletionDate.lt
+          required: false
+          in: query
+          description: Seller planned completion date lesser than
+          type: string
+          format: date-time
+        - name: completionDate.gt
+          required: false
+          in: query
+          description: Effective completion date greater than
+          type: string
+          format: date-time
+        - name: completionDate.lt
+          required: false
+          in: query
+          description: Effective completion date lesser than
+          type: string
+          format: date-time
+        - name: orderCancellationDate.gt
+          required: false
+          in: query
+          description: order cancellation date greater than
+          type: string
+          format: date-time
+        - name: orderCancellationDate.lt
+          required: false
+          in: query
+          description: order cancellation date lesser than
+          type: string
+          format: date-time
+        - name: siteName
+          required: false
+          in: query
+          description: A name by which the site is known.
+          type: string
+        - name: siteCompanyName
+          required: false
+          in: query
+          description: The name of the company that is located at the service location.  This may be different from the name of the Buyer that ordered services at that site.
+          type: string
+        - name: siteCustomerName
+          required: false
+          in: query
+          description: The customer name at a site where the service is being delivered
+          type: string
+        - name: projectId
+          required: false
+          in: query
+          description: An identifier that is used to group Orders that represent a unit of functionality that is important to a Buyer.
+          type: string
+        - name: externalId
+          required: false
+          in: query
+          description: A number that uniquely identifies an order within the Buyer's enterprise.
+          type: string
+        - name: offset
+          required: false
+          in: query
+          description: Requested index for start of resources to be provided in response requested by client
+          type: string
+        - name: limit
+          required: false
+          in: query
+          description: Requested number of resources to be provided in response requested by client
+          type: string
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-Result-Count:
+              description: Actual number of items returned in the response body
+              type: integer
+            X-Total-Count:
+              description: Total number of items matching criteria
+              type: integer
+            X-Pagination-Throttled:
+              type: boolean
+              description: >
+                Used to indicate that result page was throttled to maximum possible size 
+                and there are additional results that can be fetched
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MEFProductOrderSummary'
+        '400':
+          description: |-
+            Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: |-
+            Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+        '403':
+          description: |-
+            Forbidden
+          schema:
+            $ref: '#/definitions/Error403'
+        '500':
+          description: |-
+            Internal Server Error
+          schema:
+            $ref: '#/definitions/Error500'
+    post:
+      operationId: createProductOrder
+      summary: Creates a ProductOrder
+      description: This operation creates a ProductOrder entity.
+      tags:
+        - productOrder
+      parameters:
+        - name: productOrder
+          description: The ProductOrder to be created
+          required: true
+          schema:
+            $ref: '#/definitions/ProductOrder_Create'
+          in: body
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/ProductOrder'
+        '400':
+          description: |-
+            Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: |-
+            Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+        '403':
+          description: |-
+            Forbidden
+          schema:
+            $ref: '#/definitions/Error403'
+        '409':
+          description: Conflict
+          schema:
+            $ref: '#/definitions/Error409'
+        '422':
+          description: |-
+            Unprocessable entity due to the business validation problems in the Quote or one of the Quote items
+          schema:
+              type: array
+              items:
+                $ref: '#/definitions/Error422'
+        '500':
+          description: |-
+            Internal Server Error
+          schema:
+            $ref: '#/definitions/Error500'
+  '/productOrder/{id}':
+    get:
+      operationId: retrieveProductOrder
+      summary: Retrieves a ProductOrder by ID
+      description: This operation retrieves a ProductOrder entity. Attribute selection is enabled for all first level attributes.
+      tags:
+        - productOrder
+      parameters:
+        - name: id
+          description: Identifier of the ProductOrder
+          required: true
+          type: string
+          in: path
+        - name: fields
+          description: Comma-separated properties to provide in response
+          required: false
+          type: string
+          in: query
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/ProductOrder'
+        '400':
+          description: |-
+            Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: |-
+            Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+        '403':
+          description: |-
+            Forbidden
+          schema:
+            $ref: '#/definitions/Error403'
+        '404':
+          description: >-
+            Not Found
+          schema:
+            $ref: '#/definitions/Error404'
+        '500':
+          description: |-
+            Internal Server Error
+          schema:
+            $ref: '#/definitions/Error500'
+  /cancelProductOrder:
+    get:
+      operationId: listCancelProductOrder
+      summary: List or find CancelProductOrder objects
+      description: This operation list or find CancelProductOrder entities
+      tags:
+        - cancelProductOrder
+      parameters:
+        - name: productOrderId
+          required: false
+          in: query
+          type: string
+        - name: productOrderExternalId
+          required: false
+          in: query
+          type: string
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-Result-Count:
+              description: Actual number of items returned in the response body
+              type: integer
+            X-Total-Count:
+              description: Total number of items matching criteria
+              type: integer
+            X-Pagination-Throttled:
+              type: boolean
+              description: >
+                Used to indicate that result page was throttled to maximum possible size 
+                and there are additional results that can be fetched
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CancelProductOrder'
+        '400':
+          description: |-
+            Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: |-
+            Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+        '403':
+          description: |-
+            Forbidden
+          schema:
+            $ref: '#/definitions/Error403'
+        '500':
+          description: |-
+            Internal Server Error
+          schema:
+            $ref: '#/definitions/Error500'
+    post:
+      operationId: createCancelProductOrder
+      summary: Creates a CancelProductOrder
+      description: This operation creates a CancelProductOrder entity.
+      tags:
+        - cancelProductOrder
+      parameters:
+        - name: cancelProductOrder
+          description: The CancelProductOrder to be created
+          required: true
+          schema:
+            $ref: '#/definitions/CancelProductOrder_Create'
+          in: body
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/CancelProductOrder'
+        '400':
+          description: |-
+            Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: |-
+            Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+        '403':
+          description: |-
+            Forbidden
+          schema:
+            $ref: '#/definitions/Error403'
+        '409':
+          description: Conflict
+          schema:
+            $ref: '#/definitions/Error409'
+        '422':
+          description: |-
+            Unprocessable entity due to the business validation problems in the Quote or one of the Quote items
+          schema:
+              type: array
+              items:
+                $ref: '#/definitions/Error422'
+        '500':
+          description: |-
+            Internal Server Error
+          schema:
+            $ref: '#/definitions/Error500'
+  '/cancelProductOrder/{id}':
+    get:
+      operationId: retrieveCancelProductOrder
+      summary: Retrieves a CancelProductOrder by ID
+      description: This operation retrieves a CancelProductOrder entity. Attribute selection is enabled for all first level attributes.
+      tags:
+        - cancelProductOrder
+      parameters:
+        - name: id
+          description: Identifier of the CancelProductOrder
+          required: true
+          type: string
+          in: path
+        - name: fields
+          description: Comma-separated properties to provide in response
+          required: false
+          type: string
+          in: query
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/CancelProductOrder'
+        '400':
+          description: |-
+            Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: |-
+            Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+        '403':
+          description: |-
+            Forbidden
+          schema:
+            $ref: '#/definitions/Error403'
+        '404':
+          description: >-
+            Not Found
+          schema:
+            $ref: '#/definitions/Error404'
+        '500':
+          description: |-
+            Internal Server Error
+          schema:
+            $ref: '#/definitions/Error500'
+  /hub:
+    post:
+      operationId: registerListener
+      summary: Register a listener
+      description: 'Sets the communication endpoint address the service instance must use to deliver information about its health state, execution state, failures and metrics.'
+      tags:
+        - events subscription
+      parameters:
+        - name: data
+          schema:
+            $ref: '#/definitions/EventSubscriptionInput'
+          required: true
+          in: body
+          description: Data containing the callback endpoint to deliver the information
+      responses:
+        '201':
+          description: Subscribed
+          schema:
+            $ref: '#/definitions/EventSubscription'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error403'
+        '405':
+          description: Method Not allowed
+          schema:
+            $ref: '#/definitions/Error405'
+        '409':
+          description: Conflict
+          schema:
+            $ref: '#/definitions/Error409'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error500'
+  '/hub/{id}':
+    get:
+      operationId: retrieveHub
+      summary: Retrieves a Hub by ID
+      description: This operation retrieves a hub entity. Attribute selection is enabled for all first level attributes.
+      tags:
+        - events subscription
+      parameters:
+        - name: id
+          description: Identifier of the Hub
+          required: true
+          type: string
+          in: path
+        - name: fields
+          description: Comma-separated properties to provide in response
+          required: false
+          type: string
+          in: query
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/EventSubscription'
+        '400':
+          description: |-
+            Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: |-
+            Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+        '403':
+          description: |-
+            Forbidden
+          schema:
+            $ref: '#/definitions/Error403'
+        '404':
+          description: >-
+            Not Found
+          schema:
+            $ref: '#/definitions/Error404'
+        '500':
+          description: |-
+            Internal Server Error
+          schema:
+            $ref: '#/definitions/Error500'
+    delete:
+      operationId: unregisterListener
+      summary: Unregister a listener
+      description: 'Resets the communication endpoint address the service instance must use to deliver information about its health state, execution state, failures and metrics.'
+      tags:
+        - events subscription
+      parameters:
+        - name: id
+          type: string
+          required: true
+          in: path
+          description: The id of the registered listener
+      responses:
+        '204':
+          description: Deleted
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error403'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Error404'
+        '405':
+          description: Method not allowed
+          schema:
+            $ref: '#/definitions/Error405'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error500'
+definitions:
+  CancelProductOrder:
+    type: object
+    description: Request for cancellation an existing product order
+    properties:
+      id:
+        type: string
+        description: id of the cancellation request (this is not an order id)
+      href:
+        type: string
+        description: Hyperlink to access the cancellation request
+      cancellationDeniedReason:
+        type: string
+        description: Buyer If seller denied cancellation request he could here provide reason for this denial of the product
+      cancellationReason:
+        type: string
+        description: Reason why the order is cancelled.
+      effectiveCancellationDate:
+        type: string
+        format: date-time
+        description: Date when the order is cancelled.
+      requestedCancellationDate:
+        type: string
+        format: date-time
+        description: Date when the submitter wants the order to be cancelled
+      productOrder:
+        $ref: '#/definitions/MEFProductOrderRef'
+      state:
+        $ref: '#/definitions/TaskStateType'
+        description: 'Tracks the lifecycle status of the cancellation request, such as Acknowledged, Rejected, InProgress, Pending and so on.'
+      '@baseType':
+        type: string
+        description: 'When sub-classing, this defines the super-class'
+      '@schemaLocation':
+        type: string
+        format: uri
+        description: A URI to a JSON-Schema file that defines additional attributes and relationships
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class entity name'
+  CancelProductOrder_Create:
+    type: object
+    description: |-
+      Request for cancellation an existing product order
+      Skipped properties: id,href,state,effectiveCancellationDate
+    required:
+      - productOrder
+    properties:
+      cancellationDeniedReason:
+        type: string
+        description: Buyer If seller denied cancellation request he could here provide reason for this denial of the product
+      cancellationReason:
+        type: string
+        description: Reason why the order is cancelled.
+      requestedCancellationDate:
+        type: string
+        format: date-time
+        description: Date when the submitter wants the order to be cancelled
+      productOrder:
+        $ref: '#/definitions/MEFProductOrderRef'
+      '@baseType':
+        type: string
+        description: 'When sub-classing, this defines the super-class'
+      '@schemaLocation':
+        type: string
+        format: uri
+        description: A URI to a JSON-Schema file that defines additional attributes and relationships
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class entity name'
+  FieldedAddress:
+    allOf:
+      - $ref: '#/definitions/RelatedPlaceRefOrValue'
+      - type: object
+        required:
+          - city
+          - country
+          - streetName
+        properties:
+          city:
+            type: string
+            description: The city that the address is in
+          country:
+            type: string
+            description: Country that the address is in
+          geographicSubAddress:
+            $ref: '#/definitions/GeographicSubAddress'
+          locality:
+            type: string
+            description: The locality that the address is in
+          postcode:
+            type: string
+            description: >-
+              Descriptor for a postal delivery area, used to speed and simplify
+              the delivery of mail (also known as zip code)
+          postcodeExtension:
+            type: string
+            description: >-
+              An extension of a postal code. E.g. the part following the dash in
+              an american urban property address
+          stateOrProvince:
+            type: string
+            description: The State or Province that the address is in
+          streetName:
+            type: string
+            description: Name of the street or other street type
+          streetNr:
+            type: string
+            description: >-
+              Number identifying a specific property on a public street. It may
+              be combined with streetNrLast for ranged addresses.
+          streetNrLast:
+            type: string
+            description: Last number in a range of street numbers allocated to a property
+          streetNrLastSuffix:
+            type: string
+            description: Last street number suffix for a ranged address
+          streetNrSuffix:
+            type: string
+            description: The first street number suffix
+          streetSuffix:
+            type: string
+            description: A modifier denoting a relative direction
+          streetType:
+            type: string
+            description: >-
+              Alley, avenue, boulevard, brae, crescent, drive, highway, lane,
+              terrace, parade, place, tarn, way, wharf
+    description: >-
+      A type of Address that has a discrete field and value for each type of
+      boundary or identifier down to the lowest level of detail. For example
+      "street number" is one field, "street name" is another field, etc.
+  FormattedAddress:
+    allOf:
+      - $ref: '#/definitions/RelatedPlaceRefOrValue'
+      - type: object
+        required:
+          - addrLine1
+          - city
+          - country
+        properties:
+          addrLine1:
+            type: string
+            description: The first address line in a formatted address
+          addrLine2:
+            type: string
+            description: The second address line in a formatted address
+          city:
+            type: string
+            description: The city that the address is in
+          country:
+            type: string
+            description: Country that the address is in
+          locality:
+            type: string
+            description: >-
+              An area of defined or undefined boundaries within a local
+              authority or other legislatively defined area, usually rural or
+              semi rural in nature
+          postcode:
+            type: string
+            description: >-
+              Descriptor for a postal delivery area, used to speed and simplify
+              the delivery of mail (also known as ZIP code)
+          postcodeExtension:
+            type: string
+            description: >-
+              An extension of a postal code. E.g. the part following the dash in
+              an US urban property address
+          stateOrProvince:
+            type: string
+            description: The State or Province that the address is in
+    description: >-
+      A type of Address that has discrete fields for each type of boundary or
+      identifier with the exception of street and more specific location
+      details, which are combined into a maximum of two strings based on local
+      postal addressing conventions.
+  GeographicSubAddress:
+    type: object
+    properties:
+      buildingName:
+        type: string
+        description: > 
+          Allows for identification of places that require building name 
+          as part of addressing information
+      id:
+        type: string
+        description: Unique Identifier of the subAddress
+      levelNumber:
+        type: string
+        description: 'Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT 2'
+      levelType:
+        type: string
+        description: Describes level types within a building
+      privateStreetName:
+        type: string
+        description: >-
+          "Private streets internal to a property (e.g. a university) may have
+          internal names that are not recorded by the land title office
+      privateStreetNumber:
+        type: string
+        description: Private streets numbers internal to a private street
+      subUnit:
+        type: array
+        description: >-
+          Representation of a MEFSubUnit
+
+          It is used for describing subunit within a subaddress  e.g.BERTH,
+          FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF.
+        items:
+          $ref: '#/definitions/MEFSubUnit'
+    description: >-
+      Additional fields used to specify an address, as detailed as possible.
+  MEFBillingAccountRefOrValue:
+    type: object
+    description: References the billing arrangement that a buyer has with a seller that provides products to the customer.
+    required:
+      - id
+    properties:
+      id:
+        type: string
+        description: Identifies the buyer’s billing account to which the recurring and non-recurring charges for this order or order item will be billed. If the value ‘NEW’ is provided it means that buyer request a new BAN.
+      billingContact:
+        $ref: '#/definitions/MEFBillingContact'
+        description: Contact allow to capture contact information. It is used to capture billing account contact information.
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class entity name'
+  MEFBillingContact:
+    type: object
+    description: Contact allow to capture contact information. It is used to capture billing account contact information.
+    required:
+      - contactName
+      - emailAddress
+      - number
+      - streetAddress
+    properties:
+      contactName:
+        type: string
+        description: Identifies the name of the person or office to be contacted on billing matters.
+      emailAddress:
+        type: string
+        description: Identifies the electronic mail address of the Billing Contact when a Buyer profile does not already exist.
+      number:
+        type: string
+        description: Identifies the telephone number (excluding extension) of the billing contact
+      numberExtension:
+        type: string
+        description: Identifies the telephone number extension of the billing contact
+      streetAddress:
+        type: string
+        description: Identifies the address of the person or office to be contacted on billing matters.
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class Extensible name'
+  MEFDesiredOrderResponse:
+    type: string
+    description: The kind of response that the buyer expects to receive from the seller.
+    enum:
+      - confirmationAndEngineeringDesign
+      - confirmationOnly
+      - none
+  MEFGeographicLocation:
+    allOf:
+      - $ref: '#/definitions/RelatedPlaceRefOrValue'
+      - type: object
+        required:
+          - geographicPoint
+          - spatialRef
+        properties:
+          geographicPoint:
+            description: The spatial reference system used to determine the coordinates
+            $ref: '#/definitions/MEFGeographicPoint'
+          spatialRef:
+            type: string
+            description: The spatial reference system used to determine the coordinates
+    description: >-
+      A set of coordinates (typically including latitude and longitude) that
+      describes a particular location on earth.
+  MEFGeographicPoint:
+    type: object
+    required:
+      - 'x'
+      - 'y'
+    properties:
+      'x':
+        type: string
+        description: The latitude expressed in the format specified by the `spacialRef`
+      'y':
+        type: string
+        description: The longitude expressed in the format specified by the `spacialRef`
+    description: A MEFGeographicPoint defines a geographic point through coordinates.
+  MEFOrderActivity:
+    type: string
+    description: The type of order as defined by the business.
+    enum:
+      - install
+      - change
+      - disconnect
+  MEFOrderMessage:
+    type: object
+    description: Holds the MEF Product Order extension
+    properties:
+      code:
+        type: string
+        description: The code associated with the Message.
+      correctionRequired:
+        type: boolean
+        description: Indicates whether the Buyer must submit an updated Order to resolve the Error/Jeopardy condition.
+      field:
+        type: string
+        description: The field/attribute on the Order associated with message.
+      messageInformation:
+        type: string
+        description: A description of the error condition or information to be conveyed to the Buyer.
+      severity:
+        $ref: '#/definitions/MEFSeverity'
+        description: Severity of the order message.
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class Extensible name'
+  MEFPricingMethod:
+    type: string
+    description: An enumeration of valid pricing methods for ordered items
+    enum:
+      - tariff
+      - contract
+      - individualCaseBasis
+      - other
+  MEFProductConfiguration:
+    type: object
+    required:
+      - '@type'
+    discriminator: '@type'
+    description: MEF Product payload
+    properties:
+      '@baseType':
+        type: string
+        description: 'When sub-classing, this defines the super-class'
+      '@schemaLocation':
+        type: string
+        format: uri
+        description: A URI to a JSON-Schema file that defines additional attributes and relationships
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class Extensible name'
+  MEFProductOrderItemStateType:
+    type: string
+    description: Possible values for the state of the Order Item
+    enum:
+      - acknowledged
+      - rejected
+      - pending
+      - held
+      - inProgress
+      - inProgress.configured
+      - cancelled
+      - completed
+      - failed
+      - assessingCancellation
+      - pendingCancellation
+  MEFProductOrderItem_Create:
+    type: object
+    description: An identified part of the order. A product order is decomposed into one or more order items.
+    properties:
+      id:
+        type: string
+        description: 'Identifier of the line item (generally it is a sequence number 01, 02, 03, ...)'
+      pricingReference:
+        type: string
+        description: 'The identifier references the previously agreed upon pricing terms, as applicable, based on the pricingMethod (e.g. a contract id or tariff id.'
+      pricingTerm:
+        type: integer
+        description: The length of the contract in months.
+      action:
+        $ref: '#/definitions/OrderItemActionType'
+        description: 'The action to be carried out on the Product. Can be: add, modify, delete.'
+      billingAccount:
+        $ref: '#/definitions/MEFBillingAccountRefOrValue'
+        description: References the billing arrangement that a buyer has with a seller that provides products to the customer.
+      itemPrice:
+        type: array
+        items:
+          $ref: '#/definitions/OrderPrice'
+      itemTerm:
+        type: array
+        items:
+          $ref: '#/definitions/OrderTerm'
+      pricingMethod:
+        $ref: '#/definitions/MEFPricingMethod'
+        description: An enumeration of valid pricing methods for ordered items.
+      product:
+        $ref: '#/definitions/MEFProductRefOrValueForOrder'
+        description: A particular Product Offering defines the technical and commercial attributes and behaviors of a Product.
+      productOffering:
+        $ref: '#/definitions/ProductOfferingRef'
+      productOfferingQualificationItem:
+        $ref: '#/definitions/ProductOfferingQualificationItemRef'
+      productOrderItemRelationship:
+        type: array
+        items:
+          $ref: '#/definitions/OrderItemRelationship'
+      quoteItem:
+        $ref: '#/definitions/MEFQuoteItemRef'
+      relatedParty:
+        type: array
+        items:
+          $ref: '#/definitions/RelatedPartyRefOrValue'
+        description: Party playing a role for this Product order item  (as installation contact for example)
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class entity name'
+  MEFProductOrderRef:
+    type: object
+    description: Holds the MEF Product Order extension
+    required:
+      - id
+    properties:
+      id:
+        type: string
+        description: Unique (within the ordering domain) identifier for the order that is generated by the seller when the order is initially accepted.
+      href:
+        type: string
+        description: Hyperlink to access the order
+      externalId:
+        type: string
+        description: A number that uniquely identifies an order within the buyer's enterprise. Must be provided if provided when the order was initially accepted
+      orderVersion:
+        type: string
+        description: The version number that the Buyer uses to refer to this particular version of the order.
+      state:
+        $ref: '#/definitions/MEFProductOrderStateType'
+        description: 'Tracks the lifecycle status of the product order, such as Acknowledged, Rejected, InProgress, Pending and so on.'
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class entity name'
+      '@referredType':
+        type: string
+        format: uri
+        description: The type of the referred entity
+  MEFProductOrderStateType:
+    type: string
+    description: Possible values for the state of the order
+    enum:
+      - acknowledged
+      - rejected
+      - pending
+      - held
+      - inProgress
+      - inProgress.configured
+      - inProgress.confirmed
+      - inProgress.jeopardy
+      - cancelled
+      - completed
+      - failed
+      - partial
+      - assessingCancellation
+      - pendingCancellation
+  MEFProductRefOrValueForOrder:
+    type: object
+    description: A product is realized as one or more service(s) and / or resource(s).
+    properties:
+      id:
+        type: string
+        description: Unique identifier of the product
+      href:
+        type: string
+        description: Reference of the product
+      buyerProductId:
+        type: string
+        description: Buyer identifier of the product
+      place:
+        type: array
+        items:
+          $ref: '#/definitions/RelatedPlaceRefOrValue'
+      productConfiguration:
+        $ref: '#/definitions/MEFProductConfiguration'
+        description: MEF extension point for product-specific attributes
+      productRelationship:
+        type: array
+        items:
+          $ref: '#/definitions/ProductRelationship'
+      productSpecification:
+        $ref: '#/definitions/ProductSpecificationRef'
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class entity name'
+  MEFQuoteItemRef:
+    type: object
+    description: It's a Quote item that has been executed previously.
+    properties:
+      id:
+        type: string
+        description: Id of an item of a quote
+      quoteHref:
+        type: string
+        description: Reference of the related entity.
+      quoteId:
+        type: string
+        description: Unique identifier of a related entity.
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class entity name'
+      '@referredType':
+        type: string
+        format: uri
+        description: The type of the referred entity
+    required:
+      - id
+  MEFSeverity:
+    type: string
+    description: Severity of a message.
+    enum:
+      - error
+      - information
+  MEFProductOrderStateChange:
+    type: object
+    description: 'Holds the State notification reasons and associated date the State changed, populated by the server'
+    properties:
+      changeDate:
+        type: string
+        format: date-time
+        description: The date and time the State changed.
+      changeReason:
+        type: string
+        description: The reason why the State changed.
+      state:
+        description: Reached state
+        $ref: '#/definitions/MEFProductOrderStateType'
+  MEFProductOrderItemStateChange:
+    type: object
+    description: 'Holds the State notification reasons and associated date the State changed, populated by the server'
+    properties:
+      changeDate:
+        type: string
+        format: date-time
+        description: The date and time the State changed.
+      changeReason:
+        type: string
+        description: The reason why the State changed.
+      state:
+        description: Reached state
+        $ref: '#/definitions/MEFProductOrderItemStateType'
+  MEFSubUnit:
+    type: object
+    required:
+      - subUnitNumber
+      - subUnitType
+    properties:
+      subUnitNumber:
+        type: string
+        description: >-
+          The discriminator used for the subunit, often just a simple number but
+          may also be a range.
+      subUnitType:
+        type: string
+        description: >-
+          The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT,
+          WHARF.
+    description: Allows for sub unit identification
+  Money:
+    type: object
+    description: A base / value business entity used to represent money
+    properties:
+      unit:
+        type: string
+        description: Currency (ISO4217 norm uses 3 letters to define the currency)
+      value:
+        type: number
+        format: float
+        description: A positive floating point number
+  Note:
+    type: object
+    description: Extra information about a given entity
+    required:
+      - text
+      - date
+      - author
+    properties:
+      id:
+        type: string
+        description: 'Identifier of the note within its containing entity (may or may not be globally unique, depending on provider implementation)'
+      author:
+        type: string
+        description: Author of the note
+      date:
+        type: string
+        format: date-time
+        description: Date of the note
+      text:
+        type: string
+        description: Text of the note
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class entity name'
+  OrderItemActionType:
+    type: string
+    description: action to be performed on the product
+    enum:
+      - add
+      - modify
+      - delete
+  OrderItemRelationship:
+    type: object
+    required:
+      - id
+      - relationshipType
+    properties:
+      id:
+        type: string
+      relationshipType:
+        type: string
+        description: The type of order item relationship
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class entity name'
+  OrderPrice:
+    type: object
+    description: 'An amount, usually of money, that represents the actual price paid by the Customer for this item or this order'
+    properties:
+      description:
+        type: string
+        description: A narrative that explains in detail the semantics of this order item price.
+      name:
+        type: string
+        description: A short descriptive name such as "Subscription price".
+      priceType:
+        type: string
+        description: 'A category that describes the price, such as recurring, discount, allowance, penalty, and so forth'
+      recurringChargePeriod:
+        type: string
+        description: 'Could be month, week...'
+      price:
+        $ref: '#/definitions/Price'
+        description: a structure used to define price amount
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class entity name'
+  OrderTerm:
+    type: object
+    description: Description of a productTerm linked to this orderItem. This represent a commitment with a duration
+    properties:
+      description:
+        type: string
+        description: Description of the productOrderTerm
+      name:
+        type: string
+        description: Name of the productOrderTerm
+      duration:
+        $ref: '#/definitions/Quantity'
+        description: Duration of the productOrderTerm
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class entity name'
+  PlaceRef:
+    allOf:
+      - $ref: '#/definitions/RelatedPlaceRefOrValue'
+      - type: object
+        required:
+          - id
+          - '@referredType'
+        properties:
+          '@referredType':
+            type: string
+            description: The actual type of the target instance when needed for disambiguation.
+          href:
+            type: string
+            description: >+
+              Hyperlink to the referenced place
+              Hyperlink MAY be used when providing response by the Seller
+              Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request
+          id:
+            type: string
+            description: >-
+              Identifier of the referenced place. This identifier is assigned
+              during successful address validation request (Sonata Geographic
+              Address Management API)
+    description: >
+      A reference to a place resource available through Sonata addressing
+      validation API.
+      This type should be use to represent Service Site Identifier
+  Price:
+    type: object
+    description: 'Provides all amounts (tax included, duty free, tax rate), used currency and percentage to apply for Price Alteration.'
+    properties:
+      taxRate:
+        type: number
+        format: float
+        description: Tax rate
+      dutyFreeAmount:
+        $ref: '#/definitions/Money'
+        description: All taxes excluded amount (expressed in the given currency)
+      taxIncludedAmount:
+        $ref: '#/definitions/Money'
+        description: All taxes included amount (expressed in the given currency)
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class entity name'
+  ProductOfferingQualificationItemRef:
+    type: object
+    description: It's a productOfferingQualification item that has been executed previously.
+    required:
+      - id
+      - productOfferingQualificationId
+    properties:
+      id:
+        type: string
+        description: Id of an item of a product offering qualification
+      alternateProductProposalId:
+        type: string
+        description: A unique identifier for this Alternate Product Proposal assigned by the Seller.
+      productOfferingQualificationHref:
+        type: string
+        description: Reference of the related entity.
+      productOfferingQualificationId:
+        type: string
+        description: Unique identifier of a related entity.
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class entity name'
+      '@referredType':
+        type: string
+        description: The actual type of the target instance when needed for disambiguation.
+  ProductOfferingRef:
+    type: object
+    description: 'ProductOffering reference. A product offering represents entities that are orderable from the provider of the catalog, this resource includes pricing information.'
+    properties:
+      id:
+        type: string
+        description: unique identifier
+      href:
+        type: string
+        description: Hyperlink reference
+      name:
+        type: string
+        description: Name of the related entity.
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class Extensible name'
+      '@referredType':
+        type: string
+        description: The actual type of the target instance when needed for disambiguation.
+    required:
+      - id
+  ProductOrder:
+    type: object
+    description: 'A Product Order is a type of order which  can  be used to place an order between a customer and a service provider or between a service provider and a partner and vice versa,'
+    required:
+      - productOrderItem
+    properties:
+      id:
+        type: string
+        description: ID created on repository side (OM system)
+      href:
+        type: string
+        description: Hyperlink to access the order
+      buyerRequestDate:
+        type: string
+        format: date-time
+        description: 'Buyer order creation date. Format is YYYY-MM-DDThh:mmTZD (e.g. 1997-07-16T19:20+01:00)'
+      cancellationDate:
+        type: string
+        format: date-time
+        description: 'Date when the order is cancelled. This is used when order is cancelled. '
+      cancellationReason:
+        type: string
+        description: 'Reason why the order is cancelled. This is used when order is cancelled. '
+      completionDate:
+        type: string
+        format: date-time
+        description: Date when the order was completed
+      description:
+        type: string
+        description: Description of the product order
+      expectedCompletionDate:
+        type: string
+        format: date-time
+        description: Expected delivery date amended by the provider
+      expeditePriority:
+        type: boolean
+        description: 'Indicates that expedited treatment is requested and any charges generated in provisioning this request (e.g., additional engineering charges or labor charges if applicable) will be accepted by the buyer..'
+      externalId:
+        type: string
+        description: ID given by the consumer and only understandable by him (to facilitate his searches afterwards)
+      orderDate:
+        type: string
+        format: date-time
+        description: Date when the order was created
+      orderVersion:
+        type: string
+        description: The version number that the Buyer uses to refer to this particular version of the order.
+      pricingReference:
+        type: string
+        description: 'The identifier references the previously agreed upon pricing terms, as applicable, based on the pricingMethod (e.g. a contract id or tariff id.'
+      pricingTerm:
+        type: integer
+        description: The length of the contract in months.
+      priority:
+        type: string
+        description: 'A way that can be used by consumers to prioritize orders in OM system (from 0 to 4 : 0 is the highest priority, and 4 the lowest)'
+      projectId:
+        type: string
+        description: An identifier that is used to group Orders that is important to the Buyer. A ProjectId can be used to relate multiple Orders together.
+      relatedBuyerPON:
+        type: string
+        description: Related Buyer Purchase Order Number (RPON)
+      requestedCompletionDate:
+        type: string
+        format: date-time
+        description: Requested delivery date from the requestor perspective
+      requestedStartDate:
+        type: string
+        format: date-time
+        description: 'Order fulfillment start date wished by the requestor. This is used when, for any reason, requestor cannot allow seller to begin to operationally begin the fulfillment before a date. '
+      tspRestorationPriority:
+        type: string
+        description: 'Within the United States, indicates the provisioning and restoration priority as defined under the TSP Service Vendor Handbook, The valid values are defined in ATIS OBF document: ATIS-0404001.'
+      billingAccount:
+        $ref: '#/definitions/MEFBillingAccountRefOrValue'
+        description: References the billing arrangement that a buyer has with a seller that provides products to the customer.
+      desiredResponse:
+        $ref: '#/definitions/MEFDesiredOrderResponse'
+        description: The kind of response that the buyer expects to receive from the seller.
+      note:
+        type: array
+        items:
+          $ref: '#/definitions/Note'
+      orderActivity:
+        $ref: '#/definitions/MEFOrderActivity'
+        description: The type of order as defined by the business.
+      orderMessage:
+        type: array
+        items:
+          $ref: '#/definitions/MEFOrderMessage'
+        description: An optional array of messages associated with the Order.
+      pricingMethod:
+        $ref: '#/definitions/MEFPricingMethod'
+        description: An enumeration of valid pricing methods for ordered items.
+      productOrderItem:
+        type: array
+        items:
+          $ref: '#/definitions/ProductOrderItem'
+        minItems: 1
+      relatedParty:
+        type: array
+        items:
+          $ref: '#/definitions/RelatedPartyRefOrValue'
+      state:
+        $ref: '#/definitions/MEFProductOrderStateType'
+        description: 'Tracks the lifecycle status of the product order, such as Acknowledged, Rejected, InProgress, Pending and so on.'
+      stateChange:
+        type: array
+        items:
+          $ref: '#/definitions/MEFProductOrderStateChange'
+        description: State change for the Product Order
+      '@baseType':
+        type: string
+        description: 'When sub-classing, this defines the super-class'
+      '@schemaLocation':
+        type: string
+        format: uri
+        description: A URI to a JSON-Schema file that defines additional attributes and relationships
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class entity name'
+  MEFProductOrderSummary:
+    description: Structure to define GET without id response. A list of productOrder matching request criteria. Provides Product order summary view.
+    required:
+      - id
+      - externalId
+      - orderDate
+      - state
+    type: object
+    properties:
+      id:
+        description: |-
+          ID created on repository side (OM system)
+          MEF: Unique identifier for the order that is generated by the Seller when the order is initially accepted via an API.
+        type: string
+      externalId:
+        description: |-
+          ID given by the consumer and only understandable by him (to facilitate his searches afterwards).
+          MEF: Buyer Purchase Order Number
+        type: string
+      orderDate:
+        description: Date when the order was created
+        type: string
+        format: date-time
+      state:
+        $ref: '#/definitions/MEFProductOrderStateType'
+  ProductOrder_Create:
+    type: object
+    description: |-
+      A Product Order is a type of order which  can  be used to place an order between a customer and a service provider or between a service provider and a partner and vice versa,
+      Skipped properties: id,href,completionDate,orderDate,state,expectedCompletionDate,stateChange,cancellationDate,cancellationReason
+    required:
+      - productOrderItem
+      - externalId
+      - buyerRequestDate
+      - requestedCompletionDate
+      - orderActivity
+      - desiredResponse
+      - orderVersion
+      - relatedParty
+    properties:
+      buyerRequestDate:
+        type: string
+        format: date-time
+        description: 'Buyer order creation date. Format is YYYY-MM-DDThh:mmTZD (e.g. 1997-07-16T19:20+01:00)'
+      description:
+        type: string
+        description: Description of the product order
+      expeditePriority:
+        type: boolean
+        description: 'Indicates that expedited treatment is requested and any charges generated in provisioning this request (e.g., additional engineering charges or labor charges if applicable) will be accepted by the buyer..'
+      externalId:
+        type: string
+        description: ID given by the consumer and only understandable by him (to facilitate his searches afterwards)
+      orderVersion:
+        type: string
+        description: The version number that the Buyer uses to refer to this particular version of the order.
+      pricingReference:
+        type: string
+        description: 'The identifier references the previously agreed upon pricing terms, as applicable, based on the pricingMethod (e.g. a contract id or tariff id.'
+      pricingTerm:
+        type: integer
+        description: The length of the contract in months.
+      priority:
+        type: string
+        description: 'A way that can be used by consumers to prioritize orders in OM system (from 0 to 4 : 0 is the highest priority, and 4 the lowest)'
+      projectId:
+        type: string
+        description: An identifier that is used to group Orders that is important to the Buyer. A ProjectId can be used to relate multiple Orders together.
+      relatedBuyerPON:
+        type: string
+        description: Related Buyer Purchase Order Number (RPON)
+      requestedCompletionDate:
+        type: string
+        format: date-time
+        description: Requested delivery date from the requestor perspective
+      requestedStartDate:
+        type: string
+        format: date-time
+        description: 'Order fulfillment start date wished by the requestor. This is used when, for any reason, requestor cannot allow seller to begin to operationally begin the fulfillment before a date. '
+      tspRestorationPriority:
+        type: string
+        description: 'Within the United States, indicates the provisioning and restoration priority as defined under the TSP Service Vendor Handbook, The valid values are defined in ATIS OBF document: ATIS-0404001.'
+      billingAccount:
+        $ref: '#/definitions/MEFBillingAccountRefOrValue'
+        description: References the billing arrangement that a buyer has with a seller that provides products to the customer.
+      desiredResponse:
+        $ref: '#/definitions/MEFDesiredOrderResponse'
+        description: The kind of response that the buyer expects to receive from the seller.
+      note:
+        type: array
+        items:
+          $ref: '#/definitions/Note'
+      orderActivity:
+        $ref: '#/definitions/MEFOrderActivity'
+        description: The type of order as defined by the business.
+      orderMessage:
+        type: array
+        items:
+          $ref: '#/definitions/MEFOrderMessage'
+        description: An optional array of messages associated with the Order.
+      pricingMethod:
+        $ref: '#/definitions/MEFPricingMethod'
+        description: An enumeration of valid pricing methods for ordered items.
+      productOrderItem:
+        type: array
+        items:
+          $ref: '#/definitions/MEFProductOrderItem_Create'
+        minItems: 1
+      relatedParty:
+        type: array
+        items:
+          $ref: '#/definitions/RelatedPartyRefOrValue'
+        minItems: 1
+      '@baseType':
+        type: string
+        description: 'When sub-classing, this defines the super-class'
+      '@schemaLocation':
+        type: string
+        format: uri
+        description: A URI to a JSON-Schema file that defines additional attributes and relationships
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class entity name'
+  ProductOrderItem:
+    type: object
+    description: An identified part of the order. A product order is decomposed into one or more order items.
+    required:
+      - id
+      - action
+      - productOffering
+    properties:
+      id:
+        type: string
+        description: 'Identifier of the line item (generally it is a sequence number 01, 02, 03, ...)'
+      pricingReference:
+        type: string
+        description: 'The identifier references the previously agreed upon pricing terms, as applicable, based on the pricingMethod (e.g. a contract id or tariff id.'
+      pricingTerm:
+        type: integer
+        description: The length of the contract in months.
+      action:
+        $ref: '#/definitions/OrderItemActionType'
+        description: 'The action to be carried out on the Product. Can be: add, modify, delete'
+      billingAccount:
+        $ref: '#/definitions/MEFBillingAccountRefOrValue'
+        description: References the billing arrangement that a buyer has with a seller that provides products to the customer.
+      itemPrice:
+        type: array
+        items:
+          $ref: '#/definitions/OrderPrice'
+      itemTerm:
+        type: array
+        items:
+          $ref: '#/definitions/OrderTerm'
+      pricingMethod:
+        $ref: '#/definitions/MEFPricingMethod'
+        description: An enumeration of valid pricing methods for ordered items.
+      product:
+        $ref: '#/definitions/MEFProductRefOrValueForOrder'
+        description: A particular Product Offering defines the technical and commercial attributes and behaviors of a Product.
+      productOffering:
+        $ref: '#/definitions/ProductOfferingRef'
+      productOfferingQualificationItem:
+        $ref: '#/definitions/ProductOfferingQualificationItemRef'
+      productOrderItemRelationship:
+        type: array
+        items:
+          $ref: '#/definitions/OrderItemRelationship'
+      quoteItem:
+        $ref: '#/definitions/MEFQuoteItemRef'
+      relatedParty:
+        type: array
+        items:
+          $ref: '#/definitions/RelatedPartyRefOrValue'
+        description: Party playing a role for this Product order item  (as installation contact for example)
+      state:
+        $ref: '#/definitions/MEFProductOrderItemStateType'
+        description: 'State of the order item : described in the state machine diagram'
+      stateChange:
+        type: array
+        items:
+          $ref: '#/definitions/MEFProductOrderItemStateChange'
+        description: State change for the ProductOrder Item
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class entity name'
+  ProductRelationship:
+    type: object
+    description: 'Linked products to the one instantiate, such as [bundled] if the product is a bundle and you want to describe the bundled products inside this bundle; [reliesOn] if the product needs another already owned product to rely on (e.g. an option on an already owned mobile access product) [targets] or [isTargeted] (depending on the way of expressing the link) for any other kind of links that may be useful'
+    required:
+      - relationshipType
+      - id
+    properties:
+      id:
+        type: string
+        description: unique identifier
+      href:
+        type: string
+        description: Hyperlink reference
+      buyerProductId:
+        type: string
+        description: Buyer identifier of the product
+      name:
+        type: string
+        description: Name of the related entity.
+      relationshipType:
+        type: string
+        description: 'Type of the product relationship, such as [bundled] if the product is a bundle and you want to describe the bundled products inside this bundle; [reliesOn] if the product needs another already owned product to rely on (e.g. an option on an already owned mobile access product) [targets] or [isTargeted] (depending on the way of expressing the link) for any other kind of links that may be useful'
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class Extensible name'
+      '@referredType':
+        type: string
+        description: The actual type of the target instance when needed for disambiguation.
+  ProductSpecificationRef:
+    type: object
+    description: 'Product specification reference: A ProductSpecification is a detailed description of a tangible or intangible object made available externally in the form of a ProductOffering to customers or other parties playing a party role.'
+    properties:
+      id:
+        type: string
+        description: unique identifier
+      href:
+        type: string
+        description: Hyperlink reference
+      name:
+        type: string
+        description: Name of the related entity.
+      targetProductSchema:
+        $ref: '#/definitions/TargetProductSchema'
+        description: A target product schema reference. The reference object to the schema and type of target product which is described by product specification.
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class Extensible name'
+      '@referredType':
+        type: string
+        description: The actual type of the target instance when needed for disambiguation.
+    required:
+      - id
+  Quantity:
+    type: object
+    description: An amount in a given unit
+    properties:
+      amount:
+        default: 1
+        type: number
+        format: float
+        description: Numeric value in a given unit
+      units:
+        type: string
+        description: Unit
+  GlobalAddressId:
+    allOf:
+      - $ref: '#/definitions/RelatedPlaceRefOrValue'
+      - type: object
+        required:
+          - externalReferenceId
+          - externalReferenceType
+        properties:
+          externalReferenceId:
+            type: string
+            description: >-
+              A reference to an address by id; this would include such things as
+              CLLI (Common Language Location Identifier) code
+          externalReferenceType:
+            type: string
+            description: >-
+              The type of the reference. For North American providers this would
+              normally be CLLI (Common Language Location Identifier) code
+    description: >-
+      A globally unique identifier controlled by a generally accepted
+      independent administrative authority that specifies a fixed geographical
+      location.
+  RelatedPartyRefOrValue:
+    type: object
+    description: Entity reference. A related party defines party or party role linked to a specific entity.
+    required:
+      - name
+      - number
+      - emailAddress
+      - role
+    properties:
+      emailAddress:
+        type: string
+        description: Party email address
+      name:
+        type: string
+        description: Name of the related entity.
+      number:
+        type: string
+        description: Party phone number
+      numberExtension:
+        type: string
+        description: Party phone number extension
+      role:
+        type: string
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class Extensible name'
+      '@referredType':
+        type: string
+        description: The actual type of the target instance when needed for disambiguation.
+  RelatedPlaceRefOrValue:
+    type: object
+    required:
+      - '@type'
+      - role
+    discriminator: '@type'
+    properties:
+      '@schemaLocation':
+        type: string
+        format: uri
+        description: >-
+          A URI to a JSON-Schema file that defines additional attributes and
+          relationships.
+          May be used to define additional related place types.
+          Usage of this attribute must be agreed between Buyer and Seller.
+      '@type':
+        type: string
+        description: >
+          This field is used as discriminator and is used between different
+          place representations. This type might discriminate for additional related place as defined
+          in '@schemaLocation'.
+      role:
+        type: string
+        description: Role of this place
+    description: Place defines the places where the products order must be done.
+  TargetProductSchema:
+    type: object
+    description: The reference object to the schema and type of target product which is described by product specification
+    required:
+      - '@schemaLocation'
+      - '@type'
+    properties:
+      '@baseType':
+        type: string
+        description: 'When sub-classing, this defines the super-class'
+      '@schemaLocation':
+        type: string
+        format: uri
+        description: This field provides a link to the schema describing the target product
+      '@type':
+        type: string
+        description: Class type of the target product
+  TaskStateType:
+    type: string
+    description: Possible values for the state of a task
+    enum:
+      - accepted
+      - terminatedWithError
+      - inProgress
+      - done
+  EventSubscription:
+    type: object
+    description: Sets the communication endpoint address the service instance must use to deliver notification information
+    required:
+      - id
+      - callback
+    properties:
+      id:
+        type: string
+        description: Id of the listener
+      callback:
+        type: string
+        description: The callback being registered.
+      query:
+        type: string
+        description: >-
+          This attribute is used to define notification type. Example:
+          ","query":”eventType = productOrderCreateEvent"}
+  EventSubscriptionInput:
+    type: object
+    description: Sets the communication endpoint address the service instance must use to deliver notification information
+    required:
+      - callback
+    properties:
+      callback:
+        type: string
+        description: The callback being registered.
+      query:
+        type: string
+        description: >-
+          This attribute is used to define notification type. Example:
+          ","query":”eventType = productOrderCreateEvent"}
+  Error:
+    description: |
+      Standard Class used to describe API response error
+      Not intended to be use directly only via specialization which defines a code
+    type: object
+    required:
+      - reason
+    properties:
+      reason:
+        type: string
+        description: Explanation of the reason for the error which can be shown to a client user.
+        maxLength: 255
+      message:
+        type: string
+        description: >-
+          Text that provides more details and corrective actions related to the
+          error. This can be shown to a client user.
+      status:
+        type: string
+        description: HTTP Error code extension
+      referenceError:
+        type: string
+        format: uri
+        description: URI of documentation describing the error.
+  Error400:
+    description: |-
+      Bad Request
+    allOf:
+      - $ref: "#/definitions/Error"
+      - type: object 
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |- 
+              List of supported error codes:
+              - missingQueryParameter: Missing query-string parameter
+              - missingQueryValue: Invalid query-string parameter value
+              - invalidQuery: Invalid Query
+              - invalidBody: Invalid body
+            type: string
+            enum:
+              - missingQueryParameter
+              - missingQueryValue
+              - invalidQuery
+              - invalidBody
+  Error401:
+    description: |-
+      Unauthorized
+    allOf:
+      - $ref: "#/definitions/Error"
+      - type: object 
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |- 
+              List of supported error codes:
+              - missingCredentials: Missing credentials
+              - invalidCredentials: Invalid OR expired credentials
+            type: string
+            enum:
+             - missingCredentials
+             - invalidCredentials
+  Error403:
+    description: |-
+      Forbidden
+    allOf:
+      - $ref: "#/definitions/Error"
+      - type: object 
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |- 
+              List of supported error codes:
+              - accessDenied: Access denied
+              - forbiddenRequester: Forbidden requester
+              - tooManyUsers: Too many users
+            type: string
+            enum:
+             - accessDenied
+             - forbiddenRequester
+             - tooManyUsers
+  Error404:
+    description: |-
+      Resource for the requested path not found
+    allOf:
+      - $ref: "#/definitions/Error"
+      - type: object 
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |- 
+              List of supported error codes:
+              - notFound: Resource not found
+            type: string
+            enum:
+             - notFound
+  Error405:
+    description: |-
+      Method Not allowed
+    allOf:
+      - $ref: "#/definitions/Error"
+      - type: object 
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |- 
+              List of supported error codes:
+              - methodNotAllowed: Method Not allowed
+            type: string
+            enum:
+             - methodNotAllowed
+  Error409:
+    description: |-
+      Conflict
+    allOf:
+      - $ref: "#/definitions/Error"
+      - type: object 
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |- 
+              List of supported error codes:
+              - conflict: conflicting resource.
+            type: string
+            enum:
+             - conflict
+  Error422:
+    description: |-
+      Unprocessable entity due to business validation problem
+    allOf:
+      - $ref: "#/definitions/Error"
+      - type: object 
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |
+              List of supported error codes:
+                - missingProperty: the property the Seller has expected is not present in the payload
+                - invalidValue: the property has an incorrect value
+                - invalidFormat: the property value does not comply to expected value format
+                - referenceNotFound: the object referenced by the property cannot be identified in the Seller system
+                - unexpectedProperty: additional property, not expected by the Seller has been provided
+                - otherIssue: other problem was identified (detailed information provided in a reason)
+            type: string
+            enum:
+              - missingProperty
+              - invalidValue
+              - invalidFormat
+              - referenceNotFound
+              - unexpectedProperty
+              - otherIssue
+          propertyPath:
+            type: string
+            description: |
+              A pointer to a particular property of the payload that caused the validation issue.
+              Defined using JsonPath format (https://goessner.net/articles/JsonPath/)
+  Error500:
+    description: |-
+      Internal Server Error
+    allOf:
+      - $ref: "#/definitions/Error"
+      - type: object 
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |- 
+              List of supported error codes:
+              - internalError: Internal server error
+            type: string
+            enum:
+             - internalError
+  Error501:
+    description: |-
+      Not Implemented
+    allOf:
+      - $ref: "#/definitions/Error"
+      - type: object 
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |- 
+              List of supported error codes:
+              - notImplemented: Method not supported by the server
+            type: string
+            enum:
+             - notImplemented

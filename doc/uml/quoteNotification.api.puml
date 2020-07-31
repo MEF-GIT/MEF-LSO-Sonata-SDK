@@ -1,0 +1,81 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class Error400 {
+
+    code*: string 
+}
+Error <|-- Error400
+
+
+
+class Error401 {
+
+    code*: string 
+}
+Error <|-- Error401
+
+
+
+class Error403 {
+
+    code*: string 
+}
+Error <|-- Error403
+
+
+
+class Error408 {
+
+    code*: string 
+}
+Error <|-- Error408
+
+
+
+class Error500 {
+
+    code*: string 
+}
+Error <|-- Error500
+
+
+
+class Error {
+
+    reason*: string 
+    message: string 
+    status: string 
+    referenceError: uri 
+}
+
+
+
+class Event {
+
+    eventId*: string 
+    eventTime*: date-time 
+    eventType*: QuoteEventType 
+}
+
+Event *-->"1" QuoteEvent : event
+
+
+class QuoteEvent {
+
+    id*: string 
+    href: string 
+}
+
+
+
+enum QuoteEventType {
+
+    quoteCreateEvent
+    quoteStateChangeEvent
+    quoteLevelChangeEvent
+}
+@enduml

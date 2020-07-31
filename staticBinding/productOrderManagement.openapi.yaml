@@ -1,0 +1,3667 @@
+---
+openapi: "3.0.1"
+info:
+  title: "API Product Ordering Management"
+  description: "**Product Ordering Management**\n\nThe scope of this API  introduces\
+    \ the following capabilities to the API:\n•\tInstall order: request for new product\n\
+    •\tChange Order: change an existing Product\n•\tDisconnect Order:  disconnect\
+    \ an existing Product \n•\tCancel Order: cancellation of an inflight-order\n•\t\
+    Support for Order Notifications\n\nThe buyer could also retrieve a single, or\
+    \ set, of Product Orders based upon a specified filter.  \n\nFollowing feature\
+    \ will be introduced in next release:\n•\tAmend Order: modification of an inflight-order\n\
+    \nProduct Order API used TMF 622 as template."
+  version: "5.0.0-RC"
+servers:
+- url: "https://serverRoot/mefApi/sonata/productOrderingManagement/v5/"
+tags:
+- name: "productOrder"
+- name: "cancelProductOrder"
+- name: "events subscription"
+paths:
+  /productOrder:
+    get:
+      tags:
+      - "productOrder"
+      summary: "List or find ProductOrder objects"
+      description: "This operation list or find ProductOrder entities"
+      operationId: "listProductOrder"
+      parameters:
+      - name: "buyerId"
+        in: "query"
+        description: "A Party Role played by an Individual or an Organization that\
+          \ buys products and services from a Seller. Specifically, the ID of the\
+          \ Service Provider (Buyer) organization placing the order."
+        schema:
+          type: "string"
+      - name: "sellerId"
+        in: "query"
+        description: |-
+          A Party Role played by an organization that provides products and services to a Buyer.
+          Specifically, the ID of the Partner/Access Provider (Seller) organization receiving the order.
+        schema:
+          type: "string"
+      - name: "state"
+        in: "query"
+        description: "The status of the order"
+        schema:
+          type: "string"
+      - name: "buyerRequestedDate.gt"
+        in: "query"
+        description: "Buyer requested date greater than"
+        schema:
+          type: "string"
+          format: "date-time"
+      - name: "buyerRequestedDate.lt"
+        in: "query"
+        description: "Buyer requested date lesser than"
+        schema:
+          type: "string"
+          format: "date-time"
+      - name: "orderDate.gt"
+        in: "query"
+        description: "Date when the order was created greater than"
+        schema:
+          type: "string"
+          format: "date-time"
+      - name: "orderDate.lt"
+        in: "query"
+        description: "Date when the order was created lesser than"
+        schema:
+          type: "string"
+          format: "date-time"
+      - name: "requestedStartDate.gt"
+        in: "query"
+        description: "Buyer requested start date greater than"
+        schema:
+          type: "string"
+          format: "date-time"
+      - name: "requestedStartDate.lt"
+        in: "query"
+        description: "Buyer requested start date lesser than"
+        schema:
+          type: "string"
+          format: "date-time"
+      - name: "requestedCompletionDate.gt"
+        in: "query"
+        description: "Identifies the Buyer's desired due date (requested delivery\
+          \ date) greater than"
+        schema:
+          type: "string"
+          format: "date-time"
+      - name: "requestedCompletionDate.lt"
+        in: "query"
+        description: "Identifies the Buyer's desired due date (requested delivery\
+          \ date) lesser than"
+        schema:
+          type: "string"
+          format: "date-time"
+      - name: "expectedCompletionDate.gt"
+        in: "query"
+        description: "Seller planned completion date greater than"
+        schema:
+          type: "string"
+          format: "date-time"
+      - name: "expectedCompletionDate.lt"
+        in: "query"
+        description: "Seller planned completion date lesser than"
+        schema:
+          type: "string"
+          format: "date-time"
+      - name: "completionDate.gt"
+        in: "query"
+        description: "Effective completion date greater than"
+        schema:
+          type: "string"
+          format: "date-time"
+      - name: "completionDate.lt"
+        in: "query"
+        description: "Effective completion date lesser than"
+        schema:
+          type: "string"
+          format: "date-time"
+      - name: "orderCancellationDate.gt"
+        in: "query"
+        description: "order cancellation date greater than"
+        schema:
+          type: "string"
+          format: "date-time"
+      - name: "orderCancellationDate.lt"
+        in: "query"
+        description: "order cancellation date lesser than"
+        schema:
+          type: "string"
+          format: "date-time"
+      - name: "siteName"
+        in: "query"
+        description: "A name by which the site is known."
+        schema:
+          type: "string"
+      - name: "siteCompanyName"
+        in: "query"
+        description: "The name of the company that is located at the service location.\
+          \  This may be different from the name of the Buyer that ordered services\
+          \ at that site."
+        schema:
+          type: "string"
+      - name: "siteCustomerName"
+        in: "query"
+        description: "The customer name at a site where the service is being delivered"
+        schema:
+          type: "string"
+      - name: "projectId"
+        in: "query"
+        description: "An identifier that is used to group Orders that represent a\
+          \ unit of functionality that is important to a Buyer."
+        schema:
+          type: "string"
+      - name: "externalId"
+        in: "query"
+        description: "A number that uniquely identifies an order within the Buyer's\
+          \ enterprise."
+        schema:
+          type: "string"
+      - name: "offset"
+        in: "query"
+        description: "Requested index for start of resources to be provided in response\
+          \ requested by client"
+        schema:
+          type: "string"
+      - name: "limit"
+        in: "query"
+        description: "Requested number of resources to be provided in response requested\
+          \ by client"
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "Success"
+          headers:
+            X-Pagination-Throttled:
+              description: |
+                Used to indicate that result page was throttled to maximum possible size  and there are additional results that can be fetched
+              schema:
+                type: "boolean"
+            X-Total-Count:
+              description: "Total number of items matching criteria"
+              schema:
+                type: "integer"
+            X-Result-Count:
+              description: "Actual number of items returned in the response body"
+              schema:
+                type: "integer"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/MEFProductOrderSummary"
+        "400":
+          description: "Bad Request"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error400"
+        "401":
+          description: "Unauthorized"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error401"
+        "403":
+          description: "Forbidden"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error403"
+        "500":
+          description: "Internal Server Error"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error500"
+    post:
+      tags:
+      - "productOrder"
+      summary: "Creates a ProductOrder"
+      description: "This operation creates a ProductOrder entity."
+      operationId: "createProductOrder"
+      requestBody:
+        description: "The ProductOrder to be created"
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: "#/components/schemas/ProductOrder_Create"
+        required: true
+      responses:
+        "201":
+          description: "Created"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/ProductOrder"
+        "400":
+          description: "Bad Request"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error400"
+        "401":
+          description: "Unauthorized"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error401"
+        "403":
+          description: "Forbidden"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error403"
+        "409":
+          description: "Conflict"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error409"
+        "422":
+          description: "Unprocessable entity due to the business validation problems\
+            \ in the Quote or one of the Quote items"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Error422"
+        "500":
+          description: "Internal Server Error"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error500"
+  /productOrder/{id}:
+    get:
+      tags:
+      - "productOrder"
+      summary: "Retrieves a ProductOrder by ID"
+      description: "This operation retrieves a ProductOrder entity. Attribute selection\
+        \ is enabled for all first level attributes."
+      operationId: "retrieveProductOrder"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Identifier of the ProductOrder"
+        required: true
+        schema:
+          type: "string"
+      - name: "fields"
+        in: "query"
+        description: "Comma-separated properties to provide in response"
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/ProductOrder"
+        "400":
+          description: "Bad Request"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error400"
+        "401":
+          description: "Unauthorized"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error401"
+        "403":
+          description: "Forbidden"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error403"
+        "404":
+          description: "Not Found"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error404"
+        "500":
+          description: "Internal Server Error"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error500"
+  /cancelProductOrder:
+    get:
+      tags:
+      - "cancelProductOrder"
+      summary: "List or find CancelProductOrder objects"
+      description: "This operation list or find CancelProductOrder entities"
+      operationId: "listCancelProductOrder"
+      parameters:
+      - name: "productOrderId"
+        in: "query"
+        schema:
+          type: "string"
+      - name: "productOrderExternalId"
+        in: "query"
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "Success"
+          headers:
+            X-Pagination-Throttled:
+              description: |
+                Used to indicate that result page was throttled to maximum possible size  and there are additional results that can be fetched
+              schema:
+                type: "boolean"
+            X-Total-Count:
+              description: "Total number of items matching criteria"
+              schema:
+                type: "integer"
+            X-Result-Count:
+              description: "Actual number of items returned in the response body"
+              schema:
+                type: "integer"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/CancelProductOrder"
+        "400":
+          description: "Bad Request"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error400"
+        "401":
+          description: "Unauthorized"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error401"
+        "403":
+          description: "Forbidden"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error403"
+        "500":
+          description: "Internal Server Error"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error500"
+    post:
+      tags:
+      - "cancelProductOrder"
+      summary: "Creates a CancelProductOrder"
+      description: "This operation creates a CancelProductOrder entity."
+      operationId: "createCancelProductOrder"
+      requestBody:
+        description: "The CancelProductOrder to be created"
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: "#/components/schemas/CancelProductOrder_Create"
+        required: true
+      responses:
+        "201":
+          description: "Created"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/CancelProductOrder"
+        "400":
+          description: "Bad Request"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error400"
+        "401":
+          description: "Unauthorized"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error401"
+        "403":
+          description: "Forbidden"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error403"
+        "409":
+          description: "Conflict"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error409"
+        "422":
+          description: "Unprocessable entity due to the business validation problems\
+            \ in the Quote or one of the Quote items"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Error422"
+        "500":
+          description: "Internal Server Error"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error500"
+  /cancelProductOrder/{id}:
+    get:
+      tags:
+      - "cancelProductOrder"
+      summary: "Retrieves a CancelProductOrder by ID"
+      description: "This operation retrieves a CancelProductOrder entity. Attribute\
+        \ selection is enabled for all first level attributes."
+      operationId: "retrieveCancelProductOrder"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Identifier of the CancelProductOrder"
+        required: true
+        schema:
+          type: "string"
+      - name: "fields"
+        in: "query"
+        description: "Comma-separated properties to provide in response"
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/CancelProductOrder"
+        "400":
+          description: "Bad Request"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error400"
+        "401":
+          description: "Unauthorized"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error401"
+        "403":
+          description: "Forbidden"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error403"
+        "404":
+          description: "Not Found"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error404"
+        "500":
+          description: "Internal Server Error"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error500"
+  /hub:
+    post:
+      tags:
+      - "events subscription"
+      summary: "Register a listener"
+      description: "Sets the communication endpoint address the service instance must\
+        \ use to deliver information about its health state, execution state, failures\
+        \ and metrics."
+      operationId: "registerListener"
+      requestBody:
+        description: "Data containing the callback endpoint to deliver the information"
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: "#/components/schemas/EventSubscriptionInput"
+        required: true
+      responses:
+        "201":
+          description: "Subscribed"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/EventSubscription"
+        "400":
+          description: "Bad Request"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error400"
+        "401":
+          description: "Unauthorized"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error401"
+        "403":
+          description: "Forbidden"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error403"
+        "405":
+          description: "Method Not allowed"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error405"
+        "409":
+          description: "Conflict"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error409"
+        "500":
+          description: "Internal Server Error"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error500"
+  /hub/{id}:
+    get:
+      tags:
+      - "events subscription"
+      summary: "Retrieves a Hub by ID"
+      description: "This operation retrieves a hub entity. Attribute selection is\
+        \ enabled for all first level attributes."
+      operationId: "retrieveHub"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Identifier of the Hub"
+        required: true
+        schema:
+          type: "string"
+      - name: "fields"
+        in: "query"
+        description: "Comma-separated properties to provide in response"
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/EventSubscription"
+        "400":
+          description: "Bad Request"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error400"
+        "401":
+          description: "Unauthorized"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error401"
+        "403":
+          description: "Forbidden"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error403"
+        "404":
+          description: "Not Found"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error404"
+        "500":
+          description: "Internal Server Error"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error500"
+    delete:
+      tags:
+      - "events subscription"
+      summary: "Unregister a listener"
+      description: "Resets the communication endpoint address the service instance\
+        \ must use to deliver information about its health state, execution state,\
+        \ failures and metrics."
+      operationId: "unregisterListener"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The id of the registered listener"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "204":
+          description: "Deleted"
+          content: {}
+        "400":
+          description: "Bad request"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error400"
+        "401":
+          description: "Unauthorized"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error401"
+        "403":
+          description: "Forbidden"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error403"
+        "404":
+          description: "Not Found"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error404"
+        "405":
+          description: "Method not allowed"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error405"
+        "500":
+          description: "Internal Server Error"
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error500"
+components:
+  schemas:
+    CancelProductOrder:
+      type: "object"
+      properties:
+        requestedCancellationDate:
+          type: "string"
+          description: "Date when the submitter wants the order to be cancelled"
+          format: "date-time"
+        '@baseType':
+          type: "string"
+          description: "When sub-classing, this defines the super-class"
+        cancellationReason:
+          type: "string"
+          description: "Reason why the order is cancelled."
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class entity name"
+        productOrder:
+          $ref: "#/components/schemas/MEFProductOrderRef"
+        id:
+          type: "string"
+          description: "id of the cancellation request (this is not an order id)"
+        href:
+          type: "string"
+          description: "Hyperlink to access the cancellation request"
+        state:
+          $ref: "#/components/schemas/TaskStateType"
+        '@schemaLocation':
+          type: "string"
+          description: "A URI to a JSON-Schema file that defines additional attributes\
+            \ and relationships"
+          format: "uri"
+        cancellationDeniedReason:
+          type: "string"
+          description: "Buyer If seller denied cancellation request he could here\
+            \ provide reason for this denial of the product"
+        effectiveCancellationDate:
+          type: "string"
+          description: "Date when the order is cancelled."
+          format: "date-time"
+      description: "Request for cancellation an existing product order"
+    CancelProductOrder_Create:
+      required:
+      - "productOrder"
+      type: "object"
+      properties:
+        requestedCancellationDate:
+          type: "string"
+          description: "Date when the submitter wants the order to be cancelled"
+          format: "date-time"
+        '@baseType':
+          type: "string"
+          description: "When sub-classing, this defines the super-class"
+        cancellationReason:
+          type: "string"
+          description: "Reason why the order is cancelled."
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class entity name"
+        productOrder:
+          $ref: "#/components/schemas/MEFProductOrderRef"
+        '@schemaLocation':
+          type: "string"
+          description: "A URI to a JSON-Schema file that defines additional attributes\
+            \ and relationships"
+          format: "uri"
+        cancellationDeniedReason:
+          type: "string"
+          description: "Buyer If seller denied cancellation request he could here\
+            \ provide reason for this denial of the product"
+      description: |-
+        Request for cancellation an existing product order
+        Skipped properties: id,href,state,effectiveCancellationDate
+    FieldedAddress:
+      properties: {}
+      description: "A type of Address that has a discrete field and value for each\
+        \ type of boundary or identifier down to the lowest level of detail. For example\
+        \ \"street number\" is one field, \"street name\" is another field, etc."
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/RelatedPlaceRefOrValue"
+      - $ref: "#/components/schemas/FieldedAddress_allOf"
+    FormattedAddress:
+      properties: {}
+      description: "A type of Address that has discrete fields for each type of boundary\
+        \ or identifier with the exception of street and more specific location details,\
+        \ which are combined into a maximum of two strings based on local postal addressing\
+        \ conventions."
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/RelatedPlaceRefOrValue"
+      - $ref: "#/components/schemas/FormattedAddress_allOf"
+    GeographicSubAddress:
+      type: "object"
+      properties:
+        buildingName:
+          type: "string"
+          description: |
+            Allows for identification of places that require building name  as part of addressing information
+        subUnit:
+          type: "array"
+          description: |-
+            Representation of a MEFSubUnit
+            It is used for describing subunit within a subaddress  e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF.
+          items:
+            $ref: "#/components/schemas/MEFSubUnit"
+        levelType:
+          type: "string"
+          description: "Describes level types within a building"
+        levelNumber:
+          type: "string"
+          description: "Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT\
+            \ 2"
+        id:
+          type: "string"
+          description: "Unique Identifier of the subAddress"
+        privateStreetNumber:
+          type: "string"
+          description: "Private streets numbers internal to a private street"
+        privateStreetName:
+          type: "string"
+          description: "\"Private streets internal to a property (e.g. a university)\
+            \ may have internal names that are not recorded by the land title office"
+      description: "Additional fields used to specify an address, as detailed as possible."
+    MEFBillingAccountRefOrValue:
+      required:
+      - "id"
+      type: "object"
+      properties:
+        billingContact:
+          $ref: "#/components/schemas/MEFBillingContact"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class entity name"
+        id:
+          type: "string"
+          description: "Identifies the buyer’s billing account to which the recurring\
+            \ and non-recurring charges for this order or order item will be billed.\
+            \ If the value ‘NEW’ is provided it means that buyer request a new BAN."
+      description: "References the billing arrangement that a buyer has with a seller\
+        \ that provides products to the customer."
+    MEFBillingContact:
+      required:
+      - "contactName"
+      - "emailAddress"
+      - "number"
+      - "streetAddress"
+      type: "object"
+      properties:
+        number:
+          type: "string"
+          description: "Identifies the telephone number (excluding extension) of the\
+            \ billing contact"
+        emailAddress:
+          type: "string"
+          description: "Identifies the electronic mail address of the Billing Contact\
+            \ when a Buyer profile does not already exist."
+        streetAddress:
+          type: "string"
+          description: "Identifies the address of the person or office to be contacted\
+            \ on billing matters."
+        contactName:
+          type: "string"
+          description: "Identifies the name of the person or office to be contacted\
+            \ on billing matters."
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class Extensible name"
+        numberExtension:
+          type: "string"
+          description: "Identifies the telephone number extension of the billing contact"
+      description: "Contact allow to capture contact information. It is used to capture\
+        \ billing account contact information."
+    MEFDesiredOrderResponse:
+      type: "string"
+      properties: {}
+      description: "The kind of response that the buyer expects to receive from the\
+        \ seller."
+      enum:
+      - "confirmationAndEngineeringDesign"
+      - "confirmationOnly"
+      - "none"
+    MEFGeographicLocation:
+      properties: {}
+      description: "A set of coordinates (typically including latitude and longitude)\
+        \ that describes a particular location on earth."
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/RelatedPlaceRefOrValue"
+      - $ref: "#/components/schemas/MEFGeographicLocation_allOf"
+    MEFGeographicPoint:
+      required:
+      - "x"
+      - "y"
+      type: "object"
+      properties:
+        x:
+          type: "string"
+          description: "The latitude expressed in the format specified by the `spacialRef`"
+        y:
+          type: "string"
+          description: "The longitude expressed in the format specified by the `spacialRef`"
+      description: "A MEFGeographicPoint defines a geographic point through coordinates."
+    MEFOrderActivity:
+      type: "string"
+      properties: {}
+      description: "The type of order as defined by the business."
+      enum:
+      - "install"
+      - "change"
+      - "disconnect"
+    MEFOrderMessage:
+      type: "object"
+      properties:
+        severity:
+          $ref: "#/components/schemas/MEFSeverity"
+        correctionRequired:
+          type: "boolean"
+          description: "Indicates whether the Buyer must submit an updated Order to\
+            \ resolve the Error/Jeopardy condition."
+        code:
+          type: "string"
+          description: "The code associated with the Message."
+        field:
+          type: "string"
+          description: "The field/attribute on the Order associated with message."
+        messageInformation:
+          type: "string"
+          description: "A description of the error condition or information to be\
+            \ conveyed to the Buyer."
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class Extensible name"
+      description: "Holds the MEF Product Order extension"
+    MEFPricingMethod:
+      type: "string"
+      properties: {}
+      description: "An enumeration of valid pricing methods for ordered items"
+      enum:
+      - "tariff"
+      - "contract"
+      - "individualCaseBasis"
+      - "other"
+    MEFProductConfiguration:
+      required:
+      - "@type"
+      type: "object"
+      properties:
+        '@baseType':
+          type: "string"
+          description: "When sub-classing, this defines the super-class"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class Extensible name"
+        '@schemaLocation':
+          type: "string"
+          description: "A URI to a JSON-Schema file that defines additional attributes\
+            \ and relationships"
+          format: "uri"
+      description: "MEF Product payload"
+      discriminator:
+        propertyName: "@type"
+    MEFProductOrderItemStateType:
+      type: "string"
+      properties: {}
+      description: "Possible values for the state of the Order Item"
+      enum:
+      - "acknowledged"
+      - "rejected"
+      - "pending"
+      - "held"
+      - "inProgress"
+      - "inProgress.configured"
+      - "cancelled"
+      - "completed"
+      - "failed"
+      - "assessingCancellation"
+      - "pendingCancellation"
+    MEFProductOrderItem_Create:
+      type: "object"
+      properties:
+        pricingReference:
+          type: "string"
+          description: "The identifier references the previously agreed upon pricing\
+            \ terms, as applicable, based on the pricingMethod (e.g. a contract id\
+            \ or tariff id."
+        product:
+          $ref: "#/components/schemas/MEFProductRefOrValueForOrder"
+        productOffering:
+          $ref: "#/components/schemas/ProductOfferingRef"
+        pricingMethod:
+          $ref: "#/components/schemas/MEFPricingMethod"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class entity name"
+        billingAccount:
+          $ref: "#/components/schemas/MEFBillingAccountRefOrValue"
+        relatedParty:
+          type: "array"
+          description: "Party playing a role for this Product order item  (as installation\
+            \ contact for example)"
+          items:
+            $ref: "#/components/schemas/RelatedPartyRefOrValue"
+        pricingTerm:
+          type: "integer"
+          description: "The length of the contract in months."
+        productOrderItemRelationship:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderItemRelationship"
+        itemTerm:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderTerm"
+        productOfferingQualificationItem:
+          $ref: "#/components/schemas/ProductOfferingQualificationItemRef"
+        action:
+          $ref: "#/components/schemas/OrderItemActionType"
+        quoteItem:
+          $ref: "#/components/schemas/MEFQuoteItemRef"
+        itemPrice:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderPrice"
+        id:
+          type: "string"
+          description: "Identifier of the line item (generally it is a sequence number\
+            \ 01, 02, 03, ...)"
+      description: "An identified part of the order. A product order is decomposed\
+        \ into one or more order items."
+    MEFProductOrderRef:
+      required:
+      - "id"
+      type: "object"
+      properties:
+        '@referredType':
+          type: "string"
+          description: "The type of the referred entity"
+          format: "uri"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class entity name"
+        externalId:
+          type: "string"
+          description: "A number that uniquely identifies an order within the buyer's\
+            \ enterprise. Must be provided if provided when the order was initially\
+            \ accepted"
+        id:
+          type: "string"
+          description: "Unique (within the ordering domain) identifier for the order\
+            \ that is generated by the seller when the order is initially accepted."
+        href:
+          type: "string"
+          description: "Hyperlink to access the order"
+        orderVersion:
+          type: "string"
+          description: "The version number that the Buyer uses to refer to this particular\
+            \ version of the order."
+        state:
+          $ref: "#/components/schemas/MEFProductOrderStateType"
+      description: "Holds the MEF Product Order extension"
+    MEFProductOrderStateType:
+      type: "string"
+      properties: {}
+      description: "Possible values for the state of the order"
+      enum:
+      - "acknowledged"
+      - "rejected"
+      - "pending"
+      - "held"
+      - "inProgress"
+      - "inProgress.configured"
+      - "inProgress.confirmed"
+      - "inProgress.jeopardy"
+      - "cancelled"
+      - "completed"
+      - "failed"
+      - "partial"
+      - "assessingCancellation"
+      - "pendingCancellation"
+    MEFProductRefOrValueForOrder:
+      type: "object"
+      properties:
+        productSpecification:
+          $ref: "#/components/schemas/ProductSpecificationRef"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class entity name"
+        buyerProductId:
+          type: "string"
+          description: "Buyer identifier of the product"
+        productConfiguration:
+          $ref: "#/components/schemas/MEFProductConfiguration"
+        productRelationship:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ProductRelationship"
+        id:
+          type: "string"
+          description: "Unique identifier of the product"
+        href:
+          type: "string"
+          description: "Reference of the product"
+        place:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/RelatedPlaceRefOrValue"
+      description: "A product is realized as one or more service(s) and / or resource(s)."
+    MEFQuoteItemRef:
+      required:
+      - "id"
+      type: "object"
+      properties:
+        quoteHref:
+          type: "string"
+          description: "Reference of the related entity."
+        '@referredType':
+          type: "string"
+          description: "The type of the referred entity"
+          format: "uri"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class entity name"
+        id:
+          type: "string"
+          description: "Id of an item of a quote"
+        quoteId:
+          type: "string"
+          description: "Unique identifier of a related entity."
+      description: "It's a Quote item that has been executed previously."
+    MEFSeverity:
+      type: "string"
+      properties: {}
+      description: "Severity of a message."
+      enum:
+      - "error"
+      - "information"
+    MEFProductOrderStateChange:
+      type: "object"
+      properties:
+        changeReason:
+          type: "string"
+          description: "The reason why the State changed."
+        changeDate:
+          type: "string"
+          description: "The date and time the State changed."
+          format: "date-time"
+        state:
+          $ref: "#/components/schemas/MEFProductOrderStateType"
+      description: "Holds the State notification reasons and associated date the State\
+        \ changed, populated by the server"
+    MEFProductOrderItemStateChange:
+      type: "object"
+      properties:
+        changeReason:
+          type: "string"
+          description: "The reason why the State changed."
+        changeDate:
+          type: "string"
+          description: "The date and time the State changed."
+          format: "date-time"
+        state:
+          $ref: "#/components/schemas/MEFProductOrderItemStateType"
+      description: "Holds the State notification reasons and associated date the State\
+        \ changed, populated by the server"
+    MEFSubUnit:
+      required:
+      - "subUnitNumber"
+      - "subUnitType"
+      type: "object"
+      properties:
+        subUnitNumber:
+          type: "string"
+          description: "The discriminator used for the subunit, often just a simple\
+            \ number but may also be a range."
+        subUnitType:
+          type: "string"
+          description: "The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,\
+            \ UNIT, WHARF."
+      description: "Allows for sub unit identification"
+    Money:
+      type: "object"
+      properties:
+        unit:
+          type: "string"
+          description: "Currency (ISO4217 norm uses 3 letters to define the currency)"
+        value:
+          type: "number"
+          description: "A positive floating point number"
+          format: "float"
+      description: "A base / value business entity used to represent money"
+    Note:
+      required:
+      - "author"
+      - "date"
+      - "text"
+      type: "object"
+      properties:
+        date:
+          type: "string"
+          description: "Date of the note"
+          format: "date-time"
+        author:
+          type: "string"
+          description: "Author of the note"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class entity name"
+        id:
+          type: "string"
+          description: "Identifier of the note within its containing entity (may or\
+            \ may not be globally unique, depending on provider implementation)"
+        text:
+          type: "string"
+          description: "Text of the note"
+      description: "Extra information about a given entity"
+    OrderItemActionType:
+      type: "string"
+      properties: {}
+      description: "action to be performed on the product"
+      enum:
+      - "add"
+      - "modify"
+      - "delete"
+    OrderItemRelationship:
+      required:
+      - "id"
+      - "relationshipType"
+      type: "object"
+      properties:
+        relationshipType:
+          type: "string"
+          description: "The type of order item relationship"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class entity name"
+        id:
+          type: "string"
+    OrderPrice:
+      type: "object"
+      properties:
+        price:
+          $ref: "#/components/schemas/Price"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class entity name"
+        name:
+          type: "string"
+          description: "A short descriptive name such as \"Subscription price\"."
+        priceType:
+          type: "string"
+          description: "A category that describes the price, such as recurring, discount,\
+            \ allowance, penalty, and so forth"
+        description:
+          type: "string"
+          description: "A narrative that explains in detail the semantics of this\
+            \ order item price."
+        recurringChargePeriod:
+          type: "string"
+          description: "Could be month, week..."
+      description: "An amount, usually of money, that represents the actual price\
+        \ paid by the Customer for this item or this order"
+    OrderTerm:
+      type: "object"
+      properties:
+        duration:
+          $ref: "#/components/schemas/Quantity"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class entity name"
+        name:
+          type: "string"
+          description: "Name of the productOrderTerm"
+        description:
+          type: "string"
+          description: "Description of the productOrderTerm"
+      description: "Description of a productTerm linked to this orderItem. This represent\
+        \ a commitment with a duration"
+    PlaceRef:
+      properties: {}
+      description: |
+        A reference to a place resource available through Sonata addressing validation API. This type should be use to represent Service Site Identifier
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/RelatedPlaceRefOrValue"
+      - $ref: "#/components/schemas/PlaceRef_allOf"
+    Price:
+      type: "object"
+      properties:
+        taxRate:
+          type: "number"
+          description: "Tax rate"
+          format: "float"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class entity name"
+        taxIncludedAmount:
+          $ref: "#/components/schemas/Money"
+        dutyFreeAmount:
+          $ref: "#/components/schemas/Money"
+      description: "Provides all amounts (tax included, duty free, tax rate), used\
+        \ currency and percentage to apply for Price Alteration."
+    ProductOfferingQualificationItemRef:
+      required:
+      - "id"
+      - "productOfferingQualificationId"
+      type: "object"
+      properties:
+        productOfferingQualificationId:
+          type: "string"
+          description: "Unique identifier of a related entity."
+        '@referredType':
+          type: "string"
+          description: "The actual type of the target instance when needed for disambiguation."
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class entity name"
+        alternateProductProposalId:
+          type: "string"
+          description: "A unique identifier for this Alternate Product Proposal assigned\
+            \ by the Seller."
+        productOfferingQualificationHref:
+          type: "string"
+          description: "Reference of the related entity."
+        id:
+          type: "string"
+          description: "Id of an item of a product offering qualification"
+      description: "It's a productOfferingQualification item that has been executed\
+        \ previously."
+    ProductOfferingRef:
+      required:
+      - "id"
+      type: "object"
+      properties:
+        '@referredType':
+          type: "string"
+          description: "The actual type of the target instance when needed for disambiguation."
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class Extensible name"
+        name:
+          type: "string"
+          description: "Name of the related entity."
+        id:
+          type: "string"
+          description: "unique identifier"
+        href:
+          type: "string"
+          description: "Hyperlink reference"
+      description: "ProductOffering reference. A product offering represents entities\
+        \ that are orderable from the provider of the catalog, this resource includes\
+        \ pricing information."
+    ProductOrder:
+      required:
+      - "productOrderItem"
+      type: "object"
+      properties:
+        pricingReference:
+          type: "string"
+          description: "The identifier references the previously agreed upon pricing\
+            \ terms, as applicable, based on the pricingMethod (e.g. a contract id\
+            \ or tariff id."
+        relatedBuyerPON:
+          type: "string"
+          description: "Related Buyer Purchase Order Number (RPON)"
+        note:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Note"
+        buyerRequestDate:
+          type: "string"
+          description: "Buyer order creation date. Format is YYYY-MM-DDThh:mmTZD (e.g.\
+            \ 1997-07-16T19:20+01:00)"
+          format: "date-time"
+        pricingMethod:
+          $ref: "#/components/schemas/MEFPricingMethod"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class entity name"
+        description:
+          type: "string"
+          description: "Description of the product order"
+        billingAccount:
+          $ref: "#/components/schemas/MEFBillingAccountRefOrValue"
+        productOrderItem:
+          minItems: 1
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ProductOrderItem"
+        pricingTerm:
+          type: "integer"
+          description: "The length of the contract in months."
+        requestedStartDate:
+          type: "string"
+          description: "Order fulfillment start date wished by the requestor. This\
+            \ is used when, for any reason, requestor cannot allow seller to begin\
+            \ to operationally begin the fulfillment before a date. "
+          format: "date-time"
+        '@baseType':
+          type: "string"
+          description: "When sub-classing, this defines the super-class"
+        expeditePriority:
+          type: "boolean"
+          description: "Indicates that expedited treatment is requested and any charges\
+            \ generated in provisioning this request (e.g., additional engineering\
+            \ charges or labor charges if applicable) will be accepted by the buyer.."
+        id:
+          type: "string"
+          description: "ID created on repository side (OM system)"
+        href:
+          type: "string"
+          description: "Hyperlink to access the order"
+        state:
+          $ref: "#/components/schemas/MEFProductOrderStateType"
+        '@schemaLocation':
+          type: "string"
+          description: "A URI to a JSON-Schema file that defines additional attributes\
+            \ and relationships"
+          format: "uri"
+        cancellationDate:
+          type: "string"
+          description: "Date when the order is cancelled. This is used when order\
+            \ is cancelled. "
+          format: "date-time"
+        requestedCompletionDate:
+          type: "string"
+          description: "Requested delivery date from the requestor perspective"
+          format: "date-time"
+        cancellationReason:
+          type: "string"
+          description: "Reason why the order is cancelled. This is used when order\
+            \ is cancelled. "
+        orderActivity:
+          $ref: "#/components/schemas/MEFOrderActivity"
+        externalId:
+          type: "string"
+          description: "ID given by the consumer and only understandable by him (to\
+            \ facilitate his searches afterwards)"
+        stateChange:
+          type: "array"
+          description: "State change for the Product Order"
+          items:
+            $ref: "#/components/schemas/MEFProductOrderStateChange"
+        orderVersion:
+          type: "string"
+          description: "The version number that the Buyer uses to refer to this particular\
+            \ version of the order."
+        priority:
+          type: "string"
+          description: "A way that can be used by consumers to prioritize orders in\
+            \ OM system (from 0 to 4 : 0 is the highest priority, and 4 the lowest)"
+        relatedParty:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/RelatedPartyRefOrValue"
+        orderMessage:
+          type: "array"
+          description: "An optional array of messages associated with the Order."
+          items:
+            $ref: "#/components/schemas/MEFOrderMessage"
+        tspRestorationPriority:
+          type: "string"
+          description: "Within the United States, indicates the provisioning and restoration\
+            \ priority as defined under the TSP Service Vendor Handbook, The valid\
+            \ values are defined in ATIS OBF document: ATIS-0404001."
+        desiredResponse:
+          $ref: "#/components/schemas/MEFDesiredOrderResponse"
+        completionDate:
+          type: "string"
+          description: "Date when the order was completed"
+          format: "date-time"
+        expectedCompletionDate:
+          type: "string"
+          description: "Expected delivery date amended by the provider"
+          format: "date-time"
+        orderDate:
+          type: "string"
+          description: "Date when the order was created"
+          format: "date-time"
+        projectId:
+          type: "string"
+          description: "An identifier that is used to group Orders that is important\
+            \ to the Buyer. A ProjectId can be used to relate multiple Orders together."
+      description: "A Product Order is a type of order which  can  be used to place\
+        \ an order between a customer and a service provider or between a service\
+        \ provider and a partner and vice versa,"
+    MEFProductOrderSummary:
+      required:
+      - "externalId"
+      - "id"
+      - "orderDate"
+      - "state"
+      type: "object"
+      properties:
+        externalId:
+          type: "string"
+          description: |-
+            ID given by the consumer and only understandable by him (to facilitate his searches afterwards).
+            MEF: Buyer Purchase Order Number
+        id:
+          type: "string"
+          description: |-
+            ID created on repository side (OM system)
+            MEF: Unique identifier for the order that is generated by the Seller when the order is initially accepted via an API.
+        state:
+          $ref: "#/components/schemas/MEFProductOrderStateType"
+        orderDate:
+          type: "string"
+          description: "Date when the order was created"
+          format: "date-time"
+      description: "Structure to define GET without id response. A list of productOrder\
+        \ matching request criteria. Provides Product order summary view."
+    ProductOrder_Create:
+      required:
+      - "buyerRequestDate"
+      - "desiredResponse"
+      - "externalId"
+      - "orderActivity"
+      - "orderVersion"
+      - "productOrderItem"
+      - "relatedParty"
+      - "requestedCompletionDate"
+      type: "object"
+      properties:
+        pricingReference:
+          type: "string"
+          description: "The identifier references the previously agreed upon pricing\
+            \ terms, as applicable, based on the pricingMethod (e.g. a contract id\
+            \ or tariff id."
+        relatedBuyerPON:
+          type: "string"
+          description: "Related Buyer Purchase Order Number (RPON)"
+        note:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Note"
+        buyerRequestDate:
+          type: "string"
+          description: "Buyer order creation date. Format is YYYY-MM-DDThh:mmTZD (e.g.\
+            \ 1997-07-16T19:20+01:00)"
+          format: "date-time"
+        pricingMethod:
+          $ref: "#/components/schemas/MEFPricingMethod"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class entity name"
+        orderActivity:
+          $ref: "#/components/schemas/MEFOrderActivity"
+        description:
+          type: "string"
+          description: "Description of the product order"
+        externalId:
+          type: "string"
+          description: "ID given by the consumer and only understandable by him (to\
+            \ facilitate his searches afterwards)"
+        orderVersion:
+          type: "string"
+          description: "The version number that the Buyer uses to refer to this particular\
+            \ version of the order."
+        priority:
+          type: "string"
+          description: "A way that can be used by consumers to prioritize orders in\
+            \ OM system (from 0 to 4 : 0 is the highest priority, and 4 the lowest)"
+        billingAccount:
+          $ref: "#/components/schemas/MEFBillingAccountRefOrValue"
+        productOrderItem:
+          minItems: 1
+          type: "array"
+          items:
+            $ref: "#/components/schemas/MEFProductOrderItem_Create"
+        relatedParty:
+          minItems: 1
+          type: "array"
+          items:
+            $ref: "#/components/schemas/RelatedPartyRefOrValue"
+        pricingTerm:
+          type: "integer"
+          description: "The length of the contract in months."
+        requestedStartDate:
+          type: "string"
+          description: "Order fulfillment start date wished by the requestor. This\
+            \ is used when, for any reason, requestor cannot allow seller to begin\
+            \ to operationally begin the fulfillment before a date. "
+          format: "date-time"
+        orderMessage:
+          type: "array"
+          description: "An optional array of messages associated with the Order."
+          items:
+            $ref: "#/components/schemas/MEFOrderMessage"
+        tspRestorationPriority:
+          type: "string"
+          description: "Within the United States, indicates the provisioning and restoration\
+            \ priority as defined under the TSP Service Vendor Handbook, The valid\
+            \ values are defined in ATIS OBF document: ATIS-0404001."
+        '@baseType':
+          type: "string"
+          description: "When sub-classing, this defines the super-class"
+        desiredResponse:
+          $ref: "#/components/schemas/MEFDesiredOrderResponse"
+        expeditePriority:
+          type: "boolean"
+          description: "Indicates that expedited treatment is requested and any charges\
+            \ generated in provisioning this request (e.g., additional engineering\
+            \ charges or labor charges if applicable) will be accepted by the buyer.."
+        '@schemaLocation':
+          type: "string"
+          description: "A URI to a JSON-Schema file that defines additional attributes\
+            \ and relationships"
+          format: "uri"
+        projectId:
+          type: "string"
+          description: "An identifier that is used to group Orders that is important\
+            \ to the Buyer. A ProjectId can be used to relate multiple Orders together."
+        requestedCompletionDate:
+          type: "string"
+          description: "Requested delivery date from the requestor perspective"
+          format: "date-time"
+      description: |-
+        A Product Order is a type of order which  can  be used to place an order between a customer and a service provider or between a service provider and a partner and vice versa,
+        Skipped properties: id,href,completionDate,orderDate,state,expectedCompletionDate,stateChange,cancellationDate,cancellationReason
+    ProductOrderItem:
+      required:
+      - "action"
+      - "id"
+      - "productOffering"
+      type: "object"
+      properties:
+        pricingReference:
+          type: "string"
+          description: "The identifier references the previously agreed upon pricing\
+            \ terms, as applicable, based on the pricingMethod (e.g. a contract id\
+            \ or tariff id."
+        product:
+          $ref: "#/components/schemas/MEFProductRefOrValueForOrder"
+        productOffering:
+          $ref: "#/components/schemas/ProductOfferingRef"
+        pricingMethod:
+          $ref: "#/components/schemas/MEFPricingMethod"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class entity name"
+        stateChange:
+          type: "array"
+          description: "State change for the ProductOrder Item"
+          items:
+            $ref: "#/components/schemas/MEFProductOrderItemStateChange"
+        billingAccount:
+          $ref: "#/components/schemas/MEFBillingAccountRefOrValue"
+        relatedParty:
+          type: "array"
+          description: "Party playing a role for this Product order item  (as installation\
+            \ contact for example)"
+          items:
+            $ref: "#/components/schemas/RelatedPartyRefOrValue"
+        pricingTerm:
+          type: "integer"
+          description: "The length of the contract in months."
+        productOrderItemRelationship:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderItemRelationship"
+        itemTerm:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderTerm"
+        productOfferingQualificationItem:
+          $ref: "#/components/schemas/ProductOfferingQualificationItemRef"
+        action:
+          $ref: "#/components/schemas/OrderItemActionType"
+        quoteItem:
+          $ref: "#/components/schemas/MEFQuoteItemRef"
+        itemPrice:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderPrice"
+        id:
+          type: "string"
+          description: "Identifier of the line item (generally it is a sequence number\
+            \ 01, 02, 03, ...)"
+        state:
+          $ref: "#/components/schemas/MEFProductOrderItemStateType"
+      description: "An identified part of the order. A product order is decomposed\
+        \ into one or more order items."
+    ProductRelationship:
+      required:
+      - "id"
+      - "relationshipType"
+      type: "object"
+      properties:
+        '@referredType':
+          type: "string"
+          description: "The actual type of the target instance when needed for disambiguation."
+        relationshipType:
+          type: "string"
+          description: "Type of the product relationship, such as [bundled] if the\
+            \ product is a bundle and you want to describe the bundled products inside\
+            \ this bundle; [reliesOn] if the product needs another already owned product\
+            \ to rely on (e.g. an option on an already owned mobile access product)\
+            \ [targets] or [isTargeted] (depending on the way of expressing the link)\
+            \ for any other kind of links that may be useful"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class Extensible name"
+        buyerProductId:
+          type: "string"
+          description: "Buyer identifier of the product"
+        name:
+          type: "string"
+          description: "Name of the related entity."
+        id:
+          type: "string"
+          description: "unique identifier"
+        href:
+          type: "string"
+          description: "Hyperlink reference"
+      description: "Linked products to the one instantiate, such as [bundled] if the\
+        \ product is a bundle and you want to describe the bundled products inside\
+        \ this bundle; [reliesOn] if the product needs another already owned product\
+        \ to rely on (e.g. an option on an already owned mobile access product) [targets]\
+        \ or [isTargeted] (depending on the way of expressing the link) for any other\
+        \ kind of links that may be useful"
+    ProductSpecificationRef:
+      required:
+      - "id"
+      type: "object"
+      properties:
+        '@referredType':
+          type: "string"
+          description: "The actual type of the target instance when needed for disambiguation."
+        targetProductSchema:
+          $ref: "#/components/schemas/TargetProductSchema"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class Extensible name"
+        name:
+          type: "string"
+          description: "Name of the related entity."
+        id:
+          type: "string"
+          description: "unique identifier"
+        href:
+          type: "string"
+          description: "Hyperlink reference"
+      description: "Product specification reference: A ProductSpecification is a detailed\
+        \ description of a tangible or intangible object made available externally\
+        \ in the form of a ProductOffering to customers or other parties playing a\
+        \ party role."
+    Quantity:
+      type: "object"
+      properties:
+        amount:
+          type: "number"
+          description: "Numeric value in a given unit"
+          format: "float"
+          default: 1.0
+        units:
+          type: "string"
+          description: "Unit"
+      description: "An amount in a given unit"
+    GlobalAddressId:
+      properties: {}
+      description: "A globally unique identifier controlled by a generally accepted\
+        \ independent administrative authority that specifies a fixed geographical\
+        \ location."
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/RelatedPlaceRefOrValue"
+      - $ref: "#/components/schemas/GlobalAddressId_allOf"
+    RelatedPartyRefOrValue:
+      required:
+      - "emailAddress"
+      - "name"
+      - "number"
+      - "role"
+      type: "object"
+      properties:
+        number:
+          type: "string"
+          description: "Party phone number"
+        emailAddress:
+          type: "string"
+          description: "Party email address"
+        '@referredType':
+          type: "string"
+          description: "The actual type of the target instance when needed for disambiguation."
+        role:
+          type: "string"
+        '@type':
+          type: "string"
+          description: "When sub-classing, this defines the sub-class Extensible name"
+        name:
+          type: "string"
+          description: "Name of the related entity."
+        numberExtension:
+          type: "string"
+          description: "Party phone number extension"
+      description: "Entity reference. A related party defines party or party role\
+        \ linked to a specific entity."
+    RelatedPlaceRefOrValue:
+      required:
+      - "@type"
+      - "role"
+      type: "object"
+      properties:
+        role:
+          type: "string"
+          description: "Role of this place"
+        '@type':
+          type: "string"
+          description: |
+            This field is used as discriminator and is used between different place representations. This type might discriminate for additional related place as defined in '@schemaLocation'.
+        '@schemaLocation':
+          type: "string"
+          description: "A URI to a JSON-Schema file that defines additional attributes\
+            \ and relationships. May be used to define additional related place types.\
+            \ Usage of this attribute must be agreed between Buyer and Seller."
+          format: "uri"
+      description: "Place defines the places where the products order must be done."
+      discriminator:
+        propertyName: "@type"
+    TargetProductSchema:
+      required:
+      - "@schemaLocation"
+      - "@type"
+      type: "object"
+      properties:
+        '@baseType':
+          type: "string"
+          description: "When sub-classing, this defines the super-class"
+        '@type':
+          type: "string"
+          description: "Class type of the target product"
+        '@schemaLocation':
+          type: "string"
+          description: "This field provides a link to the schema describing the target\
+            \ product"
+          format: "uri"
+      description: "The reference object to the schema and type of target product\
+        \ which is described by product specification"
+    TaskStateType:
+      type: "string"
+      properties: {}
+      description: "Possible values for the state of a task"
+      enum:
+      - "accepted"
+      - "terminatedWithError"
+      - "inProgress"
+      - "done"
+    EventSubscription:
+      required:
+      - "callback"
+      - "id"
+      type: "object"
+      properties:
+        query:
+          type: "string"
+          description: "This attribute is used to define notification type. Example:\
+            \ \",\"query\":”eventType = productOrderCreateEvent\"}"
+        callback:
+          type: "string"
+          description: "The callback being registered."
+        id:
+          type: "string"
+          description: "Id of the listener"
+      description: "Sets the communication endpoint address the service instance must\
+        \ use to deliver notification information"
+    EventSubscriptionInput:
+      required:
+      - "callback"
+      type: "object"
+      properties:
+        query:
+          type: "string"
+          description: "This attribute is used to define notification type. Example:\
+            \ \",\"query\":”eventType = productOrderCreateEvent\"}"
+        callback:
+          type: "string"
+          description: "The callback being registered."
+      description: "Sets the communication endpoint address the service instance must\
+        \ use to deliver notification information"
+    Error:
+      required:
+      - "reason"
+      type: "object"
+      properties:
+        reason:
+          maxLength: 255
+          type: "string"
+          description: "Explanation of the reason for the error which can be shown\
+            \ to a client user."
+        message:
+          type: "string"
+          description: "Text that provides more details and corrective actions related\
+            \ to the error. This can be shown to a client user."
+        referenceError:
+          type: "string"
+          description: "URI of documentation describing the error."
+          format: "uri"
+        status:
+          type: "string"
+          description: "HTTP Error code extension"
+      description: |
+        Standard Class used to describe API response error
+        Not intended to be use directly only via specialization which defines a code
+    Error400:
+      properties: {}
+      description: "Bad Request"
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/Error"
+      - $ref: "#/components/schemas/Error400_allOf"
+    Error401:
+      properties: {}
+      description: "Unauthorized"
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/Error"
+      - $ref: "#/components/schemas/Error401_allOf"
+    Error403:
+      properties: {}
+      description: "Forbidden"
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/Error"
+      - $ref: "#/components/schemas/Error403_allOf"
+    Error404:
+      properties: {}
+      description: "Resource for the requested path not found"
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/Error"
+      - $ref: "#/components/schemas/Error404_allOf"
+    Error405:
+      properties: {}
+      description: "Method Not allowed"
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/Error"
+      - $ref: "#/components/schemas/Error405_allOf"
+    Error409:
+      properties: {}
+      description: "Conflict"
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/Error"
+      - $ref: "#/components/schemas/Error409_allOf"
+    Error422:
+      properties: {}
+      description: "Unprocessable entity due to business validation problem"
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/Error"
+      - $ref: "#/components/schemas/Error422_allOf"
+    Error500:
+      properties: {}
+      description: "Internal Server Error"
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/Error"
+      - $ref: "#/components/schemas/Error500_allOf"
+    Error501:
+      properties: {}
+      description: "Not Implemented"
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/Error"
+      - $ref: "#/components/schemas/Error501_allOf"
+    OneWayCompositePmMetric:
+      type: "object"
+      properties:
+        oneWayIfdvThreshold:
+          $ref: "#/components/schemas/Time"
+        cpmObjective:
+          $ref: "#/components/schemas/Percentage"
+        compositeFrameDelay:
+          maximum: 1
+          minimum: 0
+          type: "integer"
+          description: "Composite indicator for One-way Frame Delay equal to 0 or\
+            \ 1."
+        compositeFrameDelayVariation:
+          type: "integer"
+          description: "Composite indicator for One-way Frame Delay Variation equal\
+            \ to 0 or 1."
+        oneWayFdThreshold:
+          $ref: "#/components/schemas/Time"
+        compositeFrameLoss:
+          maximum: 1
+          minimum: 0
+          type: "integer"
+          description: "Composite indicator for One-way Frame Loss equal to 0 or 1."
+        orderedPairs:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+        compositePerformanceIndicatorThreshold:
+          type: "number"
+          description: "Composite Performance Indicator threshold which if exceeded\
+            \ suggests an unacceptable time interval."
+      description: "Data type representing One-way Composite Performance Metric. Reference\
+        \ MEF 10.4 Section 8.8.10 One-way Composite Performance Metric."
+    objCosFromOvcEp:
+      required:
+      - "field_F"
+      - "l2cp_P"
+      - "map_M"
+      type: "object"
+      properties:
+        map_M:
+          type: "string"
+          description: "The single CoS at this OVC EP"
+        field_F:
+          $ref: "#/components/schemas/Field_F"
+        l2cp_P:
+          $ref: "#/components/schemas/objCosL2cp"
+      description: "Ingress CoS is specified as {F,M,P}. This is when F=OVC_EP. "
+    objEtherType:
+      required:
+      - "etherType"
+      type: "object"
+      properties:
+        etherType:
+          pattern: "[0][x][0-9a-f]{4}"
+          type: "string"
+          description: "4 hex digits 0xDDDD"
+      description: "4 hex digits, 0xDDDD"
+    OrderedPair:
+      type: "object"
+      properties:
+        toUni:
+          type: "string"
+          description: "NOTE: Need to point to schema reference."
+        fromUni:
+          type: "string"
+          description: "NOTE: Need to point to schema reference."
+        uuid:
+          type: "string"
+          description: "Unique identifier for Ordered Pair."
+      description: "The OrderedPair data type is an ordered pair of EVC/OVC End Points\
+        \ for a specific performance metric for one way direction. It is associated\
+        \ with one way performance metrics and a pair of  CarrierEthernetServiceEndPoints."
+    objLLC:
+      required:
+      - "llc"
+      type: "object"
+      properties:
+        llc:
+          pattern: "[0][x][0-9a-f]{2}"
+          type: "string"
+          description: "2 hex digits 0xDD"
+      description: "2 hex digits, 0xDD"
+    objVlanRangeList:
+      required:
+      - "vlanRangeList"
+      type: "object"
+      properties:
+        vlanRangeList:
+          minItems: 1
+          type: "array"
+          description: "A list of VLAN ranges"
+          items:
+            $ref: "#/components/schemas/objVlanRange"
+      description: "A list of {VLAN Ranges} used in the VLAN Map"
+    objCosBWP:
+      required:
+      - "cosBWP"
+      - "cosName"
+      type: "object"
+      properties:
+        cosBWP:
+          description: "The Bandwidth Profile (or DISABLED)"
+          $ref: "#/components/schemas/cosBWP_oneOf"
+        cosName:
+          type: "string"
+          description: "The Name of the Class of Service that this BWP is applied\
+            \ to."
+      description: "2-tuple {CoS Name, Bandwidth Profile}. A list of these is used\
+        \ in the OVC End Point Service Attribute: Ingress Bandwidth Profile per Class\
+        \ of Service Name."
+    objOvcEgressMapItems:
+      type: "object"
+      properties:
+        cnpcp:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "This allows specification of either 0 or 1 mappings of a list\
+            \ of Class of Service name into PCP."
+          items:
+            $ref: "#/components/schemas/objCnPcpList"
+        ccdei:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "This allows specification of either 0 or 1 mappings of a list\
+            \ of Class of Service names/color into DEI."
+          items:
+            $ref: "#/components/schemas/objCcDeiList"
+        ccpcp:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "This allows specification of either 0 or 1 mappings of a list\
+            \ of Class of Service name/DEI into PCP."
+          items:
+            $ref: "#/components/schemas/objCcPcpList"
+      description: "This object allows specification of the various ways to fill in\
+        \ the OVC Egress Map."
+    OneWayFrameDelayPmMetric:
+      type: "object"
+      properties:
+        oneWayFdObjective:
+          $ref: "#/components/schemas/Time"
+        oneWayFdPercentile:
+          $ref: "#/components/schemas/Percentage"
+        orderedPairList:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+      description: "Data type representing One-way Frame Delay Performance Metric.\
+        \ Reference MEF 10.4 Section 8.8.2 One-way Frame Delay Performance Metric\
+        \ and MEF 26.2 Section 12.13.2 One-way Frame Delay Performance Metric."
+    objL2cpIdentifer:
+      required:
+      - "macAddr"
+      - "protocolIdentifier"
+      type: "object"
+      properties:
+        protocolIdentifier:
+          $ref: "#/components/schemas/objL2cpProtocolIdentifier"
+        macAddr:
+          pattern: "[0-9a-f][0-9a-f]([-][0-9a-f][0-9a-f]){5}"
+          type: "string"
+          description: "The MAC Address of the L2CP to be peered."
+      description: "This describes an L2CP as a MAC Address and Protocol Identifier\
+        \ as described in MEF 45.1 section 8.2."
+    OneWayMeanFrameDelayPmMetric:
+      type: "object"
+      properties:
+        oneWayMfdObjective:
+          $ref: "#/components/schemas/Time"
+        orderedPairs:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+      description: "Data type representing One-way Mean Frame Delay Performance Metric.\
+        \ Reference MEF 10.4 Section 8.8.3 One-way Mean Frame Delay Performance Metric\
+        \ and MEF 26.2 Section 12.13.3 One-way Mean Frame Delay Performance Metric."
+    objSLS:
+      type: "object"
+      properties:
+        slsCosNameEntry:
+          minItems: 1
+          type: "array"
+          description: "Pointer to SlsCosNameEntry."
+          items:
+            $ref: "#/components/schemas/SlsCosNameEntry"
+        timeInterval:
+          $ref: "#/components/schemas/TimeIntervalT"
+        startTime:
+          $ref: "#/components/schemas/TimeAndDate"
+      description: "Data type that represents Carrier Ethernet Service Level Specification\
+        \ that provides a list of Performance Metrics where each item in the list\
+        \ includes the parameters and performance objective for the given Performance\
+        \ Metric. It is associated with EVC or OVC and a list of SlsCosNameEntry(s).\
+        \ Reference MEF 10.4 Section 8.8 EVC Service Specification Service Attribute\
+        \ and MEF 26.2 Section 12.13 OVC Service Level Specification Service Attribute."
+    OneWayAvailabilityPmMetric:
+      type: "object"
+      properties:
+        oneWayAvailabilityObjective:
+          $ref: "#/components/schemas/Percentage"
+        orderedPairs:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+      description: "Data type representing One-way Availability Performance Metric.\
+        \ Reference MEF 10.4 Section 8.8.7 One-way Availability Performance Metric\
+        \ and MEF 26.2 Section 12.13.7 One-way Availability Performance Metric."
+    objLinkDepth:
+      required:
+      - "lagDepth"
+      - "vlanID"
+      type: "object"
+      properties:
+        vlanID:
+          maximum: 4094
+          minimum: 1
+          type: "integer"
+          description: "The VLAN ID"
+        lagDepth:
+          maximum: 8
+          minimum: 1
+          type: "integer"
+          description: "The number of Link Aggreation links available to the VLAN"
+      description: "A 2-tuple {SVID, Depth} that indicates at the ENNI how many LAG\
+        \ links can be used by the SVID. It indicates the level of resiliency to use\
+        \ for the SVID at the ENNI."
+    objBWP:
+      required:
+      - "cm"
+      - "envelopeName"
+      - "envelopeRank"
+      type: "object"
+      properties:
+        eirmax:
+          minimum: 0
+          type: "integer"
+          description: "The Maximum Excess Information Rate for the Bandwidth Profile"
+        envelopeRank:
+          minimum: 1
+          type: "integer"
+          description: "The rank in the envelope of this BWP"
+        envelopeName:
+          maxLength: 45
+          type: "string"
+          description: "The name of the envelope that this Bandwidth Profile resides\
+            \ in."
+        cf:
+          maximum: 1
+          minimum: 0
+          type: "number"
+          description: "Do overflow tokens at this level flow down to the next committed\
+            \ bucket or to the corresponding excess bucket?"
+        cirmax:
+          minimum: 0
+          type: "integer"
+          description: "The Maximum Committed Information Rate for the BWP"
+        offset:
+          type: "integer"
+          description: "A number of bytes (positive or negative) to include in the\
+            \ Bandwidth Profile calculation to account for headers."
+        cbs:
+          minimum: 4000
+          type: "integer"
+          description: "The depth in bytes of the Committed Token Bucket"
+        ebs:
+          minimum: 4000
+          type: "integer"
+          description: "The depth in bytes of the Excess Token Bucket"
+        cm:
+          $ref: "#/components/schemas/Cm"
+        cir:
+          minimum: 0
+          type: "integer"
+          description: "The Committed Information Rate for the BWP"
+        eir:
+          minimum: 0
+          type: "integer"
+          description: "The Excess Information Rate for the Bandwidth Profile"
+      description: "The MEF Bandwidth Profile 11-tuple as described in MEF 10.4 section\
+        \ 12.1.2. (MEF 10.4 actually defines a 10-tuple where Envelope Name and Rank\
+        \ are a single attribute)."
+    objDscpValues:
+      type: "object"
+      properties:
+        dscpValues:
+          minItems: 1
+          uniqueItems: true
+          type: "array"
+          description: "A list of unique 6-bit (0-63) values"
+          items:
+            maximum: 63
+            minimum: 0
+            type: "integer"
+      description: "A list of 6 bit values"
+    accessElineOvcOrder:
+      properties: {}
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/MEFProductConfiguration"
+      - $ref: "#/components/schemas/accessElineOvcOrder_allOf"
+    objCcPcp:
+      required:
+      - "cosname"
+      - "pcpgreen"
+      - "pcpyellow"
+      type: "object"
+      properties:
+        cosname:
+          type: "string"
+          description: "A class of service name from the OVC List of Class of Service\
+            \ Names Service Attribute"
+        pcpgreen:
+          $ref: "#/components/schemas/Pcpgreen"
+        pcpyellow:
+          $ref: "#/components/schemas/Pcpyellow"
+      description: "One of the possible values for the OVC Egress Map. This indicates\
+        \ that the Class of Service and Color are mapped to the PCP field of the Egress\
+        \ Frame. Note that the Enums used for the PCP values include DISCARD as a\
+        \ value."
+    OneWayGroupAvailabilityPmMetric:
+      type: "object"
+      properties:
+        minimumNumberOfSetsAvailableK:
+          minimum: 1
+          type: "integer"
+        oneWayGroupAvailabilityObjective:
+          $ref: "#/components/schemas/Percentage"
+        setOfOrderedPairs:
+          minItems: 1
+          type: "array"
+          items:
+            $ref: "#/components/schemas/SetOfOrderedPairs"
+      description: "Data type representing One-way Group Availability Performance\
+        \ Metric. Reference MEF 10.4 Section 8.8.11 One-way Group Availability Performance\
+        \ Metric and MEF 26.2 Section 12.13.10 One-way Group Availability Performance\
+        \ Metric."
+    objEnniService:
+      type: "object"
+      properties:
+        maximumNumberOfOvcs:
+          maximum: 4095
+          minimum: 1
+          type: "integer"
+          description: "Maximum Number of OVCs - MEF 26.2 §13.3"
+        enniEnvelopes:
+          minItems: 1
+          type: "array"
+          description: "ENNI Envelopes - MEF 26.2 §13.6"
+          items:
+            $ref: "#/components/schemas/objEnvelope"
+        enniTokenShare:
+          $ref: "#/components/schemas/EnniTokenShare"
+        sVlanIdControl:
+          $ref: "#/components/schemas/SVlanIdControl"
+      description: "For each instance of an ENNI, there are multiple sets of ENNI\
+        \ Service Attributes. The value for each ENNI Service Attribute in a set for\
+        \ an Operator CEN is specific to a SP/SO that is using the ENNI per Section\
+        \ 8.11. Each such value is agreed to by the SP/SO and the Operator."
+    objCnPcp:
+      required:
+      - "cosname"
+      - "pcp"
+      type: "object"
+      properties:
+        cosname:
+          type: "string"
+          description: "A class of service name from the OVC List of Class of Service\
+            \ Names Service Attribute"
+        pcp:
+          $ref: "#/components/schemas/Pcp"
+      description: "One of the possible values for the OVC Egress Map. This indicates\
+        \ that the Class of Service is mapped to the PCP field of the Egress Frame.\
+        \ Note that the Enums used for the PCP values include DISCARD as a value."
+    OneWayHighLossIntervalPmMetric:
+      type: "object"
+      properties:
+        oneWayHighLossIntervalsObjective:
+          type: "integer"
+        orderedPairs:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+      description: "Data type representing One-way Consecutive High Loss Intervals\
+        \ Performance Metric. Reference MEF 10.4 Section 8.8.9 One-way Consecutive\
+        \ High Loss Intervals Performance Metric and MEF 26.2 Section 12.13.9 One-way\
+        \ Consecutive High Loss Intervals Performance Metric."
+    objDisabled:
+      required:
+      - "constantDisabled"
+      type: "object"
+      properties:
+        constantDisabled:
+          $ref: "#/components/schemas/ConstantDisabled"
+      description: "An object that includes a single property, the constant DISABLED"
+    accessElineOperatorUniOrder:
+      properties: {}
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/MEFProductConfiguration"
+      - $ref: "#/components/schemas/accessElineOperatorUniOrder_allOf"
+    objCcDei:
+      required:
+      - "cosname"
+      - "deigreen"
+      - "deiyellow"
+      type: "object"
+      properties:
+        deiyellow:
+          $ref: "#/components/schemas/Deiyellow"
+        deigreen:
+          $ref: "#/components/schemas/Deigreen"
+        cosname:
+          type: "string"
+          description: "A class of service name from the OVC List of Class of Service\
+            \ Names Service Attribute"
+      description: "One of the possible values for the OVC Egress Map. This indicates\
+        \ that the Color is mapped to the DEI field of the Egress Frame. Note that\
+        \ the Enums used for the DEI values include DISCARD as a value."
+    Percentage:
+      maximum: 100
+      minimum: 0
+      type: "number"
+      properties: {}
+    OneWayConsecutiveHighLossIntervalPmMetric:
+      type: "object"
+      properties:
+        consecutiveNumberP:
+          type: "integer"
+        oneWayChliObjective:
+          type: "integer"
+        orderedPairs:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+      description: "Data type representing One-way Consecutive High Loss Intervals\
+        \ Performance Metric. Reference MEF 10.4 Section 8.8.9 One-way Consecutive\
+        \ High Loss Intervals Performance Metric and MEF 26.2 Section 12.13.9 One-way\
+        \ Consecutive High Loss Intervals Performance Metric."
+    objCosFromCtagPcp:
+      required:
+      - "field_F"
+      - "l2cp_P"
+      - "map_M"
+      type: "object"
+      properties:
+        map_M:
+          $ref: "#/components/schemas/objCosPCPList"
+        field_F:
+          $ref: "#/components/schemas/objCosFromCtagPcpField_F"
+        l2cp_P:
+          $ref: "#/components/schemas/objCosL2cp"
+      description: "Ingress CoS is specified as {F,M,P}. This is when F=C_TAG_PCP. "
+    objVlanMap:
+      required:
+      - "vlanMap"
+      type: "object"
+      properties:
+        vlanMap:
+          description: "Either ALL for a port-based service or a list of VLAN Ranges"
+          $ref: "#/components/schemas/vlanMap_oneOf"
+      description: "Used to specify which C-VLANs or S-VLANs are mapped to an Interface.\
+        \ It is either {ALL} (for port-based service) or a {list of VLAN ranges}"
+    objCosPcpMapEntry:
+      required:
+      - "pcpCosName"
+      - "pcpVal"
+      type: "object"
+      properties:
+        pcpVal:
+          maximum: 7
+          minimum: 0
+          type: "integer"
+          description: "A value 0 to 7"
+        pcpCosName:
+          type: "string"
+          description: "A CoS Name or DISCARD"
+      description: "2-tuple {PCP, CoSName} that maps a CoS Name or DISCARD to a PCP. "
+    objEtherTypeSubType:
+      required:
+      - "etherType"
+      - "subType"
+      type: "object"
+      properties:
+        etherType:
+          pattern: "[0][x][0-9a-f]{4}"
+          type: "string"
+          description: "An Ethertype 0xFFFF"
+        subType:
+          pattern: "[0][x][0-9a-f]{2}"
+          type: "string"
+          description: "An EtherType SubType 0xDD"
+      description: "This is a two-tuple consisting of an Ethernet Type 0xDDDD and\
+        \ a SubType 0xDD"
+    OneWayMeanFrameDelayRangePmMetric:
+      type: "object"
+      properties:
+        oneWayFdrPercentile:
+          $ref: "#/components/schemas/Percentage"
+        oneWayFdrObjective:
+          $ref: "#/components/schemas/Time"
+        orderedPairs:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+      description: "Data type representing One-way Frame Delay Range Performance Metric.\
+        \ Reference MEF 10.4 Section 8.8.4 One-way Frame Delay Range Performance Metric\
+        \ and MEF 26.2 Section 12.13.4 One-way Frame Delay Range Performance Metric."
+    accessElineEnniOrder:
+      properties: {}
+      allOf:
+      - properties: {}
+        $ref: "#/components/schemas/MEFProductConfiguration"
+      - $ref: "#/components/schemas/accessElineEnniOrder_allOf"
+    objCnPcpList:
+      required:
+      - "cnPcpList"
+      type: "object"
+      properties:
+        cnPcpList:
+          minItems: 1
+          uniqueItems: true
+          type: "array"
+          description: "If the OVC Egress Map includes CN → PCP, there must be an\
+            \ entry in the list for each Class of Service Name in the OVC List of\
+            \ Class of Service Names."
+          items:
+            $ref: "#/components/schemas/objCnPcp"
+      description: "This is a list of 1...n CNPCP Objects. One for each Class of Service."
+    objCosDscpMap:
+      type: "object"
+      properties:
+        dscpValueCoSList:
+          minItems: 1
+          type: "array"
+          description: "This is a list of DSCP to CoS Map Entries: {ipv4DSCPs, ipv6DSCPs,\
+            \ CoSName}"
+          items:
+            $ref: "#/components/schemas/objCosDscpMapEntry"
+        notIP:
+          type: "string"
+          description: "This is the CoS value for packets that are not IP packets\
+            \ when CoS is determined from DSCP"
+        otherIPv6:
+          type: "string"
+          description: "This is the CoS value for IPv6 packets with DSCP values other\
+            \ than those listed."
+        otherIPv4:
+          type: "string"
+          description: "This is the CoS value for IPv4 packets with DSCP values other\
+            \ than those listed."
+      description: "This is a list of CoS to DSCP Map Entries followed by items for\
+        \ Not an IP Packet and All Other Values."
+    Time:
+      type: "object"
+      properties:
+        number:
+          type: "number"
+          description: "Time as a float."
+        unit:
+          $ref: "#/components/schemas/Unit"
+      description: "A data type used to represent time in various units."
+    objOvcEP:
+      required:
+      - "ovcEndPointMap"
+      type: "object"
+      properties:
+        sourceAddressMacLimit:
+          $ref: "#/components/schemas/objSaLimit"
+        aggregationLinkDepth:
+          $ref: "#/components/schemas/objLinkDepth"
+        egressMap:
+          $ref: "#/components/schemas/objOvcEgressMapItems"
+        megIntermediatePoint:
+          $ref: "#/components/schemas/MegIntermediatePoint"
+        ovcEndPointMap:
+          $ref: "#/components/schemas/objVlanMap"
+        ingressBandwidthProfilePerEndPoint:
+          description: "Ingress Bandwidth Profile per OVC End Point - MEF 26.2 §16.10"
+          $ref: "#/components/schemas/ingressBandwidthProfilePerEndPoint_oneOf"
+        ingressBandwidthProfilePerClassOfServiceName:
+          maxItems: 8
+          minItems: 0
+          type: "array"
+          description: "Ingress Bandwidth Profile per Class of Service Name - MEF\
+            \ 26.2 §16.12"
+          items:
+            $ref: "#/components/schemas/objCosBWP"
+        ingressClassOfServiceMap:
+          description: "OVC End Point Class of Service Identifier - MEF 26.2 §16.6"
+          $ref: "#/components/schemas/ingressClassOfServiceMap_oneOf"
+        maintenanceEndPointList:
+          maxItems: 7
+          minItems: 0
+          type: "array"
+          description: "OVC End Point Maintenance End Point List - MEF 26.2 §16.17"
+          items:
+            $ref: "#/components/schemas/objMEPspec"
+      description: "An OVC End Point is a logical entity at a given External Interface\
+        \ that is associated with a distinct set of frames passing over that External\
+        \ Interface. The OVC End Point is actually one of the Common Objects, but\
+        \ it is listed directly after the OVC because it is an integral component\
+        \ of the OVC."
+    objL2cpProtocolIdentifier:
+      required:
+      - "protoID"
+      type: "object"
+      properties:
+        protoID:
+          description: "The EtherType or LLC Address or EtherType/SubType"
+          $ref: "#/components/schemas/protoID_oneOf"
+      description: "This is one of:  EtherType (four hex digits), (2) LLC (2 hex digits),\
+        \ or (3) EtherType/Subtype (4 hex digits and 2 hex digits)"
+    SetOfOrderedPairs:
+      type: "object"
+      properties:
+        orderedPairsList:
+          minItems: 1
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+      description: "Data type representing a set of Ordered Pairs."
+    SlsObjectiveAndParameters:
+      type: "object"
+      properties:
+        oneWayMeanFrameDelayRangePmMetric:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "Pointer to One-way Frame Delay Range Performance Management\
+            \ Metric."
+          items:
+            $ref: "#/components/schemas/OneWayMeanFrameDelayRangePmMetric"
+        oneWayAvailabilityPmMetric:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "Pointer to One-way Availability Performance Management Metric."
+          items:
+            $ref: "#/components/schemas/OneWayAvailabilityPmMetric"
+        oneWayCompositePmMetric:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "Pointer to One-way Composite Performance Management Metric."
+          items:
+            $ref: "#/components/schemas/OneWayCompositePmMetric"
+        oneWayFrameDelayPmMetric:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "Pointer to One-way Frame Delay Performance Management Metric."
+          items:
+            $ref: "#/components/schemas/OneWayFrameDelayPmMetric"
+        oneWayInterFrameDelayVariationPmMetric:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "Pointer to One-way Inter-Frame Delay Variation Performance\
+            \ Management Metric."
+          items:
+            $ref: "#/components/schemas/OneWayInterFrameDelayVariationPmMetric"
+        oneWayFrameLossRatioPmMetric:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "Pointer to One-way Frame Loss Ratio Performance Management\
+            \ Metric."
+          items:
+            $ref: "#/components/schemas/OneWayFrameLossRatioPmMetric"
+        oneWayMeanFrameDelayPmMetric:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "Pointer to One-way Mean Frame Delay Performance Management\
+            \ Metric."
+          items:
+            $ref: "#/components/schemas/OneWayMeanFrameDelayPmMetric"
+        oneWayHighLossIntervalPmMetric:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "Pointer to One-way High Loss Interval Performance Management\
+            \ Metric."
+          items:
+            $ref: "#/components/schemas/OneWayHighLossIntervalPmMetric"
+        oneWayGroupAvailabilityPmMetric:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "Pointer to One-way Group Availability Performance Management\
+            \ Metric."
+          items:
+            $ref: "#/components/schemas/OneWayGroupAvailabilityPmMetric"
+        oneWayConsecutiveHighLossIntervalPmMetric:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          description: "Pointer to One-way Consecutive High Loss Interval Performance\
+            \ Management Metric."
+          items:
+            $ref: "#/components/schemas/OneWayConsecutiveHighLossIntervalPmMetric"
+      description: "The Service Level Specification (SLS) is the technical details\
+        \ of the service level, in terms of Performance Objectives, agreed between\
+        \ the Service Provider and the Subscriber (or Operator) as part of the Service\
+        \ Level Agreement.  A given SLS might contain 0, 1, or more Performance Objectives\
+        \ for each Performance Metric. The SlsObjectiveAndParameters data type associating\
+        \ the set of performance parameters such as FD, MFD, FDR, IFDV, FLR, Availability,\
+        \ HILI, CHLI, Composite and Group Availablity for Ordered Pairs. Reference\
+        \ MEF 10.4 Section 8.8 EVC Service Level Specification Service Attribute and\
+        \ MEF 26.2 Section 12.13 OVC Service Level Specification Service Attribute."
+    objCosPCPList:
+      required:
+      - "cosPCPList"
+      type: "object"
+      properties:
+        cosPCPList:
+          maxItems: 8
+          minItems: 8
+          type: "array"
+          description: "List of 8 CoS Name to PCP values"
+          items:
+            $ref: "#/components/schemas/objCosPcpMapEntry"
+      description: "A list of 8 2-tuples {PCP value, CoS Name or DISCARD}. A PCP value\
+        \ of 0 is used for Untagged Frame. This is consistent with D11 in MEF 26.2."
+    objCosDscpMapEntry:
+      required:
+      - "cosName"
+      type: "object"
+      properties:
+        ipv4List:
+          $ref: "#/components/schemas/objDscpValues"
+        ipv6List:
+          $ref: "#/components/schemas/objDscpValues"
+        cosName:
+          type: "string"
+      description: "This is a 3-tuple {ipv4list, ipv6list, cosName}"
+    OneWayInterFrameDelayVariationPmMetric:
+      type: "object"
+      properties:
+        oneWayIfdvPercentile:
+          $ref: "#/components/schemas/Percentage"
+        oneWayIfdvObjective:
+          $ref: "#/components/schemas/Time"
+        timeDuration:
+          $ref: "#/components/schemas/Time"
+        orderedPairs:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+      description: "Data type representing One-way Inter-Frame Delay Performance Metric.\
+        \ Reference MEF 10.4 Section 8.8.5 One-way InterFrame Delay Performance Metric\
+        \ and MEF 26.2 Section 12.13.5 One-way Inter-Frame Delay Performance Metric."
+    TimeAndDate:
+      type: "object"
+      properties:
+        hour:
+          type: "integer"
+          description: "Denotes the hour."
+        month:
+          type: "integer"
+          description: "Denotes the month."
+        year:
+          type: "integer"
+          description: "Denotes the year."
+        day:
+          type: "integer"
+          description: "Denotes the day."
+        minute:
+          type: "integer"
+          description: "Denotes the minute."
+        second:
+          type: "integer"
+          description: "Denotes the second."
+      description: "This data type is for Time and Date in UTC. Used for CarrierEthernetSls\
+        \ startTime attribute."
+    objSaLimit:
+      required:
+      - "interval"
+      - "numAddr"
+      type: "object"
+      properties:
+        numAddr:
+          type: "integer"
+          description: "The number of MAC source addresses that can be learned in\
+            \ the time interval."
+        interval:
+          minimum: 1
+          type: "integer"
+          description: "The time interval in seconds over which the source address\
+            \ limit is evaluated"
+      description: "2-tuple to encode the Source Address limit and time interval"
+    objConvToAggLink:
+      required:
+      - "aggLinkList"
+      - "vlans"
+      type: "object"
+      properties:
+        vlans:
+          $ref: "#/components/schemas/objVlanRange"
+        aggLinkList:
+          maxItems: 8
+          minItems: 1
+          uniqueItems: true
+          type: "array"
+          description: "Aggregation Link List - 802.1AX-2014 §6.6.2.1"
+          items:
+            maximum: 8
+            minimum: 1
+            type: "integer"
+      description: "2-tuple {x,y} where x is a VLAN or range of VLANs and y is a list\
+        \ of Link Aggregation Links. This is used in the Port Conversation to Aggregation\
+        \ Link Map for the Operator UNI and ENNI."
+    objAll:
+      required:
+      - "constantAll"
+      type: "object"
+      properties:
+        constantAll:
+          $ref: "#/components/schemas/ConstantAll"
+      description: "An object that includes a single property, the constant ALL"
+    objCosL2cp:
+      required:
+      - "l2cpCosName"
+      - "l2cpIdentifier"
+      type: "object"
+      properties:
+        l2cpIdentifier:
+          $ref: "#/components/schemas/objL2cpProtocolIdentifier"
+        l2cpCosName:
+          type: "string"
+          description: "CoS Name String to associate with the L2CP"
+      description: "2-tuple {L2CP Ident, CoS Name}"
+    objCosFromStagPcp:
+      required:
+      - "field_F"
+      - "l2cp_P"
+      - "map_M"
+      type: "object"
+      properties:
+        map_M:
+          $ref: "#/components/schemas/objCosPCPList"
+        field_F:
+          $ref: "#/components/schemas/objCosFromStagPcpField_F"
+        l2cp_P:
+          $ref: "#/components/schemas/objCosL2cp"
+      description: "Ingress CoS is specified as {F,M,P}. This is when F=S_TAG_PCP. "
+    objCcPcpList:
+      required:
+      - "ccPcpList"
+      type: "object"
+      properties:
+        ccPcpList:
+          minItems: 1
+          uniqueItems: true
+          type: "array"
+          description: "If the OVC Egress Map includes CC → PCP, there must be an\
+            \ entry in the list for each Class of Service Name in the OVC List of\
+            \ Class of Service Names."
+          items:
+            $ref: "#/components/schemas/objCcPcp"
+      description: "This is a list of 1...n CCPCP Objects. One for each Class of Service."
+    objEnvelope:
+      required:
+      - "cf0"
+      - "name"
+      type: "object"
+      properties:
+        name:
+          maxLength: 45
+          type: "string"
+          description: "The name of the Envelope"
+        cf0:
+          maximum: 1
+          minimum: 0
+          type: "integer"
+          description: "Envelope Coupling Flag indicates how unused tokens at the\
+            \ lowest level are handled."
+      description: "Bandwidth Profiles are organized into Envelopes. Multiple Bandwidth\
+        \ Profiles in an envelope can share bandwidth resources. Each Envelope has\
+        \ a name and a flag (CF0) that indicates whether unused green tokens are discarded\
+        \ or converted to yellow tokens."
+    objCosFromDscp:
+      required:
+      - "field_F"
+      - "l2cp_P"
+      - "map_M"
+      type: "object"
+      properties:
+        map_M:
+          $ref: "#/components/schemas/objCosDscpMap"
+        field_F:
+          $ref: "#/components/schemas/objCosFromDscpField_F"
+        l2cp_P:
+          $ref: "#/components/schemas/objCosL2cp"
+      description: "Ingress CoS is specified as {F,M,P}. This is when F=DSCP. "
+    objMEPspec:
+      required:
+      - "megLevel"
+      - "mepDirection"
+      type: "object"
+      properties:
+        megLevel:
+          maximum: 7
+          minimum: 0
+          type: "integer"
+          description: "The MEG level"
+        mepDirection:
+          $ref: "#/components/schemas/MepDirection"
+      description: "A 2-tuple for a MEP at an interface containing MEG level and direction"
+    SlsCosNameEntry:
+      type: "object"
+      properties:
+        thresholdC:
+          type: "number"
+          description: "Denotes the threshold for PM, used to determine whether a\
+            \ given time interval delta t has high loss."
+        slsObjectiveAndParameterList:
+          minItems: 0
+          type: "array"
+          items:
+            $ref: "#/components/schemas/SlsObjectiveAndParameters"
+        consecutiveIntervalN:
+          type: "integer"
+          description: "This attribute denotes n, used to identify how many consecutive\
+            \ delta-T intervals must have high loss to trigger a change in Availability."
+        deltaT:
+          type: "integer"
+          description: "This attribute denotes the delta-T, a time interval in seconds,\
+            \ smaller than T (SLS time period)."
+        cosName:
+          type: "string"
+          description: "Class of Service name."
+      description: "The SlsCosNameEntry data type represents the CoS Name entry consisting\
+        \ of a list of 5-tuples of the form <CoS Name, deltat, C, n, PM> where CoS\
+        \ Name as Class of Service Name, deltat as a small time interval, C as a threshold\
+        \ and n to identify consecutive deltat for high loss interval and PM is a\
+        \ non-empty list where each element in the list consists of Performance Metrics.\
+        \ The SlsCosNameEntry data type is associated with EVC or OVC and SlsObjectiveAndParameters.\
+        \ Reference MEF 10.4 Section 8.8 EVC Service Level Specification Service Attribute\
+        \ and MEF 26.2 Section 12.13 OVC Service Level Specification Service Attribute."
+    objVlanRange:
+      required:
+      - "start"
+      type: "object"
+      properties:
+        start:
+          maximum: 4094
+          minimum: 1
+          type: "integer"
+          description: "The starting VLAN of the range or the only VLAN"
+        end:
+          maximum: 4094
+          minimum: 1
+          type: "integer"
+          description: "The final VLAN in the range"
+      description: "A range of VLANs allowing three forms: x, x → x, and x → y"
+    TimeIntervalT:
+      type: "object"
+      properties:
+        number:
+          type: "integer"
+          description: "This denotes the value (for the unit)."
+        unit:
+          $ref: "#/components/schemas/TimeIntervalTUnit"
+      description: "This attribute sets the time interval to evaluate the performance\
+        \ for the SLS.  All performances of this SLS use the same time interval T,\
+        \ which itself may not be constrained, e.g., 1 month."
+    objCcDeiList:
+      required:
+      - "ccDeiList"
+      type: "object"
+      properties:
+        ccDeiList:
+          minItems: 1
+          uniqueItems: true
+          type: "array"
+          description: "If the OVC Egress Map includes CC → DEI, there must be an\
+            \ entry in the list for each Class of Service Name in the OVC List of\
+            \ Class of Service Names."
+          items:
+            $ref: "#/components/schemas/objCcDei"
+      description: "This is a list of 1...n CCDEI Objects. One for each Class of Service."
+    OneWayFrameLossRatioPmMetric:
+      type: "object"
+      properties:
+        oneWayFrameLossRatioObjective:
+          $ref: "#/components/schemas/Percentage"
+        orderedPairs:
+          maxItems: 1
+          minItems: 0
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+      description: "Data type representing One-way Frame Loss Ratio Performance Metric.\
+        \ Reference MEF 10.4 Section 8.8.6 One-way Frame Loss Ratio Performance Metric\
+        \ and MEF 26.2 Section 12.13.6 One-way Frame Loss Performance Metric."
+    cosBWP_oneOf:
+      properties: {}
+      description: "The Bandwidth Profile (or DISABLED)"
+      oneOf:
+      - properties: {}
+        $ref: "#/components/schemas/objBWP"
+      - properties: {}
+        $ref: "#/components/schemas/objDisabled"
+    ingressBandwidthProfile_oneOf:
+      properties: {}
+      description: "Operator UNI Ingress Bandwidth Profile per UNI - MEF 26.2 §14.12"
+      oneOf:
+      - properties: {}
+        $ref: "#/components/schemas/objBWP"
+      - properties: {}
+        $ref: "#/components/schemas/objDisabled"
+    egressBandwidthProfile_oneOf:
+      properties: {}
+      description: "Operator UNI Egress Bandwidth Profile per UNI - MEF 26.2 §14.13"
+      oneOf:
+      - properties: {}
+        $ref: "#/components/schemas/objBWP"
+      - properties: {}
+        $ref: "#/components/schemas/objDisabled"
+    vlanMap_oneOf:
+      properties: {}
+      description: "Either ALL for a port-based service or a list of VLAN Ranges"
+      oneOf:
+      - properties: {}
+        $ref: "#/components/schemas/objVlanRangeList"
+      - properties: {}
+        $ref: "#/components/schemas/objAll"
+    ingressBandwidthProfilePerEndPoint_oneOf:
+      properties: {}
+      description: "Ingress Bandwidth Profile per OVC End Point - MEF 26.2 §16.10"
+      oneOf:
+      - properties: {}
+        $ref: "#/components/schemas/objBWP"
+      - properties: {}
+        $ref: "#/components/schemas/objDisabled"
+    ingressClassOfServiceMap_oneOf:
+      properties: {}
+      description: "OVC End Point Class of Service Identifier - MEF 26.2 §16.6"
+      oneOf:
+      - properties: {}
+        $ref: "#/components/schemas/objCosFromOvcEp"
+      - properties: {}
+        $ref: "#/components/schemas/objCosFromStagPcp"
+      - properties: {}
+        $ref: "#/components/schemas/objCosFromCtagPcp"
+      - properties: {}
+        $ref: "#/components/schemas/objCosFromDscp"
+    protoID_oneOf:
+      properties: {}
+      description: "The EtherType or LLC Address or EtherType/SubType"
+      oneOf:
+      - properties: {}
+        $ref: "#/components/schemas/objEtherType"
+      - properties: {}
+        $ref: "#/components/schemas/objLLC"
+      - properties: {}
+        $ref: "#/components/schemas/objEtherTypeSubType"
+    Code:
+      type: "string"
+      description: |-
+        List of supported error codes:
+        - missingQueryParameter: Missing query-string parameter
+        - missingQueryValue: Invalid query-string parameter value
+        - invalidQuery: Invalid Query
+        - invalidBody: Invalid body
+      enum:
+      - "missingQueryParameter"
+      - "missingQueryValue"
+      - "invalidQuery"
+      - "invalidBody"
+    Error401Code:
+      type: "string"
+      description: |-
+        List of supported error codes:
+        - missingCredentials: Missing credentials
+        - invalidCredentials: Invalid OR expired credentials
+      enum:
+      - "missingCredentials"
+      - "invalidCredentials"
+    Error403Code:
+      type: "string"
+      description: |-
+        List of supported error codes:
+        - accessDenied: Access denied
+        - forbiddenRequester: Forbidden requester
+        - tooManyUsers: Too many users
+      enum:
+      - "accessDenied"
+      - "forbiddenRequester"
+      - "tooManyUsers"
+    Error404Code:
+      type: "string"
+      description: |-
+        List of supported error codes:
+        - notFound: Resource not found
+      enum:
+      - "notFound"
+    Error405Code:
+      type: "string"
+      description: |-
+        List of supported error codes:
+        - methodNotAllowed: Method Not allowed
+      enum:
+      - "methodNotAllowed"
+    Error409Code:
+      type: "string"
+      description: |-
+        List of supported error codes:
+        - conflict: conflicting resource.
+      enum:
+      - "conflict"
+    Error422Code:
+      type: "string"
+      description: |
+        List of supported error codes:
+          - missingProperty: the property the Seller has expected is not present in the payload
+          - invalidValue: the property has an incorrect value
+          - invalidFormat: the property value does not comply to expected value format
+          - referenceNotFound: the object referenced by the property cannot be identified in the Seller system
+          - unexpectedProperty: additional property, not expected by the Seller has been provided
+          - otherIssue: other problem was identified (detailed information provided in a reason)
+      enum:
+      - "missingProperty"
+      - "invalidValue"
+      - "invalidFormat"
+      - "referenceNotFound"
+      - "unexpectedProperty"
+      - "otherIssue"
+    Error500Code:
+      type: "string"
+      description: |-
+        List of supported error codes:
+        - internalError: Internal server error
+      enum:
+      - "internalError"
+    Error501Code:
+      type: "string"
+      description: |-
+        List of supported error codes:
+        - notImplemented: Method not supported by the server
+      enum:
+      - "notImplemented"
+    Field_F:
+      type: "string"
+      description: "The field that indicates CoS = OVC EP."
+      enum:
+      - "OVC_EP"
+    Cm:
+      type: "string"
+      description: "Does the policer consider the color marking in the incoming frame?"
+      enum:
+      - "COLOR_BLIND"
+      - "COLOR_AWARE"
+    CeVlanIdPreservation:
+      type: "string"
+      description: "OVC CE-VLAN ID Preservation - MEF 26.2 §12.7"
+      enum:
+      - "PRESERVE"
+      - "STRIP"
+      - "RETAIN"
+    CTagPcpPreservation:
+      type: "string"
+      description: "OVC CE-VLAN PCP Preservation - MEF 26.2 §12.8"
+      enum:
+      - "ENABLED"
+      - "DISABLED"
+    CTagDeiPreservation:
+      type: "string"
+      description: "OVC CE-VLAN DEI Preservation - MEF 26.2 §12.9"
+      enum:
+      - "ENABLED"
+      - "DISABLED"
+    L2cpAddressSet:
+      type: "string"
+      description: "OVC L2CP Address Set - MEF 45 §8.1 and MEF 26.2 §12.16"
+      enum:
+      - "CTA"
+      - "CTB"
+      - "CTB2"
+    Pcpgreen:
+      type: "string"
+      description: "A PCP value (0-7) or DISCARD to use for Green frames"
+      enum:
+      - "0"
+      - "1"
+      - "2"
+      - "3"
+      - "4"
+      - "5"
+      - "6"
+      - "7"
+      - "DISCARD"
+    Pcpyellow:
+      type: "string"
+      description: "A PCP value (0-7) or DISCARD to use for Yellow frames"
+      enum:
+      - "0"
+      - "1"
+      - "2"
+      - "3"
+      - "4"
+      - "5"
+      - "6"
+      - "7"
+      - "DISCARD"
+    EnniTokenShare:
+      type: "string"
+      description: "ENNI Token Share - MEF 26.2 §13.5"
+      enum:
+      - "ENABLED"
+      - "DISABLED"
+    SVlanIdControl:
+      type: "string"
+      description: "S-VLAN ID Control - MEF 26.2 §13.2"
+      enum:
+      - "FULL"
+      - "PARTIAL"
+    Pcp:
+      type: "string"
+      description: "A PCP value (0-7) or DISCARD"
+      enum:
+      - "0"
+      - "1"
+      - "2"
+      - "3"
+      - "4"
+      - "5"
+      - "6"
+      - "7"
+      - "DISCARD"
+    ConstantDisabled:
+      type: "string"
+      enum:
+      - "DISABLED"
+    ConnectorType:
+      type: "string"
+      enum:
+      - "SC"
+      - "LC"
+      - "RJ45"
+      - "OTHER"
+    LagLinkMeg:
+      type: "string"
+      description: "Operator UNI LAG Link MEG - MEF 26.2 §14.16"
+      enum:
+      - "ENABLED"
+      - "DISABLED"
+    accessElineOperatorUniOrderL2cpAddressSet:
+      type: "string"
+      description: "Operator UNI L2CP Address Set - MEF 26.2 §14.20"
+      enum:
+      - "CTA"
+      - "CTB"
+      - "CTB2"
+    LinkOAM:
+      type: "string"
+      description: "Operator UNI Link OAM - MEF 26.2 §14.14"
+      enum:
+      - "ENABLED"
+      - "DISABLED"
+    Meg:
+      type: "string"
+      description: "Operator UNI MEG - MEF 26.2 §14.15"
+      enum:
+      - "ENABLED"
+      - "DISABLED"
+    SynchronousMode:
+      type: "string"
+      description: "Operator UNI Synchronous Mode - MEF 26.2 §14.3"
+      enum:
+      - "ENABLED"
+      - "DISABLED"
+    LinkAggregation:
+      type: "string"
+      description: "Operator UNI Link Aggregation - MEF 26.2 §14.5"
+      enum:
+      - "NONE"
+      - "2_LINK_ACTIVE_STANDBY"
+      - "ALL_ACTIVE"
+      - "OTHER"
+    TokenShare:
+      type: "string"
+      description: "Operator UNI Token Share - MEF 26.2 §14.18"
+      enum:
+      - "ENABLED"
+      - "DISABLED"
+    Deiyellow:
+      type: "string"
+      description: "A DEI value (0 or 1 or DISCARD) to use for Yellow frames"
+      enum:
+      - "0"
+      - "1"
+      - "DISCARD"
+    Deigreen:
+      type: "string"
+      description: "A DEI value (0 or 1 or DISCARD) to use for Green frames"
+      enum:
+      - "0"
+      - "1"
+      - "DISCARD"
+    objCosFromCtagPcpField_F:
+      type: "string"
+      description: "The Field that indicates CoS is C-Tag PCP."
+      enum:
+      - "C_TAG_PCP"
+    Unit:
+      type: "string"
+      description: "Time units as set of enumerations."
+      enum:
+      - "nanoSeconds"
+      - "microSeconds"
+      - "milliSeconds"
+      - "seconds"
+      - "minutes"
+      - "hours"
+      - "days"
+      - "weeks"
+      - "months"
+      - "years"
+    MegIntermediatePoint:
+      type: "string"
+      description: "OVC End Point MIP - MEF 26.2 §16.16"
+      enum:
+      - "ENABLED"
+      - "DISABLED"
+    ConstantAll:
+      type: "string"
+      enum:
+      - "ALL"
+    objCosFromStagPcpField_F:
+      type: "string"
+      description: "The Field that indicates CoS is S-Tag PCP."
+      enum:
+      - "S_TAG_PCP"
+    objCosFromDscpField_F:
+      type: "string"
+      description: "The Field that indicates CoS is DSCP."
+      enum:
+      - "DSCP"
+    MepDirection:
+      type: "string"
+      description: "Indicates whether this is an Up MEP or Down MEP"
+      enum:
+      - "UP"
+      - "DOWN"
+    TimeIntervalTUnit:
+      type: "string"
+      description: "Time interval unit."
+      enum:
+      - "second"
+      - "minute"
+      - "hour"
+      - "day"
+      - "month"
+      - "week"
+      - "year"
+    FieldedAddress_allOf:
+      required:
+      - "city"
+      - "country"
+      - "streetName"
+      type: "object"
+      properties:
+        country:
+          type: "string"
+          description: "Country that the address is in"
+        streetType:
+          type: "string"
+          description: "Alley, avenue, boulevard, brae, crescent, drive, highway,\
+            \ lane, terrace, parade, place, tarn, way, wharf"
+        postcodeExtension:
+          type: "string"
+          description: "An extension of a postal code. E.g. the part following the\
+            \ dash in an american urban property address"
+        city:
+          type: "string"
+          description: "The city that the address is in"
+        streetNr:
+          type: "string"
+          description: "Number identifying a specific property on a public street.\
+            \ It may be combined with streetNrLast for ranged addresses."
+        locality:
+          type: "string"
+          description: "The locality that the address is in"
+        postcode:
+          type: "string"
+          description: "Descriptor for a postal delivery area, used to speed and simplify\
+            \ the delivery of mail (also known as zip code)"
+        streetNrLast:
+          type: "string"
+          description: "Last number in a range of street numbers allocated to a property"
+        streetNrSuffix:
+          type: "string"
+          description: "The first street number suffix"
+        streetName:
+          type: "string"
+          description: "Name of the street or other street type"
+        stateOrProvince:
+          type: "string"
+          description: "The State or Province that the address is in"
+        streetNrLastSuffix:
+          type: "string"
+          description: "Last street number suffix for a ranged address"
+        geographicSubAddress:
+          $ref: "#/components/schemas/GeographicSubAddress"
+        streetSuffix:
+          type: "string"
+          description: "A modifier denoting a relative direction"
+    FormattedAddress_allOf:
+      required:
+      - "addrLine1"
+      - "city"
+      - "country"
+      type: "object"
+      properties:
+        country:
+          type: "string"
+          description: "Country that the address is in"
+        postcodeExtension:
+          type: "string"
+          description: "An extension of a postal code. E.g. the part following the\
+            \ dash in an US urban property address"
+        stateOrProvince:
+          type: "string"
+          description: "The State or Province that the address is in"
+        city:
+          type: "string"
+          description: "The city that the address is in"
+        addrLine2:
+          type: "string"
+          description: "The second address line in a formatted address"
+        addrLine1:
+          type: "string"
+          description: "The first address line in a formatted address"
+        locality:
+          type: "string"
+          description: "An area of defined or undefined boundaries within a local\
+            \ authority or other legislatively defined area, usually rural or semi\
+            \ rural in nature"
+        postcode:
+          type: "string"
+          description: "Descriptor for a postal delivery area, used to speed and simplify\
+            \ the delivery of mail (also known as ZIP code)"
+    MEFGeographicLocation_allOf:
+      required:
+      - "geographicPoint"
+      - "spatialRef"
+      type: "object"
+      properties:
+        spatialRef:
+          type: "string"
+          description: "The spatial reference system used to determine the coordinates"
+        geographicPoint:
+          $ref: "#/components/schemas/MEFGeographicPoint"
+    PlaceRef_allOf:
+      required:
+      - "@referredType"
+      - "id"
+      type: "object"
+      properties:
+        '@referredType':
+          type: "string"
+          description: "The actual type of the target instance when needed for disambiguation."
+        href:
+          type: "string"
+          description: |
+            Hyperlink to the referenced place Hyperlink MAY be used when providing response by the Seller Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request
+        id:
+          type: "string"
+          description: "Identifier of the referenced place. This identifier is assigned\
+            \ during successful address validation request (Sonata Geographic Address\
+            \ Management API)"
+    GlobalAddressId_allOf:
+      required:
+      - "externalReferenceId"
+      - "externalReferenceType"
+      type: "object"
+      properties:
+        externalReferenceId:
+          type: "string"
+          description: "A reference to an address by id; this would include such things\
+            \ as CLLI (Common Language Location Identifier) code"
+        externalReferenceType:
+          type: "string"
+          description: "The type of the reference. For North American providers this\
+            \ would normally be CLLI (Common Language Location Identifier) code"
+    Error400_allOf:
+      required:
+      - "code"
+      type: "object"
+      properties:
+        code:
+          $ref: "#/components/schemas/Code"
+    Error401_allOf:
+      required:
+      - "code"
+      type: "object"
+      properties:
+        code:
+          $ref: "#/components/schemas/Error401Code"
+    Error403_allOf:
+      required:
+      - "code"
+      type: "object"
+      properties:
+        code:
+          $ref: "#/components/schemas/Error403Code"
+    Error404_allOf:
+      required:
+      - "code"
+      type: "object"
+      properties:
+        code:
+          $ref: "#/components/schemas/Error404Code"
+    Error405_allOf:
+      required:
+      - "code"
+      type: "object"
+      properties:
+        code:
+          $ref: "#/components/schemas/Error405Code"
+    Error409_allOf:
+      required:
+      - "code"
+      type: "object"
+      properties:
+        code:
+          $ref: "#/components/schemas/Error409Code"
+    Error422_allOf:
+      required:
+      - "code"
+      type: "object"
+      properties:
+        code:
+          $ref: "#/components/schemas/Error422Code"
+        propertyPath:
+          type: "string"
+          description: |
+            A pointer to a particular property of the payload that caused the validation issue.
+            Defined using JsonPath format (https://goessner.net/articles/JsonPath/)
+    Error500_allOf:
+      required:
+      - "code"
+      type: "object"
+      properties:
+        code:
+          $ref: "#/components/schemas/Error500Code"
+    Error501_allOf:
+      required:
+      - "code"
+      type: "object"
+      properties:
+        code:
+          $ref: "#/components/schemas/Error501Code"
+    accessElineOvcOrder_allOf:
+      title: "JSON Schema accessElineOvc - Order, updated: 2020730 ( #2 )"
+      required:
+      - "enniEP"
+      - "uniEP"
+      type: "object"
+      properties:
+        ceVlanIdPreservation:
+          $ref: "#/components/schemas/CeVlanIdPreservation"
+        cTagPcpPreservation:
+          $ref: "#/components/schemas/CTagPcpPreservation"
+        cTagDeiPreservation:
+          $ref: "#/components/schemas/CTagDeiPreservation"
+        enniEP:
+          $ref: "#/components/schemas/objOvcEP"
+        listOfClassOfServiceNames:
+          maxItems: 8
+          minItems: 1
+          uniqueItems: true
+          type: "array"
+          description: "OVC List of Class of Service Names - MEF 26.2 §12.12"
+          items:
+            type: "string"
+        availableMegLevel:
+          maximum: 6
+          minimum: 0
+          type: "number"
+          description: "OVC Available MEG Level - MEF 26.2 §12.15"
+        l2cpAddressSet:
+          $ref: "#/components/schemas/L2cpAddressSet"
+        carrierEthernetSls:
+          $ref: "#/components/schemas/objSLS"
+        maximumFrameSize:
+          minimum: 1526
+          type: "integer"
+          description: "OVC Maximum Frame Size - MEF 26.2 §12.6"
+        uniEP:
+          $ref: "#/components/schemas/objOvcEP"
+      description: "MEF Forum LSO Sonata Product Schema for Access E-Line Ovc - Function:\
+        \ Order"
+    accessElineOperatorUniOrder_allOf:
+      title: "JSON Schema accessElineOperatorUni - Order, updated: 2020730 ( #2 )"
+      required:
+      - "connectorType"
+      - "maximumServiceFrameSize"
+      - "numberOfLinks"
+      - "physicalLayer"
+      - "synchronousMode"
+      type: "object"
+      properties:
+        connectorType:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ConnectorType"
+        numberOfLinks:
+          maximum: 8
+          minimum: 1
+          type: "number"
+          description: "Operator UNI Number of Links - MEF 26.2 §14.4"
+        defaultCeVlanId:
+          maximum: 4094
+          minimum: 1
+          type: "integer"
+          description: "Operator UNI Default CE-VLAN ID - MEF 26.2 §14.9"
+        physicalLayer:
+          maxItems: 8
+          minItems: 1
+          type: "array"
+          description: "Operator UNI Physical Layer - MEF 26.2 §14.2"
+          items:
+            pattern: "[0-9]+[G]?BASE-[A-Z0-9]{1,2}$"
+            type: "string"
+        portConversation:
+          $ref: "#/components/schemas/objConvToAggLink"
+        ingressBandwidthProfile:
+          description: "Operator UNI Ingress Bandwidth Profile per UNI - MEF 26.2\
+            \ §14.12"
+          $ref: "#/components/schemas/ingressBandwidthProfile_oneOf"
+        maximumNumberOfCeVlanIdsPerOvcEndPoint:
+          maximum: 4094
+          minimum: 1
+          type: "integer"
+          description: "Operator UNI Maximum Number of CE-VLAN IDs per OVC End Point\
+            \ - MEF 26.2 §14.11"
+        lagLinkMeg:
+          $ref: "#/components/schemas/LagLinkMeg"
+        l2cpAddressSet:
+          $ref: "#/components/schemas/accessElineOperatorUniOrderL2cpAddressSet"
+        linkOAM:
+          $ref: "#/components/schemas/LinkOAM"
+        meg:
+          $ref: "#/components/schemas/Meg"
+        synchronousMode:
+          $ref: "#/components/schemas/SynchronousMode"
+        linkAggregation:
+          $ref: "#/components/schemas/LinkAggregation"
+        maximumNumberOfOvcEndPoints:
+          maximum: 4094
+          minimum: 1
+          type: "integer"
+          description: "Operator UNI Maximum Number of OVC End Points - MEF 26.2 §\
+            14.10"
+        egressBandwidthProfile:
+          description: "Operator UNI Egress Bandwidth Profile per UNI - MEF 26.2 §\
+            14.13"
+          $ref: "#/components/schemas/egressBandwidthProfile_oneOf"
+        l2cpPeering:
+          minItems: 0
+          type: "array"
+          description: "Operator UNI L2CP Peering - MEF 26.2 §14.21"
+          items:
+            $ref: "#/components/schemas/objL2cpIdentifer"
+        tokenShare:
+          $ref: "#/components/schemas/TokenShare"
+        maximumServiceFrameSize:
+          minimum: 1522
+          type: "number"
+          description: "Operator UNI Maximum Service Frame Size - MEF 26.2 §14.8"
+        envelopes:
+          minItems: 0
+          type: "array"
+          description: "Operator UNI Envelopes - MEF 26.2 §14.19"
+          items:
+            $ref: "#/components/schemas/objEnvelope"
+      description: "MEF Forum LSO Sonata Product Schema for Access E-Line OperatorUni\
+        \ - Function: Order"
+    accessElineEnniOrder_allOf:
+      title: "JSON Schema accessElineEnni - Order, updated: 2020730 ( #2 )"
+      required:
+      - "enniService"
+      type: "object"
+      properties:
+        enniService:
+          $ref: "#/components/schemas/objEnniService"
+      description: "MEF Forum LSO Sonata Product Schema for Access E-Line Enni - Function:\
+        \ Order"

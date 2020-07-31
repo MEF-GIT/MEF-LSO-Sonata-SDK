@@ -1,0 +1,21 @@
+@startuml
+
+skinparam state {
+    BackgroundColor White
+    BorderColor Black
+}
+[*] --> accepted : initial request validation successful
+accepted --> inProgress : deferred response \n requested by the Buyer
+accepted --> done : instant qualification requested \n sufficient informaion
+accepted --> terminatedWithError  : instant qualification requested \n insufficient information
+accepted --> done.abandoned  : other item \n could not be completed
+inProgress --> done  : successfully completed
+inProgress --> terminatedWithError : insufficient information
+inProgress --> done.abandoned : other item \n could not be completed
+done --> [*] 
+
+terminatedWithError --> [*]
+done.abandoned --> [*]
+
+
+@enduml
