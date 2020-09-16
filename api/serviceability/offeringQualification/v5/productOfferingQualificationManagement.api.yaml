@@ -20,7 +20,7 @@ info:
     
     The ProductOfferingQualification API used TMF 679 (v4.0) as a template.
 
-  version: 5.0.0-RC
+  version: 5.0.0-RC2
   title: API Product Offering Qualification Management
 host: serverRoot
 basePath: /mefApi/sonata/productOfferingQualification/v5/
@@ -813,15 +813,15 @@ definitions:
 
       This type should be use to represent Service Site Identifier from MEF 79
       (Table 21).
-  ProductActionType:
+  MEFProductActionType:
     type: string
     description: |
       Action to be performed on the Product Item. The action types are described
       in MEF 79 (Sn 8.4.1.1).
 
-      The following mapping has been used between `ProductActionType` and MEF 79:
+      The following mapping has been used between `MEFProductActionType` and MEF 79:
 
-      | ProductActionType | MEF 79     |
+      | MEFProductActionType | MEF 79     |
       |------------------ | ---------- |
       | add               | INSTALL    |
       | modify            | CHANGE     |
@@ -1165,9 +1165,6 @@ definitions:
         description: |
           Related Product Identifier list is constructed from product ids having the same groupingKey and relationshipType.
           Reference: MEF 79.0.1 (Sn 7)
-      name:
-        type: string
-        description: Name of the related entity.
       relationshipType:
         type: string
         description: >-
@@ -1397,7 +1394,7 @@ definitions:
       action:
         description: >-
           Action to be qualified
-        $ref: '#/definitions/ProductActionType'
+        $ref: '#/definitions/MEFProductActionType'
       expectedActivationDate:
         type: string
         format: date-time

@@ -2,7 +2,7 @@ swagger: '2.0'
 info:
   title: API Product Ordering Management
   description: "**Product Ordering Management**\n\nThe scope of this API  introduces the following capabilities to the API:\n•\tInstall order: request for new product\n•\tChange Order: change an existing Product\n•\tDisconnect Order:  disconnect an existing Product \n•\tCancel Order: cancellation of an inflight-order\n•\tSupport for Order Notifications\n\nThe buyer could also retrieve a single, or set, of Product Orders based upon a specified filter.  \n\nFollowing feature will be introduced in next release:\n•\tAmend Order: modification of an inflight-order\n\nProduct Order API used TMF 622 as template."
-  version: 5.0.0-RC
+  version: 5.0.0-RC2
 host: serverRoot
 basePath: /mefApi/sonata/productOrderingManagement/v5/
 schemes:
@@ -953,7 +953,7 @@ definitions:
         type: integer
         description: The length of the contract in months.
       action:
-        $ref: '#/definitions/OrderItemActionType'
+        $ref: '#/definitions/MEFProductActionType'
         description: 'The action to be carried out on the Product. Can be: add, modify, delete.'
       billingAccount:
         $ref: '#/definitions/MEFBillingAccountRefOrValue'
@@ -1173,7 +1173,7 @@ definitions:
       '@type':
         type: string
         description: 'When sub-classing, this defines the sub-class entity name'
-  OrderItemActionType:
+  MEFProductActionType:
     type: string
     description: action to be performed on the product
     enum:
@@ -1584,7 +1584,7 @@ definitions:
         type: integer
         description: The length of the contract in months.
       action:
-        $ref: '#/definitions/OrderItemActionType'
+        $ref: '#/definitions/MEFProductActionType'
         description: 'The action to be carried out on the Product. Can be: add, modify, delete'
       billingAccount:
         $ref: '#/definitions/MEFBillingAccountRefOrValue'
@@ -1645,9 +1645,6 @@ definitions:
       buyerProductId:
         type: string
         description: Buyer identifier of the product
-      name:
-        type: string
-        description: Name of the related entity.
       relationshipType:
         type: string
         description: 'Type of the product relationship, such as [bundled] if the product is a bundle and you want to describe the bundled products inside this bundle; [reliesOn] if the product needs another already owned product to rely on (e.g. an option on an already owned mobile access product) [targets] or [isTargeted] (depending on the way of expressing the link) for any other kind of links that may be useful'
