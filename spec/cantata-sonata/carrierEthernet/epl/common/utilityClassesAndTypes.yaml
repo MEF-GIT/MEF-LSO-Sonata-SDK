@@ -1,0 +1,205 @@
+---
+"$schema": http://json-schema.org/draft-07/schema#
+title: 
+    MEF LSO Sonata - Utility Classes and Types (Common) Product Specification
+    # MEF Forum - Date: 20201222  Edit-level: 178
+    # File: json-format/epl/common/utilityClassesAndTypes.yaml
+definitions:
+    MepLevelAndDirection:
+        type: object
+        description:  >-
+            A 2-tuple <level, direction> that defines the MEG Level and
+            MEP direction.
+        properties:
+            level:
+                description: The MEG level
+                type: integer
+                minimum: 0
+                maximum: 7
+            mepDirection:
+                description: Indicates whether this is an Up MEP or Down MEP
+                type: string
+                enum:
+                    - "UP"
+                    - "DOWN"
+        required:
+            - level
+            - mepDirection
+    SourceMacAddressLimit:
+        type: object
+        description:  >-
+            This limits the number of source MAC addresses that can be
+            used in ingress  frame mapped to the End Point of all types over
+            a time interval. It is a recommendation that each Ingress EI Frame
+            with a source MAC address that would exceed the limit be discarded
+            by the Carrier Ethernet Network.
+        properties:
+            limit:
+                description:  >-
+                    The number of MAC source addresses that will not subject an
+                    Ingress EI Frame to discard during the time interval.
+                type: integer
+                minimum: 1
+            interval:
+                description:  >-
+                    The time interval in seconds over which the source address
+                    limit is evaluated
+                type: object
+                $ref: "#/definitions/ShortDuration"
+        required:
+            - limit
+            - interval
+    AggLinkDepth:
+        type: object
+        description:  >-
+            This is a pair of <VLAN ID, link depth> indicating that a given
+            VLAN ID maps to a given number of links in the Port Conversation
+            ID to Aggregation Link Map.
+        properties:
+            vlanID:
+                description: The VLAN ID
+                type: integer
+                minimum: 1
+                maximum: 4094
+            lagDepth:
+                description: The number of Link Aggregation links available to the VLAN
+                type: integer
+                minimum: 1
+        required:
+            - vlanID
+            - lagDepth
+    FrameDisposition:
+        type: object
+        description:  >-
+            A 3-tuple that indicates how Unicast, Multicast, and Broadcast
+            Frames are delivered by the service. For each, the value can be
+            UNCONDITIONAL, the frames are delivered without condition, CONDITIONAL,
+            the frames are delivered based on conditions agreed to between
+            buyer and seller (e.g., based on learned addresses), and DISCARD.
+        properties:
+            unicast:
+                type: object
+                $ref: "#/definitions/FrameDispEnum"
+            multicast:
+                type: object
+                $ref: "#/definitions/FrameDispEnum"
+            broadcast:
+                type: object
+                $ref: "#/definitions/FrameDispEnum"
+        required:
+            - unicast
+            - multicast
+            - broadcast
+    FrameDispEnum:
+        type: string
+        enum:
+            - "DISCARD"
+            - "DELIVER_UNCONDITIONALLY"
+            - "DELIVER_CONDITIONALLY"
+    EnabledDisabled:
+        description: Enumeration to indicate Enabled/Disabled state of an attribute
+        type: string
+        enum:
+            - "ENABLED"
+            - "DISABLED"
+    InformationRate:
+        type: object
+        description: A value and a unit of measure that specifies an Information Rate.
+        properties:
+            irValue:
+                description:  >-
+                    The value in the information rate. For example if the information
+                    rate is 70 kbps this element is 70.
+                type: number
+                minimum: 0
+            irUnits:
+                description:  >-
+                    The unit of measure for the Information Rate. For example if
+                    the Information Rate is 70 kbps this element is kbps.
+                type: string
+                enum:
+                    - "BPS"
+                    - "KBPS"
+                    - "MBPS"
+                    - "GBPS"
+                    - "TBPS"
+                    - "PBPS"
+                    - "EBPS"
+                    - "ZBPS"
+                    - "YBPS"
+        required:
+            - irValue
+            - irUnits
+    DataSize:
+        type: object
+        description:  >-
+            A value and a unit of measure that specifies a data size for
+            example for a buffer or a burst size.
+        properties:
+            dataSizeValue:
+                description:  >-
+                    The value in the data size. For example, if a burst size is
+                    40 KBYTES, this element is 40.
+                type: integer
+            dataSizeUnits:
+                description:  >-
+                    The unit of measure in the data size. For example, if a burst
+                    size is 40 KBYTES, this element is KBYTES.
+                type: string
+                enum:
+                    - "BYTES"
+                    - "KBYTES"
+                    - "MBYTES"
+                    - "GBYTES"
+                    - "TBYTES"
+                    - "PBYTES"
+                    - "EBYTES"
+                    - "ZBYTES"
+                    - "YBYTES"
+        required:
+            - dataSizeValue
+            - dataSizeUnits
+    ShortDuration:
+        type: object
+        description:  >-
+            This class is used to describe durations expressed in minutes
+            or smaller time units
+        properties:
+            shortDurationValue:
+                description:  >-
+                    The value of the duration. For example, if the duration is
+                    20 ms, this element is 20.
+                type: integer
+            shortDurationUnits:
+                description:  >-
+                    The unit of measure in the duration. For example, if an interval
+                    is 2ms, this element is MS.
+                type: string
+                enum:
+                    - "NS"
+                    - "US"
+                    - "MS"
+                    - "SEC"
+                    - "MIN"
+        required:
+            - shortDurationValue
+            - shortDurationUnits
+    PcpValueAndDiscard:
+        type: string
+        enum:
+            - "0"
+            - "1"
+            - "2"
+            - "3"
+            - "4"
+            - "5"
+            - "6"
+            - "7"
+            - "DISCARD"
+    DeiValueAndDiscard:
+        type: string
+        enum:
+            - "0"
+            - "1"
+            - "DISCARD"
+

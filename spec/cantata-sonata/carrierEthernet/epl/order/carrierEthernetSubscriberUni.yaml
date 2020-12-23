@@ -1,0 +1,187 @@
+---
+"$schema": http://json-schema.org/draft-07/schema#
+"$id": urn:mef:lso:spec:cantata-sonata:SubscriberUni:v1.0.0:order
+title: 
+    MEF LSO Cantata-Sonata - Carrier Ethernet Subscriber UNI (Order) Product Specification
+    # MEF Forum - Date: 20201222  Edit-level: 178
+    # File: epl/order/carrierEthernetSubscriberUni.yaml
+description:  >-
+    The Subscriber UNI Service Attributes values are agreed to
+    by the Subscriber and the Service Provider to describe the behavior
+    of the UNI. All of these Service Attributes can be modified after
+    initial provisioning of the UNI except the components of the List
+    of Physical Links and Link Aggregation-related attributes.
+properties:
+    instantiation:
+        description:  >-
+            MEF 10.4 §9.2 - When the value is Physical, the UNI is implemented
+            using one or more instances of a standard Physical Layer. When
+            the value is Virtual, the physical layer is not specified.
+        type: string
+        enum:
+            - "PHYSICAL"
+            - "VIRTUAL"
+    virtualFrameMap:
+        description:  >-
+            MEF 10.4 §9.2 and §9.3 - When the value of the Subscriber UNI
+            Instantiation Service Attribute = Virtual, there must exist a map
+            that maps the set of Virtual Frames that cross the UNI to a sequence
+            of pairs of the form 〈s,t〉 where s is a standard Ethernet frame
+            per Clause 3 of IEEE Std 802.3 – 2015 [5] and t is the arrival
+            time at the UNI for all bits in s. Since MEF 10.4 does not specify
+            the contents or format of this map, it is currently defined as
+            an arbitrary length string.
+        type: array 
+        minItems: 0
+        maxItems: 1
+        uniqueItems: TRUE
+        items:
+            type: object
+            $ref: "../common/carrierEthernetExternalInterfaces.yaml#/definitions/VirtualFrameMap"
+    listOfPhyLinks:
+        description:  >-
+            MEF 10.4 §9.4 - The value of the Subscriber UNI List of Physical
+            Links Service Attribute is a list of 5-tuples of the form <id,
+            physicalLink, synchronousEthernet, precisionTiming, demarcConnectorType>,
+            with one list item for each physical link. The value of id is an
+            identifier for the physical link. The value of physicalLink is
+            the specific Ethernet physical layer type. synchronousEthernet
+            indicates if synchronous Ethernet is used on the physical link
+            and has the value Enabled or Disabled. The value of precisionTiming
+            indicates if the Precision Time Protocol is used on the physical
+            link and has the value Enabled or Disabled. The value of demarcConnectorType
+            specifies the type of connector used. Note that the id and the
+            physicalLink come from the CarrierEthernetPhysicalLink class.
+        # See additional validation notes in the manual
+        type: array 
+        minItems: 0
+        uniqueItems: FALSE
+        items:
+            type: object
+            $ref: "../common/carrierEthernetExternalInterfaces.yaml#/definitions/UniPhysicalLink"
+    linkAggregation:
+        description:  >-
+            MEF 10.4 §9.5 - Data type representing Link Aggregation types.
+            NONE-No Link Aggregation is used. 2_LINK_ACTIVE_STANDBY-The SP
+            network uses Link Aggregation as in either Clause 5.6.1 of IEEE
+            Std 802.1AX-2008 [2] or Clause 6.7.1 of IEEE Std 802.1AX-2014 with
+            one Link Aggregation Group(LAG) across the links supporting the
+            UNI/ENNI such that all Service Frames are carried on only one of
+            the two links when both links are operational. ALL_ACTIVE-The SP
+            Network uses Link Aggregation as specified in Clause 5.3 of IEEE
+            Std 802.1AX-2014, including the use of the version 2 LACPDUs as
+            specified in Clause 5.3.1h of IEEE Std 802.1AZ-2014, with one Link
+            Aggregation Group (LAG) across the links. OTHER-The Operator/Subscriber/Service
+            Provider agree on another other resiliency mechanism.
+        type: string
+        enum:
+            - "NONE"
+            - "2_LINK_ACTIVE_STANDBY"
+            - "ALL_ACTIVE"
+            - "OTHER"
+    portConversation:
+        description:  >-
+            MEF 10.4 §9.6 - A mapping of Port Conversation IDs (i.e., VLAN
+            IDs or zero for untagged frames) to an ordered list of physical
+            links if there are multiple physical links in the UNI and the link
+            aggregation is ALL_ACTIVE.
+        type: array 
+        minItems: 0
+        uniqueItems: FALSE
+        items:
+            type: object
+            $ref: "../common/carrierEthernetLinkAggregation.yaml#/definitions/ConversationIdToAggregationLinkMap"
+    maximumServiceFrameSize:
+        description:  >-
+            MEF 10.4 §9.8 - Specifies the maximum size of Service Frames
+            that can be transmitted across UNI.
+        type: integer
+        minimum: 1522
+    maximumNumberOfEndPoints:
+        description:  >-
+            MEF 10.4 §9.9 - The maximum number of OVC End Points that the
+            Operator CEN can support at the UNI.
+        type: integer
+        minimum: 1
+        maximum: 4094
+    maximumNumberOfCtagVlanIdsPerEndPoint:
+        description:  >-
+            MEF 10.4 §9.10 - An integer greater than or equal to 1 that
+            limits the number of C-Tag VLAN IDs that can map to each EVC End
+            Point.
+        type: integer
+        minimum: 1
+        maximum: 4094
+    tokenShare:
+        description:  >-
+            MEF 10.4 §9.11 - An attribute that indicates whether Bandwidth
+            Profile Envelopes containing more than one Bandwidth Profile Flow
+            are supported by the Service Provider at the Subscriber UNI.
+        type: object
+        $ref: "../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
+    envelopes:
+        description:  >-
+            MEF 10.4 §9.12 - The Envelopes and Envelope Coupling Flag values
+            to which Bandwidth Profile Flows can be mapped. Value is list of
+            {envelopeID, couplingFlagForIndexZero}.
+        # See additional validation notes in the manual
+        type: array 
+        minItems: 0
+        uniqueItems: TRUE
+        items:
+            type: object
+            $ref: "../common/carrierEthernetBandwidthProfile.yaml#/definitions/Envelope"
+    linkOAM:
+        description:  >-
+            MEF 10.4 §9.13 - Controls when and how Link OAM per IEEE Std
+            802.3-2015 is run on the physical links in the UNI.
+        type: object
+        $ref: "../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
+    meg:
+        description:  >-
+            MEF 10.4 §9.14 - Indicates if the Service Provider has instantiated
+            a MEG End Point (MEP) at the UNI Maintenance Entity Group (MEG)
+            Level (ENABLED) or not (DISABLED).
+        type: object
+        $ref: "../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
+    lagLinkMeg:
+        description:  >-
+            MEF 10.4 §9.15 - Indicates if the Service Provider has instantiated
+            a LAG Link MEG End Point (MEP) on each physical link in the UNI
+            if the UNI has more than one physical link (ENABLED) or not (DISABLED).
+        type: object
+        $ref: "../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
+    l2cpAddressSet:
+        description:  >-
+            MEF 10.4 §9.16 and MEF 45.1 §8.1 - L2CP Address Set Service
+            Attribute is defined in MEF 45.1. CTA CEVLAN Tag Aware for VLAN-based
+            services where the CE-VLAN ID is used to map a frame to a service.
+            CTB CVLAN Tag Blind for Port-based services where the CE-VLAN ID
+            not used to map a frame to a service. CTB2 CVLAN Tag Blind Option
+            2 for point-to-point Port-based services that support the EPL Option
+            2 L2CP processing.
+        type: string
+        enum:
+            - "CTA"
+            - "CTB"
+            - "CTB2"
+    l2cpPeering:
+        description:  >-
+            MEF 10.4 §9.17 and MEF 45.1 §8.2 - L2CP Peering Service Attribute
+            defined in MEF 45.1 specifies which protocols, if any, are peered
+            at the UNI. The L2CP Peering service attribute value must be an
+            empty list, or a list of entries identifying protocols to be Peered
+            where each entry consists of {Destination Address, Protocol Identifier}
+            or {Destination Address, Protocol Identifier, Link Identifier}.
+        type: object
+        $ref: "../common/carrierEthernetL2cp.yaml#/definitions/L2cpPeering"
+required:
+    - instantiation
+    - listOfPhyLinks
+    - linkAggregation
+    - maximumServiceFrameSize
+    - linkOAM
+    - meg
+    - l2cpAddressSet
+    - l2cpPeering
+

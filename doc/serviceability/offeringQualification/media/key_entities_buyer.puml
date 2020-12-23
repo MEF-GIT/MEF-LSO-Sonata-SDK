@@ -1,0 +1,103 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+
+class ProductOfferingQualification_Create {
+
+}
+
+ProductOfferingQualification_Create --|> ProductOfferingQualification_Common
+
+ProductOfferingQualification_Create *->"1..*" ProductOfferingQualificationItem_Create : productOfferingQualificationItem
+
+class ProductOfferingQualificationItem_Create {
+
+}
+ProductOfferingQualificationItem_Create --|> ProductOfferingQualificationItem_Common
+
+class MEFProductConfiguration {
+
+    @schemaLocation: uri 
+    @type*: string
+}
+
+
+class MEFProductRefOrValue {
+
+    href: string 
+    id: string 
+    productOffering: ProductOfferingRef
+    productSpecification: ProductSpecificationRef
+    @type*: string 
+}
+
+MEFProductRefOrValue *-->"*" RelatedPlaceRefOrValue : place
+MEFProductRefOrValue *--> MEFProductConfiguration : productConfiguration
+MEFProductRefOrValue *->"*" ProductRelationship : productRelationship
+
+
+
+class ProductOfferingQualificationItem_Common {
+
+    action*: ProductActionType 
+    id*: string 
+
+}
+
+ProductOfferingQualificationItem_Common *-->"1" MEFProductRefOrValue : product
+ProductOfferingQualificationItem_Common *->"*" QualificationItemRelationship : qualificationItemRelationship
+ProductOfferingQualificationItem_Common *-->"*" RelatedContactInformation : relatedContactInformation
+
+
+class QualificationItemRelationship {
+
+    id*: string 
+    relationshipType*: string 
+}
+
+
+
+class ProductOfferingQualification_Common {
+
+    instantSyncQualification: boolean 
+    projectId: string 
+    provideAlternative: boolean 
+    requestedPOQCompletionDate: date-time 
+}
+
+ProductOfferingQualification_Common *--->"1..*" RelatedContactInformation : relatedContactInformation
+
+class ProductRelationship {
+
+    href: string 
+    id*: string 
+    groupingKey: string 
+    relationshipType*: string 
+}
+
+
+
+
+class RelatedContactInformation {
+
+    emailAddress*: string 
+    name*: string 
+    number*: string 
+    numberExtension: string 
+    organization: string
+    postalAddress: FieldedAddress
+    role*: string 
+}
+
+class RelatedPlaceRefOrValue {
+
+    @schemaLocation: uri 
+    @type*: string 
+    role*: string 
+}
+
+
+@enduml

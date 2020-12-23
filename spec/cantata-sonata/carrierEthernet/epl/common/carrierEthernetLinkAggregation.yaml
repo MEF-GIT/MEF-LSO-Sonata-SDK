@@ -1,0 +1,81 @@
+---
+"$schema": http://json-schema.org/draft-07/schema#
+title: 
+    MEF LSO Sonata - Carrier Ethernet Link Aggregation (Common) Product Specification
+    # MEF Forum - Date: 20201222  Edit-level: 178
+    # File: json-format/epl/common/carrierEthernetLinkAggregation.yaml
+definitions:
+    ConversationIdToAggregationLinkMap:
+        type: object
+        description:  >-
+            This is a 2-tuple ⟨x,y⟩ where x is a Port Conversation ID (a
+            VLAN or range of VLANs or 0 for untagged frames) and y is a list
+            of Link Aggregation Links. This is used in the Port Conversation
+            to Aggregation Link Map for the UNI and ENNI.
+        properties:
+            conversationIDs:
+                description:  >-
+                    802.1AX-2014 §6.6.2.1 - A Port Conversation ID is a VLAN ID
+                    (1 to 4094) or 0 to represent untagged and priority-tagged frames.
+                type: array 
+                minItems: 1
+                uniqueItems: TRUE
+                items:
+                    type: object
+                    $ref: "#/definitions/ConversationIdRange"
+            aggLinkList:
+                description: 802.1AX-2014 §6.6.2.1 - An ordered list of Aggregation Link Numbers
+                # See additional validation notes in the manual
+                type: array 
+                minItems: 1
+                uniqueItems: TRUE
+                items:
+                    type: integer
+                    minimum: 1
+        required:
+            - conversationIDs
+            - aggLinkList
+    ConversationIdRangeList:
+        type: object
+        description:  >-
+            A list of Port ConversationID (VLAN ID or 0 for untagged) used
+            in the VLAN Map
+        properties:
+            conversationIdRangeList:
+                description: A list of Conversation IDs
+                # Ensure that the specified ranges do not overlap/have common values
+                # See additional validation notes in the manual
+                type: array 
+                minItems: 1
+                uniqueItems: TRUE
+                items:
+                    type: object
+                    $ref: "#/definitions/ConversationIdRange"
+        required:
+            - conversationIdRangeList
+    ConversationIdRange:
+        type: object
+        description:  >-
+            A range of ConversationID (either a VLAN Id or 0 for untagged
+            frames)  allowing three forms: start, start → start, and start
+            → end
+        properties:
+            start:
+                description:  >-
+                    The starting Conversation ID of the range or the only Conversation
+                    ID if there is no end value
+                # start must be less than or equal to end
+                # See additional validation notes in the manual
+                type: integer
+                minimum: 0
+                maximum: 4094
+            end:
+                description: The final Conversation ID in the range
+                # end, if specified, must be greater than or equal to start
+                # See additional validation notes in the manual
+                type: integer
+                minimum: 0
+                maximum: 4094
+        required:
+            - start
+

@@ -1,0 +1,55 @@
+---
+"$schema": http://json-schema.org/draft-07/schema#
+"$id": urn:mef:lso:spec:sonata:OperatorMultilateral:v1.0.0:inventory
+title: 
+    MEF LSO Sonata - Operator Multilateral Attributes (Inventory) Product Specification
+    # MEF Forum - Date: 20201220  Edit-level: 178
+    # File: accessEline/inventory/operatorMultilateralAttributes.yaml
+description:  >-
+    An Operator Multilateral Attribute is a behavior of a single
+    Operator CEN at an ENNI that is externally visible to a Service
+    Provider or Super Operator using that CEN and ENNI and/or to peer
+    Operators operating CENs on the other side of the ENNI. An Operator
+    Multilateral Attribute has the same value for all Service Providers
+    or Super Operators using that CEN and ENNI to whom the behavior
+    is externally visible.
+properties:
+    l2cpPeering:
+        description:  >-
+            MEF 26.2 §10.1 and  MEF 45 §8.2 - A list of Layer 2 Control
+            Protocols that will be Peered by a protocol entity at an ENNI:
+            an empty list, or a list of entries identifying protocols to be
+            Peered where each entry consists of {Destination Address, Protocol
+            Identifier} or {Destination Address, Protocol Identifier, Link
+            Identifier}
+        # See additional validation notes in the manual
+        type: array 
+        minItems: 0
+        uniqueItems: FALSE
+        items:
+            type: object
+            $ref: "../common/carrierEthernetL2cp.yaml#/definitions/L2cpPeering"
+    taggedL2cpFrameProcessing:
+        description:  >-
+            MEF 26.2 §10.2 and MEF 45 §8.3 - Reflects the capability of
+            the ENNI to process S-VLAN-tagged L2CP Frames in an 802.1 compliant
+            manner. The allowed values are “802_1_COMPLIANT” or “802_1_NON_COMPLIANT”.
+            A value of 802_1_COMPLIANT means the ENNI will apply the special
+            forwarding rules to Tagged L2CP ENNI Frames that map to a VUNI
+            or an OVC End Point supporting a service other than EPL with EPL
+            Option 2 L2CP processing. A value of 802_1_NON_COMPLIANT means
+            the ENNI will pass any Tagged L2CP ENNI Frames. There is an ENNI
+            Tagged L2CP Frame Processing Multilateral Attribute for each ENNI.
+        # MEF 51.1 indicates that the value SHOULD be 802_1_COMPLIANT
+        type: string
+        enum:
+            - "802_1_COMPLIANT"
+            - "802_1_NON_COMPLIANT"
+    maximumFrameSizeMultilateral:
+        description:  >-
+            MEF 26.2 §10.3 - The maximum length ENNI Frame in bytes that
+            can be reliably processed.
+        # See additional validation notes in the manual
+        type: integer
+        minimum: 1526
+

@@ -46,9 +46,8 @@ Error <|-- Error500
 
 class Error {
 
-    reason*: string 
     message: string 
-    status: string 
+    reason*: string 
     referenceError: uri 
 }
 
@@ -56,117 +55,102 @@ class Error {
 
 class FieldedAddress {
 
-    id: string 
-    href: string 
     city*: string 
     country*: string 
     locality: string 
-    name: string 
-    postcode*: string 
+    postcode: string 
     postcodeExtension: string 
-    stateOrProvince*: string 
-    streetName: string 
+    stateOrProvince: string 
+    streetName*: string 
     streetNr: string 
     streetNrLast: string 
     streetNrLastSuffix: string 
     streetNrSuffix: string 
     streetSuffix: string 
-    streetType*: string 
-    @type: string 
+    streetType: string 
 }
+GeographicAddressRefOrValue <|-- FieldedAddress
 
 FieldedAddress *--> GeographicSubAddress : geographicSubAddress
 
 
 class FormattedAddress {
 
-    id: string 
-    href: string 
     addrLine1*: string 
     addrLine2: string 
     city*: string 
     country*: string 
     locality: string 
-    name: string 
-    postcode*: string 
+    postcode: string 
     postcodeExtension: string 
-    stateOrProvince*: string 
-    @type: string 
+    stateOrProvince: string 
+}
+GeographicAddressRefOrValue <|-- FormattedAddress
+
+
+
+class GeographicAddressIdentifier {
+
+    externalReferenceId*: string 
+    externalReferenceType*: string 
+}
+GeographicAddressRefOrValue <|-- GeographicAddressIdentifier
+
+
+
+class GeographicAddressRef {
+
+    href: string 
+    id*: string 
+}
+GeographicAddressRefOrValue <|-- GeographicAddressRef
+
+
+
+class GeographicAddressRefOrValue {
+
+    @schemaLocation: uri 
+    @type*: string 
 }
 
-
-
-class GeographicAddressFindResp {
-
-}
-
-GeographicAddressFindResp *--> FieldedAddress : fieldedAddress
-GeographicAddressFindResp *--> FormattedAddress : formattedAddress
 
 
 class GeographicSite {
 
     id*: string 
     href: string 
-    additionalSiteInformation: string 
     description: string 
     name: string 
-    siteCompanyName: string 
-    siteCustomerName: string 
+    companyName: string 
+    customerName: string 
     siteType: MEFSiteType 
-    status*: MEFGeographicSiteStatus 
     @type: string 
 }
 
-GeographicSite *--> FieldedAddress : fieldedAddress
-GeographicSite *--> FormattedAddress : formattedAddress
-GeographicSite *--> MEFGeographicLocation : geographicLocation
-GeographicSite *--> GlobalAddressId : globalAddressId
-GeographicSite *-->"*" RelatedPartyValue : relatedParty
+GeographicSite *-->"*" GeographicAddressRefOrValue : place
+GeographicSite *-->"*" RelatedContactInformation : relatedContactInformation
 
 
 class GeographicSubAddress {
 
-    id: string 
-    href: string 
     buildingName: string 
     levelNumber: string 
     levelType: string 
-    name: string 
     privateStreetName: string 
     privateStreetNumber: string 
-    @type: string 
 }
 
 GeographicSubAddress *-->"*" MEFSubUnit : subUnit
 
 
-class GlobalAddressId {
-
-    externalReferenceId*: string 
-    externalReferenceType*: string 
-}
-RelatedPlaceRefOrValue <|-- GlobalAddressId
-
-
-
-class MEFGeographicLocation {
-
-    id: string 
-    href: string 
-    name: string 
-    spatialRef*: string 
-    @type: string 
-}
-
-MEFGeographicLocation *-->"1" MEFGeographicPoint : geographicPoint
-
-
 class MEFGeographicPoint {
 
-    x: string 
-    y: string 
+    spatialRef*: string 
+    x*: string 
+    y*: string 
+    z: string 
 }
+GeographicAddressRefOrValue <|-- MEFGeographicPoint
 
 
 
@@ -178,49 +162,17 @@ class MEFSubUnit {
 
 
 
-class RelatedPartyValue {
+class RelatedContactInformation {
 
-    emailAddress: string 
-    name: string 
-    number: string 
+    emailAddress*: string 
+    name*: string 
+    number*: string 
     numberExtension: string 
-    role: string 
-    @type: string 
-}
-
-
-
-class RelatedPlaceRefOrValue {
-
-    @schemaLocation: uri 
-    @type*: string 
+    organization: string 
     role*: string 
 }
 
-
-
-enum MEFGeographicSiteStatus {
-
-    planned
-    underConstruction
-    cancelled
-    active
-    inactive
-    former
-}
-class MEFGeographicSiteSummary {
-
-    id: string 
-    status: MEFGeographicSiteStatus 
-    siteCompanyName: string 
-    siteCustomerName: string 
-    siteName: string 
-    siteDescription: string 
-    siteType: string 
-    siteContactName: string 
-}
-
-MEFGeographicSiteSummary *--> GeographicAddressFindResp : geographicAddress
+RelatedContactInformation *--> FieldedAddress : postalAddress
 
 
 enum MEFSiteType {

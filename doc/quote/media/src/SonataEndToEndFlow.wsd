@@ -1,0 +1,83 @@
+@startuml
+title Sonata End-to-End Flow
+
+entity PoqListener
+entity QuoteListener
+entity OrderListener
+actor Buyer
+participant Seller
+database Location
+entity Poq
+entity Quote
+entity Order
+entity Hub
+
+== Start Address Validation ==
+
+loop
+    Buyer -> Seller: geographicAddressValidation(address)
+    Seller -> Location: geographicAddressValidation(address)
+    Location -> Seller: OK
+    Seller -> Buyer: validGeographicAddress
+end
+
+== End Address Validation ==
+
+
+== Start Service Site ==
+
+loop
+    Buyer -> Seller: geographicSite(address, filterQuery)
+    Seller -> Location: geographicSite(address, filterQuery)
+    Location -> Seller: siteId
+    Seller -> Buyer: siteId
+end
+
+== End Service Site ==
+
+== Start Product Offering Qualification ==
+
+Buyer -> Seller: registerListener(callback, query)
+Seller -> Hub: <<create>>
+loop
+    Buyer -> Seller: createProductOfferingQualification(POQItem[](action, product, place))
+    Seller -> Buyer: OK
+    Seller -> Poq: <<createPoq>>
+    Poq -> Poq: internalProcess
+    Poq -> Hub: eventUpdate
+    Hub -> PoqListener: callbackListener(Notification.event)
+end
+== End Product Offering Qualification ==
+
+
+== Start Product Quote ==
+
+Buyer -> Seller: registerListener(callback, query)
+Seller -> Hub: <<create>>
+loop
+    Buyer -> Seller: createQuote(QuoteItem[](action, product, POQ, place))
+    Seller -> Buyer: OK
+    Seller -> Quote: <<createQuote>>
+    Quote -> Quote: internalProcess
+    Quote -> Hub: eventUpdate
+    Hub -> QuoteListener: callbackListener(Notification.event)
+end
+
+== End Product Quote ==
+
+
+== Start Product Order ==
+
+Buyer -> Seller: registerListener(callback, query)
+Seller -> Hub: <<create>>
+loop
+    Buyer -> Seller: createProductOrder(OrderItem[](action, product, POQ, Quote, place))
+    Seller -> Buyer: OK
+    Seller -> Order: <<createOrder>>
+    Order -> Order: internalProcess
+    Order -> Hub: eventUpdate
+    Hub -> OrderListener: callbackListener(Notification.event)
+end
+
+== End Product Order ==
+@enduml

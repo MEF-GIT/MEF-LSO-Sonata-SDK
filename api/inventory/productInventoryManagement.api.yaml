@@ -1,0 +1,920 @@
+swagger: '2.0'
+info:
+  title: Product Inventory Management
+  description: |
+    **This specification represents MEF work in progress and is subject to change.** 
+
+    The scope of this MEF API is to provide the ability  for a Service Provider’s (Buyer)
+    operational support system to retrieve from a Partner’s (Seller) Inventory management
+    system a set of product instances based upon a filter of product inventory attributes,
+    or a specific product instance based upon a product identifier.
+    
+    Product Inventory API used TMF 637 as template.
+  version: 6.0.0-RC
+host: serverRoot
+basePath: /mefApi/sonata/productInventory/v6/
+schemes:
+  - https
+consumes:
+  - application/json;charset=utf-8
+produces:
+  - application/json;charset=utf-8
+tags:
+  - name: product
+  - name: events subscription
+paths:
+  /product:
+    get:
+      operationId: listProduct
+      summary: List or find Product objects
+      description: This operation list or find Product entities
+      tags:
+        - product
+      parameters:
+        - name: buyerId
+          in: query
+          type: string
+          description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+
+            Reference: MEF 57.2 (Sn 11.15)
+        - name: sellerId
+          in: query
+          type: string
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity  represents more than one Seller.
+
+            Reference: MEF 57.2 (Sn 11.15)
+        - name: status
+          required: false
+          in: query
+          description: The status of the product
+          type: string
+          enum:
+            - active
+            - suspended
+            - activePendingTerminate
+            - terminated
+            - pendingActive
+            - suspendedPendingTerminate
+        - name: productSpecificationId
+          required: false
+          in: query
+          description: A reference to a product spec by id
+          type: string
+        - name: productOfferingId
+          required: false
+          in: query
+          description: A reference to a product offering by id
+          type: string
+        - name: buyerProductId
+          required: false
+          in: query
+          description: A reference to the buyerProductId provided in the order
+          type: string
+        - name: geographicalSiteId
+          required: false
+          in: query
+          description: A site identifier which is associated to the product
+          type: string
+        - name: relatedProductId
+          required: false
+          in: query
+          description: |-
+            This criteria allows to retrieve all Product records with a Product Relationship to a specified Product.
+            E.g. All Products related to Product with ID 5
+          type: string
+        - name: billingAccountId
+          required: false
+          in: query
+          description: The Billing Account associated with the Product.
+          type: string
+        - name: productOrderId
+          required: false
+          in: query
+          description: Identifies Product Order(s) associated with the Product
+          type: string
+        - name: startDate.lt
+          required: false
+          in: query
+          description: Less than the date that is the initial install date for the Product
+          type: string
+          format: date-time
+        - name: startDate.gt
+          required: false
+          in: query
+          description: Greater than the date that is the initial install date for the Product
+          type: string
+          format: date-time
+        - name: lastUpdateDate.lt
+          required: false
+          in: query
+          description: Less than date that the last change affecting this Product was completed
+          type: string
+          format: date-time
+        - name: lastUpdateDate.gt
+          required: false
+          in: query
+          description: Greater than the date that the last change affecting this Product was completed
+          type: string
+          format: date-time
+        - name: offset
+          required: false
+          in: query
+          description: Requested index for start of resources to be provided in response requested by client
+          type: string
+        - name: limit
+          required: false
+          in: query
+          description: Requested number of resources to be provided in response requested by client
+          type: string
+      responses:
+        '200':
+          description: OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)
+          headers:
+            X-Pagination-Throttled:
+              type: boolean
+              description: >
+                Used to indicate that result page was throttled to maximum
+                possible size  and there are additional results that can be
+                fetched
+            X-Result-Count:
+              type: integer
+              description: The number of items included in the response
+            X-Total-Count:
+              type: integer
+              description: >
+                The total number of matching items. E.g. if there are 50
+                matching items in total, but the request has offset=10 and
+                limit=10, then the X-Total-Count is 50.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MEFProductSummary'
+        '400':
+          description: |-
+            Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: |-
+            Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+        '403':
+          description: |-
+            Forbidden
+          schema:
+            $ref: '#/definitions/Error403'
+        '500':
+          description: |-
+            Internal Server Error
+          schema:
+            $ref: '#/definitions/Error500'
+  '/product/{id}':
+    get:
+      operationId: retrieveProduct
+      summary: Retrieves a Product by ID
+      description: This operation retrieves a Product entity. Attribute selection is enabled for all first level attributes.
+      tags:
+        - product
+      parameters:
+        - name: id
+          description: Identifier of the Product
+          required: true
+          type: string
+          in: path
+        - name: fields
+          description: Comma-separated properties to provide in response
+          required: false
+          type: string
+          in: query
+        - name: buyerId
+          in: query
+          type: string
+          description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+
+            Reference: MEF 57.2 (Sn 11.15)
+        - name: sellerId
+          in: query
+          type: string
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity  represents more than one Seller.
+
+            Reference: MEF 57.2 (Sn 11.15)
+      responses:
+        '200':
+          description: OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)
+          schema:
+            $ref: '#/definitions/Product'
+        '400':
+          description: |-
+            Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: |-
+            Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+        '403':
+          description: |-
+            Forbidden
+          schema:
+            $ref: '#/definitions/Error403'
+        '404':
+          description: >-
+            Not Found
+          schema:
+            $ref: '#/definitions/Error404'
+        '500':
+          description: |-
+            Internal Server Error
+          schema:
+            $ref: '#/definitions/Error500'
+definitions:
+  AgreementRef:
+    type: object
+    description: 'Agreement reference. An agreement represents a contract or arrangement, either written or verbal and sometimes enforceable by law, such as a service level agreement or a customer price agreement. An agreement involves a number of other business entities, such as products, services, and resources and/or their specifications.'
+    properties:
+      id:
+        type: string
+        description: unique identifier
+      name:
+        type: string
+        description: Name of the agreement
+      path:
+        type: string
+        description: A URI/URL to where the agreement resides.
+    required:
+      - id
+  BillingAccountRef:
+    type: object
+    description: BillingAccount reference. A BillingAccount is a detailed description of a bill structure.
+    required:
+      - id
+    properties:
+      id:
+        type: string
+        description: Unique identifier of the billing account
+  Duration:
+    type: object
+    required:
+      - amount
+      - units
+    description: A Duration in a given unit of time e.g. 3 hours, or 5 days.
+    properties:
+      amount:
+        type: integer
+        description: 'Duration (number of seconds, minutes, hours, etc.)'
+      units:
+        description: 'Time unit type'
+        $ref: '#/definitions/TimeUnit'
+  FieldedAddress:
+      type: object
+      required:
+        - city
+        - country
+        - streetName
+      properties:
+        city:
+          type: string
+          description: The city that the address is in
+        country:
+          type: string
+          description: Country that the address is in
+        geographicSubAddress:
+          $ref: '#/definitions/GeographicSubAddress'
+        locality:
+          type: string
+          description: The locality that the address is in
+        postcode:
+          type: string
+          description: >-
+            Descriptor for a postal delivery area, used to speed and simplify
+            the delivery of mail (also known as zip code)
+        postcodeExtension:
+          type: string
+          description: >-
+            An extension of a postal code. E.g. the part following the dash
+            in a US urban property address
+        stateOrProvince:
+          type: string
+          description: The State or Province that the address is in
+        streetName:
+          type: string
+          description: Name of the street or other street type
+        streetNr:
+          type: string
+          description: >-
+            Number identifying a specific property on a public street. It may
+            be combined with streetNrLast for ranged addresses. MEF 79
+            defines it as required however as in certain countries it is not
+            used we make it optional in API.
+        streetNrLast:
+          type: string
+          description:
+            Last number in a range of street numbers allocated to a property
+        streetNrLastSuffix:
+          type: string
+          description: Last street number suffix for a ranged address
+        streetNrSuffix:
+          type: string
+          description: The first street number suffix
+        streetSuffix:
+          type: string
+          description: A modifier denoting a relative direction
+        streetType:
+          type: string
+          description: >-
+            The type of street (e.g., alley, avenue, boulevard, brae,
+            crescent, drive, highway, lane, terrace, parade, place, tarn,
+            way, wharf)
+      description: >-
+        A type of Address that has a discrete field and value for each type of
+        boundary or identifier down to the lowest level of detail. For example
+        "street number" is one field, "street name" is another field, etc.
+        Reference: MEF 79 (Sn 8.9.2)
+  GeographicSubAddress:
+    type: object
+    properties:
+      buildingName:
+        type: string
+        description: >
+          Allows for identification of places that require building name  as
+          part of addressing information
+      levelNumber:
+        type: string
+        description:
+          'Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT 2'
+      levelType:
+        type: string
+        description: Describes level types within a building
+      privateStreetName:
+        type: string
+        description: >-
+          "Private streets internal to a property (e.g. a university) may have
+          internal names that are not recorded by the land title office
+      privateStreetNumber:
+        type: string
+        description: Private streets numbers internal to a private street
+      subUnit:
+        type: array
+        description: >-
+          Representation of a MEFSubUnit It is used for describing subunit
+          within a subAddress e.g. BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT,
+          WHARF.
+        items:
+          $ref: '#/definitions/MEFSubUnit'
+    description:
+      'Additional fields used to specify an address, as detailed as possible.'
+  MEFProductConfiguration:
+    type: object
+    required:
+      - '@type'
+    discriminator: '@type'
+    properties:
+      '@schemaLocation':
+        type: string
+        format: uri
+        description: >-
+          A URI to the JSON schema file that defines the Product Specification
+          for the product that is the subject of the POQ Request.
+      '@type':
+        type: string
+        description: >-
+          The name of the type, defined in the JSON schema specified  above,
+          for the product that is the subject of the POQ Request. The named
+          type must be a subclass of MEFProductConfiguration.
+    description: >-
+      MEFProductConfiguration is used as an extension point for MEF specific
+      product/service payload.  The `@type` attribute is used as a
+      discriminator
+  MEFProductOrderItemRef:
+    type: object
+    description: A reference to a product order and product order item.
+    required:
+      - id
+      - orderItemId
+    properties:
+      id:
+        type: string
+        description: Identifier of the productOrder(provided by the seller
+      href:
+        type: string
+        description: Hyperlink to the productOrder
+      orderItemId:
+        type: string
+        description: 'Identifier of the line item (generally it is a sequence number 01, 02, 03, ...)'
+  MEFProductStatusType:
+    type: string
+    description: Possible values for the status of a MEF product
+    enum:
+      - pendingActive
+      - active
+      - activePendingTerminate
+      - suspendedPendingTerminate
+      - terminated
+      - suspended
+  MEFProductStateChange:
+    type: object
+    required:
+      - state
+      - changeDate
+    description: Holds the reached state, reasons and associated date the Quote state
+      changed, populated by the Seller.
+    properties:
+      changeDate:
+        type: string
+        format: date-time
+        description: The date and time the State changed.
+      changeReason:
+        type: string
+        description: The reason why the State changed.
+      state:
+        $ref: '#/definitions/MEFProductStatusType'
+        description: Status of the product
+  MEFSubUnit:
+    type: object
+    required:
+      - subUnitNumber
+      - subUnitType
+    properties:
+      subUnitNumber:
+        type: string
+        description: >-
+          The discriminator used for the subunit, often just a simple number
+          but may also be a range.
+      subUnitType:
+        type: string
+        description: >-
+          The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT,
+          WHARF.
+    description: Allows for sub unit identification
+  Money:
+    type: object
+    required:
+      - unit
+      - value
+    description: A base / value business entity used to represent money
+    properties:
+      unit:
+        type: string
+        description: Currency (ISO4217 norm uses 3 letters to define the currency)
+      value:
+        type: number
+        format: float
+        description: A positive floating point number
+  Price:
+    type: object
+    description: 'Provides all amounts (tax included, duty free, tax rate), used currency and percentage to apply for Price Alteration.'
+    properties:
+      taxRate:
+        type: number
+        format: float
+        description: Tax rate
+      dutyFreeAmount:
+        $ref: '#/definitions/Money'
+        description: All taxes excluded amount (expressed in the given currency)
+      taxIncludedAmount:
+        $ref: '#/definitions/Money'
+        description: All taxes included amount (expressed in the given currency)
+  Product:
+    type: object
+    description: A product is realized as one or more service(s) and / or resource(s).
+    required:
+      - startDate
+      - status
+      - id
+    properties:
+      id:
+        type: string
+        description: Unique identifier of the product
+      href:
+        type: string
+        description: Reference of the product
+      buyerProductId:
+        type: string
+        description: Buyer identifier of the product
+      lastUpdateDate:
+        type: string
+        format: date-time
+        description: Latest date when the product has been updated.
+      startDate:
+        type: string
+        format: date-time
+        description: 'Is the date from which the product starts. MEF: Start date is when the product is active for the first time (when the install in the product order has been processed).'
+      terminationDate:
+        type: string
+        format: date-time
+        description: 'Is the date when the product was terminated. MEF: Termination date (commercial) is when the product has been terminated (when the disconnect in the product order has been processed).'
+      MEFProductConfiguration:
+        $ref: '#/definitions/MEFProductConfiguration'
+        description: MEF product payload
+      agreement:
+        type: array
+        items:
+          $ref: '#/definitions/AgreementRef'
+      billingAccount:
+        type: array
+        items:
+          $ref: '#/definitions/BillingAccountRef'
+      productOffering:
+        $ref: '#/definitions/ProductOfferingRef'
+      productOrderItem:
+        type: array
+        items:
+          $ref: '#/definitions/MEFProductOrderItemRef'
+      productPrice:
+        type: array
+        items:
+          $ref: '#/definitions/ProductPrice'
+      productRelationship:
+        type: array
+        items:
+          $ref: '#/definitions/ProductRelationship'
+      productSpecification:
+        $ref: '#/definitions/ProductSpecificationRef'
+      productTerm:
+        type: array
+        items:
+          $ref: '#/definitions/ProductTerm'
+      relatedContactInformation:
+        type: array
+        items:
+          $ref: '#/definitions/RelatedContactInformation'
+        description: Party playing a role for this Product
+      relatedSite:
+        type: array
+        items:
+          $ref: '#/definitions/RelatedGeographicSite'
+      stateChange:
+        type: array
+        items:
+          $ref: '#/definitions/MEFProductStateChange'
+        description: State change for the Product
+      status:
+        $ref: '#/definitions/MEFProductStatusType'
+        description: Is the lifecycle status of the product.
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class entity name'
+  ProductOfferingRef:
+    type: object
+    description: 'ProductOffering reference. A product offering represents entities that are orderable from the provider of the catalog, this resource includes pricing information.'
+    properties:
+      id:
+        type: string
+        description: unique identifier
+    required:
+      - id
+  ProductPrice:
+    type: object
+    description: 'An amount, usually of money, that represents the actual price paid by a Customer for a purchase, a rent or a lease of a Product. The price is valid for a defined period of time.'
+    required:
+      - price
+      - priceType
+    properties:
+      description:
+        type: string
+        description: A narrative that explains in detail the semantics of this product price.
+      name:
+        type: string
+        description: A short descriptive name such as "Subscription price".
+      priceType:
+        type: string
+        description: 'A category that describes the price, such as recurring, discount, allowance, penalty, and so forth.'
+      recurringChargePeriod:
+        type: string
+        description: 'Could be month, week...'
+      unitOfMeasure:
+        type: string
+        description: 'Could be minutes, GB...'
+      price:
+        $ref: '#/definitions/Price'
+  ProductRelationship:
+    type: object
+    description: 'Linked products to the one instantiate, such as [bundled] if the product is a bundle and you want to describe the bundled products inside this bundle; [reliesOn] if the product needs another already owned product to rely on (e.g. an option on an already owned mobile access product) [targets] or [isTargeted] (depending on the way of expressing the link) for any other kind of links that may be useful'
+    required:
+      - relationshipType
+      - id
+    properties:
+      id:
+        type: string
+        description: unique identifier
+      href:
+        type: string
+        description: Hyperlink reference
+      buyerProductId:
+        type: string
+        description: Buyer identifier of the product
+      name:
+        type: string
+        description: Name of the related entity.
+      relationshipType:
+        type: string
+        description: 'Type of the product relationship, such as [bundled] if the product is a bundle and you want to describe the bundled products inside this bundle; [reliesOn] if the product needs another already owned product to rely on (e.g. an option on an already owned mobile access product) [targets] or [isTargeted] (depending on the way of expressing the link) for any other kind of links that may be useful'
+  ProductSpecificationRef:
+    type: object
+    description: 'Product specification reference: A ProductSpecification is a detailed description of a tangible or intangible object made available externally in the form of a ProductOffering to customers or other parties playing a party role.'
+    properties:
+      id:
+        type: string
+        description: unique identifier
+      href:
+        type: string
+        description: Hyperlink reference
+      name:
+        type: string
+        description: Name of the related entity.
+      targetProductSchema:
+        $ref: '#/definitions/TargetProductSchema'
+        description: A target product schema reference. The reference object to the schema and type of target product which is described by product specification.
+      '@schemaLocation':
+        type: string
+        format: uri
+        description: A URI to a JSON-Schema file that defines additional attributes and relationships
+      '@type':
+        type: string
+        description: 'When sub-classing, this defines the sub-class Extensible name'
+    required:
+      - id
+  MEFProductSummary:
+    description: Class used to provide product overview retrieved in GET (by list) operation
+    required:
+      - id
+      - status
+    type: object
+    properties:
+      id:
+        description: Unique identifier of the product
+        type: string
+      href:
+        description: Reference of the product
+        type: string
+      status:
+        $ref: '#/definitions/MEFProductStatusType'
+      startDate:
+        description: The date from which the product starts
+        type: string
+        format: date-time
+      productOffering:
+        $ref: '#/definitions/ProductOfferingRef'
+      productSpecification:
+        $ref: '#/definitions/MEFProductSpecificationSummary'
+      buyerProductId:
+        description: This identifier is optionally provided during the product ordering and stored for informative purpose in the seller inventory
+        type: string
+  MEFProductSpecificationSummary:
+    description: Technical class to provide productSpecification id in the summary view
+    required:
+      - id
+    type: object
+    properties:
+      id:
+        description: Unique identifier of the product specification
+        type: string
+  ProductTerm:
+    type: object
+    description: Description of a productTerm linked to this product. This represent a commitment with a duration
+    properties:
+      description:
+        type: string
+        description: Description of the productTerm
+      name:
+        type: string
+        description: Name of the productTerm
+      duration:
+        $ref: '#/definitions/Duration'
+        description: Duration of the productTerm
+      validFor:
+        $ref: '#/definitions/TimePeriod'
+        description: productTerm validity period
+  RelatedGeographicSite:
+    type: object
+    required:
+      - role
+      - id
+    description: 'A  Geographic Site  and an associated role as installation address, delivery address, etc....'
+    properties:
+      id:
+        type: string
+        description: Unique identifier of the geographic site
+      href:
+        type: string
+        description: Unique reference of the geographic site
+      role:
+        type: string
+        description: 'Role of the geographic site, such as: [home delivery], [shop retrieval]) MEF: The role that the Site plays, e.g. Billing Address, UNI Site, or ENNI Site.'
+  RelatedContactInformation:
+    type: object
+    required:
+      - emailAddress
+      - name
+      - number
+      - role
+    properties:
+      emailAddress:
+        type: string
+        description: Email address
+      name:
+        type: string
+        description: Name of the contact
+      number:
+        type: string
+        description: Phone number
+      numberExtension:
+        type: string
+        description: Phone number extension
+      organization:
+        type: string
+        description: The organization or company that the contact belongs to
+      role:
+        type: string
+        description: >-
+          A role the party plays in a given context.
+      postalAddress:
+        $ref: '#/definitions/FieldedAddress'
+        description:
+          'Identifies the postal address of the person or office to be
+          contacted.'
+    description: |
+      Contact information of an individual or organization playing a role for
+      this Order Item. The rule for mapping a represented attribute value to a
+      `role` is to use the _lowerCamelCase_ pattern e.g. 
+      - Buyer Order Item Contact: `role=buyerOrderItemContact` 
+      - Buyer Implementation Contact: `role=buyerImplementationContact` 
+      - Buyer Technical Contact: `role=buyerTechnicalContact`
+  TargetProductSchema:
+    type: object
+    description: The reference object to the schema and type of target product which is described by product specification
+    required:
+      - '@schemaLocation'
+      - '@type'
+    properties:
+      '@schemaLocation':
+        type: string
+        format: uri
+        description: This field provides a link to the schema describing the target product
+      '@type':
+        type: string
+        description: Class type of the target product
+  TimePeriod:
+    type: object
+    description: 'A period of time, either as a deadline (endDateTime only) a startDateTime only, or both'
+    properties:
+      endDateTime:
+        example: '1985-04-12T23:20:50.52Z'
+        type: string
+        format: date-time
+        description: 'End of the time period, using IETC-RFC-3339 format'
+      startDateTime:
+        example: '1985-04-12T23:20:50.52Z'
+        type: string
+        format: date-time
+        description: 'Start of the time period, using IETC-RFC-3339 format. If you define a start, you must also define an end'
+  TimeUnit:
+    type: string
+    description: |
+      Represents a unit of time.
+      Reference: MEF 57.2 (Sn 9.22.1)
+    enum:
+      - calendarMonths
+      - calendarDays
+      - calendarHours
+      - calendarMinutes
+      - businessDays
+      - businessHours
+      - businessMinutes
+  Error:
+    description: |
+      Standard Class used to describe API response error
+      Not intended to be use directly only via specialization which defines a code
+    type: object
+    required:
+      - reason
+    properties:
+      reason:
+        type: string
+        description:
+          Explanation of the reason for the error which can be shown to a
+          client user.
+        maxLength: 255
+      message:
+        type: string
+        description: >-
+          Text that provides more details and corrective actions related to the
+          error. This can be shown to a client user.
+      status:
+        type: string
+        description: HTTP Error code extension
+      referenceError:
+        type: string
+        format: uri
+        description: URI of documentation describing the error.  
+  Error400:
+    description: |-
+      Bad Request
+    allOf:
+      - $ref: '#/definitions/Error'
+      - type: object
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |-
+              List of supported error codes:
+              - missingQueryParameter: Missing query-string parameter
+              - missingQueryValue: Invalid query-string parameter value
+              - invalidQuery: Invalid Query
+              - invalidBody: Invalid body
+            type: string
+            enum:
+              - missingQueryParameter
+              - missingQueryValue
+              - invalidQuery
+              - invalidBody
+  Error401:
+    description: |-
+      Unauthorized
+    allOf:
+      - $ref: '#/definitions/Error'
+      - type: object
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |-
+              List of supported error codes:
+              - missingCredentials: Missing credentials
+              - invalidCredentials: Invalid OR expired credentials
+            type: string
+            enum:
+              - missingCredentials
+              - invalidCredentials
+  Error403:
+    description: |-
+      Forbidden
+    allOf:
+      - $ref: '#/definitions/Error'
+      - type: object
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |-
+              List of supported error codes:
+              - accessDenied: Access denied
+              - forbiddenRequester: Forbidden requester
+              - tooManyUsers: Too many users
+            type: string
+            enum:
+              - accessDenied
+              - forbiddenRequester
+              - tooManyUsers
+  Error404:
+    description: |-
+      Resource for the requested path not found
+    allOf:
+      - $ref: '#/definitions/Error'
+      - type: object
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |-
+              List of supported error codes:
+              - notFound: Resource not found
+            type: string
+            enum:
+              - notFound
+  Error500:
+    description: |-
+      Internal Server Error
+    allOf:
+      - $ref: '#/definitions/Error'
+      - type: object
+        required:
+          - reason
+          - code
+        properties:
+          code:
+            description: |-
+              List of supported error codes:
+              - internalError: Internal server error
+            type: string
+            enum:
+              - internalError

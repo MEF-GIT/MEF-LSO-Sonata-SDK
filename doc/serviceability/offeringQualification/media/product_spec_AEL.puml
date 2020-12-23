@@ -1,0 +1,143 @@
+@startuml
+
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor<<API>> Black
+}
+
+hide  <<API>> stereotype
+
+class MEFProductSpecification<<API>> {
+
+    @type*: string 
+}
+
+
+class AccessElineOvcEndPoint {
+
+    identifier: string 
+    maintenanceIntermediatePoint: EnabledDisabled 
+    egressEquivalenceClassIdentifier: CosFrom
+    aggregationLinkDepth: AggLinkDepth[]
+    ovcEgressMap: OvcEgressMap[]
+    ovcEndPointEnvelopes : Envelope[]
+    ovcEndPointMap: OvcEndPointMapForm
+    colorMap: OvcColorFrom
+    ingressClassOfServiceMap: CosFrom
+    sourceMacAddressLimit: SourceMacAddressLimit[]
+    maintenanceEndPointList: MepLevelAndDirection[]
+
+}
+
+AccessElineOvcEndPoint *-->"*" BwpFlow : egressBandwidthProfilePerEndPoint
+AccessElineOvcEndPoint *-->"*" BandwidthProfilePerClassOfServiceName : egressBwpPerEgressEquivalenceClassName
+AccessElineOvcEndPoint *-->"*" BandwidthProfilePerClassOfServiceName : ingressBandwidthProfilePerClassOfServiceName
+
+
+class AccessElineOvc as "Access Eline OVC v1.0.0" {
+
+    ceVlanIdPreservation: CeVlanIdPreservation 
+    cTagPcpPreservation: EnabledDisabled 
+    cTagDeiPreservation: EnabledDisabled
+    listOfClassOfServiceNames: string[] 
+    availableMegLevel: integer 
+    maximumFrameSize: integer 
+}
+MEFProductSpecification <|-- AccessElineOvc
+
+AccessElineOvc *-->"1" AccessElineOvcEndPoint : enniEp
+AccessElineOvc *-->"1" AccessElineOvcEndPoint : uniEp
+
+
+
+class BandwidthProfilePerClassOfServiceName {
+
+    classOfServiceName*: string 
+}
+
+BandwidthProfilePerClassOfServiceName *-->"1..*" BwpFlow : bwpFlow
+
+
+class BwpFlow {
+
+    envelopeRank*: integer 
+    couplingFlag*: boolean 
+    envelopeId*: string 
+    tokenRequestOffset*: integer 
+    colorMode*: ColorMode 
+}
+
+BwpFlow *-->"1" InformationRate : eirMax
+BwpFlow *-->"1" InformationRate : cirMax
+BwpFlow *-->"1" DataSize : cbs
+BwpFlow *-->"1" DataSize : ebs
+BwpFlow *-->"1" InformationRate : cir
+BwpFlow *-->"1" InformationRate : eir
+
+
+
+enum CeVlanIdPreservation {
+
+    PRESERVE
+    STRIP
+    RETAIN
+}
+
+
+
+enum ColorMode {
+
+    COLOR_BLIND
+    COLOR_AWARE
+}
+
+class DataSize {
+
+    dataSizeUnits*: DataSizeUnits 
+    dataSizeValue*: integer 
+}
+
+
+
+enum DataSizeUnits {
+
+    BYTES
+    KBYTES
+    MBYTES
+    GBYTES
+    TBYTES
+    PBYTES
+    EBYTES
+    ZBYTES
+    YBYTES
+}
+
+
+
+enum EnabledDisabled {
+
+    ENABLED
+    DISABLED
+}
+
+
+class InformationRate {
+
+    irValue*: number 
+    irUnits*: IrUnits 
+}
+
+enum IrUnits {
+
+    BPS
+    KBPS
+    MBPS
+    GBPS
+    TBPS
+    PBPS
+    EBPS
+    ZBPS
+    YBPS
+}
+
+@enduml

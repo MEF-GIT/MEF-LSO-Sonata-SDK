@@ -1,0 +1,35 @@
+@startuml
+
+
+skinparam activity {
+    BackgroundColor White
+    BorderColor Black
+}
+
+start
+    if(immediate response?) then (no)
+        :inProgress;
+        if(further work needed?) then (yes)
+            :inProgress.
+            draft;
+        else(no)
+        endif
+    else(yes)
+    endif
+    if(sufficient information?) then (no)
+        :rejected.
+        insufficientInformationProvided;
+    elseif(able to provide a quote?) then (no)
+        :rejected.
+        unableToProvide;
+    elseif(Quote moved to terminal state?) then (yes)
+        :rejected;
+    elseif(able to provide as requested?) then (yes)
+        :approved.orderable;
+    else(no)
+        :approved.
+        orderableAlternate;
+    endif
+stop
+
+@enduml

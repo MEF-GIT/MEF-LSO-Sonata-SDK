@@ -1,0 +1,342 @@
+<TABLE style="width: 6.5in; border-color:#aaaaaa; border-width:1px; padding:3px; border-collapse:collapse; border-style:solid; font-family: verdana; font-size: 70%"> <TR style="border-width:2px; border-color: black; padding:2px; background-color:lightblue; border-style:solid;">
+<TD><b>Carrier Ethernet Egress Maps</b><br>&nbsp;&nbsp;&nbsp;Schema File Name: Carrier_Ethernet_Egress_Maps
+<br>&nbsp;&nbsp;&nbsp;Includes classes:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PcpFromCos&nbsp;&nbsp;(PCP From Class of Service)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CnPcp&nbsp;&nbsp;(CNPCP Entry)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DeiFromCosColor&nbsp;&nbsp;(DEI From CoS and Color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CcDei&nbsp;&nbsp;(CCDEI Entry)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PcpFromCosColor&nbsp;&nbsp;(PCP From CoS and Color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CcPcp&nbsp;&nbsp;(CCPCP Entry)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PcpFromCosDeiFromCosColor&nbsp;&nbsp;(PCP From CoS and DEI From CoS and Color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CnPcpCcDei&nbsp;&nbsp;(CNPCPCCDEI Entry)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EvcEgressMap&nbsp;&nbsp;(EVC Egress Map)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EvcEgressMapEntry&nbsp;&nbsp;(Evc Egress Map Entry)<br>
+</td></tr>
+<TABLE style="width: 6.5in; border-color:#aaaaaa; border-width:1px; padding:3px; border-collapse:collapse; border-style:solid; font-family: verdana; font-size: 70% ">
+<tr style="background-color:black; line-height: 2px"><td> &nbsp;</td></tr>
+<tr style="background-color:white; line-height: 9px"><td> &nbsp;</td></tr>
+<TR style="border-width:2px; border-color: black; padding:2px; background-color:white; border-style:solid;">
+<TD style="text-align:left;"><b>Class: </b>PcpFromCos&nbsp;&nbsp;<b><i>(PCP From Class of Service)</i></b><br><br>
+<i>The PCP Field in the Egress EI Frame is determined from the Class of Service. This is a list that contains exactly one entry for each Class of Service Name and the PCP value  (or DISCARD) to use for that CoS. For example CoS=Platinum --> PCP = 6. This affects the C-tag at the UNI and the S-tag at the ENNI.</i></td></tr>
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>Map Type - CN → PCP</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>mapType</I> - <b>Type: </b><i>const</i></TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>"CN_PCP"</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>List of CNPCP Entries</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>cnPcpEntries</I> - <b>Type: </b><i>List of object</i></TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Description:</B> A list of entries, one per CoS that indicates the PCP for the CoS.</TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>List of [1...*] Unique 
+Class: CnPcp</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+</TABLE>
+
+<TABLE style="width: 6.5in; border-color:#aaaaaa; border-width:1px; padding:3px; border-collapse:collapse; border-style:solid; font-family: verdana; font-size: 70% ">
+<tr style="background-color:black; line-height: 2px"><td> &nbsp;</td></tr>
+<tr style="background-color:white; line-height: 9px"><td> &nbsp;</td></tr>
+<TR style="border-width:2px; border-color: black; padding:2px; background-color:white; border-style:solid;">
+<TD style="text-align:left;"><b>Class: </b>CnPcp&nbsp;&nbsp;<b><i>(CNPCP Entry)</i></b><br><br>
+<i>This is a list of 1...n CNPCP Objects. One for each Class of Service.</i></td></tr>
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>Class of Service Name</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>cosName</I> - <b>Type: </b><i>string</i></TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Description:</B> When used for an Ingress frame this is class of service name from the EVC/OVC List of Class of Service Names Service Attribute. When used in an Egress frame this is an Egress Equivalence Class Name (OVC Only).</TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>[Any String]</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>PCP Value</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>pcpValue</I> - <b>Type: </b><i>object</i></TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>Class: PcpValueAndDiscard</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+</TABLE>
+
+<TABLE style="width: 6.5in; border-color:#aaaaaa; border-width:1px; padding:3px; border-collapse:collapse; border-style:solid; font-family: verdana; font-size: 70% ">
+<tr style="background-color:black; line-height: 2px"><td> &nbsp;</td></tr>
+<tr style="background-color:white; line-height: 9px"><td> &nbsp;</td></tr>
+<TR style="border-width:2px; border-color: black; padding:2px; background-color:white; border-style:solid;">
+<TD style="text-align:left;"><b>Class: </b>DeiFromCosColor&nbsp;&nbsp;<b><i>(DEI From CoS and Color)</i></b><br><br>
+<i>The DEI Field in the Egress EI Frame is determined from the Class of Service and the Frame Color. Each row in the table contains one entry for each Class of Service Name and the DEI value (or DISCARD) to use for Green frames and the DEI value (or DISCARD) to use for Yellow Frames. For example CoS=Platinum and Color=Green --> DEI = 1 and Color=Yellow --> DEI = 0. This affects the C-tag at the UNI and the S-tag at the ENNI.</i></td></tr>
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>Map Type CC → DEI</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>mapType</I> - <b>Type: </b><i>const</i></TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>"CC_DEI"</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>List of CCDEI Entries</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>ccDeiEntries</I> - <b>Type: </b><i>List of object</i></TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Description:</B> A list of entries, one per CoS, that specifies the DEI value for Green frames and Yellow frames.</TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>List of [1...*] Unique 
+Class: CcDei</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+</TABLE>
+
+<TABLE style="width: 6.5in; border-color:#aaaaaa; border-width:1px; padding:3px; border-collapse:collapse; border-style:solid; font-family: verdana; font-size: 70% ">
+<tr style="background-color:black; line-height: 2px"><td> &nbsp;</td></tr>
+<tr style="background-color:white; line-height: 9px"><td> &nbsp;</td></tr>
+<TR style="border-width:2px; border-color: black; padding:2px; background-color:white; border-style:solid;">
+<TD style="text-align:left;"><b>Class: </b>CcDei&nbsp;&nbsp;<b><i>(CCDEI Entry)</i></b><br><br>
+<i>One of the possible values for the OVC Egress Map. This indicates that the Color is mapped to the DEI field of the Egress Frame. Note that the Enums used for the DEI values include DISCARD as a value.</i></td></tr>
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>Class of Service</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>cosName</I> - <b>Type: </b><i>string</i></TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Description:</B> When used for an Ingress frame this is class of service name from the EVC/OVC List of Class of Service Names Service Attribute. When used in an Egress frame this is an Egress Equivalence Class Name (OVC Only).</TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>[Any String]</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>DEI for Green Frames</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>deiGeen</I> - <b>Type: </b><i>object</i></TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Description:</B> The DEI value (or DISCARD) to use for Green frames.</TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>Class: DeiValueAndDiscard</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>DEI for Yellow Frames</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>deiYellow</I> - <b>Type: </b><i>object</i></TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Description:</B> The DEI value (or DISCARD) to use for Yellow frames.</TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>Class: DeiValueAndDiscard</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+</TABLE>
+
+<TABLE style="width: 6.5in; border-color:#aaaaaa; border-width:1px; padding:3px; border-collapse:collapse; border-style:solid; font-family: verdana; font-size: 70% ">
+<tr style="background-color:black; line-height: 2px"><td> &nbsp;</td></tr>
+<tr style="background-color:white; line-height: 9px"><td> &nbsp;</td></tr>
+<TR style="border-width:2px; border-color: black; padding:2px; background-color:white; border-style:solid;">
+<TD style="text-align:left;"><b>Class: </b>PcpFromCosColor&nbsp;&nbsp;<b><i>(PCP From CoS and Color)</i></b><br><br>
+<i>The PCP Field in the Egress EI Frame is determined from the Class of Service Name and the Frame Color. Each row in this table contains a Class of Service Name and two PCP values (or <i>DISCARD</i>), one for Green frames and one for Yellow frames.  For example CoS=Platinum and Color=Green --> PCP = 6  and Color=Yellow --> PCP = 5. This affects the C-tag at the UNI and the S-tag at the ENNI.</i></td></tr>
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>Map Type - CC → PCP</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>mapType</I> - <b>Type: </b><i>const</i></TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>"CC_PCP"</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>List of CCPCP Entries</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>ccPcpEntries</I> - <b>Type: </b><i>List of object</i></TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Description:</B> A list of entries, one per CoS that indicates the PCP value for Green Frames and the PCP value for Yellow Frames.</TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>List of [1...*] Unique 
+Class: CcPcp</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+</TABLE>
+
+<TABLE style="width: 6.5in; border-color:#aaaaaa; border-width:1px; padding:3px; border-collapse:collapse; border-style:solid; font-family: verdana; font-size: 70% ">
+<tr style="background-color:black; line-height: 2px"><td> &nbsp;</td></tr>
+<tr style="background-color:white; line-height: 9px"><td> &nbsp;</td></tr>
+<TR style="border-width:2px; border-color: black; padding:2px; background-color:white; border-style:solid;">
+<TD style="text-align:left;"><b>Class: </b>CcPcp&nbsp;&nbsp;<b><i>(CCPCP Entry)</i></b><br><br>
+<i>One of the possible values for the OVC Egress Map. This indicates that the Class of Service and Color are mapped to the PCP field of the Egress Frame. Note that the Enums used for the PCP values include DISCARD as a value.</i></td></tr>
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>Class of Service</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>cosName</I> - <b>Type: </b><i>string</i></TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Description:</B> When used for an Ingress frame this is class of service name from the EVC/OVC List of Class of Service Names Service Attribute. When used in an Egress frame this is an Egress Equivalence Class Name (OVC Only).</TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>[Any String]</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>PCP For Green Frames</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>pcpGreen</I> - <b>Type: </b><i>object</i></TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Description:</B> A PCP value (0-7) or DISCARD to use for Green frames in the CoS</TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>Class: PcpValueAndDiscard</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>PCP For Yellow Frames</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>pcpYellow</I> - <b>Type: </b><i>object</i></TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Description:</B> A PCP value (0-7) or DISCARD to use for Yellow frames in the CoS</TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>Class: PcpValueAndDiscard</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+</TABLE>
+
+<TABLE style="width: 6.5in; border-color:#aaaaaa; border-width:1px; padding:3px; border-collapse:collapse; border-style:solid; font-family: verdana; font-size: 70% ">
+<tr style="background-color:black; line-height: 2px"><td> &nbsp;</td></tr>
+<tr style="background-color:white; line-height: 9px"><td> &nbsp;</td></tr>
+<TR style="border-width:2px; border-color: black; padding:2px; background-color:white; border-style:solid;">
+<TD style="text-align:left;"><b>Class: </b>PcpFromCosDeiFromCosColor&nbsp;&nbsp;<b><i>(PCP From CoS and DEI From CoS and Color)</i></b><br><br>
+<i>This is a combination of PCP from CoS and DEI from Color. The PCP Field in the Egress EI Frame is determined from the Class of Service and the DEI Field is determined from the Frame Color. This is a list that contains exactly one entry for each Class of Service Name including PCP value to use (or DISCARD) and the DEI value to use for each color for that CoS Name. For example CoS=Platinum and Color=Green --> PCP = 6/DEI = 1 and Color=Yellow --> DEI=0. This affects the C-tag at the UNI and the S-tag at the ENNI.</i></td></tr>
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>Map Type - CN→PCP & CC→DEI</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>mapType</I> - <b>Type: </b><i>const</i></TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>"CN_PCP_CC_DEI"</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>List of CNPCP_CCDEI Entries</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>cnPcpCcDeiEntries</I> - <b>Type: </b><i>List of object</i></TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Description:</B> A list of entries, one per CoS, the specifies the PCP value for the CoS and the DEI values for Green and Yellow frames in the CoS.</TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>List of [1...*] Unique 
+Class: PcpFromCosDeiFromCosColor</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+</TABLE>
+
+<TABLE style="width: 6.5in; border-color:#aaaaaa; border-width:1px; padding:3px; border-collapse:collapse; border-style:solid; font-family: verdana; font-size: 70% ">
+<tr style="background-color:black; line-height: 2px"><td> &nbsp;</td></tr>
+<tr style="background-color:white; line-height: 9px"><td> &nbsp;</td></tr>
+<TR style="border-width:2px; border-color: black; padding:2px; background-color:white; border-style:solid;">
+<TD style="text-align:left;"><b>Class: </b>CnPcpCcDei&nbsp;&nbsp;<b><i>(CNPCPCCDEI Entry)</i></b><br><br>
+<i></i></td></tr>
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>Class of Service</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>cosName</I> - <b>Type: </b><i>string</i></TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Description:</B> When used for an Ingress frame this is class of service name from the EVC/OVC List of Class of Service Names Service Attribute. When used in an Egress frame this is an Egress Equivalence Class Name (OVC Only).</TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>[Any String]</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>PCP Value</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>pcpValue</I> - <b>Type: </b><i>object</i></TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Description:</B> A PCP value (0-7) or DISCARD to use frames in the CoS</TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>Class: PcpValueAndDiscard</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>DEI for Green Frames</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>deiGreen</I> - <b>Type: </b><i>object</i></TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Description:</B> A DEI value to use for Green frames in the CoS</TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>Class: DeiValueAndDiscard</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>DEI for Yellow Frames</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>deiYellow</I> - <b>Type: </b><i>object</i></TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Description:</B> A DEI value to use for Yellow frames in the CoS</TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>Class: DeiValueAndDiscard</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+</TABLE>
+
+<TABLE style="width: 6.5in; border-color:#aaaaaa; border-width:1px; padding:3px; border-collapse:collapse; border-style:solid; font-family: verdana; font-size: 70% ">
+<tr style="background-color:black; line-height: 2px"><td> &nbsp;</td></tr>
+<tr style="background-color:white; line-height: 9px"><td> &nbsp;</td></tr>
+<TR style="border-width:2px; border-color: black; padding:2px; background-color:white; border-style:solid;">
+<TD style="text-align:left;"><b>Class: </b>EvcEgressMap&nbsp;&nbsp;<b><i>(EVC Egress Map)</i></b><br><br>
+<i>This map is a table with one entries for each CosName, that includes the CoSName, a PCP value for green frames, a PCP value for yellow frames, a DEI value for green frames and a DEI value for yellow frames. Any of the values can be DISCARD (in which case they are all treated as DISCARD). This table is used at the UNI for EVCs.</i></td></tr>
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>List of EVC Egress Map Entries</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>evcEgressMapEntries</I> - <b>Type: </b><i>List of object</i></TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>List of [0...*] Unique 
+Class: EvcEgressMapEntry</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+</TABLE>
+
+<TABLE style="width: 6.5in; border-color:#aaaaaa; border-width:1px; padding:3px; border-collapse:collapse; border-style:solid; font-family: verdana; font-size: 70% ">
+<tr style="background-color:black; line-height: 2px"><td> &nbsp;</td></tr>
+<tr style="background-color:white; line-height: 9px"><td> &nbsp;</td></tr>
+<TR style="border-width:2px; border-color: black; padding:2px; background-color:white; border-style:solid;">
+<TD style="text-align:left;"><b>Class: </b>EvcEgressMapEntry&nbsp;&nbsp;<b><i>(Evc Egress Map Entry)</i></b><br><br>
+<i>A row in the EVC Egress Map. Contains a CoSName, PCPGreen, PCPYellow, DEIGreen, DEIYellow</i></td></tr>
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>CoS Name</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>cosName</I> - <b>Type: </b><i>string</i></TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>[Any String]</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+<TR><TD style="border:1px solid black; background-color: SeaShell; font-size: smaller;"><B>Validation Notes: </B>This must be a CoS Name from <b><i>EVC List of Class of Service Names</i></b></TD></TR>
+
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>PCP Green</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>pcpGreen</I> - <b>Type: </b><i>object</i></TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Description:</B> A PCP value (0-7) or DISCARD to use for Green Frames</TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>Class: PcpValueAndDiscard</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Required&nbsp;&nbsp;</td></tr>
+
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>PCP Yellow</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>pcpYellow</I> - <b>Type: </b><i>object</i></TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Description:</B> A PCP value (0-7) or DISCARD to use for Yellow frames</TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>Class: PcpValueAndDiscard</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Optional&nbsp;&nbsp;</td></tr>
+<TR><TD style="border:1px solid black; background-color: SeaShell; font-size: smaller;"><B>Validation Notes: </B>This is optional ONLY if <b><i>pcpGreen</i></b> is set to <i>DISCARD</i></TD></TR>
+
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>DEI Green</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>deiGreen</I> - <b>Type: </b><i>object</i></TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Description:</B> A DEI value to use for Green frames</TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>Class: DeiValueAndDiscard</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Optional&nbsp;&nbsp;</td></tr>
+<TR><TD style="border:1px solid black; background-color: SeaShell; font-size: smaller;"><B>Validation Notes: </B>This is optional ONLY if <b><i>pcpGreen</i></b> is set to <i>DISCARD</i></TD></TR>
+
+<tr style="background-color:black; line-height: 3px"><td> &nbsp;</td></tr>
+<TR style="border-width:1px; border-color: black; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Element Name:  </b><I>DEI Yellow</I><br>&nbsp;&nbsp<B>JSON Name:  </b><I>deiYellow</I> - <b>Type: </b><i>object</i></TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Description:</B> A DEI value to use for Yellow frames</TD></TR>
+<TR style="border-width:1px; padding:2px; background-color:ivory; border-style:solid;">
+<TD style="text-align: left;"><B>Allowed values: </b>Class: DeiValueAndDiscard</TD></TR>
+<TR style= "background-color:ivory; border-width:1px; border-style:solid;"><TD><B>Usage: </b>&nbsp;&nbsp;
+<B>Common: </B>Optional&nbsp;&nbsp;</td></tr>
+<TR><TD style="border:1px solid black; background-color: SeaShell; font-size: smaller;"><B>Validation Notes: </B>This is optional ONLY if <b><i>pcpGreen</i></b> is set to <i>DISCARD</i></TD></TR>
+
+</TABLE>
+
+</table>
+

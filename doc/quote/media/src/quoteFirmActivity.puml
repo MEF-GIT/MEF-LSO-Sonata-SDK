@@ -1,0 +1,66 @@
+@startuml
+
+
+skinparam activity {
+    BackgroundColor White
+    BorderColor Black
+}
+
+start
+if(immediate response?) then (yes)
+    if(sufficient information?) then (no)
+        :cancelled.
+        insufficientInformationProvided;
+    elseif(able to quote all items?) then (no)
+        :cancelled.
+        unableToProvide;
+    else(yes)
+        if(able to provide as requested?) then (no)
+            :approved.orderableAlternate;
+        else (yes)
+            :approved.orderable;
+        endif
+        if(Buyer rejected?) then (yes)
+            :rejected;
+        elseif(Buyer ordered?) then (yes)
+            :accepted;
+        else
+            :rejected.expired;
+        endif
+    endif
+else (no)
+    :inProgress;
+    if(further work needed?) then (yes)
+        :inProgress.
+        draft;
+    else(no)
+    endif
+    if(cancelled by the Buyer?) then (no)
+        if(sufficient information?) then (no)
+            :cancelled.
+            insufficientInformationProvided;
+        elseif(able to quote all items?) then (no)
+            :cancelled.
+            unableToProvide;
+        else(yes)
+            if(able to provide as requested?) then (no)
+                :approved.orderableAlternate;
+            else (yes)
+                :approved.orderable;
+            endif
+            if(Buyer rejected?) then (yes)
+                :rejected;
+            elseif(Buyer ordered?) then (yes)
+                :accepted;
+            else
+                :rejected.expired;
+            endif
+        endif
+    else(yes)
+      :cancelled;
+    endif
+endif
+
+stop
+
+@enduml

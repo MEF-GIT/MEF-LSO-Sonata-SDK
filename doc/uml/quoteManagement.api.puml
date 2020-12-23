@@ -4,51 +4,10 @@ skinparam {
     ClassBorderColor Black
 }
 scale 4096 width
-class AgreementRef {
-
-    id*: string 
-    href: string 
-    name: string 
-    path: string 
-    @type: string 
-    @referredType: string 
-}
-
-
-
-class CancelOrRejectQuote {
-
-    id: string 
-    externalId: string 
-    quoteId: string 
-    reason: string 
-    requestedQuoteState: MEFCancelOrRejectStateType 
-    state: TaskStateType 
-    @baseType: string 
-    @schemaLocation: uri 
-    @type: string 
-}
-
-
-
-class CancelOrRejectQuote_Create {
-
-    externalId: string 
-    quoteId*: string 
-    reason: string 
-    requestedQuoteState: MEFCancelOrRejectStateType 
-    @baseType: string 
-    @schemaLocation: uri 
-    @type: string 
-}
-
-
-
 class Duration {
 
-    amount: integer 
-    units: TimeUnit 
-    @type: string 
+    amount*: integer 
+    units*: TimeUnit 
 }
 
 
@@ -93,14 +52,6 @@ Error <|-- Error405
 
 
 
-class Error409 {
-
-    code*: string 
-}
-Error <|-- Error409
-
-
-
 class Error422 {
 
     code*: string 
@@ -128,9 +79,8 @@ Error <|-- Error501
 
 class Error {
 
-    reason*: string 
     message: string 
-    status: string 
+    reason*: string 
     referenceError: uri 
 }
 
@@ -189,6 +139,33 @@ RelatedPlaceRefOrValue <|-- FormattedAddress
 
 
 
+class GeographicAddressIdentifier {
+
+    externalReferenceId*: string 
+    externalReferenceType*: string 
+}
+RelatedPlaceRefOrValue <|-- GeographicAddressIdentifier
+
+
+
+class GeographicAddressRef {
+
+    href: string 
+    id*: string 
+}
+RelatedPlaceRefOrValue <|-- GeographicAddressRef
+
+
+
+class GeographicSiteRef {
+
+    href: string 
+    id*: string 
+}
+RelatedPlaceRefOrValue <|-- GeographicSiteRef
+
+
+
 class GeographicSubAddress {
 
     buildingName: string 
@@ -202,95 +179,74 @@ class GeographicSubAddress {
 GeographicSubAddress *-->"*" MEFSubUnit : subUnit
 
 
-class GlobalAddressId {
+enum MEFEndOfTermAction {
 
-    externalReferenceId*: string 
-    externalReferenceType*: string 
+    roll
+    autoDisconnect
+    autoRenew
 }
-RelatedPlaceRefOrValue <|-- GlobalAddressId
-
-
-
-class MEFGeographicLocation {
-
-    spatialRef*: string 
-}
-RelatedPlaceRefOrValue <|-- MEFGeographicLocation
-
-MEFGeographicLocation *-->"1" MEFGeographicPoint : geographicPoint
-
-
 class MEFGeographicPoint {
 
+    spatialRef*: string 
     x*: string 
     y*: string 
+    z: string 
+}
+RelatedPlaceRefOrValue <|-- MEFGeographicPoint
+
+
+
+class MEFItemTerm {
+
+    endOfTermAction: MEFEndOfTermAction 
 }
 
-
-
-class MEFItemTerm_Buyer {
-
-    description: string 
-    name: string 
-    @type: string 
-}
-
-MEFItemTerm_Buyer *--> Duration : duration
-
-
-class MEFItemTerm_Seller {
-
-    description: string 
-    name: string 
-    sellerEndOfTermAction: MEFSellerEndOfTermAction 
-    @type: string 
-}
-
-MEFItemTerm_Seller *--> Duration : duration
-MEFItemTerm_Seller *--> Duration : rollInterval
+MEFItemTerm *--> Duration : duration
+MEFItemTerm *--> Duration : rollInterval
 
 
 class MEFProductConfiguration {
 
-    @baseType: string 
     @schemaLocation: uri 
     @type*: string 
 }
 
 
 
-class MEFProductRefOrValue {
+class MEFProductRefOrValueForQuote {
 
     href: string 
     id: string 
-    @type*: string 
 }
 
-MEFProductRefOrValue *-->"*" RelatedPlaceRefOrValue : place
-MEFProductRefOrValue *--> MEFProductConfiguration : productConfiguration
-MEFProductRefOrValue *-->"*" ProductRelationship : productRelationship
-MEFProductRefOrValue *--> ProductSpecificationRef : productSpecification
+MEFProductRefOrValueForQuote *-->"*" RelatedPlaceRefOrValue : place
+MEFProductRefOrValueForQuote *--> MEFProductConfiguration : productConfiguration
+MEFProductRefOrValueForQuote *--> ProductOfferingRef : productOffering
+MEFProductRefOrValueForQuote *-->"*" ProductRelationship : productRelationship
 
 
 class MEFQuoteItem_Create {
 
+}
+MEFQuoteItem_Common <|-- MEFQuoteItem_Create
+
+
+
+class MEFQuoteItem_Common {
+
     id*: string 
     dealReference: string 
-    action*: MEFQuoteItemActionType 
-    @type: string 
+    action*: MEFProductActionType 
+    agreement: string 
 }
 
-MEFQuoteItem_Create *-->"*" AgreementRef : agreement
-MEFQuoteItem_Create *-->"*" Note : note
-MEFQuoteItem_Create *-->"*" RelatedPlaceRefOrValue : place
-MEFQuoteItem_Create *--> MEFProductRefOrValue : product
-MEFQuoteItem_Create *--> ProductOfferingRef : productOffering
-MEFQuoteItem_Create *--> ProductOfferingQualificationItemRef : productOfferingQualificationItem
-MEFQuoteItem_Create *-->"*" QuoteItemRelationship : quoteItemRelationship
-MEFQuoteItem_Create *-->"*" RelatedPartyValue : relatedParty
-MEFQuoteItem_Create *--> TimeInterval : requestedQuoteItemInstallationInterval
-MEFQuoteItem_Create *--> MEFItemTerm_Buyer : requestedQuoteItemTerm
-MEFQuoteItem_Create *-->"*" TerminationError : terminationError
+MEFQuoteItem_Common *-->"*" Note : note
+MEFQuoteItem_Common *--> MEFProductRefOrValueForQuote : product
+MEFQuoteItem_Common *--> ProductOfferingQualificationItemRef : productOfferingQualificationItem
+MEFQuoteItem_Common *-->"*" QuoteItemRelationship : quoteItemRelationship
+MEFQuoteItem_Common *-->"*" RelatedContactInformation : relatedContactInformation
+MEFQuoteItem_Common *--> Duration : requestedQuoteItemInstallationInterval
+MEFQuoteItem_Common *--> MEFItemTerm : requestedQuoteItemTerm
 
 
 class MEFQuoteStateChange {
@@ -314,7 +270,6 @@ class Money {
 
     unit: string 
     value: float 
-    @type: string 
 }
 
 
@@ -324,26 +279,15 @@ class Note {
     id*: string 
     author*: string 
     date*: date-time 
+    source*: NoteSourceType 
     text*: string 
-    @type: string 
 }
-
-
-
-class PlaceRef {
-
-    @referredType*: string 
-    href: string 
-    id*: string 
-}
-RelatedPlaceRefOrValue <|-- PlaceRef
 
 
 
 class Price {
 
     taxRate: float 
-    @type: string 
 }
 
 Price *--> Money : dutyFreeAmount
@@ -356,8 +300,6 @@ class ProductOfferingQualificationItemRef {
     alternateProductProposalId: string 
     productOfferingQualificationHref: string 
     productOfferingQualificationId*: string 
-    @type: string 
-    @referredType: string 
 }
 
 
@@ -366,9 +308,54 @@ class ProductOfferingRef {
 
     id*: string 
     href: string 
-    name: string 
-    @type: string 
-    @referredType: string 
+}
+
+
+
+class ProductRelationship {
+
+    id*: string 
+    groupingKey: string 
+    href: string 
+    relationshipType*: string 
+}
+
+
+
+class Quote {
+
+    id*: string 
+    href: string 
+    effectiveQuoteCompletionDate: date-time 
+    expectedQuoteCompletionDate: date-time 
+    quoteDate: date-time 
+    quoteLevel: MEFSellerQuoteLevel 
+    state: MEFQuoteStateType 
+}
+Quote_Common <|-- Quote
+
+Quote *-->"1..*" QuoteItem : quoteItem
+Quote *-->"*" MEFQuoteStateChange : stateChange
+Quote *--> TimePeriod : validFor
+
+
+class QuoteItem {
+
+    subjectToFeasibilityCheck: boolean 
+    state: MEFQuoteItemStateType 
+}
+MEFQuoteItem_Common <|-- QuoteItem
+
+QuoteItem *--> Duration : quoteItemInstallationInterval
+QuoteItem *-->"*" QuotePrice : quoteItemPrice
+QuoteItem *--> MEFItemTerm : quoteItemTerm
+QuoteItem *-->"*" TerminationError : terminationError
+
+
+class QuoteItemRelationship {
+
+    id*: string 
+    relationshipType*: string 
 }
 
 
@@ -378,183 +365,6 @@ enum MEFBuyerQuoteLevel {
     budgetary
     firm
 }
-class ProductRelationship {
-
-    id*: string 
-    href: string 
-    buyerProductId: string 
-    name: string 
-    relationshipType*: string 
-}
-
-
-
-class ProductSpecificationRef {
-
-    id*: string 
-    href: string 
-    name: string 
-    @type: string 
-    @referredType: string 
-}
-
-ProductSpecificationRef *--> TargetProductSchema : targetProductSchema
-
-
-class Quote {
-
-    id: string 
-    href: string 
-    description: string 
-    expectedQuoteCompletionDate: date-time 
-    externalId: string 
-    instantSyncQuote: boolean 
-    projectId: string 
-    quoteDate: date-time 
-    requestedQuoteCompletionDate: date-time 
-    buyerRequestedQuoteLevel: MEFBuyerQuoteLevel 
-    sellerQuoteLevel: MEFSellerQuoteLevel 
-    state: MEFQuoteStateType 
-    @baseType: string 
-    @schemaLocation: uri 
-    @type: string 
-}
-
-Quote *-->"*" Note : note
-Quote *-->"1..*" QuoteItem : quoteItem
-Quote *-->"*" RelatedPartyValue : relatedParty
-Quote *-->"*" MEFQuoteStateChange : stateChange
-Quote *--> TimePeriod : validFor
-
-
-class QuoteItem {
-
-    id*: string 
-    dealReference: string 
-    action*: MEFQuoteItemActionType 
-    sellerQuoteItemLevel: MEFSellerQuoteLevel 
-    state: MEFQuoteItemStateType 
-    @baseType: string 
-    @schemaLocation: uri 
-    @type: string 
-}
-
-QuoteItem *-->"*" AgreementRef : agreement
-QuoteItem *-->"*" Note : note
-QuoteItem *-->"*" RelatedPlaceRefOrValue : place
-QuoteItem *--> MEFProductRefOrValue : product
-QuoteItem *--> ProductOfferingRef : productOffering
-QuoteItem *--> ProductOfferingQualificationItemRef : productOfferingQualificationItem
-QuoteItem *--> TimeInterval : quoteItemInstallationInterval
-QuoteItem *-->"*" QuotePrice : quoteItemPrice
-QuoteItem *-->"*" QuoteItemRelationship : quoteItemRelationship
-QuoteItem *--> MEFItemTerm_Seller : quoteItemTerm
-QuoteItem *-->"*" RelatedPartyValue : relatedParty
-QuoteItem *--> TimeInterval : requestedQuoteItemInstallationInterval
-QuoteItem *--> MEFItemTerm_Buyer : requestedQuoteItemTerm
-QuoteItem *-->"*" TerminationError : terminationError
-
-
-class QuoteItemRelationship {
-
-    id*: string 
-    relationshipType*: string 
-    @type: string 
-}
-
-
-
-class QuotePrice {
-
-    description: string 
-    name: string 
-    unitOfMeasure: string 
-    priceType: MEFPriceType 
-    recurringChargePeriod: MEFChargePeriod 
-    @type: string 
-}
-
-QuotePrice *--> Price : price
-
-
-class Quote_Create {
-
-    description: string 
-    buyerId: string 
-    sellerId: string 
-    externalId: string 
-    instantSyncQuote*: boolean 
-    projectId: string 
-    requestedQuoteCompletionDate: date-time 
-    buyerRequestedQuoteLevel*: MEFBuyerQuoteLevel 
-}
-
-Quote_Create *-->"*" Note : note
-Quote_Create *-->"1..*" MEFQuoteItem_Create : quoteItem
-Quote_Create *-->"*" RelatedPartyValue : relatedParty
-
-
-class RelatedPartyValue {
-
-    @type: string 
-    emailAddress*: string 
-    name*: string 
-    number*: string 
-    numberExtension: string 
-    role*: string 
-}
-
-
-
-class RelatedPlaceRefOrValue {
-
-    @schemaLocation: uri 
-    @type*: string 
-    role*: string 
-}
-
-
-
-class TargetProductSchema {
-
-    @baseType: string 
-    @schemaLocation*: uri 
-    @type*: string 
-}
-
-
-
-enum MEFCancelOrRejectStateType {
-
-    cancelled
-    rejected
-}
-class TerminationError {
-
-    id: string 
-    value: string 
-    @type: string 
-}
-
-
-
-class TimeInterval {
-
-    amount*: integer 
-    timeUnit*: TimeUnit 
-}
-
-
-
-class TimePeriod {
-
-    endDateTime: date-time 
-    startDateTime: date-time 
-    @type: string 
-}
-
-
-
 enum MEFChargePeriod {
 
     hour
@@ -569,26 +379,29 @@ enum MEFPriceType {
     nonRecurring
     usageBased
 }
-enum MEFQuoteItemActionType {
+enum MEFProductActionType {
 
-    install
-    change
-    disconnect
+    add
+    modify
+    delete
 }
 enum MEFQuoteItemStateType {
 
-    approved
+    approved.answered
+    approved.orderable
     approved.orderableAlternate
     inProgress
+    inProgress.draft
     rejected
     rejected.unableToProvide
     rejected.insufficientInformationProvided
+    pending
 }
 enum MEFQuoteStateType {
 
     accepted
-    approved
     approved.answered
+    approved.orderable
     approved.orderableAlternate
     cancelled
     cancelled.insufficientInformationProvided
@@ -599,32 +412,120 @@ enum MEFQuoteStateType {
     rejected.expired
     pending
 }
-enum MEFSellerEndOfTermAction {
+enum MEFSellerQuoteLevel {
 
-    roll
-    autoDisconnect
-    autoRenew
+    budgetary
+    firmSubjectToFeasibilityCheck
+    firm
 }
-enum TaskStateType {
+enum NoteSourceType {
 
-    accepted
-    terminatedWithError
-    inProgress
-    done
+    buyer
+    seller
 }
+class QuoteOperationData {
+
+    quoteId*: string 
+    reason: string 
+}
+
+
+
+class QuotePrice {
+
+    description: string 
+    name: string 
+    unitOfMeasure: string 
+    priceType: MEFPriceType 
+    recurringChargePeriod: MEFChargePeriod 
+}
+
+QuotePrice *--> Price : price
+
+
+class Quote_Create {
+
+}
+Quote_Common <|-- Quote_Create
+
+Quote_Create *-->"1..*" MEFQuoteItem_Create : quoteItem
+
+
+class Quote_Common {
+
+    description: string 
+    externalId: string 
+    instantSyncQuote*: boolean 
+    projectId: string 
+    requestedQuoteCompletionDate: date-time 
+    buyerRequestedQuoteLevel*: MEFBuyerQuoteLevel 
+}
+
+Quote_Common *-->"*" Note : note
+Quote_Common *-->"*" RelatedContactInformation : relatedContactInformation
+
+
+class Quote_Find {
+
+    id: string 
+    effectiveQuoteCompletionDate: date-time 
+    expectedQuoteCompletionDate: date-time 
+    externalId: string 
+    projectId: string 
+    quoteDate: date-time 
+    requestedQuoteCompletionDate: date-time 
+    quoteLevel: MEFSellerQuoteLevel 
+    state*: MEFQuoteStateType 
+}
+
+Quote_Find *-->"*" MEFQuoteStateChange : stateChange
+
+
+class RelatedContactInformation {
+
+    emailAddress*: string 
+    name*: string 
+    number*: string 
+    numberExtension: string 
+    organization: string 
+    role*: string 
+}
+
+RelatedContactInformation *--> FieldedAddress : postalAddress
+
+
+class RelatedPlaceRefOrValue {
+
+    @schemaLocation: uri 
+    @type*: string 
+    role*: string 
+}
+
+
+
+class TerminationError {
+
+    value: string 
+}
+
+
+
+class TimePeriod {
+
+    endDateTime: date-time 
+    startDateTime: date-time 
+}
+
+
+
 enum TimeUnit {
 
+    calendarMonths
     calendarDays
     calendarHours
     calendarMinutes
     businessDays
     businessHours
     businessMinutes
-}
-enum MEFSellerQuoteLevel {
-
-    budgetary
-    firmSubjectToFeasibilityCheck
-    firm
 }
 @enduml

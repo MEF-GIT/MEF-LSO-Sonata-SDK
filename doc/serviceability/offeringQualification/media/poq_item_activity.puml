@@ -1,0 +1,40 @@
+@startuml
+
+
+skinparam activity {
+    BackgroundColor White
+    BorderColor Black
+}
+
+start
+
+:acknowledged;
+if(Seller provides immediate response?) then (yes)
+    if(any other item failed?) then (yes)
+        :done
+        .abandoned;
+    else (no)
+        if(sufficient information provided?) then (yes)
+            :done.ready;
+        else (no)
+            :terminatedWithError;
+        endif
+    endif
+else (no)
+    :inProgress;
+    
+    if(any other item failed?) then (yes)
+        :done
+        .abandoned;
+    else (no)
+        if(sufficient information provided?) then (yes)
+            :done.ready;
+        else (no)
+            :terminatedWithError;
+        endif
+    endif
+endif
+
+stop
+
+@enduml

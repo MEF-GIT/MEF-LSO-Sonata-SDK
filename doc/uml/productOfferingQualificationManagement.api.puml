@@ -3,7 +3,7 @@ skinparam {
     ClassBackgroundColor White
     ClassBorderColor Black
 }
-
+scale 4096 width
 class AlternateProductOfferingProposal {
 
     id*: string 
@@ -46,6 +46,14 @@ Error <|-- Error404
 
 
 
+class Error405 {
+
+    code*: string 
+}
+Error <|-- Error405
+
+
+
 class Error422 {
 
     code*: string 
@@ -76,7 +84,6 @@ class Error {
     message: string 
     reason*: string 
     referenceError: uri 
-    status: string 
 }
 
 
@@ -134,10 +141,36 @@ RelatedPlaceRefOrValue <|-- FormattedAddress
 
 
 
+class GeographicAddressIdentifier {
+
+    externalReferenceId*: string 
+    externalReferenceType*: string 
+}
+RelatedPlaceRefOrValue <|-- GeographicAddressIdentifier
+
+
+
+class GeographicAddressRef {
+
+    href: string 
+    id*: string 
+}
+RelatedPlaceRefOrValue <|-- GeographicAddressRef
+
+
+
+class GeographicSiteRef {
+
+    href: string 
+    id*: string 
+}
+RelatedPlaceRefOrValue <|-- GeographicSiteRef
+
+
+
 class GeographicSubAddress {
 
     buildingName: string 
-    id: string 
     levelNumber: string 
     levelType: string 
     privateStreetName: string 
@@ -147,29 +180,14 @@ class GeographicSubAddress {
 GeographicSubAddress *-->"*" MEFSubUnit : subUnit
 
 
-class GlobalAddressId {
-
-    externalReferenceId*: string 
-    externalReferenceType*: string 
-}
-RelatedPlaceRefOrValue <|-- GlobalAddressId
-
-
-
-class MEFGeographicLocation {
-
-    spatialRef*: string 
-}
-RelatedPlaceRefOrValue <|-- MEFGeographicLocation
-
-MEFGeographicLocation *-->"1" MEFGeographicPoint : geographicPoint
-
-
 class MEFGeographicPoint {
 
+    spatialRef*: string 
     x*: string 
     y*: string 
+    z: string 
 }
+RelatedPlaceRefOrValue <|-- MEFGeographicPoint
 
 
 
@@ -210,11 +228,11 @@ class MEFProductRefOrValue {
 
     href: string 
     id: string 
-    @type*: string 
 }
 
 MEFProductRefOrValue *-->"*" RelatedPlaceRefOrValue : place
 MEFProductRefOrValue *--> MEFProductConfiguration : productConfiguration
+MEFProductRefOrValue *--> ProductOfferingRef : productOffering
 MEFProductRefOrValue *-->"*" ProductRelationship : productRelationship
 MEFProductRefOrValue *--> ProductSpecificationRef : productSpecification
 
@@ -224,16 +242,6 @@ class MEFSubUnit {
     subUnitNumber*: string 
     subUnitType*: string 
 }
-
-
-
-class PlaceRef {
-
-    @referredType*: string 
-    href: string 
-    id*: string 
-}
-RelatedPlaceRefOrValue <|-- PlaceRef
 
 
 
@@ -254,7 +262,7 @@ ProductOfferingQualification *-->"*" MEFPOQStateChange : stateChange
 class ProductOfferingQualificationItem {
 
     guaranteedUntilDate: date-time 
-    serviceConfidenceReason: string 
+    serviceabilityConfidenceReason: string 
     serviceabilityConfidence: MEFServiceabilityColor 
     state*: MEFPOQItemTaskStateType 
 }
@@ -266,17 +274,85 @@ ProductOfferingQualificationItem *-->"*" MEFPOQItemStateChange : stateChange
 ProductOfferingQualificationItem *-->"*" TerminationError : terminationError
 
 
+class ProductOfferingQualificationItem_Create {
+
+}
+ProductOfferingQualificationItem_Common <|-- ProductOfferingQualificationItem_Create
+
+
+
 class ProductOfferingQualificationItem_Common {
 
     action*: ProductActionType 
-    expectedActivationDate: date-time 
     id*: string 
 }
 
 ProductOfferingQualificationItem_Common *-->"1" MEFProductRefOrValue : product
-ProductOfferingQualificationItem_Common *--> ProductOfferingRef : productOffering
 ProductOfferingQualificationItem_Common *-->"*" QualificationItemRelationship : qualificationItemRelationship
-ProductOfferingQualificationItem_Common *-->"*" RelatedPartyValue : relatedParty
+ProductOfferingQualificationItem_Common *-->"*" RelatedContactInformation : relatedContactInformation
+
+
+class ProductOfferingQualification_Create {
+
+}
+ProductOfferingQualification_Common <|-- ProductOfferingQualification_Create
+
+ProductOfferingQualification_Create *-->"1..*" ProductOfferingQualificationItem_Create : productOfferingQualificationItem
+
+
+class ProductOfferingQualification_Common {
+
+    instantSyncQualification: boolean 
+    projectId: string 
+    provideAlternative: boolean 
+    requestedPOQCompletionDate: date-time 
+}
+
+ProductOfferingQualification_Common *-->"1..*" RelatedContactInformation : relatedContactInformation
+
+
+enum MEFPOQItemTaskStateType {
+
+    acknowledged
+    terminatedWithError
+    inProgress
+    done.abandoned
+    done.ready
+}
+class ProductOfferingQualification_Find {
+
+    id*: string 
+    projectId: string 
+    requestedPOQCompletionDate: date 
+    state*: MEFPOQTaskStateType 
+}
+
+
+
+class ProductOfferingRef {
+
+    href: string 
+    id*: string 
+}
+
+
+
+class ProductRelationship {
+
+    groupingKey: string 
+    href: string 
+    id*: string 
+    relationshipType*: string 
+}
+
+
+
+class ProductSpecificationRef {
+
+    href: string 
+    id*: string 
+}
+
 
 
 class QualificationItemRelationship {
@@ -287,10 +363,31 @@ class QualificationItemRelationship {
 
 
 
+class RelatedContactInformation {
+
+    emailAddress*: string 
+    name*: string 
+    number*: string 
+    numberExtension: string 
+    organization: string 
+    role*: string 
+}
+
+RelatedContactInformation *--> FieldedAddress : postalAddress
+
+
+class RelatedPlaceRefOrValue {
+
+    @schemaLocation: uri 
+    @type*: string 
+    role*: string 
+}
+
+
+
 class TerminationError {
 
-    id: string 
-    value: string 
+    value*: string 
 }
 
 
@@ -309,115 +406,15 @@ enum MEFServiceabilityColor {
     yellow
     red
 }
-class ProductOfferingQualification_Create {
+enum ProductActionType {
 
-}
-ProductOfferingQualification_Common <|-- ProductOfferingQualification_Create
-
-ProductOfferingQualification_Create *-->"1..*" ProductOfferingQualificationItem_Create : productOfferingQualificationItem
-
-
-enum MEFPOQTaskStateType {
-
-    accepted
-    terminatedWithError
-    inProgress
-    done.unableToProvide
-    done
-}
-class ProductOfferingQualificationItem_Create {
-
-}
-ProductOfferingQualificationItem_Common <|-- ProductOfferingQualificationItem_Create
-
-
-
-class ProductOfferingQualification_Common {
-
-    buyerId: string 
-    instantSyncQualification: boolean 
-    projectId: string 
-    provideAlternative: boolean 
-    requestedPOQCompletionDate: date-time 
-    sellerId: string 
-}
-
-ProductOfferingQualification_Common *-->"1..*" RelatedPartyValue : relatedParty
-
-
-class ProductOfferingQualification_Find {
-
-    id*: string 
-    projectId: string 
-    requestedPOQCompletionDate: date 
-    state*: MEFPOQTaskStateType 
-}
-
-
-
-class ProductOfferingRef {
-
-    @referredType: string 
-    href: string 
-    id*: string 
-    name: string 
-}
-
-
-
-class ProductRelationship {
-
-    @referredType: string 
-    href: string 
-    id*: string 
-    groupingKey: string 
-    name: string 
-    relationshipType*: string 
-}
-
-
-
-class ProductSpecificationRef {
-
-    @referredType: string 
-    href: string 
-    id*: string 
-    name: string 
-}
-
-
-
-class RelatedPartyValue {
-
-    @type: string 
-    emailAddress*: string 
-    name*: string 
-    number*: string 
-    numberExtension: string 
-    role*: string 
-}
-
-
-
-class RelatedPlaceRefOrValue {
-
-    @schemaLocation: uri 
-    @type*: string 
-    role*: string 
-}
-
-
-
-enum MEFPOQItemTaskStateType {
-
-    accepted
-    terminatedWithError
-    inProgress
-    done.abandoned
-    done
+    add
+    modify
+    delete
 }
 enum TimeUnit {
 
+    calendarMonths
     calendarDays
     calendarHours
     calendarMinutes
@@ -425,10 +422,12 @@ enum TimeUnit {
     businessHours
     businessMinutes
 }
-enum ProductActionType {
+enum MEFPOQTaskStateType {
 
-    add
-    modify
-    delete
+    acknowledged
+    terminatedWithError
+    inProgress
+    done.unableToProvide
+    done.ready
 }
 @enduml

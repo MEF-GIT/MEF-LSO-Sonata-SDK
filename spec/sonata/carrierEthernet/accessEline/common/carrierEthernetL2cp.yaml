@@ -1,0 +1,66 @@
+---
+"$schema": http://json-schema.org/draft-07/schema#
+title: 
+    MEF LSO Sonata - Carrier Ethernet L2CP (Common) Product Specification
+    # MEF Forum - Date: 20201220  Edit-level: 178
+    # File: json-format/accessEline/common/carrierEthernetL2cp.yaml
+definitions:
+    L2cpPeering:
+        type: object
+        description:  >-
+            This specifies the L2CP Protocol Identifier and the Destination
+            Address in use by the protocol entity. Reference MEF 45.1 Section
+            8.2 L2CP Peering Service Attribute
+        properties:
+            protocolID:
+                description:  >-
+                    This specifies the Protocol Type for the L2CP. It consists
+                    of a field specification (ETHERTYPE or LLC), the EtherType or LLC
+                    value, and an optional subtype.
+                type: object
+                $ref: "#/definitions/L2cpProtocol"
+            destinationAddress:
+                description:  >-
+                    The Destination MAC Address of the L2CP to be peered in the
+                    standard format of 6 hex bytes separated either by colon (:) or
+                    hyphen (-).
+                type: string
+                pattern: "[0-9a-fA-F][0-9a-fA-F]([-][0-9a-fA-F][0-9a-fA-F]){5}"
+            linkIdList:
+                description:  >-
+                    Identifiers for the links on which the specified protocol will
+                    be peered. If no links are specified the protocol is peered on
+                    all links.
+                type: array 
+                minItems: 0
+                uniqueItems: FALSE
+                items:
+                    type: string
+        required:
+            - protocolID
+            - destinationAddress
+    L2cpProtocol:
+        type: object
+        description:  >-
+            Defines a L2CP protocol LLC address type or EtherType with
+            possible subtype. Reference MEF 45.1 Section 8.2 L2CP Peering Service
+            Attribute.
+        properties:
+            l2cpProtocolType:
+                description: The protocol field to inspect to identify the L2CP.
+                type: string
+                enum:
+                    - "ETHERTYPE"
+                    - "LLC"
+            llcAddressOrEtherType:
+                description: The EtherType value or LLC value
+                type: integer
+                minimum: 0
+            subType:
+                description: The EtherType can be modified by an optional sub-type.
+                type: integer
+                minimum: 0
+        required:
+            - l2cpProtocolType
+            - llcAddressOrEtherType
+

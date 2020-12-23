@@ -1,0 +1,226 @@
+---
+"$schema": http://json-schema.org/draft-07/schema#
+title: 
+    MEF LSO Sonata - Carrier Ethernet External Interfaces (Common) Product Specification
+    # MEF Forum - Date: 20201220  Edit-level: 178
+    # File: json-format/accessEline/common/carrierEthernetExternalInterfaces.yaml
+definitions:
+    UniPhysicalLink:
+        description:  >-
+            This class describes the Physical Link attributes at a UNI.
+            It is a 4-tuple {carrierEthernet, frequency sync enable, PTP enable,
+            connector}. carrierEthernet is a 2-tuple containing an id and physical
+            link type.
+        allOf:
+            - $ref: "#/definitions/CarrierEthernetPhysicalLink"
+            - $ref: "#/definitions/UniSpecifcAttributes"
+    EnniPhysicalLink:
+        description:  >-
+            This class describes the Physical Link attributes at an ENNI.
+            It consists of the Carrier Ethernet Physical Links (id and physical
+            link type) with no elements.
+        allOf:
+            - $ref: "#/definitions/CarrierEthernetPhysicalLink"
+    CarrierEthernetPhysicalLink:
+        type: object
+        description:  >-
+            A 2-tuple of the form <id, physicalLink>. The value of id is
+            an identifier for the physical link. The value of physicalLink
+            is the specific Ethernet physical layer type.
+        properties:
+            id:
+                description: An identifier for the physical link.
+                # This must be specified for all External Interfaces
+                type: string
+                minLength: 1
+                maxLength: 45
+                pattern: "[\x20-\x7F]+"
+            physicalLink:
+                description: An Ethernet physical layer
+                # This must be specified for all External Internal interfaces
+                type: string
+                enum:
+                    - "1BASE5"
+                    - "2BASE_TL"
+                    - "10BASE2"
+                    - "10BASE5"
+                    - "10BASE_F"
+                    - "10BASE_FB"
+                    - "10BASE_FL"
+                    - "10BASE_FP"
+                    - "10BASE_T"
+                    - "10BASE_T1L"
+                    - "10BASE_T1S"
+                    - "10BASE_TE"
+                    - "10BROAD36"
+                    - "10PASS_TS"
+                    - "100BASE_BX10"
+                    - "100BASE_FX"
+                    - "100BASE_LX10"
+                    - "100BASE_T"
+                    - "100BASE_T1"
+                    - "100BASE_T2"
+                    - "100BASE_T4"
+                    - "100BASE_TX"
+                    - "100BASE_X"
+                    - "1000BASE_BX10"
+                    - "1000BASE_CX"
+                    - "1000BASE_KX"
+                    - "1000BASE_LX"
+                    - "1000BASE_LX10"
+                    - "1000BASE_PX10"
+                    - "1000BASE_PX20"
+                    - "1000BASE_RHA"
+                    - "1000BASE_RHB"
+                    - "1000BASE_RHC"
+                    - "1000BASE_SX"
+                    - "1000BASE_T"
+                    - "1000BASE_T1"
+                    - "1000BASE_X"
+                    - "2_5GBASE_KX"
+                    - "2_5GBASE_T"
+                    - "2_5GBASE_T1"
+                    - "5GBASE_KR"
+                    - "5GBASE_T"
+                    - "5GBASE_T1"
+                    - "10GBASE_CX4"
+                    - "10GBASE_E"
+                    - "10GBASE_ER"
+                    - "10GBASE_EW"
+                    - "10GBASE_KR"
+                    - "10GBASE_KX4"
+                    - "10GBASE_L"
+                    - "10GBASE_LR"
+                    - "10GBASE_LRM"
+                    - "10GBASE_LW"
+                    - "10GBASE_LX4"
+                    - "10GBASE_R"
+                    - "10GBASE_S"
+                    - "10GBASE_SR"
+                    - "10GBASE_SW"
+                    - "10GBASE_T"
+                    - "10GBASE_T1"
+                    - "10GBASE_W"
+                    - "10GBASE_X"
+                    - "25GBASE_CR"
+                    - "25GBASE_CR_S"
+                    - "25GBASE_ER"
+                    - "25GBASE_KR"
+                    - "25GBASE_KR_S"
+                    - "25GBASE_LR"
+                    - "25GBASE_SR"
+                    - "25GBASE_T"
+                    - "40GBASE_CR4"
+                    - "40GBASE_ER4"
+                    - "40GBASE_FR"
+                    - "40GBASE_KR4"
+                    - "40GBASE_LR4"
+                    - "40GBASE_R"
+                    - "40GBASE_SR4"
+                    - "40GBASE_T"
+                    - "50GBASE_CR"
+                    - "50GBASE_ER"
+                    - "50GBASE_FR"
+                    - "50GBASE_KR"
+                    - "50GBASE_LR"
+                    - "50GBASE_SR"
+                    - "100GBASE_CR10"
+                    - "100GBASE_CR2"
+                    - "100GBASE_CR4"
+                    - "100GBASE_DR"
+                    - "100GBASE_ER4"
+                    - "100GBASE_KP4"
+                    - "100GBASE_KR2"
+                    - "100GBASE_KR4"
+                    - "100GBASE_LR4"
+                    - "100GBASE_R"
+                    - "100GBASE_SR10"
+                    - "100GBASE_SR2"
+                    - "100GBASE_SR4"
+                    - "200GBASE_CR4"
+                    - "200GBASE_DR4"
+                    - "200GBASE_ER4"
+                    - "200GBASE_FR4"
+                    - "200GBASE_KR4"
+                    - "200GBASE_LR4"
+                    - "200GBASE_SR4"
+                    - "400GBASE_DR4"
+                    - "400GBASE_ER8"
+                    - "400GBASE_FR8"
+                    - "400GBASE_LR8"
+                    - "400GBASE_SR16"
+                    - "400GBASE_SR4_2"
+                    - "400GBASE_SR8"
+                    - "OTHER"
+        required:
+            - id
+            - physicalLink
+    UniSpecifcAttributes:
+        type: object
+        properties:
+            synchronousEthernet:
+                description:  >-
+                    Indicates if synchronous Ethernet is used on the physical link
+                    and has the value either Enabled or Disabled.
+                type: object
+                $ref: "../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
+            precisionTiming:
+                description:  >-
+                    Indicates if the Precision Time Protocol is used on the physical
+                    link and has the value either Enabled or Disabled
+                type: object
+                $ref: "../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
+            uniConnectorType:
+                description:  >-
+                    This indicates the type of connector that is presented to the
+                    Subscriber.
+                type: string
+                enum:
+                    - "SC"
+                    - "LC"
+                    - "RJ45"
+                    - "FC"
+                    - "D4"
+                    - "OTHER"
+            uniConnectorGender:
+                description:  >-
+                    This indicates whether the Subscriber is presented with a SOCKET
+                    (common) or a PLUG (less common).
+                type: string
+                enum:
+                    - "SOCKET"
+                    - "PLUG"
+        required:
+            - synchronousEthernet
+            - precisionTiming
+            - uniConnectorType
+            - uniConnectorGender
+    CarrierEthernetEiReference:
+        type: object
+        properties:
+            href:
+                description: A reference to an External Interface (UNI, ENNI).
+                type: string
+                format: uri
+        required:
+            - href
+    VirtualFrameMap:
+        type: object
+        description:  >-
+            A map for virtual frame mapping.   The absence of this attribute
+            corresponds to a Service Attribute value of Not Applicable. Reference
+            MEF 10.4 Section 9.3 Subscriber UNI Virtual Frame Map Service Attribute.
+        properties:
+            vfMap:
+                description:  >-
+                    MEF 10.4 §9.2 and §9,3 - When the value of the Subscriber UNI
+                    Instantiation Service Attribute = Virtual, there must exist a map
+                    that maps the set of Virtual Frames that cross the UNI to a sequence
+                    of pairs of the form〈s,t where s is a standard Ethernet frame per
+                    Clause 3 of IEEE Std 802.3 – 2015 [5] and t is the arrival time
+                    at the UNI for all bits in s. Since MEF 10.4 does not specify the
+                    contents or format of this map, it is currently defined as an arbitrary
+                    length string.
+                type: string
+                minLength: 0
+

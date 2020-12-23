@@ -1,0 +1,265 @@
+---
+"$schema": http://json-schema.org/draft-07/schema#
+title: 
+    MEF LSO Sonata - Carrier Ethernet Egress Maps (Common) Product Specification
+    # MEF Forum - Date: 20201220  Edit-level: 178
+    # File: json-format/accessEline/common/carrierEthernetEgressMaps.yaml
+definitions:
+    PcpFromCos:
+        type: object
+        description:  >-
+            The PCP Field in the Egress EI Frame is determined from the
+            Class of Service. This is a list that contains exactly one entry
+            for each Class of Service Name and the PCP value  (or DISCARD)
+            to use for that CoS. For example CoS=Platinum --> PCP = 6. This
+            affects the C-tag at the UNI and the S-tag at the ENNI.
+        properties:
+            mapType:
+                type: string
+                enum:
+                    - "CN_PCP"
+            cnPcpEntries:
+                description: A list of entries, one per CoS that indicates the PCP for the CoS.
+                type: array 
+                minItems: 1
+                uniqueItems: TRUE
+                items:
+                    type: object
+                    $ref: "#/definitions/CnPcp"
+        required:
+            - mapType
+            - cnPcpEntries
+    CnPcp:
+        type: object
+        description: This is a list of 1...n CNPCP Objects. One for each Class of Service.
+        properties:
+            cosName:
+                description:  >-
+                    When used for an Ingress frame this is class of service name
+                    from the EVC/OVC List of Class of Service Names Service Attribute.
+                    When used in an Egress frame this is an Egress Equivalence Class
+                    Name (OVC Only).
+                type: string
+            pcpValue:
+                type: object
+                $ref: "../common/utilityClassesAndTypes.yaml#/definitions/PcpValueAndDiscard"
+        required:
+            - cosName
+            - pcpValue
+    DeiFromCosColor:
+        type: object
+        description:  >-
+            The DEI Field in the Egress EI Frame is determined from the
+            Class of Service and the Frame Color. Each row in the table contains
+            one entry for each Class of Service Name and the DEI value (or
+            DISCARD) to use for Green frames and the DEI value (or DISCARD)
+            to use for Yellow Frames. For example CoS=Platinum and Color=Green
+            --> DEI = 1 and Color=Yellow --> DEI = 0. This affects the C-tag
+            at the UNI and the S-tag at the ENNI.
+        properties:
+            mapType:
+                type: string
+                enum:
+                    - "CC_DEI"
+            ccDeiEntries:
+                description:  >-
+                    A list of entries, one per CoS, that specifies the DEI value
+                    for Green frames and Yellow frames.
+                type: array 
+                minItems: 1
+                uniqueItems: TRUE
+                items:
+                    type: object
+                    $ref: "#/definitions/CcDei"
+        required:
+            - mapType
+            - ccDeiEntries
+    CcDei:
+        type: object
+        description:  >-
+            One of the possible values for the OVC Egress Map. This indicates
+            that the Color is mapped to the DEI field of the Egress Frame.
+            Note that the Enums used for the DEI values include DISCARD as
+            a value.
+        properties:
+            cosName:
+                description:  >-
+                    When used for an Ingress frame this is class of service name
+                    from the EVC/OVC List of Class of Service Names Service Attribute.
+                    When used in an Egress frame this is an Egress Equivalence Class
+                    Name (OVC Only).
+                type: string
+            deiGeen:
+                description: The DEI value (or DISCARD) to use for Green frames.
+                type: object
+                $ref: "../common/utilityClassesAndTypes.yaml#/definitions/DeiValueAndDiscard"
+            deiYellow:
+                description: The DEI value (or DISCARD) to use for Yellow frames.
+                type: object
+                $ref: "../common/utilityClassesAndTypes.yaml#/definitions/DeiValueAndDiscard"
+        required:
+            - cosName
+            - deiGeen
+            - deiYellow
+    PcpFromCosColor:
+        type: object
+        description:  >-
+            The PCP Field in the Egress EI Frame is determined from the
+            Class of Service Name and the Frame Color. Each row in this table
+            contains a Class of Service Name and two PCP values (or DISCARD),
+            one for Green frames and one for Yellow frames.  For example CoS=Platinum
+            and Color=Green --> PCP = 6  and Color=Yellow --> PCP = 5. This
+            affects the C-tag at the UNI and the S-tag at the ENNI.
+        properties:
+            mapType:
+                type: string
+                enum:
+                    - "CC_PCP"
+            ccPcpEntries:
+                description:  >-
+                    A list of entries, one per CoS that indicates the PCP value
+                    for Green Frames and the PCP value for Yellow Frames.
+                type: array 
+                minItems: 1
+                uniqueItems: TRUE
+                items:
+                    type: object
+                    $ref: "#/definitions/CcPcp"
+        required:
+            - mapType
+            - ccPcpEntries
+    CcPcp:
+        type: object
+        description:  >-
+            One of the possible values for the OVC Egress Map. This indicates
+            that the Class of Service and Color are mapped to the PCP field
+            of the Egress Frame. Note that the Enums used for the PCP values
+            include DISCARD as a value.
+        properties:
+            cosName:
+                description:  >-
+                    When used for an Ingress frame this is class of service name
+                    from the EVC/OVC List of Class of Service Names Service Attribute.
+                    When used in an Egress frame this is an Egress Equivalence Class
+                    Name (OVC Only).
+                type: string
+            pcpGreen:
+                description: A PCP value (0-7) or DISCARD to use for Green frames in the CoS
+                type: object
+                $ref: "../common/utilityClassesAndTypes.yaml#/definitions/PcpValueAndDiscard"
+            pcpYellow:
+                description: A PCP value (0-7) or DISCARD to use for Yellow frames in the CoS
+                type: object
+                $ref: "../common/utilityClassesAndTypes.yaml#/definitions/PcpValueAndDiscard"
+        required:
+            - cosName
+            - pcpGreen
+            - pcpYellow
+    PcpFromCosDeiFromCosColor:
+        type: object
+        description:  >-
+            This is a combination of PCP from CoS and DEI from Color. The
+            PCP Field in the Egress EI Frame is determined from the Class of
+            Service and the DEI Field is determined from the Frame Color. This
+            is a list that contains exactly one entry for each Class of Service
+            Name including PCP value to use (or DISCARD) and the DEI value
+            to use for each color for that CoS Name. For example CoS=Platinum
+            and Color=Green --> PCP = 6/DEI = 1 and Color=Yellow --> DEI=0.
+            This affects the C-tag at the UNI and the S-tag at the ENNI.
+        properties:
+            mapType:
+                type: string
+                enum:
+                    - "CN_PCP_CC_DEI"
+            cnPcpCcDeiEntries:
+                description:  >-
+                    A list of entries, one per CoS, the specifies the PCP value
+                    for the CoS and the DEI values for Green and Yellow frames in the
+                    CoS.
+                type: array 
+                minItems: 1
+                uniqueItems: TRUE
+                items:
+                    type: object
+                    $ref: "#/definitions/PcpFromCosDeiFromCosColor"
+        required:
+            - mapType
+            - cnPcpCcDeiEntries
+    CnPcpCcDei:
+        type: object
+        properties:
+            cosName:
+                description:  >-
+                    When used for an Ingress frame this is class of service name
+                    from the EVC/OVC List of Class of Service Names Service Attribute.
+                    When used in an Egress frame this is an Egress Equivalence Class
+                    Name (OVC Only).
+                type: string
+            pcpValue:
+                description: A PCP value (0-7) or DISCARD to use frames in the CoS
+                type: object
+                $ref: "../common/utilityClassesAndTypes.yaml#/definitions/PcpValueAndDiscard"
+            deiGreen:
+                description: A DEI value to use for Green frames in the CoS
+                type: object
+                $ref: "../common/utilityClassesAndTypes.yaml#/definitions/DeiValueAndDiscard"
+            deiYellow:
+                description: A DEI value to use for Yellow frames in the CoS
+                type: object
+                $ref: "../common/utilityClassesAndTypes.yaml#/definitions/DeiValueAndDiscard"
+        required:
+            - cosName
+            - pcpValue
+            - deiGreen
+            - deiYellow
+    EvcEgressMap:
+        type: object
+        description:  >-
+            This map is a table with one entries for each CosName, that
+            includes the CoSName, a PCP value for green frames, a PCP value
+            for yellow frames, a DEI value for green frames and a DEI value
+            for yellow frames. Any of the values can be DISCARD (in which case
+            they are all treated as DISCARD). This table is used at the UNI
+            for EVCs.
+        properties:
+            evcEgressMapEntries:
+                type: array 
+                minItems: 0
+                uniqueItems: TRUE
+                items:
+                    type: object
+                    $ref: "#/definitions/EvcEgressMapEntry"
+        required:
+            - evcEgressMapEntries
+    EvcEgressMapEntry:
+        type: object
+        description:  >-
+            A row in the EVC Egress Map. Contains a CoSName, PCPGreen,
+            PCPYellow, DEIGreen, DEIYellow
+        properties:
+            cosName:
+                # See additional validation notes in the manual
+                type: string
+            pcpGreen:
+                description: A PCP value (0-7) or DISCARD to use for Green Frames
+                type: object
+                $ref: "../common/utilityClassesAndTypes.yaml#/definitions/PcpValueAndDiscard"
+            pcpYellow:
+                description: A PCP value (0-7) or DISCARD to use for Yellow frames
+                # See additional validation notes in the manual
+                type: object
+                $ref: "../common/utilityClassesAndTypes.yaml#/definitions/PcpValueAndDiscard"
+            deiGreen:
+                description: A DEI value to use for Green frames
+                # See additional validation notes in the manual
+                type: object
+                $ref: "../common/utilityClassesAndTypes.yaml#/definitions/DeiValueAndDiscard"
+            deiYellow:
+                description: A DEI value to use for Yellow frames
+                # See additional validation notes in the manual
+                type: object
+                $ref: "../common/utilityClassesAndTypes.yaml#/definitions/DeiValueAndDiscard"
+        required:
+            - cosName
+            - pcpGreen
+

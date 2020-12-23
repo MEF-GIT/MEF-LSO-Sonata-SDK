@@ -1,0 +1,196 @@
+---
+"$schema": http://json-schema.org/draft-07/schema#
+title: 
+    MEF LSO Sonata - Carrier Ethernet Bandwidth Profile (Common) Product Specification
+    # MEF Forum - Date: 20201220  Edit-level: 178
+    # File: json-format/accessEline/common/carrierEthernetBandwidthProfile.yaml
+definitions:
+    BwpFlow:
+        type: object
+        description:  >-
+            The Bandwidth Profile Flow, BwpFlow, object class represents
+            the Bandwidth Profile Flow which includes the bandwidth profile
+            parameter CIR, CIRmax, CBS, EIR, EIRmax, EBS, Coupling Flag, Color
+            Mode, Envelope and Rank, and Token Request Offset. The BwpFlow
+            is used with Service Attributes for CarrierEthernetOperatorUni,
+            CarrierEthernetSubscriberUni, CarrierEthernetVuni, as well as OVC
+            and EVC End Points. Reference MEF 10.4 Section 12 and MEF 26.2
+            Section 17.
+        properties:
+            cir:
+                description:  >-
+                    MEF 26.2 §17.1.2 and MEF 10.4 §12.1.2 - cir represents Committed
+                    Information Rate. When added to unused committed bandwidth provided
+                    from higher-ranked Bandwidth Profile Flows (depending on the value
+                    of couplingFlag for the higher-ranked Bandwidth Profile Flows),
+                    limits the average rate in bits per second at which Service Frames
+                    for this Bandwidth Profile Flow can be declared Green.
+                type: object
+                $ref: "../common/utilityClassesAndTypes.yaml#/definitions/InformationRate"
+            cirMax:
+                description:  >-
+                    MEF 26.2 §17.1.2 and MEF 10.4 §12.1.2 - cirMax represents Maximum
+                    Committed Information Rate. It limits the average rate in bits
+                    per second at which Service Frames for this Bandwidth Profile Flow
+                    can be declared Green (regardless of unused committed bandwidth
+                    from higher-ranked Bandwidth Profile Flows).
+                type: object
+                $ref: "../common/utilityClassesAndTypes.yaml#/definitions/InformationRate"
+            cbs:
+                description:  >-
+                    MEF 26.2 §17.1.2 and MEF 10.4 §12.1.2 - cbs represents Committed
+                    Burst Size. Limits by how much, and for how long, the amount of
+                    traffic declared Green for this Bandwidth Profile Flow in the short
+                    term can exceed the committed bandwidth made available to this
+                    Bandwidth Profile Flow over the long term, in bytes.
+                # See additional validation notes in the manual
+                type: object
+                $ref: "../common/utilityClassesAndTypes.yaml#/definitions/DataSize"
+            eir:
+                description:  >-
+                    MEF 26.2 §17.1.2 and MEF 10.4 §12.1.2 - eir represents Excess
+                    Information Rate. When added to unused excess bandwidth from higher-ranked
+                    Bandwidth Profile Flows, and to un-used committed bandwidth (depending
+                    on the value of couplingFlag for this Bandwidth Profile Flow and
+                    couplingFlagForIndexZero for the Envelope), limits the average
+                    rate in bits per second at which Service Frames for this Bandwidth
+                    Profile Flow can be declared Yellow.
+                type: object
+                $ref: "../common/utilityClassesAndTypes.yaml#/definitions/InformationRate"
+            eirMax:
+                description:  >-
+                    MEF 26.2 §17.1.2 and MEF 10.4 §12.1.2 - eirMax represents Maximum
+                    Excess Information Rate. It limits the average rate in bits per
+                    second at which Service Frames for this Bandwidth Profile Flow
+                    can be declared Yellow (regardless of unused excess bandwidth from
+                    higher-ranked Bandwidth Profile Flows or unused committed bandwidth).
+                type: object
+                $ref: "../common/utilityClassesAndTypes.yaml#/definitions/InformationRate"
+            ebs:
+                description:  >-
+                    MEF 26.2 §17.1.2 and MEF 10.4 §12.1.2 - ebs represents Excess
+                    Burst Size. It limits by how much, and for how long, the amount
+                    of traffic declared Yellow for this Bandwidth Profile Flow in the
+                    short term can exceed the excess bandwidth made available to this
+                    Bandwidth Profile Flow over the long term.
+                # See additional validation notes in the manual
+                type: object
+                $ref: "../common/utilityClassesAndTypes.yaml#/definitions/DataSize"
+            couplingFlag:
+                description:  >-
+                    MEF 26.2 §17.1.2 and MEF 10.4 §12.1.2 - The couplingFlag determines
+                    whether unused committed bandwidth for this Bandwidth Profile Flow
+                    is made available as excess bandwidth for this Bandwidth Profile
+                    Flow or as committed bandwidth for the next lower-ranked Bandwidth
+                    Profile Flow. 0/FALSE means overflow green tokens are used as green
+                    tokens in the next lowest BWP Flow in the Envelope. 1/TRUE means
+                    they are used as yellow tokens for this BWP Flow.
+                # See additional validation notes in the manual
+                type: boolean
+            colorMode:
+                description:  >-
+                    MEF 26.2 §17.1.2 and MEF 10.4 §12.1.2 - colorMode indicates
+                    whether or not Service Frames for this Bandwidth Profile Flow that
+                    are identified as Yellow on input to the Bandwidth Profile Algorithm
+                    can be declared Green.
+                type: string
+                enum:
+                    - "COLOR_BLIND"
+                    - "COLOR_AWARE"
+            envelopeId:
+                description:  >-
+                    MEF 26.2 §17.1.2 and MEF 10.4 §12.1.2 - The name of the envelope
+                    that this Bandwidth Profile Flow resides in.
+                # See additional validation notes in the manual
+                type: string
+                minLength: 1
+                maxLength: 45
+                pattern: "[\x20-\x7F]+"
+            envelopeRank:
+                description:  >-
+                    MEF 26.2 §17.1.2 and MEF 10.4 §12.1.2 - The rank in the envelope
+                    of this Bandwidth Profile Flow
+                type: integer
+                minimum: 1
+            tokenRequestOffset:
+                description:  >-
+                    MEF 26.2 §17.1.2 and MEF 10.4 §12.1.2 - tokenRequestOffset
+                    adjusts the bandwidth consumed by each Service Frame in the Bandwidth
+                    Profile Flow by a fixed number of octets.
+                type: integer
+        required:
+            - cir
+            - cirMax
+            - cbs
+            - eir
+            - eirMax
+            - ebs
+            - couplingFlag
+            - colorMode
+            - envelopeId
+            - envelopeRank
+            - tokenRequestOffset
+    Envelope:
+        type: object
+        description:  >-
+            Bandwidth Profiles are organized into Envelopes. Multiple Bandwidth
+            Profiles in an envelope can share bandwidth resources. Each Envelope
+            has a name and a Coupling Flag for Index Zero (CF0) that indicates
+            whether unused green tokens are discarded or converted to yellow
+            tokens. All Bandwidth Profile Flows in the same envelope satisfy
+            the same criterion listed in R230 of MEF 26.2.
+        properties:
+            envelopeID:
+                description:  >-
+                    MEF 10.4 §9.12 and MEF 26.2 §14.19 - The attribute is a string
+                    that identifies the Envelope
+                type: string
+                minLength: 1
+                maxLength: 45
+                pattern: "[\x20-\x7F]+"
+            couplingFlagForIndexZero:
+                description:  >-
+                    MEF 10.4 §9.12 and MEF 26.2 §14.19 - This attribute denotes
+                    the coupling flag for index zero. FALSE for 0 (overflow Green tokens
+                    are discarded) and TRUE for 1 (overflow Green tokens can be used
+                    as Yellow tokens).
+                type: boolean
+        required:
+            - envelopeID
+            - couplingFlagForIndexZero
+    BandwidthProfilePerClassOfServiceName:
+        type: object
+        description:  >-
+            This Class is used for both the Ingress Bandwidth Profile per
+            Class of Service Name (MEF 26.2 §16.12) and Egress Bandwidth Profile
+            per Egress Equivalence Class Name (MEF 26.2 §16.13) . The value
+            is a list of pairs of the form〈x, y〉 where x is a Class of Service
+            Name that is in the value of the OVC List of Class of Service Names
+            Service Attribute (Section 12.12) for the OVC that associates the
+            OVC End Point for Ingress and an Egress Equvalence Class Name for
+            Egress. And y, if specified, is a reference to a Bandwidth Profile
+            Flow. There is at most one pair in the list for each CoS or EEC
+            Name (Except Discard).
+        properties:
+            classOfServiceName:
+                description:  >-
+                    MEF 26.2 §16.12 and 16.13 - For Ingress, this is the Name of
+                    the Class of Service that this bandwidth profile flow is applied
+                    to. This should be an item from ovc.listOfClassOfServiceNames.
+                    For Egress, this is the Egress Equivalence Class (EEC) Name.
+                type: string
+            bwpFlow:
+                description:  >-
+                    The Bandwidth Profile to be applied to all items that are in
+                    the specified Class of Service or Egress Equivalence Class.
+                type: array 
+                minItems: 0
+                maxItems: 1
+                uniqueItems: TRUE
+                items:
+                    type: object
+                    $ref: "#/definitions/BwpFlow"
+        required:
+            - classOfServiceName
+            - bwpFlow
+

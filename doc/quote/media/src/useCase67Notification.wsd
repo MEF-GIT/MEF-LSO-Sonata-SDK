@@ -1,0 +1,29 @@
+@startuml
+
+hide footbox
+
+participant Buyer
+participant Seller
+
+Buyer -> Seller : POST {{baseUrl}}/hub with {{callback}} details
+Seller --> Buyer: notification confirmation with {{id}}
+
+...
+group loop  [until Buyer unregisters]
+alt succesful inquiry
+Seller -> Buyer:  {{callbackUrl}}/listener/QuoteCreateEvent
+
+else
+Seller -> Buyer: {{callbackUrl}}/listener/QuoteStateChangeEvent
+
+else
+Seller -> Buyer:  {{callbackUrl}}/listener/QuoteCreateEvent
+end
+
+Buyer -> Seller :   GET {{baseUrl}}/quote/{{id}}
+return Quote in current state
+end
+...
+Buyer -> Seller : DELETE {{baseUrl}}/hub/{{id}} 
+
+@enduml

@@ -1,0 +1,31 @@
+@startuml
+
+hide footbox
+
+participant Buyer
+participant Seller
+
+Buyer -> Seller : POST {{baseUrl}}/hub with {{callback}} details
+Seller --> Buyer: notification confirmation with {{id}}
+...
+Buyer -> Seller : POST {{baseUrl}}/quote (instantSyncQuote=false)
+Seller -> Seller : validate Request
+
+alt succesful inquiry
+Seller --> Buyer : 201 Quote with {{id}}, "inProgress" state
+Seller -> Buyer:  {{callbackUrl}}/listener/QuoteCreateEvent
+
+group loop  [until Quote in completion state]
+    Seller -> Buyer: {{callbackUrl}}/listener/QuoteStateChangeEvent
+    Buyer -> Seller :   GET {{baseUrl}}/quote/{{id}}
+    return Quote in current state
+end
+
+else validation or internal problem
+
+Seller --> Buyer : 4xx or 5xx errorresponse
+end 
+...
+Buyer -> Seller : DELETE {{baseUrl}}/hub/{{id}} 
+
+@enduml

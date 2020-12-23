@@ -1,0 +1,77 @@
+---
+"$schema": http://json-schema.org/draft-07/schema#
+title: 
+    MEF LSO Sonata - Carrier Ethernet End Point Maps (Common) Product Specification
+    # MEF Forum - Date: 20201222  Edit-level: 178
+    # File: json-format/epl/common/carrierEthernetEndPointMaps.yaml
+definitions:
+    EndPointMapFormE:
+        type: object
+        description:  >-
+            The value of an End Point Map of Form E (E for ENNI) consists
+            of a list of one or more SVLAN ID values. An S-Tagged ENNI Frame
+            whose S-VLAN ID value matches an entry in the list maps to the
+            OVC End Point.
+        properties:
+            mapType:
+                type: string
+                enum:
+                    - "FORM_E"
+            EndPointMapFormE:
+                type: object
+                $ref: "#/definitions/VlanIdListing"
+        required:
+            - mapType
+            - EndPointMapFormE
+    EndPointMapFormU:
+        type: object
+        description:  >-
+            The EndPointMapFormU object class represents the EVC/OVC End
+            Point  Map Form U (U for UNI).  For OVCs it is a list of one or
+            more CE-VLAN IDs. For EVCs it can be either a list of one of more
+            C-VLAN IDs, or ALL or UT/PT.
+        properties:
+            mapType:
+                type: string
+                enum:
+                    - "FORM_U"
+            ovcEndPointMapFormU:
+                type: object
+                $ref: "#/definitions/VlanIdListing"
+        required:
+            - mapType
+            - ovcEndPointMapFormU
+    VlanIdListing:
+        type: object
+        description:  >-
+            A list of of VLAN IDs for mapping to an OVC or EVC End Point.
+            The <li>vlanType</li> element indicates the form of the list. If
+            it is LIST then the second element vlanID specifies a list of one
+            or more VLAN IDs. For an OVC these are CE-VLAN IDs at the UNI and
+            S-VLAN IDs at the ENNI. For an EVC these are C-VLAN IDs. For OVCs,
+            LIST is the only allowed value. <br> For EVCs the vlanType can
+            also be ALL (meaning all C-VLAN IDs) or UT/PT (meaning only Untagged
+            and Priority Tagged Frames).
+        properties:
+            vlanType:
+                description: An indication about how the Vlan List argument is interpreted
+                type: string
+                enum:
+                    - "LIST"
+                    - "ALL"
+                    - "UT/PT"
+            vlanId:
+                description:  >-
+                    A list of VLAN IDs that is interpreted based on the value of
+                    vlanType.
+                type: array 
+                minItems: 1
+                maxItems: 4094
+                uniqueItems: TRUE
+                items:
+                    type: integer
+                    minimum: 1
+                    maximum: 4094
+        required:
+            - vlanType
+

@@ -36,14 +36,6 @@ Error <|-- Error404
 
 
 
-class Error409 {
-
-    code*: string 
-}
-Error <|-- Error409
-
-
-
 class Error422 {
 
     code*: string 
@@ -63,9 +55,8 @@ Error <|-- Error500
 
 class Error {
 
-    reason*: string 
     message: string 
-    status: string 
+    reason*: string 
     referenceError: uri 
 }
 
@@ -87,7 +78,7 @@ class FieldedAddress {
     streetSuffix: string 
     streetType: string 
 }
-RelatedPlaceRefOrValue <|-- FieldedAddress
+GeographicAddress <|-- FieldedAddress
 
 FieldedAddress *--> GeographicSubAddress : geographicSubAddress
 
@@ -103,7 +94,16 @@ class FormattedAddress {
     postcodeExtension: string 
     stateOrProvince: string 
 }
-RelatedPlaceRefOrValue <|-- FormattedAddress
+GeographicAddress <|-- FormattedAddress
+
+
+
+class GeographicAddressIdentifier {
+
+    externalReferenceId*: string 
+    externalReferenceType*: string 
+}
+GeographicAddress <|-- GeographicAddressIdentifier
 
 
 
@@ -113,48 +113,35 @@ class GeographicAddress {
     href: string 
     allowsNewSite: boolean 
     hasPublicSite: boolean 
-    name: string 
     @schemaLocation: uri 
-    @type: string 
+    @type*: string 
 }
 
-GeographicAddress *--> FieldedAddress : fieldedAddress
-GeographicAddress *--> FormattedAddress : formattedAddress
-GeographicAddress *--> MEFGeographicLocation : geographicLocation
-GeographicAddress *--> GlobalAddressId : globalAddressId
+GeographicAddress *--> FieldedAddress : associatedGeographicAddress
 
 
 class GeographicAddressValidation {
 
-    id: string 
-    href: string 
-    provideAlternative: boolean 
-    validationDate: date-time 
-    validationResult: string 
-    @baseType: string 
-    @schemaLocation: uri 
-    @type: string 
+    provideAlternative*: boolean 
+    validationResult: MEFValidationResultType 
 }
 
-GeographicAddressValidation *--> MEFSubmittedGeographicAddress : submittedGeographicAddress
-GeographicAddressValidation *--> MEFValidatedGeographicAddress : validGeographicAddress
+GeographicAddressValidation *-->"*" GeographicAddress : alternateGeographicAddress
+GeographicAddressValidation *--> GeographicAddress : bestMatchGeographicAddress
+GeographicAddressValidation *-->"1" GeographicAddress : submittedGeographicAddress
 
 
 class GeographicAddressValidation_Create {
 
     provideAlternative*: boolean 
-    @baseType: string 
-    @schemaLocation: uri 
-    @type: string 
 }
 
-GeographicAddressValidation_Create *-->"1" MEFSubmittedGeographicAddress : submittedGeographicAddress
+GeographicAddressValidation_Create *-->"1" GeographicAddress : submittedGeographicAddress
 
 
 class GeographicSubAddress {
 
     buildingName: string 
-    id: string 
     levelNumber: string 
     levelType: string 
     privateStreetName: string 
@@ -164,29 +151,14 @@ class GeographicSubAddress {
 GeographicSubAddress *-->"*" MEFSubUnit : subUnit
 
 
-class GlobalAddressId {
-
-    externalReferenceId*: string 
-    externalReferenceType*: string 
-}
-RelatedPlaceRefOrValue <|-- GlobalAddressId
-
-
-
-class MEFGeographicLocation {
-
-    spatialRef*: string 
-}
-RelatedPlaceRefOrValue <|-- MEFGeographicLocation
-
-MEFGeographicLocation *-->"1" MEFGeographicPoint : geographicPoint
-
-
 class MEFGeographicPoint {
 
+    spatialRef*: string 
     x*: string 
     y*: string 
+    z: string 
 }
+GeographicAddress <|-- MEFGeographicPoint
 
 
 
@@ -198,37 +170,10 @@ class MEFSubUnit {
 
 
 
-class MEFSubmittedGeographicAddress {
+enum MEFValidationResultType {
 
-    @schemaLocation: uri 
-    @type: string 
+    success
+    partial
+    fail
 }
-
-MEFSubmittedGeographicAddress *--> FieldedAddress : fieldedAddress
-MEFSubmittedGeographicAddress *--> FormattedAddress : formattedAddress
-
-
-class MEFValidatedGeographicAddress {
-
-    id: string 
-    allowsNewSite: boolean 
-    hasPublicSite: boolean 
-    isBestMatch*: boolean 
-    @schemaLocation: uri 
-    @type: string 
-}
-
-MEFValidatedGeographicAddress *--> FieldedAddress : fieldedAddress
-MEFValidatedGeographicAddress *--> FormattedAddress : formattedAddress
-
-
-class RelatedPlaceRefOrValue {
-
-    @schemaLocation: uri 
-    @type*: string 
-    role*: string 
-}
-
-
-
 @enduml
