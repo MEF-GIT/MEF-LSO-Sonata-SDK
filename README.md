@@ -1,5 +1,7 @@
 # MEF-LSO-Sonata-SDK - Aretha Release
 
+## Theme: Serviceability
+
 ## Download Link
 
 Download the entire repository by clicking
@@ -20,6 +22,10 @@ It also provides Product Specification for Access ELine as delivered by MEF
 W106 and EPL
 
 ## High-level release notes
+
+The theme of this release is **Servicability**: it delivers full coverage of
+Business Requirements, API and API Developer Guides for Address, Site
+Retrieval, and Product Offering Qualification Management.
 
 - All APIs have been reviewed and updated to follow their respective Business
   Requirements & Use Cases and Developer Guides documents
@@ -143,10 +149,11 @@ thoroughly read, review, and understand the following materials:
 - [MEF 79.0.1: Amendment to MEF 79 Address, Service Site, and Product Offering Qualification Management Requirements and Use Cases](https://www.mef.net/wp-content/uploads/2020/12/MEF-79-0-1.pdf)
 - [MEF 79.0.2: Amendment to MEF 79: Address Validation](https://www.mef.net/wp-content/uploads/2020/11/MEF-79.0.2-Draft-R1.pdf)
   This document is a ratified MEF standard.
-- [MEF 80: Quote Management](https://www.mef.net/wp-content/uploads/2020/11/MEF-80-Draft-R5.pdf) Draft Release 5
+- [MEF 80: Quote Management](https://www.mef.net/wp-content/uploads/2020/11/MEF-80-Draft-R5.pdf)
+  Draft Release 5
 - [MEF 81: Product Inventory Management](doc/standards/MEF%2081%20-%20Product%20Inventory%20Management.pdf)
 - [MEF 81.0.1: Amendment to MEF81 Product Inventory Management](doc/standards/MEF%2081.0.1%20-%20Amandment%20to%20MEF81%20Product%20Inventory%20Management.pdf)
-- [MEF W87: LSO Sonata Product Offering Qualification API - Developer Guide](doc/serviceability/offeringQualification/v5/MEF_W87.md)
+- [MEF W87: LSO Sonata Product Offering Qualification API - Developer Guide](doc/serviceability/offeringQualification/MEF_W87.md)
 - [MEF W106: LSO Sonata Product Specification - Access E-Line](https://wiki.mef.net/download/attachments/106599684/MEF%20W106%20wd%201.4C.pdf?api=v2)
 
 ## Issues, questions, and Feedback

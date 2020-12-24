@@ -283,7 +283,7 @@ correctness of the payloads.
 [Section 5.2.1](#521-integrating-product-specifications-into-poq-payload)
 explains how to use product-specific definitions with POQ API definition.
 
-The current version `<<exact version TBD>>` of the SDK contains examples of
+The current version **"Aretha"** of the SDK contains examples of
 Access E-Line Product specified by [[mefw106](#8-references)]. These sample
 product specification definitions are used to construct API payloads examples
 that illustrate API usage in [Section 6](#6-api-interaction--flows).
@@ -310,7 +310,7 @@ used to indicates a variable to be substituted with a correct value.
 
 The requirements and use cases for POQ functionality are defined in MEF 79
 [[mef79](#8-references)] and MEF 79.0.1 [[mef79.0.1](#8-references)]. The API
-definition builds on TMF 679 version 17.5.0 [[tmf679](#8-references)]. POQ
+definition builds on TMF 679 version 19.0.1 [[tmf679](#8-references)]. POQ
 functions must allow using any MEF product specifications, in particular the
 ones defined for the Access E-Line Product Specification in MEF W106
 [[mefw106](#8-references)].
@@ -363,14 +363,14 @@ defined in
 `api/serviceability/offeringQualification/v6/productOfferingQualificationManagement.api.yaml`.
 
 | API endpoint                               | Description                                                                                                                                                                                                                                                                                                                                                                          | MEF 79 Use case Mapping                     |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------- | ------------------------------------ |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------- |
 | `POST /productOfferingQualification`       | A request initiated by the Buyer to determine whether the Seller can feasibly deliver a particular Product (or Products) to a specific set of geographic locations                                                                                                                                                                                                                   | UC 6: Create Product Offering Qualification |
 | `GET /productOfferingQualification`        | A request initiated by the Buyer to retrieve a list of POQs (in any state) from the Seller based on a set of POQ filter criteria.                                                                                                                                                                                                                                                    | UC 7: Retrieve POQ List                     |
 | `GET /productOfferingQualification/{{id}}` | A request initiated by the Buyer to retrieve full details of a single Product Offering Qualification based on a POQ identifier.                                                                                                                                                                                                                                                      | UC 8: Retrieve POQ by Identifier            |
-| `POST /hub`                                | A request initiated by the Buyer to instruct the Seller to send notifications of POQ create and/or state changes if the Buyer has registered for these notifications. The state change notifications are sent only in the Deferred scenario as in the Immediate scenario once the response to POQ Request is provided (create notification), there will be no further state changes. | UC 5: Register for POQ Notifications        | UC 5: Register for POQ Notifications |
-| `DELETE /hub/{{id}}`                       | A request initiated by the Buyer to instruct the Seller to stop sending notifications of POQ create and/or state changes.                                                                                                                                                                                                                                                            | UC 5: Register for POQ Notifications        | UC 5: Register for POQ Notifications |
+| `POST /hub`                                | A request initiated by the Buyer to instruct the Seller to send notifications of POQ create and/or state changes if the Buyer has registered for these notifications. The state change notifications are sent only in the Deferred scenario as in the Immediate scenario once the response to POQ Request is provided (create notification), there will be no further state changes. | UC 5: Register for POQ Notifications        |
+| `DELETE /hub/{{id}}`                       | A request initiated by the Buyer to instruct the Seller to stop sending notifications of POQ create and/or state changes.                                                                                                                                                                                                                                                            | UC 5: Register for POQ Notifications        |
 
-[R XXX] The Buyer implementation **MUST** be able to use all REST methods for
+[R1] The Buyer implementation **MUST** be able to use all REST methods for
 `/productOfferingQualification` endpoint that are listed in the table above.
 This requirement corresponds to [MEF79 R1].
 
@@ -418,22 +418,22 @@ each operation defined in `productOfferingQualificationManagement.api.yaml` and
 as a specialized event (`PoqEvent`) attributes as described in
 `productOfferingQualificationNotification.api.yaml`.
 
-[RXXX] If the Requesting Entity has the authority to represent more than one
+[R2] If the Requesting Entity has the authority to represent more than one
 Buyer the request **MUST** include `buyerId` query parameter that identifies
 the Buyer being represented [MEF79 R80]
 
-[RXXX] If the Requesting Entity represents precisely one Buyer with the
+[R3] If the Requesting Entity represents precisely one Buyer with the
 Responding Entity, the request **MUST NOT** specify the `buyerId` [MEF79 R81]
 
-[RXXX] If the Responding Entity represents more than one Seller to this Buyer
-the request **MUST** include `sellerId` query parameter that identifies the
-Seller with whom this request is associated [MEF79 R82]
+[R4] If the Responding Entity represents more than one Seller to this Buyer the
+request **MUST** include `sellerId` query parameter that identifies the Seller
+with whom this request is associated [MEF79 R82]
 
-[RXXX] If the Responding Entity represents precisely one Seller to this Buyer,
+[R5] If the Responding Entity represents precisely one Seller to this Buyer,
 the request **MUST NOT** specify the `sellerId` [MEF79 R83]
 
-[RXXX] If `buyerId` or `sellerId` attributes were specified in the request same
-attributes **MUST**
+[R6] If `buyerId` or `sellerId` attributes were specified in the request same
+attributes **MUST** be used in notification payload.
 
 ## 5.2. Data Model - Key Entities
 
@@ -443,7 +443,7 @@ Each entity is a simple or composed type (using `allOf` keyword for data types
 composition). A simple type defines a set of properties that might be of an
 object, primitive or reference type.
 
-[R_XXX] If an entity is used in the request or response payload all properties
+[R7] If an entity is used in the request or response payload all properties
 marked as required **MUST** be provided.
 
 A detailed description of the data types is provided in
@@ -487,7 +487,7 @@ qualification response and it is managed by the Seller.
 (which represents Buyer's request) with a number of attributes, i.e. unique
 identifier or state information.
 
-[R_XXX] The properties provided in the requests by the Buyer **MUST NOT** be
+[R8] The properties provided in the requests by the Buyer **MUST NOT** be
 modified by the Seller.
 
 `ProductOfferingQualification` contains one or more items
@@ -495,7 +495,7 @@ modified by the Seller.
 processing state and if applicable the final response to a particular item from
 Buyer's request.
 
-[R_XXX] In case of a successful response (`status` equals to `done.ready`) the
+[R9] In case of a successful response (`status` equals to `done.ready`) the
 Seller **MUST** provide serviceability confidence level and if applicable might
 provide an alternate product proposal (`AlternateProductOfferingProposal`).
 
@@ -554,10 +554,9 @@ using:
   migrated to OpenAPI 3.0 with all Sonata APIs for the next release)
 - JsonSchema (draft 7) for product-specific part of the payload
 
-[R_XXX] Implementations **MUST** use payloads that conform to these
-definitions.
+[R10] Implementations **MUST** use payloads that conform to these definitions.
 
-[R_XXX] A product specification may define additional consistency rules and
+[R11] A product specification may define additional consistency rules and
 requirements that **MUST** be respected by implementations. These are defined
 for:
 
@@ -650,10 +649,10 @@ returned in case the payload doesn't pass initial validation. Please note that
 case as it is used in a deferred scenario when the Seller is unable to provide
 a response in the timeframe required by the Buyer.
 
-[R XXX] The Seller **MAY** provide an immediate answer even when
+[R12] The Seller **MAY** provide an immediate answer even when
 `instantSyncQualification` flag set to `false`.
 
-[R XXX] The Seller **MUST** support the immediate qualification interaction
+[R13] The Seller **MUST** support the immediate qualification interaction
 pattern [MEF79 R2].
 
 ![Immediate qualification](media/iter_instant.png)
@@ -1783,8 +1782,8 @@ additional results available using:
 - `X-Total-Count` header attribute with the total number of available results
 - `X-Pagination-Throttled` header set to `true`
 
-[R XXX] Seller **MUST** use either `X-Total-Count` or `X-Pagination-Throttled`
-to indicate that the page was truncated and additional results are available.
+[R14] Seller **MUST** use either `X-Total-Count` or `X-Pagination-Throttled` to
+indicate that the page was truncated and additional results are available.
 
 ## 7.2. Management API Data model
 
@@ -1855,7 +1854,7 @@ that list.
     </tbody>
 </table>
 
-[R XXX] `requestedPOQCompletionDate` is required when
+[R15] `requestedPOQCompletionDate` is required when
 `instantSyncQualification=false`
 
 #### 7.2.1.2. Type ProductOfferingQualification_Create
@@ -1886,7 +1885,7 @@ Inherits from:
     </tbody>
 </table>
 
-[R XXX] Related contact information list **MUST** contain an entry that
+[R16] Related contact information list **MUST** contain an entry that
 represents Buyer Contact Information. The role for this entry **MUST** be
 `buyerContactInformation`. [MEF79 R27].
 
@@ -1963,17 +1962,16 @@ Hyperlink MAY be used by the Seller in responses
     </tbody>
 </table>
 
-[R XXX] If the `ProductOfferingQualification` is used to provide a response to
-an instant qualification request the `state` **MUST** take either
+[R17] If the `ProductOfferingQualification` is used to provide a response to an
+instant qualification request the `state` **MUST** take either
 `terminatedWithError` or `done.ready` value. [MEF79 R45]
 
-[R XXX] Related contact information list **MUST** contain an entry that
+[R18] Related contact information list **MUST** contain an entry that
 represents Seller Contact Information [MEF79 R48 && R72]. The `role` for this
 entry **MUST** be `sellerContactInformation`.
 
-[R XXX] Each item in `productOfferingQualificationItem` list **MUST**
-correspond to an item from `ProductOfferingQualification_Create` [MEF79 R50 &&
-R74].
+[R19] Each item in `productOfferingQualificationItem` list **MUST** correspond
+to an item from `ProductOfferingQualification_Create` [MEF79 R50 && R74].
 
 #### 7.2.1.4. `enum` MEFPOQTaskStateType
 
@@ -1998,15 +1996,15 @@ send by the Buyer. If the POQ is processed asynchronously it can reach
 qualification by the deadline specified by the Buyer
 (`requestedPOQCompletionDate`).
 
-[R XXX] The state of the POQ **MUST** be `done.ready` only if _all_ items are
-in `done.ready` state [MEF79 R46 & R68].
+[R20] The state of the POQ **MUST** be `done.ready` only if _all_ items are in
+`done.ready` state [MEF79 R46 & R68].
 
-[R XXX] The state of the POQ **MUST** be `terminatedWithError` only if _at
-least one_ item is in `terminatedWithError` state [MEF79 R47 & R69].
+[R21] The state of the POQ **MUST** be `terminatedWithError` only if _at least
+one_ item is in `terminatedWithError` state [MEF79 R47 & R69].
 
-[R XXX] The state of the POQ **MUST** be `inProgress` only if _at least one_
-item is in `inProgress` state and _none_ of the items is in
-`terminatedWithError` state [MEF79 R70].
+[R22] The state of the POQ **MUST** be `inProgress` only if _at least one_ item
+is in `inProgress` state and _none_ of the items is in `terminatedWithError`
+state [MEF79 R70].
 
 The following mapping has been used between
 `ProductOfferingQualificationStateType` and MEF 79 (Sn 9.1):
@@ -2212,20 +2210,20 @@ are described in MEF 79 (Sn 8.4.1.1) as _POQ Activity_
     </tbody>
 </table>
 
-[R XXX] If item's `action` attribute is `add` the Buyer **MUST NOT** specify
+[R23] If item's `action` attribute is `add` the Buyer **MUST NOT** specify
 `product.id` attribute value [MEF79 R30] of an item.
 
-[R XXX] If item's `action` attribute is `add` the Buyer **MUST** specify
+[R24] If item's `action` attribute is `add` the Buyer **MUST** specify
 `productOffering` and `product.productConfiguration` attributes [MEF79 R31] on
 an item.
 
-[R XXX] If item's `action` attribute is `modify` or `delete` the Buyer **MUST**
+[R25] If item's `action` attribute is `modify` or `delete` the Buyer **MUST**
 specify `product.id` attribute value [MEF79 R32] on an item.
 
-[R XXX] If the item's `action` attribute is `delete` the Buyer **MUST NOT**
+[R26] If the item's `action` attribute is `delete` the Buyer **MUST NOT**
 specify values for attributes other than `product.id` [MEF79 R33] on an item.
 
-[R XXX] If item's `action` attribute is `modify` the Buyer **MUST** specify all
+[R27] If item's `action` attribute is `modify` the Buyer **MUST** specify all
 required values for `product.productConfiguration` attribute [MEF79 R34] on an
 item.
 
@@ -2414,15 +2412,15 @@ Inherits from:
     </tbody>
 </table>
 
-[R XXX] When item state is `done.ready` the Seller **MUST** provide values for
+[R28] When item state is `done.ready` the Seller **MUST** provide values for
 `serviceabilityConfidence` [MEF79 R55 & R78] attribute. These values **MUST
 NOT** be provided for other states [MEF79 R53 & R76].
 
-[R XXX] When attribute `serviceabilityConfidence` is set to `green` or `yellow`
+[R29] When attribute `serviceabilityConfidence` is set to `green` or `yellow`
 the Seller **MUST** provide values for `installationInterval` attribute [MEF79
 R56 & R79]
 
-[R XXX] When item state is `terminatedWithError` the Seller **MUST** provide
+[R30] When item state is `terminatedWithError` the Seller **MUST** provide
 value for `terminationError` attribute [MEF79 R54 & R77].
 
 #### 7.2.2.7. `enum` MEFServiceabilityColor
@@ -2702,14 +2700,14 @@ discriminator.
     </tbody>
 </table>
 
-[R_XXX] `MEFProductConfiguration` entity is an extension point that **MUST** be
+[R31] `MEFProductConfiguration` entity is an extension point that **MUST** be
 used to integrate product specifications' properties into a request/response
 payload.
 
-[R_XXX] The `@type` attribute of `MEFProductConfiguration` **MUST** be used to
+[R32] The `@type` attribute of `MEFProductConfiguration` **MUST** be used to
 indicate the type of the extending entity.
 
-[R_XXX] If the product offering is specified at the item level it **MUST** be
+[R33] If the product offering is specified at the item level it **MUST** be
 compatible with the value of `@type` attribute.
 
 [Section 7.2.2.2](#7222-enum-productactiontype) describes the relation between
@@ -2768,7 +2766,7 @@ be later used while processing the request as defined in the Product
 Specification. The `groupingKey` attribute is to achieve this behavior in the
 APIs.
 
-[R XXX] The Product Identifier from relationships having the same `groupingKey`
+[R34] The Product Identifier from relationships having the same `groupingKey`
 and `relationshipType` **MUST** be treated as a list of identifiers.
 
 #### 7.2.3.4. Type AlternateProductOfferingProposal
@@ -2881,12 +2879,12 @@ This data type is not represented in MEF 79.
 There are several formats in which place information can be introduced to the
 POQ request.
 
-[R XXX] Buyer and Seller **MUST** support at least one of `FieldedAddress` or
+[R35] Buyer and Seller **MUST** support at least one of `FieldedAddress` or
 `FormattedAddress` place representations [MEF79 R84 & R85].
 
-[R XXX] `GeographicAddressRef` or `GeographicSiteRef` **MUST** be used to
-provide place information by reference. This method is referred to as "Known
-Address ID method" in MEF 79 Sn 8.9.3.1. [MEF79 D2]
+[R36] `GeographicAddressRef` or `GeographicSiteRef` **MUST** be used to provide
+place information by reference. This method is referred to as "Known Address ID
+method" in MEF 79 Sn 8.9.3.1. [MEF79 D2]
 
 ![Data model types representing a place](media/place_entities.png)
 
@@ -3145,11 +3143,11 @@ Inherits from:
     </tbody>
 </table>
 
-[R XXX] `MEFGeographicPoint` **MUST** be used to specify Geographic Point from
+[R37] `MEFGeographicPoint` **MUST** be used to specify Geographic Point from
 MEF 79
 
-[R XXX] The `spatialRef` value that can be used **MUST** be agreed between
-Buyer and Seller
+[R38] The `spatialRef` value that can be used **MUST** be agreed between Buyer
+and Seller
 
 #### 7.2.4.5. Type GeographicSubAddress
 
@@ -3239,7 +3237,7 @@ Hyperlink <b>MUST</b> be ignored by the Seller in case it is provided by the Buy
 
 #### 7.2.4.7. Type GeographicSiteRef
 
-**Description:**A reference to a Geographic Site resource available through
+**Description:** A reference to a Geographic Site resource available through
 Sonata Service Site API. Identifier from MEF 79 (Table 21).
 
 Inherits from:
@@ -3599,11 +3597,15 @@ Reference: MEF 79 (Sn 8.5)
     </tbody>
 </table>
 
-[R XXX] Seller **MUST** send events only to Buyers who have registered to
-receive such notifications [MEF79 R58]. [R XXX] The state change notifications
-**MUST** be sent only in the Deferred scenario (there will be no state changes
-in the Immediate scenario anyway) [MEF79 R59]. [R XXX] The create notifications
-**MUST** be sent in both Immediate and Deferred scenarios [MEF79 R59].
+[R39] Seller **MUST** send events only to Buyers who have registered to receive
+such notifications [MEF79 R58].
+
+[R40] The state change notifications **MUST** be sent only in the Deferred
+scenario (there will be no state changes in the Immediate scenario anyway)
+[MEF79 R59].
+
+[R41] The create notifications **MUST** be sent in both Immediate and Deferred
+scenarios [MEF79 R59].
 
 ### 7.3.2. Type POQEvent
 
@@ -3695,8 +3697,8 @@ in the Immediate scenario anyway) [MEF79 R59]. [R XXX] The create notifications
   Qualification Management, Requirements, and Use Cases, December 2020
 - [mefw106]
   [MEF W106](https://wiki.mef.net/download/attachments/106599684/MEF%20W106%20wd%201.4C.pdf?api=v2)
-  LSO Sonata Product Specification – Access E-Line Product Requirements, December
-  2020, CfC#1 reviewed
+  LSO Sonata Product Specification – Access E-Line Product Requirements,
+  December 2020, CfC#1 reviewed
 - [tmf679]
   [TMF 679 version 19.0.1](https://www.tmforum.org/resources/specification/tmf679-product-offering-qualification-api-rest-specification-r19-0-0/).
 - [mefw113]

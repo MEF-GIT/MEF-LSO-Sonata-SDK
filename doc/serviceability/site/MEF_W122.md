@@ -316,7 +316,7 @@ Site Retrieval is part of a broader End-to-End Sonata flow. Figure 3. below
 shows a high-level diagram to get a good understanding of the whole process and
 Site Retrieval's position within it.
 
-![Figure 3. Sonata End-to-End Flow](media/sonataEndToEndFlowSite.png.png)
+![Figure 3. Sonata End-to-End Flow](media/sonataEndToEndFlowSite.png)
 
 **Figure 3. Sonata End-to-End Flow**
 
@@ -421,8 +421,8 @@ Seller with whom this request is associated [MEF79 R82]
 [R XXX] If the Responding Entity represents precisely one Seller to this Buyer,
 the request **MUST NOT** specify the `sellerId` [MEF79 R83]
 
-[R XXX] If `buyerId` or `sellerId` attributes were specified in the request
-same attributes **MUST**
+[R XXX] If `buyerId` or `sellerId` attributes were specified in the request same
+attributes **MUST** be used in notification payload.
 
 ## 5.3. API Resource Schema summary
 

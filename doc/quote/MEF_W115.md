@@ -12,9 +12,9 @@
 
 © MEF Forum 2020. All Rights Reserved.
 
-The information in this publication is freely available for reproduction and use
-by any recipient and is believed to be accurate as of its publication date. Such
-information is subject to change without notice and MEF Forum (MEF) is not
+The information in this publication is freely available for reproduction and
+use by any recipient and is believed to be accurate as of its publication date.
+Such information is subject to change without notice and MEF Forum (MEF) is not
 responsible for any errors. MEF does not assume responsibility to update or
 correct any information in this publication. No representation or warranty,
 expressed or implied, is made by MEF concerning the completeness, accuracy, or
@@ -22,16 +22,16 @@ applicability of any information contained herein and no liability of any kind
 shall be assumed by MEF as a result of reliance upon such information.
 
 The information contained herein is intended to be used without modification by
-the recipient or user of this document. MEF is not responsible or liable for any
-modifications to this document made by any other party.
+the recipient or user of this document. MEF is not responsible or liable for
+any modifications to this document made by any other party.
 
 The receipt or any use of this document or its contents does not in any way
 create, by implication or otherwise:
 
-- (a) any express or implied license or right to or under any patent, copyright,
-  trademark or trade secret rights held or claimed by any MEF member which are
-  or may be associated with the ideas, techniques, concepts or expressions
-  contained herein; nor
+- (a) any express or implied license or right to or under any patent,
+  copyright, trademark or trade secret rights held or claimed by any MEF member
+  which are or may be associated with the ideas, techniques, concepts or
+  expressions contained herein; nor
 
 - (b) any warranty or representation that any MEF member will announce any
   product(s) and/or service(s) related thereto, or if such announcements are
@@ -45,8 +45,8 @@ Implementation or use of specific MEF standards, specifications or
 recommendations will be voluntary, and no Member shall be obliged to implement
 them by virtue of participation in MEF Forum. MEF is a non-profit international
 organization to enable the development and worldwide adoption of agile, assured
-and orchestrated network services. MEF does not, expressly or otherwise, endorse
-or promote any specific products or services.
+and orchestrated network services. MEF does not, expressly or otherwise,
+endorse or promote any specific products or services.
 
 **Copyright**
 
@@ -135,8 +135,9 @@ document and have requested to be included in this list.
 This standard is intended to assist implementation of the Quote functionality
 defined for the LSO Sonata Interface Reference Point (IRP), for which
 requirements and use cases are defined in MEF 80 _Quote Management Requirements
-and Use Cases_ [[mef80](#8-references)]. This standard consists of this document
-and complementary API definitions for Quote Management and Quote Notification.
+and Use Cases_ [[mef80](#8-references)]. This standard consists of this
+document and complementary API definitions for Quote Management and Quote
+Notification.
 
 This standard normatively incorporates the following files by reference as if
 they were part of this document, from the GitHub repository
@@ -149,9 +150,9 @@ https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK
 # 2. Terminology and Abbreviations
 
 This section defines the terms used in this document. In many cases, the
-normative definitions of terms are found in other documents. In these cases, the
-third column is used to provide the reference that is controlling, in other MEF
-or external documents.
+normative definitions of terms are found in other documents. In these cases,
+the third column is used to provide the reference that is controlling, in other
+MEF or external documents.
 
 <table>
 <tr>
@@ -249,8 +250,8 @@ capitals, as shown here. All key words must be in bold text.
 
 Items that are **REQUIRED** (contain the words **MUST** or **MUST NOT**) are
 labeled as **[Rx]** for required. Items that are **RECOMMENDED** (contain the
-words **SHOULD** or **SHOULD NOT**) are labeled as **[Dx]** for desirable. Items
-that are **OPTIONAL** (contain the words MAY or OPTIONAL) are labeled as
+words **SHOULD** or **SHOULD NOT**) are labeled as **[Dx]** for desirable.
+Items that are **OPTIONAL** (contain the words MAY or OPTIONAL) are labeled as
 **[Ox]** for optional.
 
 # 4. Introduction
@@ -287,8 +288,8 @@ structured as follows:
 
 - [Chapter 4](#4-introduction) provides an introduction to Quote Management and
   its description in a broader context of Sonata and Sonata SDK.
-- [Chapter 5](#5-api-description) gives an overview of endpoints, resource model
-  and design patterns.
+- [Chapter 5](#5-api-description) gives an overview of endpoints, resource
+  model and design patterns.
 - Use cases and flows are presented in
   [Chapter 6](#6-api-interactions-and-flows).
 - And finally, [Chapter 7](#7-api-details) complements previous sections with a
@@ -305,8 +306,8 @@ Requirements and Use Cases_ [[mef79](#8-references)]
 The API payloads exchanged between the Buyer and the Seller consist of
 product-independent and product-specific parts. The product-independent part is
 technically defined in this standard. The product-specific part is defined in
-the product specification standard of the concerned product. Both standards must
-be used in combination to validate the correctness of the payloads.
+the product specification standard of the concerned product. Both standards
+must be used in combination to validate the correctness of the payloads.
 [Section 5.3](#53-integrating-product-specifications-into-payload) explains how
 to use product specifications as the Quote API payloads.
 
@@ -317,15 +318,15 @@ examples that illustrate API usage. Product specifications are defined using
 JsonSchema (draft 7) standard [[js](#8-references)], whereas Quote API is
 defined using OpenAPI 2.0 standard. [[oas-v2](#8-references)] (will be migrated
 to OpenAPI 3.0 [[oas-v3](#8-references)] with all Sonata APIs for the next
-release). The payloads exchanged through Sonata Quote endpoints must comply with
-the Product specification schema as well as with MEF 80 [[mef80](#8-references)]
-requirements for Quote Management.
+release). The payloads exchanged through Sonata Quote endpoints must comply
+with the Product specification schema as well as with MEF 80
+[[mef80](#8-references)] requirements for Quote Management.
 
 ## 4.2. Conventions in the Document
 
-Code samples are formatted using code blocks. When notation `<< some text >>` is
-used in the payload sample it indicates that a comment is provided instead of an
-example value and it might not comply with the OpenAPI definition.  
+Code samples are formatted using code blocks. When notation `<< some text >>`
+is used in the payload sample it indicates that a comment is provided instead
+of an example value and it might not comply with the OpenAPI definition.  
 Model definitions are formatted as in-line code (e.g. `Quote`). In UML figures
 the default cardinality of associations is `0..1`. In UML sequence diagrams
 `{{variable}}` notation is used to indicate a variable to be substituted with a
@@ -360,16 +361,17 @@ Firstly, the Generic API Framework defines a set of design rules and patterns
 that are applied across all Sonata API suites throughout all LSO Interface
 Reference Points' APIs.  
 Secondly, the product-independent information of the framework focuses on a
-model of a particular Sonata functionality and is agnostic to any of the product
-specifications. For example, this standard is describing the Quote model and
-operations that allow performing quoting of any product that is aligned with
-either MEF or custom product specifications.  
+model of a particular Sonata functionality and is agnostic to any of the
+product specifications. For example, this standard is describing the Quote
+model and operations that allow performing quoting of any product that is
+aligned with either MEF or custom product specifications.  
 Finally, the product-specific information part of the framework focuses on MEF
-product specifications that define business-relevant attributes and requirements
-for trading MEF subscriber and MEF operator services.
+product specifications that define business-relevant attributes and
+requirements for trading MEF subscriber and MEF operator services.
 
 This Developer Guide is not defining MEF product specifications but can be used
-in combination with any product specifications defined by or compliant with MEF.
+in combination with any product specifications defined by or compliant with
+MEF.
 
 ## 4.5. High-Level Flow
 
@@ -400,11 +402,11 @@ Quote Management's position within it.
 # 5. API Description
 
 This section presents the API structure and design patterns. It starts with the
-high-level use cases diagram. Then it describes the REST endpoints with use case
-mapping. Next, it gives an overview of the API resource model and explanation of
-the design pattern that is used to combine product-agnostic and product-specific
-parts of API payloads. Finally, payload validation and API security aspects are
-discussed.
+high-level use cases diagram. Then it describes the REST endpoints with use
+case mapping. Next, it gives an overview of the API resource model and
+explanation of the design pattern that is used to combine product-agnostic and
+product-specific parts of API payloads. Finally, payload validation and API
+security aspects are discussed.
 
 ## 5.1. High-level use cases
 
@@ -423,8 +425,8 @@ the endpoint mapping. Use cases are described extensively in
 
 **BasePath**: `https://{{server}}:{{port}}/mefApi/sonata/quoteManagement/v6/`
 
-The following API endpoints are implemented by the Seller and allow the Buyer to
-send Quote requests, retrieve existing Quotes or Quote details, and manage
+The following API endpoints are implemented by the Seller and allow the Buyer
+to send Quote requests, retrieve existing Quotes or Quote details, and manage
 notification registrations. The endpoints and corresponding data model are
 defined in `api/quote/v6/quoteManagement.api.yaml`.
 
@@ -444,9 +446,9 @@ defined in `api/quote/v6/quoteManagement.api.yaml`.
 
 **BasePath**: `https://{{server}}:{{port}}/mefApi/sonata/quoteNotification/v6/`
 
-The following API Endpoints are used by the Seller to post `Quote` notifications
-to registered listeners. The endpoints and corresponding data model are defined
-in `api/quote/v6/quoteNotification.api.yaml`
+The following API Endpoints are used by the Seller to post `Quote`
+notifications to registered listeners. The endpoints and corresponding data
+model are defined in `api/quote/v6/quoteNotification.api.yaml`
 
 | API Endpoint                               | Description                                                                         | MEF 80 Use Case Mapping       |
 | ------------------------------------------ | ----------------------------------------------------------------------------------- | ----------------------------- |
@@ -472,8 +474,8 @@ states:
 >
 > While it is outside the scope of this specification, it is assumed that the
 > Requesting Entity and the Responding Entity are aware of each other and can
-> authenticate requests initiated by the other party. It is further assumed that
-> both the Buying Entity and the Requesting Entity know:
+> authenticate requests initiated by the other party. It is further assumed
+> that both the Buying Entity and the Requesting Entity know:
 >
 > a) the list of Buyers the Requesting Entity represents when interacting with
 > this Responding Entity;and  
@@ -486,8 +488,8 @@ as a specialized event (`PoqEvent`) attributes as described in
 `productOfferingQualificationNotification.api.yaml`.
 
 [RXXX] If the Requesting Entity has the authority to represent more than one
-Buyer the request **MUST** include `buyerId` query parameter that identifies the
-Buyer being represented [MEF79 R80]
+Buyer the request **MUST** include `buyerId` query parameter that identifies
+the Buyer being represented [MEF79 R80]
 
 [RXXX] If the Requesting Entity represents precisely one Buyer with the
 Responding Entity, the request **MUST NOT** specify the `buyerId` [MEF79 R81]
@@ -500,22 +502,22 @@ Seller with whom this request is associated [MEF79 R82]
 the request **MUST NOT** specify the `sellerId` [MEF79 R83]
 
 [RXXX] If `buyerId` or `sellerId` attributes were specified in the request same
-attributes **MUST**
+attributes **MUST** be used in notification payload.
 
 ## 5.3. API Resource Schema summary
 
 This subchapter describes the most important entities from the resource model
-which can be found in the API specification. Each entity is a simple or composed
-type (with the use of `allOf` keyword for data types composition). A simple type
-defines a set of properties that might be of an object, primitive, or reference
-type.
+which can be found in the API specification. Each entity is a simple or
+composed type (with the use of `allOf` keyword for data types composition). A
+simple type defines a set of properties that might be of an object, primitive,
+or reference type.
 
 [R_XXX] If an entity is used in the request or response payload, all properties
 marked as required **MUST** be provided.
 
 [Section 6](#6-api-interactions-and-flows) provides examples of data model and
-API usage. For a detailed description and complete definition of the data model,
-please refer to [API Details](#7-api-details) chapter.
+API usage. For a detailed description and complete definition of the data
+model, please refer to [API Details](#7-api-details) chapter.
 
 ### 5.3.1. Key Entities - Create Request
 
@@ -529,21 +531,21 @@ the response with additional information.
 [R XXX] `Quote_Create` is the root entity of a quote request. It **MUST**
 contain one or more `QuoteItem_Create` **[MEF80 R12]**.
 
-**_Note:_** `Quote_Create` and `QuoteItem_Create` are entities used by the Buyer
-to make a request. `Quote` and `QuoteItem` are entities used by Seller to
+**_Note:_** `Quote_Create` and `QuoteItem_Create` are entities used by the
+Buyer to make a request. `Quote` and `QuoteItem` are entities used by Seller to
 provide a response. The resquest entities have a subset of attributes of the
 response entities. Thus for visibility of these shared attribues `Quote_Common`
 and `QuoteItem_Common` have been introduced. Thought, these are not to be used
 directly in the exchange.
 
 A `QuoteItem_Create` defines details of the product(s) being subject of
-quotation (in `MEFProductRefOrValue` structure) and allows for the definition of
-additional information like related parties (`RelatedContactInformation`) or
+quotation (in `MEFProductRefOrValue` structure) and allows for the definition
+of additional information like related parties (`RelatedContactInformation`) or
 relations to other items (`QuoteItemRelationship`).
 
 `MEFProductRefOrValue` allows for the introduction of MEF product-specific
-properties to the Quote payload. The extension mechanism is described in details
-in
+properties to the Quote payload. The extension mechanism is described in
+details in
 [Section 5.2.3](#523-integration-of-product-specifications-into-product-offering-qualification-management-api).
 `MEFProductRefOrValue` may be also used to specify relations to places (using
 specializations of `RelatePlaceOrValue`) and/or to a product that exists in the
@@ -555,10 +557,10 @@ Seller's inventory (using `ProductRelationship`).
 
 ### 5.3.2. Key Entities - Response
 
-Figure 6 shows the most important data model parts used to provide a response to
-a Buyer's Create Quote (`POST /quote`) or to retrieve a `Quote` by identifier
-(`GET /quote/{{id}}`) request. Please note that the model differs only with the
-number of attributes for `Quote` and `QuoteItem` entities.
+Figure 6 shows the most important data model parts used to provide a response
+to a Buyer's Create Quote (`POST /quote`) or to retrieve a `Quote` by
+identifier (`GET /quote/{{id}}`) request. Please note that the model differs
+only with the number of attributes for `Quote` and `QuoteItem` entities.
 
 [R_XXX] Any attribute set by the Buyer in the request **MUST NOT** be modified
 by the Seller in the response.
@@ -589,8 +591,8 @@ payload.
 [R_XXX] The `@type` property of `MEFProductConfiguration` **MUST** be used to
 specify the type of the extending entity.
 
-[R XXX] `MEFProductConfiguration` **MUST** be provided in the payload in case an
-item `action` is set to `add` or `modify`. **[MEF80 R19], [MEF80 R27]**
+[R XXX] `MEFProductConfiguration` **MUST** be provided in the payload in case
+an item `action` is set to `add` or `modify`. **[MEF80 R19], [MEF80 R27]**
 
 [R XXX] `MEFProductConfiguration` **MUST NOT** be provided in the payload in
 case an item `action` is set to `delete`. **[MEF80 R30]**
@@ -622,11 +624,12 @@ The structure of the HTTP payloads exchanged via Quote API endpoints is defined
 using:
 
 - OpenAPI version 2.0 for product-agnostic part of the payload
-  - **_Note_**: It will be migrated to OAS 3.0 together with all Sonata APIs for
-    the next release
+  - **_Note_**: It will be migrated to OAS 3.0 together with all Sonata APIs
+    for the next release
 - JsonSchema (draft 7) for product-specific part of the payload
 
-[R_XXX] Implementations **MUST** use payloads that conform to these definitions.
+[R_XXX] Implementations **MUST** use payloads that conform to these
+definitions.
 
 [R_XXX] A product specification may define additional consistency rules and
 requirements that **MUST** be respected by implementations. These are defined
@@ -642,18 +645,18 @@ for:
 ## 5.5. Security Considerations
 
 There must be an authentication mechanism whereby a Seller can be assured who a
-Buyer is and vice-versa. There must also be authorization mechanisms in place to
-control what a particular Buyer or Seller is allowed to do and what information
-may be obtained. However, the definition of the exact security mechanism is
-outside the scope of this document.
+Buyer is and vice-versa. There must also be authorization mechanisms in place
+to control what a particular Buyer or Seller is allowed to do and what
+information may be obtained. However, the definition of the exact security
+mechanism is outside the scope of this document.
 
 # 6. API Interactions and Flows
 
 This section provides a detailed insight into the API functionality, use cases,
-and flows. It starts with Table 4 presenting a list and short description of all
-business use cases then presents the variants of ent-to-end interaction flows,
-and in following subchapters describes the API usage flow and examples for each
-of the use cases.
+and flows. It starts with Table 4 presenting a list and short description of
+all business use cases then presents the variants of ent-to-end interaction
+flows, and in following subchapters describes the API usage flow and examples
+for each of the use cases.
 
 | Use Case # | Use Case Name                                                             | Use Case Description                                                                                                                                                                                  |
 | ---------- | ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -704,16 +707,16 @@ Product specifications define several attribute-related and envelope-related
 requirements. For example (as of MEF 106):
 
 - the `modify` action cannot be used for operator UNI products
-- an Access E-Line product defines two mandatory product relationship roles, one
-  with the operator ENNI (`ENNI_REFERENCE`) and a second with the operator UNI
-  (`UNI_REFERENCE`) for `add` action. First must be realized as a product
+- an Access E-Line product defines two mandatory product relationship roles,
+  one with the operator ENNI (`ENNI_REFERENCE`) and a second with the operator
+  UNI (`UNI_REFERENCE`) for `add` action. First must be realized as a product
   relationship (relation to product existing in Seller's Inventory), second
   might be realized as a quote item (being part of the quotation) or product
   relationship
 - product relationships cannot be specified in the case of `modify` or `delete`
   actions
-- an operator UNI product defines a place relationship (`INSTALL_LOCATION`) that
-  must be specified for `add` action
+- an operator UNI product defines a place relationship (`INSTALL_LOCATION`)
+  that must be specified for `add` action
 - place relationships cannot be specified in the case of `modify` or `delete`
   actions
 
@@ -748,8 +751,8 @@ able to provide the answer for any other reason.
 A deferred quotation can be requested by using `instantSyncQuote` flag set to
 `false`. The Seller responds with `Quote` (state `inProgress` and `Quote.id`
 specified) and starts processing the request asynchronously. When the Buyer has
-registered for quote notifications, the Seller will send a quote notification to
-the Buyer for each quote change the Buyer has registered for.
+registered for quote notifications, the Seller will send a quote notification
+to the Buyer for each quote change the Buyer has registered for.
 
 The Buyer may choose between two possible patterns in order to get details on
 the progress of his quote:
@@ -782,8 +785,8 @@ Deferred Response Provided - Notification pattern**
 ### 6.2.3. Use case 1c: Create Quote Request, Deferred Quote Response, Immediate Response Provided
 
 In this scenario, the Buyer does not request an Immediate Quote Response
-(`instantSyncQuote=false`), but the Seller is able to provide an Immediate Quote
-and does so, including a `Quote` in one of the completion states.
+(`instantSyncQuote=false`), but the Seller is able to provide an Immediate
+Quote and does so, including a `Quote` in one of the completion states.
 
 ![Use Case 1c](media/useCase1c.png)
 
@@ -794,8 +797,8 @@ Figure 13. presents the case where the Buyer didn't register for Quote
 Notifications.  
 Figure 14. presents the interaction between Buyer and Seller when the Buyer
 registered for all Quote Notifications. Please note that in this case before
-sending an immediate response the Seller will also send a `QuoteCreateEvent` and
-a `QuoteStateChangeEvent`.
+sending an immediate response the Seller will also send a `QuoteCreateEvent`
+and a `QuoteStateChangeEvent`.
 
 ![Use Case 1c](media/useCase1cNotification.png)
 
@@ -804,9 +807,9 @@ Immediate Response Provided, with Notifications**
 
 ### 6.2.4. Buyer's Quote Request
 
-To send a Quote Request the Buyer uses the `createQuote` operation from the API:
-`POST /quote`. The Create Quote Request model is common for Use Cases 1a, 1b,
-and 1c.  
+To send a Quote Request the Buyer uses the `createQuote` operation from the
+API: `POST /quote`. The Create Quote Request model is common for Use Cases 1a,
+1b, and 1c.  
 For clarity, some of the Quote payload's attributes might be omitted to improve
 examples' readability.  
 The full list of attributes is available in [Section 7](#7-api-details) and in
@@ -856,8 +859,8 @@ The Buyer **MUST** specify:
 - [R XXX] `buyerRequestedQuoteLevel` - to inform whether `budgetary` or `firm`
   quotation level is required **[MEF80 R13]**. Please refer to the glossary for
   more details.
-- [R XXX] `instantSyncQuote` - to request the _Immediate_ (`true`) or _Deferred_
-  (`false`) response **[MEF80 R13]**.
+- [R XXX] `instantSyncQuote` - to request the _Immediate_ (`true`) or
+  _Deferred_ (`false`) response **[MEF80 R13]**.
 - [R XXX] at least one `quoteItem` **[MEF80 R13]**.
 - [R XXX] if `instantSyncQuote=false` the `relatedContactInformation[]` with an
   item of `role="buyerContact"` to specify the required
@@ -867,13 +870,13 @@ The Buyer **MUST** specify:
   `instantSyncQuote=true`, this is ignored by the Seller **[MEF80 R18]**.
 
   **_Note_**: [O XXX] The Seller **MAY** decide to make the
-  `productOfferingQualificationItem` mandatory for a Buyer Create Quote request.
-  **[MEF80 O4]**
+  `productOfferingQualificationItem` mandatory for a Buyer Create Quote
+  request. **[MEF80 O4]**
 
 For every `QuoteItem` the Buyer **MUST** specify:
 
-- [R XXX] `id` - to identify `quoteItem` locally within a `Quote`. For example a
-  sequence number (01, 02, 03...) **[MEF80 R14]**
+- [R XXX] `id` - to identify `quoteItem` locally within a `Quote`. For example
+  a sequence number (01, 02, 03...) **[MEF80 R14]**
 - [R XXX] `action` - to specify what kind of operation on a product is to be
   quoted **[MEF80 R14]**
 
@@ -966,9 +969,9 @@ structure as in the retrieve by identifier operation.
       "number": "12-345-67890",
       "role": "sellerContact"
     }
-  ]
+  ],
   "validFor": {
-    "endDateTime": "2020-08-17T16:45:39.422Z",
+    "endDateTime": "2020-08-17T16:45:39.422Z"
   }
 }
 ```
@@ -993,8 +996,8 @@ In response, the Seller **MUST** provide:
     with `quoteLevel` equal to `firm` or `firmSubjectToFeasibilityCheck`
     **[MEF80 R37]**,
   - [R XXX] if the `quoteLevel` is `firmSubjectToFeasibilityCheck`, the Seller
-    **MUST** specify the `SubjectToFeasibilityCheck` attribute in their response
-    for each `QuoteItem` **[MEF80 R44]**,
+    **MUST** specify the `SubjectToFeasibilityCheck` attribute in their
+    response for each `QuoteItem` **[MEF80 R44]**,
   - `stateChange` - to specify the history of the `Quote's` state transitions.
 
 The Seller might append related contact information if required, either at item
@@ -1003,8 +1006,8 @@ Buyer.
 
 ### 6.2.7. Quote Item Specification Details
 
-This section provides examples of how the `quoteItem` should look like depending
-on the desired `action`.
+This section provides examples of how the `quoteItem` should look like
+depending on the desired `action`.
 
 #### 6.2.7.1. Quote Item Structure for `add` Action
 
@@ -1155,10 +1158,10 @@ that have to be specified in case of quoting an `add` action: `ENNI_REFERENCE`
 and `UNI_REFERENCE`.  
 The reference to an operator UNI product might use another Quote item or an
 existing product from the Seller's inventory. This example assumes that UNI
-product is another item of the request with a unique identifier `item-002`. This
-Access E-Line product references to an existing ENNI product which is uniquely
-identified with id `00000000-0000-000a-0000-000000000001` in the Seller's
-inventory.
+product is another item of the request with a unique identifier `item-002`.
+This Access E-Line product references to an existing ENNI product which is
+uniquely identified with id `00000000-0000-000a-0000-000000000001` in the
+Seller's inventory.
 
 The place is not provided as Access E-Line product specification does not allow
 for a place description to be part of the request. Values for some of the
@@ -1175,9 +1178,9 @@ is build of:
 - the JSON Schemas for technical specifications. Those can be found in the SDK
   in the `\spec\` directory.
 - a document with a textual description of the product and a list of the
-  requirements (not all of them can be technically included in the JSON schema).
-  Such documents can be found in the `\doc\product\` directory of the SDK
-  package.
+  requirements (not all of them can be technically included in the JSON
+  schema). Such documents can be found in the `\doc\product\` directory of the
+  SDK package.
 
 The product offering is a business representation of a product specification
 version offered by the Seller for purchase. Product offering associates
@@ -1186,9 +1189,9 @@ not part of the standardisation and is up to the Seller to define their
 offering.
 
 Both product specifications and product offerings are not negotiated and
-exchanged within Sonata. They are agreed between the Buyer and the Seller during
-the onboarding process. After that, they are only referenced as in the example
-above.
+exchanged within Sonata. They are agreed between the Buyer and the Seller
+during the onboarding process. After that, they are only referenced as in the
+example above.
 
 #### 6.2.7.2. Quote Item Structure for `modify` Action
 
@@ -1207,8 +1210,8 @@ the `quoteItemRelationship` pointing to another `quoteItem` in the same Quote
 Request. This is because the UNI was not existing at that moment and was also a
 part of the quotation. In the case of quoting the update of an existing Access
 E-Line, the UNI is also existing and it must be referenced with the use of
-`productRelationship`. This example assumes that the UNI product is available in
-Seller's Inventory with the `id="00000000-0000-000a-0000-000000000098"`.
+`productRelationship`. This example assumes that the UNI product is available
+in Seller's Inventory with the `id="00000000-0000-000a-0000-000000000098"`.
 
 There is no possibility to send an update to single attributes. The Buyer must
 send a full set of `productConfiguration` attributes that represent the desired
@@ -1364,8 +1367,8 @@ The example below represents a single Quote request for deletion
 ```
 
 Product instance identifier (`01494079-6c79-4a25-83f7-48284196d44d`) is
-mandatory **[MEF80 R28]** and (apart from `@type`) the only allowed attribute in
-the `delete` request **[MEF80 R30]**.
+mandatory **[MEF80 R28]** and (apart from `@type`) the only allowed attribute
+in the `delete` request **[MEF80 R30]**.
 
 ### 6.2.8. Specifying Place Details
 
@@ -1411,13 +1414,14 @@ of different place specification formats are provided below.
 }
 ```
 
-Fielded address example of a place specification. The type discriminator has the
-value `FieldedAddress`. A subset of available attributes is used to describe the
-place. The fielded address has an optional `geographicSubAddress` structure that
-defines several attributes that can be used in case precise address information
-has to be provided. In the example above, a floor in the building at the given
-address is specified using this structure. The role of the place is assigned
-according to the requirements of the Operator UNI product specification.
+Fielded address example of a place specification. The type discriminator has
+the value `FieldedAddress`. A subset of available attributes is used to
+describe the place. The fielded address has an optional `geographicSubAddress`
+structure that defines several attributes that can be used in case precise
+address information has to be provided. In the example above, a floor in the
+building at the given address is specified using this structure. The role of
+the place is assigned according to the requirements of the Operator UNI product
+specification.
 
 #### 6.2.8.2. Formatted Address
 
@@ -1434,8 +1438,8 @@ according to the requirements of the Operator UNI product specification.
 }
 ```
 
-Place information in a form of formatted address. The type discriminator has the
-value `FormattedAddress`. This example contains the same information as the
+Place information in a form of formatted address. The type discriminator has
+the value `FormattedAddress`. This example contains the same information as the
 previous `FieldedAddress` example.
 
 #### 6.2.8.3. Geographic Point
@@ -1470,11 +1474,11 @@ information like the floor number from previous examples.
 }
 ```
 
-The Geographic Address Identifier represents a unique identifier controlled by a
-generally accepted independent administrative authority that specifies a fixed
-geographical location. The example above is a place that represents a CLLI
-(Common Language Location Identifier) identifier which is commonly used to refer
-locations in North America for network equipment installations.
+The Geographic Address Identifier represents a unique identifier controlled by
+a generally accepted independent administrative authority that specifies a
+fixed geographical location. The example above is a place that represents a
+CLLI (Common Language Location Identifier) identifier which is commonly used to
+refer locations in North America for network equipment installations.
 
 #### 6.2.8.5. Geographic Site Reference
 
@@ -1502,13 +1506,13 @@ the POQ request. In the above example a `GeographicSite` identified as
 
 `GeographicAddressRef` type is used to specify a `GeographicAddress` by
 reference in the POQ request. In the above example a `GeographicAddress`
-identified as `8198bb74-18d3-9ef0-4913-66765a842507` in the Sellers Service Site
-API is used.
+identified as `8198bb74-18d3-9ef0-4913-66765a842507` in the Sellers Service
+Site API is used.
 
 ## 6.3. Use Case 2: Retrieve Quote List
 
-The Buyer can retrieve a list of `Quotes` by using a `GET /quote` operation with
-desired filtering criteria.
+The Buyer can retrieve a list of `Quotes` by using a `GET /quote` operation
+with desired filtering criteria.
 
 The [[mef80](#8-references)] specifies the possible filtering criteria, those
 are **[MEF80 O11], [MEF80 O12]**:
@@ -1538,9 +1542,9 @@ https://serverRoot/mefApi/sonata/quoteManagement/v6/quote?state=approved.orderab
 
 The example above shows a Buyer's request to get all `Quotes` that are in
 `approved.orderable` state and with `firm` level. The correct response (HTTP
-code `200`) contains a list of `Quote_Find` objects matching the criteria in the
-response body. To get more details (e.g. the item level information), The Buyer
-has to query a specific `Quote` by id.
+code `200`) contains a list of `Quote_Find` objects matching the criteria in
+the response body. To get more details (e.g. the item level information), The
+Buyer has to query a specific `Quote` by id.
 
 The [[mef80](#8-references)] specifies the subset of attributes that the Seller
 must put into the `Quote_Find` object in the response **[MEF80 R79]**:
@@ -1676,53 +1680,55 @@ shown in Table 6 **[MEF80 R85]**.
 E - Echoed (repeated without change)  
 M - Mandatory
 
-|                                                                     | approved.answered      | cancelled                        | rejected.expired       | inProgress                              | cancelled.insufficientInformationProvided | cancelled.unableToProvide |
-| ------------------------------------------------------------------- | ---------------------- | -------------------------------- | ---------------------- | --------------------------------------- | ----------------------------------------- | ------------------------- | --- | ----------------------- | --- | --- | --- | --- | --- | --- | --- |
-| id                                                                  | M                      | M                                | M                      | M                                       | M                                         | M                         |
-| externalId                                                          | E                      | E                                | E                      | E                                       | E                                         | E                         |
-| projectId                                                           | E                      | E                                | E                      | E                                       | E                                         | E                         |
-| sescription                                                         | E                      | E                                | E                      | E                                       | E                                         | E                         |
-| state                                                               | M                      | M                                | M                      | M                                       | M                                         | M                         |
-| quoteDate                                                           | M                      | M                                | M                      | M                                       | M                                         | M                         |
-| stateChange                                                         | M                      | M                                | M                      | M                                       | M                                         | M                         |
-| expectedQuoteCompletionDate                                         |                        |                                  |                        | M                                       |                                           |                           |
-| validFor                                                            | NA                     | NA                               | NA                     | NA                                      | NA                                        | NA                        |
-| effectiveQuoteCompletionDate                                        |                        | M                                |                        | M                                       | M                                         | M                         |
-| buyerRequestedQuoteLevel                                            | E                      | E                                | E                      | E                                       | E                                         | E                         |
-| quoteLevel                                                          | M                      | M                                | M                      | M                                       | M                                         | M                         |
-| instantSyncQuote                                                    | E                      | E                                | E                      | E                                       | E                                         | E                         |
-| requestedQuoteCompletionDate                                        | E                      | E                                | E                      | E                                       | E                                         | E                         |
-| note                                                                | E - Buyer / M - Seller | E - Buyer / M - Seller           | E - Buyer / M - Seller | E - Buyer / M - Seller                  | E - Buyer / M - Seller                    | E - Buyer / M - Seller    |
-| relatedContactInformation (role=buyerContactInformation)            | E                      | E                                | E                      | E                                       | E                                         | E                         |
-| relatedContactInformation (role=sellerContactInformation)           | M                      | M                                | M                      | M                                       | M                                         | M                         |     |
-| quoteItem.id                                                        | E                      | E                                | E                      | E                                       | E                                         | E                         |     
-| quoteItem.action        | E   | E   | E   | E   | E   | | E                                                                   |                        
-| quoteItem.requestedQuoteItemTerm | E                      | E                                       | E                                         | E                         | E   | E                       |     |
-| quoteItem.requestedQuoteItemInstallationInterval                    | E                      | E                                | E                      | E                                       | E                                         | E                         |     |
-| quoteItem.product.id                                                | E                      | E                                | E                      | E                                       | E                                         | E                         |     |
-| quoteItem.product.productOffering                                   | E                      | E                                | E                      | E                                       | E                                         | E                         |     |
-| quoteItem.product.productConfiguration                              | E                      | E                                | E                      | E                                       | E                                         | E                         |     |
-| quoteItem.subjectToFeasibilityCheck                                 | NA                     | NA                               | NA                     | NA                                      | NA                                        | NA                        |     |
-| quoteItem.product.place                                             | E                      | E                                | E                      | E                                       | E                                         | E                         |     |
-| quoteItem.relatedContactInformation (role=quoteItemLocationContact) | E                      | E                                | E                      | | E                                                                   | E                      | E                                |                        | quoteItem.relatedContactInformation     |
-| (role=quoteItemTechnicalContact)                                    | E                      | E                                | E                      | E                                       | E                                         | E                         |     |
-| quoteItem.quoteItemRelationship                                     | E                      | E                                | E                      | E                                       | E                                         | E                         |     |
-| quoteItem.product.productRelationship                               | E                      | E                                | E                      | E                                       | E                                         | E                         |     | quoteItem.note          | | E - Buyer / M - Seller                                              | E - Buyer / M - Seller | E - Buyer / M - Seller           | E -                    | | Buyer / M - Seller                                                  | E - Buyer / M - Seller | E - Buyer / M - Seller           |                        |
-| quoteItem.agreement                                                 | E                      | E                                | E                      | E                                       | E                                         | E                         |     |
-| quoteItem.productOfferingQualificationItem                          | E                      | E                                | E                      | E                                       | E                                         | E                         |     |
-| quoteItem.state                                                     | M                      | M                                | M                      | M                                       | M                                         | M                         | 
-| quoteItem.Price         | M   |     | M   |     |     |     |     |
-| quoteItem.quoteItemTerm                                             | M                      |                                  | M                      |                                         |                                           |                           |     
-| quoteItem.dealReference | E   | E   | E   | | E                                                                   | E                      | E                                |                        | quoteItem.quoteItemInstallationInterval | M                                         |                           | M   |                         |     |     |     |
-| quoteItem.terminationError                                          |                        |                                  |                        |                                         |                                           | M                         |
+|                                                                      | approved.answered      | cancelled              | rejected.expired       | inProgress             | cancelled.insufficientInformationProvided | cancelled.unableToProvide |
+| -------------------------------------------------------------------- | ---------------------- | ---------------------- | ---------------------- | ---------------------- | ----------------------------------------- | ------------------------- |
+| id                                                                   | M                      | M                      | M                      | M                      | M                                         | M                         |
+| externalId                                                           | E                      | E                      | E                      | E                      | E                                         | E                         |
+| projectId                                                            | E                      | E                      | E                      | E                      | E                                         | E                         |
+| sescription                                                          | E                      | E                      | E                      | E                      | E                                         | E                         |
+| state                                                                | M                      | M                      | M                      | M                      | M                                         | M                         |
+| quoteDate                                                            | M                      | M                      | M                      | M                      | M                                         | M                         |
+| stateChange                                                          | M                      | M                      | M                      | M                      | M                                         | M                         |
+| expectedQuoteCompletionDate                                          |                        |                        |                        | M                      |                                           |                           |
+| validFor                                                             | NA                     | NA                     | NA                     | NA                     | NA                                        | NA                        |
+| effectiveQuoteCompletionDate                                         |                        | M                      |                        | M                      | M                                         | M                         |
+| buyerRequestedQuoteLevel                                             | E                      | E                      | E                      | E                      | E                                         | E                         |
+| quoteLevel                                                           | M                      | M                      | M                      | M                      | M                                         | M                         |
+| instantSyncQuote                                                     | E                      | E                      | E                      | E                      | E                                         | E                         |
+| requestedQuoteCompletionDate                                         | E                      | E                      | E                      | E                      | E                                         | E                         |
+| note                                                                 | E - Buyer / M - Seller | E - Buyer / M - Seller | E - Buyer / M - Seller | E - Buyer / M - Seller | E - Buyer / M - Seller                    | E - Buyer / M - Seller    |
+| relatedContactInformation (role=buyerContactInformation)             | E                      | E                      | E                      | E                      | E                                         | E                         |
+| relatedContactInformation (role=sellerContactInformation)            | M                      | M                      | M                      | M                      | M                                         | M                         |
+| quoteItem.id                                                         | E                      | E                      | E                      | E                      | E                                         | E                         |
+| quoteItem.action                                                     | E                      | E                      | E                      | E                      | E                                         | E                         |
+| quoteItem.requestedQuoteItemTerm                                     | E                      | E                      | E                      | E                      | E                                         | E                         |
+| quoteItem.requestedQuoteItemInstallationInterval                     | E                      | E                      | E                      | E                      | E                                         | E                         |
+| quoteItem.product.id                                                 | E                      | E                      | E                      | E                      | E                                         | E                         |
+| quoteItem.product.productOffering                                    | E                      | E                      | E                      | E                      | E                                         | E                         |
+| quoteItem.product.productConfiguration                               | E                      | E                      | E                      | E                      | E                                         | E                         |
+| quoteItem.subjectToFeasibilityCheck                                  | NA                     | NA                     | NA                     | NA                     | NA                                        | NA                        |
+| quoteItem.product.place                                              | E                      | E                      | E                      | E                      | E                                         | E                         |
+| quoteItem.relatedContactInformation (role=quoteItemLocationContact)  | E                      | E                      | E                      | E                      | E                                         | E                         |
+| quoteItem.relatedContactInformation (role=quoteItemTechnicalContact) | E                      | E                      | E                      | E                      | E                                         | E                         |
+| quoteItem.quoteItemRelationship                                      | E                      | E                      | E                      | E                      | E                                         | E                         |
+| quoteItem.product.productRelationship                                | E                      | E                      | E                      | E                      | E                                         | E                         |
+| quoteItem.note                                                       | E - Buyer / M - Seller | E - Buyer / M - Seller | E - Buyer / M - Seller | E - Buyer / M - Seller | E - Buyer / M - Seller                    | E - Buyer / M - Seller    |
+| quoteItem.agreement                                                  | E                      | E                      | E                      | E                      | E                                         | E                         |
+| quoteItem.productOfferingQualificationItem                           | E                      | E                      | E                      | E                      | E                                         | E                         |
+| quoteItem.state                                                      | M                      | M                      | M                      | M                      | M                                         | M                         |
+| quoteItem.Price                                                      | M                      |                        | M                      |                        |                                           |                           |
+| quoteItem.quoteItemTerm                                              | M                      |                        | M                      |                        |                                           |                           |
+| quoteItem.dealReference                                              | E                      | E                      | E                      | E                      | E                                         | E                         |
+| quoteItem.quoteItemInstallationInterval                              | M                      |                        | M                      |                        |                                           |                           |
+| quoteItem.terminationError                                           |                        |                        |                        |                        |                                           | M                         |
 
 **Table 6. Seller Response to Query by ID, BUDGETARY Quote Level**
 
 In the example below, the `Quote` is in the `approved.orderable` state. [R XXX]
-This is only possible if all items are also in the `approved.orderable` state as
-well **[MEF80 R65], [MEF80 R75]**. The Seller's response to an inquiry is valid
-for one week (`validFor.endDateTime`). The `stateChange` lists the history of
-the `Quote` state.
+This is only possible if all items are also in the `approved.orderable` state
+as well **[MEF80 R65], [MEF80 R75]**. The Seller's response to an inquiry is
+valid for one week (`validFor.endDateTime`). The `stateChange` lists the
+history of the `Quote` state.
 
 ```json
 {
@@ -1735,7 +1741,7 @@ the `Quote` state.
   "effectiveQuoteCompletionDate": "2020-08-10T16:45:20.421Z",
   "quoteDate": "2020-08-10T16:40:33.422Z",
   "validFor": {
-    "endDateTime": "2020-08-17T16:45:39.422Z",
+    "endDateTime": "2020-08-17T16:45:39.422Z"
   },
   "quoteItem": [ {
     "state": "approved.orderable",
@@ -1782,8 +1788,8 @@ the `Quote` state.
 
 ## 6.5. Use case 4: Cancel Quote by Quote Identifier
 
-The Buyer may decide to cancel a Quote Request that is in progress (`inProgress`
-or `inProgress.draft` states). A `cancelQuote` operation from the
+The Buyer may decide to cancel a Quote Request that is in progress
+(`inProgress` or `inProgress.draft` states). A `cancelQuote` operation from the
 `POST /cancelQuote` endpoint must be used to do so.
 
 [R XXX] The Seller **MUST** provide the ability for a Buyer to cancel a `Quote`
@@ -1804,8 +1810,8 @@ The message body contains only two attributes:
 
 The Seller responds with the same body. No `id` is added. The cancellation
 request does not create any trackable object in the Seller's system that can be
-further tracked or monitored by the Buyer. The Seller is obliged to process such
-a request and cancel the `Quote`.
+further tracked or monitored by the Buyer. The Seller is obliged to process
+such a request and cancel the `Quote`.
 
 The reason for having a separate `POST` endpoint for operation on the `Quote`,
 even when it is not technically required, is keeping the pattern consistency
@@ -1825,9 +1831,9 @@ The Buyer may also decide to reject a `Quote` provided by the Seller
 (`approved.orderable` or `approved.orderableAlternate` states). A `rejectQuote`
 operation from the `POST /rejectQuote` endpoint must be used to do so.
 
-[R XXX] The Seller **MUST** provide the ability for a Buyer to reject a `Quote `
-when the `Quote` is in the `approved.orderable` or `approved.orderableAlternate`
-state. **[MEF80 R2]**.
+[R XXX] The Seller **MUST** provide the ability for a Buyer to reject a
+`Quote ` when the `Quote` is in the `approved.orderable` or
+`approved.orderableAlternate` state. **[MEF80 R2]**.
 
 The Reject Request has the same body and the rules of usage as the Cancel
 Request mentioned in the section above.
@@ -1961,8 +1967,8 @@ Notifications are sent to:
 
 Erroneous situations are indicated by appropriate HTTP responses. An error
 response is indicated by HTTP status 4xx (for client errors) or 5xx (for server
-errors) and appropriate response payload. The Quote API uses the error responses
-as depicted and described below.
+errors) and appropriate response payload. The Quote API uses the error
+responses as depicted and described below.
 
 ![Error response data model](media/error_entities.png)
 
@@ -1970,9 +1976,9 @@ as depicted and described below.
 
 #### 7.1.1.1. Type Error
 
-**Description:** Standard Class used to describe API response error NOT intended
-to be used directly. It **MUST** be used via specialization which defines a
-`code` property.
+**Description:** Standard Class used to describe API response error NOT
+intended to be used directly. It **MUST** be used via specialization which
+defines a `code` property.
 
 <table id="T_Error">
     <thead style="font-weight:bold;">
@@ -2336,10 +2342,10 @@ following query attributes related to pagination:
 - `limit` - number of expected list items
 - `offset` - offset of the first element in the result list
 
-The Seller returns a list of elements that comply with the requested `limit`. If
-the requested `limit` is higher than the supported list size the smaller list
-result is returned. In that case, the size of the result is returned in the
-header attribute `X-Result-Count`. The Seller can indicate that there are
+The Seller returns a list of elements that comply with the requested `limit`.
+If the requested `limit` is higher than the supported list size the smaller
+list result is returned. In that case, the size of the result is returned in
+the header attribute `X-Result-Count`. The Seller can indicate that there are
 additional results available using:
 
 - `X-Total-Count` header attribute with the total number of available results
@@ -2363,8 +2369,8 @@ later in this section.
 #### 7.2.1.1 Type Quote_Common
 
 **Description:** Quote can be used to negotiate service and product acquisition
-or modification between a customer and a service provider. Quote contains a list
-of quote items, a reference to customer, a list of productOfferings, and
+or modification between a customer and a service provider. Quote contains a
+list of quote items, a reference to customer, a list of productOfferings, and
 attached prices and conditions.
 
 <table id="T_Quote_Common">
@@ -2426,9 +2432,9 @@ attached prices and conditions.
 #### 7.2.1.2. Type Quote_Create
 
 **Description:** Quote can be used to negotiate service and product acquisition
-or modification between a customer and a service provider. Quote contains a list
-of quote items, a reference to the customer, a list of productOffering, and
-attached prices and conditions.
+or modification between a customer and a service provider. Quote contains a
+list of quote items, a reference to the customer, a list of productOffering,
+and attached prices and conditions.
 
 This type MUST be used by the Buyer in the request.
 
@@ -2462,8 +2468,8 @@ Inherits from:
 #### 7.2.1.3. Type Quote
 
 **Description:** Quote can be used to negotiate service and product acquisition
-or modification between a customer and a service provider. Quote contain list of
-quote items, a reference to customer, a list of productOffering and attached
+or modification between a customer and a service provider. Quote contain list
+of quote items, a reference to customer, a list of productOffering and attached
 prices and conditions.
 
 This type MUST be used by the Seller in the response.
@@ -2540,9 +2546,9 @@ Inherits from:
 [R XXX] Each item in `quoteItem` list **MUST** correspond to an item from
 `Quote_Create` **[MEF80 R36]**, **[MEF80 R41]**.
 
-[R XXX] If `instantSyncQuote=false` the
-`relatedContactInformation" list **MUST** contain an entry that represents Seller Contact Information. The role for this entry **MUST** be `sellerContactInformation`.
-[MEF80 R40].
+[R XXX] If `instantSyncQuote=false` the `relatedContactInformation` list
+**MUST** contain an entry that represents Seller Contact Information. The role
+for this entry **MUST** be `sellerContactInformation`. [MEF80 R40].
 
 #### 7.2.1.4. `enum` MEFQuoteStateType
 
@@ -2555,9 +2561,9 @@ Inherits from:
 **Figure 20. Quote budgetary flow activity diagram**
 
 If a Quote request does not pass an initial validation the appropriate error
-response is returned to the Buyer. In case a Quote request failed business rules
-validation the HTTP response code is `422` and a list of validation problems is
-returned. Otherwise, the Quote is processed and given an `id`.
+response is returned to the Buyer. In case a Quote request failed business
+rules validation the HTTP response code is `422` and a list of validation
+problems is returned. Otherwise, the Quote is processed and given an `id`.
 
 Following tables present the possible combinations of Quote and QuoteItem
 states, as described in MEF 80 [[mef80](#8-references)]:
@@ -3096,10 +3102,10 @@ relationship could have an impact on pricing and conditions
 
 **Description:** The terms of the Quote Item. Used to describe a term (also
 known as commitment) for a Quote Item. Each Quote Item in a Quote Request could
-have a different Requested Quote Item Term. The Buyer specifies the longest term
-that they would accept. The Buyer may be willing to accept a shorter term. If
-the Seller responds with a term longer than the Buyer’s request, it is treated
-as an alternate response.
+have a different Requested Quote Item Term. The Buyer specifies the longest
+term that they would accept. The Buyer may be willing to accept a shorter term.
+If the Seller responds with a term longer than the Buyer’s request, it is
+treated as an alternate response.
 
 <table id="T_MEFItemTerm">
     <thead style="font-weight:bold;">
@@ -3157,8 +3163,8 @@ as an alternate response.
 
 #### 7.2.2.11. Type QuotePrice
 
-Table 7 shows the combination of attributes that MUST be provided for each Price
-Type **[MEF80 R56]**.
+Table 7 shows the combination of attributes that MUST be provided for each
+Price Type **[MEF80 R56]**.
 
 | `priceType`    | `recurringChargePeriod` | `unitOfMeasure` | `price.dutyFreeAmount` | Comments                                                 |
 | -------------- | ----------------------- | --------------- | ---------------------- | -------------------------------------------------------- |
@@ -3446,10 +3452,10 @@ discriminator.
 </table>
 
 MEF 80 allows for providing a list of related product identifiers within a
-single Product Relationship. This can be later used while processing the request
-as defined in the Product Specification. The `groupingKey` attribute is used to
-achieve this behavior in the API by marking the list of `ProductRelationships`
-within a `product` with a common key.
+single Product Relationship. This can be later used while processing the
+request as defined in the Product Specification. The `groupingKey` attribute is
+used to achieve this behavior in the API by marking the list of
+`ProductRelationships` within a `product` with a common key.
 
 [R XXX] The Product Identifier from relationships having the same `groupingKey`
 and `relationshipType` **MUST** be treated as a list of identifiers.
@@ -3469,8 +3475,8 @@ Address ID method" in MEF 79 Sn 8.9.3.1.
 
 #### 7.2.4.2. Type RelatedPlaceRefOrValue
 
-**Description:** Definition of a place. For example, a place where the Quotation
-must be done.
+**Description:** Definition of a place. For example, a place where the
+Quotation must be done.
 
 This standard defines a number of specializations (place representations) of a
 place type.
@@ -3714,8 +3720,8 @@ Inherits from:
 
 [R XXX] `MEFGeographicPoint` **MUST** be used to specify Geographic Point.
 
-[R XXX] The `spatialRef` value that can be used **MUST** be agreed between Buyer
-and Seller
+[R XXX] The `spatialRef` value that can be used **MUST** be agreed between
+Buyer and Seller
 
 #### 7.2.4.5. Type GeographicSubAddress
 
@@ -3914,11 +3920,11 @@ The below sections describe data models related to this endpoint.
 
 #### 7.2.5.1. Type EventSubscriptionInput
 
-The `query` attribute is used to constrain the notification types that the Buyer
-is willing to receive to the callback endpoint. The `query` formatting complies
-to RCF3986 [rfc3986](#8-references) and [tmf630](#8-references). Every attribute
-defined in Event model (from notification API) can be used in the `query`.
-Example:
+The `query` attribute is used to constrain the notification types that the
+Buyer is willing to receive to the callback endpoint. The `query` formatting
+complies to RCF3986 [rfc3986](#8-references) and [tmf630](#8-references). Every
+attribute defined in Event model (from notification API) can be used in the
+`query`. Example:
 
 ```
     "query":"eventType=quoteCreateEvent"
@@ -3993,8 +3999,8 @@ must use to deliver notification information
 
 ### 7.2.6. Type QuoteOperationData
 
-The `QuoteOperationData` is a common type for Cancel or Reject requests that can
-be sent by using `/cancelQuote` or `/rejectQuote` endpoints.
+The `QuoteOperationData` is a common type for Cancel or Reject requests that
+can be sent by using `/cancelQuote` or `/rejectQuote` endpoints.
 
 **Description:** Request for operation on an existing Quote (cancellation or
 rejection)
@@ -4145,9 +4151,9 @@ rejection)
 
 #### 7.2.7.5. Type RelatedContactInformation
 
-**Description:** Contact data for a person or organization that is involved in a
-given context. It is specified by the Seller (e.g. Seller Contact Information)
-or by the Buyer.
+**Description:** Contact data for a person or organization that is involved in
+a given context. It is specified by the Seller (e.g. Seller Contact
+Information) or by the Buyer.
 
 Reference: MEF 80 (Sn 8.1.9)
 
@@ -4200,11 +4206,11 @@ Reference: MEF 80 (Sn 8.1.9)
     </tbody>
 </table>
 
-The related contact information can be defined at a Quote or a Quote Item level.
-In both cases, it is allowed to provide a list of party role information. The
-`role` attribute is used to provide a reason the particular party information is
-used. It can result from MEF 80 requirements (e.g. Seller Contact Information)
-or from the Product Specification requirements.
+The related contact information can be defined at a Quote or a Quote Item
+level. In both cases, it is allowed to provide a list of party role
+information. The `role` attribute is used to provide a reason the particular
+party information is used. It can result from MEF 80 requirements (e.g. Seller
+Contact Information) or from the Product Specification requirements.
 
 The rule for mapping a represented attribute value to a `role` is to use the
 _lowerCamelCase_ pattern e.g.
@@ -4455,8 +4461,8 @@ this event.
   Quote Management Requirements and Use Cases, November 2020, Draft R5
 - [mefw106]
   [MEF W106](https://wiki.mef.net/download/attachments/106599684/MEF%20W106%20wd%201.4C.pdf?api=v2)
-  LSO Sonata Product Specification – Access E-Line Product Requirements, December
-  2020, CfC#1 reviewed
+  LSO Sonata Product Specification – Access E-Line Product Requirements,
+  December 2020, CfC#1 reviewed
 - [mefw113]
   [MEF W113 0.15](https://wiki.mef.net/download/attachments/106625017/L74053_001_MEF%20W113%20WD%20%231_Arndt.docx?version=1&modificationDate=1595452765000&api=v2)
   Trouble Ticketing Business Requirements and Use Cases, July 2020, CfC#1
