@@ -158,7 +158,7 @@ thoroughly read, review, and understand the following materials:
 - [MEF W106: LSO Sonata Product Specification - Access E-Line](https://wiki.mef.net/download/attachments/106599684/MEF%20W106%20wd%201.4C.pdf?api=v2)
 - [MEF W92.1: LSO SOnata Test Requirements](https://wiki.mef.net/download/attachments/128222601/T76000_001_MEF%20W92.1%20WD%20%231_Bencheck.docx?version=1&modificationDate=1608054790000&api=v2)
   
-## Issues, questions, and Feedback
+## Issues, Questions, and Feedback
 
 Issues should be reported with the use of GitHub issues. Questions and feedback
 should be asked either at
