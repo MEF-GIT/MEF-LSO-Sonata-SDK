@@ -18,12 +18,12 @@ for the following functional areas:
 - Product Order
 - Product Inventory
 
-It also provides Product Specification for Access ELine as delivered by MEF
-W106 and EPL
+It also provides Product Specification for Access E-Line (MEF
+W106) and EPL product schema.
 
 ## High-level release notes
 
-The theme of this release is **Servicability**: it delivers full coverage of
+The theme of this release is **Serviceability**: it delivers full coverage of
 Business Requirements, API and API Developer Guides for Address, Site
 Retrieval, and Product Offering Qualification Management.
 
@@ -34,7 +34,7 @@ Retrieval, and Product Offering Qualification Management.
   - MEF W121 - LSO Sonata Address Management API - Developer Guide
   - MEF W122 - LSO Sonata Site Management API - Developer Guide
   - MEF W79.0.2 - Amendment to MEF 79: Address Validation, November 2020
-  - MEF W92.1: LSO SOnata Test Requirements, December 2020
+  - MEF W92.1: LSO Sonata Test Requirements, December 2020
 - Updated Documents:
   - MEF W106 - LSO Sonata Product Specification - Access E-Line
   - MEF W87 - LSO Sonata Product Offering Qualification API - Developer Guide
