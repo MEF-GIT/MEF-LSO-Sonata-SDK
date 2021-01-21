@@ -1,6 +1,6 @@
 # MEF-LSO-Sonata-SDK - Aretha Release
 
-## Theme: Serviceability
+## Theme: Pre-Ordering
 
 ## Download Link
 
@@ -23,7 +23,7 @@ W106) and EPL product schema.
 
 ## High-level release notes
 
-The theme of this release is **Serviceability**: it delivers full coverage of
+The theme of this release is **Pre-ordering**: it delivers full coverage of
 Business Requirements, API and API Developer Guides for Address, Site
 Retrieval, and Product Offering Qualification Management.
 
