@@ -1,0 +1,121 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class FieldedAddress {
+
+    city*: string 
+    country*: string 
+    locality: string 
+    postcode: string 
+    postcodeExtension: string 
+    stateOrProvince: string 
+    streetName*: string 
+    streetNr: string 
+    streetNrLast: string 
+    streetNrLastSuffix: string 
+    streetNrSuffix: string 
+    streetSuffix: string 
+    streetType: string 
+}
+GeographicAddress <|-- FieldedAddress
+
+FieldedAddress *--> GeographicSubAddress : geographicSubAddress
+
+
+class FormattedAddress {
+
+    addrLine1*: string 
+    addrLine2: string 
+    city*: string 
+    country*: string 
+    locality: string 
+    postcode: string 
+    postcodeExtension: string 
+    stateOrProvince: string 
+}
+GeographicAddress <|-- FormattedAddress
+
+
+
+class GeographicAddressLabel {
+
+    externalReferenceId*: string 
+    externalReferenceType*: string 
+}
+GeographicAddress <|-- GeographicAddressLabel
+
+
+
+class GeographicAddress {
+
+    id: string {readOnly} 
+    href: string {readOnly} 
+    allowsNewSite: boolean {readOnly}  
+    hasPublicSite: boolean {readOnly} 
+    @schemaLocation: uri 
+    @type*: string 
+}
+
+GeographicAddress *--> FieldedAddress : associatedGeographicAddress {readOnly} 
+
+
+class GeographicAddressValidation {
+
+    provideAlternative*: boolean 
+    validationResult: MEFValidationResultType 
+}
+
+GeographicAddressValidation *-->"*" GeographicAddress : alternateGeographicAddress
+GeographicAddressValidation *--> GeographicAddress : bestMatchGeographicAddress
+GeographicAddressValidation *-->"1" GeographicAddress : submittedGeographicAddress
+
+
+class GeographicAddressValidation_Create {
+
+    provideAlternative*: boolean 
+}
+
+GeographicAddressValidation_Create *-->"1" GeographicAddress : submittedGeographicAddress
+
+
+class GeographicSubAddress {
+
+    buildingName: string 
+    levelNumber: string 
+    levelType: string 
+    privateStreetName: string 
+    privateStreetNumber: string 
+}
+
+GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+
+
+class MEFGeographicPoint {
+
+    spatialRef*: string 
+    x*: string 
+    y*: string 
+    z: string 
+}
+GeographicAddress <|-- MEFGeographicPoint
+
+
+
+class MEFSubUnit {
+
+    subUnitNumber*: string 
+    subUnitType*: string 
+}
+
+
+
+enum MEFValidationResultType {
+
+    success
+    partial
+    fail
+}
+@enduml

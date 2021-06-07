@@ -1,0 +1,17 @@
+@startuml
+
+hide footbox
+
+participant Buyer
+participant Seller
+
+Buyer -> Seller : POST {{baseUrl}}/troubleTicket (TroubleTicket_Create)
+
+Seller -> Seller : validate Request
+Seller -> Seller : assign id
+alt successful inquiry
+    Buyer <-- Seller : 201 Trouble Ticket (TroubleTicket) with {{id}}, in `acknowledged` state
+else validation or internal problem
+    Buyer <-- Seller: 4xx/5xx : error response
+end
+@enduml

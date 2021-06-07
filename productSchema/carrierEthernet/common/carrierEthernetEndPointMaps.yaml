@@ -1,0 +1,144 @@
+---
+"$schema": http://json-schema.org/draft-07/schema#
+title: 
+    MEF LSO Sonata - Carrier Ethernet End Point Maps (Common) Product Specification
+    # MEF Forum - Date: 20210531  Edit-level: 216
+    # File: carrierEthernet/common/carrierEthernetEndPointMaps.yaml
+    #
+    # ---------------------
+    # Disclaimer
+    # 
+    # © MEF Forum 2021. All Rights Reserved.
+    # 
+    # The information in this publication is freely available for reproduction
+    # and use by any recipient and is believed to be accurate as of its
+    # publication date. Such information is subject to change without notice
+    # and MEF Forum (MEF) is not responsible for any errors. MEF does not
+    # assume responsibility to update or correct any information in this
+    # publication. No representation or warranty, expressed or implied, is
+    # made by MEF concerning the completeness, accuracy, or applicability of
+    # any information contained herein and no liability of any kind shall be
+    # assumed by MEF as a result of reliance upon such information.
+    # 
+    # The information contained herein is intended to be used without
+    # modification by the recipient or user of this document. MEF is not
+    # responsible or liable for any modifications to this document made by any
+    # other party.
+    # 
+    # The receipt or any use of this document or its contents
+    # does not in any way create, by implication or otherwise:
+    # 
+    # a) any express or implied license or right to or under any patent,
+    # copyright, trademark or trade secret rights held or claimed by any MEF
+    # member which are or may be associated with the ideas, techniques,
+    # concepts or expressions contained herein; nor
+    # 
+    # b) any warranty or representation that any MEF members will announce
+    # any product(s) and/or service(s) related thereto, or if such
+    # announcements are made, that such announced product(s) and/or service(s)
+    # embody any or all of the ideas, technologies, or concepts contained
+    # herein; nor
+    # 
+    # c) any form of relationship between any MEF member and the recipient
+    # or user of this document.
+    # 
+    # Implementation or use of specific MEF standards, specifications, or
+    # recommendations will be voluntary, and no Member shall be obliged to
+    # implement them by virtue of participation in MEF Forum. MEF is a
+    # non-profit international organization to enable the development and
+    # worldwide adoption of agile, assured and orchestrated network services.
+    # MEF does not, expressly or otherwise, endorse or promote any specific
+    # products or services.
+    # ---------------------
+    #
+definitions:
+    EndPointMapFormE:
+        type: object
+        description:  >-
+            The value of an End Point Map of Form E (E for ENNI) consists
+            of a list of one or more SVLAN ID values. An S-Tagged ENNI Frame
+            whose S-VLAN ID value matches an entry in the list maps to the
+            OVC End Point.
+        properties:
+            mapType:
+                type: string
+                enum:
+                    - "FORM_E"
+            EndPointMapFormE:
+                type: array 
+                minItems: 1
+                maxItems: 4094
+                uniqueItems: TRUE
+                items:
+                    type: integer
+                    minimum: 1
+                    maximum: 4094
+    EndPointMapFormT:
+        type: object
+        description:  >-
+            The value of an OVC End Point Map of Form T (T for Trunk) consists
+            of a pair of S-VLAN ID values, ⟨r,l⟩ is called the Root S-VLAN
+            ID value and l is called the Leaf S-VLAN ID value. An S-Tagged
+            ENNI Frame whose S-VLAN ID value matches one of the two S-VLAN
+            ID values in the OVC End Point Map Form T maps to the OVC End Point.
+            Note that Form T differs from Form E because it distinguishes the
+            role of each S-VLAN ID value.
+        properties:
+    EndPointMapFormV:
+        type: object
+        description:  >-
+            The value of an OVC End Point Map of Form V (V for VUNI) consists
+            of one S-VLAN ID value and a list of one or more ENNI CE-VLAN ID
+            values. An S-Tagged ENNI Frame whose S-VLAN ID value matches the
+            S-VLAN ID value in the map and whose ENNI CE-VLAN ID value matches
+            one of the ENNI CE-VLAN ID values in the map, maps to the OVC End
+            Point.
+        properties:
+    EndPointMapFormU:
+        type: object
+        description:  >-
+            The EndPointMapFormU object class represents the EVC/OVC End
+            Point  Map Form U (U for UNI). It is a list of one or more CE-VLAN
+            IDs.
+        properties:
+            mapType:
+                type: string
+                enum:
+                    - "FORM_U"
+            ovcEndPointMapFormU:
+                type: array 
+                minItems: 1
+                maxItems: 4094
+                uniqueItems: TRUE
+                items:
+                    type: integer
+                    minimum: 1
+                    maximum: 4094
+    EndPointMapEvc:
+        type: object
+        description:  >-
+            This is specifications for which Service Frames are mapped
+            to the EVC End Point. The allowed values in MEF 10.4 are ALL, LIST,
+            and UT/PT. Since Private services must be ALL, the map isn;t needed
+            for those services, and therefore the type does not include ALL.
+            If the type is LIST there must be a list of VLAN IDs specified.
+        properties:
+            vlanType:
+                description: An indication about how the Vlan List argument is interpreted
+                type: string
+                enum:
+                    - "LIST"
+                    - "UT/PT"
+            vlanId:
+                description:  >-
+                    A list of VLAN IDs that is interpreted based on the value of
+                    vlanType.
+                type: array 
+                minItems: 1
+                maxItems: 4094
+                uniqueItems: TRUE
+                items:
+                    type: integer
+                    minimum: 1
+                    maximum: 4094
+

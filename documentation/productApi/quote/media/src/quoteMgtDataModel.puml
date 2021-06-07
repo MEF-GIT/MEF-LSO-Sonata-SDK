@@ -1,0 +1,441 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class Duration {
+
+    amount*: integer 
+    units*: TimeUnit 
+}
+
+
+
+
+class FieldedAddress {
+
+    city*: string 
+    country*: string 
+    locality: string 
+    postcode: string 
+    postcodeExtension: string 
+    stateOrProvince: string 
+    streetName*: string 
+    streetNr: string 
+    streetNrLast: string 
+    streetNrLastSuffix: string 
+    streetNrSuffix: string 
+    streetSuffix: string 
+    streetType: string 
+}
+RelatedPlaceRefOrValue <|-- FieldedAddress
+
+FieldedAddress *--> GeographicSubAddress : geographicSubAddress
+
+
+class FormattedAddress {
+
+    addrLine1*: string 
+    addrLine2: string 
+    city*: string 
+    country*: string 
+    locality: string 
+    postcode: string 
+    postcodeExtension: string 
+    stateOrProvince: string 
+}
+RelatedPlaceRefOrValue <|-- FormattedAddress
+
+
+
+class GeographicAddressIdentifier {
+
+    externalReferenceId*: string 
+    externalReferenceType*: string 
+}
+RelatedPlaceRefOrValue <|-- GeographicAddressIdentifier
+
+
+
+class GeographicAddressRef {
+
+    href: string 
+    id*: string 
+}
+RelatedPlaceRefOrValue <|-- GeographicAddressRef
+
+
+
+class GeographicSiteRef {
+
+    href: string 
+    id*: string 
+}
+RelatedPlaceRefOrValue <|-- GeographicSiteRef
+
+
+
+class GeographicSubAddress {
+
+    buildingName: string 
+    id: string 
+    levelNumber: string 
+    levelType: string 
+    privateStreetName: string 
+    privateStreetNumber: string 
+}
+
+GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+
+
+enum MEFEndOfTermAction {
+
+    roll
+    autoDisconnect
+    autoRenew
+}
+class MEFGeographicPoint {
+
+    spatialRef*: string 
+    x*: string 
+    y*: string 
+    z: string 
+}
+RelatedPlaceRefOrValue <|-- MEFGeographicPoint
+
+
+
+class MEFItemTerm {
+
+    name: string
+    description: string
+    endOfTermAction: MEFEndOfTermAction
+}
+
+MEFItemTerm *--> Duration : duration
+MEFItemTerm *--> Duration : rollInterval
+
+
+class MEFProductConfiguration {
+
+    @type*: string 
+}
+
+
+
+class MEFProductRefOrValueQuote {
+
+    href: string 
+    id: string 
+}
+
+MEFProductRefOrValueQuote *-->"*" RelatedPlaceRefOrValue : place
+MEFProductRefOrValueQuote *--> MEFProductConfiguration : productConfiguration
+MEFProductRefOrValueQuote *--> ProductOfferingRef : productOffering
+MEFProductRefOrValueQuote *-->"*" ProductRelationshipWithGrouping : productRelationship
+
+
+class MEFQuoteItem_Create {
+
+}
+MEFQuoteItem_Common <|-- MEFQuoteItem_Create
+
+
+
+class MEFQuoteItem_Common {
+
+    id*: string 
+    dealReference: string 
+    action*: MEFProductActionType 
+    agreementName: string 
+}
+
+MEFQuoteItem_Common *-->"*" Note : note
+MEFQuoteItem_Common *--> MEFProductRefOrValueQuote : product
+MEFQuoteItem_Common *--> ProductOfferingQualificationItemRef : productOfferingQualificationItem
+MEFQuoteItem_Common *-->"*" QuoteItemRelationship : quoteItemRelationship
+MEFQuoteItem_Common *-->"*" RelatedContactInformation : relatedContactInformation
+MEFQuoteItem_Common *--> Duration : requestedQuoteItemInstallationInterval
+MEFQuoteItem_Common *--> MEFItemTerm : requestedQuoteItemTerm
+
+
+class MEFQuoteStateChange {
+
+    changeDate*: date-time 
+    changeReason: string 
+    state*: MEFQuoteStateType 
+}
+
+
+
+class MEFSubUnit {
+
+    subUnitNumber*: string 
+    subUnitType*: string 
+}
+
+
+
+class Money {
+
+    unit: string 
+    value: float 
+}
+
+
+
+class Note {
+
+    id*: string 
+    author*: string 
+    date*: date-time 
+    source*: MEFBuyerSellerType 
+    text*: string 
+}
+
+
+
+class Price {
+
+    taxRate: float 
+}
+
+Price *--> Money : dutyFreeAmount
+Price *--> Money : taxIncludedAmount
+
+
+class ProductOfferingQualificationItemRef {
+
+    id*: string 
+    alternateProductProposalId: string 
+    productOfferingQualificationHref: string 
+    productOfferingQualificationId*: string 
+}
+
+
+
+class ProductOfferingRef {
+
+    id*: string 
+    href: string 
+}
+
+
+
+class ProductRelationshipWithGrouping {
+
+    id*: string 
+    groupingKey: string 
+    href: string 
+    relationshipType*: string 
+}
+
+
+
+class Quote {
+
+    id*: string 
+    href: string 
+    effectiveQuoteCompletionDate: date-time 
+    expectedQuoteCompletionDate: date-time 
+    quoteDate*: date-time 
+    quoteLevel: MEFSellerQuoteLevel 
+    state: MEFQuoteStateType 
+}
+Quote_Common <|-- Quote
+
+Quote *-->"1..*" QuoteItem : quoteItem
+Quote *-->"*" MEFQuoteStateChange : stateChange
+Quote *--> TimePeriod : validFor
+
+
+class QuoteItem {
+
+    subjectToFeasibilityCheck: boolean 
+    state: MEFQuoteItemStateType 
+}
+MEFQuoteItem_Common <|-- QuoteItem
+
+QuoteItem *--> Duration : quoteItemInstallationInterval
+QuoteItem *-->"*" QuotePrice : quoteItemPrice
+QuoteItem *-->"0..1" MEFItemTerm : quoteItemTerm
+QuoteItem *-->"*" TerminationError : terminationError
+
+
+class QuoteItemRelationship {
+
+    id*: string 
+    relationshipType*: string 
+}
+
+
+
+enum MEFBuyerQuoteLevel {
+
+    budgetary
+    firm
+}
+enum MEFChargePeriod {
+
+    hour
+    day
+    week
+    month
+    year
+}
+enum MEFPriceType {
+
+    recurring
+    nonRecurring
+    usageBased
+}
+enum MEFProductActionType {
+
+    add
+    modify
+    delete
+}
+enum MEFQuoteItemStateType {
+
+    acknowledged
+    answered
+    approved.orderable
+    approved.orderableAlternate
+    inProgress
+    inProgress.draft
+    rejected
+    abandoned
+    unableToProvide
+}
+enum MEFQuoteStateType {
+
+    accepted
+    acknowledged
+    answered
+    approved.orderable
+    approved.orderableAlternate
+    cancelled
+    unableToProvide
+    declined
+    inProgress
+    inProgress.draft
+    rejected
+    expired
+}
+enum MEFSellerQuoteLevel {
+
+    budgetary
+    firmSubjectToFeasibilityCheck
+    firm
+}
+enum MEFBuyerSellerType {
+
+    buyer
+    seller
+}
+class QuoteOperationData {
+
+    quoteId*: string 
+    reason: string 
+}
+
+
+
+class QuotePrice {
+
+    description: string 
+    name: string 
+    unitOfMeasure: string 
+    priceType: MEFPriceType 
+    recurringChargePeriod: MEFChargePeriod 
+}
+
+QuotePrice *--> Price : price
+
+
+class Quote_Create {
+
+}
+Quote_Common <|-- Quote_Create
+
+Quote_Create *-->"1..*" MEFQuoteItem_Create : quoteItem
+
+
+class Quote_Common {
+
+    description: string 
+    externalId: string 
+    instantSyncQuote*: boolean 
+    projectId: string 
+    requestedQuoteCompletionDate: date-time 
+    buyerRequestedQuoteLevel*: MEFBuyerQuoteLevel 
+}
+
+Quote_Common *-->"*" Note : note
+Quote_Common *-->"*" RelatedContactInformation : relatedContactInformation
+
+
+class Quote_Find {
+
+    id: string 
+    effectiveQuoteCompletionDate: date-time 
+    expectedQuoteCompletionDate: date-time 
+    externalId: string 
+    projectId: string 
+    quoteDate*: date-time 
+    requestedQuoteCompletionDate: date-time 
+    quoteLevel: MEFSellerQuoteLevel 
+    state*: MEFQuoteStateType 
+}
+
+
+class RelatedContactInformation {
+
+    emailAddress*: string 
+    name*: string 
+    number*: string 
+    numberExtension: string 
+    organization: string 
+    role*: string 
+}
+
+RelatedContactInformation *--> FieldedAddress : postalAddress
+
+
+class RelatedPlaceRefOrValue {
+
+    @schemaLocation: uri 
+    @type*: string 
+    role*: string 
+}
+
+
+
+class TerminationError {
+    code: string
+    propertyPath: string
+    value: string 
+}
+
+
+
+class TimePeriod {
+
+    endDateTime: date-time 
+    startDateTime: date-time 
+}
+
+
+
+enum TimeUnit {
+
+    calendarMonths
+    calendarDays
+    calendarHours
+    calendarMinutes
+    businessDays
+    businessHours
+    businessMinutes
+}
+@enduml

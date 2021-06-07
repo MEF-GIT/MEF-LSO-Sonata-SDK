@@ -1,0 +1,32 @@
+@startuml
+
+hide footbox
+
+participant Buyer
+participant Seller
+
+
+entity "Trouble Ticket" as TT
+activate TT
+
+autonumber
+
+note over TT: Trouble Tickect in `acknowledged`, `inProgress` or `pending`
+Buyer -> Seller : POST /troubleTicket/{{id}}/cancel request
+
+Seller -> Seller: check ticket id
+Seller -> Seller: check ticket state
+
+Seller -> TT: (causes state change)
+TT -> TT: state: assessingCancellation
+Seller --> Buyer: POST /troubleTicket/{{id}}/cancel response
+TT -> Buyer: POST troubleTicketStatusChangeEvent
+
+...
+
+TT -> TT: state: cancelled
+TT -> Buyer: POST troubleTicketStatusChangeEvent
+
+
+
+@enduml

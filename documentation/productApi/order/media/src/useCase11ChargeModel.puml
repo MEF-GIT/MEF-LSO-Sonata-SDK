@@ -1,0 +1,142 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class MEFChargeItem {
+
+    id*: string
+    chargeType: MEFPriceType
+    description: string
+    activityType: MEFChargeActivityType
+    recurringChargePeriod: MEFChargePeriod
+    blocking: boolean
+    acceptanceIndicator: MEFAcceptedRejectedType
+    state: MEFChargeItemStateType
+    unitOfMeasure: string
+}
+
+enum MEFChargeStateType {
+
+    awaitingResponse
+    completed
+    withdrawnBySeller
+}
+
+
+enum MEFChargeItemStateType {
+
+    awaitingResponse
+    acceptedByBuyer
+    declinedByBuyer
+    withdrawnBySeller
+}
+
+enum MEFAcceptedRejectedType {
+
+    accepted
+    rejected
+}
+
+
+class MEFCancelProductOrderRef {
+
+    id*: string
+    href: string
+}
+
+
+
+class MEFCharge {
+
+    id*: string
+    href: string
+    creationDate: date-time
+    responseDueDate*: date-time
+    state*: MEFChargeStateType
+}
+
+MEFCharge *--> MEFCancelProductOrderRef : cancelProductOrder
+MEFCharge *-->"1..*" MEFChargeItem : chargeItem
+MEFCharge *--> MEFModifyProductOrderItemCompletionDateRef : modifyProductOrderItemCompletionDate
+MEFCharge *-->"1" MEFProductOrderItemRef : productOrderItem
+
+
+enum MEFChargeActivityType {
+
+    new
+    change
+}
+
+MEFChargeItem *--> Price : price
+
+
+class MEFChargeItem_Update {
+
+    id*: string
+    acceptanceIndicator*: MEFAcceptedRejectedType
+}
+
+
+
+class MEFCharge_Update {
+
+}
+
+MEFCharge_Update *-->"1..*" MEFChargeItem_Update : chargeItem
+
+
+
+class MEFProductOrderItemRef {
+
+    productOrderItemId*: string
+    productOrderHref: string
+    productOrderId*: string
+}
+
+
+
+
+
+enum MEFChargePeriod {
+
+    hour
+    day
+    week
+    month
+    year
+}
+
+enum MEFPriceType {
+
+    recurring
+    nonRecurring
+    usageBased
+}
+
+
+class MEFModifyProductOrderItemCompletionDateRef {
+
+    id*: string
+    href: string
+}
+
+
+class Price {
+
+    taxRate: float
+}
+
+Price *--> Money : dutyFreeAmount
+Price *--> Money : taxIncludedAmount
+
+class Money {
+
+    unit: string
+    value: float
+}
+
+
+
+@enduml

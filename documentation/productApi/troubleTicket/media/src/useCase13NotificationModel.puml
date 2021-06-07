@@ -1,0 +1,36 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+
+
+class Event {
+
+    eventId*: string
+    eventTime*: date-time
+    eventType*: TroubleTicketEventType
+}
+
+Event *-->"1" TroubleTicketEvent : event
+
+
+class TroubleTicketEvent {
+
+    id*: string
+    href: string
+    buyerId: string
+    sellerId: string
+}
+
+
+
+enum TroubleTicketEventType {
+
+    troubleTicketAttributeValueChangeEvent
+    troubleTicketInformationRequiredEvent
+    troubleTicketResolvedEvent
+    troubleTicketStatusChangeEvent
+}
+@enduml

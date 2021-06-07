@@ -1,0 +1,120 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class CancelProductOrder {
+
+    id*: string
+    href: string
+    cancellationReason: string
+    cancellationReasonType: CancellationReasonType
+    orderVersion*: string
+    state*: MEFChargeableTaskStateType
+}
+
+CancelProductOrder *-->"*" Note : note
+CancelProductOrder *-->"1..*" MEFProductOrderRef : productOrder
+CancelProductOrder *-->"1..*" RelatedContactInformation : relatedContactInformation
+
+class CancelProductOrder_Create {
+
+    cancellationReasonType: CancellationReasonType
+    cancellationReason: string
+    orderVersion*: string
+}
+
+CancelProductOrder_Create *-->"*" Note : note
+CancelProductOrder_Create *-->"1..*" RelatedContactInformation : relatedContactInformation
+CancelProductOrder_Create *-->"1" MEFProductOrderRef : productOrder
+
+
+class FieldedAddress {
+
+    city*: string
+    country*: string
+    locality: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+    streetName*: string
+    streetNr: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetNrSuffix: string
+    streetSuffix: string
+    streetType: string
+}
+RelatedPlaceRefOrValue <|-- FieldedAddress
+
+FieldedAddress *--> GeographicSubAddress : geographicSubAddress
+
+
+
+class GeographicSubAddress {
+
+    buildingName: string
+    levelNumber: string
+    levelType: string
+    privateStreetName: string
+    privateStreetNumber: string
+}
+
+GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+
+
+
+class Note {
+
+    date*: date-time
+    author*: string
+    id*: string
+    source*: MEFBuyerSellerType
+    text*: string
+}
+
+
+class MEFProductOrderRef {
+
+    productOrderId: string
+    productOrderHref: string
+}
+
+
+class MEFSubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+
+
+
+class RelatedPlaceRefOrValue {
+
+    @schemaLocation: uri
+    @type*: string
+    role*: string
+}
+
+
+
+class RelatedContactInformation {
+
+    emailAddress*: string
+    name*: string
+    number*: string
+    numberExtension: string
+    organization: string
+    role*: string
+}
+
+RelatedContactInformation *--> FieldedAddress : postalAddress
+
+enum CancellationReasonType {
+
+    technical
+    commercial
+}
+
+@enduml

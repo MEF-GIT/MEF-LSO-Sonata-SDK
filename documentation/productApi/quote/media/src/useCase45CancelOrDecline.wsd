@@ -1,0 +1,29 @@
+@startuml
+
+hide footbox
+
+participant Buyer
+participant Seller
+
+Buyer -> Seller : POST {{baseUrl}}/hub with {{callbackUrl}} details
+Seller --> Buyer: 201 confirmation with {{id}}
+
+...
+
+Buyer -> Seller : POST {{baseUrl}}/cancelQuote
+return 200 confirmation
+
+...
+
+Seller -> Buyer: {{callbackUrl}}/listener/quoteStateChangeEvent
+Buyer --> Seller : 204 confirmation
+
+Buyer -> Seller :   GET {{baseUrl}}/quote/{{id}}
+return 200 Quote in current state
+
+...
+
+Buyer -> Seller : DELETE {{baseUrl}}/hub/{{id}} 
+Seller -->  Buyer : 204 confirmation
+
+@enduml

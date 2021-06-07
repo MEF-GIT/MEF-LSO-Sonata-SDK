@@ -1,0 +1,328 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+
+class Duration {
+
+    amount*: integer
+    units*: TimeUnit
+}
+
+
+
+
+class FieldedAddress {
+
+    city*: string
+    country*: string
+    locality: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+    streetName*: string
+    streetNr: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetNrSuffix: string
+    streetSuffix: string
+    streetType: string
+}
+RelatedPlaceRefOrValue <|-- FieldedAddress
+
+FieldedAddress *--> GeographicSubAddress : geographicSubAddress
+
+
+class FormattedAddress {
+
+    addrLine1*: string
+    addrLine2: string
+    city*: string
+    country*: string
+    locality: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+}
+RelatedPlaceRefOrValue <|-- FormattedAddress
+
+
+
+class GeographicAddressLabel {
+
+    externalReferenceId*: string
+    externalReferenceType*: string
+}
+RelatedPlaceRefOrValue <|-- GeographicAddressLabel
+
+
+
+class GeographicAddressRef {
+
+    href: string
+    id*: string
+}
+RelatedPlaceRefOrValue <|-- GeographicAddressRef
+
+
+
+class GeographicSiteRef {
+
+    href: string
+    id*: string
+}
+RelatedPlaceRefOrValue <|-- GeographicSiteRef
+
+
+
+class GeographicSubAddress {
+
+    buildingName: string
+    levelNumber: string
+    levelType: string
+    privateStreetName: string
+    privateStreetNumber: string
+}
+
+GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+
+
+class MEFProductOrderItemStateChange {
+
+    changeDate: date-time
+    changeReason: string
+    state: MEFProductOrderItemStateType
+}
+
+
+class MEFBillingAccount {
+
+    id*: string
+    agreementName: string
+}
+
+MEFBillingAccount *--> RelatedContactInformation : billingContact
+
+
+class MEFItemTerm {
+
+    description: string
+    endOfTermAction: MEFEndOfTermAction
+    name: string
+}
+
+MEFItemTerm *--> Duration : duration
+MEFItemTerm *--> Duration : rollInterval
+
+
+class MEFOrderItemCoordinatedAction {
+
+    itemId*: string
+    coordinationDependency*: MEFOrderItemCoordinationDependencyType
+}
+
+MEFOrderItemCoordinatedAction *-->"1" Duration : coordinatedActionDelay
+
+
+class MEFProductConfiguration {
+
+    @type*: string
+}
+
+class MEFProductOrderStateChange {
+
+    changeDate: date-time
+    changeReason: string
+    state: MEFProductOrderStateType
+}
+
+
+
+class MEFQuoteItemRef {
+
+    id*: string
+    quoteHref: string
+    quoteId*: string
+}
+
+
+
+class Note {
+
+    date*: date-time
+    author*: string
+    id*: string
+    source*: MEFBuyerSellerType
+    text*: string
+}
+
+
+
+class OrderItemRelationship {
+
+    id*: string
+    relationshipType*: string
+}
+
+
+class ProductOfferingRef {
+
+    href: string
+    id*: string
+}
+
+
+
+class ProductOrder {
+
+    id*: string
+    href: string
+    cancellationDate: date-time
+    cancellationReason: string
+    completionDate: date-time
+    expectedCompletionDate: date-time
+    orderVersion: string
+    orderDate*: date-time
+    state*: MEFProductOrderStateType
+}
+ProductOrder_Common <|-- ProductOrder
+
+ProductOrder *-->"*" MEFChargeRef : charge
+ProductOrder *-->"1..*" ProductOrderItem : productOrderItem
+ProductOrder *-->"*" MEFProductOrderStateChange : stateChange
+
+
+class TerminationError {
+
+    code: string
+    propertyPath: string
+    value: string
+}
+
+
+class MEFGeographicPoint {
+
+    spatialRef*: string
+    x*: string
+    y*: string
+    z: string
+}
+RelatedPlaceRefOrValue <|-- MEFGeographicPoint
+
+class ProductOrderItem {
+
+    completionDate: date-time
+    expectedCompletionDate: date-time
+    expediteAcceptedIndicator: boolean
+    sellerItemIdentifier: string
+    state: MEFProductOrderItemStateType
+}
+MEFProductOrderItem_Common <|-- ProductOrderItem
+
+ProductOrderItem *-->"*" MEFChargeRef : charge
+ProductOrderItem *-->"*" MEFItemTerm : itemTerm
+ProductOrderItem *-->"*" MEFProductOrderItemStateChange : stateChange
+ProductOrderItem *-->"*" TerminationError : terminationError
+
+
+class MEFProductOrderItem_Common {
+
+    id*: string
+    endCustomerName: string
+    expediteIndicator: boolean
+    relatedBuyerPON: string
+    requestedCompletionDate: date-time
+    tspRestorationPriority: string
+    action*: MEFProductActionType
+}
+
+MEFProductOrderItem_Common *--> MEFBillingAccount : billingAccount
+MEFProductOrderItem_Common *-->"*" MEFOrderItemCoordinatedAction : coordinatedAction
+MEFProductOrderItem_Common *-->"*" Note : note
+MEFProductOrderItem_Common *--> MEFProductRefOrValueOrder : product
+MEFProductOrderItem_Common *--> ProductOfferingQualificationItemRef : productOfferingQualificationItem
+MEFProductOrderItem_Common *-->"*" OrderItemRelationship : productOrderItemRelationship
+MEFProductOrderItem_Common *--> MEFQuoteItemRef : quoteItem
+MEFProductOrderItem_Common *-->"*" RelatedContactInformation : relatedContactInformation
+MEFProductOrderItem_Common *--> MEFItemTerm : requestedItemTerm
+
+
+
+class MEFProductRefOrValueOrder {
+
+    id: string
+    href: string
+}
+
+MEFProductRefOrValueOrder *-->"*" RelatedPlaceRefOrValue : place
+MEFProductRefOrValueOrder *--> MEFProductConfiguration : productConfiguration
+MEFProductRefOrValueOrder *--> ProductOfferingRef : productOffering
+MEFProductRefOrValueOrder *-->"*" ProductRelationship : productRelationship
+
+
+class MEFSubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+
+
+
+class ProductOrder_Common {
+
+    description: string
+    externalId: string
+    projectId: string
+    requestedCompletionDate: date-time
+}
+
+ProductOrder_Common *-->"*" Note : note
+ProductOrder_Common *-->"1..*" RelatedContactInformation : relatedContactInformation
+
+
+class ProductOrder_Update {
+
+    description: string
+    externalId: string
+    orderVersion*: string
+    projectId: string
+}
+
+ProductOrder_Update *-->"*" Note : note
+ProductOrder_Update *-->"*" RelatedContactInformation : relatedContactInformation
+ProductOrder_Update *-->"*" MEFProductOrderItem_Update : productOrderItem
+
+
+class ProductRelationship {
+
+    id*: string
+    href: string
+    relationshipType*: string
+}
+
+
+
+class RelatedPlaceRefOrValue {
+
+    @schemaLocation: uri
+    @type*: string
+    role*: string
+}
+
+
+
+class RelatedContactInformation {
+
+    emailAddress*: string
+    name*: string
+    number*: string
+    numberExtension: string
+    organization: string
+    role*: string
+}
+
+RelatedContactInformation *--> FieldedAddress : postalAddress
+
+@enduml

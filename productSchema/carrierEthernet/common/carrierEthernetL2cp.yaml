@@ -1,0 +1,110 @@
+---
+"$schema": http://json-schema.org/draft-07/schema#
+title: 
+    MEF LSO Sonata - Carrier Ethernet L2CP (Common) Product Specification
+    # MEF Forum - Date: 20210531  Edit-level: 216
+    # File: carrierEthernet/common/carrierEthernetL2cp.yaml
+    #
+    # ---------------------
+    # Disclaimer
+    # 
+    # © MEF Forum 2021. All Rights Reserved.
+    # 
+    # The information in this publication is freely available for reproduction
+    # and use by any recipient and is believed to be accurate as of its
+    # publication date. Such information is subject to change without notice
+    # and MEF Forum (MEF) is not responsible for any errors. MEF does not
+    # assume responsibility to update or correct any information in this
+    # publication. No representation or warranty, expressed or implied, is
+    # made by MEF concerning the completeness, accuracy, or applicability of
+    # any information contained herein and no liability of any kind shall be
+    # assumed by MEF as a result of reliance upon such information.
+    # 
+    # The information contained herein is intended to be used without
+    # modification by the recipient or user of this document. MEF is not
+    # responsible or liable for any modifications to this document made by any
+    # other party.
+    # 
+    # The receipt or any use of this document or its contents
+    # does not in any way create, by implication or otherwise:
+    # 
+    # a) any express or implied license or right to or under any patent,
+    # copyright, trademark or trade secret rights held or claimed by any MEF
+    # member which are or may be associated with the ideas, techniques,
+    # concepts or expressions contained herein; nor
+    # 
+    # b) any warranty or representation that any MEF members will announce
+    # any product(s) and/or service(s) related thereto, or if such
+    # announcements are made, that such announced product(s) and/or service(s)
+    # embody any or all of the ideas, technologies, or concepts contained
+    # herein; nor
+    # 
+    # c) any form of relationship between any MEF member and the recipient
+    # or user of this document.
+    # 
+    # Implementation or use of specific MEF standards, specifications, or
+    # recommendations will be voluntary, and no Member shall be obliged to
+    # implement them by virtue of participation in MEF Forum. MEF is a
+    # non-profit international organization to enable the development and
+    # worldwide adoption of agile, assured and orchestrated network services.
+    # MEF does not, expressly or otherwise, endorse or promote any specific
+    # products or services.
+    # ---------------------
+    #
+definitions:
+    L2cpPeering:
+        type: object
+        description:  >-
+            This specifies the L2CP Protocol Identifier and the Destination
+            Address in use by the protocol entity. Reference MEF 45.1 Section
+            8.2 L2CP Peering Service Attribute
+        properties:
+            protocolID:
+                description:  >-
+                    This specifies the Protocol Type for the L2CP. It consists
+                    of a field specification (ETHERTYPE or LLC), the EtherType or LLC
+                    value, and an optional subtype.
+                type: object
+                $ref: "#/definitions/L2cpProtocol"
+            destinationAddress:
+                description:  >-
+                    The Destination MAC Address of the L2CP to be peered in the
+                    standard format of 6 hex bytes separated either by colon (:) or
+                    hyphen (-).
+                type: string
+                pattern: "[0-9a-fA-F][0-9a-fA-F]([-][0-9a-fA-F][0-9a-fA-F]){5}"
+            linkIdList:
+                description:  >-
+                    Identifiers for the links on which the specified protocol will
+                    be peered. If no links are specified the protocol is peered on
+                    all links.
+                type: array 
+                minItems: 0
+                uniqueItems: FALSE
+                items:
+                    type: string
+                    minLength: 1
+                    maxLength: 45
+                    pattern: "[\x20-\x7F]+"
+    L2cpProtocol:
+        type: object
+        description:  >-
+            Defines a L2CP protocol LLC address type or EtherType with
+            possible subtype. Reference MEF 45.1 Section 8.2 L2CP Peering Service
+            Attribute.
+        properties:
+            l2cpProtocolType:
+                description: The protocol field to inspect to identify the L2CP.
+                type: string
+                enum:
+                    - "ETHERTYPE"
+                    - "LLC"
+            llcAddressOrEtherType:
+                description: The EtherType value or LLC value
+                type: integer
+                minimum: 0
+            subType:
+                description: The EtherType can be modified by an optional sub-type.
+                type: integer
+                minimum: 0
+

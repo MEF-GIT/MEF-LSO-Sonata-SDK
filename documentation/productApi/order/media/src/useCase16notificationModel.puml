@@ -1,0 +1,165 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class CancelProductOrderEvent {
+
+    eventType*: CancelProductOrderEventType
+}
+Event <|-- CancelProductOrderEvent
+
+CancelProductOrderEvent *-->"1" CancelProductOrderEventPayload : event
+
+
+class CancelProductOrderEventPayload {
+
+    id*: string
+    href: string
+    buyerId: string
+    sellerId: string
+}
+
+
+
+enum CancelProductOrderEventType {
+
+    cancelProductOrderStateChangeEvent
+}
+class ChargeEvent {
+
+    eventType*: ChargeEventType
+}
+Event <|-- ChargeEvent
+
+ChargeEvent *-->"1" ChargeEventPayload : event
+
+
+class ChargeEventPayload {
+
+    id*: string
+    href: string
+    buyerId: string
+    sellerId: string
+}
+
+
+
+class Error400 {
+
+    code*: string
+}
+Error <|-- Error400
+
+
+
+class Error401 {
+
+    code*: string
+}
+Error <|-- Error401
+
+
+
+class Error403 {
+
+    code*: string
+}
+Error <|-- Error403
+
+
+
+enum ChargeEventType {
+
+    chargeCreateEvent
+    chargeStateChangeEvent
+    chargeTimeoutEvent
+}
+class Error408 {
+
+    code*: string
+}
+Error <|-- Error408
+
+
+
+class Error500 {
+
+    code*: string
+}
+Error <|-- Error500
+
+
+
+class Error {
+
+    message: string
+    reason*: string
+    referenceError: uri
+}
+
+
+
+class ModifyProductOrderItemCompletionDateEvent {
+
+    eventType*: ModifyProductOrderItemCompletionDateEventType
+}
+Event <|-- ModifyProductOrderItemCompletionDateEvent
+
+ModifyProductOrderItemCompletionDateEvent *-->"1" ModifyProductOrderItemCompletionDateEventPayload : event
+
+
+class ProductOrderEvent {
+
+    eventType*: ProductOrderEventType
+}
+Event <|-- ProductOrderEvent
+
+ProductOrderEvent *-->"1" ProductOrderEventPayload : event
+
+
+class Event {
+
+    eventId*: string
+    eventTime*: date-time
+}
+
+
+
+class ModifyProductOrderItemCompletionDateEventPayload {
+
+    id*: string
+    href: string
+    buyerId: string
+    sellerId: string
+}
+
+
+
+class ProductOrderEventPayload {
+
+    id*: string
+    href: string
+    orderItemId: string
+    milestoneName: string
+    buyerId: string
+    sellerId: string
+}
+
+
+
+enum ModifyProductOrderItemCompletionDateEventType {
+
+    modifyProductOrderItemCompletionDateStateChangeEvent
+}
+enum ProductOrderEventType {
+
+    productOrderStateChangeEvent
+    productOrderItemStateChangeEvent
+    productOrderExpectedCompletionDateSet
+    productOrderItemExpectedCompletionDateSet
+    productSpecificProductOrderMilestoneEvent
+    productSpecificProductOrderItemMilestoneEvent
+}
+@enduml

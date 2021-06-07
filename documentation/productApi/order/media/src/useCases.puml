@@ -1,0 +1,33 @@
+@startuml
+
+left to right direction
+actor Seller
+actor Buyer
+
+rectangle {
+Buyer --> (1: Create Product Order)
+Buyer --> (2: Update Product Order)
+(1: Create Product Order) --> (1c: Product Order Item to Disconnect Existing Product)
+(1: Create Product Order) --> (1b: Product Order Item to Change Existing Product)
+(1: Create Product Order) --> (1a: Product Order Item to Install Product)
+
+Buyer --> (3: Retrieve List of Product Orders)
+Buyer --> (4: Retrieve Product Order by Product Order Identifier)
+Buyer --> (5: Modify Product Order Item Completion Date)
+Buyer --> (6: Retrieve Modify Product Order Item Completion Date List)
+Buyer --> (7: Retrieve Modify Product Order Item Completion Date by Identifier)
+Buyer --> (8: Cancel In-Flight Product Order)
+Buyer --> (9: Retrieve List of Cancel Requests)
+Buyer --> (10: Retrieve Cancel Product Order by Cancel Product Order Identifier)
+Buyer --> (11: Initiate Charge)
+Buyer --> (12: Respond to Charge)
+Buyer --> (13: Retrieve List of Charges)
+Buyer --> (14: Retrieve Charge by Identifier)
+Buyer --> (15: Register for Notifications)
+(16. Send Notifications) <-- Seller
+
+Seller -[hidden]up-> (1c: Product Order Item to Disconnect Existing Product)
+
+}
+
+@enduml

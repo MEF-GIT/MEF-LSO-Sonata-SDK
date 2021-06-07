@@ -1,0 +1,37 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+    ClassBorderColor<<ProductSpecification>> FireBrick
+}
+set namespaceSeparator none
+
+class MEFProduct{
+
+    <<... attributes are skipped ...>>
+   
+}
+
+
+class MEFProductConfiguration {
+    @type*: string <<discriminator>>
+}
+
+
+MEFProduct *-->"0..1" MEFProductConfiguration : productConfiguration
+
+class urn:mef:lso:spec:sonata:OperatorUNI:1.0.0:poq <<ProductSpecification>> {
+
+    <<... attributes are skipped ...>>
+}
+MEFProductConfiguration <|-- "urn:mef:lso:spec:sonata:OperatorUNI:1.0.0:poq"
+
+
+
+class urn:mef:lso:spec:sonata:AccessElineOvc:1.0.0:poq <<ProductSpecification>> {
+
+    <<... attributes are skipped ...>>
+}
+MEFProductConfiguration <|-- "urn:mef:lso:spec:sonata:AccessElineOvc:1.0.0:poq"
+
+@enduml

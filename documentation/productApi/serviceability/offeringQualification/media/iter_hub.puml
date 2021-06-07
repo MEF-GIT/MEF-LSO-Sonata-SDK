@@ -1,0 +1,46 @@
+@startuml
+hide footbox
+
+skinparam {
+    ParticipantBackgroundColor White
+    ParticipantBorderColor Black
+}
+
+participant Buyer
+participant Seller
+
+Buyer -> Seller : POST {{baseUrl}}/hub with {{calback}} details
+Seller --> Buyer: 201 confirmation with an {{id}}
+
+...
+
+Buyer -> Seller : POST {{baseUrl}}/productOfferingQualification  \ninstantSyncQualification=false
+
+alt succesful inquiry
+    Seller --> Buyer : 201 POQ with {{id}} in `acknowledged` state
+  
+  ...
+  
+  Seller -> Buyer:  {{callbackUrl}}/listener/poqCreateEvent
+  Buyer --> Seller : 204 confirmation
+
+  ...
+
+  group repeatedUntil  [POQ reaches a terminal state]
+      Seller -> Buyer: {{callbackUrl}}/listener/poqStateChangeEvent
+      Buyer --> Seller : 204 confirmation
+      Buyer -> Seller : GET {{baseUrl}}/productOfferingQualification/{{id}}
+      return 200 POQ in current state
+  end
+
+else validation or internal problem
+  Seller --> Buyer : 4xx or 5xx response
+end 
+
+
+...
+
+Buyer -> Seller : DELETE {{baseUrl}}/hub/{{id}} 
+Seller -->  Buyer : 204 confirmation
+
+@enduml

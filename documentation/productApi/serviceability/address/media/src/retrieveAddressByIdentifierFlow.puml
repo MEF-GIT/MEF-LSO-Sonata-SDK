@@ -1,0 +1,17 @@
+@startuml
+
+hide footbox
+
+participant Buyer
+participant Seller
+
+Buyer -> Seller : GET {{baseUrl}}/geographicAddress/{id}
+
+Seller -> Seller : validate Request
+
+alt success
+    Buyer <-- Seller : 200 GeographicAddress
+else validation or internal problem
+    Buyer <-- Seller: 4xx/5xx : error response
+end
+@enduml

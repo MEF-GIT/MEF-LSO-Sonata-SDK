@@ -1,0 +1,318 @@
+openapi: 3.0.1
+info:
+  description: |
+    **This file forms part of MEF 115**
+
+     **This specification represents MEF work in progress and is subject to
+     change.** 
+
+     This is a Quote notification API. This API must be deployed on
+     client/subscriber (Buyer) side to receive notifications.
+
+     Quote API Notification has been designed by MEF basing on TMF 648 v4.0.0
+  title: Quote Notification
+  version: 7.0.0-RC
+  x-logo:
+    url: /redoc/logo.png
+    backgroundColor: '#FFFFFF'
+servers:
+  - url: 'https://serverRoot/mefApi/sonata/quoteNotification/v7/'
+tags:
+  - description: |
+      The Buyer's endpoint to send particular event types notifications to.
+    name: Notification listeners
+paths:
+  /listener/quoteStateChangeEvent:
+    post:
+      deprecated: false
+      description: |
+        This endpoint is used to receive notifications on Quote state change
+      operationId: listenToQuoteStateChangeEvent
+      requestBody:
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/Event'
+        required: true
+      responses:
+        '204':
+          description: 'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
+        '400':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request
+        '401':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: Unauthorized
+        '403':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+          description: Forbidden
+        '500':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal Server Error
+      summary: Quote State Change Notification endpoint
+      tags:
+        - Notification listeners
+      x-codegen-request-body-name: data
+  /listener/quoteItemStateChangeEvent:
+    post:
+      deprecated: false
+      description: >
+        This endpoint is used to receive notifications on Quote Item state
+        change
+      operationId: listenToQuoteItemStateChangeEvent
+      requestBody:
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/Event'
+        required: true
+      responses:
+        '204':
+          description: 'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
+        '400':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request
+        '401':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: Unauthorized
+        '403':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+          description: Forbidden
+        '500':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal Server Error
+      summary: Quote Item State Change Notification endpoint
+      tags:
+        - Notification listeners
+      x-codegen-request-body-name: data
+components:
+  schemas:
+    Error400Code:
+      description: >-
+        One of the following error codes:
+
+        - missingQueryParameter: The URI is missing a required query-string
+        parameter
+
+        - missingQueryValue: The URI is missing a required query-string
+        parameter value
+
+        - invalidQuery: The query section of the URI is invalid.
+
+        - invalidBody: The request has an invalid body
+      enum:
+        - missingQueryParameter
+        - missingQueryValue
+        - invalidQuery
+        - invalidBody
+      type: string
+    Error:
+      description: >
+        Standard Class used to describe API response error
+
+        Not intended to be used directly. The `code` in the HTTP header is used
+        as a discriminator for the type of error returned in runtime.
+      properties:
+        reason:
+          description: >-
+            Text that explains the reason for the error. This can be shown to a
+            client user.
+          maxLength: 255
+          type: string
+        message:
+          description: >-
+            Text that provides more details and corrective actions related to
+            the error. This can be shown to a client user.
+          type: string
+        referenceError:
+          description: URL pointing to documentation describing the error
+          format: uri
+          type: string
+      required:
+        - reason
+      type: object
+    Error400:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              description: >-
+                One of the following error codes:
+
+                - missingQueryParameter: The URI is missing a required
+                query-string parameter
+
+                - missingQueryValue: The URI is missing a required query-string
+                parameter value
+
+                - invalidQuery: The query section of the URI is invalid.
+
+                - invalidBody: The request has an invalid body
+              $ref: '#/components/schemas/Error400Code'
+          required:
+            - code
+          type: object
+      description: 'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
+    Error401:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              description: >-
+                One of the following error codes:
+
+                - missingCredentials: No credentials provided.
+
+                - invalidCredentials: Provided credentials are invalid or
+                expired
+              $ref: '#/components/schemas/Error401Code'
+          required:
+            - code
+          type: object
+      description: 'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
+    Error401Code:
+      description: |-
+        One of the following error codes:
+        - missingCredentials: No credentials provided.
+        - invalidCredentials: Provided credentials are invalid or expired
+      enum:
+        - missingCredentials
+        - invalidCredentials
+      type: string
+    Error403:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              description: |-
+                This code indicates that the server understood
+                the request but refuses to authorize it because
+                of one of the following error codes:
+                - accessDenied: Access denied
+                - forbiddenRequester: Forbidden requester
+                - tooManyUsers: Too many users
+              $ref: '#/components/schemas/Error403Code'
+          required:
+            - code
+          type: object
+      description: 'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
+    Error403Code:
+      description: |-
+        This code indicates that the server understood
+        the request but refuses to authorize it because
+        of one of the following error codes:
+        - accessDenied: Access denied
+        - forbiddenRequester: Forbidden requester
+        - tooManyUsers: Too many users
+      enum:
+        - accessDenied
+        - forbiddenRequester
+        - tooManyUsers
+      type: string
+    Error500:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              description: >-
+                One of the following error codes:
+
+                - internalError: Internal server error - the server encountered
+                an unexpected condition that prevented it from fulfilling the
+                request.
+              enum:
+                - internalError
+              type: string
+          required:
+            - code
+          type: object
+      description: >-
+        Internal Server Error.
+        (https://tools.ietf.org/html/rfc7231#section-6.6.1)
+    Event:
+      description: >-
+        Event class is used to describe information structure used for
+        notification.
+      properties:
+        eventId:
+          description: Id of the event
+          type: string
+        eventTime:
+          description: Datetime when the event occurred
+          format: date-time
+          type: string
+        eventType:
+          $ref: '#/components/schemas/QuoteEventType'
+        event:
+          $ref: '#/components/schemas/QuoteEvent'
+      required:
+        - event
+        - eventId
+        - eventTime
+        - eventType
+      type: object
+    QuoteEvent:
+      description: >-
+        The identifier of the Quote and/or Quote Item being subject of this
+        event.
+      properties:
+        sellerId:
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when the requester
+            entity represents more than one Seller.
+
+            Reference: MEF 79 (Sn 8.8)
+          type: string
+        id:
+          description: ID of the Quote attributed by quoting system
+          type: string
+        href:
+          description: Hyperlink to access the quote
+          type: string
+        quoteItemId:
+          description: >-
+            ID of the Quote Item (within the Quote) which state change triggered
+            the event
+          type: string
+        buyerId:
+          description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the responding
+            represents more than one Buyer.
+
+            Reference: MEF 79 (Sn 8.8)
+          type: string
+      required:
+        - id
+      type: object
+    QuoteEventType:
+      description: Type of the Event
+      enum:
+        - quoteStateChangeEvent
+        - quoteItemStateChangeEvent
+      type: string

@@ -1,0 +1,3791 @@
+openapi: 3.0.1
+info:
+  description: >
+    **This file forms part of MEF 87**
+     
+    **This specification represents MEF work in progress and is subject to
+    change.** 
+
+    The Product Offering Qualification (POQ) Management API allows a Buyer to
+    check whether the Seller can deliver a product or set of products from among
+    their product offerings at the geographic address or a service site
+    specified by the Buyer; or modify a previously purchased product.
+
+    The following operations are managed:
+
+    - Register for POQ Notifications
+
+    - Create Product Offering Qualification
+
+    - Retrieve POQ List
+
+    - Retrieve POQ by Identifier
+
+    (note: POQ Notification are described in a separate swagger)
+
+    The ProductOfferingQualification API used TMF 679 (v4.0) as a template.
+  title: Product Offering Qualification Management
+  version: 7.0.0-RC
+servers:
+  - url: "https://serverRoot/mefApi/sonata/productOfferingQualification/v7/"
+tags:
+  - description:
+      Operations for managing the Product Offering Qualification request.
+    name: productOfferingQualification
+  - description:
+      Operations for managing the subscription for events notification.
+    name: events subscription
+paths:
+  /hub:
+    post:
+      description: >-
+        A request initiated by the Buyer to instruct the Seller to send
+        notifications of POQ create, POQ and/or POQ Item state changes if the
+        Buyer has registered for these notifications. The state change
+        notifications are sent only in the Deferred response scenario as in the
+        Immediate response scenario once the response to POQ Request is provided
+        (create notification), there  will be no further state changes.
+        Reference: MEF 79 (section 8.4.2).
+      operationId: registerListener
+      parameters:
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+
+            Reference: MEF 79 (Sn 8.8)
+          explode: true
+          in: query
+          name: buyerId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when the responding
+            entity  represents more than one Seller.
+
+            Reference: MEF 79 (Sn 8.8)
+          explode: true
+          in: query
+          name: sellerId
+          required: false
+          schema:
+            type: string
+          style: form
+      requestBody:
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: "#/components/schemas/EventSubscriptionInput"
+        description: >-
+          Data containing the callback endpoint to which to deliver the
+          information.
+        required: true
+      responses:
+        "201":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/EventSubscription"
+          description:
+            "Created. (https://tools.ietf.org/html/rfc7231#section-6.3.2)"
+        "400":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error400"
+          description: Bad Request
+        "401":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error401"
+          description: Unauthorized
+        "403":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error403"
+          description: Forbidden
+        "404":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error404"
+          description: Not Found
+        "500":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error500"
+          description: Internal Server Error
+        "501":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error501"
+          description: >-
+            Method not implemented. Used in case Seller is not supporting
+            Notification mechanism
+      summary:
+        Allows a Buyer to register to receive POQ state change notifications
+      tags:
+        - events subscription
+      x-codegen-request-body-name: data
+  "/hub/{id}":
+    delete:
+      description: |
+        This operation is used to delete an event subscription. 
+        Reference: MEF 79 (Sn 8.3)
+      operationId: unregisterListener
+      parameters:
+        - description: Identifier of the EventSubscription
+          explode: false
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          style: simple
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+
+            Reference: MEF 79 (Sn 8.8)
+          explode: true
+          in: query
+          name: buyerId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when the responding
+            entity represents more than one Seller.
+
+            Reference: MEF 79 (Sn 8.8)
+          explode: true
+          in: query
+          name: sellerId
+          required: false
+          schema:
+            type: string
+          style: form
+      responses:
+        "204":
+          description:
+            "No Content. (https://tools.ietf.org/html/rfc7231#section-6.3.5)"
+        "400":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error400"
+          description: Bad Request
+        "401":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error401"
+          description: Unauthorized
+        "403":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error403"
+          description: Forbidden
+        "404":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error404"
+          description: Not Found
+        "500":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error500"
+          description: Internal Server Error
+        "501":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error501"
+          description: >-
+            Method not implemented. Used in case Seller is not supporting
+            Notification mechanism
+      summary: Unregister a listener
+      tags:
+        - events subscription
+  /productOfferingQualification:
+    get:
+      description: >-
+        The Buyer requests a list of POQs from the Seller based on a set of POQ
+        filter criteria (as described in MEF79).  For each POQ returned, the
+        Seller also provides a POQ Identifier that uniquely identifies this POQ
+        within the Seller's system. The order of the elements returned to the
+        Buyer is defined by the Seller (e.g. natural order) and does not change
+        between the pages. If criteria for attribute X are provided, all
+        returned items must match it.
+      operationId: listProductOfferingQualification
+      parameters:
+        - description: >-
+            State of the POQ to be retrieved. See `MEFPOQTaskStateType`
+            definition for details
+          explode: true
+          in: query
+          name: state
+          required: false
+          schema:
+            enum:
+              - acknowledged
+              - terminatedWithError
+              - inProgress
+              - done.unableToProvide
+              - done.ready
+            type: string
+          style: form
+        - description: >-
+            ID given by the consumer and only understandable by him (to
+            facilitate his searches afterward)
+          explode: true
+          in: query
+          name: externalId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: Identifier of Buyer project associated with POQ
+          explode: true
+          in: query
+          name: projectId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: POQ expected response date is on or after this date
+          explode: true
+          in: query
+          name: requestedPOQCompletionDate.gt
+          required: false
+          schema:
+            format: date-time
+            type: string
+          style: form
+        - description: POQ expected response date is on or before this date
+          explode: true
+          in: query
+          name: requestedPOQCompletionDate.lt
+          required: false
+          schema:
+            format: date-time
+            type: string
+          style: form
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Buyer
+          explode: true
+          in: query
+          name: buyerId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller
+          explode: true
+          in: query
+          name: sellerId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: >-
+            Requested index for the start of POQ to be provided in response
+            requested by the client. Note that the index starts with "0".
+          explode: true
+          in: query
+          name: offset
+          required: false
+          schema:
+            format: int32
+            type: integer
+          style: form
+        - description: >-
+            Requested number of POQ to be provided in response requested by
+            client
+          explode: true
+          in: query
+          name: limit
+          required: false
+          schema:
+            format: int32
+            type: integer
+          style: form
+      responses:
+        "200":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ProductOfferingQualification_Find"
+                type: array
+          description: "OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)"
+          headers:
+            X-Pagination-Throttled:
+              description: >
+                Used to indicate that result page was throttled to maximum
+                possible size  and there are additional results that can be
+                fetched
+              explode: false
+              schema:
+                type: boolean
+              style: simple
+            X-Total-Count:
+              description: >
+                The total number of matching POQ. E.g. if there are 50 matching
+                items in total, but the request has offset=10 and limit=10, then
+                the X-Total-Count is 50.
+              explode: false
+              schema:
+                type: integer
+              style: simple
+            X-Result-Count:
+              description: The number of POQ included in the response
+              explode: false
+              schema:
+                type: integer
+              style: simple
+        "400":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error400"
+          description: Bad Request
+        "401":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error401"
+          description: Unauthorized
+        "403":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error403"
+          description: Forbidden
+        "500":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error500"
+          description: Internal Server Error
+      summary: >-
+        Retrieve a list of ProductOfferingQualifications based on a set of
+        criteria
+      tags:
+        - productOfferingQualification
+    post:
+      description: >-
+        A request initiated by the Buyer to determine whether the Seller is able
+        to deliver a product or set of products from among their product
+        offerings, at the Buyer's location(s); or modify a previously purchased
+        product. The Seller also provides estimated time intervals to complete
+        these deliveries. Reference: MEF 79 (Sn 8.4).
+      operationId: createProductOfferingQualification
+      parameters:
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+
+            Reference: MEF 79 (Sn 8.8)
+          explode: true
+          in: query
+          name: buyerId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when the responding
+            entity represents more than one Seller.
+
+            Reference: MEF 79 (Sn 8.8)
+          explode: true
+          in: query
+          name: sellerId
+          required: false
+          schema:
+            type: string
+          style: form
+      requestBody:
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: "#/components/schemas/ProductOfferingQualification_Create"
+        description: >-
+          POQ content provided by the Buyer. See definition's description for
+          details.
+        required: true
+      responses:
+        "201":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/ProductOfferingQualification"
+          description:
+            "Created. (https://tools.ietf.org/html/rfc7231#section-6.3.2)"
+        "400":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error400"
+          description: Bad Request
+        "401":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error401"
+          description: Unauthorized
+        "403":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error403"
+          description: Forbidden
+        "422":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Error422"
+                type: array
+          description: Unprocessable entity due to business validation problems
+        "500":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error500"
+          description: Internal Server Error
+      summary: Send a request to perform product offering qualification
+      tags:
+        - productOfferingQualification
+      x-codegen-request-body-name: productOfferingQualification
+  "/productOfferingQualification/{id}":
+    get:
+      description: >-
+        The Buyer requests the full details of a single Product Offering
+        Qualification based on a POQ identifier returned from  the POQ create
+        (`createProductOfferingQualification`) or POQ find
+        (`listProductOfferingQualification`)
+      operationId: retrieveProductOfferingQualification
+      parameters:
+        - description:
+            POQ identifier (matches `ProductOfferingQualification.id`)
+          explode: false
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          style: simple
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+
+            Reference: MEF 79 (Sn 8.8)
+          explode: true
+          in: query
+          name: buyerId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when the responding
+            entity represents more than one Seller.
+
+            Reference: MEF 79 (Sn 8.8)
+          explode: true
+          in: query
+          name: sellerId
+          required: false
+          schema:
+            type: string
+          style: form
+      responses:
+        "200":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/ProductOfferingQualification"
+          description: "OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)"
+        "400":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error400"
+          description: Bad Request
+        "401":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error401"
+          description: Unauthorized
+        "403":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error403"
+          description: Forbidden
+        "404":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error404"
+          description: Not Found
+        "500":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Error500"
+          description: Internal Server Error
+      summary: Retrieves a ProductOfferingQualification by ID
+      tags:
+        - productOfferingQualification
+components:
+  schemas:
+    AlternateProductOfferingProposal:
+      description: >
+        If in the request the Buyer has requested to have alternate product
+        proposals, then this class represents a single proposal. All properties
+        are assigned by the Seller.
+
+        Reference: MEF 79 (Sn 8.4.3.2)
+      properties:
+        installationInterval:
+          $ref: "#/components/schemas/Duration"
+        id:
+          description: >
+            Identifier of the Product Offering Qualification alternate proposal.
+            Assigned by the Seller.
+          type: string
+        alternateProduct:
+          $ref: "#/components/schemas/MEFAlternateProduct"
+      required:
+        - alternateProduct
+        - id
+        - installationInterval
+      type: object
+    AvailableMegLevel:
+      description: >-
+        MEF 10.4 8.11 - The lowest MEG level for which SOAM Frames are not
+        peered or discarded by the Service Provider. If this attribute is NONE
+        there is no such level (that is, SOAM frames at all MEG levels may be
+        peered or discarded by the Service Provider). MEF 6.3 constrains it to
+        0-6 for all Subscriber Ethernet Services.
+      enum:
+        - "0"
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+        - "5"
+        - "6"
+      type: string
+    BandwidthProfilePerClassOfServiceName:
+      description: >-
+        This Class is used for both the Ingress Bandwidth Profile per Class of
+        Service Name (MEF 26.2 16.12) and Egress Bandwidth Profile per Egress
+        Equivalence Class Name (MEF 26.2 16.13) . The value is a list of pairs
+        of the form?x, y? where x is a Class of Service Name that is in the
+        value of the OVC List of Class of Service Names Service Attribute
+        (Section 12.12) for the OVC that associates the OVC End Point for
+        Ingress and an Egress Equvalence Class Name for Egress. And y, if
+        specified, is a reference to a Bandwidth Profile Flow. There is at most
+        one pair in the list for each CoS or EEC Name (Except Discard).
+      properties:
+        bwpFlow:
+          $ref: "#/components/schemas/BwpFlow"
+        classOfServiceName:
+          description: >-
+            MEF 26.2 16.12 and 16.13 - For Ingress, this is the Name of the
+            Class of Service that this bandwidth profile flow is applied to.
+            This should be an item from ovc.listOfClassOfServiceNames. For
+            Egress, this is the Egress Equivalence Class (EEC) Name.
+          type: string
+      type: object
+    BwpFlow:
+      description: >-
+        The Bandwidth Profile Flow, BwpFlow, object class represents the
+        Bandwidth Profile Flow which includes the bandwidth profile parameter
+        CIR, CIRmax, CBS, EIR, EIRmax, EBS, Coupling Flag, Color Mode, Envelope
+        and Rank, and Token Request Offset. The BwpFlow is used with Service
+        Attributes for CarrierEthernetOperatorUni, CarrierEthernetSubscriberUni,
+        CarrierEthernetVuni,, and ENNI as well as OVC and EVC End Points.
+        Reference MEF 10.4 Section 12 and MEF 26.2 Section 17.
+      properties:
+        eirMax:
+          $ref: "#/components/schemas/InformationRate"
+        envelopeRank:
+          description: >-
+            MEF 26.2 17.1.2 and MEF 10.4 12.1.2 - The rank in the envelope of
+            this Bandwidth Profile Flow
+          minimum: 1
+          type: integer
+        cirMax:
+          $ref: "#/components/schemas/InformationRate"
+        cbs:
+          $ref: "#/components/schemas/DataSize"
+        couplingFlag:
+          description: >-
+            MEF 26.2 17.1.2 and MEF 10.4 12.1.2 - The couplingFlag determines
+            whether unused committed bandwidth for this Bandwidth Profile Flow
+            is made available as excess bandwidth for this Bandwidth Profile
+            Flow or as committed bandwidth for the next lower-ranked Bandwidth
+            Profile Flow. 0/FALSE means overflow green tokens are used as green
+            tokens in the next lowest BWP Flow in the Envelope. 1/TRUE means
+            they are used as yellow tokens for this BWP Flow.
+          type: boolean
+        envelopeId:
+          description: >-
+            MEF 26.2 17.1.2 and MEF 10.4 12.1.2 - The name of the envelope that
+            this Bandwidth Profile Flow resides in.
+          maxLength: 45
+          minLength: 1
+          pattern: "[ -\x7F]+"
+          type: string
+        tokenRequestOffset:
+          description: >-
+            MEF 26.2 17.1.2 and MEF 10.4 12.1.2 - tokenRequestOffset adjusts the
+            bandwidth consumed by each External Interface Frame in the Bandwidth
+            Profile Flow by a fixed number of octets.
+          type: integer
+        ebs:
+          $ref: "#/components/schemas/DataSize"
+        colorMode:
+          description: >-
+            MEF 26.2 17.1.2 and MEF 10.4 12.1.2 - colorMode indicates whether or
+            not External Interface Frames for this Bandwidth Profile Flow that
+            are identified as Yellow on input to the Bandwidth Profile Algorithm
+            can be declared Green.
+          $ref: "#/components/schemas/ColorMode"
+        cir:
+          $ref: "#/components/schemas/InformationRate"
+        eir:
+          $ref: "#/components/schemas/InformationRate"
+      type: object
+    CarrierEthernetEiReference:
+      properties:
+        href:
+          description: "A reference to an External Interface (UNI, ENNI)."
+          format: uri
+          type: string
+      type: object
+    CarrierEthernetEvcCommon:
+      description: >-
+        These are the MEF 10.4 EVC Service Attributes that are common to all
+        Subscriber (EVC-based) Ethernet Services defined in MEF 6.3.
+      properties:
+        listOfCosNames:
+          description: >-
+            MEF 10.4 8.7 - The EVC List of Class of Service Names Service
+            Attribute is used to specify all of the Class of Service Names
+            supported by an EVC. The value of the EVC List of Class of Service
+            Names Service Attribute is a non-empty list of Class of Service
+            Names (which may include one or more of the CoS Labels defined in
+            MEF 23.2).
+          items:
+            type: string
+          minItems: 1
+          type: array
+          uniqueItems: true
+        availableMegLevel:
+          description: >-
+            MEF 10.4 8.11 - The lowest MEG level for which SOAM Frames are not
+            peered or discarded by the Service Provider. If this attribute is
+            NONE  there is no such level (that is, SOAM frames at all MEG levels
+            may be peered or discarded by the Service Provider). MEF 6.3
+            constrains it to 0-6 for all Subscriber Ethernet Services.
+          $ref: "#/components/schemas/AvailableMegLevel"
+        carrierEthernetSls:
+          description: >-
+            MEF 10.4 8.8 - The SLS includes technical details of the service
+            level in terms of Performance Objectives, agreed between the Service
+            Provider and the Subscriber or between Service Provider and the
+            Operator as part of the Service Level Agreement. A given SLS might
+            contain 0,1 or more Performance Objectives for each Performance
+            Metric.
+          items:
+            $ref: "#/components/schemas/CarrierEthernetSls"
+          maxItems: 1
+          minItems: 0
+          type: array
+          uniqueItems: true
+        maximumFrameSize:
+          description: >-
+            MEF 10.4 8.10 - Maximum size of Service frames that can be carried
+            over the EVC. This must be at least 1522 (1518+C-tag).
+          minimum: 1522
+          type: integer
+      type: object
+    CarrierEthernetEvcEpCommon:
+      description: >-
+        This set of EVC End Point Service Attributes are applicable to all
+        Subscriber (EVC-based) Ethernet Services defined in MEF 6.3 based on the
+        Service Attributes in MEF 10.4.
+      properties:
+        identifier:
+          description: >-
+            MEF 10.4 10.1 - The value of the EVC EP ID Service Attribute is a
+            string that is used to allow the Subscriber and Service Provider to
+            uniquely identify the EVC EP for operations purposes.
+          maxLength: 45
+          minLength: 1
+          pattern: "[ -\x7F]+"
+          type: string
+        uni:
+          $ref: "#/components/schemas/CarrierEthernetEiReference"
+        subscriberMegMip:
+          description: >-
+            MEF 10.4 10.13 - The value of the EVC EP Subscriber MEG MIP Service
+            Attribute is either None or an integer in the range 0  7 that
+            indicates the MEG Level of a Subscriber MEG MIP.
+          $ref: "#/components/schemas/SubscriberMegMip"
+        egressMap:
+          $ref: "#/components/schemas/EvcEgressMap"
+        colorMap:
+          description: >-
+            MEF 10.4 10.6 - The value of the EVC EP Color Map Service Attribute
+            is a pair of the form ?F, M? where: F is one of the values ENDPOINT,
+            DEI, PCP, or DSCP and M is a map that can be used to assign Color to
+            each Ingress Service Frame. (The form of M depends on the value of
+            F.). The EVC EP Color Map Service Attribute is the mechanism by
+            which the Color for an Ingress Service Frame that is mapped to an
+            EVC EP is indicated by the content in the Service Frame header.
+          $ref: "#/components/schemas/ColorFrom"
+        ingressClassOfServiceMap:
+          description: >-
+            MEF 10.4 10.5 and MEF 45.1 6.2 - The value of the EVC EP Ingress
+            Class of Service Map Service Attribute is a 3-tuple of the form ?F,
+            M, P? where: F is one of the values ENDPOINT, C_TAG_PCP, or DSCP, M
+            is a map that can be used to assign Class of Service Names to
+            Service Frames. (The form of M depends on the value of F.), and P is
+            a map with entries of the form ?Layer 2 Control Protocol type ?
+            Class of Service Name? where the Layer 2 Control Protocol type is
+            determined by the Protocol Identifier (see Section 6.2 of MEF 45.1).
+          $ref: "#/components/schemas/CosFrom"
+        ingressBandwidthProfilePerClassofServiceName:
+          $ref: "#/components/schemas/BandwidthProfilePerClassOfServiceName"
+      type: object
+    CarrierEthernetEvcEpEtree:
+      description: >-
+        These EVC End Point Service Attributes (only one, actually) are
+        applicable to E-TREE Services, i.e., EP-TREE and EVP-TREE
+      properties:
+        role:
+          description: >-
+            MEF 10.4 10.3 - Indicates how EI Frames mapped to the EVC End Point
+            can be forwarded
+          $ref: "#/components/schemas/Role"
+      type: object
+    CarrierEthernetEvcEpNotEpl:
+      description: >-
+        This set of EVC End Point Service Attributes are applicable to all
+        Subscriber (EVC-based) Ethernet Services defined in MEF 6.3 based on the
+        Service Attributes in MEF 10.4 - except EPL.
+      properties:
+        sourceAddressMacLimit:
+          $ref: "#/components/schemas/SourceMacAddressLimit"
+        egressBandwidthProfilePerClassofServiceName:
+          $ref: "#/components/schemas/BandwidthProfilePerClassOfServiceName"
+      type: object
+    CarrierEthernetEvcEpVirtualPrivate:
+      properties:
+        evcEndPointMap:
+          $ref: "#/components/schemas/EndPointMapEvc"
+      type: object
+    CarrierEthernetEvcNotEpl:
+      description: >-
+        These are the MEF 10.4 EVC Service Attributes that are common to all
+        Subscriber (EVC-based) Ethernet Services defined in MEF 6.3 based on the
+        Service Attributes in MEF 10.4 - except EPL.
+      properties:
+        frameDisposition:
+          $ref: "#/components/schemas/FrameDisposition"
+      type: object
+    CarrierEthernetPhysicalLink:
+      description: >-
+        A 2-tuple of the form <id, physicalLink>. The value of id is an
+        identifier for the physical link. The value of physicalLink is the
+        specific Ethernet physical layer type.
+      properties:
+        physicalLink:
+          description: An Ethernet physical layer
+          $ref: "#/components/schemas/PhysicalLink"
+        id:
+          description: An identifier for the physical link.
+          maxLength: 45
+          minLength: 1
+          pattern: "[ -\x7F]+"
+          type: string
+      type: object
+    CarrierEthernetSls:
+      description: >-
+        The Service Level Specification Service Attribute (SLS) is the technical
+        details of the service level, in terms of Performance Objectives, agreed
+        between the Service Provider and the Subscriber as part of the Service
+        Level Agreement. A given SLS might contain 0, 1, or more Performance
+        Objectives for each Performance Metric. The SLS is described in section
+        8.8 (EVC Service Level Specification Service Attribute) of MEF 10.4 for
+        EVCs and section 12.13 (OVC Service Level Specification Service
+        Attribute) for OVCs. MEF 10.4 defines 10 Performance Metrics (all of
+        which are included here). MEF 26.2 defines only 9 Performance Metrics.
+        MEF 26.2 does not include the One Way Composite PM. The other 9 are the
+        same.
+      properties:
+        slsCosNameEntry:
+          description: >-
+            MEF 10.4 8.8 and MEF 26.2 12.13 - This is a list of Performance
+            Metrics. Each entry contains a set of parameters and Performance
+            Metrics one one Class of Service.
+          items:
+            $ref: "#/components/schemas/SlsCosNameEntry"
+          minItems: 1
+          type: array
+          uniqueItems: true
+        timeInterval:
+          $ref: "#/components/schemas/LongDuration"
+        startTime:
+          $ref: "#/components/schemas/Time"
+      type: object
+    CarrierEthernetSubscriberUni:
+      allOf:
+        - $ref: "#/components/schemas/MEFProductConfiguration"
+        - $ref: "#/components/schemas/SubscriberUniCommon"
+      x-discriminator-value: >-
+        urn:mef:lso:spec:cantata-sonata:carrier-ethernet-subscriber-uni:v0.1.0:poq
+    CarrierEthernetVpEvcCommon:
+      description: >-
+        These are the MEF 10.4 EVC Service Attributes that are common to all
+        Virtual Private Subscriber (EVC-based) Ethernet Services (EVPL, EVP-LAN,
+        EVP_TREE) defined in MEF 6.3.
+      properties:
+        cTagPcpPreservation:
+          $ref: "#/components/schemas/EnabledDisabled"
+        cTagDeiPreservation:
+          $ref: "#/components/schemas/EnabledDisabled"
+      type: object
+    ColorFrom:
+      discriminator:
+        mapping:
+          DEI: "#/components/schemas/ColorFromDei"
+          DSCP: "#/components/schemas/ColorFromDSCP"
+          PCP: "#/components/schemas/ColorFromPCP"
+          ENDPOINT: "#/components/schemas/ColorFromEp"
+        propertyName: mapType
+      properties:
+        mapType:
+          type: string
+      required:
+        - mapType
+      type: object
+    ColorFromDSCP:
+      allOf:
+        - $ref: "#/components/schemas/ColorFrom"
+        - description: >-
+            This Class is referenced when the color comes from the DSCP field.
+            It is a list of DSCP Entries where each entry has three components:
+            (1) A list of DSCP values, (2) a color for IPv4 packets with one of
+            those DSCP values, and (3) a color for IPv6 packets with one of
+            those DSCP values. Any DSCP value that is not specified and any
+            Frame that does not include an IP packet is Green..
+          properties:
+            colorFromDscpMap:
+              items:
+                $ref: "#/components/schemas/ColorFromDscpEntry"
+              minItems: 1
+              type: array
+              uniqueItems: true
+          type: object
+      x-discriminator-value: DSCP
+    ColorFromDei:
+      allOf:
+        - $ref: "#/components/schemas/ColorFrom"
+        - description: >-
+            This Class is referenced when the color comes from the S-tag or
+            C-tag DEI field. MEF 26.2 requires that DEI=0 means Green and DEI=1
+            means Yellow, so no map is needed.
+          type: object
+      x-discriminator-value: DEI
+    ColorFromDscpEntry:
+      properties:
+        ipv6Color:
+          $ref: "#/components/schemas/Ipv6Color"
+        dscpList:
+          description: This is a list of DSCP values
+          items:
+            maximum: 63
+            minimum: 0
+            type: integer
+          minItems: 1
+          type: array
+          uniqueItems: true
+        ipv4Color:
+          $ref: "#/components/schemas/Ipv4Color"
+      type: object
+    ColorFromEp:
+      allOf:
+        - $ref: "#/components/schemas/ColorFrom"
+        - description: >-
+            The color of each Ingress Frame is determined solely from the EVC or
+            OVC End Point. In other words, the EP declares all frames GREEN or
+            all frame YELLOW
+          properties:
+            epColor:
+              $ref: "#/components/schemas/EpColor"
+          type: object
+      x-discriminator-value: ENDPOINT
+    ColorFromPCP:
+      allOf:
+        - $ref: "#/components/schemas/ColorFrom"
+        - description: >-
+            This Class is referenced when the color comes from the S-tag or
+            C-tag PCP field. Each of the 8 possible PCP values maps to a color.
+            If there is no tag, the frame is Green.
+          properties:
+            colorFromPcpMap:
+              description:
+                "This is a list of 8 Color mappings, one for each PCP value."
+              items:
+                $ref: "#/components/schemas/ColorFromPCPMapEntry"
+              maxItems: 8
+              minItems: 8
+              type: array
+              uniqueItems: true
+          type: object
+      x-discriminator-value: PCP
+    ColorFromPCPMapEntry:
+      properties:
+        pcpValue:
+          $ref: "#/components/schemas/PcpValue"
+        pcpColor:
+          $ref: "#/components/schemas/PcpColor"
+      type: object
+    ColorMode:
+      description: >-
+        MEF 26.2 17.1.2 and MEF 10.4 12.1.2 - colorMode indicates whether or not
+        External Interface Frames for this Bandwidth Profile Flow that are
+        identified as Yellow on input to the Bandwidth Profile Algorithm can be
+        declared Green.
+      enum:
+        - COLOR_BLIND
+        - COLOR_AWARE
+      type: string
+    ConversationIdRange:
+      description: >-
+        A range of ConversationID (either a VLAN Id or 0 for untagged frames)
+        allowing three forms: start, start ? start, and start ? end
+      properties:
+        start:
+          description: >-
+            The starting Conversation ID of the range or the only Conversation
+            ID if there is no end value
+          maximum: 4094
+          minimum: 0
+          type: integer
+        end:
+          description: The final Conversation ID in the range
+          maximum: 4094
+          minimum: 0
+          type: integer
+      type: object
+    ConversationIdToAggregationLinkMap:
+      description: >-
+        This is a 2-tuple ?x,y? where x is a list of Port Conversation IDs or
+        ranges of Port Conversation IDs (a Port Conversation ID is a VLAN ID or
+        0 for untagged frames) and y is a list of Link Aggregation Links. This
+        is used in the Port Conversation to Aggregation Link Map for the UNI and
+        ENNI.
+      properties:
+        conversationIDs:
+          description: >-
+            802.1AX-2014 6.6.2.1 - A Port Conversation ID is a VLAN ID (1 to
+            4094) or 0 to represent untagged and priority-tagged frames.
+          items:
+            $ref: "#/components/schemas/ConversationIdRange"
+          minItems: 1
+          type: array
+          uniqueItems: true
+        aggLinkList:
+          description:
+            802.1AX-2014 6.6.2.1 - An ordered list of Aggregation Link Numbers
+          items:
+            minimum: 1
+            type: integer
+          minItems: 1
+          type: array
+          uniqueItems: true
+      type: object
+    CosDscpMap:
+      description: >-
+        This is a list of CoS to DSCP Map Entries followed by items for Not an
+        IP Packet and All Other Values.
+      properties:
+        dscpValueCoSList:
+          description: >-
+            This is a list of DSCP to CoS Map Entries: {ipv4DSCPs, ipv6DSCPs,
+            CoSName}
+          items:
+            $ref: "#/components/schemas/CosDscpMapEntry"
+          minItems: 0
+          type: array
+          uniqueItems: true
+        notIP:
+          description: >-
+            This is the CoS value for packets that are not IP packets when CoS
+            is determined from DSCP
+          type: string
+        otherIPv6:
+          description: >-
+            This is the CoS value for IPv6 packets with DSCP values other than
+            those listed.
+          type: string
+        otherIPv4:
+          description: >-
+            This is the CoS value for IPv4 packets with DSCP values other than
+            those listed.
+          type: string
+      type: object
+    CosDscpMapEntry:
+      description: "This is a 3-tuple {ipv4list, ipv6list, cosName}"
+      properties:
+        ipv4List:
+          $ref: "#/components/schemas/DscpValues"
+        ipv6List:
+          $ref: "#/components/schemas/DscpValues"
+        cosName:
+          type: string
+      type: object
+    CosFrom:
+      discriminator:
+        mapping:
+          DSCP: "#/components/schemas/CosFromDscp"
+          ENDPOINT: "#/components/schemas/CosFromEp"
+          C_TAG_PCP: "#/components/schemas/CosFromCtagPcp"
+        propertyName: mapType
+      properties:
+        mapType:
+          description: The Field that indicates CoS is DSCP.
+          type: string
+      required:
+        - mapType
+      type: object
+    CosFromCtagPcp:
+      allOf:
+        - $ref: "#/components/schemas/CosFrom"
+        - description: >-
+            Ingress CoS is specified as {F,M,P}. This is when F=C_TAG_PCP. This
+            maps each of the 8 PCP values in the C-tag to a Class of Service
+            Name. It also maps UNTAGGED frames to a Class of Service Name.
+          properties:
+            map_M:
+              description: >-
+                This maps each of the possible C-tag PCP values (0-7) and
+                Untagged to a specific Class of Service.
+              items:
+                $ref: "#/components/schemas/CosUniPcpMapEntry"
+              maxItems: 9
+              minItems: 9
+              type: array
+              uniqueItems: true
+            l2cp_P:
+              $ref: "#/components/schemas/CosL2cp"
+          type: object
+      x-discriminator-value: C_TAG_PCP
+    CosFromDscp:
+      allOf:
+        - $ref: "#/components/schemas/CosFrom"
+        - description: >-
+            Ingress CoS is specified as {F,M,P}. This is when F=DSCP. This maps
+            groups of DSCP values (independently for ipV4 and ipV6) to a Class
+            of Service. It also provides a Class of Service mapping for DSCP
+            values that are not specified and for frames that do not contain IP
+            Packets.
+          properties:
+            map_M:
+              $ref: "#/components/schemas/CosDscpMap"
+            l2cp_P:
+              $ref: "#/components/schemas/CosL2cp"
+          type: object
+      x-discriminator-value: DSCP
+    CosFromEp:
+      allOf:
+        - $ref: "#/components/schemas/CosFrom"
+        - description: >-
+            Ingress CoS is specified as {F,M,P}. This is when F=OVC_EP or EVC_EP
+            as appropriate.
+          properties:
+            map_M:
+              description: The single CoS at this EVC/OVC EP
+              type: string
+            l2cp_P:
+              $ref: "#/components/schemas/CosL2cp"
+          type: object
+      x-discriminator-value: ENDPOINT
+    CosL2cp:
+      description: "2-tuple {L2CP Ident, CoS Name}"
+      properties:
+        l2cpIdentifier:
+          $ref: "#/components/schemas/L2cpProtocol"
+        l2cpCosName:
+          description: CoS Name String to associate with the L2CP
+          type: string
+      type: object
+    CosUniPcpMapEntry:
+      description:
+        "2-tuple {PCP, CoSName} that maps a CoS Name or DISCARD to a PCP."
+      properties:
+        pcpVal:
+          description: A value 0 to 7
+          $ref: "#/components/schemas/PcpVal"
+        pcpCosName:
+          description: A CoS Name or DISCARD
+          type: string
+      type: object
+    DataSize:
+      description: >-
+        A value and a unit of measure that specifies a data size for example for
+        a buffer or a burst size.
+      properties:
+        dataSizeUnits:
+          description: >-
+            The unit of measure in the data size. For example, if a burst size
+            is 40 KBYTES, this element is KBYTES.
+          $ref: "#/components/schemas/DataSizeUnits"
+        dataSizeValue:
+          description: >-
+            The value in the data size. For example, if a burst size is 40
+            KBYTES, this element is 40.
+          type: integer
+      type: object
+    DataSizeUnits:
+      description: >-
+        The unit of measure in the data size. For example, if a burst size is 40
+        KBYTES, this element is KBYTES.
+      enum:
+        - BYTES
+        - KBYTES
+        - MBYTES
+        - GBYTES
+        - TBYTES
+        - PBYTES
+        - EBYTES
+        - ZBYTES
+        - YBYTES
+      type: string
+    DeiValueAndDiscard:
+      enum:
+        - "0"
+        - "1"
+        - DISCARD
+      type: string
+    DscpValues:
+      description: A list of 6 bit values
+      properties:
+        dscpValues:
+          description: A list of unique 6-bit (0-63) values
+          items:
+            maximum: 63
+            minimum: 0
+            type: integer
+          minItems: 1
+          type: array
+          uniqueItems: true
+      type: object
+    Duration:
+      description: "A Duration in a given unit of time e.g. 3 hours, or 5 days."
+      properties:
+        amount:
+          description: "Duration (number of seconds, minutes, hours, etc.)"
+          type: integer
+        units:
+          $ref: "#/components/schemas/TimeUnit"
+      required:
+        - amount
+        - units
+      type: object
+    EnabledDisabled:
+      description:
+        Enumeration to indicate Enabled/Disabled state of an attribute
+      enum:
+        - ENABLED
+        - DISABLED
+      type: string
+    EndPointMapEvc:
+      description: >-
+        This is specifications for which Service Frames are mapped to the EVC
+        End Point. The allowed values in MEF 10.4 are ALL, LIST, and UT/PT.
+        Since Private services must be ALL, the map isn;t needed for those
+        services, and therefore the type does not include ALL. If the type is
+        LIST there must be a list of VLAN IDs specified.
+      properties:
+        vlanId:
+          description: >-
+            A list of VLAN IDs that is interpreted based on the value of
+            vlanType.
+          items:
+            maximum: 4094
+            minimum: 1
+            type: integer
+          maxItems: 4094
+          minItems: 1
+          type: array
+          uniqueItems: true
+        vlanType:
+          description:
+            An indication about how the Vlan List argument is interpreted
+          $ref: "#/components/schemas/VlanType"
+      type: object
+    Envelope:
+      description: >-
+        Bandwidth Profiles are organized into Envelopes. Multiple Bandwidth
+        Profiles in an envelope can share bandwidth resources. Each Envelope has
+        a name and a Coupling Flag for Index Zero (CF0) that indicates whether
+        unused green tokens are discarded or converted to yellow tokens. All
+        Bandwidth Profile Flows in the same envelope satisfy the same criterion
+        listed in R230 of MEF 26.2.
+      properties:
+        couplingFlagForIndexZero:
+          description: >-
+            MEF 10.4 9.12 and MEF 26.2 14.19 - This attribute denotes the
+            coupling flag for index zero. FALSE for 0 (overflow Green tokens are
+            discarded) and TRUE for 1 (overflow Green tokens can be used as
+            Yellow tokens).
+          type: boolean
+        envelopeID:
+          description: >-
+            MEF 10.4 9.12 and MEF 26.2 14.19 - The attribute is a string that
+            identifies the Envelope
+          maxLength: 45
+          minLength: 1
+          pattern: "[ -\x7F]+"
+          type: string
+      type: object
+    EpColor:
+      enum:
+        - GREEN
+        - YELLOW
+      type: string
+    Epl:
+      allOf:
+        - $ref: "#/components/schemas/MEFProductConfiguration"
+        - $ref: "#/components/schemas/CarrierEthernetEvcCommon"
+        - properties:
+            evcEndPoints:
+              description: MEF 10.4 10 - An array of two EVC End Points.
+              items:
+                $ref: "#/components/schemas/EplEvcEndPoint"
+              maxItems: 2
+              minItems: 2
+              type: array
+              uniqueItems: true
+          required:
+            - evcEndPoints
+          type: object
+      x-discriminator-value: "urn:mef:lso:spec:cantata-sonata:epl:v0.1.0:poq"
+    EplEvcEndPoint:
+      allOf:
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpCommon"
+      description: >-
+        An EVC End Point is a logical entity at a given UNI that is associated
+        with a distinct set of frames passing over that UNI. EVC End Point
+        Service Attributes are the attributes of an EVC that can be different at
+        each UNI in the EVC. These are the EVC End Point Service Attributes
+        applicable to Ethernet Private Line (EPL) Services defined in MEF 6.3
+        based on the Service Attributes in MEF 10.4.
+    Eplan:
+      allOf:
+        - $ref: "#/components/schemas/MEFProductConfiguration"
+        - $ref: "#/components/schemas/CarrierEthernetEvcCommon"
+        - $ref: "#/components/schemas/CarrierEthernetEvcNotEpl"
+        - properties:
+            evcEndPoints:
+              description: MEF 10.4 10 - An array of two or more EVC End Points.
+              items:
+                $ref: "#/components/schemas/EplanEvcEndPoint"
+              minItems: 2
+              type: array
+              uniqueItems: true
+          required:
+            - evcEndPoints
+          type: object
+      x-discriminator-value: "urn:mef:lso:spec:cantata-sonata:eplan:v0.1.0:poq"
+    EplanEvcEndPoint:
+      allOf:
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpCommon"
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpNotEpl"
+    Eptree:
+      allOf:
+        - $ref: "#/components/schemas/MEFProductConfiguration"
+        - $ref: "#/components/schemas/CarrierEthernetEvcCommon"
+        - $ref: "#/components/schemas/CarrierEthernetEvcNotEpl"
+        - properties:
+            evcEndPoints:
+              description: MEF 10.4 10 - An array of two or more EVC End Points.
+              items:
+                $ref: "#/components/schemas/EptreeEvcEndPoint"
+              minItems: 2
+              type: array
+              uniqueItems: true
+          required:
+            - evcEndPoints
+          type: object
+      x-discriminator-value: "urn:mef:lso:spec:cantata-sonata:eptree:v0.1.0:poq"
+    EptreeEvcEndPoint:
+      allOf:
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpCommon"
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpEtree"
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpNotEpl"
+    Error:
+      description: >
+        Standard Class used to describe API response error Not intended to be
+        used directly. The `code` in the HTTP header is used as a discriminator
+        for the type of error returned in runtime.
+      properties:
+        reason:
+          description: >-
+            Text that explains the reason for the error. This can be shown to a
+            client user.
+          maxLength: 255
+          type: string
+        message:
+          description: >-
+            Text that provides mode details and corrective actions related to
+            the error. This can be shown to a client user.
+          type: string
+        referenceError:
+          description: URL pointing to documentation describing the error
+          format: uri
+          type: string
+      required:
+        - reason
+      type: object
+    Error400:
+      allOf:
+        - $ref: "#/components/schemas/Error"
+        - properties:
+            code:
+              $ref: "#/components/schemas/Error400Code"
+          required:
+            - code
+          type: object
+      description:
+        "Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)"
+    Error400Code:
+      description: >-
+        One of the following error codes:
+
+        - missingQueryParameter: The URI is missing a required query-string
+        parameter
+
+        - missingQueryValue: The URI is missing a required query-string
+        parameter value
+
+        - invalidQuery: The query section of the URI is invalid.
+
+        - invalidBody: The request has an invalid body
+      enum:
+        - missingQueryParameter
+        - missingQueryValue
+        - invalidQuery
+        - invalidBody
+      type: string
+    Error401:
+      allOf:
+        - $ref: "#/components/schemas/Error"
+        - properties:
+            code:
+              $ref: "#/components/schemas/Error401Code"
+          required:
+            - code
+          type: object
+      description:
+        "Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)"
+    Error401Code:
+      description: |-
+        One of the following error codes:
+        - missingCredentials: No credentials provided.
+        - invalidCredentials: Provided credentials are invalid or expired
+      enum:
+        - missingCredentials
+        - invalidCredentials
+      type: string
+    Error403:
+      allOf:
+        - $ref: "#/components/schemas/Error"
+        - properties:
+            code:
+              $ref: "#/components/schemas/Error403Code"
+          required:
+            - code
+          type: object
+      description: >-
+        Forbidden. This code indicates that the server understood the request
+        but refuses to authorize it.
+        (https://tools.ietf.org/html/rfc7231#section-6.5.3)
+    Error403Code:
+      description: |-
+        This code indicates that the server understood
+        the request but refuses to authorize it because
+        of one of the following error codes:
+        - accessDenied: Access denied
+        - forbiddenRequester: Forbidden requester
+        - tooManyUsers: Too many users
+      enum:
+        - accessDenied
+        - forbiddenRequester
+        - tooManyUsers
+      type: string
+    Error404:
+      allOf:
+        - $ref: "#/components/schemas/Error"
+        - properties:
+            code:
+              description: >-
+                The following error code:
+
+                - notFound: A current representation for the target resource not
+                found
+              enum:
+                - notFound
+              type: string
+          required:
+            - code
+          type: object
+      description: >-
+        Resource for the requested path not found.
+        (https://tools.ietf.org/html/rfc7231#section-6.5.4)
+    Error422:
+      allOf:
+        - $ref: "#/components/schemas/Error"
+        - properties:
+            code:
+              $ref: "#/components/schemas/Error422Code"
+            propertyPath:
+              description: >
+                A pointer to a particular property of the payload that caused
+                the validation issue. It is highly recommended that this
+                property should be used.
+
+                Defined using JavaScript Object Notation (JSON) Pointer
+                (https://tools.ietf.org/html/rfc6901).
+              type: string
+          required:
+            - code
+          type: object
+      description: >-
+        Unprocessable entity due to a business validation problem.
+        (https://tools.ietf.org/html/rfc4918#section-11.2)
+    Error422Code:
+      description: |
+        One of the following error codes:
+          - missingProperty: The property the Seller has expected is not present in the payload
+          - invalidValue: The property has an incorrect value
+          - invalidFormat: The property value does not comply with the expected value format
+          - referenceNotFound: The object referenced by the property cannot be identified in the Seller system
+          - unexpectedProperty: Additional property, not expected by the Seller has been provided
+          - tooManyRecords: the number of records to be provided in the response exceeds the Seller's threshold.
+          - otherIssue: Other problem was identified (detailed information provided in a reason)
+      enum:
+        - missingProperty
+        - invalidValue
+        - invalidFormat
+        - referenceNotFound
+        - unexpectedProperty
+        - tooManyRecords
+        - otherIssue
+      type: string
+    Error500:
+      allOf:
+        - $ref: "#/components/schemas/Error"
+        - properties:
+            code:
+              description: >-
+                The following error code:
+
+                - internalError: Internal server error - the server encountered
+                an unexpected condition that prevented it from fulfilling the
+                request.
+              enum:
+                - internalError
+              type: string
+          required:
+            - code
+          type: object
+      description: >-
+        Internal Server Error.
+        (https://tools.ietf.org/html/rfc7231#section-6.6.1)
+    Error501:
+      allOf:
+        - $ref: "#/components/schemas/Error"
+        - properties:
+            code:
+              description: |-
+                The following error code::
+                - notImplemented: Method not supported by the server
+              enum:
+                - notImplemented
+              type: string
+          required:
+            - code
+          type: object
+      description:
+        "Not Implemented. (https://tools.ietf.org/html/rfc7231#section-6.6.2)"
+    EvcEgressMap:
+      description: >-
+        This map is a table with one entries for each CosName, that includes the
+        CoSName, a PCP value for green frames, a PCP value for yellow frames, a
+        DEI value for green frames and a DEI value for yellow frames. Any of the
+        values can be DISCARD (in which case they are all treated as DISCARD).
+        This table is used at the UNI for EVCs.
+      properties:
+        evcEgressMapEntries:
+          items:
+            $ref: "#/components/schemas/EvcEgressMapEntry"
+          minItems: 0
+          type: array
+          uniqueItems: true
+      type: object
+    EvcEgressMapEntry:
+      description: >-
+        A row in the EVC Egress Map. Contains a CoSName, PCPGreen, PCPYellow,
+        DEIGreen, DEIYellow
+      properties:
+        pcpYellow:
+          $ref: "#/components/schemas/PcpValueAndDiscard"
+        deiYellow:
+          $ref: "#/components/schemas/DeiValueAndDiscard"
+        cosName:
+          type: string
+        deiGreen:
+          $ref: "#/components/schemas/DeiValueAndDiscard"
+        pcpGreen:
+          $ref: "#/components/schemas/PcpValueAndDiscard"
+      type: object
+    EventSubscription:
+      description: |
+        This resource is used to manage notification subscription.
+        Reference: MEF 79 (Sn 8.3)
+      properties:
+        query:
+          description: >-
+            The value provided by the Buyer in `EventSubscriptionInput` during
+            notification registration
+          type: string
+        callback:
+          description: >-
+            The value provided by the Buyer in `EventSubscriptionInput` during
+            notification registration
+          type: string
+        id:
+          description: >-
+            An identifier of this Event Subscription assigned by the Seller when
+            a resource is created.
+          type: string
+      required:
+        - callback
+        - id
+      type: object
+    EventSubscriptionInput:
+      description: This class is used to register for Notifications.
+      properties:
+        query:
+          description: >-
+            This attribute is used to define to which type of events to register
+            to. Example: "query":"eventType = poqCreateEvent". To subscribe for
+            more than one event type, put the values separated by comma:
+            `eventType=poqCreateEvent,poqStateChangeEvent`. The possible values
+            are enumerated by the 'POQEventType' in
+            productOfferingQualificationNotification.api.yaml. An empty query is
+            treated as specifying no filters - ending in  subscription for all
+            event types.
+          type: string
+        callback:
+          description: >-
+            This callback value must be set to *host* property from Buyer
+            ProductOfferingQualification Notification API
+            (productOfferingQualificationNotification.api.yaml). This property
+            is appended with the base path and notification resource path
+            specified in that API to construct an URL to which notification is
+            sent. E.g. for "callback": "https://buyer.co/listenerEndpoint", the
+            create event notification will be sent to:
+            `https://buyer.co/listenerEndpoint/mefApi/sonata/productOfferingQualificationNotification/v7/listener/poqCreateEvent`
+          type: string
+      required:
+        - callback
+      type: object
+    Evpl:
+      allOf:
+        - $ref: "#/components/schemas/MEFProductConfiguration"
+        - $ref: "#/components/schemas/CarrierEthernetEvcCommon"
+        - $ref: "#/components/schemas/CarrierEthernetVpEvcCommon"
+        - $ref: "#/components/schemas/CarrierEthernetEvcNotEpl"
+        - properties:
+            evcEndPoints:
+              description: MEF 10.4 10 - An array of two EVC End Points.
+              items:
+                $ref: "#/components/schemas/EvplEvcEndPoint"
+              maxItems: 2
+              minItems: 2
+              type: array
+              uniqueItems: true
+          required:
+            - evcEndPoints
+          type: object
+      x-discriminator-value: "urn:mef:lso:spec:cantata-sonata:evpl:v0.1.0:poq"
+    EvplEvcEndPoint:
+      allOf:
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpCommon"
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpVirtualPrivate"
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpNotEpl"
+    Evplan:
+      allOf:
+        - $ref: "#/components/schemas/MEFProductConfiguration"
+        - $ref: "#/components/schemas/CarrierEthernetEvcCommon"
+        - $ref: "#/components/schemas/CarrierEthernetVpEvcCommon"
+        - $ref: "#/components/schemas/CarrierEthernetEvcNotEpl"
+        - properties:
+            evcEndPoints:
+              description: MEF 10.4 10 - An array of two or more EVC End Points.
+              items:
+                $ref: "#/components/schemas/EvplanEvcEndPoint"
+              minItems: 2
+              type: array
+              uniqueItems: true
+          required:
+            - evcEndPoints
+          type: object
+      x-discriminator-value: "urn:mef:lso:spec:cantata-sonata:evplan:v0.1.0:poq"
+    EvplanEvcEndPoint:
+      allOf:
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpCommon"
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpVirtualPrivate"
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpNotEpl"
+    Evptree:
+      allOf:
+        - $ref: "#/components/schemas/MEFProductConfiguration"
+        - $ref: "#/components/schemas/CarrierEthernetEvcCommon"
+        - $ref: "#/components/schemas/CarrierEthernetVpEvcCommon"
+        - $ref: "#/components/schemas/CarrierEthernetEvcNotEpl"
+        - properties:
+            evcEndPoints:
+              description: MEF 10.4 10 - An array of two or more EVC End Points.
+              items:
+                $ref: "#/components/schemas/EvptreeEvcEndPoint"
+              minItems: 2
+              type: array
+              uniqueItems: true
+          required:
+            - evcEndPoints
+          type: object
+      x-discriminator-value: "urn:mef:lso:spec:cantata-sonata:evptree:v0.1.0:poq"
+    EvptreeEvcEndPoint:
+      allOf:
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpCommon"
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpVirtualPrivate"
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpEtree"
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpNotEpl"
+    FieldedAddress:
+      allOf:
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
+        - properties:
+            country:
+              description: Country that the address is in
+              type: string
+            streetType:
+              description: >-
+                The type of street (e.g., alley, avenue, boulevard, brae,
+                crescent, drive, highway, lane, terrace, parade, place, tarn,
+                way, wharf)
+              type: string
+            postcodeExtension:
+              description: >-
+                An extension of a postal code. E.g. the part following the dash
+                in a US urban property address
+              type: string
+            city:
+              description: The city that the address is in
+              type: string
+            streetNr:
+              description: >-
+                Number identifying a specific property on a public street. It
+                may be combined with streetNrLast for ranged addresses. MEF 79
+                defines it as required for the Seller response, however in
+                certain countries it is not used, so it's optional in API.
+              type: string
+            locality:
+              description: The locality that the address is in
+              type: string
+            postcode:
+              description: >-
+                A descriptor for a postal delivery area, used to speed and
+                simplify the delivery of mail (also known as zip code) MEF 79
+                defines it as required however as in certain countries it is not
+                used we make it optional in API.
+              type: string
+            streetNrLast:
+              description:
+                Last number in a range of street numbers allocated to a property
+              type: string
+            streetNrSuffix:
+              description: The first street number suffix
+              type: string
+            streetName:
+              description: Name of the street or other street type
+              type: string
+            stateOrProvince:
+              description: The State or Province that the address is in
+              type: string
+            streetNrLastSuffix:
+              description: Last street number suffix for a ranged address
+              type: string
+            geographicSubAddress:
+              $ref: "#/components/schemas/GeographicSubAddress"
+            streetSuffix:
+              description: A modifier denoting a relative direction
+              type: string
+          required:
+            - city
+            - country
+            - streetName
+          type: object
+      description: >-
+        A type of Address that has a discrete field and value for each type of
+        boundary or identifier down to the lowest level of detail. For example
+        "street number" is one field, "street name" is another field, etc.
+        Reference: MEF 79 (Sn 8.9.2)
+    FormattedAddress:
+      allOf:
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
+        - properties:
+            country:
+              description: Country that the address is in
+              type: string
+            postcodeExtension:
+              description: >-
+                An extension of a postal code. E.g. the part following the dash
+                in a US urban property address
+              type: string
+            stateOrProvince:
+              description: The State or Province that the address is in
+              type: string
+            city:
+              description: The city that the address is in
+              type: string
+            addrLine2:
+              description: The second address line in a formatted address
+              type: string
+            addrLine1:
+              description: The first address line in a formatted address
+              type: string
+            locality:
+              description: >-
+                An area of defined or undefined boundaries within a local
+                authority or other legislatively defined area, usually rural or
+                semi-rural in nature
+              type: string
+            postcode:
+              description: >-
+                A descriptor for a postal delivery area used to speed and
+                simplify the delivery of mail (also known as ZIP code)
+              type: string
+          required:
+            - addrLine1
+            - city
+            - country
+          type: object
+      description: >-
+        A type of Address that has discrete fields for each type of boundary or
+        identifier with the exception of the street and more specific location
+        details, which are combined into a maximum of two strings based on local
+        postal addressing conventions. Reference: MEF 79 (Sn 8.9.3)
+    FrameDispEnum:
+      enum:
+        - DISCARD
+        - DELIVER_UNCONDITIONALLY
+        - DELIVER_CONDITIONALLY
+      type: string
+    FrameDisposition:
+      description: >-
+        A 3-tuple that indicates how Unicast, Multicast, and Broadcast Frames
+        are delivered by the service. For each, the value can be UNCONDITIONAL,
+        the frames are delivered without condition, CONDITIONAL, the frames are
+        delivered based on conditions agreed to between buyer and seller (e.g.,
+        based on learned addresses), and DISCARD.
+      properties:
+        broadcast:
+          $ref: "#/components/schemas/FrameDispEnum"
+        unicast:
+          $ref: "#/components/schemas/FrameDispEnum"
+        multicast:
+          $ref: "#/components/schemas/FrameDispEnum"
+      type: object
+    GeographicAddressLabel:
+      allOf:
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
+        - properties:
+            externalReferenceId:
+              description: >-
+                The unique reference to an Address as provided by the
+                Administrative Authority.
+              type: string
+            externalReferenceType:
+              description: >-
+                The organization or standard from the organization that
+                administers this Geographic Address Label ensuring it is unique
+                within the Administrative Authority. The value(s) to be used are
+                to be agreed upon during the onboarding. For North American
+                providers this would normally be CLLI (Common Language Location
+                Identifier) code.
+              type: string
+          required:
+            - externalReferenceId
+            - externalReferenceType
+          type: object
+      description: >-
+        A unique identifier controlled by a generally accepted independent
+        administrative authority that specifies a fixed geographical location. 
+
+        Reference: MEF 79 (Sn 8.9.4)
+    GeographicAddressRef:
+      allOf:
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
+        - properties:
+            href:
+              description: >
+                Hyperlink to the referenced Address. Hyperlink MAY be used by
+                the Seller in responses. Hyperlink MUST be ignored by the Seller
+                in case it is provided by the Buyer in a request.
+              type: string
+            id:
+              description: >-
+                Identifier of the referenced Geographic Address. This identifier
+                is assigned during a successful address validation request
+                (Sonata Geographic Address Management API)
+              type: string
+          required:
+            - id
+          type: object
+      description: >
+        A reference to a Geographic Address resource available through Sonata
+        Address Validation API.
+    GeographicSiteRef:
+      allOf:
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
+        - properties:
+            href:
+              description: >
+                Hyperlink to the referenced Site. Hyperlink MAY be used by the
+                Seller in responses. Hyperlink MUST be ignored by the Seller in
+                case it is provided by the Buyer in a request.
+              type: string
+            id:
+              description: Identifier of the referenced Geographic Site.
+              type: string
+          required:
+            - id
+          type: object
+      description: >
+        A reference to a Geographic Site resource available through Sonata
+        Service Site API
+    GeographicSubAddress:
+      description:
+        "Additional fields used to specify an address, as detailed as possible."
+      properties:
+        buildingName:
+          description: >
+            Allows for identification of places that require building name  as
+            part of addressing information
+          type: string
+        subUnit:
+          description: >-
+            Representation of a MEFSubUnit It is used for describing subunit
+            within a subAddress e.g. BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
+            UNIT, WHARF.
+          items:
+            $ref: "#/components/schemas/MEFSubUnit"
+          type: array
+        levelType:
+          description: Describes level types within a building
+          type: string
+        levelNumber:
+          description:
+            "Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT 2"
+          type: string
+        privateStreetNumber:
+          description: Private streets numbers internal to a private street
+          type: string
+        privateStreetName:
+          description: >-
+            Private streets internal to a property (e.g. a university) may have
+            internal names that are not recorded by the land title office
+          type: string
+      type: object
+    InformationRate:
+      description:
+        A value and a unit of measure that specifies an Information Rate.
+      properties:
+        irValue:
+          description: >-
+            The value in the information rate. For example if the information
+            rate is 70 kbps this element is 70.
+          minimum: 0
+          type: number
+        irUnits:
+          description: >-
+            The unit of measure for the Information Rate. For example if the
+            Information Rate is 70 kbps this element is kbps.
+          $ref: "#/components/schemas/IrUnits"
+      type: object
+    Instantiation:
+      description: >-
+        MEF 10.4 9.2 - When the value is Physical, the UNI is implemented using
+        one or more instances of a standard Physical Layer. When the value is
+        Virtual, the physical layer is not specified.
+      enum:
+        - PHYSICAL
+        - VIRTUAL
+      type: string
+    Ipv4Color:
+      enum:
+        - GREEN
+        - YELLOW
+      type: string
+    Ipv6Color:
+      enum:
+        - GREEN
+        - YELLOW
+      type: string
+    IrUnits:
+      description: >-
+        The unit of measure for the Information Rate. For example if the
+        Information Rate is 70 kbps this element is kbps.
+      enum:
+        - BPS
+        - KBPS
+        - MBPS
+        - GBPS
+        - TBPS
+        - PBPS
+        - EBPS
+        - ZBPS
+        - YBPS
+      type: string
+    L2cpAddressSet:
+      description: >-
+        MEF 10.4 9.16 and MEF 45.1 8.1 - L2CP Address Set Service Attribute is
+        defined in MEF 45.1. CTA CEVLAN Tag Aware for VLAN-based services where
+        the CE-VLAN ID is used to map a frame to a service. CTB CVLAN Tag Blind
+        for Port-based services where the CE-VLAN ID not used to map a frame to
+        a service. CTB2 CVLAN Tag Blind Option 2 for point-to-point Port-based
+        services that support the EPL Option 2 L2CP processing.
+      enum:
+        - CTA
+        - CTB
+        - CTB2
+      type: string
+    L2cpPeering:
+      description: >-
+        This specifies the L2CP Protocol Identifier and the Destination Address
+        in use by the protocol entity. Reference MEF 45.1 Section 8.2 L2CP
+        Peering Service Attribute
+      properties:
+        protocolID:
+          $ref: "#/components/schemas/L2cpProtocol"
+        destinationAddress:
+          description: >-
+            The Destination MAC Address of the L2CP to be peered in the standard
+            format of 6 hex bytes separated either by colon (:) or hyphen (-).
+          pattern: "[0-9a-fA-F][0-9a-fA-F]([-][0-9a-fA-F][0-9a-fA-F]){5}"
+          type: string
+        linkIdList:
+          description: >-
+            Identifiers for the links on which the specified protocol will be
+            peered. If no links are specified the protocol is peered on all
+            links.
+          items:
+            maxLength: 45
+            minLength: 1
+            pattern: "[ -\x7F]+"
+            type: string
+          minItems: 0
+          type: array
+          uniqueItems: false
+      type: object
+    L2cpProtocol:
+      description: >-
+        Defines a L2CP protocol LLC address type or EtherType with possible
+        subtype. Reference MEF 45.1 Section 8.2 L2CP Peering Service Attribute.
+      properties:
+        l2cpProtocolType:
+          description: The protocol field to inspect to identify the L2CP.
+          $ref: "#/components/schemas/L2cpProtocolType"
+        subType:
+          description: The EtherType can be modified by an optional sub-type.
+          minimum: 0
+          type: integer
+        llcAddressOrEtherType:
+          description: The EtherType value or LLC value
+          minimum: 0
+          type: integer
+      type: object
+    L2cpProtocolType:
+      description: The protocol field to inspect to identify the L2CP.
+      enum:
+        - ETHERTYPE
+        - LLC
+      type: string
+    LinkAggregation:
+      description: >-
+        MEF 10.4 9.5 - Data type representing Link Aggregation types. NONE-No
+        Link Aggregation is used. 2_LINK_ACTIVE_STANDBY-The SP network uses Link
+        Aggregation as in either Clause 5.6.1 of IEEE Std 802.1AX-2008 [2] or
+        Clause 6.7.1 of IEEE Std 802.1AX-2014 with one Link Aggregation
+        Group(LAG) across the links supporting the UNI/ENNI such that all
+        Service Frames are carried on only one of the two links when both links
+        are operational. ALL_ACTIVE-The SP Network uses Link Aggregation as
+        specified in Clause 5.3 of IEEE Std 802.1AX-2014, including the use of
+        the version 2 LACPDUs as specified in Clause 5.3.1h of IEEE Std
+        802.1AZ-2014, with one Link Aggregation Group (LAG) across the links.
+        OTHER-The Operator/Subscriber/Service Provider agree on another other
+        resiliency mechanism.
+      enum:
+        - NONE
+        - 2_LINK_ACTIVE_STANDBY
+        - ALL_ACTIVE
+        - OTHER
+      type: string
+    LongDuration:
+      description: >-
+        This class is used to describe durations expressed in days or larger
+        time units
+      properties:
+        longDurationUnits:
+          description: >-
+            The unit of measure in the duration. For example, if an interval is
+            2 weeks, this element is WEEKS.
+          $ref: "#/components/schemas/LongDurationUnits"
+        longDurationValue:
+          description: >-
+            The value of the duration. For example, if the duration is 20 days,
+            this element is 20.
+          type: integer
+      type: object
+    LongDurationUnits:
+      description: >-
+        The unit of measure in the duration. For example, if an interval is 2
+        weeks, this element is WEEKS.
+      enum:
+        - DAY
+        - WEEK
+        - MONTH
+        - YEAR
+      type: string
+    MEFAlternateProduct:
+      description: >-
+        An alternative Product Offering that the Seller is proposing to the
+        Buyer. If 1) the Buyer has set `provideAlternate=true`;  2) the Seller
+        has determined that the POQ Confidence Level for this item is `yellow`
+        or `red`; and  3) The Seller has alternate Products (e.g. similar but
+        lower bandwidth) that may be adequate.
+      properties:
+        productSpecification:
+          $ref: "#/components/schemas/ProductSpecificationRef"
+        productOffering:
+          $ref: "#/components/schemas/ProductOfferingRef"
+        productConfiguration:
+          $ref: "#/components/schemas/MEFProductConfiguration"
+      required:
+        - productConfiguration
+        - productOffering
+      type: object
+    MEFGeographicPoint:
+      allOf:
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
+        - properties:
+            spatialRef:
+              description: >-
+                The spatial reference system used to determine the coordinates
+                (e.g. "WGS84"). The system used and the value of this field are
+                to be agreed during the onboarding process.
+              type: string
+            x:
+              description: >-
+                The latitude expressed in the format specified by the
+                `spacialRef`
+              type: string
+            "y":
+              description: >-
+                The longitude expressed in the format specified by the
+                `spacialRef`
+              type: string
+            z:
+              description: >-
+                The elevation expressed in the format specified by the
+                `spacialRef`
+              type: string
+          required:
+            - spatialRef
+            - x
+            - "y"
+          type: object
+      description: >
+        A MEFGeographicPoint defines a geographic point through coordinates.
+        Reference: MEF 79 (Sn 8.9.5)
+    MEFPOQItemStateChange:
+      description: >-
+        Holds the reached state, reasons, and associated date the POQ state
+        changed, populated by the Seller.
+      properties:
+        changeReason:
+          description: Additional comment related to state change
+          type: string
+        changeDate:
+          description: The date on when the state was reached
+          format: date-time
+          type: string
+        state:
+          $ref: "#/components/schemas/MEFPOQItemTaskStateType"
+      required:
+        - changeDate
+        - state
+      type: object
+    MEFPOQItemTaskStateType:
+      description: |
+        POQ item states - The specific states are managed by the Seller based on
+        its processing and/or based on the Buyer's action. The following mapping
+        has been used between `MEFPOQItemTaskStateType` and MEF 79 (Sn 9.2):
+
+        | MEFPOQItemTaskStateType | MEF79                             | Description                                                                                                                                                           |
+        | ----------------------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | acknowledged            | N/A                               | Not represented MEF 79. The state might be internally assigned when POQ is acknowledged by the Seller and assigned an identifier. It is not to be shown to the Buyer. |
+        | done.ready              | READY                             | POQ Item response is complete. This state does not imply that Seller is able to deliver requested item                                                                |
+        | done.abandoned          | ABANDONED                         | Applied to a POQ Item in case the final state is not reached and any other POQ Item moved to the final state other than done                                          |
+        | terminatedWithError     | INSUFFICIENT_INFORMATION_PROVIDED | The information provided by the Buyer is insufficient for the Seller to provide POQ Item response                                                                     |
+        | inProgress              | IN_PROGRESS                       | The Seller is working on a POQ item response and the answer is not ready yet                                                                                          |
+      enum:
+        - acknowledged
+        - terminatedWithError
+        - inProgress
+        - done.abandoned
+        - done.ready
+      type: string
+    MEFPOQStateChange:
+      description: >-
+        Holds the reached state, reasons, and associated date the POQ state
+        changed, populated by the Seller.
+      properties:
+        changeReason:
+          description: Additional comment related to state change
+          type: string
+        changeDate:
+          description: The date on when the state was reached
+          format: date-time
+          type: string
+        state:
+          $ref: "#/components/schemas/MEFPOQTaskStateType"
+      required:
+        - changeDate
+        - state
+      type: object
+    MEFPOQTaskStateType:
+      description: >
+        These values represent the valid states through which the product
+
+        offering qualification can transition.
+
+
+        The following mapping has been used between `MEFPOQTaskStateType` and
+
+        MEF 79 (Sn 9.1):
+
+
+        | MEFPOQTaskStateType  | MEF 79                            |
+        Description                                                                                                                                                          
+        |
+
+        | -------------------- | --------------------------------- |
+        ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        |
+
+        | acknowledged         | N/A                               | Not
+        represented MEF 79. The state might be internally assigned when POQ is
+        acknowledged by the Seller and assigned an identifier. It is not to be
+        shown to the Buyer. |
+
+        | done.ready           | READY                             | Reached
+        when all items are in `done`
+        state                                                                                                                           
+        |
+
+        | done.unableToProvide | UNABLE_TO_PROVIDE                 | This state
+        is set when the Seller is unable to provide a Product Offering
+        Qualification in the timeframe required by the
+        Buyer.                                       |
+
+        | terminatedWithError  | INSUFFICIENT_INFORMATION_PROVIDED | This state
+        is achieved when a well-formed POQ request has been received, but there
+        is insufficient information to complete the
+        POQ                                    |
+
+        | inProgress           | IN_PROGRESS                       | There is at
+        least one POQ Item in `inProgress`
+        state                                                                                                                 
+        |
+      enum:
+        - acknowledged
+        - terminatedWithError
+        - inProgress
+        - done.unableToProvide
+        - done.ready
+      type: string
+    MEFProductConfiguration:
+      description: >-
+        MEFProductConfiguration is used as an extension point for MEF specific
+        product/service payload. The `@type` attribute is used as a
+        discriminator
+      discriminator:
+        mapping:
+          "urn:mef:lso:spec:cantata-sonata:evptree:v0.1.0:poq": "#/components/schemas/Evptree"
+          "urn:mef:lso:spec:cantata-sonata:eptree:v0.1.0:poq": "#/components/schemas/Eptree"
+          "urn:mef:lso:spec:cantata-sonata:evplan:v0.1.0:poq": "#/components/schemas/Evplan"
+          "urn:mef:lso:spec:cantata-sonata:epl:v0.1.0:poq": "#/components/schemas/Epl"
+          "urn:mef:lso:spec:cantata-sonata:eplan:v0.1.0:poq": "#/components/schemas/Eplan"
+          "urn:mef:lso:spec:cantata-sonata:evpl:v0.1.0:poq": "#/components/schemas/Evpl"
+          "urn:mef:lso:spec:cantata-sonata:carrier-ethernet-subscriber-uni:v0.1.0:poq": "#/components/schemas/CarrierEthernetSubscriberUni"
+        propertyName: "@type"
+      properties:
+        "@type":
+          description: >-
+            The name of the type that uniquely identifies the type of the
+            product that is the subject of the POQ Request. In case of MEF
+            product this is the URN provided in the Product Specification.
+          type: string
+      required:
+        - "@type"
+      type: object
+    MEFProductRefOrValue:
+      description: >-
+        Used by the Buyer to point to existing and/or describe the desired shape
+        of the product. In case of `add` action - only `productConfiguration`
+        MUST be specified. For `modify` action - both `id` and
+        `productConfiguration` MUST be provided to point which product instance
+        to update and to what state. In `delete` only the `id` must be provided.
+      properties:
+        productSpecification:
+          $ref: "#/components/schemas/ProductSpecificationRef"
+        productOffering:
+          $ref: "#/components/schemas/ProductOfferingRef"
+        productConfiguration:
+          $ref: "#/components/schemas/MEFProductConfiguration"
+        productRelationship:
+          description: >-
+            A list of references to existing products that are related to the
+            Product that would be delivered to fulfill the POQ Item.
+          items:
+            $ref: "#/components/schemas/ProductRelationshipWithGrouping"
+          type: array
+        href:
+          description: >
+            Hyperlink to the referenced Product. Hyperlink MAY be used by the
+            Seller in responses. Hyperlink MUST be ignored by the Seller in case
+            it is provided by the Buyer in a request.
+          type: string
+        id:
+          description: >
+            The unique identifier of an in-service Product that is the
+            qualification's subject. This field MUST be populated if an item
+            `action` is either `modify` or `delete`. This field MUST NOT be
+            populated if an item `action` is `add`.
+          type: string
+        place:
+          description: >-
+            A list of locations that are related to the Product. For example an
+            installation location
+          items:
+            $ref: "#/components/schemas/RelatedPlaceRefOrValue"
+          type: array
+      type: object
+    MEFServiceabilityColor:
+      description: |
+        A color that indicates confidence to service the request. When the item
+        state is `done.ready` the Seller **MUST** provide a value. It **MUST
+        NOT** be populated for other states.
+
+        Mapping between `ServiceabilityColor` and POQ Confidence Level:
+
+        | ServiceabilityColor      | MEF 79       | MEF 79 semantics |
+        |------------------------- | ------------ | -----------------|
+        | green                    | GREEN        |  The Seller has high confidence that this Product can be delivered |
+        | yellow                   | YELLOW       |  The Seller believes they can deliver the Product but is not highly confident |
+        | red                      | RED          |  The Seller cannot deliver the Product as specified.  |
+
+        Reference: MEF 79 (Sn 8.4.3.1)
+      enum:
+        - green
+        - yellow
+        - red
+      type: string
+    MEFSubUnit:
+      description: Allows for sub unit identification
+      properties:
+        subUnitNumber:
+          description: >-
+            The discriminator used for the subunit, often just a simple number
+            but may also be a range.
+          type: string
+        subUnitType:
+          description: >-
+            The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT,
+            WHARF.
+          type: string
+      required:
+        - subUnitNumber
+        - subUnitType
+      type: object
+    OneWayAvailabilityPmMetric:
+      description: >-
+        One Way Availability Performance Metric consisting of 1 parameter, a
+        list of Ordered End Point Pairs (referred to as S in the MEF Standards),
+        and the One Way Availability Objective for this Class of Service Name
+        and these Ordered End Point Pairs. See MEF 10.4 section 8.8.7 for EVC
+        and MEF 26.2 section 12.13.7 for OVC.
+      properties:
+        oneWayAvailabilityObjective:
+          $ref: "#/components/schemas/Percentage"
+        orderedPairList:
+          description: >-
+            The set (referred to as S in the MEF Standards) of ordered pairs of
+            EVC or OVC End Points over which this Performance Metric parameters
+            and objective apply.
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+          minItems: 1
+          type: array
+          uniqueItems: true
+      type: object
+    OneWayCompositePmMetric:
+      description: >-
+        One Way Composite Performance Metric consisting of 7 parameters, a list
+        of Ordered End Point Pairs (referred to as S in the MEF Standards) , a
+        Composite Performance number (referred to as U in the MEF Standards),
+        indicators about Composite Frame Loss, Composite Frame Delay, and
+        Composite Frame Delay Variation (referred to as Wfl, Wfd, and Wfdv in
+        the MEF Standards), Thresholds for Frame Delay and Delay Variation
+        (referred to as DL and Jt in the MEF Standards) and the One Way
+        Composite Objective for this Class of Service Name and these two
+        parameters. See MEF 10.4 section 8.8.10 for EVC (this Performance Metric
+        is not defined for OVC services).
+      properties:
+        oneWayIfdvThreshold:
+          $ref: "#/components/schemas/ShortDuration"
+        cpmObjective:
+          $ref: "#/components/schemas/Percentage"
+        compositeFrameDelay:
+          description:
+            Composite indicator for One-way Frame Delay equal to 0 or 1.
+          maximum: 1
+          minimum: 0
+          type: integer
+        compositeFrameDelayVariation:
+          description: >-
+            Composite indicator for One-way Frame Delay Variation equal to 0 or
+            1.
+          maximum: 1
+          minimum: 0
+          type: integer
+        oneWayFdThreshold:
+          $ref: "#/components/schemas/ShortDuration"
+        compositeFrameLoss:
+          description:
+            Composite indicator for One-way Frame Loss equal to 0 or 1.
+          maximum: 1
+          minimum: 0
+          type: integer
+        orderedPairList:
+          description: >-
+            The set (referred to as S in the MEF Standards) of ordered pairs of
+            EVC or OVC End Points over which this Performance Metric parameters
+            and objective apply.
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+          minItems: 1
+          type: array
+          uniqueItems: true
+        compositePerformanceIndicatorThreshold:
+          description: >-
+            Composite Performance Indicator threshold which if exceeded suggests
+            an unacceptable time interval.
+          maximum: 1
+          minimum: 0
+          type: number
+      type: object
+    OneWayConsecutiveHighLossIntervalsPmMetric:
+      description: >-
+        One Way Frame Delay Range Performance Metric consisting of 2 parameters,
+        a list of Ordered End Point Pairs (referred to as S in the MEF
+        Standards) , a number (referred to as p in the MEF Standards), and the
+        One Way Consecutive High Loss Intervals Objective for this Class of
+        Service Name and these two parameters. See MEF 10.4 section 8.8.9 for
+        EVC and MEF 26.2 section 12.13.9 for OVC.
+      properties:
+        consecutiveNumberP:
+          description: >-
+            The number of high loss intervals that constitute a consecutive high
+            loss interval.
+          minimum: 1
+          type: integer
+        oneWayChliObjective:
+          description:
+            Performance Objective expressed as a non-negative integer.
+          minimum: 1
+          type: integer
+        orderedPairList:
+          description: >-
+            The set (referred to as S in the MEF Standards) of ordered pairs of
+            EVC or OVC End Points over which this Performance Metric parameters
+            and objective apply.
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+          minItems: 1
+          type: array
+          uniqueItems: true
+      type: object
+    OneWayFrameDelayPmMetric:
+      description: >-
+        One Way Frame Delay Performance Metric consisting of 2 parameters, a
+        list of Ordered End Point Pairs (referred to as S in the MEF Standards)
+        , a percentile (referred to as Pd in the MEF Standards), and the One Way
+        Frame Delay Objective for this Class of Service Name and these two
+        parameters. See MEF 10.4 section 8.8.2 for EVC and MEF 26.2 section
+        12.13.2 for OVC.
+      properties:
+        oneWayFdObjective:
+          $ref: "#/components/schemas/ShortDuration"
+        oneWayFdPercentile:
+          $ref: "#/components/schemas/Percentage"
+        orderedPairList:
+          description: >-
+            MEF 10.4  8.8.1.1 and MEF 26.2 12.13.1.1 - The set (referred to as S
+            in the MEF Standards) of ordered pairs of EVC or OVC End Points over
+            which this Performance Metric parameters and objective apply.
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+          minItems: 1
+          type: array
+          uniqueItems: true
+      type: object
+    OneWayFrameDelayRangePmMetric:
+      description: >-
+        One Way Frame Delay Range Performance Metric consisting of 2 parameters,
+        a list of Ordered End Point Pairs (referred to as S in the MEF
+        Standards) , a percentile (referred to as Pr in the MEF Standards), and
+        the One Way Frame Delay Range Objective for this Class of Service Name
+        and these two parameters. See MEF 10.4 section 8.8.4 for EVC and MEF
+        26.2 section 12.13.4 for OVC.
+      properties:
+        oneWayFdrObjective:
+          $ref: "#/components/schemas/ShortDuration"
+        oneWayFdrPecentile:
+          $ref: "#/components/schemas/Percentage"
+        orderedPairList:
+          description: >-
+            The set (referred to as S in the MEF Standards) of ordered pairs of
+            EVC or OVC End Points over which this Performance Metric parameters
+            and objective apply.
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+          minItems: 1
+          type: array
+          uniqueItems: false
+      type: object
+    OneWayFrameLostRatioPmMetric:
+      description: >-
+        One Way Frame Loss Ratio Performance Metric consisting of 1 parameter, a
+        list of Ordered End Point Pairs (referred to as S in the MEF Standards),
+        and the One Way Frame Loss Ratio Objective for this Class of Service
+        Name and these Ordered End Point Pairs. See MEF 10.4 section 8.8.6 for
+        EVC and MEF 26.2 section 12.13.6 for OVC.
+      properties:
+        oneWayFlrObjective:
+          $ref: "#/components/schemas/Percentage"
+        orderedPairList:
+          description: >-
+            The set (referred to as S in the MEF Standards) of ordered pairs of
+            EVC or OVC End Points over which this Performance Metric parameters
+            and objective apply.
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+          minItems: 1
+          type: array
+          uniqueItems: true
+      type: object
+    OneWayHighLossIntervalPmMetric:
+      description: >-
+        One Way High Loss Intervals Performance Metric consisting of 1
+        parameter, a list of Ordered End Point Pairs (referred to as S in the
+        MEF Standards), and the One Way High Loss Intervals Objective for this
+        Class of Service Name and these Ordered End Point Pairs. See MEF 10.4
+        section 8.8.8 for EVC and MEF 26.2 section 12.13.8 for OVC.
+      properties:
+        oneWayHighLossIntervalsObjective:
+          description: >-
+            The PM Objective for this Performance Metric (this CoS and these
+            Ordered End Point Pairs) expressed as a non-negative number.
+          minimum: 0
+          type: integer
+        orderedPairList:
+          description: >-
+            The set (referred to as S in the MEF Standards) of ordered pairs of
+            EVC or OVC End Points over which this Performance Metric parameters
+            and objective apply.
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+          minItems: 1
+          type: array
+          uniqueItems: true
+      type: object
+    OneWayInterFrameDelayVariationPmMetric:
+      description: >-
+        One Way Frame Inter Frame Delay Variation Performance Metric consisting
+        of 3 parameters, a list of Ordered End Point Pairs (referred to as S in
+        the MEF Standards) , a time duration (referred to as ?t in the MEF
+        Standards), a percentile (referred to as Pv in the MEF Standards), and
+        the Inter Frame Delay Variation Objective for this Class of Service Name
+        and these two parameters. See MEF 10.4 section 8.8.5 for EVC and MEF
+        26.2 section 12.13.5 for OVC.
+      properties:
+        oneWayIfdvObjective:
+          $ref: "#/components/schemas/ShortDuration"
+        oneWayIfdvPencentile:
+          $ref: "#/components/schemas/Percentage"
+        timeDuration:
+          $ref: "#/components/schemas/ShortDuration"
+        orderedPairList:
+          description: >-
+            The set (referred to as S in the MEF Standards) of ordered pairs of
+            EVC or OVC End Points over which this Performance Metric parameters
+            and objective apply.
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+          minItems: 1
+          type: array
+          uniqueItems: false
+      type: object
+    OneWayMeanFrameDelayPmMetric:
+      description: >-
+        One Way Frame Mean Delay Performance Metric consisting of 1 parameter, a
+        list of Ordered End Point Pairs (referred to as S in the MEF Standards),
+        and the One Way Mean Frame Delay Objective for this Class of Service
+        Name and these Ordered End Point Pairs. See MEF 10.4 section 8.8.3 for
+        EVC and MEF 26.2 section 12.13.3 for OVC.
+      properties:
+        oneWayMfdObjective:
+          $ref: "#/components/schemas/ShortDuration"
+        orderedPairList:
+          description: >-
+            The set (referred to as S in the MEF Standards) of ordered pairs of
+            EVC or OVC End Points over which this Performance Metric parameters
+            and objective apply.
+          items:
+            $ref: "#/components/schemas/OrderedPair"
+          minItems: 1
+          type: array
+          uniqueItems: true
+      type: object
+    OrderedPair:
+      description: >-
+        Performance Metrics (except for Group Availability) are specified for a
+        list of Ordered End Point Pairs. In other words a Frame Delay objective
+        (for example) is specified from ?A to B? and from ?C to D?. This class
+        defines one Ordered End Point Pair.
+      properties:
+        toCarrierEthernetServiceEndPoint:
+          type: string
+        fromCarrierEthernetServiceEndPoint:
+          type: string
+      type: object
+    PcpColor:
+      enum:
+        - GREEN
+        - YELLOW
+      type: string
+    PcpVal:
+      description: A value 0 to 7
+      enum:
+        - "0"
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+        - "5"
+        - "6"
+        - "7"
+        - UNTAGGED
+      type: string
+    PcpValue:
+      enum:
+        - "0"
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+        - "5"
+        - "6"
+        - "7"
+      type: string
+    PcpValueAndDiscard:
+      enum:
+        - "0"
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+        - "5"
+        - "6"
+        - "7"
+        - DISCARD
+      type: string
+    Percentage:
+      description:
+        This is a number of percent - a floating point number between 0 and 100
+      maximum: 100
+      minimum: 0
+      type: number
+    PhysicalLink:
+      description: An Ethernet physical layer
+      enum:
+        - 1BASE5
+        - 2BASE_TL
+        - 10BASE2
+        - 10BASE5
+        - 10BASE_F
+        - 10BASE_FB
+        - 10BASE_FL
+        - 10BASE_FP
+        - 10BASE_T
+        - 10BASE_T1L
+        - 10BASE_T1S
+        - 10BASE_TE
+        - 10BROAD36
+        - 10PASS_TS
+        - 100BASE_BX10
+        - 100BASE_FX
+        - 100BASE_LX10
+        - 100BASE_T
+        - 100BASE_T1
+        - 100BASE_T2
+        - 100BASE_T4
+        - 100BASE_TX
+        - 100BASE_X
+        - 1000BASE_BX10
+        - 1000BASE_CX
+        - 1000BASE_KX
+        - 1000BASE_LX
+        - 1000BASE_LX10
+        - 1000BASE_PX10
+        - 1000BASE_PX20
+        - 1000BASE_RHA
+        - 1000BASE_RHB
+        - 1000BASE_RHC
+        - 1000BASE_SX
+        - 1000BASE_T
+        - 1000BASE_T1
+        - 1000BASE_X
+        - 2_5GBASE_KX
+        - 2_5GBASE_T
+        - 2_5GBASE_T1
+        - 5GBASE_KR
+        - 5GBASE_T
+        - 5GBASE_T1
+        - 10GBASE_CX4
+        - 10GBASE_E
+        - 10GBASE_ER
+        - 10GBASE_EW
+        - 10GBASE_KR
+        - 10GBASE_KX4
+        - 10GBASE_L
+        - 10GBASE_LR
+        - 10GBASE_LRM
+        - 10GBASE_LW
+        - 10GBASE_LX4
+        - 10GBASE_R
+        - 10GBASE_S
+        - 10GBASE_SR
+        - 10GBASE_SW
+        - 10GBASE_T
+        - 10GBASE_T1
+        - 10GBASE_W
+        - 10GBASE_X
+        - 25GBASE_CR
+        - 25GBASE_CR_S
+        - 25GBASE_ER
+        - 25GBASE_KR
+        - 25GBASE_KR_S
+        - 25GBASE_LR
+        - 25GBASE_SR
+        - 25GBASE_T
+        - 40GBASE_CR4
+        - 40GBASE_ER4
+        - 40GBASE_FR
+        - 40GBASE_KR4
+        - 40GBASE_LR4
+        - 40GBASE_R
+        - 40GBASE_SR4
+        - 40GBASE_T
+        - 50GBASE_CR
+        - 50GBASE_ER
+        - 50GBASE_FR
+        - 50GBASE_KR
+        - 50GBASE_LR
+        - 50GBASE_SR
+        - 100GBASE_CR10
+        - 100GBASE_CR2
+        - 100GBASE_CR4
+        - 100GBASE_DR
+        - 100GBASE_ER4
+        - 100GBASE_KP4
+        - 100GBASE_KR2
+        - 100GBASE_KR4
+        - 100GBASE_LR4
+        - 100GBASE_R
+        - 100GBASE_SR10
+        - 100GBASE_SR2
+        - 100GBASE_SR4
+        - 200GBASE_CR4
+        - 200GBASE_DR4
+        - 200GBASE_ER4
+        - 200GBASE_FR4
+        - 200GBASE_KR4
+        - 200GBASE_LR4
+        - 200GBASE_SR4
+        - 400GBASE_DR4
+        - 400GBASE_ER8
+        - 400GBASE_FR8
+        - 400GBASE_LR8
+        - 400GBASE_SR16
+        - 400GBASE_SR4_2
+        - 400GBASE_SR8
+        - OTHER
+      type: string
+    ProductActionType:
+      description: |
+        Action to be performed on the Product Item. The action types are
+        described in MEF 79 (Sn 8.4.1.1).
+
+        The following mapping has been used between `ProductActionType` and MEF
+        79:
+
+        | ProductActionType | MEF 79     |
+        | ----------------- | ---------- |
+        | add               | INSTALL    |
+        | modify            | CHANGE     |
+        | delete            | DISCONNECT |
+      enum:
+        - add
+        - modify
+        - delete
+      type: string
+    ProductOfferingQualification:
+      allOf:
+        - $ref: "#/components/schemas/ProductOfferingQualification_Common"
+        - properties:
+            productOfferingQualificationItem:
+              description: >-
+                One or more of Product Offering Qualification Items. It MUST
+                contain exactly one entry for each item in the POQ request.
+              items:
+                $ref: "#/components/schemas/ProductOfferingQualificationItem"
+              minItems: 1
+              type: array
+            effectiveQualificationDate:
+              description: >-
+                Date and time (set by the Seller) when the POQ state was set to
+                one of the completion states (done.ready,
+                done.unable_to_provide, terminated_with_error). The Seller MUST
+                NOT provide this attribute until mentioned states are achieved.
+              format: date-time
+              type: string
+            expectedPOQCompletionDate:
+              description: >-
+                The date the Seller expects to provide qualification result. Set
+                by the Seller in case of providing a deferred response when the
+                POQ is in an acknowledged or inProgress state.
+              format: date-time
+              type: string
+            stateChange:
+              description: >
+                A log of all state transitions for the POQ. It must be in sync
+                with the most recent POQ Request state.
+              items:
+                $ref: "#/components/schemas/MEFPOQStateChange"
+              type: array
+            href:
+              description: >
+                Hyperlink to this POQ. Hyperlink MAY be used by the Seller in
+                responses. Hyperlink MUST be ignored by the Seller in case it is
+                provided by the Buyer in a request.
+              type: string
+            id:
+              description: >-
+                The Serviceability Request's unique identifier assigned by the
+                Seller.
+              type: string
+            state:
+              $ref: "#/components/schemas/MEFPOQTaskStateType"
+          required:
+            - id
+            - productOfferingQualificationItem
+            - state
+          type: object
+      description: >
+        Represents a response to the Buyer POQ inquiry. This type defines a set
+        of attributes that are assigned by the Seller while processing the
+        request. A POQ response is a combination of attributes defined here with
+        common attributes that are sent in the request. This type is used in
+        response to an immediate request and POQ retrieval by an identifier.
+        Reference MEF 79 (Sn 8.7 and 8.4.3).
+    ProductOfferingQualificationItem:
+      allOf:
+        - $ref: "#/components/schemas/ProductOfferingQualificationItem_Common"
+        - properties:
+            terminationError:
+              description: >
+                A list of text-based reasons the Seller MUST provide when the
+                request cannot be processed. When item state is
+                `terminatedWithError` the Seller **MUST** provide at least one
+                termination error.
+              items:
+                $ref: "#/components/schemas/TerminationError"
+              type: array
+            serviceabilityConfidence:
+              $ref: "#/components/schemas/MEFServiceabilityColor"
+            serviceabilityConfidenceReason:
+              description: >-
+                A free text description of the reason a particular color is
+                being provided.
+              type: string
+            alternateProductOfferingProposal:
+              description: >
+                A list of one or more alternative Product Offerings that the
+                Seller is proposing to the Buyer. If 1) the Buyer has set
+                `provideAlternate=true`;  2) the Seller has determined that the
+                POQ Confidence Level for this item is `yellow` or `red`; and  3)
+                The Seller has alternate Products (e.g. similar but lower
+                bandwidth) that may be adequate.
+
+                **MUST NOT** be specified if 'state' is 'terminatedWithError' or
+                'done.abandoned'.
+              items:
+                $ref: "#/components/schemas/AlternateProductOfferingProposal"
+              type: array
+            installationInterval:
+              $ref: "#/components/schemas/Duration"
+            guaranteedUntilDate:
+              description: >
+                Date until the Seller guarantees the qualification result.
+                **MUST NOT** be specified if 'state' is 'terminatedWithError' or
+                'done.abandoned'.
+              format: date-time
+              type: string
+            stateChange:
+              description: >
+                A log of all state transitions for the POQ Item. It must be in
+                sync with the most recent POQ Item's state.
+              items:
+                $ref: "#/components/schemas/MEFPOQItemStateChange"
+              type: array
+            state:
+              $ref: "#/components/schemas/MEFPOQItemTaskStateType"
+          required:
+            - state
+          type: object
+      description: >-
+        An individual article included in a POQ that describes a Product of a
+        particular type (Product Offering) being delivered to a specific
+        geographical location.  The objective is to determine if it is feasible
+        for the Seller to deliver this item as described and for the Seller to
+        inform the Buyer of the estimated time interval to complete this
+        delivery.
+
+        Reference: MEF 79 (Sn 8.4.3.1)
+    ProductOfferingQualificationItem_Common:
+      description: >
+        Common attributes shared between a POQ request and response.  These
+        attributes are provided by the Buyer and must not be modified by the
+        Seller.
+      properties:
+        product:
+          $ref: "#/components/schemas/MEFProductRefOrValue"
+        qualificationItemRelationship:
+          description: |
+            A list of references to related POQ items in this POQ
+          items:
+            $ref: "#/components/schemas/QualificationItemRelationship"
+          type: array
+        relatedContactInformation:
+          description: >-
+            Contact information of an individual or organization playing a role
+            for this POQ Item
+
+            (e.g. for MEF 79: POQ Item Location Contact, role=locationContact)
+          items:
+            $ref: "#/components/schemas/RelatedContactInformation"
+          type: array
+        action:
+          $ref: "#/components/schemas/ProductActionType"
+        id:
+          description: >
+            Id of this POQ item which is unique within the POQ. Assigned by the
+            Buyer.
+          type: string
+      required:
+        - action
+        - id
+        - product
+      type: object
+    ProductOfferingQualificationItem_Create:
+      allOf:
+        - $ref: "#/components/schemas/ProductOfferingQualificationItem_Common"
+        - type: object
+      description: >-
+        This structure serves as a request for a product offering qualification
+        item.
+
+        A product qualification item is an individual article included in a POQ
+        that describes a Product of a particular type (Product Offering) being
+        delivered to the geographic address  or a service site specified by the
+        Buyer.
+
+        The objective is to determine if it is feasible for the Seller to
+        deliver this item as described and for the Seller to inform the Buyer of
+        the estimated time interval to complete this delivery.
+
+        The modelling pattern introduces the `Common` supertype to aggregate
+        attributes that are common to both `ProductOfferingQualificationItem`
+        and `ProductOfferingQualificationItem_Create`. It happens that it is the
+        Create type has a subset of attributes of the response type and does not
+        introduce any new, thus the `Create` type has an empty definition.
+
+        Reference: MEF 79 (Sn 8.4.1.1)
+    ProductOfferingQualification_Common:
+      description: >
+        Defines a set of POQ attributes that might be used by the Buyer and
+        cannot be modified by the Seller. The `relatedContactInformation`
+        entries provided by the Buyer cannot be changed by the Seller, however
+        the Seller might append related contact information to that list.`
+      properties:
+        instantSyncQualification:
+          default: false
+          description: >-
+            If this flag is set to Yes, Buyer requests to have an instant
+            qualification to be provided in operation POST response
+          type: boolean
+        relatedContactInformation:
+          description: |-
+            Party playing a role for this qualification. MEF 79 mandates
+            providing 'Buyer Contact Information' in the request
+            ('role=buyerContactInformation') and 'Seller Contact Information'
+            in the response ('role=sellerContactInformation')
+          items:
+            $ref: "#/components/schemas/RelatedContactInformation"
+          minItems: 1
+          type: array
+        externalId:
+          description: >-
+            ID given by the consumer and only understandable by him (to
+            facilitate his searches afterwards)
+          type: string
+        provideAlternative:
+          default: false
+          description: >-
+            Allows the Buyer to indicate if he is willing to get an alternate
+            proposal if requested product not available.
+          type: boolean
+        projectId:
+          description: >-
+            This value MAY be assigned by the Buyer to identify a project the
+            serviceability request is associated with.
+          type: string
+        requestedPOQCompletionDate:
+          description: >-
+            The latest date a the POQ completion is expected. This attribute is
+            required when `instantSyncQualification=false`
+          format: date-time
+          type: string
+      required:
+        - relatedContactInformation
+      type: object
+    ProductOfferingQualification_Create:
+      allOf:
+        - $ref: "#/components/schemas/ProductOfferingQualification_Common"
+        - properties:
+            productOfferingQualificationItem:
+              description: A non-empty list of POQ items
+              items:
+                $ref: "#/components/schemas/ProductOfferingQualificationItem_Create"
+              minItems: 1
+              type: array
+          required:
+            - productOfferingQualificationItem
+          type: object
+      description: >
+        Represents a request formulated by the Buyer that is composed of product
+        offering qualification items.
+
+        Reference: MEF 79 (Sn 8.4)
+    ProductOfferingQualification_Find:
+      description: >
+        This class represent a single list item for the response of
+        `listProductOfferingQualification` operation. 
+
+        Reference: MEF 79 (Sn 8.6)
+      properties:
+        externalId:
+          description: >-
+            ID given by the consumer and only understandable by him (to
+            facilitate his searches afterwards)
+          type: string
+        id:
+          description: The POQ Request's unique identifier.
+          type: string
+        state:
+          $ref: "#/components/schemas/MEFPOQTaskStateType"
+        projectId:
+          description:
+            "The project ID specified by the Buyer in the POQ Request, if any."
+          type: string
+        requestedPOQCompletionDate:
+          description: >
+            The latest date the POQ completion is expected by the Buyer, if
+            specified by the Buyer.
+          format: date
+          type: string
+      required:
+        - id
+        - state
+      type: object
+    ProductOfferingRef:
+      description: >-
+        A reference to a Product Offering offered by the Seller to the Buyer.  A
+        Product Offering contains the commercial and technical details of a
+        Product sold by a particular Seller. A Product Offering defines all of
+        the commercial terms and, through association with a particular Product
+        Specification, defines all the technical attributes and behaviors of the
+        Product. A Product Offering may constrain the allowable set of
+        configurable technical attributes and/or behaviors specified in the
+        associated Product Specification. Defined in MEF 79 Section 8.4.1.1
+      properties:
+        href:
+          description: >
+            Hyperlink to a Product Offering in Sellers catalog. In case Seller
+            is not providing a catalog API this field is not used. The catalog
+            is provided by the Seller to the Buyer during onboarding. Hyperlink
+            MAY be used by the Seller in responses   Hyperlink MUST be ignored
+            by the Seller in case it is provided by the Buyer in a request.
+          type: string
+        id:
+          description: >-
+            id of a Product Offering. It is assigned by the Seller. The Buyer
+            and the Seller exchange information about offerings' ids during the
+            onboarding process.
+          type: string
+      required:
+        - id
+      type: object
+    ProductRelationshipWithGrouping:
+      description: >-
+        A relationship to existing Product. The requirements for usage for given
+        Product are described in the Product Specification. The "WithGrouping"
+        flavour of the Product Relationship allows for providing a list of
+        related product identifiers within a single Product Relationship. This
+        can be later used while processing the request as defined in the Product
+        Specification. The `groupingKey` attribute is used to achieve this
+        behavior in the API by marking the list of
+        `ProductRelationshipWithGroupings` within a `product` with a common key.
+      properties:
+        relationshipType:
+          description: >-
+            Specifies the type (nature) of the relationship to the related
+            Product. The nature of required relationships varies for Products of
+            different types. For example, a UNI or ENNI Product may not have any
+            relationships, but an Access E-Line may have two mandatory
+            relationships (related to the UNI on one end and the ENNI on the
+            other). More complex Products such as multipoint IP or Firewall
+            Products may have more complex relationships. As a result, the
+            allowed and mandatory `relationshipType` values are defined in the
+            Product Specification.
+          type: string
+        href:
+          description: >
+            Hyperlink to the product in Seller's inventory that is referenced
+            Hyperlink MAY be set by the Seller in responses. Hyperlink MUST be
+            ignored by the Seller in case it is provided by the Buyer in a
+            request.
+          type: string
+        id:
+          description: unique identifier of a Product that is referenced
+          type: string
+        groupingKey:
+          description: >
+            MEF 79.0.1. Introduces a list of related ids for the
+            ProductRelationship. For sake of TMF compliance, a `groupingKey` is
+            introduced to retain id as a simple attribute. Ids from
+            relationships having the same `groupingKey` and `relationshipType`
+            MUST be treated as a list of identifiers.
+
+            Reference: MEF 79.0.1 (Sn 7)
+          type: string
+      required:
+        - id
+        - relationshipType
+      type: object
+    ProductSpecificationRef:
+      description: >-
+        A reference to a structured set of well-defined technical attributes
+        and/or behaviors that are used to construct a Product Offering for sale
+        to a market.
+      properties:
+        href:
+          description: >
+            Hyperlink to a Product Specification in Sellers catalog. In case
+            Seller is not providing a catalog API this field is not used. The
+            catalog is provided by the Seller to the Buyer during onboarding.
+            Hyperlink MAY be used by the Seller in responses. Hyperlink MUST be
+            ignored by the Seller in case it is provided by the Buyer in a
+            request.
+          type: string
+        id:
+          description: Unique identifier of the product specification
+          type: string
+      required:
+        - id
+      type: object
+    QualificationItemRelationship:
+      description: >-
+        The relationship between product offering qualification items that can
+        be used to validate business rules between POQ items.
+
+        Reference: MEF 79.0.1 (Sn 6)
+      properties:
+        relationshipType:
+          description: >
+            One of the relationship types defined in the Product Specification.
+            For example: "relies on".
+          type: string
+        id:
+          description:
+            An identifier of the targeted POQ item within the same POQ request
+          type: string
+      required:
+        - id
+        - relationshipType
+      type: object
+    RelatedContactInformation:
+      description: >-
+        Contact data for a person or organization that is involved in the
+        product offering qualification. In a given context it is always
+        specified by the Seller (e.g. Seller Contact Information) or by the
+        Buyer. 
+
+        Reference: MEF 79 (Sn 8.11)
+      properties:
+        number:
+          description: Phone number
+          type: string
+        emailAddress:
+          description: Email address
+          type: string
+        role:
+          description: A role of the particular contact in the request
+          type: string
+        postalAddress:
+          $ref: "#/components/schemas/FieldedAddress"
+        organization:
+          description: The organization or company that the contact belongs to
+          type: string
+        name:
+          description: Name of the contact
+          type: string
+        numberExtension:
+          description: Phone number extension
+          type: string
+      required:
+        - emailAddress
+        - name
+        - number
+        - role
+      type: object
+    RelatedPlaceRefOrValue:
+      description: >-
+        Place defines the places (locations) where the products being subject of
+        this qualification are to be provided.
+      discriminator:
+        mapping:
+          FieldedAddress: "#/components/schemas/FieldedAddress"
+          FormattedAddress: "#/components/schemas/FormattedAddress"
+          GeographicAddressLabel: "#/components/schemas/GeographicAddressLabel"
+          MEFGeographicPoint: "#/components/schemas/MEFGeographicPoint"
+          GeographicAddressRef: "#/components/schemas/GeographicAddressRef"
+          GeographicSiteRef: "#/components/schemas/GeographicSiteRef"
+        propertyName: "@type"
+      properties:
+        role:
+          description: >-
+            Role of this place. The values that can be specified here are
+            described by Product Specification (e.g. "INSTALL_LOCATION").
+          type: string
+        "@type":
+          description: >
+            This field is used as discriminator. The value is the name of one of
+            the types that inherit from it using 'allOf', i.e. one of
+            FieldedAddress, FormattedAddress, GeographicAddressLabel,
+            MEFGeographicPoint, GeographicAddressRef, GeographicSiteRef.
+            Moreover, it might discriminate for an additional related place as
+            defined in '@schemaLocation'.
+          type: string
+        "@schemaLocation":
+          description: >-
+            A URL to a JSON-Schema file that defines additional attributes and
+            relationships. May be used to define additional related place types.
+            Usage of this attribute must be agreed between Buyer and Seller.
+          format: uri
+          type: string
+      required:
+        - "@type"
+        - role
+      type: object
+    Role:
+      description: >-
+        MEF 10.4 10.3 - Indicates how EI Frames mapped to the EVC End Point can
+        be forwarded
+      enum:
+        - ROOT
+        - LEAF
+        - TRUNK
+      type: string
+    ShortDuration:
+      description: >-
+        This class is used to describe durations expressed in minutes or smaller
+        time units
+      properties:
+        shortDurationValue:
+          description: >-
+            The value of the duration. For example, if the duration is 20 ms,
+            this element is 20.
+          type: integer
+        shortDurationUnits:
+          description: >-
+            The unit of measure in the duration. For example, if an interval is
+            2ms, this element is MS.
+          $ref: "#/components/schemas/ShortDurationUnits"
+      type: object
+    ShortDurationUnits:
+      description: >-
+        The unit of measure in the duration. For example, if an interval is 2ms,
+        this element is MS.
+      enum:
+        - NS
+        - US
+        - MS
+        - SEC
+        - MIN
+      type: string
+    SlsCosNameEntry:
+      description: >-
+        This is the specification of Performance Metrics (and parameters) for
+        one Class of Service. The first element is the CoS Name. This MUST be
+        unique, i.e. there can not be two instances of this Class with the same
+        CoS Name. The CoS Name is followed by three parameters and then lists of
+        Performance Metrics.
+      properties:
+        thresholdC:
+          description:
+            "MEF 10.4 8.8 and MEF 26.2 12.13 - thresholdC is a real number in
+            the range [0,1] used as a threshold to determine whether a given
+            time interval ?\U0001D461\U0001D458 has high loss."
+          maximum: 1
+          minimum: 0
+          type: number
+        oneWayConsecutiveHighLossIntervalsPmMetric:
+          description: >-
+            MEF 10.4 8.8.9 and MEF 26.2 12.13.9 -
+            oneWayConsecutiveHighLossIntervalsPmMetric is a reference to zero or
+            more instances of One Way Consecutive High Loss Intervals
+            Performance Metric. Each reference contains a set of parameters and
+            performance objective for the Performance Metric. If there are 0
+            instances then this Class of Service does not have an objective for
+            this One Way Frame Delay. If there are multiple instances for this
+            Class of Service then at least one of the parameters must be
+            different between the instances.
+          items:
+            $ref: "#/components/schemas/OneWayConsecutiveHighLossIntervalsPmMetric"
+          minItems: 0
+          type: array
+          uniqueItems: true
+        oneWayFrameDelayPmMetric:
+          description: >-
+            MEF 10.4 8.8.2 and MEF 26.2 12.13.2 - oneWayFrameDelayPmMetric is a
+            reference to zero or more instances of One Way Frame Delay
+            Performance Metric. Each reference contains a set of parameters and
+            performance objective for the Performance Metric. If there are 0
+            instances then this Class of Service does not have an objective for
+            this One Way Frame Delay. If there are multiple instances for this
+            Class of Service then at least one of the parameters must be
+            different between the instances.
+          items:
+            $ref: "#/components/schemas/OneWayFrameDelayPmMetric"
+          minItems: 0
+          type: array
+          uniqueItems: true
+        oneWayInterFrameDelayVariationPmMetric:
+          description: >-
+            MEF 10.4 8.8.5 and MEF 26.2 12.13.5 -
+            oneWayInterFrameDelayVariationPmMetric is a reference to zero or
+            more instances of One Way Inter Frame Delay Variation Performance
+            Metric. Each reference contains a set of parameters and performance
+            objective for the Performance Metric. If there are 0 instances then
+            this Class of Service does not have an objective for this One Way
+            Frame Delay. If there are multiple instances for this Class of
+            Service then at least one of the parameters must be different
+            between the instances.
+          items:
+            $ref: "#/components/schemas/OneWayInterFrameDelayVariationPmMetric"
+          minItems: 0
+          type: array
+          uniqueItems: true
+        oneWayMeanFrameDelayPmMetric:
+          description: >-
+            MEF 10.4 8.8.3 and MEF 26.2 12.13.3 - oneWayMeanFrameDelayPmMetric
+            is a reference to zero or more instances of One Way Mean Frame Delay
+            Performance Metric. Each reference contains a set of parameters and
+            performance objective for the Performance Metric. If there are 0
+            instances then this Class of Service does not have an objective for
+            this One Way Frame Delay. If there are multiple instances for this
+            Class of Service then at least one of the parameters must be
+            different between the instances.
+          items:
+            $ref: "#/components/schemas/OneWayMeanFrameDelayPmMetric"
+          minItems: 0
+          type: array
+          uniqueItems: true
+        oneWayGroupAvailabilityPmMetric:
+          description: >-
+            MEF 10.4 8.8.11 and MEF 26.2 12.13.10 -
+            oneWayGroupAvailabilityPmMetric is a reference to zero or more
+            instances of One Way Group Availability Performance Metric. Each
+            reference contains a set of parameters and performance objective for
+            the Performance Metric. If there are 0 instances then this Class of
+            Service does not have an objective for this One Way Frame Delay. If
+            there are multiple instances for this Class of Service then at least
+            one of the parameters must be different between the instances.
+          items:
+            $ref: "#/components/schemas/OneWayAvailabilityPmMetric"
+          minItems: 0
+          type: array
+          uniqueItems: true
+        oneWayAvailabilityPmMetric:
+          description: >-
+            MEF 10.4 8.8.7 and MEF 26.2 12.13.7 - oneWayAvailabilityPmMetric is
+            a reference to zero or more instances of One Way Availability
+            Performance Metric. Each reference contains a set of parameters and
+            performance objective for the Performance Metric. If there are 0
+            instances then this Class of Service does not have an objective for
+            this One Way Frame Delay. If there are multiple instances for this
+            Class of Service then at least one of the parameters must be
+            different between the instances.
+          items:
+            $ref: "#/components/schemas/OneWayAvailabilityPmMetric"
+          minItems: 0
+          type: array
+          uniqueItems: true
+        oneWayHighLossIntervalsPmMetric:
+          description: >-
+            MEF 10.4 8.8.8 and MEF 26.2 12.13.8 -
+            oneWayHighLossIntervalsPmMetric is a reference to zero or more
+            instances of One Way High Loss Intervals Performance Metric. Each
+            reference contains a set of parameters and performance objective for
+            the Performance Metric. If there are 0 instances then this Class of
+            Service does not have an objective for this One Way Frame Delay. If
+            there are multiple instances for this Class of Service then at least
+            one of the parameters must be different between the instances.
+          items:
+            $ref: "#/components/schemas/OneWayHighLossIntervalPmMetric"
+          minItems: 0
+          type: array
+          uniqueItems: true
+        oneWayCompositePmMetric:
+          description: >-
+            MEF 10.4 8.8.10 - oneWayCompositePmMetric is a reference to zero or
+            more instances of One Way Composite Performance Metric. Each
+            reference contains a set of parameters and performance objective for
+            the Performance Metric. If there are 0 instances then this Class of
+            Service does not have an objective for this One Way Frame Delay. If
+            there are multiple instances for this Class of Service then at least
+            one of the parameters must be different between the instances.
+          items:
+            $ref: "#/components/schemas/OneWayCompositePmMetric"
+          minItems: 0
+          type: array
+          uniqueItems: true
+        oneWayFrameLossRatioPmMetric:
+          description: >-
+            MEF 10.4 8.8.6 and MEF 26.2 12.13.6 - oneWayFrameLossRatioPmMetric
+            is a reference to zero or more instances of One Way Frame Loss Ratio
+            Performance Metric. Each reference contains a set of parameters and
+            performance objective for the Performance Metric. If there are 0
+            instances then this Class of Service does not have an objective for
+            this One Way Frame Delay. If there are multiple instances for this
+            Class of Service then at least one of the parameters must be
+            different between the instances.
+          items:
+            $ref: "#/components/schemas/OneWayFrameLostRatioPmMetric"
+          maxItems: 1
+          minItems: 0
+          type: array
+          uniqueItems: true
+        consecutiveIntervalN:
+          description:
+            "MEF 10.4 8.8 and MEF 26.2 12.13 - consectiveIntervalN is an integer
+            ? 1, used to identify how many consecutive ?\U0001D461\U0001D458
+            intervals must have high loss to trigger a change in Availability."
+          minimum: 1
+          type: integer
+        deltaT:
+          description: >-
+            MEF 10.4 8.8 and MEF 26.2 12.13 - deltaT is a time duration in
+            seconds much smaller than timeInterval. This is used, primarily, in
+            calculations associated with Availability, High Loss Intervals and
+            Consecutive High Loss Intervals.
+          type: integer
+        oneWayFrameDelayRangePmMetric:
+          description: >-
+            MEF 10.4 8.8.4 and MEF 26.2 12.13.4 - oneWayFrameDelayRangePmMetric
+            is a reference to zero or more instances of One Way Frame Delay
+            Range Performance Metric. Each reference contains a set of
+            parameters and performance objective for the Performance Metric. If
+            there are 0 instances then this Class of Service does not have an
+            objective for this One Way Frame Delay. If there are multiple
+            instances for this Class of Service then at least one of the
+            parameters must be different between the instances.
+          items:
+            $ref: "#/components/schemas/OneWayFrameDelayRangePmMetric"
+          minItems: 0
+          type: array
+          uniqueItems: true
+        cosName:
+          description: This is the CoS Name for this PM Entry.
+          minLength: 1
+          type: string
+      type: object
+    SourceMacAddressLimit:
+      description: >-
+        This limits the number of source MAC addresses that can be used in
+        ingress  frame mapped to the End Point of all types over a time
+        interval. It is a recommendation that each Ingress EI Frame with a
+        source MAC address that would exceed the limit be discarded by the
+        Carrier Ethernet Network.
+      properties:
+        limit:
+          description: >-
+            The number of MAC source addresses that will not subject an Ingress
+            EI Frame to discard during the time interval.
+          minimum: 1
+          type: integer
+        interval:
+          $ref: "#/components/schemas/ShortDuration"
+      type: object
+    SubscriberMegMip:
+      description: >-
+        MEF 10.4 10.13 - The value of the EVC EP Subscriber MEG MIP Service
+        Attribute is either None or an integer in the range 0  7 that indicates
+        the MEG Level of a Subscriber MEG MIP.
+      enum:
+        - "0"
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+        - "5"
+        - "6"
+        - "7"
+        - NONE
+      type: string
+    SubscriberUniCommon:
+      description: >-
+        This class contains all of the Subscriber UNI Services Attributes that
+        are used in all four Business Functions (POQ, Quote, Order, Inventory).
+        At this time, this includes all of the Subscriber UNI Service
+        Attributes. This class is used to compose the SubscriberUNI class which
+        has one file for each Business Function that differ in terms of the
+        Service Attributes that are "Required" for the Business Function (rather
+        than "Optional").
+      properties:
+        listOfPhyLinks:
+          description: >-
+            MEF 10.4 9.4 - The value of the Subscriber UNI List of Physical
+            Links Service Attribute is a list of 5-tuples of the form <id,
+            physicalLink, synchronousEthernet, precisionTiming,
+            demarcConnectorType>, with one list item for each physical link. The
+            value of id is an identifier for the physical link. The value of
+            physicalLink is the specific Ethernet physical layer type.
+            synchronousEthernet indicates if synchronous Ethernet is used on the
+            physical link and has the value Enabled or Disabled. The value of
+            precisionTiming indicates if the Precision Time Protocol is used on
+            the physical link and has the value Enabled or Disabled. The value
+            of demarcConnectorType specifies the type of connector used. Note
+            that the id and the physicalLink come from the
+            CarrierEthernetPhysicalLink class.
+          items:
+            $ref: "#/components/schemas/UniPhysicalLink"
+          minItems: 0
+          type: array
+          uniqueItems: false
+        virtualFrameMap:
+          description: >-
+            MEF 10.4 9.2 and 9.3 - When the value of the Subscriber UNI
+            Instantiation Service Attribute = Virtual, there must exist a map
+            that maps the set of Virtual Frames that cross the UNI to a sequence
+            of pairs of the form ?s,t? where s is a standard Ethernet frame per
+            Clause 3 of IEEE Std 802.3  2015 [5] and t is the arrival time at
+            the UNI for all bits in s. Since MEF 10.4 does not specify the
+            contents or format of this map, it is currently defined as an
+            arbitrary length string.
+          items:
+            $ref: "#/components/schemas/VirtualFrameMap"
+          maxItems: 1
+          minItems: 0
+          type: array
+          uniqueItems: true
+        portConversation:
+          description: >-
+            MEF 10.4 9.6 - A mapping of Port Conversation IDs (i.e., VLAN IDs or
+            zero for untagged frames) to an ordered list of physical links if
+            there are multiple physical links in the UNI and the link
+            aggregation is ALL_ACTIVE.
+          items:
+            $ref: "#/components/schemas/ConversationIdToAggregationLinkMap"
+          minItems: 0
+          type: array
+          uniqueItems: false
+        maximumNumberOfEndPoints:
+          description: >-
+            MEF 10.4 9.9 - The maximum number of OVC End Points that the
+            Operator CEN can support at the UNI.
+          maximum: 4094
+          minimum: 1
+          type: integer
+        lagLinkMeg:
+          $ref: "#/components/schemas/EnabledDisabled"
+        l2cpAddressSet:
+          description: >-
+            MEF 10.4 9.16 and MEF 45.1 8.1 - L2CP Address Set Service Attribute
+            is defined in MEF 45.1. CTA CEVLAN Tag Aware for VLAN-based services
+            where the CE-VLAN ID is used to map a frame to a service. CTB CVLAN
+            Tag Blind for Port-based services where the CE-VLAN ID not used to
+            map a frame to a service. CTB2 CVLAN Tag Blind Option 2 for
+            point-to-point Port-based services that support the EPL Option 2
+            L2CP processing.
+          $ref: "#/components/schemas/L2cpAddressSet"
+        linkOAM:
+          $ref: "#/components/schemas/EnabledDisabled"
+        meg:
+          $ref: "#/components/schemas/EnabledDisabled"
+        linkAggregation:
+          description: >-
+            MEF 10.4 9.5 - Data type representing Link Aggregation types.
+            NONE-No Link Aggregation is used. 2_LINK_ACTIVE_STANDBY-The SP
+            network uses Link Aggregation as in either Clause 5.6.1 of IEEE Std
+            802.1AX-2008 [2] or Clause 6.7.1 of IEEE Std 802.1AX-2014 with one
+            Link Aggregation Group(LAG) across the links supporting the UNI/ENNI
+            such that all Service Frames are carried on only one of the two
+            links when both links are operational. ALL_ACTIVE-The SP Network
+            uses Link Aggregation as specified in Clause 5.3 of IEEE Std
+            802.1AX-2014, including the use of the version 2 LACPDUs as
+            specified in Clause 5.3.1h of IEEE Std 802.1AZ-2014, with one Link
+            Aggregation Group (LAG) across the links. OTHER-The
+            Operator/Subscriber/Service Provider agree on another other
+            resiliency mechanism.
+          $ref: "#/components/schemas/LinkAggregation"
+        l2cpPeering:
+          $ref: "#/components/schemas/L2cpPeering"
+        maximumNumberOfCtagVlanIdsPerEndPoint:
+          description: >-
+            MEF 10.4 9.10 - An integer greater than or equal to 1 that limits
+            the number of C-Tag VLAN IDs that can map to each EVC End Point.
+          maximum: 4094
+          minimum: 1
+          type: integer
+        tokenShare:
+          $ref: "#/components/schemas/EnabledDisabled"
+        maximumServiceFrameSize:
+          description: >-
+            MEF 10.4 9.8 - Specifies the maximum size of Service Frames that can
+            be transmitted across UNI.
+          minimum: 1522
+          type: integer
+        envelopes:
+          description: >-
+            MEF 10.4 9.12 - The Envelopes and Envelope Coupling Flag values to
+            which Bandwidth Profile Flows can be mapped. Value is list of
+            {envelopeID, couplingFlagForIndexZero}.
+          items:
+            $ref: "#/components/schemas/Envelope"
+          minItems: 0
+          type: array
+          uniqueItems: true
+        instantiation:
+          description: >-
+            MEF 10.4 9.2 - When the value is Physical, the UNI is implemented
+            using one or more instances of a standard Physical Layer. When the
+            value is Virtual, the physical layer is not specified.
+          $ref: "#/components/schemas/Instantiation"
+      type: object
+    TerminationError:
+      description: >-
+        This indicates an error that caused an Item to be terminated. The code
+        and propertyPath should be used like in Error422.
+      properties:
+        code:
+          $ref: "#/components/schemas/Error422Code"
+        propertyPath:
+          description: >
+            A pointer to a particular property of the payload that caused the
+            validation issue. It is highly recommended that this property should
+            be used.
+
+            Defined using JavaScript Object Notation (JSON) Pointer
+            (https://tools.ietf.org/html/rfc6901).
+          type: string
+        value:
+          description: Text to describe the reason of the termination.
+          type: string
+      type: object
+    Time:
+      properties:
+        month:
+          maximum: 12
+          minimum: 1
+          type: integer
+        hour:
+          maximum: 23
+          minimum: 0
+          type: integer
+        year:
+          minimum: 1900
+          type: integer
+        day:
+          maximum: 31
+          minimum: 1
+          type: integer
+        minute:
+          maximum: 59
+          minimum: 0
+          type: integer
+        second:
+          maximum: 59
+          minimum: 0
+          type: integer
+      type: object
+    TimeUnit:
+      description: |
+        Represents a unit of time.
+        Reference: MEF 79 (Sn 8.4.3.1/8.4.3.2)
+      enum:
+        - calendarMonths
+        - calendarDays
+        - calendarHours
+        - calendarMinutes
+        - businessDays
+        - businessHours
+        - businessMinutes
+      type: string
+    UniConnectorGender:
+      description: >-
+        This indicates whether the Subscriber is presented with a SOCKET
+        (common) or a PLUG (less common).
+      enum:
+        - SOCKET
+        - PLUG
+      type: string
+    UniConnectorType:
+      description: >-
+        This indicates the type of connector that is presented to the
+        Subscriber.
+      enum:
+        - SC
+        - LC
+        - RJ45
+        - FC
+        - D4
+        - OTHER
+      type: string
+    UniPhysicalLink:
+      allOf:
+        - $ref: "#/components/schemas/CarrierEthernetPhysicalLink"
+        - $ref: "#/components/schemas/UniSpecifcAttributes"
+      description: >-
+        This class describes the Physical Link attributes at a UNI. It is a
+        4-tuple {carrierEthernet, frequency sync enable, PTP enable, connector}.
+        carrierEthernet is a 2-tuple containing an id and physical link type.
+    UniSpecifcAttributes:
+      properties:
+        uniConnectorGender:
+          description: >-
+            This indicates whether the Subscriber is presented with a SOCKET
+            (common) or a PLUG (less common).
+          $ref: "#/components/schemas/UniConnectorGender"
+        synchronousEthernet:
+          $ref: "#/components/schemas/EnabledDisabled"
+        uniConnectorType:
+          description: >-
+            This indicates the type of connector that is presented to the
+            Subscriber.
+          $ref: "#/components/schemas/UniConnectorType"
+        precisionTiming:
+          $ref: "#/components/schemas/EnabledDisabled"
+      type: object
+    VirtualFrameMap:
+      description: >-
+        A map for virtual frame mapping.   The absence of this attribute
+        corresponds to a Service Attribute value of Not Applicable. Reference
+        MEF 10.4 Section 9.3 Subscriber UNI Virtual Frame Map Service Attribute.
+      properties:
+        vfMap:
+          description: >-
+            MEF 10.4 9.2 and 9,3 - When the value of the Subscriber UNI
+            Instantiation Service Attribute = Virtual, there must exist a map
+            that maps the set of Virtual Frames that cross the UNI to a sequence
+            of pairs of the form?s,t where s is a standard Ethernet frame per
+            Clause 3 of IEEE Std 802.3  2015 [5] and t is the arrival time at
+            the UNI for all bits in s. Since MEF 10.4 does not specify the
+            contents or format of this map, it is currently defined as an
+            arbitrary length string.
+          minLength: 0
+          type: string
+      type: object
+    VlanType:
+      description: An indication about how the Vlan List argument is interpreted
+      enum:
+        - LIST
+        - UT/PT
+      type: string
