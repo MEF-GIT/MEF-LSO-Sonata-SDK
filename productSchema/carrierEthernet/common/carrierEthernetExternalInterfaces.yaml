@@ -1,8 +1,8 @@
 ---
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
-    MEF LSO Sonata - Carrier Ethernet External Interfaces (Common) Product Specification
-    # MEF Forum - Date: 20210531  Edit-level: 216
+    MEF LSO Sonata - Carrier Ethernet External Interfaces
+    # MEF Forum - Date: 20210615  Edit-level: 221
     # File: carrierEthernet/common/carrierEthernetExternalInterfaces.yaml
     #
     # ---------------------
@@ -199,6 +199,9 @@ definitions:
                     - "400GBASE_SR4_2"
                     - "400GBASE_SR8"
                     - "OTHER"
+        required:
+            - id
+            - physicalLink
     UniSpecifcAttributes:
         type: object
         properties:
@@ -234,6 +237,11 @@ definitions:
                 enum:
                     - "SOCKET"
                     - "PLUG"
+        required:
+            - synchronousEthernet
+            - precisionTiming
+            - uniConnectorType
+            - uniConnectorGender
     CarrierEthernetEiReference:
         type: object
         properties:
@@ -241,6 +249,8 @@ definitions:
                 description: A reference to an External Interface (UNI, ENNI).
                 type: string
                 format: uri
+        required:
+            - href
     VirtualFrameMap:
         type: object
         description:  >-
@@ -250,14 +260,14 @@ definitions:
         properties:
             vfMap:
                 description:  >-
-                    MEF 10.4 §9.2 and §9,3 - When the value of the Subscriber UNI
-                    Instantiation Service Attribute = Virtual, there must exist a map
-                    that maps the set of Virtual Frames that cross the UNI to a sequence
-                    of pairs of the form〈s,t where s is a standard Ethernet frame per
-                    Clause 3 of IEEE Std 802.3 – 2015 [5] and t is the arrival time
-                    at the UNI for all bits in s. Since MEF 10.4 does not specify the
-                    contents or format of this map, it is currently defined as an arbitrary
-                    length string.
+                    MEF 10.4 sec. 9.2 and sec. 9,3 - When the value of the Subscriber
+                    UNI Instantiation Service Attribute = Virtual, there must exist
+                    a map that maps the set of Virtual Frames that cross the UNI to
+                    a sequence of pairs of the form〈s,t where s is a standard Ethernet
+                    frame per Clause 3 of IEEE Std 802.3 – 2015 [5] and t is the arrival
+                    time at the UNI for all bits in s. Since MEF 10.4 does not specify
+                    the contents or format of this map, it is currently defined as
+                    an arbitrary length string.
                 type: string
                 minLength: 0
 

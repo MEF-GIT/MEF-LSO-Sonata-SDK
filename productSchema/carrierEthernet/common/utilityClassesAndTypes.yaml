@@ -1,8 +1,8 @@
 ---
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
-    MEF LSO Sonata - Utility Classes and Types (Common) Product Specification
-    # MEF Forum - Date: 20210531  Edit-level: 216
+    MEF LSO Sonata - Utility Classes and Types
+    # MEF Forum - Date: 20210615  Edit-level: 221
     # File: carrierEthernet/common/utilityClassesAndTypes.yaml
     #
     # ---------------------
@@ -69,6 +69,9 @@ definitions:
                 enum:
                     - "UP"
                     - "DOWN"
+        required:
+            - level
+            - mepDirection
     SourceMacAddressLimit:
         type: object
         description:  >-
@@ -90,6 +93,9 @@ definitions:
                     limit is evaluated
                 type: object
                 $ref: "#/definitions/ShortDuration"
+        required:
+            - limit
+            - interval
     AggLinkDepth:
         type: object
         description:  >-
@@ -106,6 +112,9 @@ definitions:
                 description: The number of Link Aggregation links available to the VLAN
                 type: integer
                 minimum: 1
+        required:
+            - vlanID
+            - lagDepth
     FrameDisposition:
         type: object
         description:  >-
@@ -124,6 +133,10 @@ definitions:
             broadcast:
                 type: object
                 $ref: "#/definitions/FrameDispEnum"
+        required:
+            - unicast
+            - multicast
+            - broadcast
     FrameDispEnum:
         type: string
         enum:
@@ -161,6 +174,9 @@ definitions:
                     - "EBPS"
                     - "ZBPS"
                     - "YBPS"
+        required:
+            - irValue
+            - irUnits
     DataSize:
         type: object
         description:  >-
@@ -187,6 +203,9 @@ definitions:
                     - "EBYTES"
                     - "ZBYTES"
                     - "YBYTES"
+        required:
+            - dataSizeValue
+            - dataSizeUnits
     ShortDuration:
         type: object
         description:  >-
@@ -209,6 +228,9 @@ definitions:
                     - "MS"
                     - "SEC"
                     - "MIN"
+        required:
+            - shortDurationValue
+            - shortDurationUnits
     LongDuration:
         type: object
         description:  >-
@@ -230,6 +252,9 @@ definitions:
                     - "WEEK"
                     - "MONTH"
                     - "YEAR"
+        required:
+            - longDurationValue
+            - longDurationUnits
     Time:
         type: object
         properties:
@@ -256,6 +281,13 @@ definitions:
                 type: integer
                 minimum: 0
                 maximum: 59
+        required:
+            - year
+            - month
+            - day
+            - hour
+            - minute
+            - second
     Percentage:
         description:  >-
             This is a number of percent - a floating point number between

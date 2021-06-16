@@ -1,8 +1,8 @@
 ---
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
-    MEF LSO Sonata - Carrier Ethernet ENNI Common (Inventory) Product Specification
-    # MEF Forum - Date: 20210531  Edit-level: 216
+    MEF LSO Sonata - Carrier Ethernet ENNI Common
+    # MEF Forum - Date: 20210615  Edit-level: 221
     # File: carrierEthernet/carrierEthernetEnniSpSo/inventory/carrierEthernetEnniCommon.yaml
     #
     # ---------------------
@@ -61,16 +61,16 @@ definitions:
         properties:
             peeringIdentifier:
                 description:  >-
-                    MEF 26.2 §9.1 - An identifier for the ENNI intended for operations
-                    purposes by the interconnecting Operators at the ENNI.
+                    MEF 26.2 sec. 9.1 - An identifier for the ENNI intended for
+                    operations purposes by the interconnecting Operators at the ENNI.
                 type: string
                 minLength: 1
                 maxLength: 45
                 pattern: "[\x20-\x7F]+"
             listOfPhysicalLinks:
                 description:  >-
-                    MEF 26.2 §9.2 and 9.3 - This Service Attribute combines several
-                    of the MEF 26.2 Objects into a single n-tuple that is consistent
+                    MEF 26.2 sec. 9.2 and 9.3 - This Service Attribute combines
+                    several of the MEF 26.2 Objects into a single n-tuple that is consistent
                     with the way this information is described in MEF 10.4. The value
                     of the ENNI List of Physical Links Service Attribute is a list
                     of 5-tuples of the form ⟨⟨id,pl,fs,pt,cn⟩, with one list item for
@@ -90,14 +90,15 @@ definitions:
                     $ref: "../../common/carrierEthernetExternalInterfaces.yaml#/definitions/EnniPhysicalLink"
             serviceFrameFormat:
                 description:  >-
-                    MEF 26.2 §9.3 - The ENNI Frame Format Common Attribute has
-                    the value Ethernet MAC Frame conforming to Clause 3 of IEEE 802.3-2012.
+                    MEF 26.2 sec. 9.3 - The ENNI Frame Format Common Attribute
+                    has the value Ethernet MAC Frame conforming to Clause 3 of IEEE
+                    802.3-2012.
                 type: string
                 enum:
                     - "802.3-2012"
             linkAggregation:
                 description:  >-
-                    MEF 26.2 §9.5 - If the ENNI is composed of multiple physical
+                    MEF 26.2 sec. 9.5 - If the ENNI is composed of multiple physical
                     links this Service Attribute indicates how they are combined using
                     Link Aggregation.
                 # See additional validation notes in the Schema Guide
@@ -109,8 +110,8 @@ definitions:
                     - "OTHER"
             portConversation:
                 description:  >-
-                    MEF 26.2 §9.6 - A mapping of Port Conversation IDs (i.e., VLAN
-                    IDs or zero for untagged frames) to an ordered list of physical
+                    MEF 26.2 sec. 9.6 - A mapping of Port Conversation IDs (i.e.,
+                    VLAN IDs or zero for untagged frames) to an ordered list of physical
                     links if there are multiple physical links in the UNI and the link
                     aggregation is ALL_ACTIVE. Note: In some cases the Port Conversation
                     ID to Aggregation Link Map can be specified at the OVC End Point.
@@ -123,20 +124,20 @@ definitions:
                     $ref: "../../common/carrierEthernetLinkAggregation.yaml#/definitions/ConversationIdToAggregationLinkMap"
             meg:
                 description:  >-
-                    MEF 26.2 §9.7 - Is a Down ENNI MEG MEP Enabled at the ENNI
+                    MEF 26.2 sec. 9.7 - Is a Down ENNI MEG MEP Enabled at the ENNI
                     as described in MEF 30.1?
                 type: object
                 $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
             lagLinkMeg:
                 description:  >-
-                    MEF 26.2 §9.8 - If Enabled the Service Provider MUST operate
+                    MEF 26.2 sec. 9.8 - If Enabled the Service Provider MUST operate
                     the LAG Link MEG on each link in the ENNI.
                 type: object
                 $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
             linkOAM:
                 description:  >-
-                    MEF 26.2 §9.9 - Indicates whether Link OAM as described in
-                    Clause 57 of IEEE Std. 802.3 is supported on the ENNI.
+                    MEF 26.2 sec. 9.9 - Indicates whether Link OAM as described
+                    in Clause 57 of IEEE Std. 802.3 is supported on the ENNI.
                 type: object
                 $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
 

@@ -1,8 +1,8 @@
 ---
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
-    MEF LSO Sonata - Carrier Ethernet Class of Service (Common) Product Specification
-    # MEF Forum - Date: 20210531  Edit-level: 216
+    MEF LSO Sonata - Carrier Ethernet Class of Service
+    # MEF Forum - Date: 20210615  Edit-level: 221
     # File: carrierEthernet/common/carrierEthernetClassOfService.yaml
     #
     # ---------------------
@@ -71,6 +71,10 @@ definitions:
                 description: This specifies the CoS for L2CPs carried over the EVC/OVC.
                 type: object
                 $ref: "#/definitions/CosL2cp"
+        required:
+            - mapType
+            - map_M
+            - l2cp_P
     CosFromCtagPcp:
         type: object
         description:  >-
@@ -98,6 +102,10 @@ definitions:
                 description: This specifies the CoS for L2CPs carried over the OVC.
                 type: object
                 $ref: "#/definitions/CosL2cp"
+        required:
+            - mapType
+            - map_M
+            - l2cp_P
     CosUniPcpMapEntry:
         type: object
         description: 2-tuple {PCP, CoSName} that maps a CoS Name or DISCARD to a PCP.
@@ -119,6 +127,9 @@ definitions:
                 description: A CoS Name or DISCARD
                 # See additional validation notes in the Schema Guide
                 type: string
+        required:
+            - pcpVal
+            - pcpCosName
     CosFromStagPcp:
         type: object
         description:  >-
@@ -145,6 +156,10 @@ definitions:
                 # See additional validation notes in the Schema Guide
                 type: object
                 $ref: "#/definitions/CosL2cp"
+        required:
+            - mapType
+            - map_M
+            - l2cp_P
     CosEnniPcpMapEntry:
         type: object
         description: 2-tuple {PCP, CoSName} that maps a CoS Name or DISCARD to a PCP.
@@ -162,6 +177,9 @@ definitions:
                     - "7"
             pcpCosName:
                 type: string
+        required:
+            - pcpVal
+            - pcpCosName
     CosFromDscp:
         type: object
         description:  >-
@@ -187,6 +205,10 @@ definitions:
                 description: This specifies the CoS for L2CPs carried over the OVC.
                 type: object
                 $ref: "#/definitions/CosL2cp"
+        required:
+            - mapType
+            - map_M
+            - l2cp_P
     CosDscpMap:
         type: object
         description:  >-
@@ -218,6 +240,11 @@ definitions:
                     This is the CoS value for packets that are not IP packets when
                     CoS is determined from DSCP
                 type: string
+        required:
+            - dscpValueCoSList
+            - otherIPv4
+            - otherIPv6
+            - notIP
     CosDscpMapEntry:
         type: object
         description: This is a 3-tuple {ipv4list, ipv6list, cosName}
@@ -231,6 +258,8 @@ definitions:
                 $ref: "#/definitions/DscpValues"
             cosName:
                 type: string
+        required:
+            - cosName
     DscpValues:
         type: object
         description: A list of 6 bit values
@@ -249,10 +278,13 @@ definitions:
         description: 2-tuple {L2CP Ident, CoS Name}
         properties:
             l2cpIdentifier:
-                description: MEF 45.1 §8.2 - Protocol Identifier
+                description: MEF 45.1 sec. 8.2 - Protocol Identifier
                 type: object
                 $ref: "carrierEthernetL2cp.yaml#/definitions/L2cpProtocol"
             l2cpCosName:
                 description: CoS Name String to associate with the L2CP
                 type: string
+        required:
+            - l2cpIdentifier
+            - l2cpCosName
 

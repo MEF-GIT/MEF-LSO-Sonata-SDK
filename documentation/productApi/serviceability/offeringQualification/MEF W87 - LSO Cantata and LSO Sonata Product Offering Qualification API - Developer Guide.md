@@ -1178,7 +1178,7 @@ response. These can be later used in Quote and Product Order steps.
 attributes (`productConfiguration`). [MEF79 R31]
 
 **[R35]** The product specified in `product.@type` **MUST** be compatible with
-the one defined by `productOffering` or `productSpecification.
+the one defined by `productOffering` or `productSpecification`.
 
 **[R36]** If `action=add` the Buyer **MUST NOT** provide `product.id`. [MEF79
 R30]
@@ -1689,9 +1689,6 @@ returned:
       << some attributes are omitted >>
     },
     "serviceabilityConfidence" : "red",
-    "alternateProductOffering": {
-        "id": "000099"
-    },
     "alternateProductOfferingProposal" : [ {
       "installationInterval" : {
         "amount" : 10,
@@ -1699,6 +1696,12 @@ returned:
       },
       "id" : "alternative-01",
       "alternateProduct" : {
+        "productOffering": {
+          "id": "000099"
+        },
+        "productSpecification": {
+          "id": "urn:mef:lso:spec:sonata:AccessElineOvc:1.0.0:poq"
+        },
         "productConfiguration" : {
             "@type" : "urn:mef:lso:spec:sonata:AccessElineOvc:1.0.0:poq",
             "uniEp": {
@@ -2276,13 +2279,15 @@ Inherits from:
 If a POQ request does not pass an initial validation the appropriate error
 response is returned to the Buyer. In case a POQ request failed business rules
 validation the HTTP response code is `422` and a list of validation problems is
-returned. Otherwise, the POQ is assigned a unique identifier. POQ moves to
-`inProgress` state in case an immediate response is not provided by the Seller.
-POQ reaches `done.ready` state if all elements are in `done.ready` state as
-well. If an evaluation of any items concludes in state `terminatedWithError`
-the POQ reaches `terminatedWithError` state. The `terminatedWithError` state is
-reached also when there is some other information is missing in POQ request
-send by the Buyer. If the POQ is processed asynchronously it can reach
+returned. Otherwise, the POQ is assigned a unique identifier. In case of a
+deferred response, the POQ gets the `acknowledged` state assigned and is
+returned in the response. In case of an immediate response the POQ moves
+directly to `done.ready` once the processing is done. POQ reaches `done.ready`
+state if all elements are in `done.ready` state as well. If an evaluation of
+any items concludes in state `terminatedWithError` the POQ reaches
+`terminatedWithError` state. The `terminatedWithError` state is reached also
+when there is some other information is missing in POQ request send by the
+Buyer. If the POQ is processed asynchronously it can reach
 `done.unableToProvide` if the Seller is not able to complete all items
 qualification by the deadline specified by the Buyer
 (`requestedPOQCompletionDate`).
@@ -2315,7 +2320,7 @@ product offering qualification can transition.
         <tr>
             <td>acknowledged</td>
             <td>Not represented in MEF 79</td>
-            <td>Not represented MEF 79. The state might be internally assigned when POQ is acknowledged by the Seller and assigned an identifier. It is not to be shown to the Buyer.</td>
+            <td>A request has been received by the Seller, has passed basic validation and the id was assigned.</td>
         </tr><tr>
             <td>terminatedWithError</td>
             <td>INSUFFICIENT_INFORMATION_PROVIDED</td>
@@ -2754,7 +2759,7 @@ The following mapping has been used between `MEFPOQItemTaskStateType` and MEF
         <tr>
             <td>acknowledged</td>
             <td>Not represented in MEF 79</td>
-            <td>The state might be internally assigned when POQ is acknowledged by the Seller and assigned an identifier. It is not to be shown to the Buyer.</td>
+            <td>A request has been received by the Seller and has passed basic validation.</td>
         </tr>
         <tr>
             <td>inProgress</td>
@@ -3972,13 +3977,12 @@ Reference: MEF 79 (Sn 8.5)
 - [MEF79.0.2]
   [MEF W79.0.2](https://www.mef.net/wp-content/uploads/MEF-79.0.2-Draft-R2.pdf),
   Amendment to MEF 79: Address Validation, May 2021, Draft R2
-- [MEF80]
-  [MEF 80](https://www.mef.net/wp-content/uploads/MEF-80-Draft-R6.pdf),
+- [MEF80] [MEF 80](https://www.mef.net/wp-content/uploads/MEF-80-Draft-R6.pdf),
   Quote Management Requirements and Use Cases, Draft (R6), May 2021
 - [MEF106]
   [MEF W106](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK-extended/blob/working-draft/documentation/productSchema/carrierEthernet/accessEline/MEF%20W106%20-%20LSO%20Sonata%20Product%20Specification%20-%20Access%20E-Line%20-%20Product%20Schema%20Guide.pdf)
-  LSO Sonata Product Specification - Access E-Line - Product Schema Guide, Working Draft
-  June 2021
+  LSO Sonata Product Specification - Access E-Line - Product Schema Guide,
+  Working Draft June 2021
 - [OAS-V3] [Open API 3.0](http://spec.openapis.org/oas/v3.0.3.html), February
   2020
 - [REST]

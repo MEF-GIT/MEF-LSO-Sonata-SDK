@@ -365,9 +365,358 @@ paths:
         - product
 components:
   schemas:
+    AccessEline:
+      allOf:
+        - $ref: '#/components/schemas/MEFProductConfiguration'
+        - $ref: '#/components/schemas/AccessElineOvcCommon'
+        - properties:
+            enniEp:
+              description:
+                MEF 26.2 sec. 16 - The OVC EP object for the OVC EP at the ENNI
+              $ref: '#/components/schemas/AccessElineOvcEndPoint'
+            uniEp:
+              description:
+                MEF 26.2 sec. 16 - The OVC EP object for the OVC EP at the UNI
+              $ref: '#/components/schemas/AccessElineOvcEndPoint'
+          required:
+            - availableMegLevel
+            - cTagDeiPreservation
+            - cTagPcpPreservation
+            - carrierEthernetSls
+            - ceVlanIdPreservation
+            - enniEp
+            - frameDisposition
+            - listOfClassOfServiceNames
+            - maximumFrameSize
+            - ovcL2cpAddressSet
+            - uniEp
+          type: object
+      x-discriminator-value: 'urn:mef:lso:spec:sonata:access-eline:v2.0.0:inventory'
+    AccessElineOvcCommon:
+      description: >-
+        This class contains all of the Access E-Line OVC Services Attributes
+        that are used in all four Business Functions (POQ, Quote, Order,
+        Inventory). At this time, this includes all of the Access Eline OVC
+        Service Attributes. This class is used to compose the AccessElineOvc
+        class which has one file for each Business Function that differ in
+        terms of the Service Attributes that are "Required" for the Business
+        Function (rather than "Optional").
+      properties:
+        ceVlanIdPreservation:
+          description: >-
+            MEF 26.2 sec. 12.7 - Determines whether the C-tag in the Ingress
+            Frame is Stripped or Preserved in the Egress Frame. Per MEF 51.1,
+            the Operator must support PRESERVE and should support STRIP.
+          $ref: '#/components/schemas/CeVlanIdPreservation'
+        cTagPcpPreservation:
+          $ref: '#/components/schemas/EnabledDisabled'
+        cTagDeiPreservation:
+          $ref: '#/components/schemas/EnabledDisabled'
+        ovcL2cpAddressSet:
+          description: >-
+            MEF 45 sec. 8.1 and MEF 26.2 sec. 12.16 - The subset of the Bridge
+            Reserved Addresses that are Peered or Discarded (i.e. not Passed).
+            The value CTB or CTB2 must be used for port-based (private)
+            services and CTA for vlan-based (virtual private) services.
+          $ref: '#/components/schemas/OvcL2cpAddressSet'
+        frameDisposition:
+          $ref: '#/components/schemas/FrameDisposition'
+        listOfClassOfServiceNames:
+          description: >-
+            MEF 26.2 sec. 12.12 - The OVC List of Class of Service Names
+            Service Attribute is used to specify all of the Class of Service
+            Names supported by an OVC. The value of the OVC List of Class of
+            Service Names Service Attribute is a non-empty list of Class of
+            Service Names (which may include one or more of the CoS Labels
+            defined in MEF 23.2).
+          items:
+            type: string
+          minItems: 1
+          type: array
+          uniqueItems: true
+        availableMegLevel:
+          description: >-
+            MEF 26.2 sec. 12.15 - The lowest MEG level for which SOAM Frames
+            are not peered or discarded by the Service Provider. If this
+            attribute is NONE there is no such level (that is, SOAM frames at
+            all MEG levels may be peered or discarded by the Service Provider).
+            MEF 51.1 constrains it to 0-6 for Access E-Line.
+          $ref: '#/components/schemas/AccessElineOvcCommonAvailableMegLevel'
+        carrierEthernetSls:
+          description: >-
+            MEF 26.2 sec. 12.13 - Technical details of the service level in
+            terms of Performance Objectives, agreed between the SP/SO and the
+            Operator as part of the Service Level Agreement. For each
+            Performance Metric included in the SLS, a Performance Objective
+            must be included as well as the parameter values needed for the
+            Performance Metric.
+          items:
+            $ref: '#/components/schemas/CarrierEthernetSls'
+          maxItems: 1
+          minItems: 0
+          type: array
+          uniqueItems: true
+        maximumFrameSize:
+          description: >-
+            MEF 26.2 sec. 12.6 - The max length in bytes allowed in a frame
+            mapped to an OVC EP associated by the OVC. The length of the frame
+            includes all bytes from the start of the destination MAC address
+            through the Frame Check Sequence. This must be at least 1526
+            (1518+C-tag+S-tag)
+          minimum: 1526
+          type: integer
+      type: object
+    AccessElineOvcCommonAvailableMegLevel:
+      description: >-
+        MEF 26.2 sec. 12.15 - The lowest MEG level for which SOAM Frames are
+        not peered or discarded by the Service Provider. If this attribute is
+        NONE there is no such level (that is, SOAM frames at all MEG levels may
+        be peered or discarded by the Service Provider). MEF 51.1 constrains it
+        to 0-6 for Access E-Line.
+      enum:
+        - '0'
+        - '1'
+        - '2'
+        - '3'
+        - '4'
+        - '5'
+        - '6'
+      type: string
+    AccessElineOvcEndPoint:
+      allOf:
+        - $ref: '#/components/schemas/AccessElineOvcEpCommon'
+      description: >-
+        An OVC End Point is a logical entity at a given External Interface that
+        is associated with a distinct set of frames passing over that External
+        Interface. The OVC End Point schema is included in the definitions
+        section of the OVC schema..
+      required:
+        - aggregationLinkDepth
+        - colorMap
+        - egressBandwidthProfilePerEndPoint
+        - egressBwpPerEgressEquivalenceClassName
+        - egressEquivalenceClassIdentifier
+        - identifier
+        - ingressBandwidthProfilePerClassOfServiceName
+        - ingressClassOfServiceMap
+        - maintenanceEndPointList
+        - maintenanceIntermediatePoint
+        - ovcEndPointEnvelopes
+        - ovcEndPointMap
+        - ovcEndPointPortConversationToAggregationLinkMap
+      type: object
+    AccessElineOvcEpCommon:
+      description: >-
+        This class contains all of the Access E-Line OVC End Point Services
+        Attributes that are used in all four Business Functions (POQ, Quote,
+        Order, Inventory). At this time, this includes all of the Access Eline
+        OVC End Point Service Attributes. This class is used to compose the
+        AccessElineOvcEndPoint class which has one file for each Business
+        Function that differ in terms of the Service Attributes that are
+        "Required" for the Business Function (rather than "Optional").
+      properties:
+        identifier:
+          description: >-
+            MEF 26.2 sec. 16.1 - The value of theOVC EP ID Service Attribute is
+            a string that is used to allow the Subscriber and Service Provider
+            to uniquely identify the OVC EP for operations purposes.
+          maxLength: 45
+          minLength: 1
+          pattern: "[ -\x7F]+"
+          type: string
+        egressEquivalenceClassIdentifier:
+          description: >-
+            MEF 26.2 sec. 16.9 - The mechanism that allows an Egress
+            Equivalence Class Name to be determined for an egress EI Frame. ?F,
+            M, P? where F is a protocol field in the egress EI Frame, M is a
+            map that maps each possible value of the field F and the absence of
+            the field F to an Egress Equivalence Class Name and P is a map of
+            L2CP type to Egress Equivalence Class Name.
+          $ref: '#/components/schemas/CosFrom'
+        aggregationLinkDepth:
+          description: >-
+            MEF 26.2 sec. 16.14 - A list of 2-tuples {SVID, Depth} that
+            indicates the number of ENNI links that can carry ENNI Frames for
+            each S-VLAN ID mapped to the OVC End Point. It indicates the level
+            of resiliency to use for the SVID at the ENNI.
+          items:
+            $ref: '#/components/schemas/AggLinkDepth'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        maintenanceIntermediatePoint:
+          description: >-
+            MEF 26.2 sec. 16.16 - Indicates whether a MIP is instantiated at
+            the OVC End Point and the MEG Level of the MIP. When the value is
+            not None, several parameter values need to be determined as
+            described in MEF 30.1.
+          $ref: '#/components/schemas/MaintenanceIntermediatePoint'
+        ovcEgressMap:
+          description: >-
+            MEF 26.2 sec. 16.8 - A set of mappings that determine the content
+            of the S-Tag or C-Tag of an egress frame at an ENNI or UNI
+            (respectively) based on the Class of Service Name and Frame Color
+            of the frame. Three forms: (1) CoSName(CN) -> C/S-Tag PCP or
+            Discard, (2) CoSName and Frame Color (CC)--> C/S-Tag DEI or
+            Discard, and (3) CoSName and Frame Color (CC)--> C/S-Tag PCP or
+            Discard. A fourth form is included which combines (1) and (2)
+            because that is a common case.
+          items:
+            $ref: '#/components/schemas/OvcEgressMap'
+          maxItems: 1
+          minItems: 0
+          type: array
+          uniqueItems: true
+        egressBandwidthProfilePerEndPoint:
+          description: >-
+            MEF 26.2 sec. 16.11 - Bandwidth Profile Flow parameters for all
+            egress Service Frames mapped to the OVC End Point.
+          items:
+            $ref: '#/components/schemas/BwpFlow'
+          maxItems: 1
+          minItems: 0
+          type: array
+          uniqueItems: true
+        egressBwpPerEgressEquivalenceClassName:
+          description: >-
+            MEF 26.2 sec. 16.13 - For each EEC Name listed, Bandwidth Profile
+            Flow parameters, for all egress Service Frames mapped to that EEC
+            Name at the OVC End Point.
+          items:
+            $ref: '#/components/schemas/BandwidthProfilePerClassOfServiceName'
+          minItems: 0
+          type: array
+          uniqueItems: false
+        ingressBandwidthProfilePerClassOfServiceName:
+          description: >-
+            MEF 26.2 sec. 16.12 - For each CoS Name listed, Bandwidth Profile
+            Flow parameters for all ingress Service Frames mapped to that CoS
+            Name at OVC End Point. This bandwidth profile flow is used to
+            police at Ingress each CoS in an OVC individually. List of 2-tuples
+            {cos, bwpf}.
+          items:
+            $ref: '#/components/schemas/BandwidthProfilePerClassOfServiceName'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        ovcEndPointEnvelopes:
+          description: >-
+            The Envelopes and Envelope Coupling Flag values to which Bandwidth
+            Profile Flows for this OVC End Point can be mapped. Value is list
+            of {envelopeID, couplingFlagForIndexZero}. Envelopes listed in the
+            OVC End Point Envelopes Service Attribute can be used when all of
+            the Bandwidth Profile Flows contained in the Envelope are specific
+            to a given OVC End Point. They are specified using one of the
+            following OVC End Point Service Attributes: Ingress Bandwidth
+            Profile Per OVC End Point Egress Bandwidth Profile Per OVC End
+            Point Ingress Bandwidth Profile Per Class of Service Name Egress
+            Bandwidth Profile Per Egress Equivalence Class Name  To create an
+            Envelope containing Bandwidth Profile Flows for more than one OVC
+            End Point, the UNI or ENNI Envelopes Service Attribute (as
+            appropriate) must be used.
+          items:
+            $ref: '#/components/schemas/Envelope'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        ovcEndPointMap:
+          description: >-
+            MEF 26.2 sec. 16.5 - The information that determines which UNI/ENNI
+            Frames are mapped to the OVC End Point. At the UNI and ENNI, the
+            only allowable mapping is a LIST of VLAN IDs (CE-VLAN IDs at the
+            UNI and S-VLAN IDs at the ENNI).
+          $ref: '#/components/schemas/EndPointMapForm'
+        colorMap:
+          description: >-
+            MEF 26.2 sec. 16.7 - The OVC EP Color Map Service Attribute is the
+            mechanism by which the Color for an Ingress External Interface
+            Frame that is mapped to an OVC EP is indicated by the content in
+            the frame header. The value of the OVC EP Color Map Service
+            Attribute is a pair of the form ?F, M? where: F is one of the
+            values ENDPOINT, DEI, PCP, or DSCP and M is a map that can be used
+            to assign Color to each Ingress Frame. (The form of M depends on
+            the value of F.)
+          $ref: '#/components/schemas/ColorFrom'
+        ovcEndPointPortConversationToAggregationLinkMap:
+          description: >-
+            MEF 26.2 sec. 13.2 - A mapping of Port Conversation IDs (i.e., VLAN
+            IDs) to an ordered list of physical links if
+            EnniService.sVlanIdControl is FULL and there are multiple physical
+            links in the ENNI and EnniCommon.linkAggregation is ALL_ACTIVE.
+            Only S-VLAN IDs that are listed in the
+            AccessElineOvcEndPoint.ovcEndPointMap can be listed in this
+            attribute.   If EnniService.sVlanIdControl is PARTIAL then the
+            Service Provider does not have full visibility of all the S-VLAN
+            IDs mapped to each physical link, and hence cannot pick values that
+            avoid overloading certain links. In this case, the ENNI Port
+            Conversation to Aggregation Link Map Common Attribute must be
+            agreed between the relevant Operators.
+          items:
+            $ref: '#/components/schemas/ConversationIdToAggregationLinkMap'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        ingressClassOfServiceMap:
+          description: >-
+            MEF 26.2 sec. 16.6 - The value of the OVC EP Ingress Class of
+            Service Map Service Attribute is a 3-tuple of the form ?F, M, P?
+            where: F is one of the values ENDPOINT, C_TAG_PCP, S_TAG_PCP, or
+            DSCP, M is a map that can be used to assign Class of Service Names
+            to External Interface Frames. (The form of M depends on the value
+            of F.), and P is a map with entries of the form ?Layer 2 Control
+            Protocol type ? Class of Service Name? where the Layer 2 Control
+            Protocol type is determined by the Protocol Identifier (see Section
+            6.2 of MEF 45.1).
+          $ref: '#/components/schemas/CosFrom'
+        sourceMacAddressLimit:
+          description: >-
+            MEF 26.2 sec. 16.15 - Specifies a limit on the number of different
+            Source MAC address over a time interval for which ingress Service
+            Frames at this OVC End Point will be delivered. The absence of this
+            attribute corresponds to a Service Attribute value of None. The
+            value is {N,t} where N is an integer greater than or equal to 1 and
+            t is a time duration.
+          items:
+            $ref: '#/components/schemas/SourceMacAddressLimit'
+          maxItems: 1
+          minItems: 0
+          type: array
+          uniqueItems: true
+        maintenanceEndPointList:
+          description: >-
+            MEF 26.2 sec. 16.17 - A list of the MEPs instantiated at this OVC
+            EP and the direction of each MEP, List of 2-tuples ?l, d? where l
+            is MEG level and d is direction (Up/Down)
+          items:
+            $ref: '#/components/schemas/MepLevelAndDirection'
+          maxItems: 16
+          minItems: 0
+          type: array
+          uniqueItems: true
+      type: object
+    AggLinkDepth:
+      description: >-
+        This is a pair of <VLAN ID, link depth> indicating that a given VLAN ID
+        maps to a given number of links in the Port Conversation ID to
+        Aggregation Link Map.
+      properties:
+        vlanID:
+          description: The VLAN ID
+          maximum: 4094
+          minimum: 1
+          type: integer
+        lagDepth:
+          description:
+            The number of Link Aggregation links available to the VLAN
+          minimum: 1
+          type: integer
+      required:
+        - lagDepth
+        - vlanID
+      type: object
     AvailableMegLevel:
       description: >-
-        MEF 10.4 8.11 - The lowest MEG level for which SOAM Frames are not
+        MEF 10.4 sec. 8.11 - The lowest MEG level for which SOAM Frames are not
         peered or discarded by the Service Provider. If this attribute is NONE
         there is no such level (that is, SOAM frames at all MEG levels may be
         peered or discarded by the Service Provider). MEF 6.3 constrains it to
@@ -384,8 +733,8 @@ components:
     BandwidthProfilePerClassOfServiceName:
       description: >-
         This Class is used for both the Ingress Bandwidth Profile per Class of
-        Service Name (MEF 26.2 16.12) and Egress Bandwidth Profile per Egress
-        Equivalence Class Name (MEF 26.2 16.13) . The value is a list of pairs
+        Service Name (MEF 26.2 §16.12) and Egress Bandwidth Profile per Egress
+        Equivalence Class Name (MEF 26.2 §16.13) . The value is a list of pairs
         of the form?x, y? where x is a Class of Service Name that is in the
         value of the OVC List of Class of Service Names Service Attribute
         (Section 12.12) for the OVC that associates the OVC End Point for
@@ -397,11 +746,14 @@ components:
           $ref: '#/components/schemas/BwpFlow'
         classOfServiceName:
           description: >-
-            MEF 26.2 16.12 and 16.13 - For Ingress, this is the Name of the
-            Class of Service that this bandwidth profile flow is applied to.
-            This should be an item from ovc.listOfClassOfServiceNames. For
+            MEF 26.2 sec. 16.12 and 16.13 - For Ingress, this is the Name of
+            the Class of Service that this bandwidth profile flow is applied
+            to. This should be an item from ovc.listOfClassOfServiceNames. For
             Egress, this is the Egress Equivalence Class (EEC) Name.
           type: string
+      required:
+        - bwpFlow
+        - classOfServiceName
       type: object
     BwpFlow:
       description: >-
@@ -418,8 +770,8 @@ components:
           $ref: '#/components/schemas/InformationRate'
         envelopeRank:
           description: >-
-            MEF 26.2 17.1.2 and MEF 10.4 12.1.2 - The rank in the envelope of
-            this Bandwidth Profile Flow
+            MEF 26.2 sec. 17.1.2 and MEF 10.4 sec. 12.1.2 - The rank in the
+            envelope of this Bandwidth Profile Flow
           minimum: 1
           type: integer
         cirMax:
@@ -428,41 +780,54 @@ components:
           $ref: '#/components/schemas/DataSize'
         couplingFlag:
           description: >-
-            MEF 26.2 17.1.2 and MEF 10.4 12.1.2 - The couplingFlag determines
-            whether unused committed bandwidth for this Bandwidth Profile Flow
-            is made available as excess bandwidth for this Bandwidth Profile
-            Flow or as committed bandwidth for the next lower-ranked Bandwidth
-            Profile Flow. 0/FALSE means overflow green tokens are used as green
-            tokens in the next lowest BWP Flow in the Envelope. 1/TRUE means
-            they are used as yellow tokens for this BWP Flow.
+            MEF 26.2 sec. 17.1.2 and MEF 10.4 sec. 12.1.2 - The couplingFlag
+            determines whether unused committed bandwidth for this Bandwidth
+            Profile Flow is made available as excess bandwidth for this
+            Bandwidth Profile Flow or as committed bandwidth for the next
+            lower-ranked Bandwidth Profile Flow. 0/FALSE means overflow green
+            tokens are used as green tokens in the next lowest BWP Flow in the
+            Envelope. 1/TRUE means they are used as yellow tokens for this BWP
+            Flow.
           type: boolean
         envelopeId:
           description: >-
-            MEF 26.2 17.1.2 and MEF 10.4 12.1.2 - The name of the envelope that
-            this Bandwidth Profile Flow resides in.
+            MEF 26.2 sec. 17.1.2 and MEF 10.4 sec. 12.1.2 - The name of the
+            envelope that this Bandwidth Profile Flow resides in.
           maxLength: 45
           minLength: 1
           pattern: "[ -\x7F]+"
           type: string
         tokenRequestOffset:
           description: >-
-            MEF 26.2 17.1.2 and MEF 10.4 12.1.2 - tokenRequestOffset adjusts
-            the bandwidth consumed by each External Interface Frame in the
-            Bandwidth Profile Flow by a fixed number of octets.
+            MEF 26.2 sec. 17.1.2 and MEF 10.4 sec. 12.1.2 - tokenRequestOffset
+            adjusts the bandwidth consumed by each External Interface Frame in
+            the Bandwidth Profile Flow by a fixed number of octets.
           type: integer
         ebs:
           $ref: '#/components/schemas/DataSize'
         colorMode:
           description: >-
-            MEF 26.2 17.1.2 and MEF 10.4 12.1.2 - colorMode indicates whether
-            or not External Interface Frames for this Bandwidth Profile Flow
-            that are identified as Yellow on input to the Bandwidth Profile
-            Algorithm can be declared Green.
+            MEF 26.2 sec. 17.1.2 and MEF 10.4 sec. 12.1.2 - colorMode indicates
+            whether or not External Interface Frames for this Bandwidth Profile
+            Flow that are identified as Yellow on input to the Bandwidth
+            Profile Algorithm can be declared Green.
           $ref: '#/components/schemas/ColorMode'
         cir:
           $ref: '#/components/schemas/InformationRate'
         eir:
           $ref: '#/components/schemas/InformationRate'
+      required:
+        - cbs
+        - cir
+        - cirMax
+        - colorMode
+        - couplingFlag
+        - ebs
+        - eir
+        - eirMax
+        - envelopeId
+        - envelopeRank
+        - tokenRequestOffset
       type: object
     CarrierEthernetEiReference:
       properties:
@@ -470,7 +835,16 @@ components:
           description: 'A reference to an External Interface (UNI, ENNI).'
           format: uri
           type: string
+      required:
+        - href
       type: object
+    CarrierEthernetEnniSpSo:
+      allOf:
+        - $ref: '#/components/schemas/MEFProductConfiguration'
+        - $ref: '#/components/schemas/EnniService'
+        - $ref: '#/components/schemas/EnniCommon'
+        - $ref: '#/components/schemas/OperatorMultilateral'
+      x-discriminator-value: 'urn:mef:lso:spec:sonata:carrier-ethernet-enni-sp-so:v2.0.0:inventory'
     CarrierEthernetEvcCommon:
       description: >-
         These are the MEF 10.4 EVC Service Attributes that are common to all
@@ -478,7 +852,7 @@ components:
       properties:
         listOfCosNames:
           description: >-
-            MEF 10.4 8.7 - The EVC List of Class of Service Names Service
+            MEF 10.4 sec. 8.7 - The EVC List of Class of Service Names Service
             Attribute is used to specify all of the Class of Service Names
             supported by an EVC. The value of the EVC List of Class of Service
             Names Service Attribute is a non-empty list of Class of Service
@@ -491,19 +865,19 @@ components:
           uniqueItems: true
         availableMegLevel:
           description: >-
-            MEF 10.4 8.11 - The lowest MEG level for which SOAM Frames are not
-            peered or discarded by the Service Provider. If this attribute is
-            NONE  there is no such level (that is, SOAM frames at all MEG
+            MEF 10.4 sec. 8.11 - The lowest MEG level for which SOAM Frames are
+            not peered or discarded by the Service Provider. If this attribute
+            is NONE  there is no such level (that is, SOAM frames at all MEG
             levels may be peered or discarded by the Service Provider). MEF 6.3
             constrains it to 0-6 for all Subscriber Ethernet Services.
           $ref: '#/components/schemas/AvailableMegLevel'
         carrierEthernetSls:
           description: >-
-            MEF 10.4 8.8 - The SLS includes technical details of the service
-            level in terms of Performance Objectives, agreed between the
-            Service Provider and the Subscriber or between Service Provider and
-            the Operator as part of the Service Level Agreement. A given SLS
-            might contain 0,1 or more Performance Objectives for each
+            MEF 10.4 sec. 8.8 - The SLS includes technical details of the
+            service level in terms of Performance Objectives, agreed between
+            the Service Provider and the Subscriber or between Service Provider
+            and the Operator as part of the Service Level Agreement. A given
+            SLS might contain 0,1 or more Performance Objectives for each
             Performance Metric.
           items:
             $ref: '#/components/schemas/CarrierEthernetSls'
@@ -513,8 +887,8 @@ components:
           uniqueItems: true
         maximumFrameSize:
           description: >-
-            MEF 10.4 8.10 - Maximum size of Service frames that can be carried
-            over the EVC. This must be at least 1522 (1518+C-tag).
+            MEF 10.4 sec. 8.10 - Maximum size of Service frames that can be
+            carried over the EVC. This must be at least 1522 (1518+C-tag).
           minimum: 1522
           type: integer
       type: object
@@ -526,9 +900,9 @@ components:
       properties:
         identifier:
           description: >-
-            MEF 10.4 10.1 - The value of the EVC EP ID Service Attribute is a
-            string that is used to allow the Subscriber and Service Provider to
-            uniquely identify the EVC EP for operations purposes.
+            MEF 10.4 sec. 10.1 - The value of the EVC EP ID Service Attribute
+            is a string that is used to allow the Subscriber and Service
+            Provider to uniquely identify the EVC EP for operations purposes.
           maxLength: 45
           minLength: 1
           pattern: "[ -\x7F]+"
@@ -537,34 +911,34 @@ components:
           $ref: '#/components/schemas/CarrierEthernetEiReference'
         subscriberMegMip:
           description: >-
-            MEF 10.4 10.13 - The value of the EVC EP Subscriber MEG MIP Service
-            Attribute is either None or an integer in the range 0  7 that
-            indicates the MEG Level of a Subscriber MEG MIP.
+            MEF 10.4 sec. 10.13 - The value of the EVC EP Subscriber MEG MIP
+            Service Attribute is either None or an integer in the range 0 - 7
+            that indicates the MEG Level of a Subscriber MEG MIP.
           $ref: '#/components/schemas/SubscriberMegMip'
         egressMap:
           $ref: '#/components/schemas/EvcEgressMap'
         colorMap:
           description: >-
-            MEF 10.4 10.6 - The value of the EVC EP Color Map Service Attribute
-            is a pair of the form ?F, M? where: F is one of the values
-            ENDPOINT, DEI, PCP, or DSCP and M is a map that can be used to
-            assign Color to each Ingress Service Frame. (The form of M depends
-            on the value of F.). The EVC EP Color Map Service Attribute is the
-            mechanism by which the Color for an Ingress Service Frame that is
-            mapped to an EVC EP is indicated by the content in the Service
-            Frame header.
+            MEF 10.4 sec. 10.6 - The value of the EVC EP Color Map Service
+            Attribute is a pair of the form ?F, M? where: F is one of the
+            values ENDPOINT, DEI, PCP, or DSCP and M is a map that can be used
+            to assign Color to each Ingress Service Frame. (The form of M
+            depends on the value of F.). The EVC EP Color Map Service Attribute
+            is the mechanism by which the Color for an Ingress Service Frame
+            that is mapped to an EVC EP is indicated by the content in the
+            Service Frame header.
           $ref: '#/components/schemas/ColorFrom'
         ingressClassOfServiceMap:
           description: >-
-            MEF 10.4 10.5 and MEF 45.1 6.2 - The value of the EVC EP Ingress
-            Class of Service Map Service Attribute is a 3-tuple of the form ?F,
-            M, P? where: F is one of the values ENDPOINT, C_TAG_PCP, or DSCP, M
-            is a map that can be used to assign Class of Service Names to
-            Service Frames. (The form of M depends on the value of F.), and P
-            is a map with entries of the form ?Layer 2 Control Protocol type ?
-            Class of Service Name? where the Layer 2 Control Protocol type is
-            determined by the Protocol Identifier (see Section 6.2 of MEF
-            45.1).
+            MEF 10.4 sec. 10.5 and MEF 45.1 sec. 6.2 - The value of the EVC EP
+            Ingress Class of Service Map Service Attribute is a 3-tuple of the
+            form ?F, M, P? where: F is one of the values ENDPOINT, C_TAG_PCP,
+            or DSCP, M is a map that can be used to assign Class of Service
+            Names to Service Frames. (The form of M depends on the value of
+            F.), and P is a map with entries of the form ?Layer 2 Control
+            Protocol type ? Class of Service Name? where the Layer 2 Control
+            Protocol type is determined by the Protocol Identifier (see Section
+            6.2 of MEF 45.1).
           $ref: '#/components/schemas/CosFrom'
         ingressBandwidthProfilePerClassofServiceName:
           $ref: '#/components/schemas/BandwidthProfilePerClassOfServiceName'
@@ -576,8 +950,8 @@ components:
       properties:
         role:
           description: >-
-            MEF 10.4 10.3 - Indicates how EI Frames mapped to the EVC End Point
-            can be forwarded
+            MEF 10.4 sec. 10.3 - Indicates how EI Frames mapped to the EVC End
+            Point can be forwarded
           $ref: '#/components/schemas/Role'
       type: object
     CarrierEthernetEvcEpNotEpl:
@@ -605,6 +979,26 @@ components:
         frameDisposition:
           $ref: '#/components/schemas/FrameDisposition'
       type: object
+    CarrierEthernetOperatorUni:
+      allOf:
+        - $ref: '#/components/schemas/MEFProductConfiguration'
+        - $ref: '#/components/schemas/OperatorUniCommon'
+        - required:
+            - egressBandwidthProfile
+            - envelopes
+            - ingressBandwidthProfile
+            - l2cpAddressSet
+            - l2cpPeering
+            - linkAggregation
+            - linkOam
+            - listofPhysicalLinks
+            - maximumNumberOfCeVlanIdsPerEndPoint
+            - maximumNumberOfEndPoints
+            - maximumServiceFrameSize
+            - meg
+            - tokenShare
+          type: object
+      x-discriminator-value: 'urn:mef:lso:spec:sonata:carrier-ethernet-operator-uni:v2.0.0:inventory'
     CarrierEthernetPhysicalLink:
       description: >-
         A 2-tuple of the form <id, physicalLink>. The value of id is an
@@ -620,6 +1014,9 @@ components:
           minLength: 1
           pattern: "[ -\x7F]+"
           type: string
+      required:
+        - id
+        - physicalLink
       type: object
     CarrierEthernetSls:
       description: >-
@@ -637,9 +1034,9 @@ components:
       properties:
         slsCosNameEntry:
           description: >-
-            MEF 10.4 8.8 and MEF 26.2 12.13 - This is a list of Performance
-            Metrics. Each entry contains a set of parameters and Performance
-            Metrics one one Class of Service.
+            MEF 10.4 sec. 8.8 and MEF 26.2 sec. 12.13 - This is a list of
+            Performance Metrics. Each entry contains a set of parameters and
+            Performance Metrics one one Class of Service.
           items:
             $ref: '#/components/schemas/SlsCosNameEntry'
           minItems: 1
@@ -649,6 +1046,10 @@ components:
           $ref: '#/components/schemas/LongDuration'
         startTime:
           $ref: '#/components/schemas/Time'
+      required:
+        - slsCosNameEntry
+        - startTime
+        - timeInterval
       type: object
     CarrierEthernetSubscriberUni:
       allOf:
@@ -682,12 +1083,76 @@ components:
         cTagDeiPreservation:
           $ref: '#/components/schemas/EnabledDisabled'
       type: object
+    CcDei:
+      description: >-
+        One of the possible values for the OVC Egress Map. This indicates that
+        the Color is mapped to the DEI field of the Egress Frame. Note that the
+        Enums used for the DEI values include DISCARD as a value.
+      properties:
+        deiGeen:
+          $ref: '#/components/schemas/DeiValueAndDiscard'
+        deiYellow:
+          $ref: '#/components/schemas/DeiValueAndDiscard'
+        cosName:
+          description:
+            The class of service name for the corresponding Ingress EI Frame.
+          type: string
+      required:
+        - cosName
+        - deiGeen
+        - deiYellow
+      type: object
+    CcPcp:
+      description: >-
+        One of the possible values for the OVC Egress Map. This indicates that
+        the Class of Service and Color are mapped to the PCP field of the
+        Egress Frame. Note that the Enums used for the PCP values include
+        DISCARD as a value.
+      properties:
+        pcpYellow:
+          $ref: '#/components/schemas/PcpValueAndDiscard'
+        cosName:
+          description:
+            The class of service name for the corresponding Ingress EI Frame.
+          type: string
+        pcpGreen:
+          $ref: '#/components/schemas/PcpValueAndDiscard'
+      required:
+        - cosName
+        - pcpGreen
+        - pcpYellow
+      type: object
+    CeVlanIdPreservation:
+      description: >-
+        MEF 26.2 sec. 12.7 - Determines whether the C-tag in the Ingress Frame
+        is Stripped or Preserved in the Egress Frame. Per MEF 51.1, the
+        Operator must support PRESERVE and should support STRIP.
+      enum:
+        - PRESERVE
+        - STRIP
+        - RETAIN
+      type: string
+    CnPcp:
+      description: >-
+        This is a 2-tuple ?x,y? where x is a Class of Service Name and y is a
+        PCP Value or DISCARD.
+      properties:
+        pcpValue:
+          $ref: '#/components/schemas/PcpValueAndDiscard'
+        cosName:
+          description:
+            The class of service name for the corresponding Ingress EI Frame.
+          type: string
+      required:
+        - cosName
+        - pcpValue
+      type: object
     ColorFrom:
       discriminator:
         mapping:
-          DSCP: '#/components/schemas/ColorFromDSCP'
-          DEI: '#/components/schemas/ColorFromDei'
           ENDPOINT: '#/components/schemas/ColorFromEp'
+          DEI: '#/components/schemas/ColorFromDei'
+          DSCP: '#/components/schemas/ColorFromDSCP'
           PCP: '#/components/schemas/ColorFromPCP'
         propertyName: mapType
       properties:
@@ -713,6 +1178,9 @@ components:
               minItems: 1
               type: array
               uniqueItems: true
+          required:
+            - colorFromDscpMap
+            - mapType
           type: object
       x-discriminator-value: DSCP
     ColorFromDei:
@@ -722,6 +1190,8 @@ components:
             This Class is referenced when the color comes from the S-tag or
             C-tag DEI field. MEF 26.2 requires that DEI=0 means Green and DEI=1
             means Yellow, so no map is needed.
+          required:
+            - mapType
           type: object
       x-discriminator-value: DEI
     ColorFromDscpEntry:
@@ -739,6 +1209,10 @@ components:
           uniqueItems: true
         ipv4Color:
           $ref: '#/components/schemas/Ipv4Color'
+      required:
+        - dscpList
+        - ipv4Color
+        - ipv6Color
       type: object
     ColorFromEp:
       allOf:
@@ -750,6 +1224,9 @@ components:
           properties:
             epColor:
               $ref: '#/components/schemas/EpColor'
+          required:
+            - epColor
+            - mapType
           type: object
       x-discriminator-value: ENDPOINT
     ColorFromPCP:
@@ -769,6 +1246,9 @@ components:
               minItems: 8
               type: array
               uniqueItems: true
+          required:
+            - colorFromPcpMap
+            - mapType
           type: object
       x-discriminator-value: PCP
     ColorFromPCPMapEntry:
@@ -777,13 +1257,16 @@ components:
           $ref: '#/components/schemas/PcpValue'
         pcpColor:
           $ref: '#/components/schemas/PcpColor'
+      required:
+        - pcpColor
+        - pcpValue
       type: object
     ColorMode:
       description: >-
-        MEF 26.2 17.1.2 and MEF 10.4 12.1.2 - colorMode indicates whether or
-        not External Interface Frames for this Bandwidth Profile Flow that are
-        identified as Yellow on input to the Bandwidth Profile Algorithm can be
-        declared Green.
+        MEF 26.2 sec. 17.1.2 and MEF 10.4 sec. 12.1.2 - colorMode indicates
+        whether or not External Interface Frames for this Bandwidth Profile
+        Flow that are identified as Yellow on input to the Bandwidth Profile
+        Algorithm can be declared Green.
       enum:
         - COLOR_BLIND
         - COLOR_AWARE
@@ -805,6 +1288,8 @@ components:
           maximum: 4094
           minimum: 0
           type: integer
+      required:
+        - start
       type: object
     ConversationIdToAggregationLinkMap:
       description: >-
@@ -816,22 +1301,26 @@ components:
       properties:
         conversationIDs:
           description: >-
-            802.1AX-2014 6.6.2.1 - A Port Conversation ID is a VLAN ID (1 to
-            4094) or 0 to represent untagged and priority-tagged frames.
+            802.1AX-2014 sec. 6.6.2.1 - A Port Conversation ID is a VLAN ID (1
+            to 4094) or 0 to represent untagged and priority-tagged frames.
           items:
             $ref: '#/components/schemas/ConversationIdRange'
           minItems: 1
           type: array
           uniqueItems: true
         aggLinkList:
-          description:
-            802.1AX-2014 6.6.2.1 - An ordered list of Aggregation Link Numbers
+          description: >-
+            802.1AX-2014 sec. 6.6.2.1 - An ordered list of Aggregation Link
+            Numbers
           items:
             minimum: 1
             type: integer
           minItems: 1
           type: array
           uniqueItems: true
+      required:
+        - aggLinkList
+        - conversationIDs
       type: object
     CosDscpMap:
       description: >-
@@ -862,6 +1351,11 @@ components:
             This is the CoS value for IPv4 packets with DSCP values other than
             those listed.
           type: string
+      required:
+        - dscpValueCoSList
+        - notIP
+        - otherIPv4
+        - otherIPv6
       type: object
     CosDscpMapEntry:
       description: 'This is a 3-tuple {ipv4list, ipv6list, cosName}'
@@ -872,13 +1366,27 @@ components:
           $ref: '#/components/schemas/DscpValues'
         cosName:
           type: string
+      required:
+        - cosName
+      type: object
+    CosEnniPcpMapEntry:
+      description:
+        '2-tuple {PCP, CoSName} that maps a CoS Name or DISCARD to a PCP.'
+      properties:
+        pcpVal:
+          $ref: '#/components/schemas/PcpVal'
+        pcpCosName:
+          type: string
+      required:
+        - pcpCosName
+        - pcpVal
       type: object
     CosFrom:
       discriminator:
         mapping:
+          DSCP: '#/components/schemas/CosFromDscp'
           C_TAG_PCP: '#/components/schemas/CosFromCtagPcp'
           ENDPOINT: '#/components/schemas/CosFromEp'
-          DSCP: '#/components/schemas/CosFromDscp'
         propertyName: mapType
       properties:
         mapType:
@@ -907,6 +1415,10 @@ components:
               uniqueItems: true
             l2cp_P:
               $ref: '#/components/schemas/CosL2cp'
+          required:
+            - l2cp_P
+            - mapType
+            - map_M
           type: object
       x-discriminator-value: C_TAG_PCP
     CosFromDscp:
@@ -923,6 +1435,10 @@ components:
               $ref: '#/components/schemas/CosDscpMap'
             l2cp_P:
               $ref: '#/components/schemas/CosL2cp'
+          required:
+            - l2cp_P
+            - mapType
+            - map_M
           type: object
       x-discriminator-value: DSCP
     CosFromEp:
@@ -937,8 +1453,37 @@ components:
               type: string
             l2cp_P:
               $ref: '#/components/schemas/CosL2cp'
+          required:
+            - l2cp_P
+            - mapType
+            - map_M
           type: object
       x-discriminator-value: ENDPOINT
+    CosFromStagPcp:
+      description: >-
+        Ingress CoS is specified as {F,M,P}. This is when F=S_TAG_PCP. This
+        maps each of the 8 PCP values in the S-tag to a Class of Service Name.
+      properties:
+        map_M:
+          description: A list of 8 PCP values and their associated CoS Names
+          items:
+            $ref: '#/components/schemas/CosEnniPcpMapEntry'
+          maxItems: 8
+          minItems: 8
+          type: array
+          uniqueItems: true
+        mapType:
+          description: The Field that indicates CoS is S-Tag PCP.
+          enum:
+            - S_TAG_PCP
+          type: string
+        l2cp_P:
+          $ref: '#/components/schemas/CosL2cp'
+      required:
+        - l2cp_P
+        - mapType
+        - map_M
+      type: object
     CosL2cp:
       description: '2-tuple {L2CP Ident, CoS Name}'
       properties:
@@ -947,6 +1492,9 @@ components:
         l2cpCosName:
           description: CoS Name String to associate with the L2CP
           type: string
+      required:
+        - l2cpCosName
+        - l2cpIdentifier
       type: object
     CosUniPcpMapEntry:
       description:
@@ -954,11 +1502,27 @@ components:
       properties:
         pcpVal:
           description: A value 0 to 7
-          $ref: '#/components/schemas/PcpVal'
+          $ref: '#/components/schemas/CosUniPcpMapEntryPcpVal'
         pcpCosName:
           description: A CoS Name or DISCARD
           type: string
+      required:
+        - pcpCosName
+        - pcpVal
       type: object
+    CosUniPcpMapEntryPcpVal:
+      description: A value 0 to 7
+      enum:
+        - '0'
+        - '1'
+        - '2'
+        - '3'
+        - '4'
+        - '5'
+        - '6'
+        - '7'
+        - UNTAGGED
+      type: string
     DataSize:
       description: >-
         A value and a unit of measure that specifies a data size for example
@@ -974,6 +1538,9 @@ components:
             The value in the data size. For example, if a burst size is 40
             KBYTES, this element is 40.
           type: integer
+      required:
+        - dataSizeUnits
+        - dataSizeValue
       type: object
     DataSizeUnits:
       description: >-
@@ -990,6 +1557,32 @@ components:
         - ZBYTES
         - YBYTES
       type: string
+    DeiFromCosColor:
+      allOf:
+        - $ref: '#/components/schemas/OvcEgressMap'
+        - description: >-
+            The DEI Field in the Egress EI Frame is determined from the Class
+            of Service and the Frame Color. This is a list that contains an
+            entry for Class of Service Name that includes the CoS Name and the
+            DEI value (or DISCARD) to use for Green frames and the DEI value
+            (or DISCARD) to use for Yellow Frames. For example CoS=Platinum and
+            Color=Green --> DEI = 1 and Color=Yellow --> DEI = 0. This affects
+            the C-tag at the UNI and the S-tag at the ENNI.
+          properties:
+            ccDeiEntries:
+              description: >-
+                A list of entries, one per CoS, that specifies the DEI value
+                for Green frames and Yellow frames.
+              items:
+                $ref: '#/components/schemas/CcDei'
+              minItems: 1
+              type: array
+              uniqueItems: true
+          required:
+            - ccDeiEntries
+            - mapType
+          type: object
+      x-discriminator-value: CC_DEI
     DeiValueAndDiscard:
       enum:
         - '0'
@@ -1053,6 +1646,204 @@ components:
           description:
             An indication about how the Vlan List argument is interpreted
           $ref: '#/components/schemas/VlanType'
+      required:
+        - vlanType
+      type: object
+    EndPointMapForm:
+      discriminator:
+        mapping:
+          FORM_E: '#/components/schemas/EndPointMapFormE'
+          FORM_U: '#/components/schemas/EndPointMapFormU'
+        propertyName: mapType
+      properties:
+        mapType:
+          type: string
+      required:
+        - mapType
+      type: object
+    EndPointMapFormE:
+      allOf:
+        - $ref: '#/components/schemas/EndPointMapForm'
+        - description: >-
+            The value of an End Point Map of Form E (E for ENNI) consists of a
+            list of one or more SVLAN ID values. An S-Tagged ENNI Frame whose
+            S-VLAN ID value matches an entry in the list maps to the OVC End
+            Point.
+          properties:
+            EndPointMapFormE:
+              items:
+                maximum: 4094
+                minimum: 1
+                type: integer
+              maxItems: 4094
+              minItems: 1
+              type: array
+              uniqueItems: true
+          required:
+            - EndPointMapFormE
+            - mapType
+          type: object
+      x-discriminator-value: FORM_E
+    EndPointMapFormU:
+      allOf:
+        - $ref: '#/components/schemas/EndPointMapForm'
+        - description: >-
+            The EndPointMapFormU object class represents the EVC/OVC End Point
+            Map Form U (U for UNI). It is a list of one or more CE-VLAN IDs.
+          properties:
+            ovcEndPointMapFormU:
+              items:
+                maximum: 4094
+                minimum: 1
+                type: integer
+              maxItems: 4094
+              minItems: 1
+              type: array
+              uniqueItems: true
+          required:
+            - mapType
+            - ovcEndPointMapFormU
+          type: object
+      x-discriminator-value: FORM_U
+    EnniCommon:
+      description: >-
+        These are the technical details that need to be agreed to by the
+        Network Operators in order for their Carrier Ethernet Networks to be
+        interconnected by the ENNI.
+      properties:
+        portConversation:
+          description: >-
+            MEF 26.2 sec. 9.6 - A mapping of Port Conversation IDs (i.e., VLAN
+            IDs or zero for untagged frames) to an ordered list of physical
+            links if there are multiple physical links in the UNI and the link
+            aggregation is ALL_ACTIVE. Note: In some cases the Port
+            Conversation ID to Aggregation Link Map can be specified at the OVC
+            End Point.
+          items:
+            $ref: '#/components/schemas/ConversationIdToAggregationLinkMap'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        peeringIdentifier:
+          description: >-
+            MEF 26.2 sec. 9.1 - An identifier for the ENNI intended for
+            operations purposes by the interconnecting Operators at the ENNI.
+          maxLength: 45
+          minLength: 1
+          pattern: "[ -\x7F]+"
+          type: string
+        lagLinkMeg:
+          $ref: '#/components/schemas/EnabledDisabled'
+        serviceFrameFormat:
+          description: >-
+            MEF 26.2 sec. 9.3 - The ENNI Frame Format Common Attribute has the
+            value Ethernet MAC Frame conforming to Clause 3 of IEEE 802.3-2012.
+          enum:
+            - 802.3-2012
+          type: string
+        linkOAM:
+          $ref: '#/components/schemas/EnabledDisabled'
+        listOfPhysicalLinks:
+          description: >-
+            MEF 26.2 sec. 9.2 and 9.3 - This Service Attribute combines several
+            of the MEF 26.2 Objects into a single n-tuple that is consistent
+            with the way this information is described in MEF 10.4. The value
+            of the ENNI List of Physical Links Service Attribute is a list of
+            5-tuples of the form ??id,pl,fs,pt,cn?, with one list item for each
+            physical link. The value of id is an identifier for the physical
+            link. The value of pl specifies a physical layer. fs indicates if
+            synchronous Ethernet is used on the physical link corresponding to
+            the 5-tuple and has the value either Enabled or Disabled. The value
+            of pt indicates if the Precision Time Protocol is used on the
+            physical link corresponding to the 5-tuple and has the value either
+            Enabled or Disabled. The value of cn specifies the type of
+            connector used at the ENNI.
+          items:
+            $ref: '#/components/schemas/EnniPhysicalLink'
+          minItems: 1
+          type: array
+          uniqueItems: true
+        meg:
+          $ref: '#/components/schemas/EnabledDisabled'
+        linkAggregation:
+          description: >-
+            MEF 26.2 sec. 9.5 - If the ENNI is composed of multiple physical
+            links this Service Attribute indicates how they are combined using
+            Link Aggregation.
+          $ref: '#/components/schemas/EnniCommonLinkAggregation'
+      type: object
+    EnniCommonLinkAggregation:
+      description: >-
+        MEF 26.2 sec. 9.5 - If the ENNI is composed of multiple physical links
+        this Service Attribute indicates how they are combined using Link
+        Aggregation.
+      enum:
+        - NONE
+        - 2_LINK_ACTIVE_STANDBY
+        - ALL_ACTIVE
+        - OTHER
+      type: string
+    EnniPhysicalLink:
+      allOf:
+        - $ref: '#/components/schemas/CarrierEthernetPhysicalLink'
+      description: >-
+        This class describes the Physical Link attributes at an ENNI. It
+        consists of the Carrier Ethernet Physical Links (id and physical link
+        type) with no elements.
+    EnniService:
+      description: >-
+        For each instance of an ENNI, there are multiple sets of ENNI Service
+        Attributes. The value for each ENNI Service Attribute in a set for an
+        Operator CEN is specific to a SP/SO that is using the ENNI per Section
+        8.11 of MEF 26.2. Each such value is agreed to by the SP/SO and the
+        Operator.
+      properties:
+        maximumNumberOfOvcs:
+          description: >-
+            MEF 26.2 sec. 13.3 - The value of the Maximum Number of OVCs
+            Service Attribute is a strictly positive integer. It provides an
+            upper bound on the number of OVCs that the Operator will support at
+            the ENNI for the SP/SO.
+          minimum: 1
+          type: integer
+        maximumNumberOfOvcEndPointsPerOvc:
+          description: >-
+            MEF 26.2 sec. 13.4 - Usually each OVC has a single End Point at the
+            ENNI but with hairpin switching an OVC can have multiple. This
+            Service Attribute sets the limit on the number of End Points an OVC
+            can have at the ENNI.
+          minimum: 1
+          type: integer
+        sVlanIdControl:
+          description: >-
+            MEF 26.2 sec. 13.2 - The value of the S-VLAN ID Control Service
+            Attribute is FULL or PARTIAL. When the value is FULL, the Operator
+            can support only a single SP/SO at the ENNI. In other words, S-VLAN
+            IDs at the ENNI can only be mapped to OVC End Points for a single
+            SP/SO. When the value is PARTIAL, there can be multiple SP/SOs
+            using the ENNI and different S-VLAN IDs can be mapped to OVC End
+            Points for different SP/SOs.
+          $ref: '#/components/schemas/SVlanIdControl'
+        tokenShare:
+          $ref: '#/components/schemas/EnabledDisabled'
+        envelopes:
+          description: >-
+            MEF 26.2 sec. 13.6 - The Envelopes and Envelope Coupling Flag
+            values to which Bandwidth Profile Flows can be mapped. Value is
+            list of {envelopeID, couplingFlagForIndexZero}. Note: Envelopes for
+            the ENNI can also be specified at the OVC End Points associated
+            with the ENNI.
+          items:
+            $ref: '#/components/schemas/Envelope'
+          minItems: 0
+          type: array
+          uniqueItems: true
+      required:
+        - envelopes
+        - maximumNumberOfOvcEndPointsPerOvc
+        - maximumNumberOfOvcs
+        - sVlanIdControl
+        - tokenShare
       type: object
     Envelope:
       description: >-
@@ -1065,19 +1856,22 @@ components:
       properties:
         couplingFlagForIndexZero:
           description: >-
-            MEF 10.4 9.12 and MEF 26.2 14.19 - This attribute denotes the
-            coupling flag for index zero. FALSE for 0 (overflow Green tokens
-            are discarded) and TRUE for 1 (overflow Green tokens can be used as
-            Yellow tokens).
+            MEF 10.4 sec. 9.12 and MEF 26.2 sec. 14.19 - This attribute denotes
+            the coupling flag for index zero. FALSE for 0 (overflow Green
+            tokens are discarded) and TRUE for 1 (overflow Green tokens can be
+            used as Yellow tokens).
           type: boolean
         envelopeID:
           description: >-
-            MEF 10.4 9.12 and MEF 26.2 14.19 - The attribute is a string that
-            identifies the Envelope
+            MEF 10.4 sec. 9.12 and MEF 26.2 sec. 14.19 - The attribute is a
+            string that identifies the Envelope
           maxLength: 45
           minLength: 1
           pattern: "[ -\x7F]+"
           type: string
+      required:
+        - couplingFlagForIndexZero
+        - envelopeID
       type: object
     EpColor:
       enum:
@@ -1090,7 +1884,7 @@ components:
         - $ref: '#/components/schemas/CarrierEthernetEvcCommon'
         - properties:
             evcEndPoints:
-              description: MEF 10.4 10 - An array of two EVC End Points.
+              description: MEF 10.4 sec. 10 - An array of two EVC End Points.
               items:
                 $ref: '#/components/schemas/EplEvcEndPoint'
               maxItems: 2
@@ -1115,6 +1909,13 @@ components:
         at each UNI in the EVC. These are the EVC End Point Service Attributes
         applicable to Ethernet Private Line (EPL) Services defined in MEF 6.3
         based on the Service Attributes in MEF 10.4.
+      required:
+        - colorMap
+        - identifier
+        - ingressBandwidthProfilePerClassofServiceName
+        - ingressClassOfServiceMap
+        - subscriberMegMip
+        - uni
     Eplan:
       allOf:
         - $ref: '#/components/schemas/MEFProductConfiguration'
@@ -1123,7 +1924,7 @@ components:
         - properties:
             evcEndPoints:
               description:
-                MEF 10.4 10 - An array of two or more EVC End Points.
+                MEF 10.4 sec. 10 - An array of two or more EVC End Points.
               items:
                 $ref: '#/components/schemas/EplanEvcEndPoint'
               minItems: 2
@@ -1142,6 +1943,13 @@ components:
       allOf:
         - $ref: '#/components/schemas/CarrierEthernetEvcEpCommon'
         - $ref: '#/components/schemas/CarrierEthernetEvcEpNotEpl'
+      required:
+        - colorMap
+        - identifier
+        - ingressBandwidthProfilePerClassofServiceName
+        - ingressClassOfServiceMap
+        - subscriberMegMip
+        - uni
     Eptree:
       allOf:
         - $ref: '#/components/schemas/MEFProductConfiguration'
@@ -1150,7 +1958,7 @@ components:
         - properties:
             evcEndPoints:
               description:
-                MEF 10.4 10 - An array of two or more EVC End Points.
+                MEF 10.4 sec. 10 - An array of two or more EVC End Points.
               items:
                 $ref: '#/components/schemas/EptreeEvcEndPoint'
               minItems: 2
@@ -1170,6 +1978,14 @@ components:
         - $ref: '#/components/schemas/CarrierEthernetEvcEpCommon'
         - $ref: '#/components/schemas/CarrierEthernetEvcEpEtree'
         - $ref: '#/components/schemas/CarrierEthernetEvcEpNotEpl'
+      required:
+        - colorMap
+        - identifier
+        - ingressBandwidthProfilePerClassofServiceName
+        - ingressClassOfServiceMap
+        - role
+        - subscriberMegMip
+        - uni
     Error:
       description: >
         Standard Class used to describe API response error Not intended to be
@@ -1363,6 +2179,8 @@ components:
           minItems: 0
           type: array
           uniqueItems: true
+      required:
+        - evcEgressMapEntries
       type: object
     EvcEgressMapEntry:
       description: >-
@@ -1379,6 +2197,9 @@ components:
           $ref: '#/components/schemas/DeiValueAndDiscard'
         pcpGreen:
           $ref: '#/components/schemas/PcpValueAndDiscard'
+      required:
+        - cosName
+        - pcpGreen
       type: object
     Evpl:
       allOf:
@@ -1388,7 +2209,7 @@ components:
         - $ref: '#/components/schemas/CarrierEthernetEvcNotEpl'
         - properties:
             evcEndPoints:
-              description: MEF 10.4 10 - An array of two EVC End Points.
+              description: MEF 10.4 sec. 10 - An array of two EVC End Points.
               items:
                 $ref: '#/components/schemas/EvplEvcEndPoint'
               maxItems: 2
@@ -1411,6 +2232,14 @@ components:
         - $ref: '#/components/schemas/CarrierEthernetEvcEpCommon'
         - $ref: '#/components/schemas/CarrierEthernetEvcEpVirtualPrivate'
         - $ref: '#/components/schemas/CarrierEthernetEvcEpNotEpl'
+      required:
+        - colorMap
+        - evcEndPointMap
+        - identifier
+        - ingressBandwidthProfilePerClassofServiceName
+        - ingressClassOfServiceMap
+        - subscriberMegMip
+        - uni
     Evplan:
       allOf:
         - $ref: '#/components/schemas/MEFProductConfiguration'
@@ -1420,7 +2249,7 @@ components:
         - properties:
             evcEndPoints:
               description:
-                MEF 10.4 10 - An array of two or more EVC End Points.
+                MEF 10.4 sec. 10 - An array of two or more EVC End Points.
               items:
                 $ref: '#/components/schemas/EvplanEvcEndPoint'
               minItems: 2
@@ -1442,6 +2271,14 @@ components:
         - $ref: '#/components/schemas/CarrierEthernetEvcEpCommon'
         - $ref: '#/components/schemas/CarrierEthernetEvcEpVirtualPrivate'
         - $ref: '#/components/schemas/CarrierEthernetEvcEpNotEpl'
+      required:
+        - colorMap
+        - evcEndPointMap
+        - identifier
+        - ingressBandwidthProfilePerClassofServiceName
+        - ingressClassOfServiceMap
+        - subscriberMegMip
+        - uni
     Evptree:
       allOf:
         - $ref: '#/components/schemas/MEFProductConfiguration'
@@ -1451,7 +2288,7 @@ components:
         - properties:
             evcEndPoints:
               description:
-                MEF 10.4 10 - An array of two or more EVC End Points.
+                MEF 10.4 sec. 10 - An array of two or more EVC End Points.
               items:
                 $ref: '#/components/schemas/EvptreeEvcEndPoint'
               minItems: 2
@@ -1474,6 +2311,15 @@ components:
         - $ref: '#/components/schemas/CarrierEthernetEvcEpVirtualPrivate'
         - $ref: '#/components/schemas/CarrierEthernetEvcEpEtree'
         - $ref: '#/components/schemas/CarrierEthernetEvcEpNotEpl'
+      required:
+        - colorMap
+        - evcEndPointMap
+        - identifier
+        - ingressBandwidthProfilePerClassofServiceName
+        - ingressClassOfServiceMap
+        - role
+        - subscriberMegMip
+        - uni
     FieldedAddress:
       description: >-
         A type of Address that has a discrete field and value for each type of
@@ -1558,6 +2404,10 @@ components:
           $ref: '#/components/schemas/FrameDispEnum'
         multicast:
           $ref: '#/components/schemas/FrameDispEnum'
+      required:
+        - broadcast
+        - multicast
+        - unicast
       type: object
     GeographicSubAddress:
       description:
@@ -1608,12 +2458,15 @@ components:
             The unit of measure for the Information Rate. For example if the
             Information Rate is 70 kbps this element is kbps.
           $ref: '#/components/schemas/IrUnits'
+      required:
+        - irUnits
+        - irValue
       type: object
     Instantiation:
       description: >-
-        MEF 10.4 9.2 - When the value is Physical, the UNI is implemented using
-        one or more instances of a standard Physical Layer. When the value is
-        Virtual, the physical layer is not specified.
+        MEF 10.4 sec. 9.2 - When the value is Physical, the UNI is implemented
+        using one or more instances of a standard Physical Layer. When the
+        value is Virtual, the physical layer is not specified.
       enum:
         - PHYSICAL
         - VIRTUAL
@@ -1645,12 +2498,13 @@ components:
       type: string
     L2cpAddressSet:
       description: >-
-        MEF 10.4 9.16 and MEF 45.1 8.1 - L2CP Address Set Service Attribute is
-        defined in MEF 45.1. CTA CEVLAN Tag Aware for VLAN-based services where
-        the CE-VLAN ID is used to map a frame to a service. CTB CVLAN Tag Blind
-        for Port-based services where the CE-VLAN ID not used to map a frame to
-        a service. CTB2 CVLAN Tag Blind Option 2 for point-to-point Port-based
-        services that support the EPL Option 2 L2CP processing.
+        MEF 10.4 sec. 9.16 and MEF 45.1 sec. 8.1 - L2CP Address Set Service
+        Attribute is defined in MEF 45.1. CTA CEVLAN Tag Aware for VLAN-based
+        services where the CE-VLAN ID is used to map a frame to a service. CTB
+        CVLAN Tag Blind for Port-based services where the CE-VLAN ID not used
+        to map a frame to a service. CTB2 CVLAN Tag Blind Option 2 for
+        point-to-point Port-based services that support the EPL Option 2 L2CP
+        processing.
       enum:
         - CTA
         - CTB
@@ -1684,6 +2538,9 @@ components:
           minItems: 0
           type: array
           uniqueItems: false
+      required:
+        - destinationAddress
+        - protocolID
       type: object
     L2cpProtocol:
       description: >-
@@ -1701,6 +2558,9 @@ components:
           description: The EtherType value or LLC value
           minimum: 0
           type: integer
+      required:
+        - l2cpProtocolType
+        - llcAddressOrEtherType
       type: object
     L2cpProtocolType:
       description: The protocol field to inspect to identify the L2CP.
@@ -1710,18 +2570,18 @@ components:
       type: string
     LinkAggregation:
       description: >-
-        MEF 10.4 9.5 - Data type representing Link Aggregation types. NONE-No
-        Link Aggregation is used. 2_LINK_ACTIVE_STANDBY-The SP network uses
-        Link Aggregation as in either Clause 5.6.1 of IEEE Std 802.1AX-2008 [2]
-        or Clause 6.7.1 of IEEE Std 802.1AX-2014 with one Link Aggregation
-        Group(LAG) across the links supporting the UNI/ENNI such that all
-        Service Frames are carried on only one of the two links when both links
-        are operational. ALL_ACTIVE-The SP Network uses Link Aggregation as
-        specified in Clause 5.3 of IEEE Std 802.1AX-2014, including the use of
-        the version 2 LACPDUs as specified in Clause 5.3.1h of IEEE Std
-        802.1AZ-2014, with one Link Aggregation Group (LAG) across the links.
-        OTHER-The Operator/Subscriber/Service Provider agree on another other
-        resiliency mechanism.
+        MEF 10.4 sec. 9.5 - Data type representing Link Aggregation types.
+        NONE-No Link Aggregation is used. 2_LINK_ACTIVE_STANDBY-The SP network
+        uses Link Aggregation as in either Clause 5.6.1 of IEEE Std
+        802.1AX-2008 [2] or Clause 6.7.1 of IEEE Std 802.1AX-2014 with one Link
+        Aggregation Group(LAG) across the links supporting the UNI/ENNI such
+        that all Service Frames are carried on only one of the two links when
+        both links are operational. ALL_ACTIVE-The SP Network uses Link
+        Aggregation as specified in Clause 5.3 of IEEE Std 802.1AX-2014,
+        including the use of the version 2 LACPDUs as specified in Clause
+        5.3.1h of IEEE Std 802.1AZ-2014, with one Link Aggregation Group (LAG)
+        across the links. OTHER-The Operator/Subscriber/Service Provider agree
+        on another other resiliency mechanism.
       enum:
         - NONE
         - 2_LINK_ACTIVE_STANDBY
@@ -1743,6 +2603,9 @@ components:
             The value of the duration. For example, if the duration is 20 days,
             this element is 20.
           type: integer
+      required:
+        - longDurationUnits
+        - longDurationValue
       type: object
     LongDurationUnits:
       description: >-
@@ -1845,11 +2708,6 @@ components:
         externalId:
           description: Buyer identifier of the product
           type: string
-        statusChange:
-          description: Status change for the Product
-          items:
-            $ref: '#/components/schemas/MEFProductStatusChange'
-          type: array
         billingAccount:
           $ref: '#/components/schemas/MEFBillingAccount'
         productOrderItem:
@@ -1871,6 +2729,11 @@ components:
             disconnect in the product order has been processed).
           format: date-time
           type: string
+        statusChange:
+          description: status change for the Product
+          items:
+            $ref: '#/components/schemas/MEFProductStatusChange'
+          type: array
         productConfiguration:
           $ref: '#/components/schemas/MEFProductConfiguration'
         productRelationship:
@@ -1912,13 +2775,16 @@ components:
         discriminator
       discriminator:
         mapping:
-          'urn:mef:lso:spec:cantata-sonata:epl:v0.1.0:inventory': '#/components/schemas/Epl'
-          'urn:mef:lso:spec:cantata-sonata:evplan:v0.1.0:inventory': '#/components/schemas/Evplan'
           'urn:mef:lso:spec:cantata-sonata:eptree:v0.1.0:inventory': '#/components/schemas/Eptree'
-          'urn:mef:lso:spec:cantata-sonata:evptree:v0.1.0:inventory': '#/components/schemas/Evptree'
+          'urn:mef:lso:spec:cantata-sonata:evplan:v0.1.0:inventory': '#/components/schemas/Evplan'
           'urn:mef:lso:spec:cantata-sonata:carrier-ethernet-subscriber-uni:v0.1.0:inventory': '#/components/schemas/CarrierEthernetSubscriberUni'
-          'urn:mef:lso:spec:cantata-sonata:evpl:v0.1.0:inventory': '#/components/schemas/Evpl'
           'urn:mef:lso:spec:cantata-sonata:eplan:v0.1.0:inventory': '#/components/schemas/Eplan'
+          'urn:mef:lso:spec:sonata:carrier-ethernet-enni-sp-so:v2.0.0:inventory': '#/components/schemas/CarrierEthernetEnniSpSo'
+          'urn:mef:lso:spec:cantata-sonata:evptree:v0.1.0:inventory': '#/components/schemas/Evptree'
+          'urn:mef:lso:spec:cantata-sonata:evpl:v0.1.0:inventory': '#/components/schemas/Evpl'
+          'urn:mef:lso:spec:sonata:access-eline:v2.0.0:inventory': '#/components/schemas/AccessEline'
+          'urn:mef:lso:spec:cantata-sonata:epl:v0.1.0:inventory': '#/components/schemas/Epl'
+          'urn:mef:lso:spec:sonata:carrier-ethernet-operator-uni:v2.0.0:inventory': '#/components/schemas/CarrierEthernetOperatorUni'
         propertyName: '@type'
       properties:
         '@type':
@@ -2060,6 +2926,46 @@ components:
         - subUnitNumber
         - subUnitType
       type: object
+    MaintenanceIntermediatePoint:
+      description: >-
+        MEF 26.2 sec. 16.16 - Indicates whether a MIP is instantiated at the
+        OVC End Point and the MEG Level of the MIP. When the value is not None,
+        several parameter values need to be determined as described in MEF
+        30.1.
+      enum:
+        - '0'
+        - '1'
+        - '2'
+        - '3'
+        - '4'
+        - '5'
+        - '6'
+        - '7'
+        - NONE
+      type: string
+    MepDirection:
+      description: Indicates whether this is an Up MEP or Down MEP
+      enum:
+        - UP
+        - DOWN
+      type: string
+    MepLevelAndDirection:
+      description: >-
+        A 2-tuple <level, direction> that defines the MEG Level and MEP
+        direction.
+      properties:
+        level:
+          description: The MEG level
+          maximum: 7
+          minimum: 0
+          type: integer
+        mepDirection:
+          description: Indicates whether this is an Up MEP or Down MEP
+          $ref: '#/components/schemas/MepDirection'
+      required:
+        - level
+        - mepDirection
+      type: object
     Money:
       description: A base / value business entity used to represent money
       properties:
@@ -2095,6 +3001,9 @@ components:
           minItems: 1
           type: array
           uniqueItems: true
+      required:
+        - oneWayAvailabilityObjective
+        - orderedPairList
       type: object
     OneWayCompositePmMetric:
       description: >-
@@ -2105,7 +3014,7 @@ components:
         Composite Frame Delay Variation (referred to as Wfl, Wfd, and Wfdv in
         the MEF Standards), Thresholds for Frame Delay and Delay Variation
         (referred to as DL and Jt in the MEF Standards) and the One Way
-        Composite Objective for this Class of Service Name and these two
+        Composite Objective for this Class of Service Name and these seven
         parameters. See MEF 10.4 section 8.8.10 for EVC (this Performance
         Metric is not defined for OVC services).
       properties:
@@ -2151,6 +3060,15 @@ components:
           maximum: 1
           minimum: 0
           type: number
+      required:
+        - compositeFrameDelay
+        - compositeFrameDelayVariation
+        - compositeFrameLoss
+        - compositePerformanceIndicatorThreshold
+        - cpmObjective
+        - oneWayFdThreshold
+        - oneWayIfdvThreshold
+        - orderedPairList
       type: object
     OneWayConsecutiveHighLossIntervalsPmMetric:
       description: >-
@@ -2182,6 +3100,10 @@ components:
           minItems: 1
           type: array
           uniqueItems: true
+      required:
+        - consecutiveNumberP
+        - oneWayChliObjective
+        - orderedPairList
       type: object
     OneWayFrameDelayPmMetric:
       description: >-
@@ -2198,14 +3120,19 @@ components:
           $ref: '#/components/schemas/Percentage'
         orderedPairList:
           description: >-
-            MEF 10.4  8.8.1.1 and MEF 26.2 12.13.1.1 - The set (referred to as
-            S in the MEF Standards) of ordered pairs of EVC or OVC End Points
-            over which this Performance Metric parameters and objective apply.
+            MEF 10.4 sec.  8.8.1.1 and MEF 26.2 sec. 12.13.1.1 - The set
+            (referred to as S in the MEF Standards) of ordered pairs of EVC or
+            OVC End Points over which this Performance Metric parameters and
+            objective apply.
           items:
             $ref: '#/components/schemas/OrderedPair'
           minItems: 1
           type: array
           uniqueItems: true
+      required:
+        - oneWayFdObjective
+        - oneWayFdPercentile
+        - orderedPairList
       type: object
     OneWayFrameDelayRangePmMetric:
       description: >-
@@ -2230,6 +3157,10 @@ components:
           minItems: 1
           type: array
           uniqueItems: false
+      required:
+        - oneWayFdrObjective
+        - oneWayFdrPecentile
+        - orderedPairList
       type: object
     OneWayFrameLostRatioPmMetric:
       description: >-
@@ -2251,6 +3182,9 @@ components:
           minItems: 1
           type: array
           uniqueItems: true
+      required:
+        - oneWayFlrObjective
+        - orderedPairList
       type: object
     OneWayHighLossIntervalPmMetric:
       description: >-
@@ -2276,16 +3210,19 @@ components:
           minItems: 1
           type: array
           uniqueItems: true
+      required:
+        - oneWayHighLossIntervalsObjective
+        - orderedPairList
       type: object
     OneWayInterFrameDelayVariationPmMetric:
       description: >-
         One Way Frame Inter Frame Delay Variation Performance Metric consisting
         of 3 parameters, a list of Ordered End Point Pairs (referred to as S in
-        the MEF Standards) , a time duration (referred to as ?t in the MEF
-        Standards), a percentile (referred to as Pv in the MEF Standards), and
-        the Inter Frame Delay Variation Objective for this Class of Service
-        Name and these two parameters. See MEF 10.4 section 8.8.5 for EVC and
-        MEF 26.2 section 12.13.5 for OVC.
+        the MEF Standards) , a time duration (referred to as ?t (the greek
+        letter tau, not t) in the MEF Standards), a percentile (referred to as
+        Pv in the MEF Standards), and the Inter Frame Delay Variation Objective
+        for this Class of Service Name and these three parameters. See MEF 10.4
+        section 8.8.5 for EVC and MEF 26.2 section 12.13.5 for OVC.
       properties:
         oneWayIfdvObjective:
           $ref: '#/components/schemas/ShortDuration'
@@ -2303,6 +3240,11 @@ components:
           minItems: 1
           type: array
           uniqueItems: false
+      required:
+        - oneWayIfdvObjective
+        - oneWayIfdvPencentile
+        - orderedPairList
+        - timeDuration
       type: object
     OneWayMeanFrameDelayPmMetric:
       description: >-
@@ -2324,7 +3266,244 @@ components:
           minItems: 1
           type: array
           uniqueItems: true
+      required:
+        - oneWayMfdObjective
+        - orderedPairList
       type: object
+    OperatorMultilateral:
+      description: >-
+        An Operator Multilateral Attribute is a behavior of a single Operator
+        CEN at an ENNI that is externally visible to a Service Provider or
+        Super Operator using that CEN and ENNI and/or to peer Operators
+        operating CENs on the other side of the ENNI. An Operator Multilateral
+        Attribute has the same value for all Service Providers or Super
+        Operators using that CEN and ENNI to whom the behavior is externally
+        visible.
+      properties:
+        l2cpPeering:
+          description: >-
+            MEF 26.2 sec. 10.1 and  MEF 45 sec. 8.2 - A list of Layer 2 Control
+            Protocols that will be Peered by a protocol entity at an ENNI: an
+            empty list, or a list of entries identifying protocols to be Peered
+            where each entry consists of {Destination Address, Protocol
+            Identifier} or {Destination Address, Protocol Identifier, Link
+            Identifier}
+          items:
+            $ref: '#/components/schemas/L2cpPeering'
+          minItems: 0
+          type: array
+          uniqueItems: false
+        taggedL2cpFrameProcessing:
+          description: >-
+            MEF 26.2 sec. 10.2 and MEF 45 sec. 8.3 - Reflects the capability of
+            the ENNI to process S-VLAN-tagged L2CP Frames in an 802.1 compliant
+            manner. The allowed values are "802_1_COMPLIANT" or
+            "802_1_NON_COMPLIANT". A value of 802_1_COMPLIANT means the ENNI
+            will apply the special forwarding rules to Tagged L2CP ENNI Frames
+            that map to a VUNI or an OVC End Point supporting a service other
+            than EPL with EPL Option 2 L2CP processing. A value of
+            802_1_NON_COMPLIANT means the ENNI will pass any Tagged L2CP ENNI
+            Frames. There is an ENNI Tagged L2CP Frame Processing Multilateral
+            Attribute for each ENNI.
+          $ref: '#/components/schemas/TaggedL2cpFrameProcessing'
+        maximumFrameSizeMultilateral:
+          description: >-
+            MEF 26.2 sec. 10.3 - The maximum length ENNI Frame in bytes that
+            can be reliably processed.
+          minimum: 1526
+          type: integer
+      type: object
+    OperatorUniCommon:
+      description: >-
+        This class contains all of the Operator UNI Services Attributes that
+        are used in all four Business Functions (POQ, Quote, Order, Inventory).
+        At this time, this includes all of the Operator UNI Service Attributes.
+        This class is used to compose the OperatorUNI class which has one file
+        for each Business Function that differ in terms of the Service
+        Attributes that are "Required" for the Business Function (rather than
+        "Optional").
+      properties:
+        aggregationLinkMap:
+          description: >-
+            MEF 26.2 sec. 14.6 and 802.1AX-2014 sec.  6.6.2.1 - A mapping of a
+            list of Port Conversation IDs (i.e., VLAN IDs or zero for untagged
+            frames) to an ordered list of physical links if there are multiple
+            physical links in the UNI and the link aggregation is ALL_ACTIVE.
+          items:
+            $ref: '#/components/schemas/ConversationIdToAggregationLinkMap'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        defaultCeVlanId:
+          description: >-
+            MEF 26.2 sec. 14.9 - The value of the Operator UNI Default CE-VLAN
+            ID is an integer that is the CE-VLAN ID value assigned to Untagged
+            Service Frames and Priority Tagged Service Frames.
+          maximum: 4094
+          minimum: 1
+          type: integer
+        maximumNumberOfEndPoints:
+          description: >-
+            MEF 26.2 sec. 14.10 - The maximum number of OVC End Points that the
+            Operator CEN can support at the UNI.
+          maximum: 4094
+          minimum: 1
+          type: integer
+        ingressBandwidthProfile:
+          description: >-
+            MEF 26.2 sec. 14.12 - A single set Bandwidth Profile Flow
+            parameters that covers all OVCs at the UNI. The value is either
+            Disabled (empty array) or a BWP.
+          items:
+            $ref: '#/components/schemas/BwpFlow'
+          maxItems: 1
+          minItems: 0
+          type: array
+          uniqueItems: true
+        lagLinkMeg:
+          $ref: '#/components/schemas/EnabledDisabled'
+        l2cpAddressSet:
+          description: >-
+            MEF 26.2 sec. 14.20 and MEF 45.1 sec. 8.1 - The subset of the
+            Bridge Reserved Addresses that are Peered or Discarded (i.e. not
+            Passed). The value CTB or CTB2 must be used for port-based
+            (private) services and CTA for vlan-based (virtual private)
+            services. Per MEF 45.1: If an OVC has an OVC End Point at a UNI,
+            then the value of the Operator UNI L2CP Address Set Service
+            Attribute MUST be the same as the OVC L2CP Address Set Service
+            Attribute.
+          $ref: '#/components/schemas/OperatorUniCommonL2cpAddressSet'
+        listofPhysicalLinks:
+          description: >-
+            MEF 26.2 sec. 14.2, 14.3 - This Service Attribute combines several
+            of the MEF 26.2 Objects into a single n-tuple that is consistent
+            with the way this information is described in MEF 10.4. The value
+            of the Operator UNI List of Physical Links Service Attribute is a
+            list of 6-tuples of the form ?id, physicalLink,
+            synchronousEthernet, precisionTiming,
+            uniConnectorType,uniConnectorGender?, with one list item for each
+            physical link. The value of id is an identifier for the physical
+            link. The value of physicalLink is the specific Ethernet physical
+            layer type. synchronousEthernet indicates if synchronous Ethernet
+            is used on the physical link and has the value Enabled or Disabled.
+            The value of precisionTiming indicates if the Precision Time
+            Protocol is used on the physical link and has the value Enabled or
+            Disabled. The values of uniConnectorType and uniConnectorGender
+            specify the type of connector used. Note that the id and the
+            physicalLink come from the CarrierEthernetPhysicalLink class.
+          items:
+            $ref: '#/components/schemas/UniPhysicalLink'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        linkOam:
+          $ref: '#/components/schemas/EnabledDisabled'
+        meg:
+          $ref: '#/components/schemas/EnabledDisabled'
+        linkAggregation:
+          description: >-
+            MEF 26.2 sec. 14.5 - Service Attribute representing Link
+            Aggregation types. NONE-No Link Aggregation is used.
+            2_LINK_ACTIVE_STANDBY-The SP network uses Link Aggregation as in
+            either Clause 5.6.1 of IEEE Std 802.1AX-2008 [2] or Clause 6.7.1 of
+            IEEE Std 802.1AX-2014 with one Link Aggregation Group (LAG) across
+            the links supporting the UNI such that all Service Frames are
+            carried on only one of the two links when both links are
+            operational. ALL_ACTIVE-The SP Network uses Link Aggregation as
+            specified in Clause 5.3 of IEEE Std 802.1AX-2014, including the use
+            of the version 2 LACPDUs as specified in Clause 5.3.1h of IEEE Std
+            802.1AZ-2014, with one Link Aggregation Group (LAG) across the
+            links. OTHER-The Operator/Subscriber/Service Provider agree on
+            another other resiliency mechanism.
+          $ref: '#/components/schemas/OperatorUniCommonLinkAggregation'
+        egressBandwidthProfile:
+          description: >-
+            MEF 26.2 sec. 14.13 - A single set of Bandwidth Profile Flow
+            parameters that covers all OVCs at the UNI. The value is either
+            Disabled (empty array) or a BWP.
+          items:
+            $ref: '#/components/schemas/BwpFlow'
+          maxItems: 1
+          minItems: 0
+          type: array
+          uniqueItems: true
+        l2cpPeering:
+          description: >-
+            MEF 26.2 sec. 14.21 and  and MEF 45.1 sec. 8.1 - L2CP Peering
+            Service Attribute defined in MEF 45.1 specifies which protocols, if
+            any, are peered at the UNI. The L2CP Peering service attribute
+            value must be an empty list, or a list of entries identifying
+            protocols to be Peered where each entry consists of {Destination
+            Address, Protocol Identifier} or {Destination Address, Protocol
+            Identifier, Link Identifier}.
+          items:
+            $ref: '#/components/schemas/L2cpPeering'
+          minItems: 0
+          type: array
+          uniqueItems: false
+        maximumNumberOfCeVlanIdsPerEndPoint:
+          description: >-
+            MEF 26.2 sec. 14.11 - An integer between 1 and 4094 inclusive that
+            limits the number of C-Tag VLAN IDs that can map to each OVC End
+            Point at the UNI.
+          maximum: 4094
+          minimum: 1
+          type: integer
+        tokenShare:
+          $ref: '#/components/schemas/EnabledDisabled'
+        maximumServiceFrameSize:
+          description: >-
+            MEF 26.2 sec. 14.8 - Specifies the maximum size of Service Frames
+            that can be transmitted across the UNI.
+          minimum: 1522
+          type: integer
+        envelopes:
+          description: >-
+            MEF 26.2 sec. 14.19 - The Envelopes and Envelope Coupling Flag
+            values to which Bandwidth Profile Flows can be mapped. Value is
+            list of {envelopeID, couplingFlagForIndexZero}. Note: Envelopes for
+            the UNI can also be specified at the OVC End Points associated with
+            the UNI.
+          items:
+            $ref: '#/components/schemas/Envelope'
+          minItems: 0
+          type: array
+          uniqueItems: true
+      type: object
+    OperatorUniCommonL2cpAddressSet:
+      description: >-
+        MEF 26.2 sec. 14.20 and MEF 45.1 sec. 8.1 - The subset of the Bridge
+        Reserved Addresses that are Peered or Discarded (i.e. not Passed). The
+        value CTB or CTB2 must be used for port-based (private) services and
+        CTA for vlan-based (virtual private) services. Per MEF 45.1: If an OVC
+        has an OVC End Point at a UNI, then the value of the Operator UNI L2CP
+        Address Set Service Attribute MUST be the same as the OVC L2CP Address
+        Set Service Attribute.
+      enum:
+        - CTA
+        - CTB
+        - CTB2
+      type: string
+    OperatorUniCommonLinkAggregation:
+      description: >-
+        MEF 26.2 sec. 14.5 - Service Attribute representing Link Aggregation
+        types. NONE-No Link Aggregation is used. 2_LINK_ACTIVE_STANDBY-The SP
+        network uses Link Aggregation as in either Clause 5.6.1 of IEEE Std
+        802.1AX-2008 [2] or Clause 6.7.1 of IEEE Std 802.1AX-2014 with one Link
+        Aggregation Group (LAG) across the links supporting the UNI such that
+        all Service Frames are carried on only one of the two links when both
+        links are operational. ALL_ACTIVE-The SP Network uses Link Aggregation
+        as specified in Clause 5.3 of IEEE Std 802.1AX-2014, including the use
+        of the version 2 LACPDUs as specified in Clause 5.3.1h of IEEE Std
+        802.1AZ-2014, with one Link Aggregation Group (LAG) across the links.
+        OTHER-The Operator/Subscriber/Service Provider agree on another other
+        resiliency mechanism.
+      enum:
+        - NONE
+        - 2_LINK_ACTIVE_STANDBY
+        - ALL_ACTIVE
+        - OTHER
+      type: string
     OrderedPair:
       description: >-
         Performance Metrics (except for Group Availability) are specified for a
@@ -2333,17 +3512,130 @@ components:
         defines one Ordered End Point Pair.
       properties:
         toCarrierEthernetServiceEndPoint:
+          description: >-
+            This is the EVC End Point ID for and EVC End Point in the service
+            or OVC End Point ID for an OVC End Point in the service.
           type: string
         fromCarrierEthernetServiceEndPoint:
+          description: >-
+            This is the EVC End Point ID for and EVC End Point in the service
+            or OVC End Point ID for an OVC End Point in the service.
           type: string
+      required:
+        - fromCarrierEthernetServiceEndPoint
+        - toCarrierEthernetServiceEndPoint
       type: object
+    OvcEgressMap:
+      discriminator:
+        mapping:
+          CN_PCP_CC_DEI: '#/components/schemas/PcpFromCosDeiFromCosColor'
+          CC_DEI: '#/components/schemas/DeiFromCosColor'
+          CC_PCP: '#/components/schemas/PcpFromCosColor'
+          CN_PCP: '#/components/schemas/PcpFromCos'
+        propertyName: mapType
+      properties:
+        mapType:
+          type: string
+      required:
+        - mapType
+      type: object
+    OvcL2cpAddressSet:
+      description: >-
+        MEF 45 sec. 8.1 and MEF 26.2 sec. 12.16 - The subset of the Bridge
+        Reserved Addresses that are Peered or Discarded (i.e. not Passed). The
+        value CTB or CTB2 must be used for port-based (private) services and
+        CTA for vlan-based (virtual private) services.
+      enum:
+        - CTA
+        - CTB
+        - CTB2
+      type: string
     PcpColor:
       enum:
         - GREEN
         - YELLOW
       type: string
+    PcpFromCos:
+      allOf:
+        - $ref: '#/components/schemas/OvcEgressMap'
+        - description: >-
+            The PCP Field in the Egress EI Frame is determined from the Class
+            of Service of the corresponding Ingress EI Frame. This is a list
+            that contains an entry for Class of Service Name that includes the
+            CoS Name and the PCP value  (or DISCARD) to use for that CoS. For
+            example CoS=Platinum --> PCP = 6. This affects the C-tag at the UNI
+            and the S-tag at the ENNI.
+          properties:
+            cnPcpEntries:
+              description: >-
+                A list of mappings of each CoS to an egress PCP value or
+                DISCARD.
+              items:
+                $ref: '#/components/schemas/CnPcp'
+              minItems: 1
+              type: array
+              uniqueItems: true
+          required:
+            - cnPcpEntries
+            - mapType
+          type: object
+      x-discriminator-value: CN_PCP
+    PcpFromCosColor:
+      allOf:
+        - $ref: '#/components/schemas/OvcEgressMap'
+        - description: >-
+            The PCP Field in the Egress EI Frame is determined from the Class
+            of Service Name and the Frame Color. This is a list that contains
+            an entry for Class of Service Name that includes the CoS Name and
+            two PCP values (or DISCARD), one for Green frames and one for
+            Yellow frames.  For example CoS=Platinum and Color=Green --> PCP =
+            6  and Color=Yellow --> PCP = 5. This affects the C-tag at the UNI
+            and the S-tag at the ENNI.
+          properties:
+            ccPcpEntries:
+              description: >-
+                A list of entries, one per CoS that indicates the PCP value for
+                Green Frames and the PCP value for Yellow Frames.
+              items:
+                $ref: '#/components/schemas/CcPcp'
+              minItems: 1
+              type: array
+              uniqueItems: true
+          required:
+            - ccPcpEntries
+            - mapType
+          type: object
+      x-discriminator-value: CC_PCP
+    PcpFromCosDeiFromCosColor:
+      allOf:
+        - $ref: '#/components/schemas/OvcEgressMap'
+        - description: >-
+            This is a combination of PCP from CoS and DEI from Color. The PCP
+            Field in the Egress EI Frame is determined from the Class of
+            Service and the DEI Field is determined from the Frame Color. This
+            is a list that contains an entry for Class of Service Name that
+            includes the CoS Name, PCP value to use (or DISCARD) and the DEI
+            value to use for each color for that CoS Name. For example
+            CoS=Platinum and Color=Green --> PCP = 6/DEI = 1 and Color=Yellow
+            --> DEI=0. This affects the C-tag at the UNI and the S-tag at the
+            ENNI.
+          properties:
+            cnPcpCcDeiEntries:
+              description: >-
+                A list of entries, one per CoS, the specifies the PCP value for
+                the CoS and the DEI values for Green and Yellow frames in the
+                CoS.
+              items:
+                $ref: '#/components/schemas/PcpFromCosDeiFromCosColor'
+              minItems: 1
+              type: array
+              uniqueItems: true
+          required:
+            - cnPcpCcDeiEntries
+            - mapType
+          type: object
+      x-discriminator-value: CN_PCP_CC_DEI
     PcpVal:
-      description: A value 0 to 7
       enum:
         - '0'
         - '1'
@@ -2353,7 +3645,6 @@ components:
         - '5'
         - '6'
         - '7'
-        - UNTAGGED
       type: string
     PcpValue:
       enum:
@@ -2672,12 +3963,25 @@ components:
       type: object
     Role:
       description: >-
-        MEF 10.4 10.3 - Indicates how EI Frames mapped to the EVC End Point can
-        be forwarded
+        MEF 10.4 sec. 10.3 - Indicates how EI Frames mapped to the EVC End
+        Point can be forwarded
       enum:
         - ROOT
         - LEAF
         - TRUNK
+      type: string
+    SVlanIdControl:
+      description: >-
+        MEF 26.2 sec. 13.2 - The value of the S-VLAN ID Control Service
+        Attribute is FULL or PARTIAL. When the value is FULL, the Operator can
+        support only a single SP/SO at the ENNI. In other words, S-VLAN IDs at
+        the ENNI can only be mapped to OVC End Points for a single SP/SO. When
+        the value is PARTIAL, there can be multiple SP/SOs using the ENNI and
+        different S-VLAN IDs can be mapped to OVC End Points for different
+        SP/SOs.
+      enum:
+        - FULL
+        - PARTIAL
       type: string
     ShortDuration:
       description: >-
@@ -2694,6 +3998,9 @@ components:
             The unit of measure in the duration. For example, if an interval is
             2ms, this element is MS.
           $ref: '#/components/schemas/ShortDurationUnits'
+      required:
+        - shortDurationUnits
+        - shortDurationValue
       type: object
     ShortDurationUnits:
       description: >-
@@ -2715,24 +4022,24 @@ components:
         of Performance Metrics.
       properties:
         thresholdC:
-          description:
-            "MEF 10.4 8.8 and MEF 26.2 12.13 - thresholdC is a real number in
-            the range [0,1] used as a threshold to determine whether a given
-            time interval ?\U0001D461\U0001D458 has high loss."
+          description: >-
+            MEF 10.4 sec. 8.8 and MEF 26.2 sec. 12.13 - thresholdC is a real
+            number in the range [0,1] used as a threshold to determine whether
+            a given time interval ?tk has high loss.
           maximum: 1
           minimum: 0
           type: number
         oneWayConsecutiveHighLossIntervalsPmMetric:
           description: >-
-            MEF 10.4 8.8.9 and MEF 26.2 12.13.9 -
+            MEF 10.4 sec. 8.8.9 and MEF 26.2 sec. 12.13.9 -
             oneWayConsecutiveHighLossIntervalsPmMetric is a reference to zero
             or more instances of One Way Consecutive High Loss Intervals
             Performance Metric. Each reference contains a set of parameters and
             performance objective for the Performance Metric. If there are 0
             instances then this Class of Service does not have an objective for
-            this One Way Frame Delay. If there are multiple instances for this
-            Class of Service then at least one of the parameters must be
-            different between the instances.
+            this One Way CHLI. If there are multiple instances for this Class
+            of Service then at least one of the parameters must be different
+            between the instances.
           items:
             $ref: '#/components/schemas/OneWayConsecutiveHighLossIntervalsPmMetric'
           minItems: 0
@@ -2740,14 +4047,14 @@ components:
           uniqueItems: true
         oneWayFrameDelayPmMetric:
           description: >-
-            MEF 10.4 8.8.2 and MEF 26.2 12.13.2 - oneWayFrameDelayPmMetric is a
-            reference to zero or more instances of One Way Frame Delay
-            Performance Metric. Each reference contains a set of parameters and
-            performance objective for the Performance Metric. If there are 0
-            instances then this Class of Service does not have an objective for
-            this One Way Frame Delay. If there are multiple instances for this
-            Class of Service then at least one of the parameters must be
-            different between the instances.
+            MEF 10.4 sec. 8.8.2 and MEF 26.2 sec. 12.13.2 -
+            oneWayFrameDelayPmMetric is a reference to zero or more instances
+            of One Way Frame Delay Performance Metric. Each reference contains
+            a set of parameters and performance objective for the Performance
+            Metric. If there are 0 instances then this Class of Service does
+            not have an objective for this One Way Frame Delay. If there are
+            multiple instances for this Class of Service then at least one of
+            the parameters must be different between the instances.
           items:
             $ref: '#/components/schemas/OneWayFrameDelayPmMetric'
           minItems: 0
@@ -2755,7 +4062,7 @@ components:
           uniqueItems: true
         oneWayInterFrameDelayVariationPmMetric:
           description: >-
-            MEF 10.4 8.8.5 and MEF 26.2 12.13.5 -
+            MEF 10.4 sec. 8.8.5 and MEF 26.2 sec. 12.13.5 -
             oneWayInterFrameDelayVariationPmMetric is a reference to zero or
             more instances of One Way Inter Frame Delay Variation Performance
             Metric. Each reference contains a set of parameters and performance
@@ -2771,14 +4078,15 @@ components:
           uniqueItems: true
         oneWayMeanFrameDelayPmMetric:
           description: >-
-            MEF 10.4 8.8.3 and MEF 26.2 12.13.3 - oneWayMeanFrameDelayPmMetric
-            is a reference to zero or more instances of One Way Mean Frame
-            Delay Performance Metric. Each reference contains a set of
-            parameters and performance objective for the Performance Metric. If
-            there are 0 instances then this Class of Service does not have an
-            objective for this One Way Frame Delay. If there are multiple
-            instances for this Class of Service then at least one of the
-            parameters must be different between the instances.
+            MEF 10.4 sec. 8.8.3 and MEF 26.2 sec. 12.13.3 -
+            oneWayMeanFrameDelayPmMetric is a reference to zero or more
+            instances of One Way Mean Frame Delay Performance Metric. Each
+            reference contains a set of parameters and performance objective
+            for the Performance Metric. If there are 0 instances then this
+            Class of Service does not have an objective for this One Way Mean
+            Frame Delay. If there are multiple instances for this Class of
+            Service then at least one of the parameters must be different
+            between the instances.
           items:
             $ref: '#/components/schemas/OneWayMeanFrameDelayPmMetric'
           minItems: 0
@@ -2786,15 +4094,15 @@ components:
           uniqueItems: true
         oneWayGroupAvailabilityPmMetric:
           description: >-
-            MEF 10.4 8.8.11 and MEF 26.2 12.13.10 -
+            MEF 10.4 sec. 8.8.11 and MEF 26.2 sec. 12.13.10 -
             oneWayGroupAvailabilityPmMetric is a reference to zero or more
             instances of One Way Group Availability Performance Metric. Each
             reference contains a set of parameters and performance objective
             for the Performance Metric. If there are 0 instances then this
-            Class of Service does not have an objective for this One Way Frame
-            Delay. If there are multiple instances for this Class of Service
-            then at least one of the parameters must be different between the
-            instances.
+            Class of Service does not have an objective for this One Way Group
+            Availability. If there are multiple instances for this Class of
+            Service then at least one of the parameters must be different
+            between the instances.
           items:
             $ref: '#/components/schemas/OneWayAvailabilityPmMetric'
           minItems: 0
@@ -2802,14 +4110,14 @@ components:
           uniqueItems: true
         oneWayAvailabilityPmMetric:
           description: >-
-            MEF 10.4 8.8.7 and MEF 26.2 12.13.7 - oneWayAvailabilityPmMetric is
-            a reference to zero or more instances of One Way Availability
-            Performance Metric. Each reference contains a set of parameters and
-            performance objective for the Performance Metric. If there are 0
-            instances then this Class of Service does not have an objective for
-            this One Way Frame Delay. If there are multiple instances for this
-            Class of Service then at least one of the parameters must be
-            different between the instances.
+            MEF 10.4 sec. 8.8.7 and MEF 26.2 sec. 12.13.7 -
+            oneWayAvailabilityPmMetric is a reference to zero or more instances
+            of One Way Availability Performance Metric. Each reference contains
+            a set of parameters and performance objective for the Performance
+            Metric. If there are 0 instances then this Class of Service does
+            not have an objective for this One Way Availability. If there are
+            multiple instances for this Class of Service then at least one of
+            the parameters must be different between the instances.
           items:
             $ref: '#/components/schemas/OneWayAvailabilityPmMetric'
           minItems: 0
@@ -2817,14 +4125,14 @@ components:
           uniqueItems: true
         oneWayHighLossIntervalsPmMetric:
           description: >-
-            MEF 10.4 8.8.8 and MEF 26.2 12.13.8 -
+            MEF 10.4 sec. 8.8.8 and MEF 26.2 sec. 12.13.8 -
             oneWayHighLossIntervalsPmMetric is a reference to zero or more
             instances of One Way High Loss Intervals Performance Metric. Each
             reference contains a set of parameters and performance objective
             for the Performance Metric. If there are 0 instances then this
-            Class of Service does not have an objective for this One Way Frame
-            Delay. If there are multiple instances for this Class of Service
-            then at least one of the parameters must be different between the
+            Class of Service does not have an objective for this One Way HLI.
+            If there are multiple instances for this Class of Service then at
+            least one of the parameters must be different between the
             instances.
           items:
             $ref: '#/components/schemas/OneWayHighLossIntervalPmMetric'
@@ -2833,14 +4141,14 @@ components:
           uniqueItems: true
         oneWayCompositePmMetric:
           description: >-
-            MEF 10.4 8.8.10 - oneWayCompositePmMetric is a reference to zero or
-            more instances of One Way Composite Performance Metric. Each
-            reference contains a set of parameters and performance objective
-            for the Performance Metric. If there are 0 instances then this
-            Class of Service does not have an objective for this One Way Frame
-            Delay. If there are multiple instances for this Class of Service
-            then at least one of the parameters must be different between the
-            instances.
+            MEF 10.4 sec. 8.8.10 - oneWayCompositePmMetric is a reference to
+            zero or more instances of One Way Composite Performance Metric.
+            Each reference contains a set of parameters and performance
+            objective for the Performance Metric. If there are 0 instances then
+            this Class of Service does not have an objective for this One Way
+            Composite Performance. If there are multiple instances for this
+            Class of Service then at least one of the parameters must be
+            different between the instances.
           items:
             $ref: '#/components/schemas/OneWayCompositePmMetric'
           minItems: 0
@@ -2848,14 +4156,15 @@ components:
           uniqueItems: true
         oneWayFrameLossRatioPmMetric:
           description: >-
-            MEF 10.4 8.8.6 and MEF 26.2 12.13.6 - oneWayFrameLossRatioPmMetric
-            is a reference to zero or more instances of One Way Frame Loss
-            Ratio Performance Metric. Each reference contains a set of
-            parameters and performance objective for the Performance Metric. If
-            there are 0 instances then this Class of Service does not have an
-            objective for this One Way Frame Delay. If there are multiple
-            instances for this Class of Service then at least one of the
-            parameters must be different between the instances.
+            MEF 10.4 sec. 8.8.6 and MEF 26.2 sec. 12.13.6 -
+            oneWayFrameLossRatioPmMetric is a reference to zero or more
+            instances of One Way Frame Loss Ratio Performance Metric. Each
+            reference contains a set of parameters and performance objective
+            for the Performance Metric. If there are 0 instances then this
+            Class of Service does not have an objective for this One Way Frame
+            Loss Ratio. If there are multiple instances for this Class of
+            Service then at least one of the parameters must be different
+            between the instances.
           items:
             $ref: '#/components/schemas/OneWayFrameLostRatioPmMetric'
           maxItems: 1
@@ -2864,29 +4173,32 @@ components:
           uniqueItems: true
         consecutiveIntervalN:
           description:
-            "MEF 10.4 8.8 and MEF 26.2 12.13 - consectiveIntervalN is an
-            integer ? 1, used to identify how many consecutive
+            "MEF 10.4 sec. 8.8 and MEF 26.2 sec. 12.13 - consectiveIntervalN is
+            an integer ? 1, used to identify how many consecutive
             ?\U0001D461\U0001D458 intervals must have high loss to trigger a
             change in Availability."
           minimum: 1
           type: integer
         deltaT:
           description: >-
-            MEF 10.4 8.8 and MEF 26.2 12.13 - deltaT is a time duration in
-            seconds much smaller than timeInterval. This is used, primarily, in
-            calculations associated with Availability, High Loss Intervals and
-            Consecutive High Loss Intervals.
+            MEF 10.4 sec. 8.8 and MEF 26.2 sec. 12.13 - deltaT is a time
+            duration in seconds much smaller than timeInterval. This is used,
+            primarily, in calculations associated with Availability, High Loss
+            Intervals and Consecutive High Loss Intervals. MEF 10.4 and MEF
+            26.2 refer to this as ?t and the k-th interval starting at ts is
+            referred to as ?tk (k is subscript).
           type: integer
         oneWayFrameDelayRangePmMetric:
           description: >-
-            MEF 10.4 8.8.4 and MEF 26.2 12.13.4 - oneWayFrameDelayRangePmMetric
-            is a reference to zero or more instances of One Way Frame Delay
-            Range Performance Metric. Each reference contains a set of
-            parameters and performance objective for the Performance Metric. If
-            there are 0 instances then this Class of Service does not have an
-            objective for this One Way Frame Delay. If there are multiple
-            instances for this Class of Service then at least one of the
-            parameters must be different between the instances.
+            MEF 10.4 sec. 8.8.4 and MEF 26.2 sec. 12.13.4 -
+            oneWayFrameDelayRangePmMetric is a reference to zero or more
+            instances of One Way Frame Delay Range Performance Metric. Each
+            reference contains a set of parameters and performance objective
+            for the Performance Metric. If there are 0 instances then this
+            Class of Service does not have an objective for this One Way Frame
+            Delay Range. If there are multiple instances for this Class of
+            Service then at least one of the parameters must be different
+            between the instances.
           items:
             $ref: '#/components/schemas/OneWayFrameDelayRangePmMetric'
           minItems: 0
@@ -2896,6 +4208,21 @@ components:
           description: This is the CoS Name for this PM Entry.
           minLength: 1
           type: string
+      required:
+        - consecutiveIntervalN
+        - cosName
+        - deltaT
+        - oneWayAvailabilityPmMetric
+        - oneWayCompositePmMetric
+        - oneWayConsecutiveHighLossIntervalsPmMetric
+        - oneWayFrameDelayPmMetric
+        - oneWayFrameDelayRangePmMetric
+        - oneWayFrameLossRatioPmMetric
+        - oneWayGroupAvailabilityPmMetric
+        - oneWayHighLossIntervalsPmMetric
+        - oneWayInterFrameDelayVariationPmMetric
+        - oneWayMeanFrameDelayPmMetric
+        - thresholdC
       type: object
     SourceMacAddressLimit:
       description: >-
@@ -2913,12 +4240,15 @@ components:
           type: integer
         interval:
           $ref: '#/components/schemas/ShortDuration'
+      required:
+        - interval
+        - limit
       type: object
     SubscriberMegMip:
       description: >-
-        MEF 10.4 10.13 - The value of the EVC EP Subscriber MEG MIP Service
-        Attribute is either None or an integer in the range 0  7 that indicates
-        the MEG Level of a Subscriber MEG MIP.
+        MEF 10.4 sec. 10.13 - The value of the EVC EP Subscriber MEG MIP
+        Service Attribute is either None or an integer in the range 0 - 7 that
+        indicates the MEG Level of a Subscriber MEG MIP.
       enum:
         - '0'
         - '1'
@@ -2942,9 +4272,9 @@ components:
       properties:
         listOfPhyLinks:
           description: >-
-            MEF 10.4 9.4 - The value of the Subscriber UNI List of Physical
-            Links Service Attribute is a list of 5-tuples of the form <id,
-            physicalLink, synchronousEthernet, precisionTiming,
+            MEF 10.4 sec. 9.4 - The value of the Subscriber UNI List of
+            Physical Links Service Attribute is a list of 5-tuples of the form
+            <id, physicalLink, synchronousEthernet, precisionTiming,
             demarcConnectorType>, with one list item for each physical link.
             The value of id is an identifier for the physical link. The value
             of physicalLink is the specific Ethernet physical layer type.
@@ -2962,14 +4292,14 @@ components:
           uniqueItems: false
         virtualFrameMap:
           description: >-
-            MEF 10.4 9.2 and 9.3 - When the value of the Subscriber UNI
-            Instantiation Service Attribute = Virtual, there must exist a map
-            that maps the set of Virtual Frames that cross the UNI to a
+            MEF 10.4 sec. 9.2 and sec. 9.3 - When the value of the Subscriber
+            UNI Instantiation Service Attribute = Virtual, there must exist a
+            map that maps the set of Virtual Frames that cross the UNI to a
             sequence of pairs of the form ?s,t? where s is a standard Ethernet
-            frame per Clause 3 of IEEE Std 802.3  2015 [5] and t is the arrival
-            time at the UNI for all bits in s. Since MEF 10.4 does not specify
-            the contents or format of this map, it is currently defined as an
-            arbitrary length string.
+            frame per Clause 3 of IEEE Std 802.3 - 2015 [5] and t is the
+            arrival time at the UNI for all bits in s. Since MEF 10.4 does not
+            specify the contents or format of this map, it is currently defined
+            as an arbitrary length string.
           items:
             $ref: '#/components/schemas/VirtualFrameMap'
           maxItems: 1
@@ -2978,9 +4308,9 @@ components:
           uniqueItems: true
         portConversation:
           description: >-
-            MEF 10.4 9.6 - A mapping of Port Conversation IDs (i.e., VLAN IDs
-            or zero for untagged frames) to an ordered list of physical links
-            if there are multiple physical links in the UNI and the link
+            MEF 10.4 sec. 9.6 - A mapping of Port Conversation IDs (i.e., VLAN
+            IDs or zero for untagged frames) to an ordered list of physical
+            links if there are multiple physical links in the UNI and the link
             aggregation is ALL_ACTIVE.
           items:
             $ref: '#/components/schemas/ConversationIdToAggregationLinkMap'
@@ -2989,7 +4319,7 @@ components:
           uniqueItems: false
         maximumNumberOfEndPoints:
           description: >-
-            MEF 10.4 9.9 - The maximum number of OVC End Points that the
+            MEF 10.4 sec. 9.9 - The maximum number of OVC End Points that the
             Operator CEN can support at the UNI.
           maximum: 4094
           minimum: 1
@@ -2998,13 +4328,13 @@ components:
           $ref: '#/components/schemas/EnabledDisabled'
         l2cpAddressSet:
           description: >-
-            MEF 10.4 9.16 and MEF 45.1 8.1 - L2CP Address Set Service Attribute
-            is defined in MEF 45.1. CTA CEVLAN Tag Aware for VLAN-based
-            services where the CE-VLAN ID is used to map a frame to a service.
-            CTB CVLAN Tag Blind for Port-based services where the CE-VLAN ID
-            not used to map a frame to a service. CTB2 CVLAN Tag Blind Option 2
-            for point-to-point Port-based services that support the EPL Option
-            2 L2CP processing.
+            MEF 10.4 sec. 9.16 and MEF 45.1 sec. 8.1 - L2CP Address Set Service
+            Attribute is defined in MEF 45.1. CTA CEVLAN Tag Aware for
+            VLAN-based services where the CE-VLAN ID is used to map a frame to
+            a service. CTB CVLAN Tag Blind for Port-based services where the
+            CE-VLAN ID not used to map a frame to a service. CTB2 CVLAN Tag
+            Blind Option 2 for point-to-point Port-based services that support
+            the EPL Option 2 L2CP processing.
           $ref: '#/components/schemas/L2cpAddressSet'
         linkOAM:
           $ref: '#/components/schemas/EnabledDisabled'
@@ -3012,7 +4342,7 @@ components:
           $ref: '#/components/schemas/EnabledDisabled'
         linkAggregation:
           description: >-
-            MEF 10.4 9.5 - Data type representing Link Aggregation types.
+            MEF 10.4 sec. 9.5 - Data type representing Link Aggregation types.
             NONE-No Link Aggregation is used. 2_LINK_ACTIVE_STANDBY-The SP
             network uses Link Aggregation as in either Clause 5.6.1 of IEEE Std
             802.1AX-2008 [2] or Clause 6.7.1 of IEEE Std 802.1AX-2014 with one
@@ -3030,8 +4360,9 @@ components:
           $ref: '#/components/schemas/L2cpPeering'
         maximumNumberOfCtagVlanIdsPerEndPoint:
           description: >-
-            MEF 10.4 9.10 - An integer greater than or equal to 1 that limits
-            the number of C-Tag VLAN IDs that can map to each EVC End Point.
+            MEF 10.4 sec. 9.10 - An integer greater than or equal to 1 that
+            limits the number of C-Tag VLAN IDs that can map to each EVC End
+            Point.
           maximum: 4094
           minimum: 1
           type: integer
@@ -3039,15 +4370,15 @@ components:
           $ref: '#/components/schemas/EnabledDisabled'
         maximumServiceFrameSize:
           description: >-
-            MEF 10.4 9.8 - Specifies the maximum size of Service Frames that
-            can be transmitted across UNI.
+            MEF 10.4 sec. 9.8 - Specifies the maximum size of Service Frames
+            that can be transmitted across UNI.
           minimum: 1522
           type: integer
         envelopes:
           description: >-
-            MEF 10.4 9.12 - The Envelopes and Envelope Coupling Flag values to
-            which Bandwidth Profile Flows can be mapped. Value is list of
-            {envelopeID, couplingFlagForIndexZero}.
+            MEF 10.4 sec. 9.12 - The Envelopes and Envelope Coupling Flag
+            values to which Bandwidth Profile Flows can be mapped. Value is
+            list of {envelopeID, couplingFlagForIndexZero}.
           items:
             $ref: '#/components/schemas/Envelope'
           minItems: 0
@@ -3055,11 +4386,27 @@ components:
           uniqueItems: true
         instantiation:
           description: >-
-            MEF 10.4 9.2 - When the value is Physical, the UNI is implemented
-            using one or more instances of a standard Physical Layer. When the
-            value is Virtual, the physical layer is not specified.
+            MEF 10.4 sec. 9.2 - When the value is Physical, the UNI is
+            implemented using one or more instances of a standard Physical
+            Layer. When the value is Virtual, the physical layer is not
+            specified.
           $ref: '#/components/schemas/Instantiation'
       type: object
+    TaggedL2cpFrameProcessing:
+      description: >-
+        MEF 26.2 sec. 10.2 and MEF 45 sec. 8.3 - Reflects the capability of the
+        ENNI to process S-VLAN-tagged L2CP Frames in an 802.1 compliant manner.
+        The allowed values are "802_1_COMPLIANT" or "802_1_NON_COMPLIANT". A
+        value of 802_1_COMPLIANT means the ENNI will apply the special
+        forwarding rules to Tagged L2CP ENNI Frames that map to a VUNI or an
+        OVC End Point supporting a service other than EPL with EPL Option 2
+        L2CP processing. A value of 802_1_NON_COMPLIANT means the ENNI will
+        pass any Tagged L2CP ENNI Frames. There is an ENNI Tagged L2CP Frame
+        Processing Multilateral Attribute for each ENNI.
+      enum:
+        - 802_1_COMPLIANT
+        - 802_1_NON_COMPLIANT
+      type: string
     Time:
       properties:
         month:
@@ -3085,6 +4432,13 @@ components:
           maximum: 59
           minimum: 0
           type: integer
+      required:
+        - day
+        - hour
+        - minute
+        - month
+        - second
+        - year
       type: object
     TimeUnit:
       description: |
@@ -3144,6 +4498,11 @@ components:
           $ref: '#/components/schemas/UniConnectorType'
         precisionTiming:
           $ref: '#/components/schemas/EnabledDisabled'
+      required:
+        - precisionTiming
+        - synchronousEthernet
+        - uniConnectorGender
+        - uniConnectorType
       type: object
     VirtualFrameMap:
       description: >-
@@ -3154,14 +4513,14 @@ components:
       properties:
         vfMap:
           description: >-
-            MEF 10.4 9.2 and 9,3 - When the value of the Subscriber UNI
-            Instantiation Service Attribute = Virtual, there must exist a map
-            that maps the set of Virtual Frames that cross the UNI to a
+            MEF 10.4 sec. 9.2 and sec. 9,3 - When the value of the Subscriber
+            UNI Instantiation Service Attribute = Virtual, there must exist a
+            map that maps the set of Virtual Frames that cross the UNI to a
             sequence of pairs of the form?s,t where s is a standard Ethernet
-            frame per Clause 3 of IEEE Std 802.3  2015 [5] and t is the arrival
-            time at the UNI for all bits in s. Since MEF 10.4 does not specify
-            the contents or format of this map, it is currently defined as an
-            arbitrary length string.
+            frame per Clause 3 of IEEE Std 802.3 - 2015 [5] and t is the
+            arrival time at the UNI for all bits in s. Since MEF 10.4 does not
+            specify the contents or format of this map, it is currently defined
+            as an arbitrary length string.
           minLength: 0
           type: string
       type: object

@@ -7,8 +7,8 @@ info:
     change.** 
 
     The Product Offering Qualification (POQ) Management API allows a Buyer to
-    check whether the Seller can deliver a product or set of products from among
-    their product offerings at the geographic address or a service site 
+    check whether the Seller can deliver a product or set of products from
+    among their product offerings at the geographic address or a service site
     specified by the Buyer; or modify a previously purchased product.
 
     The following operations are managed:
@@ -29,9 +29,11 @@ info:
 servers:
   - url: 'https://serverRoot/mefApi/sonata/productOfferingQualification/v7/'
 tags:
-  - description: Operations for managing the Product Offering Qualification request.
+  - description:
+      Operations for managing the Product Offering Qualification request.
     name: productOfferingQualification
-  - description: Operations for managing the subscription for events notification.
+  - description:
+      Operations for managing the subscription for events notification.
     name: events subscription
 paths:
   /hub:
@@ -41,9 +43,9 @@ paths:
         notifications of POQ create, POQ and/or POQ Item state changes if the
         Buyer has registered for these notifications. The state change
         notifications are sent only in the Deferred response scenario as in the
-        Immediate response scenario once the response to POQ Request is provided
-        (create notification), there  will be no further state changes. 
-        Reference: MEF 79 (section 8.4.2).
+        Immediate response scenario once the response to POQ Request is
+        provided (create notification), there  will be no further state
+        changes.  Reference: MEF 79 (section 8.4.2).
       operationId: registerListener
       parameters:
         - description: >-
@@ -81,7 +83,8 @@ paths:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/EventSubscription'
-          description: 'Created. (https://tools.ietf.org/html/rfc7231#section-6.3.2)'
+          description:
+            'Created. (https://tools.ietf.org/html/rfc7231#section-6.3.2)'
         '400':
           content:
             application/json;charset=utf-8:
@@ -120,7 +123,8 @@ paths:
           description: >-
             Method not implemented. Used in case Seller is not supporting
             Notification mechanism
-      summary: Allows a Buyer to register to receive POQ state change notifications
+      summary:
+        Allows a Buyer to register to receive POQ state change notifications
       tags:
         - events subscription
       x-codegen-request-body-name: data
@@ -159,7 +163,8 @@ paths:
             type: string
       responses:
         '204':
-          description: 'No Content. (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
+          description:
+            'No Content. (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
         '400':
           content:
             application/json;charset=utf-8:
@@ -209,8 +214,8 @@ paths:
         Seller also provides a POQ Identifier that uniquely identifies this POQ
         within the Seller's system. The order of the elements returned to the
         Buyer is defined by the Seller (e.g. natural order) and does not change
-        between the pages. If criteria for attribute X are provided, all returned
-        items must match it.
+        between the pages. If criteria for attribute X are provided, all
+        returned items must match it.
       operationId: listProductOfferingQualification
       parameters:
         - description: >-
@@ -289,7 +294,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/ProductOfferingQualification_Find'
                 type: array
-          description: 'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
+          description:
+            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
           headers:
             X-Pagination-Throttled:
               description: >
@@ -301,8 +307,8 @@ paths:
             X-Total-Count:
               description: >
                 The total number of matching POQ. E.g. if there are 50 matching
-                items in total, but the request has offset=10 and limit=10, then
-                the X-Total-Count is 50.
+                items in total, but the request has offset=10 and limit=10,
+                then the X-Total-Count is 50.
               schema:
                 type: integer
             X-Result-Count:
@@ -340,8 +346,8 @@ paths:
         - productOfferingQualification
     post:
       description: >-
-        A request initiated by the Buyer to determine whether the Seller is able
-        to deliver a product or set of products from among their product
+        A request initiated by the Buyer to determine whether the Seller is
+        able to deliver a product or set of products from among their product
         offerings, at the Buyer's location(s); or modify a previously purchased
         product. The Seller also provides estimated time intervals to complete
         these deliveries. Reference: MEF 79 (Sn 8.4).
@@ -382,7 +388,8 @@ paths:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/ProductOfferingQualification'
-          description: 'Created. (https://tools.ietf.org/html/rfc7231#section-6.3.2)'
+          description:
+            'Created. (https://tools.ietf.org/html/rfc7231#section-6.3.2)'
         '400':
           content:
             application/json;charset=utf-8:
@@ -428,7 +435,8 @@ paths:
         (`listProductOfferingQualification`)
       operationId: retrieveProductOfferingQualification
       parameters:
-        - description: POQ identifier (matches `ProductOfferingQualification.id`)
+        - description:
+            POQ identifier (matches `ProductOfferingQualification.id`)
           in: path
           name: id
           required: true
@@ -460,7 +468,8 @@ paths:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/ProductOfferingQualification'
-          description: 'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
+          description:
+            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
         '400':
           content:
             application/json;charset=utf-8:
@@ -512,8 +521,8 @@ components:
           $ref: '#/components/schemas/Duration'
         id:
           description: >
-            Identifier of the Product Offering Qualification alternate proposal.
-            Assigned by the Seller.
+            Identifier of the Product Offering Qualification alternate
+            proposal. Assigned by the Seller.
           type: string
         alternateProduct:
           description: Alternate product proposal
@@ -543,7 +552,8 @@ components:
         - invalidBody
       type: string
     Duration:
-      description: 'A Duration in a given unit of time e.g. 3 hours, or 5 days.'
+      description:
+        'A Duration in a given unit of time e.g. 3 hours, or 5 days.'
       properties:
         amount:
           description: 'Duration (number of seconds, minutes, hours, etc.)'
@@ -600,7 +610,8 @@ components:
           required:
             - code
           type: object
-      description: 'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
+      description:
+        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
     Error401:
       allOf:
         - $ref: '#/components/schemas/Error'
@@ -617,7 +628,8 @@ components:
           required:
             - code
           type: object
-      description: 'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
+      description:
+        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
     Error401Code:
       description: |-
         One of the following error codes:
@@ -668,8 +680,8 @@ components:
               description: >-
                 The following error code:
 
-                - notFound: A current representation for the target resource not
-                found
+                - notFound: A current representation for the target resource
+                not found
               enum:
                 - notFound
               type: string
@@ -762,7 +774,8 @@ components:
           required:
             - code
           type: object
-      description: 'Not Implemented. (https://tools.ietf.org/html/rfc7231#section-6.6.2)'
+      description:
+        'Not Implemented. (https://tools.ietf.org/html/rfc7231#section-6.6.2)'
     EventSubscription:
       description: |
         This resource is used to manage notification subscription.
@@ -780,8 +793,8 @@ components:
           type: string
         id:
           description: >-
-            An identifier of this Event Subscription assigned by the Seller when
-            a resource is created.
+            An identifier of this Event Subscription assigned by the Seller
+            when a resource is created.
           type: string
       required:
         - callback
@@ -792,14 +805,14 @@ components:
       properties:
         query:
           description: >-
-            This attribute is used to define to which type of events to register
-            to. Example: "query":"eventType = poqCreateEvent". To subscribe for
-            more than one event type, put the values separated by comma:
-            `eventType=poqCreateEvent,poqStateChangeEvent`. The possible values
-            are enumerated by the 'POQEventType' in
-            productOfferingQualificationNotification.api.yaml. An empty query is
-            treated as specifying no filters - ending in  subscription for all
-            event types.
+            This attribute is used to define to which type of events to
+            register to. Example: "query":"eventType = poqCreateEvent". To
+            subscribe for more than one event type, put the values separated by
+            comma: `eventType=poqCreateEvent,poqStateChangeEvent`. The possible
+            values are enumerated by the 'POQEventType' in
+            productOfferingQualificationNotification.api.yaml. An empty query
+            is treated as specifying no filters - ending in  subscription for
+            all event types.
           type: string
         callback:
           description: >-
@@ -850,11 +863,13 @@ components:
               description: >-
                 A descriptor for a postal delivery area, used to speed and
                 simplify the delivery of mail (also known as zip code) MEF 79
-                defines it as required however as in certain countries it is not
-                used we make it optional in API.
+                defines it as required however as in certain countries it is
+                not used we make it optional in API.
               type: string
             streetNrLast:
-              description: Last number in a range of street numbers allocated to a property
+              description:
+                Last number in a range of street numbers allocated to a
+                property
               type: string
             streetNrSuffix:
               description: The first street number suffix
@@ -929,8 +944,8 @@ components:
       description: >-
         A type of Address that has discrete fields for each type of boundary or
         identifier with the exception of the street and more specific location
-        details, which are combined into a maximum of two strings based on local
-        postal addressing conventions. Reference: MEF 79 (Sn 8.9.3)
+        details, which are combined into a maximum of two strings based on
+        local postal addressing conventions. Reference: MEF 79 (Sn 8.9.3)
     GeographicAddressLabel:
       allOf:
         - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
@@ -944,9 +959,9 @@ components:
               description: >-
                 The organization or standard from the organization that
                 administers this Geographic Address Label ensuring it is unique
-                within the Administrative Authority. The value(s) to be used are
-                to be agreed upon during the onboarding. For North American providers
-                this would normally be CLLI (Common Language Location
+                within the Administrative Authority. The value(s) to be used
+                are to be agreed upon during the onboarding. For North American
+                providers this would normally be CLLI (Common Language Location
                 Identifier) code.
               type: string
           required:
@@ -965,14 +980,14 @@ components:
             href:
               description: >
                 Hyperlink to the referenced Address. Hyperlink MAY be used by
-                the Seller in responses. Hyperlink MUST be ignored by the Seller
-                in case it is provided by the Buyer in a request.
+                the Seller in responses. Hyperlink MUST be ignored by the
+                Seller in case it is provided by the Buyer in a request.
               type: string
             id:
               description: >-
-                Identifier of the referenced Geographic Address. This identifier
-                is assigned during a successful address validation request
-                (Sonata Geographic Address Management API)
+                Identifier of the referenced Geographic Address. This
+                identifier is assigned during a successful address validation
+                request (Sonata Geographic Address Management API)
               type: string
           required:
             - id
@@ -1000,7 +1015,8 @@ components:
         A reference to a Geographic Site resource available through Sonata
         Service Site API
     GeographicSubAddress:
-      description: 'Additional fields used to specify an address, as detailed as possible.'
+      description:
+        'Additional fields used to specify an address, as detailed as possible.'
       properties:
         buildingName:
           description: >
@@ -1019,7 +1035,9 @@ components:
           description: Describes level types within a building
           type: string
         levelNumber:
-          description: 'Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT 2'
+          description:
+            'Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT
+            2'
           type: string
         privateStreetNumber:
           description: Private streets numbers internal to a private street
@@ -1114,13 +1132,13 @@ components:
         its processing and/or based on the Buyer's action. The following mapping
         has been used between `MEFPOQItemTaskStateType` and MEF 79 (Sn 9.2):
 
-        | MEFPOQItemTaskStateType | MEF79                             | Description                                                                                                                                                           |
-        | ----------------------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-        | acknowledged            | N/A                               | Not represented MEF 79. The state might be internally assigned when POQ is acknowledged by the Seller and assigned an identifier. It is not to be shown to the Buyer. |
-        | done.ready              | READY                             | POQ Item response is complete. This state does not imply that Seller is able to deliver requested item                                                                |
-        | done.abandoned          | ABANDONED                         | Applied to a POQ Item in case the final state is not reached and any other POQ Item moved to the final state other than done                                          |
-        | terminatedWithError     | INSUFFICIENT_INFORMATION_PROVIDED | The information provided by the Buyer is insufficient for the Seller to provide POQ Item response                                                                     |
-        | inProgress              | IN_PROGRESS                       | The Seller is working on a POQ item response and the answer is not ready yet                                                                                          |
+        | MEFPOQItemTaskStateType | MEF79                             | Description                                                                                                                  |
+        | ----------------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+        | acknowledged            | N/A                               | A request has been received by the Seller and has passed basic validation.                                                   |
+        | done.ready              | READY                             | POQ Item response is complete. This state does not imply that Seller is able to deliver requested item                       |
+        | done.abandoned          | ABANDONED                         | Applied to a POQ Item in case the final state is not reached and any other POQ Item moved to the final state other than done |
+        | terminatedWithError     | INSUFFICIENT_INFORMATION_PROVIDED | The information provided by the Buyer is insufficient for the Seller to provide POQ Item response                            |
+        | inProgress              | IN_PROGRESS                       | The Seller is working on a POQ item response and the answer is not ready yet                                                 |
       enum:
         - acknowledged
         - terminatedWithError
@@ -1155,13 +1173,13 @@ components:
         The following mapping has been used between `MEFPOQTaskStateType` and
         MEF 79 (Sn 9.1):
 
-        | MEFPOQTaskStateType  | MEF 79                            | Description                                                                                                                                                           |
-        | -------------------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-        | acknowledged         | N/A                               | Not represented MEF 79. The state might be internally assigned when POQ is acknowledged by the Seller and assigned an identifier. It is not to be shown to the Buyer. |
-        | done.ready           | READY                             | Reached when all items are in `done` state                                                                                                                            |
-        | done.unableToProvide | UNABLE_TO_PROVIDE                 | This state is set when the Seller is unable to provide a Product Offering Qualification in the timeframe required by the Buyer.                                       |
-        | terminatedWithError  | INSUFFICIENT_INFORMATION_PROVIDED | This state is achieved when a well-formed POQ request has been received, but there is insufficient information to complete the POQ                                    |
-        | inProgress           | IN_PROGRESS                       | There is at least one POQ Item in `inProgress` state                                                                                                                  |
+        | MEFPOQTaskStateType  | MEF 79                            | Description                                                                                                                         |
+        | -------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------|
+        | acknowledged         | N/A                               | A request has been received by the Seller, has passed basic validation and the id was assigned.                                     |
+        | done.ready           | READY                             | Reached when all items are in `done` state                                                                                          |
+        | done.unableToProvide | UNABLE_TO_PROVIDE                 | This state is set when the Seller is unable to provide a Product Offering Qualification in the timeframe required by the Buyer.     |
+        | terminatedWithError  | INSUFFICIENT_INFORMATION_PROVIDED | This state is achieved when a well-formed POQ request has been received, but there is insufficient information to complete the POQ. |
+        | inProgress           | IN_PROGRESS                       | There is at least one POQ Item in `inProgress` state                                                                                |
       enum:
         - acknowledged
         - terminatedWithError
@@ -1188,14 +1206,16 @@ components:
       type: object
     MEFProductRefOrValue:
       description: >-
-        Used by the Buyer to point to existing and/or describe the desired shape
-        of the product. In case of `add` action - only `productConfiguration`
-        MUST be specified. For `modify` action - both `id` and
-        `productConfiguration` MUST be provided to point which product instance
-        to update and to what state. In `delete` only the `id` must be provided.
+        Used by the Buyer to point to existing and/or describe the desired
+        shape of the product. In case of `add` action - only
+        `productConfiguration` MUST be specified. For `modify` action - both
+        `id` and `productConfiguration` MUST be provided to point which product
+        instance to update and to what state. In `delete` only the `id` must be
+        provided.
       properties:
         productSpecification:
-          description: A reference to a Product Specification used to describe the Product
+          description:
+            A reference to a Product Specification used to describe the Product
           $ref: '#/components/schemas/ProductSpecificationRef'
         productOffering:
           description: >
@@ -1233,8 +1253,8 @@ components:
         href:
           description: >
             Hyperlink to the referenced Product. Hyperlink MAY be used by the
-            Seller in responses. Hyperlink MUST be ignored by the Seller in case
-            it is provided by the Buyer in a request.
+            Seller in responses. Hyperlink MUST be ignored by the Seller in
+            case it is provided by the Buyer in a request.
           type: string
         id:
           description: >
@@ -1252,7 +1272,7 @@ components:
           type: array
       type: object
     MEFServiceabilityColor:
-      description: >
+      description: |
         A color that indicates confidence to service the request. When the item
         state is `done.ready` the Seller **MUST** provide a value. It **MUST
         NOT** be populated for other states.
@@ -1261,11 +1281,11 @@ components:
         Mapping between `ServiceabilityColor` and POQ Confidence Level:
 
 
-        | ServiceabilityColor      | MEF 79       | MEF 79 semantics |
-        |------------------------- | ------------ | -----------------|
-        | green                    | GREEN        |  The Seller has high confidence that this Product can be delivered |
+        | ServiceabilityColor      | MEF 79       | MEF 79 semantics                                                              |
+        |------------------------- | ------------ | ----------------------------------------------------------------------------- |
+        | green                    | GREEN        |  The Seller has high confidence that this Product can be delivered            |
         | yellow                   | YELLOW       |  The Seller believes they can deliver the Product but is not highly confident |
-        | red                      | RED          |  The Seller cannot deliver the Product as specified.  |
+        | red                      | RED          |  The Seller cannot deliver the Product as specified                           |
 
         Reference: MEF 79 (Sn 8.4.3.1)
       enum:
@@ -1283,8 +1303,8 @@ components:
           type: string
         subUnitType:
           description: >-
-            The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT,
-            WHARF.
+            The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
+            UNIT, WHARF.
           type: string
       required:
         - subUnitNumber
@@ -1330,9 +1350,9 @@ components:
               type: string
             expectedPOQCompletionDate:
               description: >-
-                The date the Seller expects to provide qualification result. Set
-                by the Seller in case of providing a deferred response when the
-                POQ is in an acknowledged or inProgress state.
+                The date the Seller expects to provide qualification result.
+                Set by the Seller in case of providing a deferred response when
+                the POQ is in an acknowledged or inProgress state.
               format: date-time
               type: string
             stateChange:
@@ -1345,8 +1365,8 @@ components:
             href:
               description: >
                 Hyperlink to this POQ. Hyperlink MAY be used by the Seller in
-                responses. Hyperlink MUST be ignored by the Seller in case it is
-                provided by the Buyer in a request.
+                responses. Hyperlink MUST be ignored by the Seller in case it
+                is provided by the Buyer in a request.
               type: string
             id:
               description: >-
@@ -1364,9 +1384,9 @@ components:
       description: >
         Represents a response to the Buyer POQ inquiry. This type defines a set
         of attributes that are assigned by the Seller while processing the
-        request. A POQ response is a combination of attributes defined here with
-        common attributes that are sent in the request. This type is used in
-        response to an immediate request and POQ retrieval by an identifier.
+        request. A POQ response is a combination of attributes defined here
+        with common attributes that are sent in the request. This type is used
+        in response to an immediate request and POQ retrieval by an identifier.
         Reference MEF 79 (Sn 8.7 and 8.4.3).
     ProductOfferingQualificationItem:
       allOf:
@@ -1385,8 +1405,8 @@ components:
               description: >-
                 The level of confidence of the Seller to be able to service the
                 request.  When the item state is `done.ready` the Seller
-                **MUST** provide a value. It **MUST NOT** be populated for other
-                states.
+                **MUST** provide a value. It **MUST NOT** be populated for
+                other states.
               $ref: '#/components/schemas/MEFServiceabilityColor'
             serviceabilityConfidenceReason:
               description: >-
@@ -1398,30 +1418,30 @@ components:
                 A list of one or more alternative Product Offerings that the
                 Seller is proposing to the Buyer. If 1) the Buyer has set
                 `provideAlternate=true`;  2) the Seller has determined that the
-                POQ Confidence Level for this item is `yellow` or `red`; and  3)
-                The Seller has alternate Products (e.g. similar but lower
-                bandwidth) that may be adequate.
+                POQ Confidence Level for this item is `yellow` or `red`;
+                and  3) The Seller has alternate Products (e.g. similar but
+                lower bandwidth) that may be adequate.
 
-                **MUST NOT** be specified if 'state' is 'terminatedWithError' or
-                'done.abandoned'.
+                **MUST NOT** be specified if 'state' is 'terminatedWithError'
+                or 'done.abandoned'.
               items:
                 $ref: '#/components/schemas/AlternateProductOfferingProposal'
               type: array
             installationInterval:
               description: >
-                The estimated minimum interval that the Seller requires in their
-                standard process to complete the delivery of this Product from
-                the time the order is placed and any precedents have been
+                The estimated minimum interval that the Seller requires in
+                their standard process to complete the delivery of this Product
+                from the time the order is placed and any precedents have been
                 completed. When attribute `serviceabilityConfidence` is set to
-                `green` or `yellow` the Seller **MUST** populate this attribute.
-                **MUST NOT** be specified if 'state' is 'terminatedWithError' or
-                `done.abandoned`.
+                `green` or `yellow` the Seller **MUST** populate this
+                attribute. **MUST NOT** be specified if 'state' is
+                'terminatedWithError' or `done.abandoned`.
               $ref: '#/components/schemas/Duration'
             guaranteedUntilDate:
               description: >
                 Date until the Seller guarantees the qualification result.
-                **MUST NOT** be specified if 'state' is 'terminatedWithError' or
-                'done.abandoned'.
+                **MUST NOT** be specified if 'state' is 'terminatedWithError'
+                or 'done.abandoned'.
               format: date-time
               type: string
             stateChange:
@@ -1456,10 +1476,10 @@ components:
           description: >
             Used by the Buyer to point to existing and/or describe the desired
             shape of the product. In case of `add` action - only
-            `productConfiguration` MUST be specified. For `modify` action - both
-            `id` and `productConfiguration` to point which product instance to
-            update and to what state. In `delete` only the `id` must be
-            provided.
+            `productConfiguration` MUST be specified. For `modify` action -
+            both `id` and `productConfiguration` to point which product
+            instance to update and to what state. In `delete` only the `id`
+            must be provided.
           $ref: '#/components/schemas/MEFProductRefOrValue'
         qualificationItemRelationship:
           description: |
@@ -1503,14 +1523,15 @@ components:
         Buyer.
 
         The objective is to determine if it is feasible for the Seller to
-        deliver this item as described and for the Seller to inform the Buyer of
-        the estimated time interval to complete this delivery.
+        deliver this item as described and for the Seller to inform the Buyer
+        of the estimated time interval to complete this delivery.
 
         The modelling pattern introduces the `Common` supertype to aggregate
         attributes that are common to both `ProductOfferingQualificationItem`
-        and `ProductOfferingQualificationItem_Create`. It happens that it is the
-        Create type has a subset of attributes of the response type and does not
-        introduce any new, thus the `Create` type has an empty definition.
+        and `ProductOfferingQualificationItem_Create`. It happens that it is
+        the Create type has a subset of attributes of the response type and
+        does not introduce any new, thus the `Create` type has an empty
+        definition.
 
         Reference: MEF 79 (Sn 8.4.1.1)
     ProductOfferingQualification_Common:
@@ -1523,8 +1544,8 @@ components:
         externalId:
           type: string
           description:
-            ID given by the consumer and only understandable by him (to facilitate
-            his searches afterwards)
+            ID given by the consumer and only understandable by him (to
+            facilitate his searches afterwards)
         instantSyncQualification:
           default: false
           description: >-
@@ -1575,8 +1596,8 @@ components:
             - productOfferingQualificationItem
           type: object
       description: >
-        Represents a request formulated by the Buyer that is composed of product
-        offering qualification items.
+        Represents a request formulated by the Buyer that is composed of
+        product offering qualification items.
 
         Reference: MEF 79 (Sn 8.4)
     ProductOfferingQualification_Find:
@@ -1592,13 +1613,14 @@ components:
         externalId:
           type: string
           description:
-            ID given by the consumer and only understandable by him (to facilitate
-            his searches afterwards)
+            ID given by the consumer and only understandable by him (to
+            facilitate his searches afterwards)
         state:
           description: Current state of the POQ
           $ref: '#/components/schemas/MEFPOQTaskStateType'
         projectId:
-          description: 'The project ID specified by the Buyer in the POQ Request, if any.'
+          description:
+            'The project ID specified by the Buyer in the POQ Request, if any.'
           type: string
         requestedPOQCompletionDate:
           description: >
@@ -1612,14 +1634,15 @@ components:
       type: object
     ProductOfferingRef:
       description: >-
-        A reference to a Product Offering offered by the Seller to the Buyer.  A
-        Product Offering contains the commercial and technical details of a
-        Product sold by a particular Seller. A Product Offering defines all of
-        the commercial terms and, through association with a particular Product
-        Specification, defines all the technical attributes and behaviors of the
-        Product. A Product Offering may constrain the allowable set of
-        configurable technical attributes and/or behaviors specified in the
-        associated Product Specification. Defined in MEF 79 Section 8.4.1.1
+        A reference to a Product Offering offered by the Seller to the
+        Buyer.  A Product Offering contains the commercial and technical
+        details of a Product sold by a particular Seller. A Product Offering
+        defines all of the commercial terms and, through association with a
+        particular Product Specification, defines all the technical attributes
+        and behaviors of the Product. A Product Offering may constrain the
+        allowable set of configurable technical attributes and/or behaviors
+        specified in the associated Product Specification. Defined in MEF 79
+        Section 8.4.1.1
       properties:
         href:
           description: >
@@ -1640,21 +1663,22 @@ components:
       type: object
     ProductRelationshipWithGrouping:
       description: >-
-        A relationship to existing Product. The requirements for usage for given
-        Product are described in the Product Specification. The "WithGrouping"
-        flavour of the Product Relationship allows for providing a list of
-        related product identifiers within a single Product Relationship. This
-        can be later used while processing the request as defined in the Product
-        Specification. The `groupingKey` attribute is used to achieve this
-        behavior in the API by marking the list of
-        `ProductRelationshipWithGroupings` within a `product` with a common key.
+        A relationship to existing Product. The requirements for usage for
+        given Product are described in the Product Specification. The
+        "WithGrouping" flavour of the Product Relationship allows for providing
+        a list of related product identifiers within a single Product
+        Relationship. This can be later used while processing the request as
+        defined in the Product Specification. The `groupingKey` attribute is
+        used to achieve this behavior in the API by marking the list of
+        `ProductRelationshipWithGroupings` within a `product` with a common
+        key.
       properties:
         relationshipType:
           description: >-
             Specifies the type (nature) of the relationship to the related
-            Product. The nature of required relationships varies for Products of
-            different types. For example, a UNI or ENNI Product may not have any
-            relationships, but an Access E-Line may have two mandatory
+            Product. The nature of required relationships varies for Products
+            of different types. For example, a UNI or ENNI Product may not have
+            any relationships, but an Access E-Line may have two mandatory
             relationships (related to the UNI on one end and the ENNI on the
             other). More complex Products such as multipoint IP or Firewall
             Products may have more complex relationships. As a result, the
@@ -1719,7 +1743,8 @@ components:
             For example: "relies on".
           type: string
         id:
-          description: An identifier of the targeted POQ item within the same POQ request
+          description:
+            An identifier of the targeted POQ item within the same POQ request
           type: string
       required:
         - id
@@ -1765,8 +1790,8 @@ components:
       type: object
     RelatedPlaceRefOrValue:
       description: >-
-        Place defines the places (locations) where the products being subject of
-        this qualification are to be provided.
+        Place defines the places (locations) where the products being subject
+        of this qualification are to be provided.
       discriminator:
         mapping:
           FieldedAddress: '#/components/schemas/FieldedAddress'
@@ -1784,8 +1809,8 @@ components:
           type: string
         '@type':
           description: >
-            This field is used as discriminator. The value is the name of one of
-            the types that inherit from it using 'allOf', i.e. one of
+            This field is used as discriminator. The value is the name of one
+            of the types that inherit from it using 'allOf', i.e. one of
             FieldedAddress, FormattedAddress, GeographicAddressLabel,
             MEFGeographicPoint, GeographicAddressRef, GeographicSiteRef.
             Moreover, it might discriminate for an additional related place as
@@ -1794,8 +1819,9 @@ components:
         '@schemaLocation':
           description: >-
             A URL to a JSON-Schema file that defines additional attributes and
-            relationships. May be used to define additional related place types.
-            Usage of this attribute must be agreed between Buyer and Seller.
+            relationships. May be used to define additional related place
+            types. Usage of this attribute must be agreed between Buyer and
+            Seller.
           format: uri
           type: string
       required:
@@ -1821,8 +1847,8 @@ components:
         propertyPath:
           description: >
             A pointer to a particular property of the payload that caused the
-            validation issue. It is highly recommended that this property should
-            be used.
+            validation issue. It is highly recommended that this property
+            should be used.
 
             Defined using JavaScript Object Notation (JSON) Pointer
             (https://tools.ietf.org/html/rfc6901).

@@ -45,7 +45,8 @@ mentioned Sonata API functions.
     Guide
   - MEF W123 - LSO Cantata and LSO Sonata Product Order Management API -
     Developer Guide
-  - MEF W124 - LSO Sonata Trouble Ticketing API - Developer Guide
+  - MEF W124 - LSO Cantata and LSO Sonata Trouble Ticketing API - Developer
+    Guide
   - MEF W125 - LSO Cantata and LSO Sonata Product Specification - Subscriber
     Ethernet - Schema Guide
 
@@ -135,10 +136,10 @@ This SDK contains the following items:
   - `supportingStandards` - The rest of documents and standards.
 - `ProductSchema` - Product Specification schemas for:
   - `carrierEthernet` - Carrier Ethernet product Schemas
-  - `sonata/carrierEthernet/accessELine` - Access E-Line
-- `generated/staticBinding/full` - contains automatically generated, not
-  normative static bindings of envelope APIs with Product Specification
-  payloads.
+- `generated/staticBinding/full` - contains automatically generated (with help
+  of the open source
+  [Sonata Blending Tool](https://github.com/Amartus/SonataBlendingTool)), not
+  normative static bindings of envelope APIs with all Product Specifications.
 
 ## Issues, Questions, and Feedback
 

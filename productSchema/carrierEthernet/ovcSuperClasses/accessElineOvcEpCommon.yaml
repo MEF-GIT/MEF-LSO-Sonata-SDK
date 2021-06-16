@@ -1,8 +1,8 @@
 ---
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
-    MEF LSO Sonata - Access Eline OVC EP Common (Inventory) Product Specification
-    # MEF Forum - Date: 20210531  Edit-level: 216
+    MEF LSO Sonata - Access Eline OVC EP Common
+    # MEF Forum - Date: 20210615  Edit-level: 221
     # File: carrierEthernet/ovcSuperClasses/accessElineOvcEpCommon.yaml
     #
     # ---------------------
@@ -66,7 +66,7 @@ definitions:
         properties:
             identifier:
                 description:  >-
-                    MEF 26.2 §16.1 - The value of theOVC EP ID Service Attribute
+                    MEF 26.2 sec. 16.1 - The value of theOVC EP ID Service Attribute
                     is a string that is used to allow the Subscriber and Service Provider
                     to uniquely identify the OVC EP for operations purposes.
                 type: string
@@ -75,10 +75,10 @@ definitions:
                 pattern: "[\x20-\x7F]+"
             ovcEndPointMap:
                 description:  >-
-                    MEF 26.2 §16.5 - The information that determines which UNI/ENNI
-                    Frames are mapped to the OVC End Point. At the UNI and ENNI, the
-                    only allowable mapping is a LIST of VLAN IDs (CE-VLAN IDs at the
-                    UNI and S-VLAN IDs at the ENNI).
+                    MEF 26.2 sec. 16.5 - The information that determines which
+                    UNI/ENNI Frames are mapped to the OVC End Point. At the UNI and
+                    ENNI, the only allowable mapping is a LIST of VLAN IDs (CE-VLAN
+                    IDs at the UNI and S-VLAN IDs at the ENNI).
                 # This must be FormU at UNI and FormE at ENNI. They can only use LIST (not ALL or UT/PT)
                 # See additional validation notes in the Schema Guide
                 oneOf:
@@ -88,15 +88,15 @@ definitions:
                     # propertyName: mapType
             ingressClassOfServiceMap:
                 description:  >-
-                    MEF 26.2 §16.6 - The value of the OVC EP Ingress Class of Service
-                    Map Service Attribute is a 3-tuple of the form 〈F, M, P〉 where:
-                    F is one of the values ENDPOINT, C_TAG_PCP, S_TAG_PCP, or DSCP,
-                    M is a map that can be used to assign Class of Service Names to
-                    External Interface Frames. (The form of M depends on the value
-                    of F.), and P is a map with entries of the form ⟨Layer 2 Control
-                    Protocol type → Class of Service Name⟩ where the Layer 2 Control
-                    Protocol type is determined by the Protocol Identifier (see Section
-                    6.2 of MEF 45.1).
+                    MEF 26.2 sec. 16.6 - The value of the OVC EP Ingress Class
+                    of Service Map Service Attribute is a 3-tuple of the form 〈F, M,
+                    P〉 where: F is one of the values ENDPOINT, C_TAG_PCP, S_TAG_PCP,
+                    or DSCP, M is a map that can be used to assign Class of Service
+                    Names to External Interface Frames. (The form of M depends on the
+                    value of F.), and P is a map with entries of the form ⟨Layer 2
+                    Control Protocol type → Class of Service Name⟩ where the Layer
+                    2 Control Protocol type is determined by the Protocol Identifier
+                    (see Section 6.2 of MEF 45.1).
                 # See additional validation notes in the Schema Guide
                 oneOf:
                     - $ref: "../../common/carrierEthernetClassOfService.yaml#/definitions/CosFromEp"
@@ -107,8 +107,8 @@ definitions:
                     # propertyName: mapType
             colorMap:
                 description:  >-
-                    MEF 26.2 §16.7 - The OVC EP Color Map Service Attribute is
-                    the mechanism by which the Color for an Ingress External Interface
+                    MEF 26.2 sec. 16.7 - The OVC EP Color Map Service Attribute
+                    is the mechanism by which the Color for an Ingress External Interface
                     Frame that is mapped to an OVC EP is indicated by the content in
                     the frame header. The value of the OVC EP Color Map Service Attribute
                     is a pair of the form ⟨F, M⟩ where: F is one of the values ENDPOINT,
@@ -124,7 +124,7 @@ definitions:
                     # propertyName: mapType
             ovcEgressMap:
                 description:  >-
-                    MEF 26.2 §16.8 - A set of mappings that determine the content
+                    MEF 26.2 sec. 16.8 - A set of mappings that determine the content
                     of the S-Tag or C-Tag of an egress frame at an ENNI or UNI (respectively)
                     based on the Class of Service Name and Frame Color of the frame.
                     Three forms: (1) CoSName(CN) -> C/S-Tag PCP or Discard, (2) CoSName
@@ -146,7 +146,7 @@ definitions:
                         # propertyName: mapType
             egressEquivalenceClassIdentifier:
                 description:  >-
-                    MEF 26.2 §16.9 - The mechanism that allows an Egress Equivalence
+                    MEF 26.2 sec. 16.9 - The mechanism that allows an Egress Equivalence
                     Class Name to be determined for an egress EI Frame. ⟨F, M, P⟩ where
                     F is a protocol field in the egress EI Frame, M is a map that maps
                     each possible value of the field F and the absence of the field
@@ -161,8 +161,8 @@ definitions:
                     # propertyName: mapType
             egressBandwidthProfilePerEndPoint:
                 description:  >-
-                    MEF 26.2 §16.11 - Bandwidth Profile Flow parameters for all
-                    egress Service Frames mapped to the OVC End Point.
+                    MEF 26.2 sec. 16.11 - Bandwidth Profile Flow parameters for
+                    all egress Service Frames mapped to the OVC End Point.
                 # Per MEF 51.1 this must be Disabled at ENNI
                 # See additional validation notes in the Schema Guide
                 type: array 
@@ -174,7 +174,7 @@ definitions:
                     $ref: "../../common/carrierEthernetBandwidthProfile.yaml#/definitions/BwpFlow"
             ingressBandwidthProfilePerClassOfServiceName:
                 description:  >-
-                    MEF 26.2 §16.12 - For each CoS Name listed, Bandwidth Profile
+                    MEF 26.2 sec. 16.12 - For each CoS Name listed, Bandwidth Profile
                     Flow parameters for all ingress Service Frames mapped to that CoS
                     Name at OVC End Point. This bandwidth profile flow is used to police
                     at Ingress each CoS in an OVC individually. List of 2-tuples {cos,
@@ -188,7 +188,7 @@ definitions:
                     $ref: "../../common/carrierEthernetBandwidthProfile.yaml#/definitions/BandwidthProfilePerClassOfServiceName"
             egressBwpPerEgressEquivalenceClassName:
                 description:  >-
-                    MEF 26.2 §16.13 - For each EEC Name listed, Bandwidth Profile
+                    MEF 26.2 sec. 16.13 - For each EEC Name listed, Bandwidth Profile
                     Flow parameters, for all egress Service Frames mapped to that EEC
                     Name at the OVC End Point.
                 # See additional validation notes in the Schema Guide
@@ -200,10 +200,10 @@ definitions:
                     $ref: "../../common/carrierEthernetBandwidthProfile.yaml#/definitions/BandwidthProfilePerClassOfServiceName"
             aggregationLinkDepth:
                 description:  >-
-                    MEF 26.2 §16.14 - A list of 2-tuples {SVID, Depth} that indicates
-                    the number of ENNI links that can carry ENNI Frames for each S-VLAN
-                    ID mapped to the OVC End Point. It indicates the level of resiliency
-                    to use for the SVID at the ENNI.
+                    MEF 26.2 sec. 16.14 - A list of 2-tuples {SVID, Depth} that
+                    indicates the number of ENNI links that can carry ENNI Frames for
+                    each S-VLAN ID mapped to the OVC End Point. It indicates the level
+                    of resiliency to use for the SVID at the ENNI.
                 # See additional validation notes in the Schema Guide
                 type: array 
                 minItems: 0
@@ -213,7 +213,7 @@ definitions:
                     $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/AggLinkDepth"
             sourceMacAddressLimit:
                 description:  >-
-                    MEF 26.2 §16.15 - Specifies a limit on the number of different
+                    MEF 26.2 sec. 16.15 - Specifies a limit on the number of different
                     Source MAC address over a time interval for which ingress Service
                     Frames at this OVC End Point will be delivered. The absence of
                     this attribute corresponds to a Service Attribute value of None.
@@ -229,8 +229,8 @@ definitions:
                     $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/SourceMacAddressLimit"
             maintenanceIntermediatePoint:
                 description:  >-
-                    MEF 26.2 §16.16 - Indicates whether a MIP is instantiated at
-                    the OVC End Point and the MEG Level of the MIP. When the value
+                    MEF 26.2 sec. 16.16 - Indicates whether a MIP is instantiated
+                    at the OVC End Point and the MEG Level of the MIP. When the value
                     is not None, several parameter values need to be determined as
                     described in MEF 30.1.
                 type: string
@@ -246,8 +246,8 @@ definitions:
                     - "NONE"
             maintenanceEndPointList:
                 description:  >-
-                    MEF 26.2 §16.17 - A list of the MEPs instantiated at this OVC
-                    EP and the direction of each MEP, List of 2-tuples ⟨l, d⟩ where
+                    MEF 26.2 sec. 16.17 - A list of the MEPs instantiated at this
+                    OVC EP and the direction of each MEP, List of 2-tuples ⟨l, d⟩ where
                     l is MEG level and d is direction (Up/Down)
                 # See additional validation notes in the Schema Guide
                 type: array 
@@ -281,7 +281,7 @@ definitions:
                     $ref: "../../common/carrierEthernetBandwidthProfile.yaml#/definitions/Envelope"
             ovcEndPointPortConversationToAggregationLinkMap:
                 description:  >-
-                    MEF 26.2 §13.2 - A mapping of Port Conversation IDs (i.e.,
+                    MEF 26.2 sec. 13.2 - A mapping of Port Conversation IDs (i.e.,
                     VLAN IDs) to an ordered list of physical links if EnniService.sVlanIdControl
                     is FULL and there are multiple physical links in the ENNI and EnniCommon.linkAggregation
                     is ALL_ACTIVE. Only S-VLAN IDs that are listed in the AccessElineOvcEndPoint.ovcEndPointMap

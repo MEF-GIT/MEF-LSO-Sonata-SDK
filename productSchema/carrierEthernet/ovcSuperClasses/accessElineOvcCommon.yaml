@@ -1,8 +1,8 @@
 ---
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
-    MEF LSO Sonata - Access Eline OVC Common (Inventory) Product Specification
-    # MEF Forum - Date: 20210531  Edit-level: 216
+    MEF LSO Sonata - Access Eline OVC Common
+    # MEF Forum - Date: 20210615  Edit-level: 221
     # File: carrierEthernet/ovcSuperClasses/accessElineOvcCommon.yaml
     #
     # ---------------------
@@ -65,7 +65,7 @@ definitions:
         properties:
             maximumFrameSize:
                 description:  >-
-                    MEF 26.2 §12.6 - The max length in bytes allowed in a frame
+                    MEF 26.2 sec. 12.6 - The max length in bytes allowed in a frame
                     mapped to an OVC EP associated by the OVC. The length of the frame
                     includes all bytes from the start of the destination MAC address
                     through the Frame Check Sequence. This must be at least 1526 (1518+C-tag+S-tag)
@@ -74,7 +74,7 @@ definitions:
                 minimum: 1526
             ceVlanIdPreservation:
                 description:  >-
-                    MEF 26.2 §12.7 - Determines whether the C-tag in the Ingress
+                    MEF 26.2 sec. 12.7 - Determines whether the C-tag in the Ingress
                     Frame is Stripped or Preserved in the Egress Frame. Per MEF 51.1,
                     the Operator must support PRESERVE and should support STRIP.
                 type: string
@@ -84,28 +84,28 @@ definitions:
                     - "RETAIN"
             cTagPcpPreservation:
                 description:  >-
-                    MEF 26.2 §12.8 - If ENABLED, then the value of the C-tag PCP
-                    field is preserved from Ingress to Egress. Per MEF 51.1, the Operator
-                    must support ENABLED and should support DISABLED.
+                    MEF 26.2 sec. 12.8 - If ENABLED, then the value of the C-tag
+                    PCP field is preserved from Ingress to Egress. Per MEF 51.1, the
+                    Operator must support ENABLED and should support DISABLED.
                 # See additional validation notes in the Schema Guide
                 type: object
                 $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
             cTagDeiPreservation:
                 description:  >-
-                    MEF 26.2 §12.9 - If ENABLED, then the value of the C-Tag DEI
-                    field is preserved from Ingress to Egress. Per MEF 51.1, the Operator
-                    must support ENABLED and should support DISABLED.
+                    MEF 26.2 sec. 12.9 - If ENABLED, then the value of the C-Tag
+                    DEI field is preserved from Ingress to Egress. Per MEF 51.1, the
+                    Operator must support ENABLED and should support DISABLED.
                 # See additional validation notes in the Schema Guide
                 type: object
                 $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
             listOfClassOfServiceNames:
                 description:  >-
-                    MEF 26.2 §12.12 - The OVC List of Class of Service Names Service
-                    Attribute is used to specify all of the Class of Service Names
-                    supported by an OVC. The value of the OVC List of Class of Service
-                    Names Service Attribute is a non-empty list of Class of Service
-                    Names (which may include one or more of the CoS Labels defined
-                    in MEF 23.2).
+                    MEF 26.2 sec. 12.12 - The OVC List of Class of Service Names
+                    Service Attribute is used to specify all of the Class of Service
+                    Names supported by an OVC. The value of the OVC List of Class of
+                    Service Names Service Attribute is a non-empty list of Class of
+                    Service Names (which may include one or more of the CoS Labels
+                    defined in MEF 23.2).
                 type: array 
                 minItems: 1
                 uniqueItems: TRUE
@@ -113,9 +113,9 @@ definitions:
                     type: string
             carrierEthernetSls:
                 description:  >-
-                    MEF 26.2 §12.13 - Technical details of the service level in
-                    terms of Performance Objectives, agreed between the SP/SO and the
-                    Operator as part of the Service Level Agreement. For each Performance
+                    MEF 26.2 sec. 12.13 - Technical details of the service level
+                    in terms of Performance Objectives, agreed between the SP/SO and
+                    the Operator as part of the Service Level Agreement. For each Performance
                     Metric included in the SLS, a Performance Objective must be included
                     as well as the parameter values needed for the Performance Metric.
                 type: array 
@@ -127,19 +127,19 @@ definitions:
                     $ref: "../../common/carrierEthernetServiceLevelSpecification.yaml#/definitions/CarrierEthernetSls"
             frameDisposition:
                 description:  >-
-                    MEF 26.2 §12.14 - A 3-tuple that indicates how Unicast, Multicast,
-                    and Broadcast Frames are delivered by the service. For each, the
-                    value can be UNCONDITIONAL, the frames are delivered without condition,
-                    CONDITIONAL, the frames are delivered based on conditions agreed
-                    to between buyer and seller (e.g., based on learned addresses),
-                    and DISCARD. If CONDITIONAL is chosen for any of the elements,
-                    the conditions must be agreed on by the Service Provider and Operator
-                    by some other means.
+                    MEF 26.2 sec. 12.14 - A 3-tuple that indicates how Unicast,
+                    Multicast, and Broadcast Frames are delivered by the service. For
+                    each, the value can be UNCONDITIONAL, the frames are delivered
+                    without condition, CONDITIONAL, the frames are delivered based
+                    on conditions agreed to between buyer and seller (e.g., based on
+                    learned addresses), and DISCARD. If CONDITIONAL is chosen for any
+                    of the elements, the conditions must be agreed on by the Service
+                    Provider and Operator by some other means.
                 type: object
                 $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/FrameDisposition"
             availableMegLevel:
                 description:  >-
-                    MEF 26.2 §12.15 - The lowest MEG level for which SOAM Frames
+                    MEF 26.2 sec. 12.15 - The lowest MEG level for which SOAM Frames
                     are not peered or discarded by the Service Provider. If this attribute
                     is NONE there is no such level (that is, SOAM frames at all MEG
                     levels may be peered or discarded by the Service Provider). MEF
@@ -155,10 +155,10 @@ definitions:
                     - "6"
             ovcL2cpAddressSet:
                 description:  >-
-                    MEF 45 §8.1 and MEF 26.2 §12.16 - The subset of the Bridge
-                    Reserved Addresses that are Peered or Discarded (i.e. not Passed).
-                    The value CTB or CTB2 must be used for port-based (private) services
-                    and CTA for vlan-based (virtual private) services.
+                    MEF 45 sec. 8.1 and MEF 26.2 sec. 12.16 - The subset of the
+                    Bridge Reserved Addresses that are Peered or Discarded (i.e. not
+                    Passed). The value CTB or CTB2 must be used for port-based (private)
+                    services and CTA for vlan-based (virtual private) services.
                 # See additional validation notes in the Schema Guide
                 type: string
                 enum:

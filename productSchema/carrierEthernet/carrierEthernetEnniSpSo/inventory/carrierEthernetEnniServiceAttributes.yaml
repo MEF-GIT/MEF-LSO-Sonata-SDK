@@ -1,8 +1,8 @@
 ---
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
-    MEF LSO Sonata - Carrier Ethernet ENNI Service Attributes (Inventory) Product Specification
-    # MEF Forum - Date: 20210531  Edit-level: 216
+    MEF LSO Sonata - Carrier Ethernet ENNI Service Attributes
+    # MEF Forum - Date: 20210615  Edit-level: 221
     # File: carrierEthernet/carrierEthernetEnniSpSo/inventory/carrierEthernetEnniServiceAttributes.yaml
     #
     # ---------------------
@@ -63,7 +63,7 @@ definitions:
         properties:
             sVlanIdControl:
                 description:  >-
-                    MEF 26.2 §13.2 - The value of the S-VLAN ID Control Service
+                    MEF 26.2 sec. 13.2 - The value of the S-VLAN ID Control Service
                     Attribute is FULL or PARTIAL. When the value is FULL, the Operator
                     can support only a single SP/SO at the ENNI. In other words, S-VLAN
                     IDs at the ENNI can only be mapped to OVC End Points for a single
@@ -76,23 +76,23 @@ definitions:
                     - "PARTIAL"
             maximumNumberOfOvcs:
                 description:  >-
-                    MEF 26.2 §13.3 - The value of the Maximum Number of OVCs Service
-                    Attribute is a strictly positive integer. It provides an upper
-                    bound on the number of OVCs that the Operator will support at the
-                    ENNI for the SP/SO.
+                    MEF 26.2 sec. 13.3 - The value of the Maximum Number of OVCs
+                    Service Attribute is a strictly positive integer. It provides an
+                    upper bound on the number of OVCs that the Operator will support
+                    at the ENNI for the SP/SO.
                 type: integer
                 minimum: 1
             maximumNumberOfOvcEndPointsPerOvc:
                 description:  >-
-                    MEF 26.2 §13.4 - Usually each OVC has a single End Point at
-                    the ENNI but with hairpin switching an OVC can have multiple. This
-                    Service Attribute sets the limit on the number of End Points an
-                    OVC can have at the ENNI.
+                    MEF 26.2 sec. 13.4 - Usually each OVC has a single End Point
+                    at the ENNI but with hairpin switching an OVC can have multiple.
+                    This Service Attribute sets the limit on the number of End Points
+                    an OVC can have at the ENNI.
                 type: integer
                 minimum: 1
             tokenShare:
                 description:  >-
-                    MEF 26.2 §13.5 - An attribute that indicates whether Bandwidth
+                    MEF 26.2 sec. 13.5 - An attribute that indicates whether Bandwidth
                     Profile Envelopes containing more than one Bandwidth Profile Flow
                     are supported by the Service Provider at the ENNI.
                 # See additional validation notes in the Schema Guide
@@ -100,15 +100,21 @@ definitions:
                 $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
             envelopes:
                 description:  >-
-                    MEF 26.2 §13.6 - The Envelopes and Envelope Coupling Flag values
-                    to which Bandwidth Profile Flows can be mapped. Value is list of
-                    {envelopeID, couplingFlagForIndexZero}. Note: Envelopes for the
-                    ENNI can also be specified at the OVC End Points associated with
-                    the ENNI.
+                    MEF 26.2 sec. 13.6 - The Envelopes and Envelope Coupling Flag
+                    values to which Bandwidth Profile Flows can be mapped. Value is
+                    list of {envelopeID, couplingFlagForIndexZero}. Note: Envelopes
+                    for the ENNI can also be specified at the OVC End Points associated
+                    with the ENNI.
                 type: array 
                 minItems: 0
                 uniqueItems: TRUE
                 items:
                     type: object
                     $ref: "../../common/carrierEthernetBandwidthProfile.yaml#/definitions/Envelope"
+        required:
+            - sVlanIdControl
+            - maximumNumberOfOvcs
+            - maximumNumberOfOvcEndPointsPerOvc
+            - tokenShare
+            - envelopes
 

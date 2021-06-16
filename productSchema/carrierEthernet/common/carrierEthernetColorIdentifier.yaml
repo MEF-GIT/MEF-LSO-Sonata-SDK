@@ -1,8 +1,8 @@
 ---
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
-    MEF LSO Sonata - Carrier Ethernet Color Identifier (Common) Product Specification
-    # MEF Forum - Date: 20210531  Edit-level: 216
+    MEF LSO Sonata - Carrier Ethernet Color Identifier
+    # MEF Forum - Date: 20210615  Edit-level: 221
     # File: carrierEthernet/common/carrierEthernetColorIdentifier.yaml
     #
     # ---------------------
@@ -63,6 +63,8 @@ definitions:
                 type: string
                 enum:
                     - "DEI"
+        required:
+            - mapType
     ColorFromPCP:
         type: object
         description:  >-
@@ -83,6 +85,9 @@ definitions:
                 items:
                     type: object
                     $ref: "#/definitions/ColorFromPCPMapEntry"
+        required:
+            - mapType
+            - colorFromPcpMap
     ColorFromPCPMapEntry:
         type: object
         properties:
@@ -102,6 +107,9 @@ definitions:
                 enum:
                     - "GREEN"
                     - "YELLOW"
+        required:
+            - pcpValue
+            - pcpColor
     ColorFromDSCP:
         type: object
         description:  >-
@@ -123,6 +131,9 @@ definitions:
                 items:
                     type: object
                     $ref: "#/definitions/ColorFromDscpEntry"
+        required:
+            - mapType
+            - colorFromDscpMap
     ColorFromDscpEntry:
         type: object
         properties:
@@ -145,6 +156,10 @@ definitions:
                 enum:
                     - "GREEN"
                     - "YELLOW"
+        required:
+            - dscpList
+            - ipv4Color
+            - ipv6Color
     ColorFromEp:
         type: object
         description:  >-
@@ -161,4 +176,7 @@ definitions:
                 enum:
                     - "GREEN"
                     - "YELLOW"
+        required:
+            - mapType
+            - epColor
 
