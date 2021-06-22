@@ -140,6 +140,8 @@ This SDK contains the following items:
   of the open source
   [Sonata Blending Tool](https://github.com/Amartus/SonataBlendingTool)), not
   normative static bindings of envelope APIs with all Product Specifications.
+  The Address, Site and Trouble Ticket APIs are not included as they do not
+  carry product information.
 
 ## Issues, Questions, and Feedback
 
