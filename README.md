@@ -102,7 +102,7 @@ the MEF WIKI.
 
 This SDK contains the following items:
 
-- `COPYRIGHT` - Copyright 2020 MEF Forum
+- `COPYRIGHT` - Copyright 2021 MEF Forum
 - `LICENSE` - Contains a copy of the Apache 2.0 license
 - `README` - This file
 - `productApi` - Definitions of the API are found in this directory
