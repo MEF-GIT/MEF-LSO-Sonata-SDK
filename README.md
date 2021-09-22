@@ -4,7 +4,7 @@
 
 ## Download Link
 
-Download the entire repository by clicking [here](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/releases/download/billie/MEF-LSO-Sonata-SDK-billie.zip)
+Download the entire repository by clicking [here](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/releases/download/billie-final/MEF-LSO-Sonata-SDK-billie.zip)
 
 ## Introduction
 
