@@ -25,11 +25,18 @@ info:
     - Register for Notifications
     - Send Notifications
 
-    Product Order API uses TMF 622 v4.0.0 as template.
+
+    Copyright 2021 MEF Forum and its contributors.
+
+
+    This file includes content based on the TM Forum Product Order API (TMF622
+    v4.0.0) available at https://github.com/tmforum-apis/TMF622_ProductOrder,
+    which is licensed by the TM Forum under the Apache License version 2.0. Such
+    content has been modified by the MEF Forum and its contributors.
   title: Product Ordering Management
   version: 7.0.0-RC
 servers:
-  - url: 'https://serverRoot/mefApi/sonata/productOrderingManagement/v7/'
+  - url: "https://serverRoot/mefApi/sonata/productOrderingManagement/v7/"
 tags:
   - name: productOrder
   - name: cancelProductOrder
@@ -174,15 +181,14 @@ paths:
             format: int32
             type: integer
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: '#/components/schemas/ProductOrder_Find'
+                  $ref: "#/components/schemas/ProductOrder_Find"
                 type: array
-          description:
-            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
+          description: "OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)"
           headers:
             X-Pagination-Throttled:
               description: >
@@ -202,29 +208,29 @@ paths:
               description: The number of items included in the response
               schema:
                 type: integer
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       summary: List or find ProductOrder objects
       tags:
@@ -257,55 +263,55 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/ProductOrder_Create'
+              $ref: "#/components/schemas/ProductOrder_Create"
         description: The ProductOrder to be created
         required: true
       responses:
-        '201':
+        "201":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/ProductOrder'
+                $ref: "#/components/schemas/ProductOrder"
           description:
-            'Created (https://tools.ietf.org/html/rfc7231#section-6.3.2)'
-        '400':
+            "Created (https://tools.ietf.org/html/rfc7231#section-6.3.2)"
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '422':
+        "422":
           content:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: '#/components/schemas/Error422'
+                  $ref: "#/components/schemas/Error422"
                 type: array
           description:
             Unprocessable entity due to the business validation problems
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       summary: Creates a ProductOrder
       tags:
         - productOrder
       x-codegen-request-body-name: productOrder
-  '/productOrder/{id}':
+  "/productOrder/{id}":
     get:
       description: >-
         This operation retrieves a ProductOrder entity. Attribute selection is
@@ -339,42 +345,41 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/ProductOrder'
-          description:
-            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
-        '400':
+                $ref: "#/components/schemas/ProductOrder"
+          description: "OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)"
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       summary: Retrieves a ProductOrder by ID
       tags:
@@ -413,58 +418,58 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/ProductOrder_Update'
+              $ref: "#/components/schemas/ProductOrder_Update"
         description: The ProductOrder to be updated
         required: true
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/ProductOrder'
+                $ref: "#/components/schemas/ProductOrder"
           description:
-            'Updated (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
-        '400':
+            "Updated (https://tools.ietf.org/html/rfc7231#section-6.3.1)"
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '409':
+        "409":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error409'
+                $ref: "#/components/schemas/Error409"
           description: Conflict
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
-        '501':
+        "501":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error501'
+                $ref: "#/components/schemas/Error501"
           description: Method not implemented.
       summary: Updates partially a ProductOrder
       tags:
@@ -520,12 +525,12 @@ paths:
             format: int32
             type: integer
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: '#/components/schemas/CancelProductOrder'
+                  $ref: "#/components/schemas/CancelProductOrder"
                 type: array
           description: Success
           headers:
@@ -547,35 +552,35 @@ paths:
               description: The number of items included in the response
               schema:
                 type: integer
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
-        '501':
+        "501":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error501'
+                $ref: "#/components/schemas/Error501"
           description: Method not implemented.
       summary: List or find CancelProductOrder objects
       tags:
@@ -608,60 +613,60 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/CancelProductOrder_Create'
+              $ref: "#/components/schemas/CancelProductOrder_Create"
         description: The CancelProductOrder to be created
         required: true
       responses:
-        '201':
+        "201":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/CancelProductOrder'
+                $ref: "#/components/schemas/CancelProductOrder"
           description: Created
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '422':
+        "422":
           content:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: '#/components/schemas/Error422'
+                  $ref: "#/components/schemas/Error422"
                 type: array
           description:
             Unprocessable entity due to the business validation problems
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
-        '501':
+        "501":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error501'
+                $ref: "#/components/schemas/Error501"
           description: Method not implemented.
       summary: Creates a CancelProductOrder
       tags:
         - cancelProductOrder
       x-codegen-request-body-name: cancelProductOrder
-  '/cancelProductOrder/{id}':
+  "/cancelProductOrder/{id}":
     get:
       description: This operation retrieves a CancelProductOrder entity.
       operationId: retrieveCancelProductOrder
@@ -693,47 +698,47 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/CancelProductOrder'
+                $ref: "#/components/schemas/CancelProductOrder"
           description: Success
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
-        '501':
+        "501":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error501'
+                $ref: "#/components/schemas/Error501"
           description: Method not implemented.
       summary: Retrieves a CancelProductOrder by ID
       tags:
@@ -808,12 +813,12 @@ paths:
             format: int32
             type: integer
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: '#/components/schemas/MEFCharge'
+                  $ref: "#/components/schemas/MEFCharge"
                 type: array
           description: Success
           headers:
@@ -835,40 +840,40 @@ paths:
               description: The number of items included in the response
               schema:
                 type: integer
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
-        '501':
+        "501":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error501'
+                $ref: "#/components/schemas/Error501"
           description: Method not implemented.
       summary: List or find Charge objects
       tags:
         - charge
-  '/charge/{id}':
+  "/charge/{id}":
     get:
       description: This operation retrieves a Charge entity.
       operationId: retrieveCharge
@@ -900,47 +905,47 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/MEFCharge'
+                $ref: "#/components/schemas/MEFCharge"
           description: Success
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
-        '501':
+        "501":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error501'
+                $ref: "#/components/schemas/Error501"
           description: Method not implemented.
       summary: Retrieves a Charge by ID
       tags:
@@ -979,58 +984,58 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/MEFCharge_Update'
+              $ref: "#/components/schemas/MEFCharge_Update"
         description: The Charge to be updated
         required: true
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/MEFCharge'
+                $ref: "#/components/schemas/MEFCharge"
           description:
-            'Updated (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
-        '400':
+            "Updated (https://tools.ietf.org/html/rfc7231#section-6.3.1)"
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '409':
+        "409":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error409'
+                $ref: "#/components/schemas/Error409"
           description: Conflict
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
-        '501':
+        "501":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error501'
+                $ref: "#/components/schemas/Error501"
           description: Method not implemented.
       summary: Updates partially a Charge
       tags:
@@ -1039,9 +1044,9 @@ paths:
   /hub:
     post:
       description: >-
-        Sets the communication endpoint address the service instance must use
-        to deliver information about its health state, execution state,
-        failures and metrics.
+        Sets the communication endpoint address the service instance must use to
+        deliver information about its health state, execution state, failures
+        and metrics.
       operationId: registerListener
       parameters:
         - description: >-
@@ -1068,57 +1073,57 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/EventSubscriptionInput'
+              $ref: "#/components/schemas/EventSubscriptionInput"
         description:
           Data containing the callback endpoint to deliver the information
         required: true
       responses:
-        '201':
+        "201":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/EventSubscription'
+                $ref: "#/components/schemas/EventSubscription"
           description: Subscribed
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
-        '501':
+        "501":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error501'
+                $ref: "#/components/schemas/Error501"
           description: Method not implemented.
       summary: Register a listener
       tags:
         - events subscription
       x-codegen-request-body-name: data
-  '/hub/{id}':
+  "/hub/{id}":
     delete:
       description: >-
         Resets the communication endpoint address the service instance must use
-        to deliver information about its health state, execution state,
-        failures and metrics.
+        to deliver information about its health state, execution state, failures
+        and metrics.
       operationId: unregisterListener
       parameters:
         - description: The id of the registered listener
@@ -1148,43 +1153,43 @@ paths:
           schema:
             type: string
       responses:
-        '204':
+        "204":
           description: Deleted
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
-        '501':
+        "501":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error501'
+                $ref: "#/components/schemas/Error501"
           description: Method not implemented.
       summary: Unregister a listener
       tags:
@@ -1222,47 +1227,47 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/EventSubscription'
+                $ref: "#/components/schemas/EventSubscription"
           description: Success
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
-        '501':
+        "501":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error501'
+                $ref: "#/components/schemas/Error501"
           description: Method not implemented.
       summary: Retrieves a Hub by ID
       tags:
@@ -1346,12 +1351,12 @@ paths:
             format: int32
             type: integer
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: '#/components/schemas/MEFModifyProductOrderItemCompletionDate'
+                  $ref: "#/components/schemas/MEFModifyProductOrderItemCompletionDate"
                 type: array
           description: Success
           headers:
@@ -1373,35 +1378,35 @@ paths:
               description: The number of items included in the response
               schema:
                 type: integer
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
-        '501':
+        "501":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error501'
+                $ref: "#/components/schemas/Error501"
           description: Method not implemented.
       summary: List or find ModifyProductOrderItemCompletionDate objects
       tags:
@@ -1440,56 +1445,56 @@ paths:
         description: The ModifyProductOrderItemCompletionDate to be created
         required: true
       responses:
-        '201':
+        "201":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/MEFModifyProductOrderItemCompletionDate'
+                $ref: "#/components/schemas/MEFModifyProductOrderItemCompletionDate"
           description: Created
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '422':
+        "422":
           content:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: '#/components/schemas/Error422'
+                  $ref: "#/components/schemas/Error422"
                 type: array
           description:
             Unprocessable entity due to the business validation problems
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
-        '501':
+        "501":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error501'
+                $ref: "#/components/schemas/Error501"
           description: Method not implemented.
       summary: Creates a ModifyProductOrderItemCompletionDate
       tags:
         - modifyProductOrderItemCompletionDate
       x-codegen-request-body-name: modifyProductOrderItemCompletionDate
-  '/modifyProductOrderItemCompletionDate/{id}':
+  "/modifyProductOrderItemCompletionDate/{id}":
     get:
       description:
         This operation retrieves a ModifyProductOrderItemCompletionDate entity.
@@ -1522,47 +1527,47 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/MEFModifyProductOrderItemCompletionDate'
+                $ref: "#/components/schemas/MEFModifyProductOrderItemCompletionDate"
           description: Success
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
-        '501':
+        "501":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error501'
+                $ref: "#/components/schemas/Error501"
           description: Method not implemented.
       summary: Retrieves a ModifyProductOrderItemCompletionDate by ID
       tags:
@@ -1574,7 +1579,7 @@ components:
       properties:
         note:
           items:
-            $ref: '#/components/schemas/Note'
+            $ref: "#/components/schemas/Note"
           type: array
         cancellationReason:
           description: >-
@@ -1596,10 +1601,10 @@ components:
 
             - Seller Contact: `role=sellerContact`
           items:
-            $ref: '#/components/schemas/RelatedContactInformation'
+            $ref: "#/components/schemas/RelatedContactInformation"
           type: array
         productOrder:
-          $ref: '#/components/schemas/MEFProductOrderRef'
+          $ref: "#/components/schemas/MEFProductOrderRef"
         id:
           description: >-
             Unique identifier for the Cancel Product Order that is generated by
@@ -1623,12 +1628,12 @@ components:
             The states as defined by TMF622 and extended to meet MEF
             requirements. These states are used to convey the Cancel Product
             Order status during the lifecycle of the Product Order.
-          $ref: '#/components/schemas/MEFChargeableTaskStateType'
+          $ref: "#/components/schemas/MEFChargeableTaskStateType"
         cancellationReasonType:
           description: >-
             Identifies the type of reason, Technical or Commercial, for the
             Cancellation Request
-          $ref: '#/components/schemas/CancellationReasonType'
+          $ref: "#/components/schemas/CancellationReasonType"
       required:
         - id
         - orderVersion
@@ -1643,7 +1648,7 @@ components:
       properties:
         note:
           items:
-            $ref: '#/components/schemas/Note'
+            $ref: "#/components/schemas/Note"
           type: array
         cancellationReason:
           description: >-
@@ -1664,11 +1669,11 @@ components:
 
             - Seller Contact: `role=sellerContact`
           items:
-            $ref: '#/components/schemas/RelatedContactInformation'
+            $ref: "#/components/schemas/RelatedContactInformation"
           minItems: 1
           type: array
         productOrder:
-          $ref: '#/components/schemas/MEFProductOrderRef'
+          $ref: "#/components/schemas/MEFProductOrderRef"
         orderVersion:
           description: >-
             The version of the Product Order. Set by the Buyer using Seller
@@ -1679,7 +1684,7 @@ components:
           description: >-
             Identifies the type of reason, Technical or Commercial, for the
             Cancellation Request
-          $ref: '#/components/schemas/CancellationReasonType'
+          $ref: "#/components/schemas/CancellationReasonType"
       required:
         - orderVersion
         - productOrder
@@ -1694,15 +1699,14 @@ components:
         - commercial
       type: string
     Duration:
-      description:
-        'A Duration in a given unit of time e.g. 3 hours, or 5 days.'
+      description: "A Duration in a given unit of time e.g. 3 hours, or 5 days."
       properties:
         amount:
-          description: 'Duration (number of seconds, minutes, hours, etc.)'
+          description: "Duration (number of seconds, minutes, hours, etc.)"
           type: integer
         units:
           description: Time unit type
-          $ref: '#/components/schemas/TimeUnit'
+          $ref: "#/components/schemas/TimeUnit"
       required:
         - amount
         - units
@@ -1733,7 +1737,7 @@ components:
       type: object
     Error400:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
               description: >-
@@ -1748,12 +1752,12 @@ components:
                 - invalidQuery: The query section of the URI is invalid.
 
                 - invalidBody: The request has an invalid body
-              $ref: '#/components/schemas/Error400Code'
+              $ref: "#/components/schemas/Error400Code"
           required:
             - code
           type: object
       description:
-        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
+        "Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)"
     Error400Code:
       description: >-
         One of the following error codes:
@@ -1775,7 +1779,7 @@ components:
       type: string
     Error401:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
               description: >-
@@ -1785,12 +1789,12 @@ components:
 
                 - invalidCredentials: Provided credentials are invalid or
                 expired
-              $ref: '#/components/schemas/Error401Code'
+              $ref: "#/components/schemas/Error401Code"
           required:
             - code
           type: object
       description:
-        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
+        "Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)"
     Error401Code:
       description: |-
         One of the following error codes:
@@ -1802,7 +1806,7 @@ components:
       type: string
     Error403:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
               description: |-
@@ -1812,7 +1816,7 @@ components:
                 - accessDenied: Access denied
                 - forbiddenRequester: Forbidden requester
                 - tooManyUsers: Too many users
-              $ref: '#/components/schemas/Error403Code'
+              $ref: "#/components/schemas/Error403Code"
           required:
             - code
           type: object
@@ -1835,14 +1839,14 @@ components:
       type: string
     Error404:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
               description: >-
                 The following error code:
 
-                - notFound: A current representation for the target resource
-                not found
+                - notFound: A current representation for the target resource not
+                found
               enum:
                 - notFound
               type: string
@@ -1854,7 +1858,7 @@ components:
         (https://tools.ietf.org/html/rfc7231#section-6.5.4)
     Error409:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
               description: >-
@@ -1869,10 +1873,10 @@ components:
             - code
           type: object
       description:
-        'Conflict (https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.8)'
+        "Conflict (https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.8)"
     Error422:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
               description: |
@@ -1884,7 +1888,7 @@ components:
                   - unexpectedProperty: Additional property, not expected by the Seller has been provided
                   - tooManyRecords: the number of records to be provided in the response exceeds the Seller's threshold.
                   - otherIssue: Other problem was identified (detailed information provided in a reason)
-              $ref: '#/components/schemas/Error422Code'
+              $ref: "#/components/schemas/Error422Code"
             propertyPath:
               description: >
                 A pointer to a particular property of the payload that caused
@@ -1921,7 +1925,7 @@ components:
       type: string
     Error500:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
               description: >-
@@ -1941,7 +1945,7 @@ components:
         (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     Error501:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
               description: |-
@@ -1972,8 +1976,8 @@ components:
           type: string
         id:
           description: >-
-            An identifier of this Event Subscription assigned by the Seller
-            when a resource is created.
+            An identifier of this Event Subscription assigned by the Seller when
+            a resource is created.
           type: string
       required:
         - callback
@@ -1984,10 +1988,10 @@ components:
       properties:
         query:
           description: >-
-            This attribute is used to define to which type of events to
-            register to. Example: "query":"eventType =
-            productOrderStateChangeEvent". To subscribe for more than one event
-            type, put the values separated by comma:
+            This attribute is used to define to which type of events to register
+            to. Example: "query":"eventType = productOrderStateChangeEvent". To
+            subscribe for more than one event type, put the values separated by
+            comma:
             `eventType=productOrderStateChangeEvent,productOrderItemStateChangeEvent`.
             The possible values are enumerated by 'ProductOrderEventType',
             `CancelProductOrderEventType` in productOrderNotification.api.yaml.
@@ -2010,7 +2014,7 @@ components:
       type: object
     FieldedAddress:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - properties:
             country:
               description: Country that the address is in
@@ -2033,8 +2037,8 @@ components:
               description: >-
                 Number identifying a specific property on a public street. It
                 may be combined with streetNrLast for ranged addresses. MEF 79
-                defines it as required however as in certain countries it is
-                not used we make it optional in API.
+                defines it as required however as in certain countries it is not
+                used we make it optional in API.
               type: string
             locality:
               description: The locality that the address is in
@@ -2046,8 +2050,7 @@ components:
               type: string
             streetNrLast:
               description:
-                Last number in a range of street numbers allocated to a
-                property
+                Last number in a range of street numbers allocated to a property
               type: string
             streetNrSuffix:
               description: The first street number suffix
@@ -2062,7 +2065,7 @@ components:
               description: Last street number suffix for a ranged address
               type: string
             geographicSubAddress:
-              $ref: '#/components/schemas/GeographicSubAddress'
+              $ref: "#/components/schemas/GeographicSubAddress"
             streetSuffix:
               description: A modifier denoting a relative direction
               type: string
@@ -2078,7 +2081,7 @@ components:
         Reference: MEF 79 (Sn 8.9.2)
     FormattedAddress:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - properties:
             country:
               description: Country that the address is in
@@ -2119,11 +2122,11 @@ components:
       description: >-
         A type of Address that has discrete fields for each type of boundary or
         identifier with the exception of street and more specific location
-        details, which are combined into a maximum of two strings based on
-        local postal addressing conventions. Reference: MEF 79 (Sn 8.9.3)
+        details, which are combined into a maximum of two strings based on local
+        postal addressing conventions. Reference: MEF 79 (Sn 8.9.3)
     GeographicAddressLabel:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - properties:
             externalReferenceId:
               description: A reference to an address by id
@@ -2147,7 +2150,7 @@ components:
         Reference: MEF 79 (Sn 8.9.4)
     GeographicAddressRef:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - properties:
             href:
               description: >
@@ -2157,9 +2160,9 @@ components:
               type: string
             id:
               description: >-
-                Identifier of the referenced Geographic Address. This
-                identifier is assigned during a successful address validation
-                request (Geographic Address Validation API)
+                Identifier of the referenced Geographic Address. This identifier
+                is assigned during a successful address validation request
+                (Geographic Address Validation API)
               type: string
           required:
             - id
@@ -2169,7 +2172,7 @@ components:
         Validation API.
     GeographicSiteRef:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - properties:
             href:
               description: >
@@ -2184,11 +2187,11 @@ components:
             - id
           type: object
       description: >
-        A reference to a Geographic Site resource available through Service
-        Site API
+        A reference to a Geographic Site resource available through Service Site
+        API
     GeographicSubAddress:
       description:
-        'Additional fields used to specify an address, as detailed as possible.'
+        "Additional fields used to specify an address, as detailed as possible."
       properties:
         buildingName:
           description: >
@@ -2201,23 +2204,22 @@ components:
             within a subAddress e.g. BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
             UNIT, WHARF.
           items:
-            $ref: '#/components/schemas/MEFSubUnit'
+            $ref: "#/components/schemas/MEFSubUnit"
           type: array
         levelType:
           description: Describes level types within a building
           type: string
         levelNumber:
           description:
-            'Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT
-            2'
+            "Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT 2"
           type: string
         privateStreetNumber:
           description: Private streets numbers internal to a private street
           type: string
         privateStreetName:
           description: >-
-            "Private streets internal to a property (e.g. a university) may
-            have internal names that are not recorded by the land title office
+            "Private streets internal to a property (e.g. a university) may have
+            internal names that are not recorded by the land title office
           type: string
       type: object
     MEFAcceptedRejectedType:
@@ -2235,7 +2237,7 @@ components:
           description: >-
             Contact allow to capture contact information. It is used to capture
             billing account contact information.
-          $ref: '#/components/schemas/RelatedContactInformation'
+          $ref: "#/components/schemas/RelatedContactInformation"
         agreementName:
           description: >-
             The name of the Agreement which is referenced for the Product Order
@@ -2273,9 +2275,9 @@ components:
       description: >-
         When non-recurring or updated recurring charges are identified by the
         Seller during their processing of a Product Order, the Seller must
-        communicate these charges to the Buyer and the Buyer must respond to
-        the Seller informing the Seller if they accept or reject each charge.
-        The Seller indicates for each charge, if the charge is Blocking or
+        communicate these charges to the Buyer and the Buyer must respond to the
+        Seller informing the Seller if they accept or reject each charge. The
+        Seller indicates for each charge, if the charge is Blocking or
         non-Blocking. If the Buyer rejects a Blocking Charge, the Seller will
         cancel that Product Order Item and any related Product  Order Items. If
         the Buyer rejects a non-blocking Charge, the Seller may proceed with
@@ -2283,10 +2285,9 @@ components:
       properties:
         cancelProductOrder:
           description: >-
-            A reference to the Cancel Product Order request that is cause of
-            the Charge. Required if the Charge was caused by a Cancel Product
-            Order.
-          $ref: '#/components/schemas/MEFCancelProductOrderRef'
+            A reference to the Cancel Product Order request that is cause of the
+            Charge. Required if the Charge was caused by a Cancel Product Order.
+          $ref: "#/components/schemas/MEFCancelProductOrderRef"
         responseDueDate:
           description: >-
             The date that the Buyer must respond to the Seller's Charge. If
@@ -2297,7 +2298,7 @@ components:
         chargeItem:
           items:
             description: The list of charges for Product Order Item
-            $ref: '#/components/schemas/MEFChargeItem'
+            $ref: "#/components/schemas/MEFChargeItem"
           type: array
         id:
           description: A unique identifier of the Charge
@@ -2310,22 +2311,21 @@ components:
           type: string
         modifyProductOrderItemCompletionDate:
           description: >-
-            A reference to the Modify Product Order Item Completion Date
-            request that is cause of the Charge. Required if the Charge was
-            caused by a  Modify Product Order Item Completion Date request.
-          $ref: '#/components/schemas/MEFModifyProductOrderItemCompletionDateRef'
+            A reference to the Modify Product Order Item Completion Date request
+            that is cause of the Charge. Required if the Charge was caused by
+            a  Modify Product Order Item Completion Date request.
+          $ref: "#/components/schemas/MEFModifyProductOrderItemCompletionDateRef"
         state:
           description: The state of the Charge
-          $ref: '#/components/schemas/MEFChargeStateType'
+          $ref: "#/components/schemas/MEFChargeStateType"
         creationDate:
           description: Date that the Charge was created by the Seller.
           format: date-time
           type: string
         productOrderItem:
           description:
-            A reference to the Product Order Item that the Charge is related
-            to.
-          $ref: '#/components/schemas/MEFProductOrderItemRef'
+            A reference to the Product Order Item that the Charge is related to.
+          $ref: "#/components/schemas/MEFProductOrderItemRef"
       required:
         - chargeItem
         - id
@@ -2347,7 +2347,7 @@ components:
           description: >-
             Indicates if this is a new charge or a change to a charge provided
             in a Quote.
-          $ref: '#/components/schemas/MEFAcceptedRejectedType'
+          $ref: "#/components/schemas/MEFAcceptedRejectedType"
         unitOfMeasure:
           description: >-
             Unit of Measure if price depending on it is usage based (Gb, SMS
@@ -2361,10 +2361,10 @@ components:
           type: boolean
         price:
           description: The value of the Price associated with the charge
-          $ref: '#/components/schemas/Price'
+          $ref: "#/components/schemas/Price"
         chargeType:
           description: The state of the Charge
-          $ref: '#/components/schemas/MEFPriceType'
+          $ref: "#/components/schemas/MEFPriceType"
         description:
           description: A description of the Charge
           type: string
@@ -2373,17 +2373,17 @@ components:
           type: string
         state:
           description: The state of the Charge Item
-          $ref: '#/components/schemas/MEFChargeItemStateType'
+          $ref: "#/components/schemas/MEFChargeItemStateType"
         activityType:
           description: >-
             Indicates if this is a new charge or a change to a charge provided
             in a Quote.
-          $ref: '#/components/schemas/MEFChargeActivityType'
+          $ref: "#/components/schemas/MEFChargeActivityType"
         recurringChargePeriod:
           description: >-
             Used for a recurring Charge Item with a chargeType = recurring to
             indicate the period
-          $ref: '#/components/schemas/MEFChargePeriod'
+          $ref: "#/components/schemas/MEFChargePeriod"
       required:
         - id
       type: object
@@ -2405,7 +2405,7 @@ components:
           description: >-
             Indicates if this is a new charge or a change to a charge provided
             in a Quote.
-          $ref: '#/components/schemas/MEFAcceptedRejectedType'
+          $ref: "#/components/schemas/MEFAcceptedRejectedType"
         id:
           description: An identifier that is unique among Charge
           type: string
@@ -2448,7 +2448,7 @@ components:
         chargeItem:
           items:
             description: The list of charges for Product Order Item
-            $ref: '#/components/schemas/MEFChargeItem_Update'
+            $ref: "#/components/schemas/MEFChargeItem_Update"
           minItems: 1
           type: array
       required:
@@ -2474,7 +2474,7 @@ components:
       type: string
     MEFGeographicPoint:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - properties:
             spatialRef:
               description: >-
@@ -2487,7 +2487,7 @@ components:
                 The latitude expressed in the format specified by the
                 `spacialRef`
               type: string
-            'y':
+            "y":
               description: >-
                 The longitude expressed in the format specified by the
                 `spacialRef`
@@ -2500,7 +2500,7 @@ components:
           required:
             - spatialRef
             - x
-            - 'y'
+            - "y"
           type: object
       description: >
         A MEFGeographicPoint defines a geographic point through coordinates.
@@ -2510,12 +2510,12 @@ components:
       properties:
         duration:
           description: Duration of the term
-          $ref: '#/components/schemas/Duration'
+          $ref: "#/components/schemas/Duration"
         endOfTermAction:
           description: >-
             The action that needs to be taken by the Seller once the term
             expires
-          $ref: '#/components/schemas/MEFEndOfTermAction'
+          $ref: "#/components/schemas/MEFEndOfTermAction"
         name:
           description: Name of the term
           type: string
@@ -2526,7 +2526,7 @@ components:
           description: >-
             The recurring period that the Buyer is willing to pay to the end of
             upon disconnecting the Product after the original term has expired.
-          $ref: '#/components/schemas/Duration'
+          $ref: "#/components/schemas/Duration"
       type: object
     MEFModifyProductOrderItemCompletionDate:
       description: >-
@@ -2561,7 +2561,7 @@ components:
         state:
           description:
             The state of the Modify Product Order Item Completion Date request
-          $ref: '#/components/schemas/MEFChargeableTaskStateType'
+          $ref: "#/components/schemas/MEFChargeableTaskStateType"
         creationDate:
           description: >-
             Date that the Modify Product Order Item Completion Date was created
@@ -2570,7 +2570,7 @@ components:
           type: string
         productOrderItem:
           description: A reference to the Product Order Item to be modified.
-          $ref: '#/components/schemas/MEFProductOrderItemRef'
+          $ref: "#/components/schemas/MEFProductOrderItemRef"
         requestedCompletionDate:
           description:
             Identifies the Buyer's desired due date (requested delivery date)
@@ -2589,8 +2589,7 @@ components:
       properties:
         id:
           description:
-            A unique identifier of the Modify Product Order Item Completion
-            Date
+            A unique identifier of the Modify Product Order Item Completion Date
           type: string
         href:
           description:
@@ -2601,8 +2600,8 @@ components:
       type: object
     MEFModifyProductOrderItemCompletionDate_Create:
       description: >-
-        A request initiated by the Buyer to modify the Requested Completion
-        Date or the Expedite Indicator of a Product Order Item.
+        A request initiated by the Buyer to modify the Requested Completion Date
+        or the Expedite Indicator of a Product Order Item.
       properties:
         expediteIndicator:
           default: false
@@ -2619,7 +2618,7 @@ components:
           type: string
         productOrderItem:
           description: A reference to the Product Order Item to be modified.
-          $ref: '#/components/schemas/MEFProductOrderItemRef'
+          $ref: "#/components/schemas/MEFProductOrderItemRef"
         requestedCompletionDate:
           description:
             Identifies the Buyer's desired due date (requested delivery date)
@@ -2640,11 +2639,11 @@ components:
           description: >-
             A dependency between the Product Order Item and a related Product
             Order Item
-          $ref: '#/components/schemas/MEFOrderItemCoordinationDependencyType'
+          $ref: "#/components/schemas/MEFOrderItemCoordinationDependencyType"
         coordinatedActionDelay:
           description:
             The period of time for which the coordinated action is delayed.
-          $ref: '#/components/schemas/Duration'
+          $ref: "#/components/schemas/Duration"
       required:
         - coordinatedActionDelay
         - coordinationDependency
@@ -2694,16 +2693,16 @@ components:
         product/service payload.  The `@type` attribute is used as a
         discriminator
       discriminator:
-        propertyName: '@type'
+        propertyName: "@type"
       properties:
-        '@type':
+        "@type":
           description: >-
             The name of the type, defined in the JSON schema specified  above,
             for the product that is the subject of the Product Order Request.
             The named type must be a subclass of MEFProductConfiguration.
           type: string
       required:
-        - '@type'
+        - "@type"
       type: object
     MEFProductOrderItemRef:
       description: It's a ProductOrder item
@@ -2735,7 +2734,7 @@ components:
           type: string
         state:
           description: Reached state
-          $ref: '#/components/schemas/MEFProductOrderItemStateType'
+          $ref: "#/components/schemas/MEFProductOrderItemStateType"
       type: object
     MEFProductOrderItemStateType:
       description: |
@@ -2780,14 +2779,14 @@ components:
           type: string
         note:
           items:
-            $ref: '#/components/schemas/Note'
+            $ref: "#/components/schemas/Note"
           type: array
         product:
           description: >-
             The Buyer's existing Product for which the Product Order is being
             requested. Set by the Buyer if the Product Action is modify or
             delete.
-          $ref: '#/components/schemas/MEFProductRefOrValueOrder'
+          $ref: "#/components/schemas/MEFProductRefOrValueOrder"
         relatedContactInformation:
           description: >-
             Contact information of an individual or organization playing a role
@@ -2804,28 +2803,27 @@ components:
 
             - Buyer Technical Contact : `role=buyerTechnicalContact`
           items:
-            $ref: '#/components/schemas/RelatedContactInformation'
+            $ref: "#/components/schemas/RelatedContactInformation"
           type: array
         requestedItemTerm:
           description: Requested term of the Product Order Item
-          $ref: '#/components/schemas/MEFItemTerm'
+          $ref: "#/components/schemas/MEFItemTerm"
         billingAccount:
           description: >-
             References the billing arrangement that a buyer has with a seller
             that provides products to the customer.
-          $ref: '#/components/schemas/MEFBillingAccount'
+          $ref: "#/components/schemas/MEFBillingAccount"
         productOrderItemRelationship:
           description:
             The relationship between Product Order Items in the Product Order.
           items:
-            $ref: '#/components/schemas/OrderItemRelationship'
+            $ref: "#/components/schemas/OrderItemRelationship"
           type: array
         tspRestorationPriority:
           description: >
-            Within the United States, indicates the provisioning and
-            restoration priority as defined under the TSP Service Vendor
-            Handbook. The valid values are defined in ATIS OBF document:
-            ATIS-0404001.
+            Within the United States, indicates the provisioning and restoration
+            priority as defined under the TSP Service Vendor Handbook. The valid
+            values are defined in ATIS OBF document: ATIS-0404001.
           type: string
         productOfferingQualificationItem:
           description: >-
@@ -2833,27 +2831,26 @@ components:
             relation may be required by the Seller. In that case, this is a
             mandatory field. If the Seller does not require the POQ Item
             reference, then this is an optional attribute.
-          $ref: '#/components/schemas/ProductOfferingQualificationItemRef'
+          $ref: "#/components/schemas/ProductOfferingQualificationItemRef"
         coordinatedAction:
           description: >-
             The interval after the completion of one or more related Product
-            Order Items that this Product Order Item can be started or
-            completed
+            Order Items that this Product Order Item can be started or completed
           items:
-            $ref: '#/components/schemas/MEFOrderItemCoordinatedAction'
+            $ref: "#/components/schemas/MEFOrderItemCoordinatedAction"
           type: array
         action:
           description: >-
             Action to be applied to this portion of the Product Order to the
             product referred by this Product Order Item
-          $ref: '#/components/schemas/MEFProductActionType'
+          $ref: "#/components/schemas/MEFProductActionType"
         quoteItem:
           description: >-
-            The Quote Item associated to this Product Order Item. The Quote
-            Item reference may be required by the Seller. In that case, this is
-            a mandatory field. If the Seller does not require the Quote, then
-            this is an optional attribute.
-          $ref: '#/components/schemas/MEFQuoteItemRef'
+            The Quote Item associated to this Product Order Item. The Quote Item
+            reference may be required by the Seller. In that case, this is a
+            mandatory field. If the Seller does not require the Quote, then this
+            is an optional attribute.
+          $ref: "#/components/schemas/MEFQuoteItemRef"
         endCustomerName:
           description: >-
             The name of the End Customer, either a business name or an
@@ -2863,17 +2860,17 @@ components:
           default: false
           description: >-
             Indicates that expedited treatment is requested. Set by the Buyer.
-            If this is set to TRUE, the Buyer sets the Requested Completion
-            Date to the expedited date. See MEF 57.2 section 7.2 for a
-            description of the interaction between the Buyer and the Seller.
+            If this is set to TRUE, the Buyer sets the Requested Completion Date
+            to the expedited date. See MEF 57.2 section 7.2 for a description of
+            the interaction between the Buyer and the Seller.
           type: boolean
         id:
           description: >
             Identifier of the item (generally it is a sequence number 01, 02,
-            03, ...)  MEF: A Buyer provided identifier to identify Product
-            Order Items and to be able to relate them to one another. This is
-            set by the Buyer and is unique within the Product Order. Examples
-            of Reference Identifier could be 1, 2, 3 or A, B, C. The Reference
+            03, ...)  MEF: A Buyer provided identifier to identify Product Order
+            Items and to be able to relate them to one another. This is set by
+            the Buyer and is unique within the Product Order. Examples of
+            Reference Identifier could be 1, 2, 3 or A, B, C. The Reference
             Identifier can be reused in multiple Product Orders to identify a
             Product Order Item within that Product Order.
           type: string
@@ -2888,7 +2885,7 @@ components:
       type: object
     MEFProductOrderItem_Create:
       allOf:
-        - $ref: '#/components/schemas/MEFProductOrderItem_Common'
+        - $ref: "#/components/schemas/MEFProductOrderItem_Common"
         - description: >
             An identified part of the order. A product order is decomposed into
             one or more order items.
@@ -2904,7 +2901,7 @@ components:
           type: string
         note:
           items:
-            $ref: '#/components/schemas/Note'
+            $ref: "#/components/schemas/Note"
           type: array
         relatedContactInformation:
           description: >-
@@ -2922,7 +2919,7 @@ components:
 
             - Buyer Technical Contact : `role=buyerTechnicalContact`
           items:
-            $ref: '#/components/schemas/RelatedContactInformation'
+            $ref: "#/components/schemas/RelatedContactInformation"
           type: array
         endCustomerName:
           description: >-
@@ -2945,8 +2942,8 @@ components:
           type: string
         productOrderId:
           description: >-
-            Unique (within the ordering domain) identifier for the order that
-            is generated by the seller when the order is initially accepted.
+            Unique (within the ordering domain) identifier for the order that is
+            generated by the seller when the order is initially accepted.
           type: string
       type: object
     MEFProductOrderStateChange:
@@ -2963,7 +2960,7 @@ components:
           type: string
         state:
           description: Reached state
-          $ref: '#/components/schemas/MEFProductOrderStateType'
+          $ref: "#/components/schemas/MEFProductOrderStateType"
       type: object
     MEFProductOrderStateType:
       description: |
@@ -2999,31 +2996,30 @@ components:
       type: string
     MEFProductRefOrValueOrder:
       description: >-
-        Used by the Buyer to point to existing and/or describe the desired
-        shape of the product. In case of `add` action - only
-        `productConfiguration` MUST be specified. For `modify` action - both
-        `id` and `productConfiguration` MUST be provided to point which product
-        instance to update and to what state. In `delete` only the `id` must be
-        provided.
+        Used by the Buyer to point to existing and/or describe the desired shape
+        of the product. In case of `add` action - only `productConfiguration`
+        MUST be specified. For `modify` action - both `id` and
+        `productConfiguration` MUST be provided to point which product instance
+        to update and to what state. In `delete` only the `id` must be provided.
       properties:
         productOffering:
           description: >-
             A particular Product Offering defines the technical and commercial
             attributes and behaviors of a Product.
-          $ref: '#/components/schemas/ProductOfferingRef'
+          $ref: "#/components/schemas/ProductOfferingRef"
         productConfiguration:
           description: >-
             MEFProductConfiguration is used to specify the MEF specific product
             payload. This field MUST be populated if an item `action` is `add`
             or `modify`. It MUST NOT be populated when an item `action` is
             `delete`. The @type is used as a discriminator.
-          $ref: '#/components/schemas/MEFProductConfiguration'
+          $ref: "#/components/schemas/MEFProductConfiguration"
         productRelationship:
           description: >-
             A list of references to existing products that are related to the
             orderedProduct.
           items:
-            $ref: '#/components/schemas/ProductRelationship'
+            $ref: "#/components/schemas/ProductRelationship"
           type: array
         id:
           description: >-
@@ -3035,15 +3031,15 @@ components:
         href:
           description: >-
             Hyperlink to the referenced Product. Hyperlink MAY be used by the
-            Seller in responses. Hyperlink MUST be ignored by the Seller in
-            case it is provided by the Buyer in a request.
+            Seller in responses. Hyperlink MUST be ignored by the Seller in case
+            it is provided by the Buyer in a request.
           type: string
         place:
           description: >-
             The relationships between this Product Order Item and one or more
             Places as defined in the Product Specification.
           items:
-            $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+            $ref: "#/components/schemas/RelatedPlaceRefOrValue"
           type: array
       type: object
     MEFQuoteItemRef:
@@ -3072,8 +3068,8 @@ components:
           type: string
         subUnitType:
           description: >-
-            The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
-            UNIT, WHARF.
+            The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT,
+            WHARF.
           type: string
       required:
         - subUnitNumber
@@ -3110,7 +3106,7 @@ components:
           type: string
         source:
           description: Indicates if the note is from Buyer or Seller
-          $ref: '#/components/schemas/MEFBuyerSellerType'
+          $ref: "#/components/schemas/MEFBuyerSellerType"
         text:
           description: Text of the note
           type: string
@@ -3130,8 +3126,7 @@ components:
             specified in the Product Specification.
           type: string
         id:
-          description:
-            Id of the related Order Item (must be in the same Order).
+          description: Id of the related Order Item (must be in the same Order).
           type: string
       required:
         - id
@@ -3144,17 +3139,17 @@ components:
       properties:
         taxRate:
           description:
-            'Price Tax Rate. Unit: [%]. E.g. value 16 stand for 16% tax.'
+            "Price Tax Rate. Unit: [%]. E.g. value 16 stand for 16% tax."
           format: float
           type: number
         taxIncludedAmount:
           description:
             All taxes included amount (expressed in the given currency)
-          $ref: '#/components/schemas/Money'
+          $ref: "#/components/schemas/Money"
         dutyFreeAmount:
           description:
             All taxes excluded amount (expressed in the given currency)
-          $ref: '#/components/schemas/Money'
+          $ref: "#/components/schemas/Money"
       type: object
     ProductOfferingQualificationItemRef:
       description: >-
@@ -3181,22 +3176,21 @@ components:
       type: object
     ProductOfferingRef:
       description: >-
-        A reference to a Product Offering offered by the Seller to the
-        Buyer.  A Product Offering contains the commercial and technical
-        details of a Product sold by a particular Seller. A Product Offering
-        defines all of the commercial terms and, through association with a
-        particular Product Specification, defines all the technical attributes
-        and behaviors of the Product. A Product Offering may constrain the
-        allowable set of configurable technical attributes and/or behaviors
-        specified in the associated Product Specification.
+        A reference to a Product Offering offered by the Seller to the Buyer.  A
+        Product Offering contains the commercial and technical details of a
+        Product sold by a particular Seller. A Product Offering defines all of
+        the commercial terms and, through association with a particular Product
+        Specification, defines all the technical attributes and behaviors of the
+        Product. A Product Offering may constrain the allowable set of
+        configurable technical attributes and/or behaviors specified in the
+        associated Product Specification.
       properties:
         href:
           description: >
             Hyperlink to a Product Offering in Sellers catalog. In case Seller
-            is not providing a catalog capabilities this field is not
-            used.  The catalog API definition is provided by the Seller to the
-            Buyer during onboarding Hyperlink MAY be used by the Seller in
-            responses  
+            is not providing a catalog capabilities this field is not used.  The
+            catalog API definition is provided by the Seller to the Buyer during
+            onboarding Hyperlink MAY be used by the Seller in responses  
             Hyperlink MUST be ignored by the Seller in case it is provided by
             the Buyer in a request
           type: string
@@ -3211,11 +3205,11 @@ components:
       type: object
     ProductOrder:
       allOf:
-        - $ref: '#/components/schemas/ProductOrder_Common'
+        - $ref: "#/components/schemas/ProductOrder_Common"
         - description: >-
             A Product Order is a type of order which can be used to place an
-            order between a customer and a service provider or between a
-            service provider and a partner and vice versa
+            order between a customer and a service provider or between a service
+            provider and a partner and vice versa
           properties:
             cancellationReason:
               description: >-
@@ -3241,29 +3235,27 @@ components:
             stateChange:
               description: State change for the Product Order
               items:
-                $ref: '#/components/schemas/MEFProductOrderStateChange'
+                $ref: "#/components/schemas/MEFProductOrderStateChange"
               type: array
             id:
               description: >-
-                Unique identifier for the Product Order that is generated by
-                the Seller when the Product Order is initially accepted via an
-                API.
+                Unique identifier for the Product Order that is generated by the
+                Seller when the Product Order is initially accepted via an API.
               type: string
             href:
               description: Hyperlink to access the order
               type: string
             orderVersion:
-              description:
-                'The version of the Product Order, set by the Seller'
+              description: "The version of the Product Order, set by the Seller"
               type: string
             state:
               description: >-
                 Tracks the lifecycle status of the product order, such as
                 Acknowledged, Rejected, InProgress, Pending and so on.
-              $ref: '#/components/schemas/MEFProductOrderStateType'
+              $ref: "#/components/schemas/MEFProductOrderStateType"
             productOrderItem:
               items:
-                $ref: '#/components/schemas/ProductOrderItem'
+                $ref: "#/components/schemas/ProductOrderItem"
               minItems: 1
               type: array
             orderDate:
@@ -3285,7 +3277,7 @@ components:
           type: object
     ProductOrderItem:
       allOf:
-        - $ref: '#/components/schemas/MEFProductOrderItem_Common'
+        - $ref: "#/components/schemas/MEFProductOrderItem_Common"
         - description: >
             An identified part of the order. A product order is decomposed into
             one or more order items.
@@ -3293,25 +3285,24 @@ components:
             itemTerm:
               items:
                 description: Term of the Product Order Item
-                $ref: '#/components/schemas/MEFItemTerm'
+                $ref: "#/components/schemas/MEFItemTerm"
               maxItems: 1
               type: array
             terminationError:
               description: >-
-                When the Seller cannot process the request, the Seller returns
-                a text-based list of reasons here.
+                When the Seller cannot process the request, the Seller returns a
+                text-based list of reasons here.
               items:
-                $ref: '#/components/schemas/TerminationError'
+                $ref: "#/components/schemas/TerminationError"
               type: array
             charge:
               description: The Charges associated to this Product Order Item
               items:
-                $ref: '#/components/schemas/MEFChargeRef'
+                $ref: "#/components/schemas/MEFChargeRef"
               type: array
             completionDate:
               description:
-                Identifies the date the Seller completed the Product Order
-                Item.
+                Identifies the date the Seller completed the Product Order Item.
               format: date-time
               type: string
             expectedCompletionDate:
@@ -3322,20 +3313,20 @@ components:
               type: string
             sellerItemIdentifier:
               description: >-
-                A Seller provided identifier to identify the Product Order
-                Items within a Product Order. This is only used when required
-                for discussion between the Buyer and Seller.
+                A Seller provided identifier to identify the Product Order Items
+                within a Product Order. This is only used when required for
+                discussion between the Buyer and Seller.
               type: string
             stateChange:
               description: State change for the Product Order Item
               items:
-                $ref: '#/components/schemas/MEFProductOrderItemStateChange'
+                $ref: "#/components/schemas/MEFProductOrderItemStateChange"
               type: array
             state:
               description:
-                'State of the order item : described in the state machine
-                diagram'
-              $ref: '#/components/schemas/MEFProductOrderItemStateType'
+                "State of the order item : described in the state machine
+                diagram"
+              $ref: "#/components/schemas/MEFProductOrderItemStateType"
             expediteAcceptedIndicator:
               default: false
               description: >-
@@ -3348,13 +3339,13 @@ components:
           type: object
     ProductOrder_Common:
       description: >-
-        A Product Order is a type of order which  can  be used to place an
-        order between a customer and a service provider or between a service
-        provider and a partner and vice versa,
+        A Product Order is a type of order which  can  be used to place an order
+        between a customer and a service provider or between a service provider
+        and a partner and vice versa,
       properties:
         note:
           items:
-            $ref: '#/components/schemas/Note'
+            $ref: "#/components/schemas/Note"
           type: array
         relatedContactInformation:
           description: >-
@@ -3367,7 +3358,7 @@ components:
 
             Providing the Product Order Contact in the request is mandatory.
           items:
-            $ref: '#/components/schemas/RelatedContactInformation'
+            $ref: "#/components/schemas/RelatedContactInformation"
           minItems: 1
           type: array
         description:
@@ -3394,18 +3385,18 @@ components:
       type: object
     ProductOrder_Create:
       allOf:
-        - $ref: '#/components/schemas/ProductOrder_Common'
+        - $ref: "#/components/schemas/ProductOrder_Common"
         - description: >
             A Product Order is a type of order which  can  be used to place an
-            order between a customer and a service provider or between a
-            service provider and a partner and vice versa, Skipped properties:
+            order between a customer and a service provider or between a service
+            provider and a partner and vice versa, Skipped properties:
             id,href,completionDate,orderDate,state,stateChange,cancellationDate,cancellationReason
           properties:
             productOrderItem:
               description: |
                 Items contained in the Product Order.
               items:
-                $ref: '#/components/schemas/MEFProductOrderItem_Create'
+                $ref: "#/components/schemas/MEFProductOrderItem_Create"
               minItems: 1
               type: array
           required:
@@ -3426,25 +3417,25 @@ components:
         completionDate:
           description: >-
             Identifies the date that all Product Order Items within the Order
-            have reached a terminal state. No further action is permitted on
-            the Product Order after this notification.
+            have reached a terminal state. No further action is permitted on the
+            Product Order after this notification.
           format: date-time
           type: string
         id:
           description: >-
-            Unique identifier for the order that is generated by the Seller
-            when the order is initially accepted via an API.
+            Unique identifier for the order that is generated by the Seller when
+            the order is initially accepted via an API.
           type: string
         orderVersion:
           description:
-            'The version of the Product Order, assigned by the Seller'
+            "The version of the Product Order, assigned by the Seller"
           type: string
         state:
           description: >-
             The states as defined by TMF622 and extended to meet MEF
             requirements. These states are used to convey the Product Order
             status during the lifecycle of the Product Order.
-          $ref: '#/components/schemas/MEFProductOrderStateType'
+          $ref: "#/components/schemas/MEFProductOrderStateType"
         orderDate:
           description: Date when the order was created
           format: date-time
@@ -3477,7 +3468,7 @@ components:
       properties:
         note:
           items:
-            $ref: '#/components/schemas/Note'
+            $ref: "#/components/schemas/Note"
           type: array
         relatedContactInformation:
           description: >
@@ -3485,7 +3476,7 @@ components:
             in this context. The Buyer is allowed to update the Product Order
             Contact: role=productOrderContact;
           items:
-            $ref: '#/components/schemas/RelatedContactInformation'
+            $ref: "#/components/schemas/RelatedContactInformation"
           minItems: 1
           type: array
         description:
@@ -3501,15 +3492,15 @@ components:
           description: >-
             The version of the Product Order. The `orderVersion` attribute
             cannot be updated. It is used only to identify the version of the
-            Product Order that the Buyer wants to update. If there is a
-            mismatch with the Seller's system, the Seller will reject the
-            request with an error response.
+            Product Order that the Buyer wants to update. If there is a mismatch
+            with the Seller's system, the Seller will reject the request with an
+            error response.
           type: string
         productOrderItem:
           description: |
             Order Item attributes that may be updated
           items:
-            $ref: '#/components/schemas/MEFProductOrderItem_Update'
+            $ref: "#/components/schemas/MEFProductOrderItem_Update"
           type: array
         projectId:
           description: >-
@@ -3527,9 +3518,9 @@ components:
         relationshipType:
           description: >
             Specifies the type (nature) of the relationship to the related
-            Product. The nature of required relationships varies for Products
-            of different types. For example, a UNI or ENNI Product may not have
-            any relationships, but an Access E-Line may have two mandatory
+            Product. The nature of required relationships varies for Products of
+            different types. For example, a UNI or ENNI Product may not have any
+            relationships, but an Access E-Line may have two mandatory
             relationships (related to the UNI on one end and the ENNI on the
             other). More complex Products such as multipoint IP or Firewall
             Products may have more complex relationships. As a result, the
@@ -3572,7 +3563,7 @@ components:
           description: >-
             Identifies the postal address of the person or office to be
             contacted.
-          $ref: '#/components/schemas/FieldedAddress'
+          $ref: "#/components/schemas/FieldedAddress"
         organization:
           description: The organization or company that the contact belongs to
           type: string
@@ -3593,33 +3584,33 @@ components:
         Place defines the places where the product order must be done.
       discriminator:
         mapping:
-          FieldedAddress: '#/components/schemas/FieldedAddress'
-          FormattedAddress: '#/components/schemas/FormattedAddress'
-          GeographicAddressRef: '#/components/schemas/GeographicAddressRef'
-          GeographicSiteRef: '#/components/schemas/GeographicSiteRef'
-          MEFGeographicPoint: '#/components/schemas/MEFGeographicPoint'
-          GeographicAddressLabel: '#/components/schemas/GeographicAddressLabel'
-        propertyName: '@type'
+          FieldedAddress: "#/components/schemas/FieldedAddress"
+          FormattedAddress: "#/components/schemas/FormattedAddress"
+          GeographicAddressRef: "#/components/schemas/GeographicAddressRef"
+          GeographicSiteRef: "#/components/schemas/GeographicSiteRef"
+          MEFGeographicPoint: "#/components/schemas/MEFGeographicPoint"
+          GeographicAddressLabel: "#/components/schemas/GeographicAddressLabel"
+        propertyName: "@type"
       properties:
         role:
           description: Role of this place
           type: string
-        '@type':
+        "@type":
           description: >
             This field is used as a discriminator and is used between different
             place representations. This type might discriminate for additional
             related place as defined in '@schemaLocation'.
           type: string
-        '@schemaLocation':
+        "@schemaLocation":
           description: >-
             A URI to a JSON-Schema file that defines additional attributes and
-            relationships. May be used to define additional related place
-            types. Usage of this attribute must be agreed upon between Buyer
-            and Seller.
+            relationships. May be used to define additional related place types.
+            Usage of this attribute must be agreed upon between Buyer and
+            Seller.
           format: uri
           type: string
       required:
-        - '@type'
+        - "@type"
         - role
       type: object
     TerminationError:
@@ -3637,12 +3628,12 @@ components:
               - unexpectedProperty: Additional property, not expected by the Seller has been provided
               - tooManyRecords: the number of records to be provided in the response exceeds the Seller's threshold.
               - otherIssue: Other problem was identified (detailed information provided in a reason)
-          $ref: '#/components/schemas/Error422Code'
+          $ref: "#/components/schemas/Error422Code"
         propertyPath:
           description: >
             A pointer to a particular property of the payload that caused the
-            validation issue. It is highly recommended that this property
-            should be used.
+            validation issue. It is highly recommended that this property should
+            be used.
 
             Defined using JavaScript Object Notation (JSON) Pointer
             (https://tools.ietf.org/html/rfc6901).
