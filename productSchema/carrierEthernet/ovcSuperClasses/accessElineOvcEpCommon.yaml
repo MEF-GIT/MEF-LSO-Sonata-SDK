@@ -82,8 +82,8 @@ definitions:
                 # This must be FormU at UNI and FormE at ENNI. They can only use LIST (not ALL or UT/PT)
                 # See additional validation notes in the Schema Guide
                 oneOf:
-                    - $ref: "../../common/carrierEthernetEndPointMaps.yaml#/definitions/EndPointMapFormU"
-                    - $ref: "../../common/carrierEthernetEndPointMaps.yaml#/definitions/EndPointMapFormE"
+                    - $ref: "../common/carrierEthernetEndPointMaps.yaml#/definitions/EndPointMapFormU"
+                    - $ref: "../common/carrierEthernetEndPointMaps.yaml#/definitions/EndPointMapFormE"
                     # discriminator:
                     # propertyName: mapType
             ingressClassOfServiceMap:
@@ -99,10 +99,10 @@ definitions:
                     (see Section 6.2 of MEF 45.1).
                 # See additional validation notes in the Schema Guide
                 oneOf:
-                    - $ref: "../../common/carrierEthernetClassOfService.yaml#/definitions/CosFromEp"
-                    - $ref: "../../common/carrierEthernetClassOfService.yaml#/definitions/CosFromStagPcp"
-                    - $ref: "../../common/carrierEthernetClassOfService.yaml#/definitions/CosFromCtagPcp"
-                    - $ref: "../../common/carrierEthernetClassOfService.yaml#/definitions/CosFromDscp"
+                    - $ref: "../common/carrierEthernetClassOfService.yaml#/definitions/CosFromEp"
+                    - $ref: "../common/carrierEthernetClassOfService.yaml#/definitions/CosFromStagPcp"
+                    - $ref: "../common/carrierEthernetClassOfService.yaml#/definitions/CosFromCtagPcp"
+                    - $ref: "../common/carrierEthernetClassOfService.yaml#/definitions/CosFromDscp"
                     # discriminator:
                     # propertyName: mapType
             colorMap:
@@ -116,10 +116,10 @@ definitions:
                     to each Ingress Frame. (The form of M depends on the value of F.)
                 # See additional validation notes in the Schema Guide
                 oneOf:
-                    - $ref: "../../common/carrierEthernetColorIdentifier.yaml#/definitions/ColorFromDei"
-                    - $ref: "../../common/carrierEthernetColorIdentifier.yaml#/definitions/ColorFromPCP"
-                    - $ref: "../../common/carrierEthernetColorIdentifier.yaml#/definitions/ColorFromDSCP"
-                    - $ref: "../../common/carrierEthernetColorIdentifier.yaml#/definitions/ColorFromEp"
+                    - $ref: "../common/carrierEthernetColorIdentifier.yaml#/definitions/ColorFromDei"
+                    - $ref: "../common/carrierEthernetColorIdentifier.yaml#/definitions/ColorFromPCP"
+                    - $ref: "../common/carrierEthernetColorIdentifier.yaml#/definitions/ColorFromDSCP"
+                    - $ref: "../common/carrierEthernetColorIdentifier.yaml#/definitions/ColorFromEp"
                     # discriminator:
                     # propertyName: mapType
             ovcEgressMap:
@@ -138,10 +138,10 @@ definitions:
                 uniqueItems: TRUE
                 items:
                     oneOf:
-                        - $ref: "../../common/carrierEthernetEgressMaps.yaml#/definitions/PcpFromCos"
-                        - $ref: "../../common/carrierEthernetEgressMaps.yaml#/definitions/DeiFromCosColor"
-                        - $ref: "../../common/carrierEthernetEgressMaps.yaml#/definitions/PcpFromCosColor"
-                        - $ref: "../../common/carrierEthernetEgressMaps.yaml#/definitions/PcpFromCosDeiFromCosColor"
+                        - $ref: "../common/carrierEthernetEgressMaps.yaml#/definitions/PcpFromCos"
+                        - $ref: "../common/carrierEthernetEgressMaps.yaml#/definitions/DeiFromCosColor"
+                        - $ref: "../common/carrierEthernetEgressMaps.yaml#/definitions/PcpFromCosColor"
+                        - $ref: "../common/carrierEthernetEgressMaps.yaml#/definitions/PcpFromCosDeiFromCosColor"
                         # discriminator:
                         # propertyName: mapType
             egressEquivalenceClassIdentifier:
@@ -153,10 +153,10 @@ definitions:
                     F to an Egress Equivalence Class Name and P is a map of L2CP type
                     to Egress Equivalence Class Name.
                 oneOf:
-                    - $ref: "../../common/carrierEthernetClassOfService.yaml#/definitions/CosFromEp"
-                    - $ref: "../../common/carrierEthernetClassOfService.yaml#/definitions/CosFromStagPcp"
-                    - $ref: "../../common/carrierEthernetClassOfService.yaml#/definitions/CosFromCtagPcp"
-                    - $ref: "../../common/carrierEthernetClassOfService.yaml#/definitions/CosFromDscp"
+                    - $ref: "../common/carrierEthernetClassOfService.yaml#/definitions/CosFromEp"
+                    - $ref: "../common/carrierEthernetClassOfService.yaml#/definitions/CosFromStagPcp"
+                    - $ref: "../common/carrierEthernetClassOfService.yaml#/definitions/CosFromCtagPcp"
+                    - $ref: "../common/carrierEthernetClassOfService.yaml#/definitions/CosFromDscp"
                     # discriminator:
                     # propertyName: mapType
             egressBandwidthProfilePerEndPoint:
@@ -170,8 +170,7 @@ definitions:
                 maxItems: 1
                 uniqueItems: TRUE
                 items:
-                    type: object
-                    $ref: "../../common/carrierEthernetBandwidthProfile.yaml#/definitions/BwpFlow"
+                    $ref: "../common/carrierEthernetBandwidthProfile.yaml#/definitions/BwpFlow"
             ingressBandwidthProfilePerClassOfServiceName:
                 description:  >-
                     MEF 26.2 sec. 16.12 - For each CoS Name listed, Bandwidth Profile
@@ -184,8 +183,7 @@ definitions:
                 minItems: 0
                 uniqueItems: TRUE
                 items:
-                    type: object
-                    $ref: "../../common/carrierEthernetBandwidthProfile.yaml#/definitions/BandwidthProfilePerClassOfServiceName"
+                    $ref: "../common/carrierEthernetBandwidthProfile.yaml#/definitions/BandwidthProfilePerClassOfServiceName"
             egressBwpPerEgressEquivalenceClassName:
                 description:  >-
                     MEF 26.2 sec. 16.13 - For each EEC Name listed, Bandwidth Profile
@@ -196,8 +194,7 @@ definitions:
                 minItems: 0
                 uniqueItems: FALSE
                 items:
-                    type: object
-                    $ref: "../../common/carrierEthernetBandwidthProfile.yaml#/definitions/BandwidthProfilePerClassOfServiceName"
+                    $ref: "../common/carrierEthernetBandwidthProfile.yaml#/definitions/BandwidthProfilePerClassOfServiceName"
             aggregationLinkDepth:
                 description:  >-
                     MEF 26.2 sec. 16.14 - A list of 2-tuples {SVID, Depth} that
@@ -209,8 +206,7 @@ definitions:
                 minItems: 0
                 uniqueItems: TRUE
                 items:
-                    type: object
-                    $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/AggLinkDepth"
+                    $ref: "../common/utilityClassesAndTypes.yaml#/definitions/AggLinkDepth"
             sourceMacAddressLimit:
                 description:  >-
                     MEF 26.2 sec. 16.15 - Specifies a limit on the number of different
@@ -225,8 +221,7 @@ definitions:
                 maxItems: 1
                 uniqueItems: TRUE
                 items:
-                    type: object
-                    $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/SourceMacAddressLimit"
+                    $ref: "../common/utilityClassesAndTypes.yaml#/definitions/SourceMacAddressLimit"
             maintenanceIntermediatePoint:
                 description:  >-
                     MEF 26.2 sec. 16.16 - Indicates whether a MIP is instantiated
@@ -255,8 +250,7 @@ definitions:
                 maxItems: 16
                 uniqueItems: TRUE
                 items:
-                    type: object
-                    $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/MepLevelAndDirection"
+                    $ref: "../common/utilityClassesAndTypes.yaml#/definitions/MepLevelAndDirection"
             ovcEndPointEnvelopes:
                 description:  >-
                     The Envelopes and Envelope Coupling Flag values to which Bandwidth
@@ -277,8 +271,7 @@ definitions:
                 minItems: 0
                 uniqueItems: TRUE
                 items:
-                    type: object
-                    $ref: "../../common/carrierEthernetBandwidthProfile.yaml#/definitions/Envelope"
+                    $ref: "../common/carrierEthernetBandwidthProfile.yaml#/definitions/Envelope"
             ovcEndPointPortConversationToAggregationLinkMap:
                 description:  >-
                     MEF 26.2 sec. 13.2 - A mapping of Port Conversation IDs (i.e.,
@@ -297,6 +290,5 @@ definitions:
                 minItems: 0
                 uniqueItems: TRUE
                 items:
-                    type: object
-                    $ref: "../../common/carrierEthernetLinkAggregation.yaml#/definitions/ConversationIdToAggregationLinkMap"
+                    $ref: "../common/carrierEthernetLinkAggregation.yaml#/definitions/ConversationIdToAggregationLinkMap"
 
