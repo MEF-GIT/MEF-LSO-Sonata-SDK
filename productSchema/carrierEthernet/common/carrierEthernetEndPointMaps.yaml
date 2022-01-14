@@ -2,7 +2,7 @@
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
     MEF LSO Sonata - Carrier Ethernet End Point Maps
-    # MEF Forum - Date: 20210615  Edit-level: 221
+    # MEF Forum - Date: 20220110  Edit-level: 319
     # File: carrierEthernet/common/carrierEthernetEndPointMaps.yaml
     #
     # ---------------------
@@ -55,16 +55,18 @@ definitions:
     EndPointMapFormE:
         type: object
         description:  >-
-            The value of an End Point Map of Form E (E for ENNI) consists
-            of a list of one or more SVLAN ID values. An S-Tagged ENNI Frame
-            whose S-VLAN ID value matches an entry in the list maps to the
-            OVC End Point.
+            MEF 10.4 sec. 16.5.1 - The value of an End Point Map of Form
+            E (E for ENNI) consists of a list of one or more SVLAN ID values.
+            An S-Tagged ENNI Frame whose S-VLAN ID value matches an entry in
+            the list maps to the OVC End Point.
         properties:
             mapType:
+                description: The discriminator for Map Type E
                 type: string
                 enum:
                     - "FORM_E"
-            EndPointMapFormE:
+            ovcEndPointMapFormE:
+                description: A list of S-VLAN ID values at the ENNI.
                 type: array 
                 minItems: 1
                 maxItems: 4094
@@ -73,42 +75,77 @@ definitions:
                     type: integer
                     minimum: 1
                     maximum: 4094
-        required:
-            - mapType
-            - EndPointMapFormE
     EndPointMapFormT:
         type: object
         description:  >-
-            The value of an OVC End Point Map of Form T (T for Trunk) consists
-            of a pair of S-VLAN ID values, ⟨r,l⟩ is called the Root S-VLAN
-            ID value and l is called the Leaf S-VLAN ID value. An S-Tagged
-            ENNI Frame whose S-VLAN ID value matches one of the two S-VLAN
-            ID values in the OVC End Point Map Form T maps to the OVC End Point.
-            Note that Form T differs from Form E because it distinguishes the
-            role of each S-VLAN ID value.
+            MEF 10.4 sec. 16.5.2 - This map type is used when the OVC End
+            Point is a Trunk OVC End Point (O-Tree services only). The value
+            of an OVC End Point Map of Form T (T for Trunk) consists of a pair
+            of S-VLAN ID values, ⟨r,l⟩ is called the Root S-VLAN ID value and
+            l is called the Leaf S-VLAN ID value. An S-Tagged ENNI Frame whose
+            S-VLAN ID value matches one of the two S-VLAN ID values in the
+            OVC End Point Map Form T maps to the OVC End Point. Note that Form
+            T differs from Form E because it distinguishes the role of each
+            S-VLAN ID value.
         properties:
+            mapType:
+                description: The discriminator for Map Type T
+                type: string
+                enum:
+                    - "FORM_T"
+            rootSvlan:
+                description: The S-VLAN ID used for Root traffic
+                type: integer
+                minimum: 1
+                maximum: 4094
+            leafSvlan:
+                description: The S-VLAN ID used for Leaf traffic
+                type: integer
+                minimum: 1
+                maximum: 4094
     EndPointMapFormV:
         type: object
         description:  >-
-            The value of an OVC End Point Map of Form V (V for VUNI) consists
-            of one S-VLAN ID value and a list of one or more ENNI CE-VLAN ID
-            values. An S-Tagged ENNI Frame whose S-VLAN ID value matches the
-            S-VLAN ID value in the map and whose ENNI CE-VLAN ID value matches
-            one of the ENNI CE-VLAN ID values in the map, maps to the OVC End
-            Point.
+            MEF 10.4 sec. 16.5.3 - The value of an OVC End Point Map of
+            Form V (V for VUNI) consists of one S-VLAN ID value and a list
+            of one or more ENNI CE-VLAN ID values. An S-Tagged ENNI Frame whose
+            S-VLAN ID value matches the S-VLAN ID value in the map and whose
+            ENNI CE-VLAN ID value matches one of the ENNI CE-VLAN ID values
+            in the map, maps to the OVC End Point.
         properties:
+            mapType:
+                type: string
+                enum:
+                    - "FORM_V"
+            svlanId:
+                description: The S-VLAN ID that is carrying the C-VLANs in the List
+                type: integer
+                minimum: 1
+                maximum: 4094
+            cvlanList:
+                description: The List of C-VLAN IDs delivered to the VUNI.
+                type: array 
+                minItems: 1
+                maxItems: 4094
+                uniqueItems: TRUE
+                items:
+                    type: integer
+                    minimum: 1
+                    maximum: 4094
     EndPointMapFormU:
         type: object
         description:  >-
-            The EndPointMapFormU object class represents the EVC/OVC End
-            Point  Map Form U (U for UNI). It is a list of one or more CE-VLAN
-            IDs.
+            MEF 10.4 sec. 16.5.4 - The EndPointMapFormU object class represents
+            the OVC End Point  Map Form U (U for UNI). It is a list of one
+            or more CE-VLAN IDs.
         properties:
             mapType:
+                description: The discriminator for Map Type U
                 type: string
                 enum:
                     - "FORM_U"
             ovcEndPointMapFormU:
+                description: A list of C-VLAN ID values at the UNI.
                 type: array 
                 minItems: 1
                 maxItems: 4094
@@ -117,28 +154,28 @@ definitions:
                     type: integer
                     minimum: 1
                     maximum: 4094
-        required:
-            - mapType
-            - ovcEndPointMapFormU
     EndPointMapEvc:
         type: object
         description:  >-
-            This is specifications for which Service Frames are mapped
-            to the EVC End Point. The allowed values in MEF 10.4 are ALL, LIST,
-            and UT/PT. Since Private services must be ALL, the map isn;t needed
-            for those services, and therefore the type does not include ALL.
-            If the type is LIST there must be a list of VLAN IDs specified.
+            MEF 10.4 sec. 10.4 - This is specifications for which Service
+            Frames are mapped to the EVC End Point. The allowed values in MEF
+            10.4 are ALL, LIST, and UT/PT. Since Private services must be ALL,
+            the map isn't needed for those services, and therefore the type
+            does not include ALL. If the type is LIST there must be a list
+            of VLAN IDs specified.
         properties:
             vlanType:
-                description: An indication about how the Vlan List argument is interpreted
+                description:  >-
+                    An indication of the type EVC End Point Map. If the value is
+                    UT/PT then no additional information is required. If the value
+                    is LIST then a list of C-VLAN ID values must be specified.
                 type: string
                 enum:
                     - "LIST"
                     - "UT/PT"
             vlanId:
-                description:  >-
-                    A list of VLAN IDs that is interpreted based on the value of
-                    vlanType.
+                description: A list of VLAN IDs if the value of vlanType is "LIST"
+                # See additional validation notes in the Schema Guide
                 type: array 
                 minItems: 1
                 maxItems: 4094
@@ -147,6 +184,4 @@ definitions:
                     type: integer
                     minimum: 1
                     maximum: 4094
-        required:
-            - vlanType
 

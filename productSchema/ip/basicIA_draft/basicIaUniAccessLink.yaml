@@ -1,0 +1,24 @@
+$schema: http://json-schema.org/draft-07/schema#
+$id: urn:mef:lso:spec:cantata-sonata:basicIaUniAccessLink:v0.1.0:all
+title: MEF LSO Cantata-Sonata Basic Internet Access UNI Access Link Service Specifications
+description: The Basic Internet Access UNI Access Link is a MEF 69.1 defined version of MEF 61.1 UNI Access Link. Reference MEF 69.1 Section 9.4 Internet Access UNI Access Link Requirements.
+type: object
+required:
+  - identifier
+properties:
+  identifier:
+    type: string
+    description: Unique identifier for the UNI Access Link for management purposes. Reference MEF 61.1 Section 13.1 UNI Access Link Identifier Service Attribute.
+  l2Technology:
+    $ref: 'ipCommon.yaml#/definitions/L2Technology'
+  ipv4ConnectionAddressing:
+    $ref: 'ipCommon.yaml#/definitions/UniIpv4ConnectionAddressing'
+  ipv6ConnectionAddressing:
+    $ref: ipCommon.yaml#/definitions/UniIpv6ConnectionAddressing
+  prefixDelegation:
+    $ref: 'ipCommon.yaml#/definitions/EnabledDisabled'
+  mtu:
+    type: integer
+    description: Maximum size, in octets of an IP Packet that can traverse the UNI Access Link. Reference MEF 61.1 Section 13.9 UNI Access Link IP MTU Service Attribute.
+  basicIaUni:
+    $ref: 'basicIaUni.yaml'

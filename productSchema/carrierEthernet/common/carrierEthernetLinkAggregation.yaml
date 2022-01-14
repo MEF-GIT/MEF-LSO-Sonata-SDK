@@ -2,7 +2,7 @@
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
     MEF LSO Sonata - Carrier Ethernet Link Aggregation
-    # MEF Forum - Date: 20210615  Edit-level: 221
+    # MEF Forum - Date: 20220110  Edit-level: 319
     # File: carrierEthernet/common/carrierEthernetLinkAggregation.yaml
     #
     # ---------------------
@@ -58,8 +58,8 @@ definitions:
             This is a 2-tuple ⟨x,y⟩ where x is a list of Port Conversation
             IDs or ranges of Port Conversation IDs (a Port Conversation ID
             is a VLAN ID or 0 for untagged frames) and y is a list of Link
-            Aggregation Links. This is used in the Port Conversation to Aggregation
-            Link Map for the UNI and ENNI.
+            Numbers. This is used in the Port Conversation to Aggregation Link
+            Map for the UNI and ENNI.
         properties:
             conversationIDs:
                 description:  >-
@@ -69,7 +69,6 @@ definitions:
                 minItems: 1
                 uniqueItems: TRUE
                 items:
-                    type: object
                     $ref: "#/definitions/ConversationIdRange"
             aggLinkList:
                 description:  >-
@@ -82,9 +81,6 @@ definitions:
                 items:
                     type: integer
                     minimum: 1
-        required:
-            - conversationIDs
-            - aggLinkList
     ConversationIdRange:
         type: object
         description:  >-
@@ -108,6 +104,4 @@ definitions:
                 type: integer
                 minimum: 0
                 maximum: 4094
-        required:
-            - start
 

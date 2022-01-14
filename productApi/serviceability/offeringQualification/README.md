@@ -1,5 +1,13 @@
 # Product Offering Qualification: Release notes
 
+## Release Celine:
+
+**Readiness status**: Requested Letter Ballot. It will be most likely published as a standard in this form.
+
+### List of changes in the API:
+
+None
+
 ## Release Billie:
 
 ### List of changes in the API:

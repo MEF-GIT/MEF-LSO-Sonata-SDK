@@ -1,0 +1,30 @@
+$schema: http://json-schema.org/draft-07/schema#
+$id: urn:mef:lso:spec:cantata-sonata:basicIaUni:v0.1.0:all
+title: MEF LSO Cantata-Sonata Basic Internet Access UNI
+description: The Basic Internet Access UNI is a MEF 69.1 defined version of MEF 61.1 UNI. Reference MEF 69.x Section 8.3 Internet Access UNI Requirements.
+type: object
+required:
+  - identifier
+properties:
+  identifier:
+    type: string
+    description: Unique identifier for the Basic Internet Access UNI for management purposes. Reference MEF 61.1 Section 13.1 UNI Access Link Identifier Service Attribute.
+  managementType:
+    $ref: 'ipCommon.yaml#/definitions/UniManagementType'
+  ingressBandwidthProfileEnvelope:
+    $ref: 'ipCommon.yaml#/definitions/IpUniIngressBwpEnvelope'
+  egressBandwidthProfileEnvelope:
+    $ref: 'ipCommon.yaml#/definitions/IpUniEgressBwpEnvelope' 
+  listOfControlProtocols:
+    $ref: 'ipCommon.yaml#/definitions/ControlProtocols'
+  routingProtocols:
+    $ref: 'ipCommon.yaml#/definitions/RoutingProtocols'
+  basicIaUniAccessLink:
+      $ref: 'basicIaUniAccessLink.yaml'
+  basicIaIpvcEndPoint:
+    minItems: 0
+    type: array
+    items:
+      $ref: 'basicIaIpvcEndPoint.yaml#/definitions/basicIaIpvcEndPointRef'
+definitions:
+     
