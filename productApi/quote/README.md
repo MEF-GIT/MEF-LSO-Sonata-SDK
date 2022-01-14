@@ -1,5 +1,18 @@
 # Quote Management: Release notes
 
+## Release Celine:
+
+**Readiness status**: Requested Letter Ballot. It will be most likely published
+as a standard in this form.
+
+### List of changes in the API:
+
+- `MEFItemTerm`
+  - made required:
+    - `duration`
+    - `endOfTermAction`
+    - `name`
+
 ## Release Billie:
 
 ### List of changes in the API:
@@ -17,7 +30,7 @@
     - `pending` - removed
 - `QuoteItem`
   - `state`:
-    - `rejected`  renamed to `abandoned`
+    - `rejected` renamed to `abandoned`
     - `rejected.unableToProvide` renamed to `unableToProvide`
     - `acknowledged` added
     - `approved.answered` renamed to `answered`

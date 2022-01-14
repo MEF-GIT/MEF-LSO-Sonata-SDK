@@ -2,7 +2,7 @@
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
     MEF LSO Sonata - Carrier Ethernet Operator UNI Common
-    # MEF Forum - Date: 20210615  Edit-level: 221
+    # MEF Forum - Date: 20220110  Edit-level: 319
     # File: carrierEthernet/ovcSuperClasses/carrierEthernetOperatorUniCommon.yaml
     #
     # ---------------------
@@ -63,7 +63,7 @@ definitions:
             in terms of the Service Attributes that are "Required" for the
             Business Function (rather than "Optional").
         properties:
-            listofPhysicalLinks:
+            listOfPhysicalLinks:
                 description:  >-
                     MEF 26.2 sec. 14.2, 14.3 - This Service Attribute combines
                     several of the MEF 26.2 Objects into a single n-tuple that is consistent
@@ -83,11 +83,10 @@ definitions:
                     class.
                 # The cardinality of this list is important to several other Service Attributes
                 type: array 
-                minItems: 0
+                minItems: 1
                 uniqueItems: TRUE
                 items:
-                    type: object
-                    $ref: "../../common/carrierEthernetExternalInterfaces.yaml#/definitions/UniPhysicalLink"
+                    $ref: "../common/carrierEthernetExternalInterfaces.yaml#/definitions/UniPhysicalLink"
             linkAggregation:
                 description:  >-
                     MEF 26.2 sec. 14.5 - Service Attribute representing Link Aggregation
@@ -103,12 +102,7 @@ definitions:
                     (LAG) across the links. OTHER-The Operator/Subscriber/Service Provider
                     agree on another other resiliency mechanism.
                 # See additional validation notes in the Schema Guide
-                type: string
-                enum:
-                    - "NONE"
-                    - "2_LINK_ACTIVE_STANDBY"
-                    - "ALL_ACTIVE"
-                    - "OTHER"
+                $ref: "../common/carrierEthernetTypes.yaml#/definitions/LinkAggType"
             aggregationLinkMap:
                 description:  >-
                     MEF 26.2 sec. 14.6 and 802.1AX-2014 sec.  6.6.2.1 - A mapping
@@ -121,8 +115,7 @@ definitions:
                 minItems: 0
                 uniqueItems: TRUE
                 items:
-                    type: object
-                    $ref: "../../common/carrierEthernetLinkAggregation.yaml#/definitions/ConversationIdToAggregationLinkMap"
+                    $ref: "../common/carrierEthernetLinkAggregation.yaml#/definitions/ConversationIdToAggregationLinkMap"
             maximumServiceFrameSize:
                 description:  >-
                     MEF 26.2 sec. 14.8 - Specifies the maximum size of Service
@@ -164,8 +157,7 @@ definitions:
                 maxItems: 1
                 uniqueItems: TRUE
                 items:
-                    type: object
-                    $ref: "../../common/carrierEthernetBandwidthProfile.yaml#/definitions/BwpFlow"
+                    $ref: "../common/carrierEthernetBandwidthProfile.yaml#/definitions/BwpFlow"
             egressBandwidthProfile:
                 description:  >-
                     MEF 26.2 sec. 14.13 - A single set of Bandwidth Profile Flow
@@ -177,21 +169,18 @@ definitions:
                 maxItems: 1
                 uniqueItems: TRUE
                 items:
-                    type: object
-                    $ref: "../../common/carrierEthernetBandwidthProfile.yaml#/definitions/BwpFlow"
+                    $ref: "../common/carrierEthernetBandwidthProfile.yaml#/definitions/BwpFlow"
             linkOam:
                 description:  >-
                     MEF 26.2 sec. 14.14 - Controls when and how Link OAM per IEEE
                     Std 802.3-2015 is run on the physical links in the UNI.
-                type: object
-                $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
+                $ref: "../common/carrierEthernetTypes.yaml#/definitions/EnabledDisabled"
             meg:
                 description:  >-
                     MEF 26.2 sec. 14.15 - Indicates if the Service Provider has
                     instantiated a MEG End Point (MEP) at the UNI Maintenance Entity
                     Group (MEG) Level (ENABLED) or not (DISABLED).
-                type: object
-                $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
+                $ref: "../common/carrierEthernetTypes.yaml#/definitions/EnabledDisabled"
             lagLinkMeg:
                 description:  >-
                     MEF 26.2 sec. 14.16 - Indicates if the Service Provider has
@@ -199,16 +188,14 @@ definitions:
                     in the UNI if the UNI has more than one physical link (ENABLED)
                     or not (DISABLED).
                 # See additional validation notes in the Schema Guide
-                type: object
-                $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
+                $ref: "../common/carrierEthernetTypes.yaml#/definitions/EnabledDisabled"
             tokenShare:
                 description:  >-
                     MEF 26.2 sec. 14.18 - An attribute that indicates whether Bandwidth
                     Profile Envelopes containing more than one Bandwidth Profile Flow
                     are supported by the Service Provider at the Operator UNI.
                 # See additional validation notes in the Schema Guide
-                type: object
-                $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
+                $ref: "../common/carrierEthernetTypes.yaml#/definitions/EnabledDisabled"
             envelopes:
                 description:  >-
                     MEF 26.2 sec. 14.19 - The Envelopes and Envelope Coupling Flag
@@ -221,8 +208,7 @@ definitions:
                 minItems: 0
                 uniqueItems: TRUE
                 items:
-                    type: object
-                    $ref: "../../common/carrierEthernetBandwidthProfile.yaml#/definitions/Envelope"
+                    $ref: "../common/carrierEthernetBandwidthProfile.yaml#/definitions/Envelope"
             l2cpAddressSet:
                 description:  >-
                     MEF 26.2 sec. 14.20 and MEF 45.1 sec. 8.1 - The subset of the
@@ -233,11 +219,7 @@ definitions:
                     of the Operator UNI L2CP Address Set Service Attribute MUST be
                     the same as the OVC L2CP Address Set Service Attribute.
                 # See additional validation notes in the Schema Guide
-                type: string
-                enum:
-                    - "CTA"
-                    - "CTB"
-                    - "CTB2"
+                $ref: "../common/carrierEthernetTypes.yaml#/definitions/L2cpAddressSet"
             l2cpPeering:
                 description:  >-
                     MEF 26.2 sec. 14.21 and  and MEF 45.1 sec. 8.1 - L2CP Peering
@@ -252,6 +234,5 @@ definitions:
                 minItems: 0
                 uniqueItems: FALSE
                 items:
-                    type: object
-                    $ref: "../../common/carrierEthernetL2cp.yaml#/definitions/L2cpPeering"
+                    $ref: "../common/carrierEthernetL2cp.yaml#/definitions/L2cpPeering"
 

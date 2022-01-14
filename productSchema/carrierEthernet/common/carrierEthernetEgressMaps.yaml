@@ -2,7 +2,7 @@
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
     MEF LSO Sonata - Carrier Ethernet Egress Maps
-    # MEF Forum - Date: 20210615  Edit-level: 221
+    # MEF Forum - Date: 20220110  Edit-level: 319
     # File: carrierEthernet/common/carrierEthernetEgressMaps.yaml
     #
     # ---------------------
@@ -72,11 +72,7 @@ definitions:
                 minItems: 1
                 uniqueItems: TRUE
                 items:
-                    type: object
                     $ref: "#/definitions/CnPcp"
-        required:
-            - mapType
-            - cnPcpEntries
     CnPcp:
         type: object
         description:  >-
@@ -87,11 +83,7 @@ definitions:
                 description: The class of service name for the corresponding Ingress EI Frame.
                 type: string
             pcpValue:
-                type: object
-                $ref: "utilityClassesAndTypes.yaml#/definitions/PcpValueAndDiscard"
-        required:
-            - cosName
-            - pcpValue
+                $ref: "carrierEthernetTypes.yaml#/definitions/PcpValueAndDiscard"
     DeiFromCosColor:
         type: object
         description:  >-
@@ -115,11 +107,7 @@ definitions:
                 minItems: 1
                 uniqueItems: TRUE
                 items:
-                    type: object
                     $ref: "#/definitions/CcDei"
-        required:
-            - mapType
-            - ccDeiEntries
     CcDei:
         type: object
         description:  >-
@@ -133,16 +121,10 @@ definitions:
                 type: string
             deiGeen:
                 description: The DEI value (or DISCARD) to use for Green frames.
-                type: object
-                $ref: "utilityClassesAndTypes.yaml#/definitions/DeiValueAndDiscard"
+                $ref: "carrierEthernetTypes.yaml#/definitions/DeiValueAndDiscard"
             deiYellow:
                 description: The DEI value (or DISCARD) to use for Yellow frames.
-                type: object
-                $ref: "utilityClassesAndTypes.yaml#/definitions/DeiValueAndDiscard"
-        required:
-            - cosName
-            - deiGeen
-            - deiYellow
+                $ref: "carrierEthernetTypes.yaml#/definitions/DeiValueAndDiscard"
     PcpFromCosColor:
         type: object
         description:  >-
@@ -166,11 +148,7 @@ definitions:
                 minItems: 1
                 uniqueItems: TRUE
                 items:
-                    type: object
                     $ref: "#/definitions/CcPcp"
-        required:
-            - mapType
-            - ccPcpEntries
     CcPcp:
         type: object
         description:  >-
@@ -184,16 +162,10 @@ definitions:
                 type: string
             pcpGreen:
                 description: A PCP value (0-7) or DISCARD to use for Green frames in the CoS
-                type: object
-                $ref: "utilityClassesAndTypes.yaml#/definitions/PcpValueAndDiscard"
+                $ref: "carrierEthernetTypes.yaml#/definitions/PcpValueAndDiscard"
             pcpYellow:
                 description: A PCP value (0-7) or DISCARD to use for Yellow frames in the CoS
-                type: object
-                $ref: "utilityClassesAndTypes.yaml#/definitions/PcpValueAndDiscard"
-        required:
-            - cosName
-            - pcpGreen
-            - pcpYellow
+                $ref: "carrierEthernetTypes.yaml#/definitions/PcpValueAndDiscard"
     PcpFromCosDeiFromCosColor:
         type: object
         description:  >-
@@ -219,11 +191,7 @@ definitions:
                 minItems: 1
                 uniqueItems: TRUE
                 items:
-                    type: object
                     $ref: "#/definitions/PcpFromCosDeiFromCosColor"
-        required:
-            - mapType
-            - cnPcpCcDeiEntries
     CnPcpCcDei:
         type: object
         properties:
@@ -232,21 +200,13 @@ definitions:
                 type: string
             pcpValue:
                 description: A PCP value (0-7) or DISCARD to use frames in the CoS
-                type: object
-                $ref: "utilityClassesAndTypes.yaml#/definitions/PcpValueAndDiscard"
+                $ref: "carrierEthernetTypes.yaml#/definitions/PcpValueAndDiscard"
             deiGreen:
                 description: A DEI value to use for Green frames in the CoS
-                type: object
-                $ref: "utilityClassesAndTypes.yaml#/definitions/DeiValueAndDiscard"
+                $ref: "carrierEthernetTypes.yaml#/definitions/DeiValueAndDiscard"
             deiYellow:
                 description: A DEI value to use for Yellow frames in the CoS
-                type: object
-                $ref: "utilityClassesAndTypes.yaml#/definitions/DeiValueAndDiscard"
-        required:
-            - cosName
-            - pcpValue
-            - deiGreen
-            - deiYellow
+                $ref: "carrierEthernetTypes.yaml#/definitions/DeiValueAndDiscard"
     EvcEgressMap:
         type: object
         description:  >-
@@ -262,10 +222,7 @@ definitions:
                 minItems: 0
                 uniqueItems: TRUE
                 items:
-                    type: object
                     $ref: "#/definitions/EvcEgressMapEntry"
-        required:
-            - evcEgressMapEntries
     EvcEgressMapEntry:
         type: object
         description:  >-
@@ -277,24 +234,17 @@ definitions:
                 type: string
             pcpGreen:
                 description: A PCP value (0-7) or DISCARD to use for Green Frames
-                type: object
-                $ref: "utilityClassesAndTypes.yaml#/definitions/PcpValueAndDiscard"
+                $ref: "carrierEthernetTypes.yaml#/definitions/PcpValueAndDiscard"
             pcpYellow:
                 description: A PCP value (0-7) or DISCARD to use for Yellow frames
                 # See additional validation notes in the Schema Guide
-                type: object
-                $ref: "utilityClassesAndTypes.yaml#/definitions/PcpValueAndDiscard"
+                $ref: "carrierEthernetTypes.yaml#/definitions/PcpValueAndDiscard"
             deiGreen:
                 description: A DEI value to use for Green frames
                 # See additional validation notes in the Schema Guide
-                type: object
-                $ref: "utilityClassesAndTypes.yaml#/definitions/DeiValueAndDiscard"
+                $ref: "carrierEthernetTypes.yaml#/definitions/DeiValueAndDiscard"
             deiYellow:
                 description: A DEI value to use for Yellow frames
                 # See additional validation notes in the Schema Guide
-                type: object
-                $ref: "utilityClassesAndTypes.yaml#/definitions/DeiValueAndDiscard"
-        required:
-            - cosName
-            - pcpGreen
+                $ref: "carrierEthernetTypes.yaml#/definitions/DeiValueAndDiscard"
 

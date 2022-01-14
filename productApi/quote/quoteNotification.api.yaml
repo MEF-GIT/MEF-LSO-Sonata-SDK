@@ -3,15 +3,16 @@ info:
   description: |
     **This file forms part of MEF 115**
 
-     **This specification represents MEF work in progress and is subject to
-     change.** 
+    This API implements Business Requirements described in MEF 80
 
-     This is a Quote notification API. This API must be deployed on
-     client/subscriber (Buyer) side to receive notifications.
+    Quote API allows the Buyer to submit a request to find out how much the installation
+    of an instance of a Product Offering, an update to an existing Product, or
+    a disconnect of an existing Product will cost.
 
+    List of supported Use Cases:
+    - Send Quote Notification
 
     Copyright 2021 MEF Forum and its contributors.
-
 
     This file includes content based on the TM Forum Quote Management API
     (TMF648 v4.0.0) available at
@@ -19,12 +20,16 @@ info:
     the TM Forum under the Apache License version 2.0. Such content has been
     modified by the MEF Forum and its contributors.
   title: Quote Notification
-  version: 7.0.0-RC
+  version: 8.0.0
   x-logo:
     url: /redoc/logo.png
     backgroundColor: '#FFFFFF'
 servers:
-  - url: 'https://serverRoot/mefApi/sonata/quoteNotification/v7/'
+  - url: 'https://{serverBase}/mefApi/sonata/quoteNotification/v8/'
+    variables:
+      serverBase:
+        default: mef.net
+        description: The base of Buyer's URL.
 tags:
   - description: |
       The Buyer's endpoint to send particular event types notifications to.
@@ -44,7 +49,8 @@ paths:
         required: true
       responses:
         '204':
-          description: 'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
+          description:
+            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
         '400':
           content:
             application/json;charset=utf-8:
@@ -88,7 +94,8 @@ paths:
         required: true
       responses:
         '204':
-          description: 'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
+          description:
+            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
         '400':
           content:
             application/json;charset=utf-8:
@@ -184,7 +191,8 @@ components:
           required:
             - code
           type: object
-      description: 'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
+      description:
+        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
     Error401:
       allOf:
         - $ref: '#/components/schemas/Error'
@@ -201,7 +209,8 @@ components:
           required:
             - code
           type: object
-      description: 'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
+      description:
+        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
     Error401Code:
       description: |-
         One of the following error codes:
@@ -227,7 +236,8 @@ components:
           required:
             - code
           type: object
-      description: 'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
+      description:
+        'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
     Error403Code:
       description: |-
         This code indicates that the server understood
@@ -304,8 +314,8 @@ components:
           type: string
         quoteItemId:
           description: >-
-            ID of the Quote Item (within the Quote) which state change triggered
-            the event
+            ID of the Quote Item (within the Quote) which state change
+            triggered the event
           type: string
         buyerId:
           description: >-

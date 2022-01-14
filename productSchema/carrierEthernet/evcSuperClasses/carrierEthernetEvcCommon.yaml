@@ -2,7 +2,7 @@
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
     MEF LSO Sonata - Carrier Ethernet EVC Common
-    # MEF Forum - Date: 20210615  Edit-level: 221
+    # MEF Forum - Date: 20220110  Edit-level: 319
     # File: carrierEthernet/evcSuperClasses/carrierEthernetEvcCommon.yaml
     #
     # ---------------------
@@ -85,12 +85,16 @@ definitions:
                 maxItems: 1
                 uniqueItems: TRUE
                 items:
-                    type: object
-                    $ref: "../../common/carrierEthernetServiceLevelSpecification.yaml#/definitions/CarrierEthernetSls"
+                    $ref: "../common/carrierEthernetServiceLevelSpecification.yaml#/definitions/CarrierEthernetSls"
             maximumFrameSize:
                 description:  >-
                     MEF 10.4 sec. 8.10 - Maximum size of Service frames that can
                     be carried over the EVC. This must be at least 1522 (1518+C-tag).
+                    This Service Attribute must be included in POQ, Quote, and Order
+                    if the Buyer requires a value that is different than the value
+                    agreed on during the on-boarding process between the Buyer and
+                    Seller.
+                # See additional validation notes in the Schema Guide
                 type: integer
                 minimum: 1522
             availableMegLevel:
@@ -100,15 +104,7 @@ definitions:
                     is NONE  there is no such level (that is, SOAM frames at all MEG
                     levels may be peered or discarded by the Service Provider). MEF
                     6.3 constrains it to 0-6 for all Subscriber Ethernet Services.
-                type: string
-                enum:
-                    - "0"
-                    - "1"
-                    - "2"
-                    - "3"
-                    - "4"
-                    - "5"
-                    - "6"
+                $ref: "../common/carrierEthernetTypes.yaml#/definitions/AvailableMegList"
     CarrierEthernetEvcEpCommon:
         type: object
         description:  >-
@@ -125,15 +121,6 @@ definitions:
                 minLength: 1
                 maxLength: 45
                 pattern: "[\x20-\x7F]+"
-            uni:
-                description:  >-
-                    MEF 10.4 sec. 10.2 - The value of the EVC EP UNI Service Attribute
-                    is a Subscriber UNI ID Service Attribute value per Section 9.1.
-                    The value of the EVC EP UNI Service Attribute serves to specify
-                    the UNI where the EVC EP is located. The EVC EP is said to be at
-                    this UNI.
-                type: object
-                $ref: "../../common/carrierEthernetExternalInterfaces.yaml#/definitions/CarrierEthernetEiReference"
             ingressClassOfServiceMap:
                 description:  >-
                     MEF 10.4 sec. 10.5 and MEF 45.1 sec. 6.2 - The value of the
@@ -147,9 +134,9 @@ definitions:
                     of MEF 45.1).
                 # See additional validation notes in the Schema Guide
                 oneOf:
-                    - $ref: "../../common/carrierEthernetClassOfService.yaml#/definitions/CosFromEp"
-                    - $ref: "../../common/carrierEthernetClassOfService.yaml#/definitions/CosFromCtagPcp"
-                    - $ref: "../../common/carrierEthernetClassOfService.yaml#/definitions/CosFromDscp"
+                    - $ref: "../common/carrierEthernetClassOfService.yaml#/definitions/CosFromEp"
+                    - $ref: "../common/carrierEthernetClassOfService.yaml#/definitions/CosFromCtagPcp"
+                    - $ref: "../common/carrierEthernetClassOfService.yaml#/definitions/CosFromDscp"
                     # discriminator:
                     # propertyName: mapType
             colorMap:
@@ -163,10 +150,10 @@ definitions:
                     is mapped to an EVC EP is indicated by the content in the Service
                     Frame header.
                 oneOf:
-                    - $ref: "../../common/carrierEthernetColorIdentifier.yaml#/definitions/ColorFromEp"
-                    - $ref: "../../common/carrierEthernetColorIdentifier.yaml#/definitions/ColorFromDei"
-                    - $ref: "../../common/carrierEthernetColorIdentifier.yaml#/definitions/ColorFromPCP"
-                    - $ref: "../../common/carrierEthernetColorIdentifier.yaml#/definitions/ColorFromDSCP"
+                    - $ref: "../common/carrierEthernetColorIdentifier.yaml#/definitions/ColorFromEp"
+                    - $ref: "../common/carrierEthernetColorIdentifier.yaml#/definitions/ColorFromDei"
+                    - $ref: "../common/carrierEthernetColorIdentifier.yaml#/definitions/ColorFromPCP"
+                    - $ref: "../common/carrierEthernetColorIdentifier.yaml#/definitions/ColorFromDscp"
                     # discriminator:
                     # propertyName: mapType
             egressMap:
@@ -175,34 +162,34 @@ definitions:
                     Attribute is None or a map of the form {Corresponding Ingress Service
                     Frame Class of Service Name, Corresponding Ingress Service Frame
                     Color} to {Egress Service Frame C-Tag PCP value, Egress Service
-                    Frame C-Tag DEI value} or Discard.
+                    Frame C-Tag DEI value} or Discard. If this property is not present
+                    or an empty list, the value is assumed to have the value None.
                 # See additional validation notes in the Schema Guide
-                type: object
-                $ref: "../../common/carrierEthernetEgressMaps.yaml#/definitions/EvcEgressMap"
+                type: array 
+                minItems: 0
+                maxItems: 1
+                uniqueItems: TRUE
+                items:
+                    $ref: "../common/carrierEthernetEgressMaps.yaml#/definitions/EvcEgressMap"
             ingressBandwidthProfilePerClassofServiceName:
                 description:  >-
                     MEF 10.4 sec. 10.9 - The EVC EP Class of Service Name Ingress
                     Bandwidth Profile Service Attribute is used to limit the rate of
                     Ingress Service Frames with a given Class of Service Name at a
-                    UNI. The value is non-empty list of pairs of the form ⟨x,y⟩, where
-                    x is a Class of Service Name that is in the value of the EVC List
-                    of Class of Service Names Service Attribute and y = BWP Flow Parameters.
-                type: object
-                $ref: "../../common/carrierEthernetBandwidthProfile.yaml#/definitions/BandwidthProfilePerClassOfServiceName"
+                    UNI. The value is None or a non-empty list of pairs of the form
+                    ⟨x,y⟩, where x is a Class of Service Name that is in the value
+                    of the EVC List of Class of Service Names Service Attribute and
+                    y = BWP Flow Parameters. If this property is not present or an
+                    empty list, the value is assumed to have the value None.
+                type: array 
+                minItems: 0
+                uniqueItems: TRUE
+                items:
+                    $ref: "../common/carrierEthernetBandwidthProfile.yaml#/definitions/BandwidthProfilePerClassOfServiceName"
             subscriberMegMip:
                 description:  >-
                     MEF 10.4 sec. 10.13 - The value of the EVC EP Subscriber MEG
                     MIP Service Attribute is either None or an integer in the range
                     0 – 7 that indicates the MEG Level of a Subscriber MEG MIP.
-                type: string
-                enum:
-                    - "0"
-                    - "1"
-                    - "2"
-                    - "3"
-                    - "4"
-                    - "5"
-                    - "6"
-                    - "7"
-                    - "NONE"
+                $ref: "../common/carrierEthernetTypes.yaml#/definitions/MegList"
 

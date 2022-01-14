@@ -1,27 +1,18 @@
 openapi: 3.0.1
 info:
-  description: >
-    **This file forms part of MEF W116**
+  description: |
+    **This file forms part of MEF 116**
 
+    This API implements Business Requirements described in MEF 81
 
-    **This specification represents MEF work in progress and is subject to
-    change.** 
+    It allows the Buyer to retrieve the information about existing Product
+    instances from Seller's Product Inventory.
 
-
-    The scope of this MEF API is to provide the ability for a Service Provider's
-    (Buyer)
-
-    operational support system to retrieve from a Partner's (Seller) Inventory
-    management
-
-    system a set of product instances based upon a filter of product inventory
-    attributes,
-
-    or a specific product instance based upon a product identifier.
-
+    List of supported use cases:
+    - Retrieve Product List
+    - Retrieve Product by Identifier
 
     Copyright 2021 MEF Forum and its contributors.
-
 
     This file includes content based on the TM Forum Product Inventory
     Management API (TMF637 v4.0.0) available at
@@ -29,9 +20,13 @@ info:
     by the TM Forum under the Apache License version 2.0. Such content has been
     modified by the MEF Forum and its contributors.
   title: Product Inventory Management
-  version: 7.0.0-RC
+  version: 7.0.1
 servers:
-  - url: "https://serverRoot/mefApi/sonata/productInventory/v7/"
+  - url: 'https://{serverBase}/mefApi/sonata/productInventory/v7/'
+    variables:
+      serverBase:
+        default: mef.net
+        description: The base of Seller's URL.
 tags:
   - name: product
   - name: events subscription
@@ -162,14 +157,15 @@ paths:
             format: int32
             type: integer
       responses:
-        "200":
+        '200':
           content:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: "#/components/schemas/MEFProduct_Find"
+                  $ref: '#/components/schemas/MEFProduct_Find'
                 type: array
-          description: "OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)"
+          description:
+            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
           headers:
             X-Pagination-Throttled:
               description: >
@@ -189,43 +185,43 @@ paths:
               description: The number of items included in the response
               schema:
                 type: integer
-        "400":
+        '400':
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
-        "401":
+        '401':
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
-        "403":
+        '403':
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
-        "422":
+        '422':
           content:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: "#/components/schemas/Error422"
+                  $ref: '#/components/schemas/Error422'
                 type: array
           description:
             Unprocessable entity due to the business validation problems
-        "500":
+        '500':
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       summary: List or find Product objects
       tags:
         - product
-  "/product/{id}":
+  '/product/{id}':
     get:
       description: >-
         This operation retrieves a Product entity. Attribute selection is
@@ -264,41 +260,42 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/MEFProduct"
-          description: "OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)"
-        "400":
+                $ref: '#/components/schemas/MEFProduct'
+          description:
+            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
+        '400':
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
-        "401":
+        '401':
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
-        "403":
+        '403':
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
-        "404":
+        '404':
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error404"
+                $ref: '#/components/schemas/Error404'
           description: Not Found
-        "500":
+        '500':
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       summary: Retrieves a Product by ID
       tags:
@@ -325,14 +322,15 @@ components:
         - invalidBody
       type: string
     Duration:
-      description: "A Duration in a given unit of time e.g. 3 hours, or 5 days."
+      description:
+        'A Duration in a given unit of time e.g. 3 hours, or 5 days.'
       properties:
         amount:
-          description: "Duration (number of seconds, minutes, hours, etc.)"
+          description: 'Duration (number of seconds, minutes, hours, etc.)'
           type: integer
         units:
           description: Time unit type
-          $ref: "#/components/schemas/TimeUnit"
+          $ref: '#/components/schemas/TimeUnit'
       required:
         - amount
         - units
@@ -363,7 +361,7 @@ components:
       type: object
     Error400:
       allOf:
-        - $ref: "#/components/schemas/Error"
+        - $ref: '#/components/schemas/Error'
         - properties:
             code:
               description: >-
@@ -378,15 +376,15 @@ components:
                 - invalidQuery: The query section of the URI is invalid.
 
                 - invalidBody: The request has an invalid body
-              $ref: "#/components/schemas/Error400Code"
+              $ref: '#/components/schemas/Error400Code'
           required:
             - code
           type: object
       description:
-        "Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)"
+        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
     Error401:
       allOf:
-        - $ref: "#/components/schemas/Error"
+        - $ref: '#/components/schemas/Error'
         - properties:
             code:
               description: >-
@@ -396,12 +394,12 @@ components:
 
                 - invalidCredentials: Provided credentials are invalid or
                 expired
-              $ref: "#/components/schemas/Error401Code"
+              $ref: '#/components/schemas/Error401Code'
           required:
             - code
           type: object
       description:
-        "Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)"
+        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
     Error401Code:
       description: |-
         One of the following error codes:
@@ -413,7 +411,7 @@ components:
       type: string
     Error403:
       allOf:
-        - $ref: "#/components/schemas/Error"
+        - $ref: '#/components/schemas/Error'
         - properties:
             code:
               description: |-
@@ -423,7 +421,7 @@ components:
                 - accessDenied: Access denied
                 - forbiddenRequester: Forbidden requester
                 - tooManyUsers: Too many users
-              $ref: "#/components/schemas/Error403Code"
+              $ref: '#/components/schemas/Error403Code'
           required:
             - code
           type: object
@@ -446,14 +444,14 @@ components:
       type: string
     Error404:
       allOf:
-        - $ref: "#/components/schemas/Error"
+        - $ref: '#/components/schemas/Error'
         - properties:
             code:
               description: >-
                 The following error code:
 
-                - notFound: A current representation for the target resource not
-                found
+                - notFound: A current representation for the target resource
+                not found
               enum:
                 - notFound
               type: string
@@ -465,7 +463,7 @@ components:
         (https://tools.ietf.org/html/rfc7231#section-6.5.4)
     Error422:
       allOf:
-        - $ref: "#/components/schemas/Error"
+        - $ref: '#/components/schemas/Error'
         - properties:
             code:
               description: |
@@ -477,7 +475,7 @@ components:
                   - unexpectedProperty: Additional property, not expected by the Seller has been provided
                   - tooManyRecords: the number of records to be provided in the response exceeds the Seller's threshold.
                   - otherIssue: Other problem was identified (detailed information provided in a reason)
-              $ref: "#/components/schemas/Error422Code"
+              $ref: '#/components/schemas/Error422Code'
             propertyPath:
               description: >
                 A pointer to a particular property of the payload that caused
@@ -514,7 +512,7 @@ components:
       type: string
     Error500:
       allOf:
-        - $ref: "#/components/schemas/Error"
+        - $ref: '#/components/schemas/Error'
         - properties:
             code:
               description: >-
@@ -549,18 +547,18 @@ components:
           type: string
         postcodeExtension:
           description: >-
-            An extension of a postal code. E.g. the part following the dash in a
-            US urban property address
+            An extension of a postal code. E.g. the part following the dash in
+            a US urban property address
           type: string
         city:
           description: The city that the address is in
           type: string
         streetNr:
           description: >-
-            Number identifying a specific property on a public street. It may be
-            combined with streetNrLast for ranged addresses. MEF 79 defines it
-            as required however as in certain countries it is not used we make
-            it optional in API.
+            Number identifying a specific property on a public street. It may
+            be combined with streetNrLast for ranged addresses. MEF 79 defines
+            it as required however as in certain countries it is not used we
+            make it optional in API.
           type: string
         locality:
           description: The locality that the address is in
@@ -587,7 +585,7 @@ components:
           description: Last street number suffix for a ranged address
           type: string
         geographicSubAddress:
-          $ref: "#/components/schemas/GeographicSubAddress"
+          $ref: '#/components/schemas/GeographicSubAddress'
         streetSuffix:
           description: A modifier denoting a relative direction
           type: string
@@ -598,7 +596,7 @@ components:
       type: object
     GeographicSubAddress:
       description:
-        "Additional fields used to specify an address, as detailed as possible."
+        'Additional fields used to specify an address, as detailed as possible.'
       properties:
         buildingName:
           description: >
@@ -611,22 +609,23 @@ components:
             within a subAddress e.g. BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
             UNIT, WHARF.
           items:
-            $ref: "#/components/schemas/MEFSubUnit"
+            $ref: '#/components/schemas/MEFSubUnit'
           type: array
         levelType:
           description: Describes level types within a building
           type: string
         levelNumber:
           description:
-            "Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT 2"
+            'Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT
+            2'
           type: string
         privateStreetNumber:
           description: Private streets numbers internal to a private street
           type: string
         privateStreetName:
           description: >-
-            "Private streets internal to a property (e.g. a university) may have
-            internal names that are not recorded by the land title office
+            "Private streets internal to a property (e.g. a university) may
+            have internal names that are not recorded by the land title office
           type: string
       type: object
     MEFBillingAccount:
@@ -638,7 +637,7 @@ components:
           description: >-
             Contact allow to capture contact information. It is used to capture
             billing account contact information.
-          $ref: "#/components/schemas/RelatedContactInformation"
+          $ref: '#/components/schemas/RelatedContactInformation'
         agreementName:
           description: >-
             The name of the Agreement which is referenced for the Product Order
@@ -675,12 +674,12 @@ components:
       properties:
         duration:
           description: Duration of the term
-          $ref: "#/components/schemas/Duration"
+          $ref: '#/components/schemas/Duration'
         endOfTermAction:
           description: >-
             The action that needs to be taken by the Seller once the term
             expires
-          $ref: "#/components/schemas/MEFEndOfTermAction"
+          $ref: '#/components/schemas/MEFEndOfTermAction'
         name:
           description: Name of the term
           type: string
@@ -691,7 +690,7 @@ components:
           description: >-
             The recurring period that the Buyer is willing to pay to the end of
             upon disconnecting the Product after the original term has expired.
-          $ref: "#/components/schemas/Duration"
+          $ref: '#/components/schemas/Duration'
       type: object
     MEFPriceType:
       description:
@@ -707,17 +706,17 @@ components:
       properties:
         productSpecification:
           description: A reference to a Product Specification of the Product
-          $ref: "#/components/schemas/ProductSpecificationRef"
+          $ref: '#/components/schemas/ProductSpecificationRef'
         relatedSite:
           description: Reference to a Site where the PRoduct is provided.
           items:
-            $ref: "#/components/schemas/RelatedGeographicSite"
+            $ref: '#/components/schemas/RelatedGeographicSite'
           type: array
         productOffering:
           description: >-
             A particular Product Offering defines the technical and commercial
             attributes and behaviors of a Product.
-          $ref: "#/components/schemas/ProductOfferingRef"
+          $ref: '#/components/schemas/ProductOfferingRef'
         lastUpdateDate:
           description: Latest date when the product has been updated.
           format: date-time
@@ -725,11 +724,11 @@ components:
         relatedContactInformation:
           description: Party playing a role for this Product
           items:
-            $ref: "#/components/schemas/RelatedContactInformation"
+            $ref: '#/components/schemas/RelatedContactInformation'
           type: array
-        "@type":
+        '@type':
           description:
-            "When sub-classing, this defines the sub-class entity name"
+            'When sub-classing, this defines the sub-class entity name'
           type: string
         externalId:
           description: Buyer identifier of the product
@@ -737,22 +736,22 @@ components:
         statusChange:
           description: status change for the Product
           items:
-            $ref: "#/components/schemas/MEFProductStatusChange"
+            $ref: '#/components/schemas/MEFProductStatusChange'
           type: array
         billingAccount:
           description: The Billing Account associated with the Product
-          $ref: "#/components/schemas/MEFBillingAccount"
+          $ref: '#/components/schemas/MEFBillingAccount'
         productOrderItem:
           description: >-
-            The Product Order Item of the associated Product order that resulted
-            in the creation of this Product.
+            The Product Order Item of the associated Product order that
+            resulted in the creation of this Product.
           items:
-            $ref: "#/components/schemas/MEFProductOrderItemRef"
+            $ref: '#/components/schemas/MEFProductOrderItemRef'
           type: array
         productTerm:
           description: Term of the Product
           items:
-            $ref: "#/components/schemas/MEFItemTerm"
+            $ref: '#/components/schemas/MEFItemTerm'
           type: array
         terminationDate:
           description: >-
@@ -765,13 +764,13 @@ components:
           description: >-
             MEFProductConfiguration is used to specify the MEF specific product
             payload.
-          $ref: "#/components/schemas/MEFProductConfiguration"
+          $ref: '#/components/schemas/MEFProductConfiguration'
         productRelationship:
           description: >-
             A list of references to existing products that are related to the
             Product.
           items:
-            $ref: "#/components/schemas/ProductRelationship"
+            $ref: '#/components/schemas/ProductRelationship'
           type: array
         id:
           description: Unique identifier of the product
@@ -789,11 +788,11 @@ components:
         productPrice:
           description: A list of Prices associated with the Product
           items:
-            $ref: "#/components/schemas/ProductPrice"
+            $ref: '#/components/schemas/ProductPrice'
           type: array
         status:
           description: The lifecycle status of the product.
-          $ref: "#/components/schemas/MEFProductStatusType"
+          $ref: '#/components/schemas/MEFProductStatusType'
       required:
         - id
         - startDate
@@ -805,16 +804,16 @@ components:
         product/service payload.  The `@type` attribute is used as a
         discriminator
       discriminator:
-        propertyName: "@type"
+        propertyName: '@type'
       properties:
-        "@type":
+        '@type':
           description: >-
             The name of the type, defined in the JSON schema specified  above,
             for the product that is the subject of the POQ Request. The named
             type must be a subclass of MEFProductConfiguration.
           type: string
       required:
-        - "@type"
+        - '@type'
       type: object
     MEFProductOrderItemRef:
       description: A reference to a ProductOrder item
@@ -846,7 +845,7 @@ components:
           type: string
         status:
           description: Status of the product
-          $ref: "#/components/schemas/MEFProductStatusType"
+          $ref: '#/components/schemas/MEFProductStatusType'
       required:
         - changeDate
         - status
@@ -882,17 +881,17 @@ components:
       properties:
         productSpecification:
           description: A reference to a Product Specification of the Product
-          $ref: "#/components/schemas/ProductSpecificationRef"
+          $ref: '#/components/schemas/ProductSpecificationRef'
         relatedSite:
           description: Reference to a Site where the PRoduct is provided.
           items:
-            $ref: "#/components/schemas/RelatedGeographicSite"
+            $ref: '#/components/schemas/RelatedGeographicSite'
           type: array
         productOffering:
           description: >-
             A particular Product Offering defines the technical and commercial
             attributes and behaviors of a Product.
-          $ref: "#/components/schemas/ProductOfferingRef"
+          $ref: '#/components/schemas/ProductOfferingRef'
         lastUpdateDate:
           description: Latest date when the product has been updated.
           format: date-time
@@ -907,7 +906,7 @@ components:
             A list of references to existing products that are related to the
             Product.
           items:
-            $ref: "#/components/schemas/ProductRelationship"
+            $ref: '#/components/schemas/ProductRelationship'
           type: array
         id:
           description: Unique identifier of the product
@@ -917,13 +916,13 @@ components:
           type: string
         billingAccount:
           description: The Billing Account associated with the Product
-          $ref: "#/components/schemas/MEFBillingAccount"
+          $ref: '#/components/schemas/MEFBillingAccount'
         productOrderItem:
           description: >-
-            The Product Order Item of the associated Product order that resulted
-            in the creation of this Product.
+            The Product Order Item of the associated Product order that
+            resulted in the creation of this Product.
           items:
-            $ref: "#/components/schemas/MEFProductOrderItemRef"
+            $ref: '#/components/schemas/MEFProductOrderItemRef'
           type: array
         startDate:
           description: The date from which the product starts
@@ -931,7 +930,7 @@ components:
           type: string
         status:
           description: The lifecycle status of the product.
-          $ref: "#/components/schemas/MEFProductStatusType"
+          $ref: '#/components/schemas/MEFProductStatusType'
       required:
         - id
         - status
@@ -946,8 +945,8 @@ components:
           type: string
         subUnitType:
           description: >-
-            The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT,
-            WHARF.
+            The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
+            UNIT, WHARF.
           type: string
       required:
         - subUnitNumber
@@ -975,17 +974,17 @@ components:
       properties:
         taxRate:
           description:
-            "Price Tax Rate. Unit: [%]. E.g. value 16 stand for 16% tax."
+            'Price Tax Rate. Unit: [%]. E.g. value 16 stand for 16% tax.'
           format: float
           type: number
         taxIncludedAmount:
           description:
             All taxes included amount (expressed in the given currency)
-          $ref: "#/components/schemas/Money"
+          $ref: '#/components/schemas/Money'
         dutyFreeAmount:
           description:
             All taxes excluded amount (expressed in the given currency)
-          $ref: "#/components/schemas/Money"
+          $ref: '#/components/schemas/Money'
       type: object
     ProductOfferingRef:
       description: >-
@@ -993,8 +992,8 @@ components:
         Product Offering contains the commercial and technical details of a
         Product sold by a particular Seller. A Product Offering defines all of
         the commercial terms and, through association with a particular Product
-        Specification, defines all the technical attributes and behaviors of the
-        Product. A Product Offering may constrain the allowable set of
+        Specification, defines all the technical attributes and behaviors of
+        the Product. A Product Offering may constrain the allowable set of
         configurable technical attributes and/or behaviors specified in the
         associated Product Specification.
       properties:
@@ -1021,11 +1020,11 @@ components:
       properties:
         unitOfMeasure:
           description:
-            "Unit of Measure if price depending on it (Gb, SMS volume, etc..)"
+            'Unit of Measure if price depending on it (Gb, SMS volume, etc..)'
           type: string
         price:
           description: Value of the Price
-          $ref: "#/components/schemas/Price"
+          $ref: '#/components/schemas/Price'
         name:
           description: A short descriptive name such as "Subscription price".
           type: string
@@ -1033,7 +1032,7 @@ components:
           description: >-
             A category that describes the price, such as recurring,
             nonRecurring, usageBased
-          $ref: "#/components/schemas/MEFPriceType"
+          $ref: '#/components/schemas/MEFPriceType'
         description:
           description: >-
             A narrative that explains in detail the semantics of this product
@@ -1041,22 +1040,22 @@ components:
           type: string
         recurringChargePeriod:
           description: Charge period for recurring charge.
-          $ref: "#/components/schemas/MEFChargePeriod"
+          $ref: '#/components/schemas/MEFChargePeriod'
       required:
         - price
         - priceType
       type: object
     ProductRelationship:
       description: >-
-        A relationship to existing Product. The requirements for usage for given
-        Product are described in the Product Specification.
+        A relationship to existing Product. The requirements for usage for
+        given Product are described in the Product Specification.
       properties:
         relationshipType:
           description: >-
             Specifies the type (nature) of the relationship to the related
             Product. The nature of required relationships vary for Products of
-            different types. For example, a UNI or ENNI Product may not have any
-            relationships, but an Access E-Line may have two mandatory
+            different types. For example, a UNI or ENNI Product may not have
+            any relationships, but an Access E-Line may have two mandatory
             relationships (related to the UNI on one end and the ENNI on the
             other). More complex Products such as multipoint IP or Firewall
             Products may have more complex relationships. As a result, the
@@ -1113,7 +1112,7 @@ components:
           description: >-
             Identifies the postal address of the person or office to be
             contacted.
-          $ref: "#/components/schemas/FieldedAddress"
+          $ref: '#/components/schemas/FieldedAddress'
         organization:
           description: The organization or company that the contact belongs to
           type: string
@@ -1137,8 +1136,8 @@ components:
         role:
           description: >-
             Role of the geographic site, such as: [home delivery], [shop
-            retrieval]) MEF: The role that the Site plays, e.g. Billing Address,
-            UNI Site, or ENNI Site.
+            retrieval]) MEF: The role that the Site plays, e.g. Billing
+            Address, UNI Site, or ENNI Site.
           type: string
         id:
           description: Unique identifier of the geographic site

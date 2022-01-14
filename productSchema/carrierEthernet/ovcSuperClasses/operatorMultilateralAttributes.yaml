@@ -1,0 +1,103 @@
+---
+"$schema": http://json-schema.org/draft-07/schema#
+title: 
+    MEF LSO Sonata - Operator Multilateral Attributes
+    # MEF Forum - Date: 20220110  Edit-level: 319
+    # File: carrierEthernet/ovcSuperClasses/alloperatorMultilateralAttributes.yaml
+    #
+    # ---------------------
+    # Disclaimer
+    # 
+    # © MEF Forum 2021. All Rights Reserved.
+    # 
+    # The information in this publication is freely available for reproduction
+    # and use by any recipient and is believed to be accurate as of its
+    # publication date. Such information is subject to change without notice
+    # and MEF Forum (MEF) is not responsible for any errors. MEF does not
+    # assume responsibility to update or correct any information in this
+    # publication. No representation or warranty, expressed or implied, is
+    # made by MEF concerning the completeness, accuracy, or applicability of
+    # any information contained herein and no liability of any kind shall be
+    # assumed by MEF as a result of reliance upon such information.
+    # 
+    # The information contained herein is intended to be used without
+    # modification by the recipient or user of this document. MEF is not
+    # responsible or liable for any modifications to this document made by any
+    # other party.
+    # 
+    # The receipt or any use of this document or its contents
+    # does not in any way create, by implication or otherwise:
+    # 
+    # a) any express or implied license or right to or under any patent,
+    # copyright, trademark or trade secret rights held or claimed by any MEF
+    # member which are or may be associated with the ideas, techniques,
+    # concepts or expressions contained herein; nor
+    # 
+    # b) any warranty or representation that any MEF members will announce
+    # any product(s) and/or service(s) related thereto, or if such
+    # announcements are made, that such announced product(s) and/or service(s)
+    # embody any or all of the ideas, technologies, or concepts contained
+    # herein; nor
+    # 
+    # c) any form of relationship between any MEF member and the recipient
+    # or user of this document.
+    # 
+    # Implementation or use of specific MEF standards, specifications, or
+    # recommendations will be voluntary, and no Member shall be obliged to
+    # implement them by virtue of participation in MEF Forum. MEF is a
+    # non-profit international organization to enable the development and
+    # worldwide adoption of agile, assured and orchestrated network services.
+    # MEF does not, expressly or otherwise, endorse or promote any specific
+    # products or services.
+    # ---------------------
+    #
+definitions:
+    OperatorMultilateral:
+        type: object
+        description:  >-
+            An Operator Multilateral Attribute is a behavior of a single
+            Operator CEN at an ENNI that is externally visible to a Service
+            Provider or Super Operator using that CEN and ENNI and/or to peer
+            Operators operating CENs on the other side of the ENNI. An Operator
+            Multilateral Attribute has the same value for all Service Providers
+            or Super Operators using that CEN and ENNI to whom the behavior
+            is externally visible.
+        properties:
+            l2cpPeering:
+                description:  >-
+                    MEF 26.2 sec. 10.1 and  MEF 45 sec. 8.2 - A list of Layer 2
+                    Control Protocols that will be Peered by a protocol entity at an
+                    ENNI: an empty list, or a list of entries identifying protocols
+                    to be Peered where each entry consists of {Destination Address,
+                    Protocol Identifier} or {Destination Address, Protocol Identifier,
+                    Link Identifier}
+                # See additional validation notes in the Schema Guide
+                type: array 
+                minItems: 0
+                uniqueItems: FALSE
+                items:
+                    $ref: "../common/carrierEthernetL2cp.yaml#/definitions/L2cpPeering"
+            taggedL2cpFrameProcessing:
+                description:  >-
+                    MEF 26.2 sec. 10.2 and MEF 45 sec. 8.3 - Reflects the capability
+                    of the ENNI to process S-VLAN-tagged L2CP Frames in an 802.1 compliant
+                    manner. The allowed values are “802_1_COMPLIANT” or “802_1_NON_COMPLIANT”.
+                    A value of 802_1_COMPLIANT means the ENNI will apply the special
+                    forwarding rules to Tagged L2CP ENNI Frames that map to a VUNI
+                    or an OVC End Point supporting a service other than EPL with EPL
+                    Option 2 L2CP processing. A value of 802_1_NON_COMPLIANT means
+                    the ENNI will pass any Tagged L2CP ENNI Frames. There is an ENNI
+                    Tagged L2CP Frame Processing Multilateral Attribute for each ENNI.
+                # MEF 51.1 indicates that the value SHOULD be 802_1_COMPLIANT
+                type: string
+                enum:
+                    - "802_1_COMPLIANT"
+                    - "802_1_NON_COMPLIANT"
+            maximumFrameSizeMultilateral:
+                description:  >-
+                    MEF 26.2 sec. 10.3 - The maximum length ENNI Frame in bytes
+                    that can be reliably processed.
+                # See additional validation notes in the Schema Guide
+                type: integer
+                minimum: 1526
+
