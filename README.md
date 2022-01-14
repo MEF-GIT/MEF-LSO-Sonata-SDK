@@ -26,7 +26,7 @@ It also provides Product Schemas for:
 - EVPL
 - EVPLAN
 - EVPTREE
-- Basic Internet Access (working draft)
+- Basic Internet Access (member contribution)
 
 ## High-level release notes
 
