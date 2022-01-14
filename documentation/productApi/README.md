@@ -1,10 +1,10 @@
-# MEF-LSO-Sonata-SDK - Billie Release - Developer Guides
+# MEF-LSO-Sonata-SDK - Celine Release - Developer Guides
 
-The MEF LSO Sonata SDK Developer Guides are available to MEF Members and can be found at https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK-extended
+The MEF LSO Sonata SDK Developer Guides are available to MEF Members and can be found at https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK-extended/tree/celine/documentation/productApi
 
 ## Copyright
 
-© MEF Forum 2021. All Rights Reserved.
+© MEF Forum 2022. All Rights Reserved.
 
 ## Disclaimer
 

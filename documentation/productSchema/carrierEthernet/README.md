@@ -1,10 +1,10 @@
-# MEF-LSO-Sonata-SDK - Billie Release - Product and Service Schemas
+# MEF-LSO-Sonata-SDK - Celine Release - Product Schemas
 
-The MEF LSO Sonata SDK Product and Service Schemas are available to MEF Members and can be found at https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK-extended
+The MEF LSO Sonata SDK Product and Service Schemas are available to MEF Members and can be found at https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK-extended/tree/celine/documentation/productSchema
 
 ## Copyright
 
-© MEF Forum 2021. All Rights Reserved.
+© MEF Forum 2022. All Rights Reserved.
 
 ## Disclaimer
 
