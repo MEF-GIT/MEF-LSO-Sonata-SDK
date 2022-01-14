@@ -2,7 +2,7 @@
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
     MEF LSO Sonata - Carrier Ethernet Color Identifier
-    # MEF Forum - Date: 20220110  Edit-level: 319
+    # MEF Forum - Date: 20210615  Edit-level: 221
     # File: carrierEthernet/common/carrierEthernetColorIdentifier.yaml
     #
     # ---------------------
@@ -63,6 +63,8 @@ definitions:
                 type: string
                 enum:
                     - "DEI"
+        required:
+            - mapType
     ColorFromPCP:
         type: object
         description:  >-
@@ -81,15 +83,34 @@ definitions:
                 maxItems: 8
                 uniqueItems: TRUE
                 items:
+                    type: object
                     $ref: "#/definitions/ColorFromPCPMapEntry"
+        required:
+            - mapType
+            - colorFromPcpMap
     ColorFromPCPMapEntry:
         type: object
         properties:
             pcpValue:
-                $ref: "carrierEthernetTypes.yaml#/definitions/PcpValue"
+                type: string
+                enum:
+                    - "0"
+                    - "1"
+                    - "2"
+                    - "3"
+                    - "4"
+                    - "5"
+                    - "6"
+                    - "7"
             pcpColor:
-                $ref: "carrierEthernetTypes.yaml#/definitions/FrameColor"
-    ColorFromDscp:
+                type: string
+                enum:
+                    - "GREEN"
+                    - "YELLOW"
+        required:
+            - pcpValue
+            - pcpColor
+    ColorFromDSCP:
         type: object
         description:  >-
             This Class is referenced when the color comes from the DSCP
@@ -108,7 +129,11 @@ definitions:
                 minItems: 1
                 uniqueItems: TRUE
                 items:
+                    type: object
                     $ref: "#/definitions/ColorFromDscpEntry"
+        required:
+            - mapType
+            - colorFromDscpMap
     ColorFromDscpEntry:
         type: object
         properties:
@@ -122,9 +147,19 @@ definitions:
                     minimum: 0
                     maximum: 63
             ipv4Color:
-                $ref: "carrierEthernetTypes.yaml#/definitions/FrameColor"
+                type: string
+                enum:
+                    - "GREEN"
+                    - "YELLOW"
             ipv6Color:
-                $ref: "carrierEthernetTypes.yaml#/definitions/FrameColor"
+                type: string
+                enum:
+                    - "GREEN"
+                    - "YELLOW"
+        required:
+            - dscpList
+            - ipv4Color
+            - ipv6Color
     ColorFromEp:
         type: object
         description:  >-
@@ -137,5 +172,11 @@ definitions:
                 enum:
                     - "ENDPOINT"
             epColor:
-                $ref: "carrierEthernetTypes.yaml#/definitions/FrameColor"
+                type: string
+                enum:
+                    - "GREEN"
+                    - "YELLOW"
+        required:
+            - mapType
+            - epColor
 

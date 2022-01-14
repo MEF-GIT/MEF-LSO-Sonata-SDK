@@ -1,0 +1,143 @@
+---
+"$schema": http://json-schema.org/draft-07/schema#
+title: 
+    MEF LSO Sonata - Carrier Ethernet ENNI Common
+    # MEF Forum - Date: 20210615  Edit-level: 221
+    # File: carrierEthernet/carrierEthernetEnniSpSo/inventory/carrierEthernetEnniCommon.yaml
+    #
+    # ---------------------
+    # Disclaimer
+    # 
+    # © MEF Forum 2021. All Rights Reserved.
+    # 
+    # The information in this publication is freely available for reproduction
+    # and use by any recipient and is believed to be accurate as of its
+    # publication date. Such information is subject to change without notice
+    # and MEF Forum (MEF) is not responsible for any errors. MEF does not
+    # assume responsibility to update or correct any information in this
+    # publication. No representation or warranty, expressed or implied, is
+    # made by MEF concerning the completeness, accuracy, or applicability of
+    # any information contained herein and no liability of any kind shall be
+    # assumed by MEF as a result of reliance upon such information.
+    # 
+    # The information contained herein is intended to be used without
+    # modification by the recipient or user of this document. MEF is not
+    # responsible or liable for any modifications to this document made by any
+    # other party.
+    # 
+    # The receipt or any use of this document or its contents
+    # does not in any way create, by implication or otherwise:
+    # 
+    # a) any express or implied license or right to or under any patent,
+    # copyright, trademark or trade secret rights held or claimed by any MEF
+    # member which are or may be associated with the ideas, techniques,
+    # concepts or expressions contained herein; nor
+    # 
+    # b) any warranty or representation that any MEF members will announce
+    # any product(s) and/or service(s) related thereto, or if such
+    # announcements are made, that such announced product(s) and/or service(s)
+    # embody any or all of the ideas, technologies, or concepts contained
+    # herein; nor
+    # 
+    # c) any form of relationship between any MEF member and the recipient
+    # or user of this document.
+    # 
+    # Implementation or use of specific MEF standards, specifications, or
+    # recommendations will be voluntary, and no Member shall be obliged to
+    # implement them by virtue of participation in MEF Forum. MEF is a
+    # non-profit international organization to enable the development and
+    # worldwide adoption of agile, assured and orchestrated network services.
+    # MEF does not, expressly or otherwise, endorse or promote any specific
+    # products or services.
+    # ---------------------
+    #
+definitions:
+    EnniCommon:
+        type: object
+        description:  >-
+            These are the technical details that need to be agreed to by
+            the Network Operators in order for their Carrier Ethernet Networks
+            to be interconnected by the ENNI.
+        properties:
+            peeringIdentifier:
+                description:  >-
+                    MEF 26.2 sec. 9.1 - An identifier for the ENNI intended for
+                    operations purposes by the interconnecting Operators at the ENNI.
+                type: string
+                minLength: 1
+                maxLength: 45
+                pattern: "[\x20-\x7F]+"
+            listOfPhysicalLinks:
+                description:  >-
+                    MEF 26.2 sec. 9.2 and 9.3 - This Service Attribute combines
+                    several of the MEF 26.2 Objects into a single n-tuple that is consistent
+                    with the way this information is described in MEF 10.4. The value
+                    of the ENNI List of Physical Links Service Attribute is a list
+                    of 5-tuples of the form ⟨⟨id,pl,fs,pt,cn⟩, with one list item for
+                    each physical link. The value of id is an identifier for the physical
+                    link. The value of pl specifies a physical layer. fs indicates
+                    if synchronous Ethernet is used on the physical link corresponding
+                    to the 5-tuple and has the value either Enabled or Disabled. The
+                    value of pt indicates if the Precision Time Protocol is used on
+                    the physical link corresponding to the 5-tuple and has the value
+                    either Enabled or Disabled. The value of cn specifies the type
+                    of connector used at the ENNI.
+                type: array 
+                minItems: 1
+                uniqueItems: TRUE
+                items:
+                    type: object
+                    $ref: "../../common/carrierEthernetExternalInterfaces.yaml#/definitions/EnniPhysicalLink"
+            serviceFrameFormat:
+                description:  >-
+                    MEF 26.2 sec. 9.3 - The ENNI Frame Format Common Attribute
+                    has the value Ethernet MAC Frame conforming to Clause 3 of IEEE
+                    802.3-2012.
+                type: string
+                enum:
+                    - "802.3-2012"
+            linkAggregation:
+                description:  >-
+                    MEF 26.2 sec. 9.5 - If the ENNI is composed of multiple physical
+                    links this Service Attribute indicates how they are combined using
+                    Link Aggregation.
+                # See additional validation notes in the Schema Guide
+                type: string
+                enum:
+                    - "NONE"
+                    - "2_LINK_ACTIVE_STANDBY"
+                    - "ALL_ACTIVE"
+                    - "OTHER"
+            portConversation:
+                description:  >-
+                    MEF 26.2 sec. 9.6 - A mapping of Port Conversation IDs (i.e.,
+                    VLAN IDs or zero for untagged frames) to an ordered list of physical
+                    links if there are multiple physical links in the UNI and the link
+                    aggregation is ALL_ACTIVE. Note: In some cases the Port Conversation
+                    ID to Aggregation Link Map can be specified at the OVC End Point.
+                # See additional validation notes in the Schema Guide
+                type: array 
+                minItems: 0
+                uniqueItems: TRUE
+                items:
+                    type: object
+                    $ref: "../../common/carrierEthernetLinkAggregation.yaml#/definitions/ConversationIdToAggregationLinkMap"
+            meg:
+                description:  >-
+                    MEF 26.2 sec. 9.7 - Is a Down ENNI MEG MEP Enabled at the ENNI
+                    as described in MEF 30.1?
+                type: object
+                $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
+            lagLinkMeg:
+                description:  >-
+                    MEF 26.2 sec. 9.8 - If Enabled the Service Provider MUST operate
+                    the LAG Link MEG on each link in the ENNI.
+                type: object
+                $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
+            linkOAM:
+                description:  >-
+                    MEF 26.2 sec. 9.9 - Indicates whether Link OAM as described
+                    in Clause 57 of IEEE Std. 802.3 is supported on the ENNI.
+                type: object
+                $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
+

@@ -2,7 +2,7 @@
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
     MEF LSO Sonata - Carrier Ethernet L2CP
-    # MEF Forum - Date: 20220110  Edit-level: 319
+    # MEF Forum - Date: 20210615  Edit-level: 221
     # File: carrierEthernet/common/carrierEthernetL2cp.yaml
     #
     # ---------------------
@@ -64,11 +64,13 @@ definitions:
                     This specifies the Protocol Type for the L2CP. It consists
                     of a field specification (ETHERTYPE or LLC), the EtherType or LLC
                     value, and an optional subtype.
+                type: object
                 $ref: "#/definitions/L2cpProtocol"
             destinationAddress:
                 description:  >-
                     The Destination MAC Address of the L2CP to be peered in the
-                    standard format of 6 hex bytes separated by hyphen (-).
+                    standard format of 6 hex bytes separated either by colon (:) or
+                    hyphen (-).
                 type: string
                 pattern: "[0-9a-fA-F][0-9a-fA-F]([-][0-9a-fA-F][0-9a-fA-F]){5}"
             linkIdList:
@@ -84,6 +86,9 @@ definitions:
                     minLength: 1
                     maxLength: 45
                     pattern: "[\x20-\x7F]+"
+        required:
+            - protocolID
+            - destinationAddress
     L2cpProtocol:
         type: object
         description:  >-
@@ -105,4 +110,7 @@ definitions:
                 description: The EtherType can be modified by an optional sub-type.
                 type: integer
                 minimum: 0
+        required:
+            - l2cpProtocolType
+            - llcAddressOrEtherType
 

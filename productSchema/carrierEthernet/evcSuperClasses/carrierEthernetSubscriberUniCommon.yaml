@@ -2,7 +2,7 @@
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
     MEF LSO Sonata - Carrier Ethernet Subscriber UNI Common
-    # MEF Forum - Date: 20220110  Edit-level: 319
+    # MEF Forum - Date: 20210615  Edit-level: 221
     # File: carrierEthernet/evcSuperClasses/carrierEthernetSubscriberUniCommon.yaml
     #
     # ---------------------
@@ -75,7 +75,7 @@ definitions:
             virtualFrameMap:
                 description:  >-
                     MEF 10.4 sec. 9.2 and sec. 9.3 - When the value of the Subscriber
-                    UNI Instantiation Service Attribute = Virtual there must exist
+                    UNI Instantiation Service Attribute = Virtual, there must exist
                     a map that maps the set of Virtual Frames that cross the UNI to
                     a sequence of pairs of the form ⟨s,t⟩ where s is a standard Ethernet
                     frame per Clause 3 of IEEE Std 802.3 – 2015 [5] and t is the arrival
@@ -87,12 +87,13 @@ definitions:
                 maxItems: 1
                 uniqueItems: TRUE
                 items:
-                    $ref: "../common/carrierEthernetExternalInterfaces.yaml#/definitions/VirtualFrameMap"
+                    type: object
+                    $ref: "../../common/carrierEthernetExternalInterfaces.yaml#/definitions/VirtualFrameMap"
             listOfPhyLinks:
                 description:  >-
                     MEF 10.4 sec. 9.4 - The value of the Subscriber UNI List of
                     Physical Links Service Attribute is a list of 5-tuples of the form
-                    id, ⟨physicalLink, synchronousEthernet, precisionTiming, demarcConnectorType⟩,
+                    <id, physicalLink, synchronousEthernet, precisionTiming, demarcConnectorType>,
                     with one list item for each physical link. The value of id is an
                     identifier for the physical link. The value of physicalLink is
                     the specific Ethernet physical layer type. synchronousEthernet
@@ -107,7 +108,8 @@ definitions:
                 minItems: 0
                 uniqueItems: FALSE
                 items:
-                    $ref: "../common/carrierEthernetExternalInterfaces.yaml#/definitions/UniPhysicalLink"
+                    type: object
+                    $ref: "../../common/carrierEthernetExternalInterfaces.yaml#/definitions/UniPhysicalLink"
             linkAggregation:
                 description:  >-
                     MEF 10.4 sec. 9.5 - Data type representing Link Aggregation
@@ -122,20 +124,24 @@ definitions:
                     specified in Clause 5.3.1h of IEEE Std 802.1AZ-2014, with one Link
                     Aggregation Group (LAG) across the links. OTHER-The Operator/Subscriber/Service
                     Provider agree on another other resiliency mechanism.
-                # See additional validation notes in the Schema Guide
-                $ref: "../common/carrierEthernetTypes.yaml#/definitions/LinkAggType"
+                type: string
+                enum:
+                    - "NONE"
+                    - "2_LINK_ACTIVE_STANDBY"
+                    - "ALL_ACTIVE"
+                    - "OTHER"
             portConversation:
                 description:  >-
                     MEF 10.4 sec. 9.6 - A mapping of Port Conversation IDs (i.e.,
                     VLAN IDs or zero for untagged frames) to an ordered list of physical
                     links if there are multiple physical links in the UNI and the link
                     aggregation is ALL_ACTIVE.
-                # See additional validation notes in the Schema Guide
                 type: array 
                 minItems: 0
                 uniqueItems: FALSE
                 items:
-                    $ref: "../common/carrierEthernetLinkAggregation.yaml#/definitions/ConversationIdToAggregationLinkMap"
+                    type: object
+                    $ref: "../../common/carrierEthernetLinkAggregation.yaml#/definitions/ConversationIdToAggregationLinkMap"
             maximumServiceFrameSize:
                 description:  >-
                     MEF 10.4 sec. 9.8 - Specifies the maximum size of Service Frames
@@ -162,38 +168,41 @@ definitions:
                     MEF 10.4 sec. 9.11 - An attribute that indicates whether Bandwidth
                     Profile Envelopes containing more than one Bandwidth Profile Flow
                     are supported by the Service Provider at the Subscriber UNI.
-                $ref: "../common/carrierEthernetTypes.yaml#/definitions/EnabledDisabled"
+                type: object
+                $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
             envelopes:
                 description:  >-
                     MEF 10.4 sec. 9.12 - The Envelopes and Envelope Coupling Flag
                     values to which Bandwidth Profile Flows can be mapped. Value is
-                    None or non-empty list of {envelopeID, couplingFlagForIndexZero}.
-                    If this property is not present or an empty list, the value is
-                    assumed to have the value None.
+                    list of {envelopeID, couplingFlagForIndexZero}.
                 # See additional validation notes in the Schema Guide
                 type: array 
                 minItems: 0
                 uniqueItems: TRUE
                 items:
-                    $ref: "../common/carrierEthernetBandwidthProfile.yaml#/definitions/Envelope"
+                    type: object
+                    $ref: "../../common/carrierEthernetBandwidthProfile.yaml#/definitions/Envelope"
             linkOAM:
                 description:  >-
                     MEF 10.4 sec. 9.13 - Controls when and how Link OAM per IEEE
                     Std 802.3-2015 is run on the physical links in the UNI.
-                $ref: "../common/carrierEthernetTypes.yaml#/definitions/EnabledDisabled"
+                type: object
+                $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
             meg:
                 description:  >-
                     MEF 10.4 sec. 9.14 - Indicates if the Service Provider has
                     instantiated a MEG End Point (MEP) at the UNI Maintenance Entity
                     Group (MEG) Level (ENABLED) or not (DISABLED).
-                $ref: "../common/carrierEthernetTypes.yaml#/definitions/EnabledDisabled"
+                type: object
+                $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
             lagLinkMeg:
                 description:  >-
                     MEF 10.4 sec. 9.15 - Indicates if the Service Provider has
                     instantiated a LAG Link MEG End Point (MEP) on each physical link
                     in the UNI if the UNI has more than one physical link (ENABLED)
                     or not (DISABLED).
-                $ref: "../common/carrierEthernetTypes.yaml#/definitions/EnabledDisabled"
+                type: object
+                $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
             l2cpAddressSet:
                 description:  >-
                     MEF 10.4 sec. 9.16 and MEF 45.1 sec. 8.1 - L2CP Address Set
@@ -203,7 +212,11 @@ definitions:
                     the CE-VLAN ID not used to map a frame to a service. CTB2 CVLAN
                     Tag Blind Option 2 for point-to-point Port-based services that
                     support the EPL Option 2 L2CP processing.
-                $ref: "../common/carrierEthernetTypes.yaml#/definitions/L2cpAddressSet"
+                type: string
+                enum:
+                    - "CTA"
+                    - "CTB"
+                    - "CTB2"
             l2cpPeering:
                 description:  >-
                     MEF 10.4 sec. 9.17 and MEF 45.1 sec. 8.2 - L2CP Peering Service
@@ -213,5 +226,6 @@ definitions:
                     to be Peered where each entry consists of {Destination Address,
                     Protocol Identifier} or {Destination Address, Protocol Identifier,
                     Link Identifier}.
-                $ref: "../common/carrierEthernetL2cp.yaml#/definitions/L2cpPeering"
+                type: object
+                $ref: "../../common/carrierEthernetL2cp.yaml#/definitions/L2cpPeering"
 

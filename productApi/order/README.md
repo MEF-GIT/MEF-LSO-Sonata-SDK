@@ -1,111 +1,6 @@
 # Product Order Management: Release notes
 
-## Release Celine:
-
-**Readiness status**: Work in progress and is subject to change. Completed and
-resolved Call for Comments #1
-
-### List of changes in the API:
-
-**productOrderManagement.yaml:**
-
-- `/productOrder/`
-  - `GET`
-    - `orderCancellationDate.gt` renamed to `cancellationDate.gt`
-    - `orderCancellationDate.lt` renamed to `cancellationDate.lt`
-- `/modifyProductOrderItemCompletionDate` renamed to
-  `/modifyProductOrderItemRequestedDeliveryDate`
-- `/modifyProductOrderItemRequestedDeliveryDate`
-  - `GET`
-    - added:
-      - `creationDate.gt`
-      - `creationDate.lt`
-- `ProductOrder`
-  - added:
-    - `cancellationCharge`
-  - removed:
-    - `description`
-    -
-- `ProductOrderItem`
-  - added:
-    - `agreementName`
-  - removed:
-    - `sellerItemIdentifier`
-- `MEFBillingAccount` - removed (replaced by MEFBillingAccountRef.
-  `agreementName` and `billingContact` moved to Product Order Item level
-- `MEFBillingAccountRef` - added
-- `CancelProductOrder`
-  - added:
-    - `cancellationDeniedReason`
-  - removed:
-    - `note`
-- `MEFCharge` - renamed to `MEFProductOrderCharge`
-- `MEFCharge_Update` - renamed to `MEFProductOrderCharge_Update`
-- `MEFChargeStateType` - renamed to `MEFProductOrderChargeStateType`
-- `MEFChargeRef` - renamed to `MEFProductOrderChargeRef`
-- `MEFChargeActivityType` - renamed to `MEFProductOrderChargeActivityType`
-- `MEFChargeItem` - renamed to `MEFProductOrderChargeItem`
-- `MEFChargeItem_Update` - renamed to `MEFProductOrderChargeItem_Update`
-- `MEFChargeItemStateType` - renamed to `MEFProductOrderChargeItemStateType`
-- `MEFChargeItemDescription` - renamed to
-  `MEFProductOrderChargeItemDescription`
-- `MEFChargeItemDescription`
-  - `inFlightCancellation` - renamed to `cancellation`
-- `MEFModifyProductOrderItemCompletionDate` - renamed to
-  `MEFModifyProductOrderItemRequestedDeliveryDate`
-- `MEFModifyProductOrderItemCompletionDateRef` - renamed to
-  ` MEFModifyProductOrderItemRequestedDeliveryDateRef`
-- `MEFModifyProductOrderItemCompletionDate_Create` - renamed to
-  ` MEFModifyProductOrderItemRequestedDeliveryDate_Create`
-
-- `MEFProductOrderCharge`:
-  - added:
-    - `productOrder`
-    - `replacedCharge`
-  - `modifyProductOrderItemCompletionDate` renamed to
-    `modifyProductOrderItemRequestedDeliveryDate`
-  - `productOrderItem` - marked not required
-- `MEFProductOrderChargeItem`:
-  - `chargeType` - marked as required
-  - `description` - marked as required
-  - `description` - dictionary introduced
-    (https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK-extended/issues/60)
-  - `activityType` - marked as required
-  - `blocking` - marked as required
-  - `price` - marked as required
-  - `state` - marked as required
-- `MEFChargeStateType`
-  - `timeout` - added
-- `MEFProductOrderRef`
-  - `productOrderId` - made required
-
-**productOrderNotification.yaml:**
-
-Changed the url from `/productOrderNotification` to
-`productOrderingNotification`
-
-- `/listener/productSpecificProductOrderMilestoneEvent` - endpoint removed
-- `/listener/productOrderExpectedCompletionDateSet` - endpoint removed
-- `ProductOrderEventType`
-
-  - `productSpecificProductOrderMilestoneEvent` - removed
-  - `productOrderExpectedCompletionDateSet` - removed
-
-- `Code` renamed to `Error400Code`
-- `/listener/modifyProductOrderItemCompletionDateStateChangeEvent` renamed to
-  `/listener/ModifyProductOrderItemRequestedDeliveryDateStateChangeEvent`
-- `ModifyProductOrderItemCompletionDateEvent` renamed to
-  `ModifyProductOrderItemRequestedDeliveryDateEvent`
-- `ModifyProductOrderItemCompletionDateEventType` renamed to
-  `ModifyProductOrderItemRequestedDeliveryDateEventType`
-- `modifyProductOrderItemCompletionDateStateChangeEvent` renamed to
-  `ModifyProductOrderItemRequestedDeliveryDateStateChangeEvent`
-- `ModifyProductOrderItemCompletionDateEventPayload` renamed to
-  `ModifyProductOrderItemRequestedDeliveryDateEventPayload`
-
 ## Release Billie:
-
-**Readiness status**: Work in progress and is subject to change
 
 ### List of changes in the API:
 
@@ -126,7 +21,7 @@ Changed the url from `/productOrderNotification` to
 - `ProductOrder`:
   - added:
     - `charge`
-    - `requestedCompletionDate`
+    - `requestedCompletionDate` 
   - removed:
     - `pricingReference`
   - `state`:
@@ -200,11 +95,9 @@ Changed the url from `/productOrderNotification` to
     - `chargeTimeoutEvent`
     - `modifyProductOrderItemCompletionDateStateChangeEvent`
   - renamed:
-    - `productOrderExpectedCompletionDateSet` =>
-      `productOrderExpectedCompletionDateSetEvent`
-    - `productOrderItemExpectedCompletionDateSet` =>
-      `productOrderItemExpectedCompletionDateSetEvent`
-- Added types
+    - `productOrderExpectedCompletionDateSet` => `productOrderExpectedCompletionDateSetEvent`
+    - `productOrderItemExpectedCompletionDateSet` => `productOrderItemExpectedCompletionDateSetEvent`
+- Addded types
   - `ProductOrder_Update`
   - `MEFProductOrderItem_Update`
   - `MEFCharge`
@@ -226,6 +119,8 @@ Changed the url from `/productOrderNotification` to
   - `TaskStateType`
   - `MEFPricingMethod`
   - `OrderPrice`
+
+**Readiness status**: Work in progress and is subject to change
 
 ## Release Aretha:
 

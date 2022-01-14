@@ -2,7 +2,7 @@
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
     MEF LSO Sonata - Access Eline OVC Common
-    # MEF Forum - Date: 20220110  Edit-level: 319
+    # MEF Forum - Date: 20210615  Edit-level: 221
     # File: carrierEthernet/ovcSuperClasses/accessElineOvcCommon.yaml
     #
     # ---------------------
@@ -68,11 +68,7 @@ definitions:
                     MEF 26.2 sec. 12.6 - The max length in bytes allowed in a frame
                     mapped to an OVC EP associated by the OVC. The length of the frame
                     includes all bytes from the start of the destination MAC address
-                    through the Frame Check Sequence. This must be at least 1526 (1518+C-tag+S-tag).
-                    This Service Attribute must be included in POQ, Quote, and Order
-                    if the Buyer requires a value that is different than the value
-                    agreed on during the on-boarding process between the Buyer and
-                    Seller.
+                    through the Frame Check Sequence. This must be at least 1526 (1518+C-tag+S-tag)
                 # See additional validation notes in the Schema Guide
                 type: integer
                 minimum: 1526
@@ -92,14 +88,16 @@ definitions:
                     PCP field is preserved from Ingress to Egress. Per MEF 51.1, the
                     Operator must support ENABLED and should support DISABLED.
                 # See additional validation notes in the Schema Guide
-                $ref: "../common/carrierEthernetTypes.yaml#/definitions/EnabledDisabled"
+                type: object
+                $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
             cTagDeiPreservation:
                 description:  >-
                     MEF 26.2 sec. 12.9 - If ENABLED, then the value of the C-Tag
                     DEI field is preserved from Ingress to Egress. Per MEF 51.1, the
                     Operator must support ENABLED and should support DISABLED.
                 # See additional validation notes in the Schema Guide
-                $ref: "../common/carrierEthernetTypes.yaml#/definitions/EnabledDisabled"
+                type: object
+                $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
             listOfClassOfServiceNames:
                 description:  >-
                     MEF 26.2 sec. 12.12 - The OVC List of Class of Service Names
@@ -125,18 +123,20 @@ definitions:
                 maxItems: 1
                 uniqueItems: TRUE
                 items:
-                    $ref: "../common/carrierEthernetServiceLevelSpecification.yaml#/definitions/CarrierEthernetSls"
+                    type: object
+                    $ref: "../../common/carrierEthernetServiceLevelSpecification.yaml#/definitions/CarrierEthernetSls"
             frameDisposition:
                 description:  >-
                     MEF 26.2 sec. 12.14 - A 3-tuple that indicates how Unicast,
                     Multicast, and Broadcast Frames are delivered by the service. For
                     each, the value can be UNCONDITIONAL, the frames are delivered
                     without condition, CONDITIONAL, the frames are delivered based
-                    on conditions agreed to between Buyer and Seller (e.g., based on
+                    on conditions agreed to between buyer and seller (e.g., based on
                     learned addresses), and DISCARD. If CONDITIONAL is chosen for any
                     of the elements, the conditions must be agreed on by the Service
                     Provider and Operator by some other means.
-                $ref: "../common/carrierEthernetUtilityClasses.yaml#/definitions/FrameDisposition"
+                type: object
+                $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/FrameDisposition"
             availableMegLevel:
                 description:  >-
                     MEF 26.2 sec. 12.15 - The lowest MEG level for which SOAM Frames
@@ -144,7 +144,15 @@ definitions:
                     is NONE there is no such level (that is, SOAM frames at all MEG
                     levels may be peered or discarded by the Service Provider). MEF
                     51.1 constrains it to 0-6 for Access E-Line.
-                $ref: "../common/carrierEthernetTypes.yaml#/definitions/AvailableMegList"
+                type: string
+                enum:
+                    - "0"
+                    - "1"
+                    - "2"
+                    - "3"
+                    - "4"
+                    - "5"
+                    - "6"
             ovcL2cpAddressSet:
                 description:  >-
                     MEF 45 sec. 8.1 and MEF 26.2 sec. 12.16 - The subset of the
@@ -152,5 +160,9 @@ definitions:
                     Passed). The value CTB or CTB2 must be used for port-based (private)
                     services and CTA for vlan-based (virtual private) services.
                 # See additional validation notes in the Schema Guide
-                $ref: "../common/carrierEthernetTypes.yaml#/definitions/L2cpAddressSet"
+                type: string
+                enum:
+                    - "CTA"
+                    - "CTB"
+                    - "CTB2"
 

@@ -2,7 +2,7 @@
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
     MEF LSO Sonata - Carrier Ethernet External Interfaces
-    # MEF Forum - Date: 20220110  Edit-level: 319
+    # MEF Forum - Date: 20210615  Edit-level: 221
     # File: carrierEthernet/common/carrierEthernetExternalInterfaces.yaml
     #
     # ---------------------
@@ -55,11 +55,12 @@ definitions:
     UniPhysicalLink:
         description:  >-
             This class describes the Physical Link attributes at a UNI.
-            It is a 6-tuple ⟨id, phy, frequency sync enable, PTP enable, connector,
-            gender⟩.
+            It is a 4-tuple {carrierEthernet, frequency sync enable, PTP enable,
+            connector}. carrierEthernet is a 2-tuple containing an id and physical
+            link type.
         allOf:
             - $ref: "#/definitions/CarrierEthernetPhysicalLink"
-            - $ref: "#/definitions/UniSpecificAttributes"
+            - $ref: "#/definitions/UniSpecifcAttributes"
     EnniPhysicalLink:
         description:  >-
             This class describes the Physical Link attributes at an ENNI.
@@ -70,7 +71,7 @@ definitions:
     CarrierEthernetPhysicalLink:
         type: object
         description:  >-
-            A 2-tuple of the form ⟨id, physicalLink⟩. The value of id is
+            A 2-tuple of the form <id, physicalLink>. The value of id is
             an identifier for the physical link. The value of physicalLink
             is the specific Ethernet physical layer type.
         properties:
@@ -198,19 +199,24 @@ definitions:
                     - "400GBASE_SR4_2"
                     - "400GBASE_SR8"
                     - "OTHER"
-    UniSpecificAttributes:
+        required:
+            - id
+            - physicalLink
+    UniSpecifcAttributes:
         type: object
         properties:
             synchronousEthernet:
                 description:  >-
                     Indicates if synchronous Ethernet is used on the physical link
                     and has the value either Enabled or Disabled.
-                $ref: "carrierEthernetTypes.yaml#/definitions/EnabledDisabled"
+                type: object
+                $ref: "utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
             precisionTiming:
                 description:  >-
                     Indicates if the Precision Time Protocol is used on the physical
                     link and has the value either Enabled or Disabled
-                $ref: "carrierEthernetTypes.yaml#/definitions/EnabledDisabled"
+                type: object
+                $ref: "utilityClassesAndTypes.yaml#/definitions/EnabledDisabled"
             uniConnectorType:
                 description:  >-
                     This indicates the type of connector that is presented to the
@@ -231,6 +237,20 @@ definitions:
                 enum:
                     - "SOCKET"
                     - "PLUG"
+        required:
+            - synchronousEthernet
+            - precisionTiming
+            - uniConnectorType
+            - uniConnectorGender
+    CarrierEthernetEiReference:
+        type: object
+        properties:
+            href:
+                description: A reference to an External Interface (UNI, ENNI).
+                type: string
+                format: uri
+        required:
+            - href
     VirtualFrameMap:
         type: object
         description:  >-

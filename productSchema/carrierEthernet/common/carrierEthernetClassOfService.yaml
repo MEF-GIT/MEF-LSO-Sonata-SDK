@@ -2,7 +2,7 @@
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
     MEF LSO Sonata - Carrier Ethernet Class of Service
-    # MEF Forum - Date: 20220110  Edit-level: 319
+    # MEF Forum - Date: 20210615  Edit-level: 221
     # File: carrierEthernet/common/carrierEthernetClassOfService.yaml
     #
     # ---------------------
@@ -59,21 +59,22 @@ definitions:
             or EVC_EP as appropriate.
         properties:
             mapType:
-                description: The field that indicates F = EVC/OVC EP.
+                description: The field that indicates CoS = EVC/OVC EP.
                 type: string
                 enum:
                     - "ENDPOINT"
             map_M:
-                description: The single CoS Name at this EVC/OVC EP
+                description: The single CoS at this EVC/OVC EP
                 # See additional validation notes in the Schema Guide
                 type: string
             l2cp_P:
-                description: This specifies the CoS Name for L2CPs carried over the EVC/OVC.
-                type: array 
-                minItems: 0
-                uniqueItems: TRUE
-                items:
-                    $ref: "#/definitions/CosL2cp"
+                description: This specifies the CoS for L2CPs carried over the EVC/OVC.
+                type: object
+                $ref: "#/definitions/CosL2cp"
+        required:
+            - mapType
+            - map_M
+            - l2cp_P
     CosFromCtagPcp:
         type: object
         description:  >-
@@ -82,35 +83,35 @@ definitions:
             Name. It also maps UNTAGGED frames to a Class of Service Name.
         properties:
             mapType:
-                description: The Field that indicates F = C_TAG_PCP.
+                description: The Field that indicates CoS is C-Tag PCP.
                 type: string
                 enum:
                     - "C_TAG_PCP"
             map_M:
                 description:  >-
                     This maps each of the possible C-tag PCP values (0-7) and Untagged
-                    to a specific CoS Name.
+                    to a specific Class of Service.
                 type: array 
                 minItems: 9
                 maxItems: 9
                 uniqueItems: TRUE
                 items:
+                    type: object
                     $ref: "#/definitions/CosUniPcpMapEntry"
             l2cp_P:
-                description: This specifies the CoS Name for L2CPs carried over the OVC.
-                type: array 
-                minItems: 0
-                uniqueItems: TRUE
-                items:
-                    $ref: "#/definitions/CosL2cp"
+                description: This specifies the CoS for L2CPs carried over the OVC.
+                type: object
+                $ref: "#/definitions/CosL2cp"
+        required:
+            - mapType
+            - map_M
+            - l2cp_P
     CosUniPcpMapEntry:
         type: object
-        description:  >-
-            2-tuple {PCP, CoSName} that maps a PCP value (or Untagged)
-            to a CoS Name.
+        description: 2-tuple {PCP, CoSName} that maps a CoS Name or DISCARD to a PCP.
         properties:
             pcpVal:
-                description: A PCP value from 0 to 7 or UNTAGGED
+                description: A value 0 to 7
                 type: string
                 enum:
                     - "0"
@@ -126,6 +127,9 @@ definitions:
                 description: A CoS Name or DISCARD
                 # See additional validation notes in the Schema Guide
                 type: string
+        required:
+            - pcpVal
+            - pcpCosName
     CosFromStagPcp:
         type: object
         description:  >-
@@ -134,7 +138,7 @@ definitions:
             Name.
         properties:
             mapType:
-                description: The Field that indicates F = S_TAG_PCP.
+                description: The Field that indicates CoS is S-Tag PCP.
                 type: string
                 enum:
                     - "S_TAG_PCP"
@@ -145,23 +149,37 @@ definitions:
                 maxItems: 8
                 uniqueItems: TRUE
                 items:
+                    type: object
                     $ref: "#/definitions/CosEnniPcpMapEntry"
             l2cp_P:
-                description: This specifies the CoS Name for L2CPs carried over the OVC.
+                description: This specifies the CoS for L2CPs carried over the OVC.
                 # See additional validation notes in the Schema Guide
-                type: array 
-                minItems: 0
-                uniqueItems: TRUE
-                items:
-                    $ref: "#/definitions/CosL2cp"
+                type: object
+                $ref: "#/definitions/CosL2cp"
+        required:
+            - mapType
+            - map_M
+            - l2cp_P
     CosEnniPcpMapEntry:
         type: object
         description: 2-tuple {PCP, CoSName} that maps a CoS Name or DISCARD to a PCP.
         properties:
             pcpVal:
-                $ref: "carrierEthernetTypes.yaml#/definitions/PcpValue"
+                type: string
+                enum:
+                    - "0"
+                    - "1"
+                    - "2"
+                    - "3"
+                    - "4"
+                    - "5"
+                    - "6"
+                    - "7"
             pcpCosName:
                 type: string
+        required:
+            - pcpVal
+            - pcpCosName
     CosFromDscp:
         type: object
         description:  >-
@@ -172,66 +190,76 @@ definitions:
             contain IP Packets.
         properties:
             mapType:
-                description: The Field that indicates F = DSCP.
+                description: The Field that indicates CoS is DSCP.
                 type: string
                 enum:
                     - "DSCP"
             map_M:
                 description:  >-
-                    This maps DSCP values to CoS Names for each of IPv4 and IPv6
-                    and also to non-IP packets.
+                    This maps CoS values to a list of DSCP values for each of IPv4
+                    and IPv6 and also to non-IP packets.
+                type: object
                 # A particular DSCP value can appear in at most one entry for each of  IPv4 and IPv6 in dscpValueCosList
                 $ref: "#/definitions/CosDscpMap"
             l2cp_P:
-                description: This specifies the CoS Names for L2CPs carried over the EVC/OVC.
-                type: array 
-                minItems: 0
-                uniqueItems: TRUE
-                items:
-                    $ref: "#/definitions/CosL2cp"
+                description: This specifies the CoS for L2CPs carried over the OVC.
+                type: object
+                $ref: "#/definitions/CosL2cp"
+        required:
+            - mapType
+            - map_M
+            - l2cp_P
     CosDscpMap:
         type: object
         description:  >-
-            This is a list of DSCP to CoS Name Entries followed by items
+            This is a list of CoS to DSCP Map Entries followed by items
             for Not an IP Packet and All Other Values.
         properties:
             dscpValueCoSList:
                 description:  >-
                     This is a list of DSCP to CoS Map Entries: {ipv4DSCPs, ipv6DSCPs,
                     CoSName}
-                # See additional validation notes in the Schema Guide
                 type: array 
                 minItems: 0
                 uniqueItems: TRUE
                 items:
+                    type: object
                     $ref: "#/definitions/CosDscpMapEntry"
             otherIPv4:
                 description:  >-
-                    This is the CoS Name for IPv4 packets with DSCP values other
+                    This is the CoS value for IPv4 packets with DSCP values other
                     than those listed.
                 type: string
             otherIPv6:
                 description:  >-
-                    This is the CoS Name for IPv6 packets with DSCP values other
+                    This is the CoS value for IPv6 packets with DSCP values other
                     than those listed.
                 type: string
             notIP:
                 description:  >-
-                    This is the CoS Name for packets that are not IP packets when
+                    This is the CoS value for packets that are not IP packets when
                     CoS is determined from DSCP
                 type: string
+        required:
+            - dscpValueCoSList
+            - otherIPv4
+            - otherIPv6
+            - notIP
     CosDscpMapEntry:
         type: object
         description: This is a 3-tuple {ipv4list, ipv6list, cosName}
         properties:
             ipv4List:
                 description: List of IPv4 DSCP values
+                type: object
                 $ref: "#/definitions/DscpValues"
             ipv6List:
-                description: List of IPv6 DSCP values
+                type: object
                 $ref: "#/definitions/DscpValues"
             cosName:
                 type: string
+        required:
+            - cosName
     DscpValues:
         type: object
         description: A list of 6 bit values
@@ -251,8 +279,12 @@ definitions:
         properties:
             l2cpIdentifier:
                 description: MEF 45.1 sec. 8.2 - Protocol Identifier
+                type: object
                 $ref: "carrierEthernetL2cp.yaml#/definitions/L2cpProtocol"
             l2cpCosName:
                 description: CoS Name String to associate with the L2CP
                 type: string
+        required:
+            - l2cpIdentifier
+            - l2cpCosName
 

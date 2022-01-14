@@ -2,7 +2,7 @@
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
     MEF LSO Sonata - Carrier Ethernet EVC EP Not EPL
-    # MEF Forum - Date: 20220110  Edit-level: 319
+    # MEF Forum - Date: 20210615  Edit-level: 221
     # File: carrierEthernet/evcSuperClasses/carrierEthernetEvcEpNotEpl.yaml
     #
     # ---------------------
@@ -65,12 +65,13 @@ definitions:
                     and Broadcast Frames are delivered by the service. For each, the
                     value can be UNCONDITIONAL, the frames are delivered without condition,
                     CONDITIONAL, the frames are delivered based on conditions agreed
-                    to between Buyer and Seller (e.g., based on learned addresses),
+                    to between buyer and seller (e.g., based on learned addresses),
                     and DISCARD. If CONDITIONAL is chosen for any of the elements,
                     the conditions must be agreed on by the Service Provider and Subscriber
                     by some other means.
                 # See additional validation notes in the Schema Guide
-                $ref: "../common/carrierEthernetUtilityClasses.yaml#/definitions/FrameDisposition"
+                type: object
+                $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/FrameDisposition"
     CarrierEthernetEvcEpNotEpl:
         type: object
         description:  >-
@@ -91,15 +92,9 @@ definitions:
                     in the value of the EVC List of Class of Service Names Service
                     Attribute (MEF 10.4 Section 8.7) but not equal to Discard and y=
                     the 3-tuple ⟨CIR, CIRmax, ER⟩ where the elements of the 3-tuple
-                    are defined in MEF 10.4 Section 12.1.2. If this property is not
-                    present or an empty list, the value is assumed to have the value
-                    None.
-                type: array 
-                minItems: 0
-                maxItems: 1
-                uniqueItems: TRUE
-                items:
-                    $ref: "../common/carrierEthernetBandwidthProfile.yaml#/definitions/BandwidthProfilePerClassOfServiceName"
+                    are defined in MEF 10.4 Section 12.1.2.
+                type: object
+                $ref: "../../common/carrierEthernetBandwidthProfile.yaml#/definitions/BandwidthProfilePerClassOfServiceName"
             sourceAddressMacLimit:
                 description:  >-
                     MEF 10.4 sec. 10.12 - The value of the EVC EP Source MAC Address
@@ -107,33 +102,8 @@ definitions:
                     N is an integer ≥1 and t is a time duration. When the value of
                     the EVC EP Source MAC Address Limit Service Attribute = ⟨N, t⟩
                     the number of source MAC Addresses that can be used in Ingress
-                    Service Frames is limited. If this property is not present or an
-                    empty list, the value is assumed to have the value None.
+                    Service Frames is limited.
                 # See additional validation notes in the Schema Guide
-                type: array 
-                minItems: 0
-                maxItems: 1
-                uniqueItems: TRUE
-                items:
-                    $ref: "../common/carrierEthernetUtilityClasses.yaml#/definitions/SourceMacAddressLimit"
-            evcEndPointEnvelopes:
-                description:  >-
-                    The Envelopes and Envelope Coupling Flag values to which Bandwidth
-                    Profile Flows for this EVC End Point can be mapped. Value is list
-                    of {envelopeID, couplingFlagForIndexZero}. Envelopes listed in
-                    the EVC End Point Envelopes Service Attribute can be used when
-                    all of the Bandwidth Profile Flows contained in the Envelope are
-                    specific to a given OVC End Point. They are specified using one
-                    of the following EVC End Point Service Attributes: Ingress Bandwidth
-                    Profile Per EVC End Point Egress Bandwidth Profile Per EVC End
-                    Point Ingress Bandwidth Profile Per Class of Service Name Egress
-                    Bandwidth Profile Per Egress Equivalence Class Name  To create
-                    an Envelope containing Bandwidth Profile Flows for more than one
-                    EVC End Point, the UNI Envelopes Service Attribute must be used.
-                # See additional validation notes in the Schema Guide
-                type: array 
-                minItems: 0
-                uniqueItems: TRUE
-                items:
-                    $ref: "../common/carrierEthernetBandwidthProfile.yaml#/definitions/Envelope"
+                type: object
+                $ref: "../../common/utilityClassesAndTypes.yaml#/definitions/SourceMacAddressLimit"
 
