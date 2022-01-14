@@ -31,7 +31,7 @@ It also provides Product Schemas for:
 
 ## High-level release notes
 
-The theme of this release is **Ordering and Inventory**: it delivers full coverage of Business Requirements, API and API Developer Guides for all above mentioned Sonata API functions.
+The theme of this release is **Ordering and Inventory**: it delivers full coverage of Business Requirements, API and API Developer Guides for all above mentioned Sonata API functions. **NOTE:** Some parts of the release are for MEF Members only.
 
 - All APIs have been reviewed and updated to follow their respective Business Requirements & Use Cases and Developer Guides documents
 - All API definitions are provided in OAS 3.0 standard.
@@ -106,7 +106,11 @@ This SDK contains the following items:
   - `supportingStandards` - The rest of documents and standards.
 - `ProductSchema` - Product Specification schemas for:
   - `carrierEthernet` - Carrier Ethernet product Schemas
+<<<<<<< HEAD
 - `generated/staticBinding/full` - contains automatically generated (with help of the open source [Sonata Blending Tool](https://github.com/Amartus/SonataBlendingTool)), not normative static bindings of envelope APIs with all Product Specifications. The Address, Site and Trouble Ticket APIs are not included as they do not carry product information.
+=======
+- `generated/staticBinding/full` - contains automatically generated (with help of the open source [Sonata Blending Tool](https://github.com/Amartus/SonataBlendingTool)), not normative static bindings of envelope APIs with all Product Specifications.
+>>>>>>> refs/heads/billie-final
 
 ## Issues, Questions, and Feedback
 
@@ -126,7 +130,11 @@ The information in this publication is freely available for reproduction and use
 
 The information contained herein is intended to be used without modification by the recipient or user of this document. MEF is not responsible or liable for any modifications to this document made by any other party.
 
+<<<<<<< HEAD
 The receipt or any use of this document or its contents does not in any way create, by implication or otherwise:
+=======
+The receipt or any use of this document or its contents does not in any way create, by implication or otherwise.
+>>>>>>> refs/heads/billie-final
 
 (a) any express or implied license or right to or under any patent, copyright, trademark or trade secret rights held or claimed by any MEF member which are or may be associated with the ideas, techniques, concepts or expressions contained herein; nor
 

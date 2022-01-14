@@ -21,29 +21,36 @@ info:
 
 
     - **Firm - Subject to Feasibility Check**: A quote that is provided to the
-    Buyer based on some, but not a complete, pre-order analysis.  At this
-    stage, there is further analysis that the Seller can (and is willing) to
-    undertake to provide a committed or firm price, but the Sell-er needs more
-    time to complete this or the Seller may request that the Buyer use the Firm
-    - Subject to Feasibility Check Quote to proceed to the Order process.
-    Ordering may be possible based on the Firm - Subject to Feasibility Check
-    Quote with some stipulations as to how cost identified during delivery is
-    addressed. The Monthly Recurring Charges specified in the Quote Response
-    are final.  Non-Recurring Charges specified in the Quote Response are
-    subject to change.
+    Buyer based on some, but not a complete, pre-order analysis.  At this stage,
+    there is further analysis that the Seller can (and is willing) to undertake
+    to provide a committed or firm price, but the Sell-er needs more time to
+    complete this or the Seller may request that the Buyer use the Firm -
+    Subject to Feasibility Check Quote to proceed to the Order process. Ordering
+    may be possible based on the Firm - Subject to Feasibility Check Quote with
+    some stipulations as to how cost identified during delivery is addressed.
+    The Monthly Recurring Charges specified in the Quote Response are
+    final.  Non-Recurring Charges specified in the Quote Response are subject to
+    change.
 
 
-    - **Firm**: A quote provided to the Buyer based on a pre-order analysis.
-    All Monthly Recurring Charges and Non-Recurring Charges specified on a Firm
+    - **Firm**: A quote provided to the Buyer based on a pre-order analysis. All
+    Monthly Recurring Charges and Non-Recurring Charges specified on a Firm
     Quote are committed.  A Firm Quote may expire at some date specified by the
     Seller.  
 
 
-    Quote API has been designed by MEF basing on TMF 648 v4.0.0
+    Copyright 2021 MEF Forum and its contributors.
+
+
+    This file includes content based on the TM Forum Quote Management API
+    (TMF648 v4.0.0) available at
+    https://github.com/tmforum-apis/TMF648_QuoteManagement, which is licensed by
+    the TM Forum under the Apache License version 2.0. Such content has been
+    modified by the MEF Forum and its contributors.
   title: Quote Management
   version: 7.0.0-RC
 servers:
-  - url: 'https://serverRoot/mefApi/sonata/quoteManagement/v7/'
+  - url: "https://serverRoot/mefApi/sonata/quoteManagement/v7/"
 tags:
   - name: quote
   - name: quote operations
@@ -55,8 +62,8 @@ paths:
         The Buyer requests a list of Quotes from the Seller based on a set of
         filter criteria (as described in MEF 80).  For each Quote returned, the
         Seller also provides a Quote Identifier that uniquely identifies this
-        Quote within the Seller. The order of the elements returned to the
-        Buyer is defined by the Seller (e.g. natural order) and does not change
+        Quote within the Seller. The order of the elements returned to the Buyer
+        is defined by the Seller (e.g. natural order) and does not change
         between the pages.
       operationId: listQuote
       parameters:
@@ -109,8 +116,8 @@ paths:
           style: form
         - description: >-
             An identifier that is used to group Quotes that represent a unit of
-            functionality that is important to a Buyer. A Project can be used
-            to relate multiple Quotes together
+            functionality that is important to a Buyer. A Project can be used to
+            relate multiple Quotes together
           explode: true
           in: query
           name: projectId
@@ -240,15 +247,14 @@ paths:
             type: integer
           style: form
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: '#/components/schemas/Quote_Find'
+                  $ref: "#/components/schemas/Quote_Find"
                 type: array
-          description:
-            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
+          description: "OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)"
           headers:
             X-Pagination-Throttled:
               description: >
@@ -274,29 +280,29 @@ paths:
               schema:
                 type: integer
               style: simple
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       summary: List or find Quote objects
       tags:
@@ -336,56 +342,56 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/Quote_Create'
+              $ref: "#/components/schemas/Quote_Create"
         description: The Quote to be created
         required: true
       responses:
-        '201':
+        "201":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Quote'
+                $ref: "#/components/schemas/Quote"
           description:
-            'Created  (https://tools.ietf.org/html/rfc7231#section-6.3.2)'
-        '400':
+            "Created  (https://tools.ietf.org/html/rfc7231#section-6.3.2)"
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '422':
+        "422":
           content:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: '#/components/schemas/Error422'
+                  $ref: "#/components/schemas/Error422"
                 type: array
           description: >-
             Unprocessable entity due to the business validation problems in the
             Quote or one of the Quote items
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       summary: Send request to perform a quotation
       tags:
         - quote
       x-codegen-request-body-name: quote
-  '/quote/{id}':
+  "/quote/{id}":
     get:
       description: >-
         This operation retrieves a Quote entity. Attribute selection is enabled
@@ -428,42 +434,41 @@ paths:
             type: string
           style: form
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Quote'
-          description:
-            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
-        '400':
+                $ref: "#/components/schemas/Quote"
+          description: "OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)"
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       summary: Retrieves a Quote by ID
       tags:
@@ -504,49 +509,49 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/QuoteOperationData'
+              $ref: "#/components/schemas/QuoteOperationData"
         description: The details of the Quote Operation
         required: true
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/QuoteOperationData'
+                $ref: "#/components/schemas/QuoteOperationData"
           description: Success
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '422':
+        "422":
           content:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: '#/components/schemas/Error422'
+                  $ref: "#/components/schemas/Error422"
                 type: array
           description: >-
             Unprocessable entity due to the business validation problems in the
             Quote or one of the Quote items
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       summary: Cancels a Quote
       tags:
@@ -588,49 +593,49 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/QuoteOperationData'
+              $ref: "#/components/schemas/QuoteOperationData"
         description: The details of the Quote Operation
         required: true
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/QuoteOperationData'
+                $ref: "#/components/schemas/QuoteOperationData"
           description: Success
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '422':
+        "422":
           content:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: '#/components/schemas/Error422'
+                  $ref: "#/components/schemas/Error422"
                 type: array
           description: >-
             Unprocessable entity due to the business validation problems in the
             Quote or one of the Quote items
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       summary: Rejects a Quote
       tags:
@@ -675,47 +680,47 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/EventSubscriptionInput'
+              $ref: "#/components/schemas/EventSubscriptionInput"
         description:
           Data containing the callback endpoint to deliver the information
         required: true
       responses:
-        '201':
+        "201":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/EventSubscription'
+                $ref: "#/components/schemas/EventSubscription"
           description:
-            'Subscribed  (https://tools.ietf.org/html/rfc7231#section-6.3.2)'
-        '400':
+            "Subscribed  (https://tools.ietf.org/html/rfc7231#section-6.3.2)"
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
-        '501':
+        "501":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error501'
+                $ref: "#/components/schemas/Error501"
           description: >-
             Method not implemented. Used in case Seller is not supporting
             Notification mechanism
@@ -723,12 +728,12 @@ paths:
       tags:
         - events subscription
       x-codegen-request-body-name: data
-  '/hub/{id}':
+  "/hub/{id}":
     delete:
       description: >-
         Resets the communication endpoint address the service instance must use
-        to deliver information about its health state, execution state,
-        failures and metrics.
+        to deliver information about its health state, execution state, failures
+        and metrics.
       operationId: unregisterListener
       parameters:
         - description: The id of the EventSubscription
@@ -767,44 +772,44 @@ paths:
             type: string
           style: form
       responses:
-        '204':
+        "204":
           description:
-            'Deleted (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+            "Deleted (https://tools.ietf.org/html/rfc7231#section-6.3.5)"
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
-        '501':
+        "501":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error501'
+                $ref: "#/components/schemas/Error501"
           description: >-
             Method not implemented. Used in case Seller is not supporting
             Notification mechanism
@@ -815,56 +820,56 @@ components:
   schemas:
     AccessEline:
       allOf:
-        - $ref: '#/components/schemas/MEFProductConfiguration'
-        - $ref: '#/components/schemas/AccessElineOvcCommon'
+        - $ref: "#/components/schemas/MEFProductConfiguration"
+        - $ref: "#/components/schemas/AccessElineOvcCommon"
         - properties:
             enniEp:
               description:
                 MEF 26.2 sec. 16 - The OVC EP object for the OVC EP at the ENNI
-              $ref: '#/components/schemas/AccessElineOvcEndPoint'
+              $ref: "#/components/schemas/AccessElineOvcEndPoint"
             uniEp:
               description:
                 MEF 26.2 sec. 16 - The OVC EP object for the OVC EP at the UNI
-              $ref: '#/components/schemas/AccessElineOvcEndPoint'
+              $ref: "#/components/schemas/AccessElineOvcEndPoint"
           type: object
-      x-discriminator-value: 'urn:mef:lso:spec:sonata:access-eline:v2.0.0:quote'
+      x-discriminator-value: "urn:mef:lso:spec:sonata:access-eline:v2.0.0:quote"
     AccessElineOvcCommon:
       description: >-
         This class contains all of the Access E-Line OVC Services Attributes
         that are used in all four Business Functions (POQ, Quote, Order,
         Inventory). At this time, this includes all of the Access Eline OVC
         Service Attributes. This class is used to compose the AccessElineOvc
-        class which has one file for each Business Function that differ in
-        terms of the Service Attributes that are "Required" for the Business
-        Function (rather than "Optional").
+        class which has one file for each Business Function that differ in terms
+        of the Service Attributes that are "Required" for the Business Function
+        (rather than "Optional").
       properties:
         ceVlanIdPreservation:
           description: >-
             MEF 26.2 sec. 12.7 - Determines whether the C-tag in the Ingress
             Frame is Stripped or Preserved in the Egress Frame. Per MEF 51.1,
             the Operator must support PRESERVE and should support STRIP.
-          $ref: '#/components/schemas/CeVlanIdPreservation'
+          $ref: "#/components/schemas/CeVlanIdPreservation"
         cTagPcpPreservation:
-          $ref: '#/components/schemas/EnabledDisabled'
+          $ref: "#/components/schemas/EnabledDisabled"
         cTagDeiPreservation:
-          $ref: '#/components/schemas/EnabledDisabled'
+          $ref: "#/components/schemas/EnabledDisabled"
         ovcL2cpAddressSet:
           description: >-
             MEF 45 sec. 8.1 and MEF 26.2 sec. 12.16 - The subset of the Bridge
             Reserved Addresses that are Peered or Discarded (i.e. not Passed).
-            The value CTB or CTB2 must be used for port-based (private)
-            services and CTA for vlan-based (virtual private) services.
-          $ref: '#/components/schemas/OvcL2cpAddressSet'
+            The value CTB or CTB2 must be used for port-based (private) services
+            and CTA for vlan-based (virtual private) services.
+          $ref: "#/components/schemas/OvcL2cpAddressSet"
         frameDisposition:
-          $ref: '#/components/schemas/FrameDisposition'
+          $ref: "#/components/schemas/FrameDisposition"
         listOfClassOfServiceNames:
           description: >-
-            MEF 26.2 sec. 12.12 - The OVC List of Class of Service Names
-            Service Attribute is used to specify all of the Class of Service
-            Names supported by an OVC. The value of the OVC List of Class of
-            Service Names Service Attribute is a non-empty list of Class of
-            Service Names (which may include one or more of the CoS Labels
-            defined in MEF 23.2).
+            MEF 26.2 sec. 12.12 - The OVC List of Class of Service Names Service
+            Attribute is used to specify all of the Class of Service Names
+            supported by an OVC. The value of the OVC List of Class of Service
+            Names Service Attribute is a non-empty list of Class of Service
+            Names (which may include one or more of the CoS Labels defined in
+            MEF 23.2).
           items:
             type: string
           minItems: 1
@@ -872,22 +877,22 @@ components:
           uniqueItems: true
         availableMegLevel:
           description: >-
-            MEF 26.2 sec. 12.15 - The lowest MEG level for which SOAM Frames
-            are not peered or discarded by the Service Provider. If this
-            attribute is NONE there is no such level (that is, SOAM frames at
-            all MEG levels may be peered or discarded by the Service Provider).
-            MEF 51.1 constrains it to 0-6 for Access E-Line.
-          $ref: '#/components/schemas/AccessElineOvcCommonAvailableMegLevel'
+            MEF 26.2 sec. 12.15 - The lowest MEG level for which SOAM Frames are
+            not peered or discarded by the Service Provider. If this attribute
+            is NONE there is no such level (that is, SOAM frames at all MEG
+            levels may be peered or discarded by the Service Provider). MEF 51.1
+            constrains it to 0-6 for Access E-Line.
+          $ref: "#/components/schemas/AccessElineOvcCommonAvailableMegLevel"
         carrierEthernetSls:
           description: >-
             MEF 26.2 sec. 12.13 - Technical details of the service level in
             terms of Performance Objectives, agreed between the SP/SO and the
             Operator as part of the Service Level Agreement. For each
-            Performance Metric included in the SLS, a Performance Objective
-            must be included as well as the parameter values needed for the
+            Performance Metric included in the SLS, a Performance Objective must
+            be included as well as the parameter values needed for the
             Performance Metric.
           items:
-            $ref: '#/components/schemas/CarrierEthernetSls'
+            $ref: "#/components/schemas/CarrierEthernetSls"
           maxItems: 1
           minItems: 0
           type: array
@@ -904,23 +909,23 @@ components:
       type: object
     AccessElineOvcCommonAvailableMegLevel:
       description: >-
-        MEF 26.2 sec. 12.15 - The lowest MEG level for which SOAM Frames are
-        not peered or discarded by the Service Provider. If this attribute is
-        NONE there is no such level (that is, SOAM frames at all MEG levels may
-        be peered or discarded by the Service Provider). MEF 51.1 constrains it
-        to 0-6 for Access E-Line.
+        MEF 26.2 sec. 12.15 - The lowest MEG level for which SOAM Frames are not
+        peered or discarded by the Service Provider. If this attribute is NONE
+        there is no such level (that is, SOAM frames at all MEG levels may be
+        peered or discarded by the Service Provider). MEF 51.1 constrains it to
+        0-6 for Access E-Line.
       enum:
-        - '0'
-        - '1'
-        - '2'
-        - '3'
-        - '4'
-        - '5'
-        - '6'
+        - "0"
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+        - "5"
+        - "6"
       type: string
     AccessElineOvcEndPoint:
       allOf:
-        - $ref: '#/components/schemas/AccessElineOvcEpCommon'
+        - $ref: "#/components/schemas/AccessElineOvcEpCommon"
       description: >-
         An OVC End Point is a logical entity at a given External Interface that
         is associated with a distinct set of frames passing over that External
@@ -948,13 +953,13 @@ components:
           type: string
         egressEquivalenceClassIdentifier:
           description: >-
-            MEF 26.2 sec. 16.9 - The mechanism that allows an Egress
-            Equivalence Class Name to be determined for an egress EI Frame. ?F,
-            M, P? where F is a protocol field in the egress EI Frame, M is a
-            map that maps each possible value of the field F and the absence of
-            the field F to an Egress Equivalence Class Name and P is a map of
-            L2CP type to Egress Equivalence Class Name.
-          $ref: '#/components/schemas/CosFrom'
+            MEF 26.2 sec. 16.9 - The mechanism that allows an Egress Equivalence
+            Class Name to be determined for an egress EI Frame. ?F, M, P? where
+            F is a protocol field in the egress EI Frame, M is a map that maps
+            each possible value of the field F and the absence of the field F to
+            an Egress Equivalence Class Name and P is a map of L2CP type to
+            Egress Equivalence Class Name.
+          $ref: "#/components/schemas/CosFrom"
         aggregationLinkDepth:
           description: >-
             MEF 26.2 sec. 16.14 - A list of 2-tuples {SVID, Depth} that
@@ -962,29 +967,29 @@ components:
             each S-VLAN ID mapped to the OVC End Point. It indicates the level
             of resiliency to use for the SVID at the ENNI.
           items:
-            $ref: '#/components/schemas/AggLinkDepth'
+            $ref: "#/components/schemas/AggLinkDepth"
           minItems: 0
           type: array
           uniqueItems: true
         maintenanceIntermediatePoint:
           description: >-
-            MEF 26.2 sec. 16.16 - Indicates whether a MIP is instantiated at
-            the OVC End Point and the MEG Level of the MIP. When the value is
-            not None, several parameter values need to be determined as
-            described in MEF 30.1.
-          $ref: '#/components/schemas/MaintenanceIntermediatePoint'
+            MEF 26.2 sec. 16.16 - Indicates whether a MIP is instantiated at the
+            OVC End Point and the MEG Level of the MIP. When the value is not
+            None, several parameter values need to be determined as described in
+            MEF 30.1.
+          $ref: "#/components/schemas/MaintenanceIntermediatePoint"
         ovcEgressMap:
           description: >-
-            MEF 26.2 sec. 16.8 - A set of mappings that determine the content
-            of the S-Tag or C-Tag of an egress frame at an ENNI or UNI
-            (respectively) based on the Class of Service Name and Frame Color
-            of the frame. Three forms: (1) CoSName(CN) -> C/S-Tag PCP or
-            Discard, (2) CoSName and Frame Color (CC)--> C/S-Tag DEI or
-            Discard, and (3) CoSName and Frame Color (CC)--> C/S-Tag PCP or
-            Discard. A fourth form is included which combines (1) and (2)
-            because that is a common case.
+            MEF 26.2 sec. 16.8 - A set of mappings that determine the content of
+            the S-Tag or C-Tag of an egress frame at an ENNI or UNI
+            (respectively) based on the Class of Service Name and Frame Color of
+            the frame. Three forms: (1) CoSName(CN) -> C/S-Tag PCP or Discard,
+            (2) CoSName and Frame Color (CC)--> C/S-Tag DEI or Discard, and (3)
+            CoSName and Frame Color (CC)--> C/S-Tag PCP or Discard. A fourth
+            form is included which combines (1) and (2) because that is a common
+            case.
           items:
-            $ref: '#/components/schemas/OvcEgressMap'
+            $ref: "#/components/schemas/OvcEgressMap"
           maxItems: 1
           minItems: 0
           type: array
@@ -994,7 +999,7 @@ components:
             MEF 26.2 sec. 16.11 - Bandwidth Profile Flow parameters for all
             egress Service Frames mapped to the OVC End Point.
           items:
-            $ref: '#/components/schemas/BwpFlow'
+            $ref: "#/components/schemas/BwpFlow"
           maxItems: 1
           minItems: 0
           type: array
@@ -1005,7 +1010,7 @@ components:
             Flow parameters, for all egress Service Frames mapped to that EEC
             Name at the OVC End Point.
           items:
-            $ref: '#/components/schemas/BandwidthProfilePerClassOfServiceName'
+            $ref: "#/components/schemas/BandwidthProfilePerClassOfServiceName"
           minItems: 0
           type: array
           uniqueItems: false
@@ -1013,31 +1018,30 @@ components:
           description: >-
             MEF 26.2 sec. 16.12 - For each CoS Name listed, Bandwidth Profile
             Flow parameters for all ingress Service Frames mapped to that CoS
-            Name at OVC End Point. This bandwidth profile flow is used to
-            police at Ingress each CoS in an OVC individually. List of 2-tuples
-            {cos, bwpf}.
+            Name at OVC End Point. This bandwidth profile flow is used to police
+            at Ingress each CoS in an OVC individually. List of 2-tuples {cos,
+            bwpf}.
           items:
-            $ref: '#/components/schemas/BandwidthProfilePerClassOfServiceName'
+            $ref: "#/components/schemas/BandwidthProfilePerClassOfServiceName"
           minItems: 0
           type: array
           uniqueItems: true
         ovcEndPointEnvelopes:
           description: >-
             The Envelopes and Envelope Coupling Flag values to which Bandwidth
-            Profile Flows for this OVC End Point can be mapped. Value is list
-            of {envelopeID, couplingFlagForIndexZero}. Envelopes listed in the
-            OVC End Point Envelopes Service Attribute can be used when all of
-            the Bandwidth Profile Flows contained in the Envelope are specific
-            to a given OVC End Point. They are specified using one of the
-            following OVC End Point Service Attributes: Ingress Bandwidth
-            Profile Per OVC End Point Egress Bandwidth Profile Per OVC End
-            Point Ingress Bandwidth Profile Per Class of Service Name Egress
-            Bandwidth Profile Per Egress Equivalence Class Name  To create an
-            Envelope containing Bandwidth Profile Flows for more than one OVC
-            End Point, the UNI or ENNI Envelopes Service Attribute (as
-            appropriate) must be used.
+            Profile Flows for this OVC End Point can be mapped. Value is list of
+            {envelopeID, couplingFlagForIndexZero}. Envelopes listed in the OVC
+            End Point Envelopes Service Attribute can be used when all of the
+            Bandwidth Profile Flows contained in the Envelope are specific to a
+            given OVC End Point. They are specified using one of the following
+            OVC End Point Service Attributes: Ingress Bandwidth Profile Per OVC
+            End Point Egress Bandwidth Profile Per OVC End Point Ingress
+            Bandwidth Profile Per Class of Service Name Egress Bandwidth Profile
+            Per Egress Equivalence Class Name  To create an Envelope containing
+            Bandwidth Profile Flows for more than one OVC End Point, the UNI or
+            ENNI Envelopes Service Attribute (as appropriate) must be used.
           items:
-            $ref: '#/components/schemas/Envelope'
+            $ref: "#/components/schemas/Envelope"
           minItems: 0
           type: array
           uniqueItems: true
@@ -1045,36 +1049,35 @@ components:
           description: >-
             MEF 26.2 sec. 16.5 - The information that determines which UNI/ENNI
             Frames are mapped to the OVC End Point. At the UNI and ENNI, the
-            only allowable mapping is a LIST of VLAN IDs (CE-VLAN IDs at the
-            UNI and S-VLAN IDs at the ENNI).
-          $ref: '#/components/schemas/EndPointMapForm'
+            only allowable mapping is a LIST of VLAN IDs (CE-VLAN IDs at the UNI
+            and S-VLAN IDs at the ENNI).
+          $ref: "#/components/schemas/EndPointMapForm"
         colorMap:
           description: >-
             MEF 26.2 sec. 16.7 - The OVC EP Color Map Service Attribute is the
-            mechanism by which the Color for an Ingress External Interface
-            Frame that is mapped to an OVC EP is indicated by the content in
-            the frame header. The value of the OVC EP Color Map Service
-            Attribute is a pair of the form ?F, M? where: F is one of the
-            values ENDPOINT, DEI, PCP, or DSCP and M is a map that can be used
-            to assign Color to each Ingress Frame. (The form of M depends on
-            the value of F.)
-          $ref: '#/components/schemas/ColorFrom'
+            mechanism by which the Color for an Ingress External Interface Frame
+            that is mapped to an OVC EP is indicated by the content in the frame
+            header. The value of the OVC EP Color Map Service Attribute is a
+            pair of the form ?F, M? where: F is one of the values ENDPOINT, DEI,
+            PCP, or DSCP and M is a map that can be used to assign Color to each
+            Ingress Frame. (The form of M depends on the value of F.)
+          $ref: "#/components/schemas/ColorFrom"
         ovcEndPointPortConversationToAggregationLinkMap:
           description: >-
             MEF 26.2 sec. 13.2 - A mapping of Port Conversation IDs (i.e., VLAN
             IDs) to an ordered list of physical links if
             EnniService.sVlanIdControl is FULL and there are multiple physical
-            links in the ENNI and EnniCommon.linkAggregation is ALL_ACTIVE.
-            Only S-VLAN IDs that are listed in the
+            links in the ENNI and EnniCommon.linkAggregation is ALL_ACTIVE. Only
+            S-VLAN IDs that are listed in the
             AccessElineOvcEndPoint.ovcEndPointMap can be listed in this
             attribute.   If EnniService.sVlanIdControl is PARTIAL then the
-            Service Provider does not have full visibility of all the S-VLAN
-            IDs mapped to each physical link, and hence cannot pick values that
+            Service Provider does not have full visibility of all the S-VLAN IDs
+            mapped to each physical link, and hence cannot pick values that
             avoid overloading certain links. In this case, the ENNI Port
-            Conversation to Aggregation Link Map Common Attribute must be
-            agreed between the relevant Operators.
+            Conversation to Aggregation Link Map Common Attribute must be agreed
+            between the relevant Operators.
           items:
-            $ref: '#/components/schemas/ConversationIdToAggregationLinkMap'
+            $ref: "#/components/schemas/ConversationIdToAggregationLinkMap"
           minItems: 0
           type: array
           uniqueItems: true
@@ -1084,12 +1087,12 @@ components:
             Service Map Service Attribute is a 3-tuple of the form ?F, M, P?
             where: F is one of the values ENDPOINT, C_TAG_PCP, S_TAG_PCP, or
             DSCP, M is a map that can be used to assign Class of Service Names
-            to External Interface Frames. (The form of M depends on the value
-            of F.), and P is a map with entries of the form ?Layer 2 Control
+            to External Interface Frames. (The form of M depends on the value of
+            F.), and P is a map with entries of the form ?Layer 2 Control
             Protocol type ? Class of Service Name? where the Layer 2 Control
             Protocol type is determined by the Protocol Identifier (see Section
             6.2 of MEF 45.1).
-          $ref: '#/components/schemas/CosFrom'
+          $ref: "#/components/schemas/CosFrom"
         sourceMacAddressLimit:
           description: >-
             MEF 26.2 sec. 16.15 - Specifies a limit on the number of different
@@ -1099,18 +1102,18 @@ components:
             value is {N,t} where N is an integer greater than or equal to 1 and
             t is a time duration.
           items:
-            $ref: '#/components/schemas/SourceMacAddressLimit'
+            $ref: "#/components/schemas/SourceMacAddressLimit"
           maxItems: 1
           minItems: 0
           type: array
           uniqueItems: true
         maintenanceEndPointList:
           description: >-
-            MEF 26.2 sec. 16.17 - A list of the MEPs instantiated at this OVC
-            EP and the direction of each MEP, List of 2-tuples ?l, d? where l
-            is MEG level and d is direction (Up/Down)
+            MEF 26.2 sec. 16.17 - A list of the MEPs instantiated at this OVC EP
+            and the direction of each MEP, List of 2-tuples ?l, d? where l is
+            MEG level and d is direction (Up/Down)
           items:
-            $ref: '#/components/schemas/MepLevelAndDirection'
+            $ref: "#/components/schemas/MepLevelAndDirection"
           maxItems: 16
           minItems: 0
           type: array
@@ -1144,13 +1147,13 @@ components:
         peered or discarded by the Service Provider). MEF 6.3 constrains it to
         0-6 for all Subscriber Ethernet Services.
       enum:
-        - '0'
-        - '1'
-        - '2'
-        - '3'
-        - '4'
-        - '5'
-        - '6'
+        - "0"
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+        - "5"
+        - "6"
       type: string
     BandwidthProfilePerClassOfServiceName:
       description: >-
@@ -1165,12 +1168,12 @@ components:
         one pair in the list for each CoS or EEC Name (Except Discard).
       properties:
         bwpFlow:
-          $ref: '#/components/schemas/BwpFlow'
+          $ref: "#/components/schemas/BwpFlow"
         classOfServiceName:
           description: >-
-            MEF 26.2 sec. 16.12 and 16.13 - For Ingress, this is the Name of
-            the Class of Service that this bandwidth profile flow is applied
-            to. This should be an item from ovc.listOfClassOfServiceNames. For
+            MEF 26.2 sec. 16.12 and 16.13 - For Ingress, this is the Name of the
+            Class of Service that this bandwidth profile flow is applied to.
+            This should be an item from ovc.listOfClassOfServiceNames. For
             Egress, this is the Egress Equivalence Class (EEC) Name.
           type: string
       required:
@@ -1183,13 +1186,12 @@ components:
         Bandwidth Profile Flow which includes the bandwidth profile parameter
         CIR, CIRmax, CBS, EIR, EIRmax, EBS, Coupling Flag, Color Mode, Envelope
         and Rank, and Token Request Offset. The BwpFlow is used with Service
-        Attributes for CarrierEthernetOperatorUni,
-        CarrierEthernetSubscriberUni, CarrierEthernetVuni,, and ENNI as well as
-        OVC and EVC End Points. Reference MEF 10.4 Section 12 and MEF 26.2
-        Section 17.
+        Attributes for CarrierEthernetOperatorUni, CarrierEthernetSubscriberUni,
+        CarrierEthernetVuni,, and ENNI as well as OVC and EVC End Points.
+        Reference MEF 10.4 Section 12 and MEF 26.2 Section 17.
       properties:
         eirMax:
-          $ref: '#/components/schemas/InformationRate'
+          $ref: "#/components/schemas/InformationRate"
         envelopeRank:
           description: >-
             MEF 26.2 sec. 17.1.2 and MEF 10.4 sec. 12.1.2 - The rank in the
@@ -1197,9 +1199,9 @@ components:
           minimum: 1
           type: integer
         cirMax:
-          $ref: '#/components/schemas/InformationRate'
+          $ref: "#/components/schemas/InformationRate"
         cbs:
-          $ref: '#/components/schemas/DataSize'
+          $ref: "#/components/schemas/DataSize"
         couplingFlag:
           description: >-
             MEF 26.2 sec. 17.1.2 and MEF 10.4 sec. 12.1.2 - The couplingFlag
@@ -1226,18 +1228,18 @@ components:
             the Bandwidth Profile Flow by a fixed number of octets.
           type: integer
         ebs:
-          $ref: '#/components/schemas/DataSize'
+          $ref: "#/components/schemas/DataSize"
         colorMode:
           description: >-
             MEF 26.2 sec. 17.1.2 and MEF 10.4 sec. 12.1.2 - colorMode indicates
             whether or not External Interface Frames for this Bandwidth Profile
-            Flow that are identified as Yellow on input to the Bandwidth
-            Profile Algorithm can be declared Green.
-          $ref: '#/components/schemas/ColorMode'
+            Flow that are identified as Yellow on input to the Bandwidth Profile
+            Algorithm can be declared Green.
+          $ref: "#/components/schemas/ColorMode"
         cir:
-          $ref: '#/components/schemas/InformationRate'
+          $ref: "#/components/schemas/InformationRate"
         eir:
-          $ref: '#/components/schemas/InformationRate'
+          $ref: "#/components/schemas/InformationRate"
       required:
         - cbs
         - cir
@@ -1254,7 +1256,7 @@ components:
     CarrierEthernetEiReference:
       properties:
         href:
-          description: 'A reference to an External Interface (UNI, ENNI).'
+          description: "A reference to an External Interface (UNI, ENNI)."
           format: uri
           type: string
       required:
@@ -1285,17 +1287,17 @@ components:
             is NONE  there is no such level (that is, SOAM frames at all MEG
             levels may be peered or discarded by the Service Provider). MEF 6.3
             constrains it to 0-6 for all Subscriber Ethernet Services.
-          $ref: '#/components/schemas/AvailableMegLevel'
+          $ref: "#/components/schemas/AvailableMegLevel"
         carrierEthernetSls:
           description: >-
             MEF 10.4 sec. 8.8 - The SLS includes technical details of the
-            service level in terms of Performance Objectives, agreed between
-            the Service Provider and the Subscriber or between Service Provider
-            and the Operator as part of the Service Level Agreement. A given
-            SLS might contain 0,1 or more Performance Objectives for each
+            service level in terms of Performance Objectives, agreed between the
+            Service Provider and the Subscriber or between Service Provider and
+            the Operator as part of the Service Level Agreement. A given SLS
+            might contain 0,1 or more Performance Objectives for each
             Performance Metric.
           items:
-            $ref: '#/components/schemas/CarrierEthernetSls'
+            $ref: "#/components/schemas/CarrierEthernetSls"
           maxItems: 1
           minItems: 0
           type: array
@@ -1310,53 +1312,52 @@ components:
     CarrierEthernetEvcEpCommon:
       description: >-
         This set of EVC End Point Service Attributes are applicable to all
-        Subscriber (EVC-based) Ethernet Services defined in MEF 6.3 based on
-        the Service Attributes in MEF 10.4.
+        Subscriber (EVC-based) Ethernet Services defined in MEF 6.3 based on the
+        Service Attributes in MEF 10.4.
       properties:
         identifier:
           description: >-
-            MEF 10.4 sec. 10.1 - The value of the EVC EP ID Service Attribute
-            is a string that is used to allow the Subscriber and Service
-            Provider to uniquely identify the EVC EP for operations purposes.
+            MEF 10.4 sec. 10.1 - The value of the EVC EP ID Service Attribute is
+            a string that is used to allow the Subscriber and Service Provider
+            to uniquely identify the EVC EP for operations purposes.
           maxLength: 45
           minLength: 1
           pattern: "[ -\x7F]+"
           type: string
         uni:
-          $ref: '#/components/schemas/CarrierEthernetEiReference'
+          $ref: "#/components/schemas/CarrierEthernetEiReference"
         subscriberMegMip:
           description: >-
             MEF 10.4 sec. 10.13 - The value of the EVC EP Subscriber MEG MIP
             Service Attribute is either None or an integer in the range 0 - 7
             that indicates the MEG Level of a Subscriber MEG MIP.
-          $ref: '#/components/schemas/SubscriberMegMip'
+          $ref: "#/components/schemas/SubscriberMegMip"
         egressMap:
-          $ref: '#/components/schemas/EvcEgressMap'
+          $ref: "#/components/schemas/EvcEgressMap"
         colorMap:
           description: >-
             MEF 10.4 sec. 10.6 - The value of the EVC EP Color Map Service
-            Attribute is a pair of the form ?F, M? where: F is one of the
-            values ENDPOINT, DEI, PCP, or DSCP and M is a map that can be used
-            to assign Color to each Ingress Service Frame. (The form of M
-            depends on the value of F.). The EVC EP Color Map Service Attribute
-            is the mechanism by which the Color for an Ingress Service Frame
-            that is mapped to an EVC EP is indicated by the content in the
-            Service Frame header.
-          $ref: '#/components/schemas/ColorFrom'
+            Attribute is a pair of the form ?F, M? where: F is one of the values
+            ENDPOINT, DEI, PCP, or DSCP and M is a map that can be used to
+            assign Color to each Ingress Service Frame. (The form of M depends
+            on the value of F.). The EVC EP Color Map Service Attribute is the
+            mechanism by which the Color for an Ingress Service Frame that is
+            mapped to an EVC EP is indicated by the content in the Service Frame
+            header.
+          $ref: "#/components/schemas/ColorFrom"
         ingressClassOfServiceMap:
           description: >-
             MEF 10.4 sec. 10.5 and MEF 45.1 sec. 6.2 - The value of the EVC EP
             Ingress Class of Service Map Service Attribute is a 3-tuple of the
-            form ?F, M, P? where: F is one of the values ENDPOINT, C_TAG_PCP,
-            or DSCP, M is a map that can be used to assign Class of Service
-            Names to Service Frames. (The form of M depends on the value of
-            F.), and P is a map with entries of the form ?Layer 2 Control
-            Protocol type ? Class of Service Name? where the Layer 2 Control
-            Protocol type is determined by the Protocol Identifier (see Section
-            6.2 of MEF 45.1).
-          $ref: '#/components/schemas/CosFrom'
+            form ?F, M, P? where: F is one of the values ENDPOINT, C_TAG_PCP, or
+            DSCP, M is a map that can be used to assign Class of Service Names
+            to Service Frames. (The form of M depends on the value of F.), and P
+            is a map with entries of the form ?Layer 2 Control Protocol type ?
+            Class of Service Name? where the Layer 2 Control Protocol type is
+            determined by the Protocol Identifier (see Section 6.2 of MEF 45.1).
+          $ref: "#/components/schemas/CosFrom"
         ingressBandwidthProfilePerClassofServiceName:
-          $ref: '#/components/schemas/BandwidthProfilePerClassOfServiceName'
+          $ref: "#/components/schemas/BandwidthProfilePerClassOfServiceName"
       type: object
     CarrierEthernetEvcEpEtree:
       description: >-
@@ -1367,38 +1368,38 @@ components:
           description: >-
             MEF 10.4 sec. 10.3 - Indicates how EI Frames mapped to the EVC End
             Point can be forwarded
-          $ref: '#/components/schemas/Role'
+          $ref: "#/components/schemas/Role"
       type: object
     CarrierEthernetEvcEpNotEpl:
       description: >-
         This set of EVC End Point Service Attributes are applicable to all
-        Subscriber (EVC-based) Ethernet Services defined in MEF 6.3 based on
-        the Service Attributes in MEF 10.4 - except EPL.
+        Subscriber (EVC-based) Ethernet Services defined in MEF 6.3 based on the
+        Service Attributes in MEF 10.4 - except EPL.
       properties:
         sourceAddressMacLimit:
-          $ref: '#/components/schemas/SourceMacAddressLimit'
+          $ref: "#/components/schemas/SourceMacAddressLimit"
         egressBandwidthProfilePerClassofServiceName:
-          $ref: '#/components/schemas/BandwidthProfilePerClassOfServiceName'
+          $ref: "#/components/schemas/BandwidthProfilePerClassOfServiceName"
       type: object
     CarrierEthernetEvcEpVirtualPrivate:
       properties:
         evcEndPointMap:
-          $ref: '#/components/schemas/EndPointMapEvc'
+          $ref: "#/components/schemas/EndPointMapEvc"
       type: object
     CarrierEthernetEvcNotEpl:
       description: >-
         These are the MEF 10.4 EVC Service Attributes that are common to all
-        Subscriber (EVC-based) Ethernet Services defined in MEF 6.3 based on
-        the Service Attributes in MEF 10.4 - except EPL.
+        Subscriber (EVC-based) Ethernet Services defined in MEF 6.3 based on the
+        Service Attributes in MEF 10.4 - except EPL.
       properties:
         frameDisposition:
-          $ref: '#/components/schemas/FrameDisposition'
+          $ref: "#/components/schemas/FrameDisposition"
       type: object
     CarrierEthernetOperatorUni:
       allOf:
-        - $ref: '#/components/schemas/MEFProductConfiguration'
-        - $ref: '#/components/schemas/OperatorUniCommon'
-      x-discriminator-value: 'urn:mef:lso:spec:sonata:carrier-ethernet-operator-uni:v2.0.0:quote'
+        - $ref: "#/components/schemas/MEFProductConfiguration"
+        - $ref: "#/components/schemas/OperatorUniCommon"
+      x-discriminator-value: "urn:mef:lso:spec:sonata:carrier-ethernet-operator-uni:v2.0.0:quote"
     CarrierEthernetPhysicalLink:
       description: >-
         A 2-tuple of the form <id, physicalLink>. The value of id is an
@@ -1407,7 +1408,7 @@ components:
       properties:
         physicalLink:
           description: An Ethernet physical layer
-          $ref: '#/components/schemas/PhysicalLink'
+          $ref: "#/components/schemas/PhysicalLink"
         id:
           description: An identifier for the physical link.
           maxLength: 45
@@ -1420,17 +1421,17 @@ components:
       type: object
     CarrierEthernetSls:
       description: >-
-        The Service Level Specification Service Attribute (SLS) is the
-        technical details of the service level, in terms of Performance
-        Objectives, agreed between the Service Provider and the Subscriber as
-        part of the Service Level Agreement. A given SLS might contain 0, 1, or
-        more Performance Objectives for each Performance Metric. The SLS is
-        described in section 8.8 (EVC Service Level Specification Service
-        Attribute) of MEF 10.4 for EVCs and section 12.13 (OVC Service Level
-        Specification Service Attribute) for OVCs. MEF 10.4 defines 10
-        Performance Metrics (all of which are included here). MEF 26.2 defines
-        only 9 Performance Metrics. MEF 26.2 does not include the One Way
-        Composite PM. The other 9 are the same.
+        The Service Level Specification Service Attribute (SLS) is the technical
+        details of the service level, in terms of Performance Objectives, agreed
+        between the Service Provider and the Subscriber as part of the Service
+        Level Agreement. A given SLS might contain 0, 1, or more Performance
+        Objectives for each Performance Metric. The SLS is described in section
+        8.8 (EVC Service Level Specification Service Attribute) of MEF 10.4 for
+        EVCs and section 12.13 (OVC Service Level Specification Service
+        Attribute) for OVCs. MEF 10.4 defines 10 Performance Metrics (all of
+        which are included here). MEF 26.2 defines only 9 Performance Metrics.
+        MEF 26.2 does not include the One Way Composite PM. The other 9 are the
+        same.
       properties:
         slsCosNameEntry:
           description: >-
@@ -1438,14 +1439,14 @@ components:
             Performance Metrics. Each entry contains a set of parameters and
             Performance Metrics one one Class of Service.
           items:
-            $ref: '#/components/schemas/SlsCosNameEntry'
+            $ref: "#/components/schemas/SlsCosNameEntry"
           minItems: 1
           type: array
           uniqueItems: true
         timeInterval:
-          $ref: '#/components/schemas/LongDuration'
+          $ref: "#/components/schemas/LongDuration"
         startTime:
-          $ref: '#/components/schemas/Time'
+          $ref: "#/components/schemas/Time"
       required:
         - slsCosNameEntry
         - startTime
@@ -1453,20 +1454,20 @@ components:
       type: object
     CarrierEthernetSubscriberUni:
       allOf:
-        - $ref: '#/components/schemas/MEFProductConfiguration'
-        - $ref: '#/components/schemas/SubscriberUniCommon'
+        - $ref: "#/components/schemas/MEFProductConfiguration"
+        - $ref: "#/components/schemas/SubscriberUniCommon"
       x-discriminator-value: >-
         urn:mef:lso:spec:cantata-sonata:carrier-ethernet-subscriber-uni:v0.1.0:quote
     CarrierEthernetVpEvcCommon:
       description: >-
         These are the MEF 10.4 EVC Service Attributes that are common to all
-        Virtual Private Subscriber (EVC-based) Ethernet Services (EVPL,
-        EVP-LAN, EVP_TREE) defined in MEF 6.3.
+        Virtual Private Subscriber (EVC-based) Ethernet Services (EVPL, EVP-LAN,
+        EVP_TREE) defined in MEF 6.3.
       properties:
         cTagPcpPreservation:
-          $ref: '#/components/schemas/EnabledDisabled'
+          $ref: "#/components/schemas/EnabledDisabled"
         cTagDeiPreservation:
-          $ref: '#/components/schemas/EnabledDisabled'
+          $ref: "#/components/schemas/EnabledDisabled"
       type: object
     CcDei:
       description: >-
@@ -1475,9 +1476,9 @@ components:
         Enums used for the DEI values include DISCARD as a value.
       properties:
         deiGeen:
-          $ref: '#/components/schemas/DeiValueAndDiscard'
+          $ref: "#/components/schemas/DeiValueAndDiscard"
         deiYellow:
-          $ref: '#/components/schemas/DeiValueAndDiscard'
+          $ref: "#/components/schemas/DeiValueAndDiscard"
         cosName:
           description:
             The class of service name for the corresponding Ingress EI Frame.
@@ -1490,18 +1491,18 @@ components:
     CcPcp:
       description: >-
         One of the possible values for the OVC Egress Map. This indicates that
-        the Class of Service and Color are mapped to the PCP field of the
-        Egress Frame. Note that the Enums used for the PCP values include
-        DISCARD as a value.
+        the Class of Service and Color are mapped to the PCP field of the Egress
+        Frame. Note that the Enums used for the PCP values include DISCARD as a
+        value.
       properties:
         pcpYellow:
-          $ref: '#/components/schemas/PcpValueAndDiscard'
+          $ref: "#/components/schemas/PcpValueAndDiscard"
         cosName:
           description:
             The class of service name for the corresponding Ingress EI Frame.
           type: string
         pcpGreen:
-          $ref: '#/components/schemas/PcpValueAndDiscard'
+          $ref: "#/components/schemas/PcpValueAndDiscard"
       required:
         - cosName
         - pcpGreen
@@ -1510,8 +1511,8 @@ components:
     CeVlanIdPreservation:
       description: >-
         MEF 26.2 sec. 12.7 - Determines whether the C-tag in the Ingress Frame
-        is Stripped or Preserved in the Egress Frame. Per MEF 51.1, the
-        Operator must support PRESERVE and should support STRIP.
+        is Stripped or Preserved in the Egress Frame. Per MEF 51.1, the Operator
+        must support PRESERVE and should support STRIP.
       enum:
         - PRESERVE
         - STRIP
@@ -1523,7 +1524,7 @@ components:
         PCP Value or DISCARD.
       properties:
         pcpValue:
-          $ref: '#/components/schemas/PcpValueAndDiscard'
+          $ref: "#/components/schemas/PcpValueAndDiscard"
         cosName:
           description:
             The class of service name for the corresponding Ingress EI Frame.
@@ -1535,10 +1536,10 @@ components:
     ColorFrom:
       discriminator:
         mapping:
-          DEI: '#/components/schemas/ColorFromDei'
-          ENDPOINT: '#/components/schemas/ColorFromEp'
-          DSCP: '#/components/schemas/ColorFromDSCP'
-          PCP: '#/components/schemas/ColorFromPCP'
+          DEI: "#/components/schemas/ColorFromDei"
+          ENDPOINT: "#/components/schemas/ColorFromEp"
+          DSCP: "#/components/schemas/ColorFromDSCP"
+          PCP: "#/components/schemas/ColorFromPCP"
         propertyName: mapType
       properties:
         mapType:
@@ -1548,7 +1549,7 @@ components:
       type: object
     ColorFromDSCP:
       allOf:
-        - $ref: '#/components/schemas/ColorFrom'
+        - $ref: "#/components/schemas/ColorFrom"
         - description: >-
             This Class is referenced when the color comes from the DSCP field.
             It is a list of DSCP Entries where each entry has three components:
@@ -1559,7 +1560,7 @@ components:
           properties:
             colorFromDscpMap:
               items:
-                $ref: '#/components/schemas/ColorFromDscpEntry'
+                $ref: "#/components/schemas/ColorFromDscpEntry"
               minItems: 1
               type: array
               uniqueItems: true
@@ -1570,7 +1571,7 @@ components:
       x-discriminator-value: DSCP
     ColorFromDei:
       allOf:
-        - $ref: '#/components/schemas/ColorFrom'
+        - $ref: "#/components/schemas/ColorFrom"
         - description: >-
             This Class is referenced when the color comes from the S-tag or
             C-tag DEI field. MEF 26.2 requires that DEI=0 means Green and DEI=1
@@ -1582,7 +1583,7 @@ components:
     ColorFromDscpEntry:
       properties:
         ipv6Color:
-          $ref: '#/components/schemas/Ipv6Color'
+          $ref: "#/components/schemas/Ipv6Color"
         dscpList:
           description: This is a list of DSCP values
           items:
@@ -1593,7 +1594,7 @@ components:
           type: array
           uniqueItems: true
         ipv4Color:
-          $ref: '#/components/schemas/Ipv4Color'
+          $ref: "#/components/schemas/Ipv4Color"
       required:
         - dscpList
         - ipv4Color
@@ -1601,14 +1602,14 @@ components:
       type: object
     ColorFromEp:
       allOf:
-        - $ref: '#/components/schemas/ColorFrom'
+        - $ref: "#/components/schemas/ColorFrom"
         - description: >-
-            The color of each Ingress Frame is determined solely from the EVC
-            or OVC End Point. In other words, the EP declares all frames GREEN
-            or all frame YELLOW
+            The color of each Ingress Frame is determined solely from the EVC or
+            OVC End Point. In other words, the EP declares all frames GREEN or
+            all frame YELLOW
           properties:
             epColor:
-              $ref: '#/components/schemas/EpColor'
+              $ref: "#/components/schemas/EpColor"
           required:
             - epColor
             - mapType
@@ -1616,7 +1617,7 @@ components:
       x-discriminator-value: ENDPOINT
     ColorFromPCP:
       allOf:
-        - $ref: '#/components/schemas/ColorFrom'
+        - $ref: "#/components/schemas/ColorFrom"
         - description: >-
             This Class is referenced when the color comes from the S-tag or
             C-tag PCP field. Each of the 8 possible PCP values maps to a color.
@@ -1624,9 +1625,9 @@ components:
           properties:
             colorFromPcpMap:
               description:
-                'This is a list of 8 Color mappings, one for each PCP value.'
+                "This is a list of 8 Color mappings, one for each PCP value."
               items:
-                $ref: '#/components/schemas/ColorFromPCPMapEntry'
+                $ref: "#/components/schemas/ColorFromPCPMapEntry"
               maxItems: 8
               minItems: 8
               type: array
@@ -1639,9 +1640,9 @@ components:
     ColorFromPCPMapEntry:
       properties:
         pcpValue:
-          $ref: '#/components/schemas/PcpValue'
+          $ref: "#/components/schemas/PcpValue"
         pcpColor:
-          $ref: '#/components/schemas/PcpColor'
+          $ref: "#/components/schemas/PcpColor"
       required:
         - pcpColor
         - pcpValue
@@ -1649,8 +1650,8 @@ components:
     ColorMode:
       description: >-
         MEF 26.2 sec. 17.1.2 and MEF 10.4 sec. 12.1.2 - colorMode indicates
-        whether or not External Interface Frames for this Bandwidth Profile
-        Flow that are identified as Yellow on input to the Bandwidth Profile
+        whether or not External Interface Frames for this Bandwidth Profile Flow
+        that are identified as Yellow on input to the Bandwidth Profile
         Algorithm can be declared Green.
       enum:
         - COLOR_BLIND
@@ -1681,15 +1682,15 @@ components:
         This is a 2-tuple ?x,y? where x is a list of Port Conversation IDs or
         ranges of Port Conversation IDs (a Port Conversation ID is a VLAN ID or
         0 for untagged frames) and y is a list of Link Aggregation Links. This
-        is used in the Port Conversation to Aggregation Link Map for the UNI
-        and ENNI.
+        is used in the Port Conversation to Aggregation Link Map for the UNI and
+        ENNI.
       properties:
         conversationIDs:
           description: >-
             802.1AX-2014 sec. 6.6.2.1 - A Port Conversation ID is a VLAN ID (1
             to 4094) or 0 to represent untagged and priority-tagged frames.
           items:
-            $ref: '#/components/schemas/ConversationIdRange'
+            $ref: "#/components/schemas/ConversationIdRange"
           minItems: 1
           type: array
           uniqueItems: true
@@ -1717,7 +1718,7 @@ components:
             This is a list of DSCP to CoS Map Entries: {ipv4DSCPs, ipv6DSCPs,
             CoSName}
           items:
-            $ref: '#/components/schemas/CosDscpMapEntry'
+            $ref: "#/components/schemas/CosDscpMapEntry"
           minItems: 0
           type: array
           uniqueItems: true
@@ -1743,12 +1744,12 @@ components:
         - otherIPv6
       type: object
     CosDscpMapEntry:
-      description: 'This is a 3-tuple {ipv4list, ipv6list, cosName}'
+      description: "This is a 3-tuple {ipv4list, ipv6list, cosName}"
       properties:
         ipv4List:
-          $ref: '#/components/schemas/DscpValues'
+          $ref: "#/components/schemas/DscpValues"
         ipv6List:
-          $ref: '#/components/schemas/DscpValues'
+          $ref: "#/components/schemas/DscpValues"
         cosName:
           type: string
       required:
@@ -1756,10 +1757,10 @@ components:
       type: object
     CosEnniPcpMapEntry:
       description:
-        '2-tuple {PCP, CoSName} that maps a CoS Name or DISCARD to a PCP.'
+        "2-tuple {PCP, CoSName} that maps a CoS Name or DISCARD to a PCP."
       properties:
         pcpVal:
-          $ref: '#/components/schemas/PcpVal'
+          $ref: "#/components/schemas/PcpVal"
         pcpCosName:
           type: string
       required:
@@ -1769,10 +1770,10 @@ components:
     CosFrom:
       discriminator:
         mapping:
-          ENDPOINT: '#/components/schemas/CosFromEp'
-          S_TAG_PCP: '#/components/schemas/CosFromStagPcp'
-          DSCP: '#/components/schemas/CosFromDscp'
-          C_TAG_PCP: '#/components/schemas/CosFromCtagPcp'
+          ENDPOINT: "#/components/schemas/CosFromEp"
+          S_TAG_PCP: "#/components/schemas/CosFromStagPcp"
+          DSCP: "#/components/schemas/CosFromDscp"
+          C_TAG_PCP: "#/components/schemas/CosFromCtagPcp"
         propertyName: mapType
       properties:
         mapType:
@@ -1783,7 +1784,7 @@ components:
       type: object
     CosFromCtagPcp:
       allOf:
-        - $ref: '#/components/schemas/CosFrom'
+        - $ref: "#/components/schemas/CosFrom"
         - description: >-
             Ingress CoS is specified as {F,M,P}. This is when F=C_TAG_PCP. This
             maps each of the 8 PCP values in the C-tag to a Class of Service
@@ -1794,13 +1795,13 @@ components:
                 This maps each of the possible C-tag PCP values (0-7) and
                 Untagged to a specific Class of Service.
               items:
-                $ref: '#/components/schemas/CosUniPcpMapEntry'
+                $ref: "#/components/schemas/CosUniPcpMapEntry"
               maxItems: 9
               minItems: 9
               type: array
               uniqueItems: true
             l2cp_P:
-              $ref: '#/components/schemas/CosL2cp'
+              $ref: "#/components/schemas/CosL2cp"
           required:
             - l2cp_P
             - mapType
@@ -1809,7 +1810,7 @@ components:
       x-discriminator-value: C_TAG_PCP
     CosFromDscp:
       allOf:
-        - $ref: '#/components/schemas/CosFrom'
+        - $ref: "#/components/schemas/CosFrom"
         - description: >-
             Ingress CoS is specified as {F,M,P}. This is when F=DSCP. This maps
             groups of DSCP values (independently for ipV4 and ipV6) to a Class
@@ -1818,9 +1819,9 @@ components:
             Packets.
           properties:
             map_M:
-              $ref: '#/components/schemas/CosDscpMap'
+              $ref: "#/components/schemas/CosDscpMap"
             l2cp_P:
-              $ref: '#/components/schemas/CosL2cp'
+              $ref: "#/components/schemas/CosL2cp"
           required:
             - l2cp_P
             - mapType
@@ -1829,16 +1830,16 @@ components:
       x-discriminator-value: DSCP
     CosFromEp:
       allOf:
-        - $ref: '#/components/schemas/CosFrom'
+        - $ref: "#/components/schemas/CosFrom"
         - description: >-
-            Ingress CoS is specified as {F,M,P}. This is when F=OVC_EP or
-            EVC_EP as appropriate.
+            Ingress CoS is specified as {F,M,P}. This is when F=OVC_EP or EVC_EP
+            as appropriate.
           properties:
             map_M:
               description: The single CoS at this EVC/OVC EP
               type: string
             l2cp_P:
-              $ref: '#/components/schemas/CosL2cp'
+              $ref: "#/components/schemas/CosL2cp"
           required:
             - l2cp_P
             - mapType
@@ -1847,23 +1848,22 @@ components:
       x-discriminator-value: ENDPOINT
     CosFromStagPcp:
       allOf:
-        - $ref: '#/components/schemas/CosFrom'
+        - $ref: "#/components/schemas/CosFrom"
         - description: >-
             Ingress CoS is specified as {F,M,P}. This is when F=S_TAG_PCP. This
             maps each of the 8 PCP values in the S-tag to a Class of Service
             Name.
           properties:
             map_M:
-              description:
-                A list of 8 PCP values and their associated CoS Names
+              description: A list of 8 PCP values and their associated CoS Names
               items:
-                $ref: '#/components/schemas/CosEnniPcpMapEntry'
+                $ref: "#/components/schemas/CosEnniPcpMapEntry"
               maxItems: 8
               minItems: 8
               type: array
               uniqueItems: true
             l2cp_P:
-              $ref: '#/components/schemas/CosL2cp'
+              $ref: "#/components/schemas/CosL2cp"
           required:
             - l2cp_P
             - mapType
@@ -1871,10 +1871,10 @@ components:
           type: object
       x-discriminator-value: S_TAG_PCP
     CosL2cp:
-      description: '2-tuple {L2CP Ident, CoS Name}'
+      description: "2-tuple {L2CP Ident, CoS Name}"
       properties:
         l2cpIdentifier:
-          $ref: '#/components/schemas/L2cpProtocol'
+          $ref: "#/components/schemas/L2cpProtocol"
         l2cpCosName:
           description: CoS Name String to associate with the L2CP
           type: string
@@ -1884,11 +1884,11 @@ components:
       type: object
     CosUniPcpMapEntry:
       description:
-        '2-tuple {PCP, CoSName} that maps a CoS Name or DISCARD to a PCP.'
+        "2-tuple {PCP, CoSName} that maps a CoS Name or DISCARD to a PCP."
       properties:
         pcpVal:
           description: A value 0 to 7
-          $ref: '#/components/schemas/CosUniPcpMapEntryPcpVal'
+          $ref: "#/components/schemas/CosUniPcpMapEntryPcpVal"
         pcpCosName:
           description: A CoS Name or DISCARD
           type: string
@@ -1899,26 +1899,26 @@ components:
     CosUniPcpMapEntryPcpVal:
       description: A value 0 to 7
       enum:
-        - '0'
-        - '1'
-        - '2'
-        - '3'
-        - '4'
-        - '5'
-        - '6'
-        - '7'
+        - "0"
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+        - "5"
+        - "6"
+        - "7"
         - UNTAGGED
       type: string
     DataSize:
       description: >-
-        A value and a unit of measure that specifies a data size for example
-        for a buffer or a burst size.
+        A value and a unit of measure that specifies a data size for example for
+        a buffer or a burst size.
       properties:
         dataSizeUnits:
           description: >-
             The unit of measure in the data size. For example, if a burst size
             is 40 KBYTES, this element is KBYTES.
-          $ref: '#/components/schemas/DataSizeUnits'
+          $ref: "#/components/schemas/DataSizeUnits"
         dataSizeValue:
           description: >-
             The value in the data size. For example, if a burst size is 40
@@ -1930,8 +1930,8 @@ components:
       type: object
     DataSizeUnits:
       description: >-
-        The unit of measure in the data size. For example, if a burst size is
-        40 KBYTES, this element is KBYTES.
+        The unit of measure in the data size. For example, if a burst size is 40
+        KBYTES, this element is KBYTES.
       enum:
         - BYTES
         - KBYTES
@@ -1945,22 +1945,22 @@ components:
       type: string
     DeiFromCosColor:
       allOf:
-        - $ref: '#/components/schemas/OvcEgressMap'
+        - $ref: "#/components/schemas/OvcEgressMap"
         - description: >-
-            The DEI Field in the Egress EI Frame is determined from the Class
-            of Service and the Frame Color. This is a list that contains an
-            entry for Class of Service Name that includes the CoS Name and the
-            DEI value (or DISCARD) to use for Green frames and the DEI value
-            (or DISCARD) to use for Yellow Frames. For example CoS=Platinum and
+            The DEI Field in the Egress EI Frame is determined from the Class of
+            Service and the Frame Color. This is a list that contains an entry
+            for Class of Service Name that includes the CoS Name and the DEI
+            value (or DISCARD) to use for Green frames and the DEI value (or
+            DISCARD) to use for Yellow Frames. For example CoS=Platinum and
             Color=Green --> DEI = 1 and Color=Yellow --> DEI = 0. This affects
             the C-tag at the UNI and the S-tag at the ENNI.
           properties:
             ccDeiEntries:
               description: >-
-                A list of entries, one per CoS, that specifies the DEI value
-                for Green frames and Yellow frames.
+                A list of entries, one per CoS, that specifies the DEI value for
+                Green frames and Yellow frames.
               items:
-                $ref: '#/components/schemas/CcDei'
+                $ref: "#/components/schemas/CcDei"
               minItems: 1
               type: array
               uniqueItems: true
@@ -1971,8 +1971,8 @@ components:
       x-discriminator-value: CC_DEI
     DeiValueAndDiscard:
       enum:
-        - '0'
-        - '1'
+        - "0"
+        - "1"
         - DISCARD
       type: string
     DscpValues:
@@ -1989,14 +1989,13 @@ components:
           uniqueItems: true
       type: object
     Duration:
-      description:
-        'A Duration in a given unit of time e.g. 3 hours, or 5 days.'
+      description: "A Duration in a given unit of time e.g. 3 hours, or 5 days."
       properties:
         amount:
-          description: 'Duration (number of seconds, minutes, hours, etc.)'
+          description: "Duration (number of seconds, minutes, hours, etc.)"
           type: integer
         units:
-          $ref: '#/components/schemas/TimeUnit'
+          $ref: "#/components/schemas/TimeUnit"
       required:
         - amount
         - units
@@ -2031,15 +2030,15 @@ components:
         vlanType:
           description:
             An indication about how the Vlan List argument is interpreted
-          $ref: '#/components/schemas/VlanType'
+          $ref: "#/components/schemas/VlanType"
       required:
         - vlanType
       type: object
     EndPointMapForm:
       discriminator:
         mapping:
-          FORM_U: '#/components/schemas/EndPointMapFormU'
-          FORM_E: '#/components/schemas/EndPointMapFormE'
+          FORM_U: "#/components/schemas/EndPointMapFormU"
+          FORM_E: "#/components/schemas/EndPointMapFormE"
         propertyName: mapType
       properties:
         mapType:
@@ -2049,7 +2048,7 @@ components:
       type: object
     EndPointMapFormE:
       allOf:
-        - $ref: '#/components/schemas/EndPointMapForm'
+        - $ref: "#/components/schemas/EndPointMapForm"
         - description: >-
             The value of an End Point Map of Form E (E for ENNI) consists of a
             list of one or more SVLAN ID values. An S-Tagged ENNI Frame whose
@@ -2072,7 +2071,7 @@ components:
       x-discriminator-value: FORM_E
     EndPointMapFormU:
       allOf:
-        - $ref: '#/components/schemas/EndPointMapForm'
+        - $ref: "#/components/schemas/EndPointMapForm"
         - description: >-
             The EndPointMapFormU object class represents the EVC/OVC End Point
             Map Form U (U for UNI). It is a list of one or more CE-VLAN IDs.
@@ -2094,18 +2093,18 @@ components:
     Envelope:
       description: >-
         Bandwidth Profiles are organized into Envelopes. Multiple Bandwidth
-        Profiles in an envelope can share bandwidth resources. Each Envelope
-        has a name and a Coupling Flag for Index Zero (CF0) that indicates
-        whether unused green tokens are discarded or converted to yellow
-        tokens. All Bandwidth Profile Flows in the same envelope satisfy the
-        same criterion listed in R230 of MEF 26.2.
+        Profiles in an envelope can share bandwidth resources. Each Envelope has
+        a name and a Coupling Flag for Index Zero (CF0) that indicates whether
+        unused green tokens are discarded or converted to yellow tokens. All
+        Bandwidth Profile Flows in the same envelope satisfy the same criterion
+        listed in R230 of MEF 26.2.
       properties:
         couplingFlagForIndexZero:
           description: >-
             MEF 10.4 sec. 9.12 and MEF 26.2 sec. 14.19 - This attribute denotes
-            the coupling flag for index zero. FALSE for 0 (overflow Green
-            tokens are discarded) and TRUE for 1 (overflow Green tokens can be
-            used as Yellow tokens).
+            the coupling flag for index zero. FALSE for 0 (overflow Green tokens
+            are discarded) and TRUE for 1 (overflow Green tokens can be used as
+            Yellow tokens).
           type: boolean
         envelopeID:
           description: >-
@@ -2126,13 +2125,13 @@ components:
       type: string
     Epl:
       allOf:
-        - $ref: '#/components/schemas/MEFProductConfiguration'
-        - $ref: '#/components/schemas/CarrierEthernetEvcCommon'
+        - $ref: "#/components/schemas/MEFProductConfiguration"
+        - $ref: "#/components/schemas/CarrierEthernetEvcCommon"
         - properties:
             evcEndPoints:
               description: MEF 10.4 sec. 10 - An array of two EVC End Points.
               items:
-                $ref: '#/components/schemas/EplEvcEndPoint'
+                $ref: "#/components/schemas/EplEvcEndPoint"
               maxItems: 2
               minItems: 2
               type: array
@@ -2140,66 +2139,66 @@ components:
           required:
             - evcEndPoints
           type: object
-      x-discriminator-value: 'urn:mef:lso:spec:cantata-sonata:epl:v0.1.0:quote'
+      x-discriminator-value: "urn:mef:lso:spec:cantata-sonata:epl:v0.1.0:quote"
     EplEvcEndPoint:
       allOf:
-        - $ref: '#/components/schemas/CarrierEthernetEvcEpCommon'
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpCommon"
       description: >-
         An EVC End Point is a logical entity at a given UNI that is associated
         with a distinct set of frames passing over that UNI. EVC End Point
-        Service Attributes are the attributes of an EVC that can be different
-        at each UNI in the EVC. These are the EVC End Point Service Attributes
+        Service Attributes are the attributes of an EVC that can be different at
+        each UNI in the EVC. These are the EVC End Point Service Attributes
         applicable to Ethernet Private Line (EPL) Services defined in MEF 6.3
         based on the Service Attributes in MEF 10.4.
       required:
         - uni
     Eplan:
       allOf:
-        - $ref: '#/components/schemas/MEFProductConfiguration'
-        - $ref: '#/components/schemas/CarrierEthernetEvcCommon'
-        - $ref: '#/components/schemas/CarrierEthernetEvcNotEpl'
+        - $ref: "#/components/schemas/MEFProductConfiguration"
+        - $ref: "#/components/schemas/CarrierEthernetEvcCommon"
+        - $ref: "#/components/schemas/CarrierEthernetEvcNotEpl"
         - properties:
             evcEndPoints:
               description:
                 MEF 10.4 sec. 10 - An array of two or more EVC End Points.
               items:
-                $ref: '#/components/schemas/EplanEvcEndPoint'
+                $ref: "#/components/schemas/EplanEvcEndPoint"
               minItems: 2
               type: array
               uniqueItems: true
           required:
             - evcEndPoints
           type: object
-      x-discriminator-value: 'urn:mef:lso:spec:cantata-sonata:eplan:v0.1.0:quote'
+      x-discriminator-value: "urn:mef:lso:spec:cantata-sonata:eplan:v0.1.0:quote"
     EplanEvcEndPoint:
       allOf:
-        - $ref: '#/components/schemas/CarrierEthernetEvcEpCommon'
-        - $ref: '#/components/schemas/CarrierEthernetEvcEpNotEpl'
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpCommon"
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpNotEpl"
       required:
         - uni
     Eptree:
       allOf:
-        - $ref: '#/components/schemas/MEFProductConfiguration'
-        - $ref: '#/components/schemas/CarrierEthernetEvcCommon'
-        - $ref: '#/components/schemas/CarrierEthernetEvcNotEpl'
+        - $ref: "#/components/schemas/MEFProductConfiguration"
+        - $ref: "#/components/schemas/CarrierEthernetEvcCommon"
+        - $ref: "#/components/schemas/CarrierEthernetEvcNotEpl"
         - properties:
             evcEndPoints:
               description:
                 MEF 10.4 sec. 10 - An array of two or more EVC End Points.
               items:
-                $ref: '#/components/schemas/EptreeEvcEndPoint'
+                $ref: "#/components/schemas/EptreeEvcEndPoint"
               minItems: 2
               type: array
               uniqueItems: true
           required:
             - evcEndPoints
           type: object
-      x-discriminator-value: 'urn:mef:lso:spec:cantata-sonata:eptree:v0.1.0:quote'
+      x-discriminator-value: "urn:mef:lso:spec:cantata-sonata:eptree:v0.1.0:quote"
     EptreeEvcEndPoint:
       allOf:
-        - $ref: '#/components/schemas/CarrierEthernetEvcEpCommon'
-        - $ref: '#/components/schemas/CarrierEthernetEvcEpEtree'
-        - $ref: '#/components/schemas/CarrierEthernetEvcEpNotEpl'
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpCommon"
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpEtree"
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpNotEpl"
       required:
         - uni
     Error:
@@ -2228,15 +2227,15 @@ components:
       type: object
     Error400:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
-              $ref: '#/components/schemas/Error400Code'
+              $ref: "#/components/schemas/Error400Code"
           required:
             - code
           type: object
       description:
-        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
+        "Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)"
     Error400Code:
       description: >-
         One of the following error codes:
@@ -2258,15 +2257,15 @@ components:
       type: string
     Error401:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
-              $ref: '#/components/schemas/Error401Code'
+              $ref: "#/components/schemas/Error401Code"
           required:
             - code
           type: object
       description:
-        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
+        "Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)"
     Error401Code:
       description: |-
         One of the following error codes:
@@ -2278,10 +2277,10 @@ components:
       type: string
     Error403:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
-              $ref: '#/components/schemas/Error403Code'
+              $ref: "#/components/schemas/Error403Code"
           required:
             - code
           type: object
@@ -2304,14 +2303,14 @@ components:
       type: string
     Error404:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
               description: >-
                 The following error code:
 
-                - notFound: A current representation for the target resource
-                not found
+                - notFound: A current representation for the target resource not
+                found
               enum:
                 - notFound
               type: string
@@ -2323,10 +2322,10 @@ components:
         (https://tools.ietf.org/html/rfc7231#section-6.5.4)
     Error422:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
-              $ref: '#/components/schemas/Error422Code'
+              $ref: "#/components/schemas/Error422Code"
             propertyPath:
               description: >
                 A pointer to a particular property of the payload that caused
@@ -2363,7 +2362,7 @@ components:
       type: string
     Error500:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
               description: >-
@@ -2383,7 +2382,7 @@ components:
         (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     Error501:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
               description: |-
@@ -2396,18 +2395,18 @@ components:
             - code
           type: object
       description:
-        'Not Implemented. (https://tools.ietf.org/html/rfc7231#section-6.6.2)'
+        "Not Implemented. (https://tools.ietf.org/html/rfc7231#section-6.6.2)"
     EvcEgressMap:
       description: >-
-        This map is a table with one entries for each CosName, that includes
-        the CoSName, a PCP value for green frames, a PCP value for yellow
-        frames, a DEI value for green frames and a DEI value for yellow frames.
-        Any of the values can be DISCARD (in which case they are all treated as
-        DISCARD). This table is used at the UNI for EVCs.
+        This map is a table with one entries for each CosName, that includes the
+        CoSName, a PCP value for green frames, a PCP value for yellow frames, a
+        DEI value for green frames and a DEI value for yellow frames. Any of the
+        values can be DISCARD (in which case they are all treated as DISCARD).
+        This table is used at the UNI for EVCs.
       properties:
         evcEgressMapEntries:
           items:
-            $ref: '#/components/schemas/EvcEgressMapEntry'
+            $ref: "#/components/schemas/EvcEgressMapEntry"
           minItems: 0
           type: array
           uniqueItems: true
@@ -2420,15 +2419,15 @@ components:
         DEIGreen, DEIYellow
       properties:
         pcpYellow:
-          $ref: '#/components/schemas/PcpValueAndDiscard'
+          $ref: "#/components/schemas/PcpValueAndDiscard"
         deiYellow:
-          $ref: '#/components/schemas/DeiValueAndDiscard'
+          $ref: "#/components/schemas/DeiValueAndDiscard"
         cosName:
           type: string
         deiGreen:
-          $ref: '#/components/schemas/DeiValueAndDiscard'
+          $ref: "#/components/schemas/DeiValueAndDiscard"
         pcpGreen:
-          $ref: '#/components/schemas/PcpValueAndDiscard'
+          $ref: "#/components/schemas/PcpValueAndDiscard"
       required:
         - cosName
         - pcpGreen
@@ -2461,12 +2460,11 @@ components:
       properties:
         query:
           description: >-
-            This attribute is used to define to which type of events to
-            register to. Example: "query":"eventType = quoteStateChangeEvent".
-            To subscribe for more than one event type, put the values separated
-            by comma:
-            `eventType=quoteStateChangeEvent,quoteItemStateChangeEvent`. The
-            possible values are enumerated by the 'QuoteEventType' in
+            This attribute is used to define to which type of events to register
+            to. Example: "query":"eventType = quoteStateChangeEvent". To
+            subscribe for more than one event type, put the values separated by
+            comma: `eventType=quoteStateChangeEvent,quoteItemStateChangeEvent`.
+            The possible values are enumerated by the 'QuoteEventType' in
             quoteNotification.api.yaml. An empty query is treated as specifying
             no filters - ending in  subscription for all event types.
           type: string
@@ -2474,10 +2472,10 @@ components:
           description: >-
             This callback value must be set to *host* property from Buyer
             Notification API (quoteNotification.api.yaml). This property is
-            appended with the base path and notification resource path
-            specified in that API to construct an URL to which notification is
-            sent. E.g. for "callback": "http://buyer.co/listenerEndpoint", the
-            state change event notification will be sent to:
+            appended with the base path and notification resource path specified
+            in that API to construct an URL to which notification is sent. E.g.
+            for "callback": "http://buyer.co/listenerEndpoint", the state change
+            event notification will be sent to:
             `http://buyer.co/listenerEndpoint/mefApi/sonata/quoteNotification/v7/listener/quoteStateChangeEvent`
           type: string
       required:
@@ -2485,15 +2483,15 @@ components:
       type: object
     Evpl:
       allOf:
-        - $ref: '#/components/schemas/MEFProductConfiguration'
-        - $ref: '#/components/schemas/CarrierEthernetEvcCommon'
-        - $ref: '#/components/schemas/CarrierEthernetVpEvcCommon'
-        - $ref: '#/components/schemas/CarrierEthernetEvcNotEpl'
+        - $ref: "#/components/schemas/MEFProductConfiguration"
+        - $ref: "#/components/schemas/CarrierEthernetEvcCommon"
+        - $ref: "#/components/schemas/CarrierEthernetVpEvcCommon"
+        - $ref: "#/components/schemas/CarrierEthernetEvcNotEpl"
         - properties:
             evcEndPoints:
               description: MEF 10.4 sec. 10 - An array of two EVC End Points.
               items:
-                $ref: '#/components/schemas/EvplEvcEndPoint'
+                $ref: "#/components/schemas/EvplEvcEndPoint"
               maxItems: 2
               minItems: 2
               type: array
@@ -2501,70 +2499,70 @@ components:
           required:
             - evcEndPoints
           type: object
-      x-discriminator-value: 'urn:mef:lso:spec:cantata-sonata:evpl:v0.1.0:quote'
+      x-discriminator-value: "urn:mef:lso:spec:cantata-sonata:evpl:v0.1.0:quote"
     EvplEvcEndPoint:
       allOf:
-        - $ref: '#/components/schemas/CarrierEthernetEvcEpCommon'
-        - $ref: '#/components/schemas/CarrierEthernetEvcEpVirtualPrivate'
-        - $ref: '#/components/schemas/CarrierEthernetEvcEpNotEpl'
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpCommon"
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpVirtualPrivate"
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpNotEpl"
       required:
         - uni
     Evplan:
       allOf:
-        - $ref: '#/components/schemas/MEFProductConfiguration'
-        - $ref: '#/components/schemas/CarrierEthernetEvcCommon'
-        - $ref: '#/components/schemas/CarrierEthernetVpEvcCommon'
-        - $ref: '#/components/schemas/CarrierEthernetEvcNotEpl'
+        - $ref: "#/components/schemas/MEFProductConfiguration"
+        - $ref: "#/components/schemas/CarrierEthernetEvcCommon"
+        - $ref: "#/components/schemas/CarrierEthernetVpEvcCommon"
+        - $ref: "#/components/schemas/CarrierEthernetEvcNotEpl"
         - properties:
             evcEndPoints:
               description:
                 MEF 10.4 sec. 10 - An array of two or more EVC End Points.
               items:
-                $ref: '#/components/schemas/EvplanEvcEndPoint'
+                $ref: "#/components/schemas/EvplanEvcEndPoint"
               minItems: 2
               type: array
               uniqueItems: true
           required:
             - evcEndPoints
           type: object
-      x-discriminator-value: 'urn:mef:lso:spec:cantata-sonata:evplan:v0.1.0:quote'
+      x-discriminator-value: "urn:mef:lso:spec:cantata-sonata:evplan:v0.1.0:quote"
     EvplanEvcEndPoint:
       allOf:
-        - $ref: '#/components/schemas/CarrierEthernetEvcEpCommon'
-        - $ref: '#/components/schemas/CarrierEthernetEvcEpVirtualPrivate'
-        - $ref: '#/components/schemas/CarrierEthernetEvcEpNotEpl'
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpCommon"
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpVirtualPrivate"
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpNotEpl"
       required:
         - uni
     Evptree:
       allOf:
-        - $ref: '#/components/schemas/MEFProductConfiguration'
-        - $ref: '#/components/schemas/CarrierEthernetEvcCommon'
-        - $ref: '#/components/schemas/CarrierEthernetVpEvcCommon'
-        - $ref: '#/components/schemas/CarrierEthernetEvcNotEpl'
+        - $ref: "#/components/schemas/MEFProductConfiguration"
+        - $ref: "#/components/schemas/CarrierEthernetEvcCommon"
+        - $ref: "#/components/schemas/CarrierEthernetVpEvcCommon"
+        - $ref: "#/components/schemas/CarrierEthernetEvcNotEpl"
         - properties:
             evcEndPoints:
               description:
                 MEF 10.4 sec. 10 - An array of two or more EVC End Points.
               items:
-                $ref: '#/components/schemas/EvptreeEvcEndPoint'
+                $ref: "#/components/schemas/EvptreeEvcEndPoint"
               minItems: 2
               type: array
               uniqueItems: true
           required:
             - evcEndPoints
           type: object
-      x-discriminator-value: 'urn:mef:lso:spec:cantata-sonata:evptree:v0.1.0:quote'
+      x-discriminator-value: "urn:mef:lso:spec:cantata-sonata:evptree:v0.1.0:quote"
     EvptreeEvcEndPoint:
       allOf:
-        - $ref: '#/components/schemas/CarrierEthernetEvcEpCommon'
-        - $ref: '#/components/schemas/CarrierEthernetEvcEpVirtualPrivate'
-        - $ref: '#/components/schemas/CarrierEthernetEvcEpEtree'
-        - $ref: '#/components/schemas/CarrierEthernetEvcEpNotEpl'
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpCommon"
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpVirtualPrivate"
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpEtree"
+        - $ref: "#/components/schemas/CarrierEthernetEvcEpNotEpl"
       required:
         - uni
     FieldedAddress:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - properties:
             country:
               description: Country that the address is in
@@ -2592,13 +2590,12 @@ components:
               type: string
             postcode:
               description: >-
-                Descriptor for a postal delivery area used to speed and
-                simplify the delivery of mail (also known as zip code)
+                Descriptor for a postal delivery area used to speed and simplify
+                the delivery of mail (also known as zip code)
               type: string
             streetNrLast:
               description:
-                Last number in a range of street numbers allocated to a
-                property
+                Last number in a range of street numbers allocated to a property
               type: string
             streetNrSuffix:
               description: The first street number suffix
@@ -2613,7 +2610,7 @@ components:
               description: Last street number suffix for a ranged address
               type: string
             geographicSubAddress:
-              $ref: '#/components/schemas/GeographicSubAddress'
+              $ref: "#/components/schemas/GeographicSubAddress"
             streetSuffix:
               description: A modifier denoting a relative direction
               type: string
@@ -2628,7 +2625,7 @@ components:
         "street number" is one field, "street name" is another field, etc.
     FormattedAddress:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - properties:
             country:
               description: Country that the address is in
@@ -2658,8 +2655,8 @@ components:
               type: string
             postcode:
               description: >-
-                Descriptor for a postal delivery area used to speed and
-                simplify the delivery of mail (also known as ZIP code)
+                Descriptor for a postal delivery area used to speed and simplify
+                the delivery of mail (also known as ZIP code)
               type: string
           required:
             - addrLine1
@@ -2669,8 +2666,8 @@ components:
       description: >-
         A type of Address that has discrete fields for each type of boundary or
         an identifier with the exception of the street and more specific
-        location details, which are combined into a maximum of two strings
-        based on local postal addressing conventions.
+        location details, which are combined into a maximum of two strings based
+        on local postal addressing conventions.
     FrameDispEnum:
       enum:
         - DISCARD
@@ -2686,11 +2683,11 @@ components:
         based on learned addresses), and DISCARD.
       properties:
         broadcast:
-          $ref: '#/components/schemas/FrameDispEnum'
+          $ref: "#/components/schemas/FrameDispEnum"
         unicast:
-          $ref: '#/components/schemas/FrameDispEnum'
+          $ref: "#/components/schemas/FrameDispEnum"
         multicast:
-          $ref: '#/components/schemas/FrameDispEnum'
+          $ref: "#/components/schemas/FrameDispEnum"
       required:
         - broadcast
         - multicast
@@ -2698,7 +2695,7 @@ components:
       type: object
     GeographicAddressLabel:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - properties:
             externalReferenceId:
               description: >-
@@ -2709,8 +2706,8 @@ components:
               description: >-
                 The organization or standard from the organization that
                 administers this Geographic Address Label ensuring it is unique
-                within the Administrative Authority. The value(s) to be used
-                are to be agreed upon during the onboarding. For North American
+                within the Administrative Authority. The value(s) to be used are
+                to be agreed upon during the onboarding. For North American
                 providers this would normally be CLLI (Common Language Location
                 Identifier) code.
               type: string
@@ -2725,7 +2722,7 @@ components:
         Reference: MEF 79 (Sn 8.9.4), MEF 79.0.2 (Sn 8.9.4)
     GeographicAddressRef:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - properties:
             href:
               description: >
@@ -2735,9 +2732,9 @@ components:
               type: string
             id:
               description: >-
-                Identifier of the referenced Geographic Address. This
-                identifier is assigned during a successful address validation
-                request (Geographic Address Validation API)
+                Identifier of the referenced Geographic Address. This identifier
+                is assigned during a successful address validation request
+                (Geographic Address Validation API)
               type: string
           required:
             - id
@@ -2747,7 +2744,7 @@ components:
         Validation API.
     GeographicSiteRef:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - properties:
             href:
               description: >
@@ -2762,11 +2759,11 @@ components:
             - id
           type: object
       description: >
-        A reference to a Geographic Site resource available through Service
-        Site API
+        A reference to a Geographic Site resource available through Service Site
+        API
     GeographicSubAddress:
       description:
-        'Additional fields used to specify an address, as detailed as possible.'
+        "Additional fields used to specify an address, as detailed as possible."
       properties:
         buildingName:
           description: >
@@ -2779,15 +2776,14 @@ components:
             within a subaddress  e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
             UNIT, WHARF.
           items:
-            $ref: '#/components/schemas/MEFSubUnit'
+            $ref: "#/components/schemas/MEFSubUnit"
           type: array
         levelType:
           description: Describes level types within a building
           type: string
         levelNumber:
           description:
-            'Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT
-            2'
+            "Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT 2"
           type: string
         id:
           description: Unique Identifier of the subAddress
@@ -2815,7 +2811,7 @@ components:
           description: >-
             The unit of measure for the Information Rate. For example if the
             Information Rate is 70 kbps this element is kbps.
-          $ref: '#/components/schemas/IrUnits'
+          $ref: "#/components/schemas/IrUnits"
       required:
         - irUnits
         - irValue
@@ -2823,8 +2819,8 @@ components:
     Instantiation:
       description: >-
         MEF 10.4 sec. 9.2 - When the value is Physical, the UNI is implemented
-        using one or more instances of a standard Physical Layer. When the
-        value is Virtual, the physical layer is not specified.
+        using one or more instances of a standard Physical Layer. When the value
+        is Virtual, the physical layer is not specified.
       enum:
         - PHYSICAL
         - VIRTUAL
@@ -2859,8 +2855,8 @@ components:
         MEF 10.4 sec. 9.16 and MEF 45.1 sec. 8.1 - L2CP Address Set Service
         Attribute is defined in MEF 45.1. CTA CEVLAN Tag Aware for VLAN-based
         services where the CE-VLAN ID is used to map a frame to a service. CTB
-        CVLAN Tag Blind for Port-based services where the CE-VLAN ID not used
-        to map a frame to a service. CTB2 CVLAN Tag Blind Option 2 for
+        CVLAN Tag Blind for Port-based services where the CE-VLAN ID not used to
+        map a frame to a service. CTB2 CVLAN Tag Blind Option 2 for
         point-to-point Port-based services that support the EPL Option 2 L2CP
         processing.
       enum:
@@ -2875,13 +2871,12 @@ components:
         Peering Service Attribute
       properties:
         protocolID:
-          $ref: '#/components/schemas/L2cpProtocol'
+          $ref: "#/components/schemas/L2cpProtocol"
         destinationAddress:
           description: >-
-            The Destination MAC Address of the L2CP to be peered in the
-            standard format of 6 hex bytes separated either by colon (:) or
-            hyphen (-).
-          pattern: '[0-9a-fA-F][0-9a-fA-F]([-][0-9a-fA-F][0-9a-fA-F]){5}'
+            The Destination MAC Address of the L2CP to be peered in the standard
+            format of 6 hex bytes separated either by colon (:) or hyphen (-).
+          pattern: "[0-9a-fA-F][0-9a-fA-F]([-][0-9a-fA-F][0-9a-fA-F]){5}"
           type: string
         linkIdList:
           description: >-
@@ -2907,7 +2902,7 @@ components:
       properties:
         l2cpProtocolType:
           description: The protocol field to inspect to identify the L2CP.
-          $ref: '#/components/schemas/L2cpProtocolType'
+          $ref: "#/components/schemas/L2cpProtocolType"
         subType:
           description: The EtherType can be modified by an optional sub-type.
           minimum: 0
@@ -2930,16 +2925,16 @@ components:
       description: >-
         MEF 10.4 sec. 9.5 - Data type representing Link Aggregation types.
         NONE-No Link Aggregation is used. 2_LINK_ACTIVE_STANDBY-The SP network
-        uses Link Aggregation as in either Clause 5.6.1 of IEEE Std
-        802.1AX-2008 [2] or Clause 6.7.1 of IEEE Std 802.1AX-2014 with one Link
-        Aggregation Group(LAG) across the links supporting the UNI/ENNI such
-        that all Service Frames are carried on only one of the two links when
-        both links are operational. ALL_ACTIVE-The SP Network uses Link
-        Aggregation as specified in Clause 5.3 of IEEE Std 802.1AX-2014,
-        including the use of the version 2 LACPDUs as specified in Clause
-        5.3.1h of IEEE Std 802.1AZ-2014, with one Link Aggregation Group (LAG)
-        across the links. OTHER-The Operator/Subscriber/Service Provider agree
-        on another other resiliency mechanism.
+        uses Link Aggregation as in either Clause 5.6.1 of IEEE Std 802.1AX-2008
+        [2] or Clause 6.7.1 of IEEE Std 802.1AX-2014 with one Link Aggregation
+        Group(LAG) across the links supporting the UNI/ENNI such that all
+        Service Frames are carried on only one of the two links when both links
+        are operational. ALL_ACTIVE-The SP Network uses Link Aggregation as
+        specified in Clause 5.3 of IEEE Std 802.1AX-2014, including the use of
+        the version 2 LACPDUs as specified in Clause 5.3.1h of IEEE Std
+        802.1AZ-2014, with one Link Aggregation Group (LAG) across the links.
+        OTHER-The Operator/Subscriber/Service Provider agree on another other
+        resiliency mechanism.
       enum:
         - NONE
         - 2_LINK_ACTIVE_STANDBY
@@ -2955,7 +2950,7 @@ components:
           description: >-
             The unit of measure in the duration. For example, if an interval is
             2 weeks, this element is WEEKS.
-          $ref: '#/components/schemas/LongDurationUnits'
+          $ref: "#/components/schemas/LongDurationUnits"
         longDurationValue:
           description: >-
             The value of the duration. For example, if the duration is 20 days,
@@ -2977,10 +2972,10 @@ components:
       type: string
     MEFBuyerQuoteLevel:
       description: >-
-        An indication of whether the Buyer's Quote Request is for a Budgetary
-        or Firm Quote Level. Set by the Buyer. Buyer Requested Quote Level
-        contains the possible values and may be set by the Buyer on the
-        Request. All Quote Items in a Quote have the same Quote Level.
+        An indication of whether the Buyer's Quote Request is for a Budgetary or
+        Firm Quote Level. Set by the Buyer. Buyer Requested Quote Level contains
+        the possible values and may be set by the Buyer on the Request. All
+        Quote Items in a Quote have the same Quote Level.
       enum:
         - budgetary
         - firm
@@ -3010,7 +3005,7 @@ components:
       type: string
     MEFGeographicPoint:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - properties:
             spatialRef:
               description: >-
@@ -3023,7 +3018,7 @@ components:
                 The latitude expressed in the format specified by the
                 `spacialRef`
               type: string
-            'y':
+            "y":
               description: >-
                 The longitude expressed in the format specified by the
                 `spacialRef`
@@ -3036,7 +3031,7 @@ components:
           required:
             - spatialRef
             - x
-            - 'y'
+            - "y"
           type: object
       description: >
         A MEFGeographicPoint defines a geographic point through coordinates.
@@ -3051,9 +3046,9 @@ components:
         Buyer's request, it is treated as an alternate response.
       properties:
         duration:
-          $ref: '#/components/schemas/Duration'
+          $ref: "#/components/schemas/Duration"
         endOfTermAction:
-          $ref: '#/components/schemas/MEFEndOfTermAction'
+          $ref: "#/components/schemas/MEFEndOfTermAction"
         name:
           description: Name of the term
           type: string
@@ -3061,7 +3056,7 @@ components:
           description: Description of the term
           type: string
         rollInterval:
-          $ref: '#/components/schemas/Duration'
+          $ref: "#/components/schemas/Duration"
       type: object
     MEFPriceType:
       description:
@@ -3093,25 +3088,25 @@ components:
         discriminator
       discriminator:
         mapping:
-          'urn:mef:lso:spec:cantata-sonata:evptree:v0.1.0:quote': '#/components/schemas/Evptree'
-          'urn:mef:lso:spec:sonata:carrier-ethernet-operator-uni:v2.0.0:quote': '#/components/schemas/CarrierEthernetOperatorUni'
-          'urn:mef:lso:spec:cantata-sonata:eplan:v0.1.0:quote': '#/components/schemas/Eplan'
-          'urn:mef:lso:spec:cantata-sonata:eptree:v0.1.0:quote': '#/components/schemas/Eptree'
-          'urn:mef:lso:spec:cantata-sonata:carrier-ethernet-subscriber-uni:v0.1.0:quote': '#/components/schemas/CarrierEthernetSubscriberUni'
-          'urn:mef:lso:spec:cantata-sonata:epl:v0.1.0:quote': '#/components/schemas/Epl'
-          'urn:mef:lso:spec:cantata-sonata:evplan:v0.1.0:quote': '#/components/schemas/Evplan'
-          'urn:mef:lso:spec:sonata:access-eline:v2.0.0:quote': '#/components/schemas/AccessEline'
-          'urn:mef:lso:spec:cantata-sonata:evpl:v0.1.0:quote': '#/components/schemas/Evpl'
-        propertyName: '@type'
+          "urn:mef:lso:spec:cantata-sonata:evptree:v0.1.0:quote": "#/components/schemas/Evptree"
+          "urn:mef:lso:spec:sonata:carrier-ethernet-operator-uni:v2.0.0:quote": "#/components/schemas/CarrierEthernetOperatorUni"
+          "urn:mef:lso:spec:cantata-sonata:eplan:v0.1.0:quote": "#/components/schemas/Eplan"
+          "urn:mef:lso:spec:cantata-sonata:eptree:v0.1.0:quote": "#/components/schemas/Eptree"
+          "urn:mef:lso:spec:cantata-sonata:carrier-ethernet-subscriber-uni:v0.1.0:quote": "#/components/schemas/CarrierEthernetSubscriberUni"
+          "urn:mef:lso:spec:cantata-sonata:epl:v0.1.0:quote": "#/components/schemas/Epl"
+          "urn:mef:lso:spec:cantata-sonata:evplan:v0.1.0:quote": "#/components/schemas/Evplan"
+          "urn:mef:lso:spec:sonata:access-eline:v2.0.0:quote": "#/components/schemas/AccessEline"
+          "urn:mef:lso:spec:cantata-sonata:evpl:v0.1.0:quote": "#/components/schemas/Evpl"
+        propertyName: "@type"
       properties:
-        '@type':
+        "@type":
           description: >-
             The name of the type that uniquely identifies the type of the
             product that is the subject of the POQ Request. In the case of the
             MEF product, this is the URN provided in the Product Specification.
           type: string
       required:
-        - '@type'
+        - "@type"
       type: object
     MEFProductRefOrValueQuote:
       description: >-
@@ -3120,15 +3115,15 @@ components:
         of a Product.
       properties:
         productOffering:
-          $ref: '#/components/schemas/ProductOfferingRef'
+          $ref: "#/components/schemas/ProductOfferingRef"
         productConfiguration:
-          $ref: '#/components/schemas/MEFProductConfiguration'
+          $ref: "#/components/schemas/MEFProductConfiguration"
         productRelationship:
           description: >-
             A list of references to existing products that are related to the
             Product that would be delivered to fulfill the Quote Item
           items:
-            $ref: '#/components/schemas/ProductRelationshipWithGrouping'
+            $ref: "#/components/schemas/ProductRelationshipWithGrouping"
           type: array
         id:
           description: >
@@ -3140,16 +3135,16 @@ components:
         href:
           description: >
             Hyperlink to the product in Seller's inventory that is the
-            quotation's subject. Hyperlink MAY be used when providing a
-            response by the Seller. Hyperlink MUST be ignored by the Seller in
-            case it is provided by the Buyer in a request
+            quotation's subject. Hyperlink MAY be used when providing a response
+            by the Seller. Hyperlink MUST be ignored by the Seller in case it is
+            provided by the Buyer in a request
           type: string
         place:
           description: >-
             A list of places that are related to the Product. For example an
             installation location
           items:
-            $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+            $ref: "#/components/schemas/RelatedPlaceRefOrValue"
           type: array
       type: object
     MEFQuoteItemStateType:
@@ -3194,23 +3189,23 @@ components:
       type: string
     MEFQuoteItem_Common:
       description: >-
-        Quote items describe an action to be performed on a productOffering or
-        a product in order to get pricing elements and conditions.
+        Quote items describe an action to be performed on a productOffering or a
+        product in order to get pricing elements and conditions.
       properties:
         requestedQuoteItemTerm:
-          $ref: '#/components/schemas/MEFItemTerm'
+          $ref: "#/components/schemas/MEFItemTerm"
         note:
           description: >-
             Free form text associated with the quote item. Only useful in
             processes involving human interaction. Not applicable for the
             automated process.
           items:
-            $ref: '#/components/schemas/Note'
+            $ref: "#/components/schemas/Note"
           type: array
         product:
-          $ref: '#/components/schemas/MEFProductRefOrValueQuote'
+          $ref: "#/components/schemas/MEFProductRefOrValueQuote"
         productOfferingQualificationItem:
-          $ref: '#/components/schemas/ProductOfferingQualificationItemRef'
+          $ref: "#/components/schemas/ProductOfferingQualificationItemRef"
         relatedContactInformation:
           description: >
             Contact information of an individual or organization playing a role
@@ -3221,7 +3216,7 @@ components:
             Quote Item Location Contact Information `role:
             quoteItemLocationContact`.
           items:
-            $ref: '#/components/schemas/RelatedContactInformation'
+            $ref: "#/components/schemas/RelatedContactInformation"
           type: array
         agreementName:
           description: >-
@@ -3229,7 +3224,7 @@ components:
             Seller.
           type: string
         action:
-          $ref: '#/components/schemas/MEFProductActionType'
+          $ref: "#/components/schemas/MEFProductActionType"
         dealReference:
           description: >-
             A pre-agreed pricing modifier reference that the Seller is offering
@@ -3241,11 +3236,11 @@ components:
             02, 03, ...)
           type: string
         requestedQuoteItemInstallationInterval:
-          $ref: '#/components/schemas/Duration'
+          $ref: "#/components/schemas/Duration"
         quoteItemRelationship:
           description: A relationship from item within a quote
           items:
-            $ref: '#/components/schemas/QuoteItemRelationship'
+            $ref: "#/components/schemas/QuoteItemRelationship"
           type: array
       required:
         - action
@@ -3253,16 +3248,16 @@ components:
       type: object
     MEFQuoteItem_Create:
       allOf:
-        - $ref: '#/components/schemas/MEFQuoteItem_Common'
+        - $ref: "#/components/schemas/MEFQuoteItem_Common"
         - description: >-
             A quote item describes an action to be performed on a
             productOffering or a product in order to get pricing elements and
-            condition. The modeling pattern introduces the
-            `MEFQuoteItem_Common` supertype to aggregate attributes that are
-            common to both `QuoteItem` and `MEFQuoteItem_Create`. In this case
-            the create type has a subset of attributes of the response type and
-            does not introduce any new, thus the `MEFQuoteItem_Create` type has
-            an empty definition.
+            condition. The modeling pattern introduces the `MEFQuoteItem_Common`
+            supertype to aggregate attributes that are common to both
+            `QuoteItem` and `MEFQuoteItem_Create`. In this case the create type
+            has a subset of attributes of the response type and does not
+            introduce any new, thus the `MEFQuoteItem_Create` type has an empty
+            definition.
           type: object
     MEFQuoteStateChange:
       description: >-
@@ -3277,7 +3272,7 @@ components:
           format: date-time
           type: string
         state:
-          $ref: '#/components/schemas/MEFQuoteStateType'
+          $ref: "#/components/schemas/MEFQuoteStateType"
       required:
         - changeDate
         - state
@@ -3337,8 +3332,8 @@ components:
           type: string
         subUnitType:
           description: >-
-            The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
-            UNIT, WHARF.
+            The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT,
+            WHARF.
           type: string
       required:
         - subUnitNumber
@@ -3346,19 +3341,18 @@ components:
       type: object
     MaintenanceIntermediatePoint:
       description: >-
-        MEF 26.2 sec. 16.16 - Indicates whether a MIP is instantiated at the
-        OVC End Point and the MEG Level of the MIP. When the value is not None,
-        several parameter values need to be determined as described in MEF
-        30.1.
+        MEF 26.2 sec. 16.16 - Indicates whether a MIP is instantiated at the OVC
+        End Point and the MEG Level of the MIP. When the value is not None,
+        several parameter values need to be determined as described in MEF 30.1.
       enum:
-        - '0'
-        - '1'
-        - '2'
-        - '3'
-        - '4'
-        - '5'
-        - '6'
-        - '7'
+        - "0"
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+        - "5"
+        - "6"
+        - "7"
         - NONE
       type: string
     MepDirection:
@@ -3379,7 +3373,7 @@ components:
           type: integer
         mepDirection:
           description: Indicates whether this is an Up MEP or Down MEP
-          $ref: '#/components/schemas/MepDirection'
+          $ref: "#/components/schemas/MepDirection"
       required:
         - level
         - mepDirection
@@ -3414,7 +3408,7 @@ components:
             be globally unique, depending on provider implementation)
           type: string
         source:
-          $ref: '#/components/schemas/MEFBuyerSellerType'
+          $ref: "#/components/schemas/MEFBuyerSellerType"
         text:
           description: Text of the note
           type: string
@@ -3428,20 +3422,20 @@ components:
     OneWayAvailabilityPmMetric:
       description: >-
         One Way Availability Performance Metric consisting of 1 parameter, a
-        list of Ordered End Point Pairs (referred to as S in the MEF
-        Standards), and the One Way Availability Objective for this Class of
-        Service Name and these Ordered End Point Pairs. See MEF 10.4 section
-        8.8.7 for EVC and MEF 26.2 section 12.13.7 for OVC.
+        list of Ordered End Point Pairs (referred to as S in the MEF Standards),
+        and the One Way Availability Objective for this Class of Service Name
+        and these Ordered End Point Pairs. See MEF 10.4 section 8.8.7 for EVC
+        and MEF 26.2 section 12.13.7 for OVC.
       properties:
         oneWayAvailabilityObjective:
-          $ref: '#/components/schemas/Percentage'
+          $ref: "#/components/schemas/Percentage"
         orderedPairList:
           description: >-
             The set (referred to as S in the MEF Standards) of ordered pairs of
             EVC or OVC End Points over which this Performance Metric parameters
             and objective apply.
           items:
-            $ref: '#/components/schemas/OrderedPair'
+            $ref: "#/components/schemas/OrderedPair"
           minItems: 1
           type: array
           uniqueItems: true
@@ -3459,13 +3453,13 @@ components:
         the MEF Standards), Thresholds for Frame Delay and Delay Variation
         (referred to as DL and Jt in the MEF Standards) and the One Way
         Composite Objective for this Class of Service Name and these seven
-        parameters. See MEF 10.4 section 8.8.10 for EVC (this Performance
-        Metric is not defined for OVC services).
+        parameters. See MEF 10.4 section 8.8.10 for EVC (this Performance Metric
+        is not defined for OVC services).
       properties:
         oneWayIfdvThreshold:
-          $ref: '#/components/schemas/ShortDuration'
+          $ref: "#/components/schemas/ShortDuration"
         cpmObjective:
-          $ref: '#/components/schemas/Percentage'
+          $ref: "#/components/schemas/Percentage"
         compositeFrameDelay:
           description:
             Composite indicator for One-way Frame Delay equal to 0 or 1.
@@ -3480,7 +3474,7 @@ components:
           minimum: 0
           type: integer
         oneWayFdThreshold:
-          $ref: '#/components/schemas/ShortDuration'
+          $ref: "#/components/schemas/ShortDuration"
         compositeFrameLoss:
           description:
             Composite indicator for One-way Frame Loss equal to 0 or 1.
@@ -3493,14 +3487,14 @@ components:
             EVC or OVC End Points over which this Performance Metric parameters
             and objective apply.
           items:
-            $ref: '#/components/schemas/OrderedPair'
+            $ref: "#/components/schemas/OrderedPair"
           minItems: 1
           type: array
           uniqueItems: true
         compositePerformanceIndicatorThreshold:
           description: >-
-            Composite Performance Indicator threshold which if exceeded
-            suggests an unacceptable time interval.
+            Composite Performance Indicator threshold which if exceeded suggests
+            an unacceptable time interval.
           maximum: 1
           minimum: 0
           type: number
@@ -3516,17 +3510,17 @@ components:
       type: object
     OneWayConsecutiveHighLossIntervalsPmMetric:
       description: >-
-        One Way Frame Delay Range Performance Metric consisting of 2
-        parameters, a list of Ordered End Point Pairs (referred to as S in the
-        MEF Standards) , a number (referred to as p in the MEF Standards), and
-        the One Way Consecutive High Loss Intervals Objective for this Class of
+        One Way Frame Delay Range Performance Metric consisting of 2 parameters,
+        a list of Ordered End Point Pairs (referred to as S in the MEF
+        Standards) , a number (referred to as p in the MEF Standards), and the
+        One Way Consecutive High Loss Intervals Objective for this Class of
         Service Name and these two parameters. See MEF 10.4 section 8.8.9 for
         EVC and MEF 26.2 section 12.13.9 for OVC.
       properties:
         consecutiveNumberP:
           description: >-
-            The number of high loss intervals that constitute a consecutive
-            high loss interval.
+            The number of high loss intervals that constitute a consecutive high
+            loss interval.
           minimum: 1
           type: integer
         oneWayChliObjective:
@@ -3540,7 +3534,7 @@ components:
             EVC or OVC End Points over which this Performance Metric parameters
             and objective apply.
           items:
-            $ref: '#/components/schemas/OrderedPair'
+            $ref: "#/components/schemas/OrderedPair"
           minItems: 1
           type: array
           uniqueItems: true
@@ -3553,15 +3547,15 @@ components:
       description: >-
         One Way Frame Delay Performance Metric consisting of 2 parameters, a
         list of Ordered End Point Pairs (referred to as S in the MEF Standards)
-        , a percentile (referred to as Pd in the MEF Standards), and the One
-        Way Frame Delay Objective for this Class of Service Name and these two
+        , a percentile (referred to as Pd in the MEF Standards), and the One Way
+        Frame Delay Objective for this Class of Service Name and these two
         parameters. See MEF 10.4 section 8.8.2 for EVC and MEF 26.2 section
         12.13.2 for OVC.
       properties:
         oneWayFdObjective:
-          $ref: '#/components/schemas/ShortDuration'
+          $ref: "#/components/schemas/ShortDuration"
         oneWayFdPercentile:
-          $ref: '#/components/schemas/Percentage'
+          $ref: "#/components/schemas/Percentage"
         orderedPairList:
           description: >-
             MEF 10.4 sec.  8.8.1.1 and MEF 26.2 sec. 12.13.1.1 - The set
@@ -3569,7 +3563,7 @@ components:
             OVC End Points over which this Performance Metric parameters and
             objective apply.
           items:
-            $ref: '#/components/schemas/OrderedPair'
+            $ref: "#/components/schemas/OrderedPair"
           minItems: 1
           type: array
           uniqueItems: true
@@ -3580,24 +3574,24 @@ components:
       type: object
     OneWayFrameDelayRangePmMetric:
       description: >-
-        One Way Frame Delay Range Performance Metric consisting of 2
-        parameters, a list of Ordered End Point Pairs (referred to as S in the
-        MEF Standards) , a percentile (referred to as Pr in the MEF Standards),
-        and the One Way Frame Delay Range Objective for this Class of Service
-        Name and these two parameters. See MEF 10.4 section 8.8.4 for EVC and
-        MEF 26.2 section 12.13.4 for OVC.
+        One Way Frame Delay Range Performance Metric consisting of 2 parameters,
+        a list of Ordered End Point Pairs (referred to as S in the MEF
+        Standards) , a percentile (referred to as Pr in the MEF Standards), and
+        the One Way Frame Delay Range Objective for this Class of Service Name
+        and these two parameters. See MEF 10.4 section 8.8.4 for EVC and MEF
+        26.2 section 12.13.4 for OVC.
       properties:
         oneWayFdrObjective:
-          $ref: '#/components/schemas/ShortDuration'
+          $ref: "#/components/schemas/ShortDuration"
         oneWayFdrPecentile:
-          $ref: '#/components/schemas/Percentage'
+          $ref: "#/components/schemas/Percentage"
         orderedPairList:
           description: >-
             The set (referred to as S in the MEF Standards) of ordered pairs of
             EVC or OVC End Points over which this Performance Metric parameters
             and objective apply.
           items:
-            $ref: '#/components/schemas/OrderedPair'
+            $ref: "#/components/schemas/OrderedPair"
           minItems: 1
           type: array
           uniqueItems: false
@@ -3608,21 +3602,21 @@ components:
       type: object
     OneWayFrameLostRatioPmMetric:
       description: >-
-        One Way Frame Loss Ratio Performance Metric consisting of 1 parameter,
-        a list of Ordered End Point Pairs (referred to as S in the MEF
-        Standards), and the One Way Frame Loss Ratio Objective for this Class
-        of Service Name and these Ordered End Point Pairs. See MEF 10.4 section
-        8.8.6 for EVC and MEF 26.2 section 12.13.6 for OVC.
+        One Way Frame Loss Ratio Performance Metric consisting of 1 parameter, a
+        list of Ordered End Point Pairs (referred to as S in the MEF Standards),
+        and the One Way Frame Loss Ratio Objective for this Class of Service
+        Name and these Ordered End Point Pairs. See MEF 10.4 section 8.8.6 for
+        EVC and MEF 26.2 section 12.13.6 for OVC.
       properties:
         oneWayFlrObjective:
-          $ref: '#/components/schemas/Percentage'
+          $ref: "#/components/schemas/Percentage"
         orderedPairList:
           description: >-
             The set (referred to as S in the MEF Standards) of ordered pairs of
             EVC or OVC End Points over which this Performance Metric parameters
             and objective apply.
           items:
-            $ref: '#/components/schemas/OrderedPair'
+            $ref: "#/components/schemas/OrderedPair"
           minItems: 1
           type: array
           uniqueItems: true
@@ -3650,7 +3644,7 @@ components:
             EVC or OVC End Points over which this Performance Metric parameters
             and objective apply.
           items:
-            $ref: '#/components/schemas/OrderedPair'
+            $ref: "#/components/schemas/OrderedPair"
           minItems: 1
           type: array
           uniqueItems: true
@@ -3669,18 +3663,18 @@ components:
         section 8.8.5 for EVC and MEF 26.2 section 12.13.5 for OVC.
       properties:
         oneWayIfdvObjective:
-          $ref: '#/components/schemas/ShortDuration'
+          $ref: "#/components/schemas/ShortDuration"
         oneWayIfdvPencentile:
-          $ref: '#/components/schemas/Percentage'
+          $ref: "#/components/schemas/Percentage"
         timeDuration:
-          $ref: '#/components/schemas/ShortDuration'
+          $ref: "#/components/schemas/ShortDuration"
         orderedPairList:
           description: >-
             The set (referred to as S in the MEF Standards) of ordered pairs of
             EVC or OVC End Points over which this Performance Metric parameters
             and objective apply.
           items:
-            $ref: '#/components/schemas/OrderedPair'
+            $ref: "#/components/schemas/OrderedPair"
           minItems: 1
           type: array
           uniqueItems: false
@@ -3692,21 +3686,21 @@ components:
       type: object
     OneWayMeanFrameDelayPmMetric:
       description: >-
-        One Way Frame Mean Delay Performance Metric consisting of 1 parameter,
-        a list of Ordered End Point Pairs (referred to as S in the MEF
-        Standards), and the One Way Mean Frame Delay Objective for this Class
-        of Service Name and these Ordered End Point Pairs. See MEF 10.4 section
-        8.8.3 for EVC and MEF 26.2 section 12.13.3 for OVC.
+        One Way Frame Mean Delay Performance Metric consisting of 1 parameter, a
+        list of Ordered End Point Pairs (referred to as S in the MEF Standards),
+        and the One Way Mean Frame Delay Objective for this Class of Service
+        Name and these Ordered End Point Pairs. See MEF 10.4 section 8.8.3 for
+        EVC and MEF 26.2 section 12.13.3 for OVC.
       properties:
         oneWayMfdObjective:
-          $ref: '#/components/schemas/ShortDuration'
+          $ref: "#/components/schemas/ShortDuration"
         orderedPairList:
           description: >-
             The set (referred to as S in the MEF Standards) of ordered pairs of
             EVC or OVC End Points over which this Performance Metric parameters
             and objective apply.
           items:
-            $ref: '#/components/schemas/OrderedPair'
+            $ref: "#/components/schemas/OrderedPair"
           minItems: 1
           type: array
           uniqueItems: true
@@ -3716,9 +3710,9 @@ components:
       type: object
     OperatorUniCommon:
       description: >-
-        This class contains all of the Operator UNI Services Attributes that
-        are used in all four Business Functions (POQ, Quote, Order, Inventory).
-        At this time, this includes all of the Operator UNI Service Attributes.
+        This class contains all of the Operator UNI Services Attributes that are
+        used in all four Business Functions (POQ, Quote, Order, Inventory). At
+        this time, this includes all of the Operator UNI Service Attributes.
         This class is used to compose the OperatorUNI class which has one file
         for each Business Function that differ in terms of the Service
         Attributes that are "Required" for the Business Function (rather than
@@ -3731,7 +3725,7 @@ components:
             frames) to an ordered list of physical links if there are multiple
             physical links in the UNI and the link aggregation is ALL_ACTIVE.
           items:
-            $ref: '#/components/schemas/ConversationIdToAggregationLinkMap'
+            $ref: "#/components/schemas/ConversationIdToAggregationLinkMap"
           minItems: 0
           type: array
           uniqueItems: true
@@ -3752,78 +3746,77 @@ components:
           type: integer
         ingressBandwidthProfile:
           description: >-
-            MEF 26.2 sec. 14.12 - A single set Bandwidth Profile Flow
-            parameters that covers all OVCs at the UNI. The value is either
-            Disabled (empty array) or a BWP.
+            MEF 26.2 sec. 14.12 - A single set Bandwidth Profile Flow parameters
+            that covers all OVCs at the UNI. The value is either Disabled (empty
+            array) or a BWP.
           items:
-            $ref: '#/components/schemas/BwpFlow'
+            $ref: "#/components/schemas/BwpFlow"
           maxItems: 1
           minItems: 0
           type: array
           uniqueItems: true
         lagLinkMeg:
-          $ref: '#/components/schemas/EnabledDisabled'
+          $ref: "#/components/schemas/EnabledDisabled"
         l2cpAddressSet:
           description: >-
-            MEF 26.2 sec. 14.20 and MEF 45.1 sec. 8.1 - The subset of the
-            Bridge Reserved Addresses that are Peered or Discarded (i.e. not
-            Passed). The value CTB or CTB2 must be used for port-based
-            (private) services and CTA for vlan-based (virtual private)
-            services. Per MEF 45.1: If an OVC has an OVC End Point at a UNI,
-            then the value of the Operator UNI L2CP Address Set Service
-            Attribute MUST be the same as the OVC L2CP Address Set Service
-            Attribute.
-          $ref: '#/components/schemas/OperatorUniCommonL2cpAddressSet'
+            MEF 26.2 sec. 14.20 and MEF 45.1 sec. 8.1 - The subset of the Bridge
+            Reserved Addresses that are Peered or Discarded (i.e. not Passed).
+            The value CTB or CTB2 must be used for port-based (private) services
+            and CTA for vlan-based (virtual private) services. Per MEF 45.1: If
+            an OVC has an OVC End Point at a UNI, then the value of the Operator
+            UNI L2CP Address Set Service Attribute MUST be the same as the OVC
+            L2CP Address Set Service Attribute.
+          $ref: "#/components/schemas/OperatorUniCommonL2cpAddressSet"
         listofPhysicalLinks:
           description: >-
             MEF 26.2 sec. 14.2, 14.3 - This Service Attribute combines several
             of the MEF 26.2 Objects into a single n-tuple that is consistent
-            with the way this information is described in MEF 10.4. The value
-            of the Operator UNI List of Physical Links Service Attribute is a
-            list of 6-tuples of the form ?id, physicalLink,
-            synchronousEthernet, precisionTiming,
-            uniConnectorType,uniConnectorGender?, with one list item for each
-            physical link. The value of id is an identifier for the physical
-            link. The value of physicalLink is the specific Ethernet physical
-            layer type. synchronousEthernet indicates if synchronous Ethernet
-            is used on the physical link and has the value Enabled or Disabled.
-            The value of precisionTiming indicates if the Precision Time
-            Protocol is used on the physical link and has the value Enabled or
-            Disabled. The values of uniConnectorType and uniConnectorGender
-            specify the type of connector used. Note that the id and the
-            physicalLink come from the CarrierEthernetPhysicalLink class.
+            with the way this information is described in MEF 10.4. The value of
+            the Operator UNI List of Physical Links Service Attribute is a list
+            of 6-tuples of the form ?id, physicalLink, synchronousEthernet,
+            precisionTiming, uniConnectorType,uniConnectorGender?, with one list
+            item for each physical link. The value of id is an identifier for
+            the physical link. The value of physicalLink is the specific
+            Ethernet physical layer type. synchronousEthernet indicates if
+            synchronous Ethernet is used on the physical link and has the value
+            Enabled or Disabled. The value of precisionTiming indicates if the
+            Precision Time Protocol is used on the physical link and has the
+            value Enabled or Disabled. The values of uniConnectorType and
+            uniConnectorGender specify the type of connector used. Note that the
+            id and the physicalLink come from the CarrierEthernetPhysicalLink
+            class.
           items:
-            $ref: '#/components/schemas/UniPhysicalLink'
+            $ref: "#/components/schemas/UniPhysicalLink"
           minItems: 0
           type: array
           uniqueItems: true
         linkOam:
-          $ref: '#/components/schemas/EnabledDisabled'
+          $ref: "#/components/schemas/EnabledDisabled"
         meg:
-          $ref: '#/components/schemas/EnabledDisabled'
+          $ref: "#/components/schemas/EnabledDisabled"
         linkAggregation:
           description: >-
-            MEF 26.2 sec. 14.5 - Service Attribute representing Link
-            Aggregation types. NONE-No Link Aggregation is used.
-            2_LINK_ACTIVE_STANDBY-The SP network uses Link Aggregation as in
-            either Clause 5.6.1 of IEEE Std 802.1AX-2008 [2] or Clause 6.7.1 of
-            IEEE Std 802.1AX-2014 with one Link Aggregation Group (LAG) across
-            the links supporting the UNI such that all Service Frames are
-            carried on only one of the two links when both links are
-            operational. ALL_ACTIVE-The SP Network uses Link Aggregation as
-            specified in Clause 5.3 of IEEE Std 802.1AX-2014, including the use
-            of the version 2 LACPDUs as specified in Clause 5.3.1h of IEEE Std
-            802.1AZ-2014, with one Link Aggregation Group (LAG) across the
-            links. OTHER-The Operator/Subscriber/Service Provider agree on
-            another other resiliency mechanism.
-          $ref: '#/components/schemas/OperatorUniCommonLinkAggregation'
+            MEF 26.2 sec. 14.5 - Service Attribute representing Link Aggregation
+            types. NONE-No Link Aggregation is used. 2_LINK_ACTIVE_STANDBY-The
+            SP network uses Link Aggregation as in either Clause 5.6.1 of IEEE
+            Std 802.1AX-2008 [2] or Clause 6.7.1 of IEEE Std 802.1AX-2014 with
+            one Link Aggregation Group (LAG) across the links supporting the UNI
+            such that all Service Frames are carried on only one of the two
+            links when both links are operational. ALL_ACTIVE-The SP Network
+            uses Link Aggregation as specified in Clause 5.3 of IEEE Std
+            802.1AX-2014, including the use of the version 2 LACPDUs as
+            specified in Clause 5.3.1h of IEEE Std 802.1AZ-2014, with one Link
+            Aggregation Group (LAG) across the links. OTHER-The
+            Operator/Subscriber/Service Provider agree on another other
+            resiliency mechanism.
+          $ref: "#/components/schemas/OperatorUniCommonLinkAggregation"
         egressBandwidthProfile:
           description: >-
             MEF 26.2 sec. 14.13 - A single set of Bandwidth Profile Flow
             parameters that covers all OVCs at the UNI. The value is either
             Disabled (empty array) or a BWP.
           items:
-            $ref: '#/components/schemas/BwpFlow'
+            $ref: "#/components/schemas/BwpFlow"
           maxItems: 1
           minItems: 0
           type: array
@@ -3832,13 +3825,13 @@ components:
           description: >-
             MEF 26.2 sec. 14.21 and  and MEF 45.1 sec. 8.1 - L2CP Peering
             Service Attribute defined in MEF 45.1 specifies which protocols, if
-            any, are peered at the UNI. The L2CP Peering service attribute
-            value must be an empty list, or a list of entries identifying
-            protocols to be Peered where each entry consists of {Destination
-            Address, Protocol Identifier} or {Destination Address, Protocol
-            Identifier, Link Identifier}.
+            any, are peered at the UNI. The L2CP Peering service attribute value
+            must be an empty list, or a list of entries identifying protocols to
+            be Peered where each entry consists of {Destination Address,
+            Protocol Identifier} or {Destination Address, Protocol Identifier,
+            Link Identifier}.
           items:
-            $ref: '#/components/schemas/L2cpPeering'
+            $ref: "#/components/schemas/L2cpPeering"
           minItems: 0
           type: array
           uniqueItems: false
@@ -3851,7 +3844,7 @@ components:
           minimum: 1
           type: integer
         tokenShare:
-          $ref: '#/components/schemas/EnabledDisabled'
+          $ref: "#/components/schemas/EnabledDisabled"
         maximumServiceFrameSize:
           description: >-
             MEF 26.2 sec. 14.8 - Specifies the maximum size of Service Frames
@@ -3861,12 +3854,12 @@ components:
         envelopes:
           description: >-
             MEF 26.2 sec. 14.19 - The Envelopes and Envelope Coupling Flag
-            values to which Bandwidth Profile Flows can be mapped. Value is
-            list of {envelopeID, couplingFlagForIndexZero}. Note: Envelopes for
-            the UNI can also be specified at the OVC End Points associated with
-            the UNI.
+            values to which Bandwidth Profile Flows can be mapped. Value is list
+            of {envelopeID, couplingFlagForIndexZero}. Note: Envelopes for the
+            UNI can also be specified at the OVC End Points associated with the
+            UNI.
           items:
-            $ref: '#/components/schemas/Envelope'
+            $ref: "#/components/schemas/Envelope"
           minItems: 0
           type: array
           uniqueItems: true
@@ -3875,9 +3868,9 @@ components:
       description: >-
         MEF 26.2 sec. 14.20 and MEF 45.1 sec. 8.1 - The subset of the Bridge
         Reserved Addresses that are Peered or Discarded (i.e. not Passed). The
-        value CTB or CTB2 must be used for port-based (private) services and
-        CTA for vlan-based (virtual private) services. Per MEF 45.1: If an OVC
-        has an OVC End Point at a UNI, then the value of the Operator UNI L2CP
+        value CTB or CTB2 must be used for port-based (private) services and CTA
+        for vlan-based (virtual private) services. Per MEF 45.1: If an OVC has
+        an OVC End Point at a UNI, then the value of the Operator UNI L2CP
         Address Set Service Attribute MUST be the same as the OVC L2CP Address
         Set Service Attribute.
       enum:
@@ -3914,13 +3907,13 @@ components:
       properties:
         toCarrierEthernetServiceEndPoint:
           description: >-
-            This is the EVC End Point ID for and EVC End Point in the service
-            or OVC End Point ID for an OVC End Point in the service.
+            This is the EVC End Point ID for and EVC End Point in the service or
+            OVC End Point ID for an OVC End Point in the service.
           type: string
         fromCarrierEthernetServiceEndPoint:
           description: >-
-            This is the EVC End Point ID for and EVC End Point in the service
-            or OVC End Point ID for an OVC End Point in the service.
+            This is the EVC End Point ID for and EVC End Point in the service or
+            OVC End Point ID for an OVC End Point in the service.
           type: string
       required:
         - fromCarrierEthernetServiceEndPoint
@@ -3929,10 +3922,10 @@ components:
     OvcEgressMap:
       discriminator:
         mapping:
-          CN_PCP_CC_DEI: '#/components/schemas/PcpFromCosDeiFromCosColor'
-          CC_PCP: '#/components/schemas/PcpFromCosColor'
-          CN_PCP: '#/components/schemas/PcpFromCos'
-          CC_DEI: '#/components/schemas/DeiFromCosColor'
+          CN_PCP_CC_DEI: "#/components/schemas/PcpFromCosDeiFromCosColor"
+          CC_PCP: "#/components/schemas/PcpFromCosColor"
+          CN_PCP: "#/components/schemas/PcpFromCos"
+          CC_DEI: "#/components/schemas/DeiFromCosColor"
         propertyName: mapType
       properties:
         mapType:
@@ -3944,8 +3937,8 @@ components:
       description: >-
         MEF 45 sec. 8.1 and MEF 26.2 sec. 12.16 - The subset of the Bridge
         Reserved Addresses that are Peered or Discarded (i.e. not Passed). The
-        value CTB or CTB2 must be used for port-based (private) services and
-        CTA for vlan-based (virtual private) services.
+        value CTB or CTB2 must be used for port-based (private) services and CTA
+        for vlan-based (virtual private) services.
       enum:
         - CTA
         - CTB
@@ -3958,12 +3951,12 @@ components:
       type: string
     PcpFromCos:
       allOf:
-        - $ref: '#/components/schemas/OvcEgressMap'
+        - $ref: "#/components/schemas/OvcEgressMap"
         - description: >-
-            The PCP Field in the Egress EI Frame is determined from the Class
-            of Service of the corresponding Ingress EI Frame. This is a list
-            that contains an entry for Class of Service Name that includes the
-            CoS Name and the PCP value  (or DISCARD) to use for that CoS. For
+            The PCP Field in the Egress EI Frame is determined from the Class of
+            Service of the corresponding Ingress EI Frame. This is a list that
+            contains an entry for Class of Service Name that includes the CoS
+            Name and the PCP value  (or DISCARD) to use for that CoS. For
             example CoS=Platinum --> PCP = 6. This affects the C-tag at the UNI
             and the S-tag at the ENNI.
           properties:
@@ -3972,7 +3965,7 @@ components:
                 A list of mappings of each CoS to an egress PCP value or
                 DISCARD.
               items:
-                $ref: '#/components/schemas/CnPcp'
+                $ref: "#/components/schemas/CnPcp"
               minItems: 1
               type: array
               uniqueItems: true
@@ -3983,22 +3976,22 @@ components:
       x-discriminator-value: CN_PCP
     PcpFromCosColor:
       allOf:
-        - $ref: '#/components/schemas/OvcEgressMap'
+        - $ref: "#/components/schemas/OvcEgressMap"
         - description: >-
-            The PCP Field in the Egress EI Frame is determined from the Class
-            of Service Name and the Frame Color. This is a list that contains
-            an entry for Class of Service Name that includes the CoS Name and
-            two PCP values (or DISCARD), one for Green frames and one for
-            Yellow frames.  For example CoS=Platinum and Color=Green --> PCP =
-            6  and Color=Yellow --> PCP = 5. This affects the C-tag at the UNI
-            and the S-tag at the ENNI.
+            The PCP Field in the Egress EI Frame is determined from the Class of
+            Service Name and the Frame Color. This is a list that contains an
+            entry for Class of Service Name that includes the CoS Name and two
+            PCP values (or DISCARD), one for Green frames and one for Yellow
+            frames.  For example CoS=Platinum and Color=Green --> PCP = 6  and
+            Color=Yellow --> PCP = 5. This affects the C-tag at the UNI and the
+            S-tag at the ENNI.
           properties:
             ccPcpEntries:
               description: >-
                 A list of entries, one per CoS that indicates the PCP value for
                 Green Frames and the PCP value for Yellow Frames.
               items:
-                $ref: '#/components/schemas/CcPcp'
+                $ref: "#/components/schemas/CcPcp"
               minItems: 1
               type: array
               uniqueItems: true
@@ -4009,17 +4002,16 @@ components:
       x-discriminator-value: CC_PCP
     PcpFromCosDeiFromCosColor:
       allOf:
-        - $ref: '#/components/schemas/OvcEgressMap'
+        - $ref: "#/components/schemas/OvcEgressMap"
         - description: >-
             This is a combination of PCP from CoS and DEI from Color. The PCP
-            Field in the Egress EI Frame is determined from the Class of
-            Service and the DEI Field is determined from the Frame Color. This
-            is a list that contains an entry for Class of Service Name that
-            includes the CoS Name, PCP value to use (or DISCARD) and the DEI
-            value to use for each color for that CoS Name. For example
-            CoS=Platinum and Color=Green --> PCP = 6/DEI = 1 and Color=Yellow
-            --> DEI=0. This affects the C-tag at the UNI and the S-tag at the
-            ENNI.
+            Field in the Egress EI Frame is determined from the Class of Service
+            and the DEI Field is determined from the Frame Color. This is a list
+            that contains an entry for Class of Service Name that includes the
+            CoS Name, PCP value to use (or DISCARD) and the DEI value to use for
+            each color for that CoS Name. For example CoS=Platinum and
+            Color=Green --> PCP = 6/DEI = 1 and Color=Yellow --> DEI=0. This
+            affects the C-tag at the UNI and the S-tag at the ENNI.
           properties:
             cnPcpCcDeiEntries:
               description: >-
@@ -4027,7 +4019,7 @@ components:
                 the CoS and the DEI values for Green and Yellow frames in the
                 CoS.
               items:
-                $ref: '#/components/schemas/PcpFromCosDeiFromCosColor'
+                $ref: "#/components/schemas/PcpFromCosDeiFromCosColor"
               minItems: 1
               type: array
               uniqueItems: true
@@ -4038,36 +4030,36 @@ components:
       x-discriminator-value: CN_PCP_CC_DEI
     PcpVal:
       enum:
-        - '0'
-        - '1'
-        - '2'
-        - '3'
-        - '4'
-        - '5'
-        - '6'
-        - '7'
+        - "0"
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+        - "5"
+        - "6"
+        - "7"
       type: string
     PcpValue:
       enum:
-        - '0'
-        - '1'
-        - '2'
-        - '3'
-        - '4'
-        - '5'
-        - '6'
-        - '7'
+        - "0"
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+        - "5"
+        - "6"
+        - "7"
       type: string
     PcpValueAndDiscard:
       enum:
-        - '0'
-        - '1'
-        - '2'
-        - '3'
-        - '4'
-        - '5'
-        - '6'
-        - '7'
+        - "0"
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+        - "5"
+        - "6"
+        - "7"
         - DISCARD
       type: string
     Percentage:
@@ -4199,13 +4191,13 @@ components:
       properties:
         taxRate:
           description:
-            'Price Tax Rate. Unit: [%]. E.g. value 16 stand for 16% tax.'
+            "Price Tax Rate. Unit: [%]. E.g. value 16 stand for 16% tax."
           format: float
           type: number
         taxIncludedAmount:
-          $ref: '#/components/schemas/Money'
+          $ref: "#/components/schemas/Money"
         dutyFreeAmount:
-          $ref: '#/components/schemas/Money'
+          $ref: "#/components/schemas/Money"
       type: object
     ProductOfferingQualificationItemRef:
       description: >-
@@ -4266,20 +4258,19 @@ components:
       description: >-
         A relationship to an existing Product. The requirements for usage for
         given Product are described in the Product Specification. The
-        "WithGrouping" flavor of the Product Relationship allows for providing
-        a list of related product identifiers within a single Product
+        "WithGrouping" flavor of the Product Relationship allows for providing a
+        list of related product identifiers within a single Product
         Relationship. This can be later used while processing the request as
         defined in the Product Specification. The `groupingKey` attribute is
         used to achieve this behavior in the API by marking the list of
-        `ProductRelationshipWithGroupings` within a `product` with a common
-        key.
+        `ProductRelationshipWithGroupings` within a `product` with a common key.
       properties:
         relationshipType:
           description: >
             Specifies the type (nature) of the relationship to the related
-            Product. The nature of required relationships varies for Products
-            of different types. For example, a UNI or ENNI Product may not have
-            any relationships, but an Access E-Line may have two mandatory
+            Product. The nature of required relationships varies for Products of
+            different types. For example, a UNI or ENNI Product may not have any
+            relationships, but an Access E-Line may have two mandatory
             relationships (related to the UNI on one end and the ENNI on the
             other). More complex Products such as multipoint IP or Firewall
             Products may have more complex relationships. As a result, the
@@ -4298,11 +4289,11 @@ components:
           type: string
         groupingKey:
           description: >
-            MEF 80 Introduces a list of related ids for the
-            ProductRelationship. For sake of TMF compliance, a `groupingKey` is
-            introduced to retain id as a simple attribute. Ids from
-            relationships having the same `groupingKey` and `relationshipType`
-            MUST be treated as a list of identifiers.
+            MEF 80 Introduces a list of related ids for the ProductRelationship.
+            For sake of TMF compliance, a `groupingKey` is introduced to retain
+            id as a simple attribute. Ids from relationships having the same
+            `groupingKey` and `relationshipType` MUST be treated as a list of
+            identifiers.
 
             Reference: MEF 80 (Sn 8.1.8.)
           type: string
@@ -4312,12 +4303,12 @@ components:
       type: object
     Quote:
       allOf:
-        - $ref: '#/components/schemas/Quote_Common'
+        - $ref: "#/components/schemas/Quote_Common"
         - description: >-
             Quote can be used to negotiate service and product acquisition or
             modification between a customer and a service provider. Quote
-            contains a list of quote items, a reference to a customer, a list
-            of productOfferings, and attached prices and conditions.
+            contains a list of quote items, a reference to a customer, a list of
+            productOfferings, and attached prices and conditions.
           properties:
             effectiveQuoteCompletionDate:
               description: >-
@@ -4332,21 +4323,21 @@ components:
               format: date-time
               type: string
             validFor:
-              $ref: '#/components/schemas/TimePeriod'
+              $ref: "#/components/schemas/TimePeriod"
             quoteLevel:
-              $ref: '#/components/schemas/MEFSellerQuoteLevel'
+              $ref: "#/components/schemas/MEFSellerQuoteLevel"
             quoteItem:
               description: >-
                 An item of the quote - it is used to describe an operation on a
                 product to be quoted
               items:
-                $ref: '#/components/schemas/QuoteItem'
+                $ref: "#/components/schemas/QuoteItem"
               minItems: 1
               type: array
             stateChange:
               description: State change for the Quote
               items:
-                $ref: '#/components/schemas/MEFQuoteStateChange'
+                $ref: "#/components/schemas/MEFQuoteStateChange"
               type: array
             id:
               description: Unique identifier - attributed by quoting system
@@ -4357,7 +4348,7 @@ components:
                 providing a response by the Seller
               type: string
             state:
-              $ref: '#/components/schemas/MEFQuoteStateType'
+              $ref: "#/components/schemas/MEFQuoteStateType"
             quoteDate:
               description: Date and time when the quote was created
               format: date-time
@@ -4369,7 +4360,7 @@ components:
           type: object
     QuoteItem:
       allOf:
-        - $ref: '#/components/schemas/MEFQuoteItem_Common'
+        - $ref: "#/components/schemas/MEFQuoteItem_Common"
         - description: >-
             Quote items describe an action to be performed on a productOffering
             or a product in order to get pricing elements and conditions.
@@ -4379,10 +4370,10 @@ components:
                 When the Seller cannot process the Quote Item Request, the
                 Seller returns a text-based list of reasons here.
               items:
-                $ref: '#/components/schemas/TerminationError'
+                $ref: "#/components/schemas/TerminationError"
               type: array
             quoteItemInstallationInterval:
-              $ref: '#/components/schemas/Duration'
+              $ref: "#/components/schemas/Duration"
             subjectToFeasibilityCheck:
               description: >-
                 For a Firm Quote Level indicates if the pricing requires a
@@ -4395,15 +4386,15 @@ components:
                 Quote Item Term as defined by the Seller and part of the Quote
                 for the Quote Item.
               items:
-                $ref: '#/components/schemas/MEFItemTerm'
+                $ref: "#/components/schemas/MEFItemTerm"
               maxItems: 1
               type: array
             state:
-              $ref: '#/components/schemas/MEFQuoteItemStateType'
+              $ref: "#/components/schemas/MEFQuoteItemStateType"
             quoteItemPrice:
               description: Price for this quote item
               items:
-                $ref: '#/components/schemas/QuotePrice'
+                $ref: "#/components/schemas/QuotePrice"
               type: array
           required:
             - state
@@ -4416,15 +4407,14 @@ components:
         relationshipType:
           description: >-
             Relationship type as relies on, bundles, etc... MEF: Specifies the
-            nature of the relationship to the related Quote Items. The nature
-            of required relationships varies for Products of different types.
-            For example, a UNI or ENNI Product may not have any relationships,
-            but an Access E-Line may have two mandatory relationships (related
-            to the UNI on one end and the ENNI on the other). More complex
-            Products such as multipoint IP or Firewall Products may have more
-            complex relationships. As a result, the allowed and mandatory
-            Relationship Nature values are defined in the Product
-            Specification.
+            nature of the relationship to the related Quote Items. The nature of
+            required relationships varies for Products of different types. For
+            example, a UNI or ENNI Product may not have any relationships, but
+            an Access E-Line may have two mandatory relationships (related to
+            the UNI on one end and the ENNI on the other). More complex Products
+            such as multipoint IP or Firewall Products may have more complex
+            relationships. As a result, the allowed and mandatory Relationship
+            Nature values are defined in the Product Specification.
           type: string
         id:
           description: ID of the related quote item (must be in the same quote)
@@ -4439,8 +4429,8 @@ components:
       properties:
         reason:
           description: >-
-            Allows the Buyer to specify a reason for the Cancel or Decline
-            Quote request.
+            Allows the Buyer to specify a reason for the Cancel or Decline Quote
+            request.
           type: string
         quoteId:
           description: >-
@@ -4459,23 +4449,23 @@ components:
             MEF: if Quote Item Price Type equals usageBased
           type: string
         price:
-          $ref: '#/components/schemas/Price'
+          $ref: "#/components/schemas/Price"
         name:
           description: Name of the quote/quote item price
           type: string
         priceType:
-          $ref: '#/components/schemas/MEFPriceType'
+          $ref: "#/components/schemas/MEFPriceType"
         description:
           description: Description of the quote/quote item price
           type: string
         recurringChargePeriod:
-          $ref: '#/components/schemas/MEFChargePeriod'
+          $ref: "#/components/schemas/MEFChargePeriod"
       type: object
     Quote_Common:
       description: >-
         Quote can be used to negotiate service and product acquisition or
-        modification between a customer and a service provider. Quote contains
-        a list of quote items, a reference to a customer, a list of
+        modification between a customer and a service provider. Quote contains a
+        list of quote items, a reference to a customer, a list of
         productOfferings, and attached prices and conditions.
       properties:
         note:
@@ -4484,7 +4474,7 @@ components:
             involving human interaction. Not applicable for the automated
             process.
           items:
-            $ref: '#/components/schemas/Note'
+            $ref: "#/components/schemas/Note"
           type: array
         requestedQuoteCompletionDate:
           description: >-
@@ -4503,7 +4493,7 @@ components:
             and the Seller MUST specify Seller Contact Information ('role:
             sellerContactInformation')
           items:
-            $ref: '#/components/schemas/RelatedContactInformation'
+            $ref: "#/components/schemas/RelatedContactInformation"
           type: array
         description:
           description: Description of the quote
@@ -4514,12 +4504,12 @@ components:
             facilitate his searches afterwards)
           type: string
         buyerRequestedQuoteLevel:
-          $ref: '#/components/schemas/MEFBuyerQuoteLevel'
+          $ref: "#/components/schemas/MEFBuyerQuoteLevel"
         projectId:
           description: >-
             An identifier that is used to group Quotes that represent a unit of
-            functionality that is important to a Buyer. A Project can be used
-            to relate multiple Quotes together.
+            functionality that is important to a Buyer. A Project can be used to
+            relate multiple Quotes together.
           type: string
         instantSyncQuote:
           description: >-
@@ -4532,19 +4522,19 @@ components:
       type: object
     Quote_Create:
       allOf:
-        - $ref: '#/components/schemas/Quote_Common'
+        - $ref: "#/components/schemas/Quote_Common"
         - description: >
             Quote can be used to negotiate service and product acquisition or
             modification between a customer and a service provider. Quote
-            contains a list of quote items, a reference to a customer, a list
-            of productOfferings, and attached prices and conditions.
+            contains a list of quote items, a reference to a customer, a list of
+            productOfferings, and attached prices and conditions.
           properties:
             quoteItem:
               description: >-
                 An item of the quote - used to describe an operation on a
                 product to be quoted
               items:
-                $ref: '#/components/schemas/MEFQuoteItem_Create'
+                $ref: "#/components/schemas/MEFQuoteItem_Create"
               minItems: 1
               type: array
           required:
@@ -4552,8 +4542,8 @@ components:
           type: object
     Quote_Find:
       description: >
-        This class represents a single list item for the response of
-        `listQuote` operation.
+        This class represents a single list item for the response of `listQuote`
+        operation.
       properties:
         effectiveQuoteCompletionDate:
           description:
@@ -4573,7 +4563,7 @@ components:
           format: date-time
           type: string
         quoteLevel:
-          $ref: '#/components/schemas/MEFSellerQuoteLevel'
+          $ref: "#/components/schemas/MEFSellerQuoteLevel"
         externalId:
           description: >-
             ID given by the consumer and only understandable by him (to
@@ -4583,12 +4573,12 @@ components:
           description: Unique identifier - attributed by quoting system
           type: string
         state:
-          $ref: '#/components/schemas/MEFQuoteStateType'
+          $ref: "#/components/schemas/MEFQuoteStateType"
         projectId:
           description: >-
             An identifier that is used to group Quotes that represent a unit of
-            functionality that is important to a Buyer. A Project can be used
-            to relate multiple Quotes together.
+            functionality that is important to a Buyer. A Project can be used to
+            relate multiple Quotes together.
           type: string
         quoteDate:
           description: Date and time when the quote was created
@@ -4600,8 +4590,8 @@ components:
     RelatedContactInformation:
       description: >-
         Contact data for a person or organization that is involved in a given
-        context. It is specified by the Seller (e.g. Seller Contact
-        Information) or by the Buyer. 
+        context. It is specified by the Seller (e.g. Seller Contact Information)
+        or by the Buyer. 
 
         Reference: MEF 80 (Sn 8.1.9)
       properties:
@@ -4615,7 +4605,7 @@ components:
           description: The role of the particular contact in a given context.
           type: string
         postalAddress:
-          $ref: '#/components/schemas/FieldedAddress'
+          $ref: "#/components/schemas/FieldedAddress"
         organization:
           description: The organization or company that the contact belongs to
           type: string
@@ -4636,39 +4626,39 @@ components:
         Place defines the places where the products' quotation must be done.
       discriminator:
         mapping:
-          FieldedAddress: '#/components/schemas/FieldedAddress'
-          FormattedAddress: '#/components/schemas/FormattedAddress'
-          GeographicAddressLabel: '#/components/schemas/GeographicAddressLabel'
-          GeographicAddressRef: '#/components/schemas/GeographicAddressRef'
-          GeographicSiteRef: '#/components/schemas/GeographicSiteRef'
-          MEFGeographicPoint: '#/components/schemas/MEFGeographicPoint'
-        propertyName: '@type'
+          FieldedAddress: "#/components/schemas/FieldedAddress"
+          FormattedAddress: "#/components/schemas/FormattedAddress"
+          GeographicAddressLabel: "#/components/schemas/GeographicAddressLabel"
+          GeographicAddressRef: "#/components/schemas/GeographicAddressRef"
+          GeographicSiteRef: "#/components/schemas/GeographicSiteRef"
+          MEFGeographicPoint: "#/components/schemas/MEFGeographicPoint"
+        propertyName: "@type"
       properties:
         role:
           description: Role of this place
           type: string
-        '@type':
+        "@type":
           description: >
             This field is used as a discriminator and is used between different
             place representations. This type might discriminate for the
             additional related place as defined in '@schemaLocation'.
           type: string
-        '@schemaLocation':
+        "@schemaLocation":
           description: >-
             A URI to a JSON-Schema file that defines additional attributes and
-            relationships. May be used to define additional related place
-            types. Usage of this attribute must be agreed upon between Buyer
-            and Seller.
+            relationships. May be used to define additional related place types.
+            Usage of this attribute must be agreed upon between Buyer and
+            Seller.
           format: uri
           type: string
       required:
-        - '@type'
+        - "@type"
         - role
       type: object
     Role:
       description: >-
-        MEF 10.4 sec. 10.3 - Indicates how EI Frames mapped to the EVC End
-        Point can be forwarded
+        MEF 10.4 sec. 10.3 - Indicates how EI Frames mapped to the EVC End Point
+        can be forwarded
       enum:
         - ROOT
         - LEAF
@@ -4676,8 +4666,8 @@ components:
       type: string
     ShortDuration:
       description: >-
-        This class is used to describe durations expressed in minutes or
-        smaller time units
+        This class is used to describe durations expressed in minutes or smaller
+        time units
       properties:
         shortDurationValue:
           description: >-
@@ -4688,15 +4678,15 @@ components:
           description: >-
             The unit of measure in the duration. For example, if an interval is
             2ms, this element is MS.
-          $ref: '#/components/schemas/ShortDurationUnits'
+          $ref: "#/components/schemas/ShortDurationUnits"
       required:
         - shortDurationUnits
         - shortDurationValue
       type: object
     ShortDurationUnits:
       description: >-
-        The unit of measure in the duration. For example, if an interval is
-        2ms, this element is MS.
+        The unit of measure in the duration. For example, if an interval is 2ms,
+        this element is MS.
       enum:
         - NS
         - US
@@ -4709,45 +4699,45 @@ components:
         This is the specification of Performance Metrics (and parameters) for
         one Class of Service. The first element is the CoS Name. This MUST be
         unique, i.e. there can not be two instances of this Class with the same
-        CoS Name. The CoS Name is followed by three parameters and then lists
-        of Performance Metrics.
+        CoS Name. The CoS Name is followed by three parameters and then lists of
+        Performance Metrics.
       properties:
         thresholdC:
           description: >-
             MEF 10.4 sec. 8.8 and MEF 26.2 sec. 12.13 - thresholdC is a real
-            number in the range [0,1] used as a threshold to determine whether
-            a given time interval ?tk has high loss.
+            number in the range [0,1] used as a threshold to determine whether a
+            given time interval ?tk has high loss.
           maximum: 1
           minimum: 0
           type: number
         oneWayConsecutiveHighLossIntervalsPmMetric:
           description: >-
             MEF 10.4 sec. 8.8.9 and MEF 26.2 sec. 12.13.9 -
-            oneWayConsecutiveHighLossIntervalsPmMetric is a reference to zero
-            or more instances of One Way Consecutive High Loss Intervals
+            oneWayConsecutiveHighLossIntervalsPmMetric is a reference to zero or
+            more instances of One Way Consecutive High Loss Intervals
             Performance Metric. Each reference contains a set of parameters and
             performance objective for the Performance Metric. If there are 0
             instances then this Class of Service does not have an objective for
-            this One Way CHLI. If there are multiple instances for this Class
-            of Service then at least one of the parameters must be different
+            this One Way CHLI. If there are multiple instances for this Class of
+            Service then at least one of the parameters must be different
             between the instances.
           items:
-            $ref: '#/components/schemas/OneWayConsecutiveHighLossIntervalsPmMetric'
+            $ref: "#/components/schemas/OneWayConsecutiveHighLossIntervalsPmMetric"
           minItems: 0
           type: array
           uniqueItems: true
         oneWayFrameDelayPmMetric:
           description: >-
             MEF 10.4 sec. 8.8.2 and MEF 26.2 sec. 12.13.2 -
-            oneWayFrameDelayPmMetric is a reference to zero or more instances
-            of One Way Frame Delay Performance Metric. Each reference contains
-            a set of parameters and performance objective for the Performance
-            Metric. If there are 0 instances then this Class of Service does
-            not have an objective for this One Way Frame Delay. If there are
+            oneWayFrameDelayPmMetric is a reference to zero or more instances of
+            One Way Frame Delay Performance Metric. Each reference contains a
+            set of parameters and performance objective for the Performance
+            Metric. If there are 0 instances then this Class of Service does not
+            have an objective for this One Way Frame Delay. If there are
             multiple instances for this Class of Service then at least one of
             the parameters must be different between the instances.
           items:
-            $ref: '#/components/schemas/OneWayFrameDelayPmMetric'
+            $ref: "#/components/schemas/OneWayFrameDelayPmMetric"
           minItems: 0
           type: array
           uniqueItems: true
@@ -4763,7 +4753,7 @@ components:
             Service then at least one of the parameters must be different
             between the instances.
           items:
-            $ref: '#/components/schemas/OneWayInterFrameDelayVariationPmMetric'
+            $ref: "#/components/schemas/OneWayInterFrameDelayVariationPmMetric"
           minItems: 0
           type: array
           uniqueItems: true
@@ -4772,14 +4762,14 @@ components:
             MEF 10.4 sec. 8.8.3 and MEF 26.2 sec. 12.13.3 -
             oneWayMeanFrameDelayPmMetric is a reference to zero or more
             instances of One Way Mean Frame Delay Performance Metric. Each
-            reference contains a set of parameters and performance objective
-            for the Performance Metric. If there are 0 instances then this
-            Class of Service does not have an objective for this One Way Mean
-            Frame Delay. If there are multiple instances for this Class of
-            Service then at least one of the parameters must be different
-            between the instances.
+            reference contains a set of parameters and performance objective for
+            the Performance Metric. If there are 0 instances then this Class of
+            Service does not have an objective for this One Way Mean Frame
+            Delay. If there are multiple instances for this Class of Service
+            then at least one of the parameters must be different between the
+            instances.
           items:
-            $ref: '#/components/schemas/OneWayMeanFrameDelayPmMetric'
+            $ref: "#/components/schemas/OneWayMeanFrameDelayPmMetric"
           minItems: 0
           type: array
           uniqueItems: true
@@ -4788,14 +4778,14 @@ components:
             MEF 10.4 sec. 8.8.11 and MEF 26.2 sec. 12.13.10 -
             oneWayGroupAvailabilityPmMetric is a reference to zero or more
             instances of One Way Group Availability Performance Metric. Each
-            reference contains a set of parameters and performance objective
-            for the Performance Metric. If there are 0 instances then this
-            Class of Service does not have an objective for this One Way Group
+            reference contains a set of parameters and performance objective for
+            the Performance Metric. If there are 0 instances then this Class of
+            Service does not have an objective for this One Way Group
             Availability. If there are multiple instances for this Class of
             Service then at least one of the parameters must be different
             between the instances.
           items:
-            $ref: '#/components/schemas/OneWayAvailabilityPmMetric'
+            $ref: "#/components/schemas/OneWayAvailabilityPmMetric"
           minItems: 0
           type: array
           uniqueItems: true
@@ -4805,12 +4795,12 @@ components:
             oneWayAvailabilityPmMetric is a reference to zero or more instances
             of One Way Availability Performance Metric. Each reference contains
             a set of parameters and performance objective for the Performance
-            Metric. If there are 0 instances then this Class of Service does
-            not have an objective for this One Way Availability. If there are
+            Metric. If there are 0 instances then this Class of Service does not
+            have an objective for this One Way Availability. If there are
             multiple instances for this Class of Service then at least one of
             the parameters must be different between the instances.
           items:
-            $ref: '#/components/schemas/OneWayAvailabilityPmMetric'
+            $ref: "#/components/schemas/OneWayAvailabilityPmMetric"
           minItems: 0
           type: array
           uniqueItems: true
@@ -4819,29 +4809,28 @@ components:
             MEF 10.4 sec. 8.8.8 and MEF 26.2 sec. 12.13.8 -
             oneWayHighLossIntervalsPmMetric is a reference to zero or more
             instances of One Way High Loss Intervals Performance Metric. Each
-            reference contains a set of parameters and performance objective
-            for the Performance Metric. If there are 0 instances then this
-            Class of Service does not have an objective for this One Way HLI.
-            If there are multiple instances for this Class of Service then at
-            least one of the parameters must be different between the
-            instances.
+            reference contains a set of parameters and performance objective for
+            the Performance Metric. If there are 0 instances then this Class of
+            Service does not have an objective for this One Way HLI. If there
+            are multiple instances for this Class of Service then at least one
+            of the parameters must be different between the instances.
           items:
-            $ref: '#/components/schemas/OneWayHighLossIntervalPmMetric'
+            $ref: "#/components/schemas/OneWayHighLossIntervalPmMetric"
           minItems: 0
           type: array
           uniqueItems: true
         oneWayCompositePmMetric:
           description: >-
             MEF 10.4 sec. 8.8.10 - oneWayCompositePmMetric is a reference to
-            zero or more instances of One Way Composite Performance Metric.
-            Each reference contains a set of parameters and performance
-            objective for the Performance Metric. If there are 0 instances then
-            this Class of Service does not have an objective for this One Way
-            Composite Performance. If there are multiple instances for this
-            Class of Service then at least one of the parameters must be
-            different between the instances.
+            zero or more instances of One Way Composite Performance Metric. Each
+            reference contains a set of parameters and performance objective for
+            the Performance Metric. If there are 0 instances then this Class of
+            Service does not have an objective for this One Way Composite
+            Performance. If there are multiple instances for this Class of
+            Service then at least one of the parameters must be different
+            between the instances.
           items:
-            $ref: '#/components/schemas/OneWayCompositePmMetric'
+            $ref: "#/components/schemas/OneWayCompositePmMetric"
           minItems: 0
           type: array
           uniqueItems: true
@@ -4850,14 +4839,14 @@ components:
             MEF 10.4 sec. 8.8.6 and MEF 26.2 sec. 12.13.6 -
             oneWayFrameLossRatioPmMetric is a reference to zero or more
             instances of One Way Frame Loss Ratio Performance Metric. Each
-            reference contains a set of parameters and performance objective
-            for the Performance Metric. If there are 0 instances then this
-            Class of Service does not have an objective for this One Way Frame
-            Loss Ratio. If there are multiple instances for this Class of
-            Service then at least one of the parameters must be different
-            between the instances.
+            reference contains a set of parameters and performance objective for
+            the Performance Metric. If there are 0 instances then this Class of
+            Service does not have an objective for this One Way Frame Loss
+            Ratio. If there are multiple instances for this Class of Service
+            then at least one of the parameters must be different between the
+            instances.
           items:
-            $ref: '#/components/schemas/OneWayFrameLostRatioPmMetric'
+            $ref: "#/components/schemas/OneWayFrameLostRatioPmMetric"
           maxItems: 1
           minItems: 0
           type: array
@@ -4875,23 +4864,23 @@ components:
             MEF 10.4 sec. 8.8 and MEF 26.2 sec. 12.13 - deltaT is a time
             duration in seconds much smaller than timeInterval. This is used,
             primarily, in calculations associated with Availability, High Loss
-            Intervals and Consecutive High Loss Intervals. MEF 10.4 and MEF
-            26.2 refer to this as ?t and the k-th interval starting at ts is
-            referred to as ?tk (k is subscript).
+            Intervals and Consecutive High Loss Intervals. MEF 10.4 and MEF 26.2
+            refer to this as ?t and the k-th interval starting at ts is referred
+            to as ?tk (k is subscript).
           type: integer
         oneWayFrameDelayRangePmMetric:
           description: >-
             MEF 10.4 sec. 8.8.4 and MEF 26.2 sec. 12.13.4 -
             oneWayFrameDelayRangePmMetric is a reference to zero or more
             instances of One Way Frame Delay Range Performance Metric. Each
-            reference contains a set of parameters and performance objective
-            for the Performance Metric. If there are 0 instances then this
-            Class of Service does not have an objective for this One Way Frame
-            Delay Range. If there are multiple instances for this Class of
-            Service then at least one of the parameters must be different
-            between the instances.
+            reference contains a set of parameters and performance objective for
+            the Performance Metric. If there are 0 instances then this Class of
+            Service does not have an objective for this One Way Frame Delay
+            Range. If there are multiple instances for this Class of Service
+            then at least one of the parameters must be different between the
+            instances.
           items:
-            $ref: '#/components/schemas/OneWayFrameDelayRangePmMetric'
+            $ref: "#/components/schemas/OneWayFrameDelayRangePmMetric"
           minItems: 0
           type: array
           uniqueItems: true
@@ -4930,25 +4919,25 @@ components:
           minimum: 1
           type: integer
         interval:
-          $ref: '#/components/schemas/ShortDuration'
+          $ref: "#/components/schemas/ShortDuration"
       required:
         - interval
         - limit
       type: object
     SubscriberMegMip:
       description: >-
-        MEF 10.4 sec. 10.13 - The value of the EVC EP Subscriber MEG MIP
-        Service Attribute is either None or an integer in the range 0 - 7 that
-        indicates the MEG Level of a Subscriber MEG MIP.
+        MEF 10.4 sec. 10.13 - The value of the EVC EP Subscriber MEG MIP Service
+        Attribute is either None or an integer in the range 0 - 7 that indicates
+        the MEG Level of a Subscriber MEG MIP.
       enum:
-        - '0'
-        - '1'
-        - '2'
-        - '3'
-        - '4'
-        - '5'
-        - '6'
-        - '7'
+        - "0"
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+        - "5"
+        - "6"
+        - "7"
         - NONE
       type: string
     SubscriberUniCommon:
@@ -4958,26 +4947,26 @@ components:
         At this time, this includes all of the Subscriber UNI Service
         Attributes. This class is used to compose the SubscriberUNI class which
         has one file for each Business Function that differ in terms of the
-        Service Attributes that are "Required" for the Business Function
-        (rather than "Optional").
+        Service Attributes that are "Required" for the Business Function (rather
+        than "Optional").
       properties:
         listOfPhyLinks:
           description: >-
-            MEF 10.4 sec. 9.4 - The value of the Subscriber UNI List of
-            Physical Links Service Attribute is a list of 5-tuples of the form
-            <id, physicalLink, synchronousEthernet, precisionTiming,
-            demarcConnectorType>, with one list item for each physical link.
-            The value of id is an identifier for the physical link. The value
-            of physicalLink is the specific Ethernet physical layer type.
-            synchronousEthernet indicates if synchronous Ethernet is used on
+            MEF 10.4 sec. 9.4 - The value of the Subscriber UNI List of Physical
+            Links Service Attribute is a list of 5-tuples of the form <id,
+            physicalLink, synchronousEthernet, precisionTiming,
+            demarcConnectorType>, with one list item for each physical link. The
+            value of id is an identifier for the physical link. The value of
+            physicalLink is the specific Ethernet physical layer type.
+            synchronousEthernet indicates if synchronous Ethernet is used on the
+            physical link and has the value Enabled or Disabled. The value of
+            precisionTiming indicates if the Precision Time Protocol is used on
             the physical link and has the value Enabled or Disabled. The value
-            of precisionTiming indicates if the Precision Time Protocol is used
-            on the physical link and has the value Enabled or Disabled. The
-            value of demarcConnectorType specifies the type of connector used.
-            Note that the id and the physicalLink come from the
+            of demarcConnectorType specifies the type of connector used. Note
+            that the id and the physicalLink come from the
             CarrierEthernetPhysicalLink class.
           items:
-            $ref: '#/components/schemas/UniPhysicalLink'
+            $ref: "#/components/schemas/UniPhysicalLink"
           minItems: 0
           type: array
           uniqueItems: false
@@ -4987,12 +4976,12 @@ components:
             UNI Instantiation Service Attribute = Virtual, there must exist a
             map that maps the set of Virtual Frames that cross the UNI to a
             sequence of pairs of the form ?s,t? where s is a standard Ethernet
-            frame per Clause 3 of IEEE Std 802.3 - 2015 [5] and t is the
-            arrival time at the UNI for all bits in s. Since MEF 10.4 does not
-            specify the contents or format of this map, it is currently defined
-            as an arbitrary length string.
+            frame per Clause 3 of IEEE Std 802.3 - 2015 [5] and t is the arrival
+            time at the UNI for all bits in s. Since MEF 10.4 does not specify
+            the contents or format of this map, it is currently defined as an
+            arbitrary length string.
           items:
-            $ref: '#/components/schemas/VirtualFrameMap'
+            $ref: "#/components/schemas/VirtualFrameMap"
           maxItems: 1
           minItems: 0
           type: array
@@ -5004,7 +4993,7 @@ components:
             links if there are multiple physical links in the UNI and the link
             aggregation is ALL_ACTIVE.
           items:
-            $ref: '#/components/schemas/ConversationIdToAggregationLinkMap'
+            $ref: "#/components/schemas/ConversationIdToAggregationLinkMap"
           minItems: 0
           type: array
           uniqueItems: false
@@ -5016,39 +5005,39 @@ components:
           minimum: 1
           type: integer
         lagLinkMeg:
-          $ref: '#/components/schemas/EnabledDisabled'
+          $ref: "#/components/schemas/EnabledDisabled"
         l2cpAddressSet:
           description: >-
             MEF 10.4 sec. 9.16 and MEF 45.1 sec. 8.1 - L2CP Address Set Service
             Attribute is defined in MEF 45.1. CTA CEVLAN Tag Aware for
-            VLAN-based services where the CE-VLAN ID is used to map a frame to
-            a service. CTB CVLAN Tag Blind for Port-based services where the
+            VLAN-based services where the CE-VLAN ID is used to map a frame to a
+            service. CTB CVLAN Tag Blind for Port-based services where the
             CE-VLAN ID not used to map a frame to a service. CTB2 CVLAN Tag
             Blind Option 2 for point-to-point Port-based services that support
             the EPL Option 2 L2CP processing.
-          $ref: '#/components/schemas/L2cpAddressSet'
+          $ref: "#/components/schemas/L2cpAddressSet"
         linkOAM:
-          $ref: '#/components/schemas/EnabledDisabled'
+          $ref: "#/components/schemas/EnabledDisabled"
         meg:
-          $ref: '#/components/schemas/EnabledDisabled'
+          $ref: "#/components/schemas/EnabledDisabled"
         linkAggregation:
           description: >-
             MEF 10.4 sec. 9.5 - Data type representing Link Aggregation types.
             NONE-No Link Aggregation is used. 2_LINK_ACTIVE_STANDBY-The SP
             network uses Link Aggregation as in either Clause 5.6.1 of IEEE Std
             802.1AX-2008 [2] or Clause 6.7.1 of IEEE Std 802.1AX-2014 with one
-            Link Aggregation Group(LAG) across the links supporting the
-            UNI/ENNI such that all Service Frames are carried on only one of
-            the two links when both links are operational. ALL_ACTIVE-The SP
-            Network uses Link Aggregation as specified in Clause 5.3 of IEEE
-            Std 802.1AX-2014, including the use of the version 2 LACPDUs as
+            Link Aggregation Group(LAG) across the links supporting the UNI/ENNI
+            such that all Service Frames are carried on only one of the two
+            links when both links are operational. ALL_ACTIVE-The SP Network
+            uses Link Aggregation as specified in Clause 5.3 of IEEE Std
+            802.1AX-2014, including the use of the version 2 LACPDUs as
             specified in Clause 5.3.1h of IEEE Std 802.1AZ-2014, with one Link
             Aggregation Group (LAG) across the links. OTHER-The
             Operator/Subscriber/Service Provider agree on another other
             resiliency mechanism.
-          $ref: '#/components/schemas/LinkAggregation'
+          $ref: "#/components/schemas/LinkAggregation"
         l2cpPeering:
-          $ref: '#/components/schemas/L2cpPeering'
+          $ref: "#/components/schemas/L2cpPeering"
         maximumNumberOfCtagVlanIdsPerEndPoint:
           description: >-
             MEF 10.4 sec. 9.10 - An integer greater than or equal to 1 that
@@ -5058,7 +5047,7 @@ components:
           minimum: 1
           type: integer
         tokenShare:
-          $ref: '#/components/schemas/EnabledDisabled'
+          $ref: "#/components/schemas/EnabledDisabled"
         maximumServiceFrameSize:
           description: >-
             MEF 10.4 sec. 9.8 - Specifies the maximum size of Service Frames
@@ -5067,11 +5056,11 @@ components:
           type: integer
         envelopes:
           description: >-
-            MEF 10.4 sec. 9.12 - The Envelopes and Envelope Coupling Flag
-            values to which Bandwidth Profile Flows can be mapped. Value is
-            list of {envelopeID, couplingFlagForIndexZero}.
+            MEF 10.4 sec. 9.12 - The Envelopes and Envelope Coupling Flag values
+            to which Bandwidth Profile Flows can be mapped. Value is list of
+            {envelopeID, couplingFlagForIndexZero}.
           items:
-            $ref: '#/components/schemas/Envelope'
+            $ref: "#/components/schemas/Envelope"
           minItems: 0
           type: array
           uniqueItems: true
@@ -5081,7 +5070,7 @@ components:
             implemented using one or more instances of a standard Physical
             Layer. When the value is Virtual, the physical layer is not
             specified.
-          $ref: '#/components/schemas/Instantiation'
+          $ref: "#/components/schemas/Instantiation"
       type: object
     TerminationError:
       description: >-
@@ -5089,12 +5078,12 @@ components:
         and propertyPath should be used like in Error422.
       properties:
         code:
-          $ref: '#/components/schemas/Error422Code'
+          $ref: "#/components/schemas/Error422Code"
         propertyPath:
           description: >
             A pointer to a particular property of the payload that caused the
-            validation issue. It is highly recommended that this property
-            should be used.
+            validation issue. It is highly recommended that this property should
+            be used.
 
             Defined using JavaScript Object Notation (JSON) Pointer
             (https://tools.ietf.org/html/rfc6901).
@@ -5149,7 +5138,7 @@ components:
           format: date-time
           type: string
         endDateTime:
-          description: 'End of the time period, using IETC-RFC-3339 format'
+          description: "End of the time period, using IETC-RFC-3339 format"
           example: 1985-04-12T23:20:50.520Z
           format: date-time
           type: string
@@ -5189,29 +5178,28 @@ components:
       type: string
     UniPhysicalLink:
       allOf:
-        - $ref: '#/components/schemas/CarrierEthernetPhysicalLink'
-        - $ref: '#/components/schemas/UniSpecifcAttributes'
+        - $ref: "#/components/schemas/CarrierEthernetPhysicalLink"
+        - $ref: "#/components/schemas/UniSpecifcAttributes"
       description: >-
         This class describes the Physical Link attributes at a UNI. It is a
-        4-tuple {carrierEthernet, frequency sync enable, PTP enable,
-        connector}. carrierEthernet is a 2-tuple containing an id and physical
-        link type.
+        4-tuple {carrierEthernet, frequency sync enable, PTP enable, connector}.
+        carrierEthernet is a 2-tuple containing an id and physical link type.
     UniSpecifcAttributes:
       properties:
         uniConnectorGender:
           description: >-
             This indicates whether the Subscriber is presented with a SOCKET
             (common) or a PLUG (less common).
-          $ref: '#/components/schemas/UniConnectorGender'
+          $ref: "#/components/schemas/UniConnectorGender"
         synchronousEthernet:
-          $ref: '#/components/schemas/EnabledDisabled'
+          $ref: "#/components/schemas/EnabledDisabled"
         uniConnectorType:
           description: >-
             This indicates the type of connector that is presented to the
             Subscriber.
-          $ref: '#/components/schemas/UniConnectorType'
+          $ref: "#/components/schemas/UniConnectorType"
         precisionTiming:
-          $ref: '#/components/schemas/EnabledDisabled'
+          $ref: "#/components/schemas/EnabledDisabled"
       required:
         - precisionTiming
         - synchronousEthernet
@@ -5222,8 +5210,7 @@ components:
       description: >-
         A map for virtual frame mapping.   The absence of this attribute
         corresponds to a Service Attribute value of Not Applicable. Reference
-        MEF 10.4 Section 9.3 Subscriber UNI Virtual Frame Map Service
-        Attribute.
+        MEF 10.4 Section 9.3 Subscriber UNI Virtual Frame Map Service Attribute.
       properties:
         vfMap:
           description: >-
@@ -5231,16 +5218,15 @@ components:
             UNI Instantiation Service Attribute = Virtual, there must exist a
             map that maps the set of Virtual Frames that cross the UNI to a
             sequence of pairs of the form?s,t where s is a standard Ethernet
-            frame per Clause 3 of IEEE Std 802.3 - 2015 [5] and t is the
-            arrival time at the UNI for all bits in s. Since MEF 10.4 does not
-            specify the contents or format of this map, it is currently defined
-            as an arbitrary length string.
+            frame per Clause 3 of IEEE Std 802.3 - 2015 [5] and t is the arrival
+            time at the UNI for all bits in s. Since MEF 10.4 does not specify
+            the contents or format of this map, it is currently defined as an
+            arbitrary length string.
           minLength: 0
           type: string
       type: object
     VlanType:
-      description:
-        An indication about how the Vlan List argument is interpreted
+      description: An indication about how the Vlan List argument is interpreted
       enum:
         - LIST
         - UT/PT

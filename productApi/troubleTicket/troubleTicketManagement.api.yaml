@@ -3,17 +3,21 @@ info:
   description: >
     **This file forms part of MEF W124**
 
-
     **This specification represents MEF work in progress and is subject to
     change.** 
 
 
-    Trouble Ticket API has been designed by MEF basing on TMF 621 - Trouble
-    Ticket, Release : 19.0 - June 2019
+    Copyright 2021 MEF Forum and its contributors
+
+
+    This file includes content based on the TM Forum Trouble Ticket API (TMF621
+    v4.0.0) available at https://github.com/tmforum-apis/TMF621_TroubleTicket,
+    which is licensed by the TM Forum under the Apache License version 2.0. Such
+    content has been modified by the MEF Forum and its contributors.
   title: Trouble Ticket
   version: 1.0.0-RC
 servers:
-  - url: 'https://serverRoot/mefApi/sonata/troubleTicket/v1/'
+  - url: "https://serverRoot/mefApi/sonata/troubleTicket/v1/"
 tags:
   - name: troubleTicket
   - name: troubleTicket operations
@@ -38,9 +42,9 @@ paths:
             type: string
         - description: >-
             The priority (ITIL) is based on the assessment of the impact and
-            urgency of how quickly the Ticket should be resolved as evaluated
-            by the Buyer. The Priority is used by the Seller to determine the
-            order in which Tickets get resolved across Buyers.
+            urgency of how quickly the Ticket should be resolved as evaluated by
+            the Buyer. The Priority is used by the Seller to determine the order
+            in which Tickets get resolved across Buyers.
           in: query
           name: priority
           schema:
@@ -115,8 +119,8 @@ paths:
               - reopened
             type: string
         - description: >-
-            ID of a related entity that this ticket is related to and is
-            present in the `relatedEntity` list
+            ID of a related entity that this ticket is related to and is present
+            in the `relatedEntity` list
           in: query
           name: relatedEntityId
           schema:
@@ -168,8 +172,8 @@ paths:
             format: date-time
             type: string
         - description: >-
-            The date the Ticket status was set to resolved by the Seller -
-            lower than
+            The date the Ticket status was set to resolved by the Seller - lower
+            than
           in: query
           name: resolutionDate.lt
           schema:
@@ -185,8 +189,8 @@ paths:
             type: string
         - description: >-
             The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when responding
-            entity represents more than one Seller.
+            Seller. MUST be specified in the request only when responding entity
+            represents more than one Seller.
           in: query
           name: sellerId
           schema:
@@ -204,15 +208,14 @@ paths:
             format: int32
             type: integer
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: '#/components/schemas/TroubleTicket_Find'
+                  $ref: "#/components/schemas/TroubleTicket_Find"
                 type: array
-          description:
-            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
+          description: "OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)"
           headers:
             X-Pagination-Throttled:
               description: >
@@ -232,29 +235,29 @@ paths:
               description: The number of records included in the response
               schema:
                 type: integer
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       summary: List or find Trouble Ticket objects
       tags:
@@ -275,8 +278,8 @@ paths:
             type: string
         - description: >-
             The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when responding
-            entity represents more than one Seller.
+            Seller. MUST be specified in the request only when responding entity
+            represents more than one Seller.
           in: query
           name: sellerId
           schema:
@@ -285,59 +288,59 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/TroubleTicket_Create'
+              $ref: "#/components/schemas/TroubleTicket_Create"
         description: The TroubleTicket to be created
         required: true
       responses:
-        '201':
+        "201":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/TroubleTicket'
+                $ref: "#/components/schemas/TroubleTicket"
           description:
-            'Created  (https://tools.ietf.org/html/rfc7231#section-6.3.2)'
-        '400':
+            "Created  (https://tools.ietf.org/html/rfc7231#section-6.3.2)"
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '422':
+        "422":
           content:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: '#/components/schemas/Error422'
+                  $ref: "#/components/schemas/Error422"
                 type: array
           description:
             Unprocessable entity due to the business validation problems
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       summary: Creates a TroubleTicket
       tags:
         - troubleTicket
       x-codegen-request-body-name: troubleTicket
-  '/troubleTicket/{id}':
+  "/troubleTicket/{id}":
     get:
       description: >-
-        The Buyer requests detailed information about a single Ticket based on
-        a Ticket Identifier.
+        The Buyer requests detailed information about a single Ticket based on a
+        Ticket Identifier.
       operationId: retrieveTroubleTicket
       parameters:
         - description: Identifier of the TroubleTicket
@@ -356,49 +359,48 @@ paths:
             type: string
         - description: >-
             The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when responding
-            entity represents more than one Seller.
+            Seller. MUST be specified in the request only when responding entity
+            represents more than one Seller.
           in: query
           name: sellerId
           schema:
             type: string
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/TroubleTicket'
-          description:
-            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
-        '400':
+                $ref: "#/components/schemas/TroubleTicket"
+          description: "OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)"
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       summary: Retrieves a TroubleTicket by ID
       tags:
@@ -425,8 +427,8 @@ paths:
             type: string
         - description: >-
             The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when responding
-            entity represents more than one Seller.
+            Seller. MUST be specified in the request only when responding entity
+            represents more than one Seller.
           in: query
           name: sellerId
           schema:
@@ -435,66 +437,66 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/TroubleTicket_Update'
+              $ref: "#/components/schemas/TroubleTicket_Update"
         description: The TroubleTicket to be updated
         required: true
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/TroubleTicket'
+                $ref: "#/components/schemas/TroubleTicket"
           description: Updated
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '409':
+        "409":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error409'
+                $ref: "#/components/schemas/Error409"
           description: Not Found
-        '422':
+        "422":
           content:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: '#/components/schemas/Error422'
+                  $ref: "#/components/schemas/Error422"
                 type: array
           description:
             Unprocessable entity due to the business validation problems
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       summary: Updates partially a TroubleTicket
       tags:
         - troubleTicket
       x-codegen-request-body-name: troubleTicket
-  '/troubleTicket/{id}/cancel':
+  "/troubleTicket/{id}/cancel":
     post:
       description: This operation sends a cancellation request.
       operationId: cancelTroubleTicket
@@ -515,59 +517,58 @@ paths:
             type: string
         - description: >-
             The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when responding
-            entity
+            Seller. MUST be specified in the request only when responding entity
              represents more than one Seller.
           in: query
           name: sellerId
           schema:
             type: string
       responses:
-        '204':
+        "204":
           description: Cancelled
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '422':
+        "422":
           content:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: '#/components/schemas/Error422'
+                  $ref: "#/components/schemas/Error422"
                 type: array
           description:
             Unprocessable entity due to the business validation problems
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       summary: Cancels a Trouble Ticket
       tags:
         - troubleTicket operations
-  '/troubleTicket/{id}/close':
+  "/troubleTicket/{id}/close":
     post:
       description: This operation closes a Trouble Ticket
       operationId: closeTroubleTicket
@@ -588,59 +589,58 @@ paths:
             type: string
         - description: >-
             The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when responding
-            entity
+            Seller. MUST be specified in the request only when responding entity
              represents more than one Seller.
           in: query
           name: sellerId
           schema:
             type: string
       responses:
-        '204':
+        "204":
           description: Closed
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '422':
+        "422":
           content:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: '#/components/schemas/Error422'
+                  $ref: "#/components/schemas/Error422"
                 type: array
           description:
             Unprocessable entity due to the business validation problems
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       summary: Closes a Trouble Ticket
       tags:
         - troubleTicket operations
-  '/troubleTicket/{id}/reopen':
+  "/troubleTicket/{id}/reopen":
     post:
       description: This operation reopens the Trouble Ticket.
       operationId: reopenTroubleTicket
@@ -661,8 +661,7 @@ paths:
             type: string
         - description: >-
             The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when responding
-            entity
+            Seller. MUST be specified in the request only when responding entity
              represents more than one Seller.
           in: query
           name: sellerId
@@ -672,50 +671,50 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/Reason'
+              $ref: "#/components/schemas/Reason"
         description: The reason for reopening.
         required: true
       responses:
-        '204':
+        "204":
           description: Reopened
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '422':
+        "422":
           content:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: '#/components/schemas/Error422'
+                  $ref: "#/components/schemas/Error422"
                 type: array
           description:
             Unprocessable entity due to the business validation problems
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       summary: Reopens a Trouble Ticket
       tags:
@@ -736,8 +735,8 @@ paths:
             type: string
         - description: >-
             The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when responding
-            entity represents more than one Seller.
+            Seller. MUST be specified in the request only when responding entity
+            represents more than one Seller.
           in: query
           name: sellerId
           schema:
@@ -746,41 +745,41 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/EventSubscriptionInput'
+              $ref: "#/components/schemas/EventSubscriptionInput"
         description:
           Data containing the callback endpoint to deliver the information
         required: true
       responses:
-        '201':
+        "201":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/EventSubscription'
+                $ref: "#/components/schemas/EventSubscription"
           description:
-            'Subscribed  (https://tools.ietf.org/html/rfc7231#section-6.3.2)'
-        '400':
+            "Subscribed  (https://tools.ietf.org/html/rfc7231#section-6.3.2)"
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       summary: >-
         Allows the Buyer to register to Trouble Ticket state change
@@ -788,7 +787,7 @@ paths:
       tags:
         - events subscription
       x-codegen-request-body-name: data
-  '/hub/{id}':
+  "/hub/{id}":
     delete:
       description: The Buyer requests to unsubscribe from Ticket Notifications
       operationId: unregisterListener
@@ -809,45 +808,45 @@ paths:
             type: string
         - description: >-
             The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when responding
-            entity represents more than one Seller.
+            Seller. MUST be specified in the request only when responding entity
+            represents more than one Seller.
           in: query
           name: sellerId
           schema:
             type: string
       responses:
-        '204':
+        "204":
           description:
-            'Deleted (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+            "Deleted (https://tools.ietf.org/html/rfc7231#section-6.3.5)"
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       summary: Unregister a listener
       tags:
@@ -861,7 +860,7 @@ components:
       properties:
         size:
           description: The size of the attachment.
-          $ref: '#/components/schemas/MEFByteSize'
+          $ref: "#/components/schemas/MEFByteSize"
         author:
           description: Author of the Attachment
           type: string
@@ -869,8 +868,7 @@ components:
           description: The name of the attachment
           type: string
         description:
-          description:
-            A narrative text describing the content of the attachment
+          description: A narrative text describing the content of the attachment
           type: string
         attachmentId:
           description: >-
@@ -885,7 +883,7 @@ components:
         source:
           description:
             Indicates if the Attachment was added by the Buyer or Seller.
-          $ref: '#/components/schemas/MEFBuyerSellerType'
+          $ref: "#/components/schemas/MEFBuyerSellerType"
         creationDate:
           description: The date the Attachment was added.
           format: date-time
@@ -946,8 +944,8 @@ components:
           type: string
         message:
           description: >-
-            Text that provide mode details and corrective actions related to
-            the error. This can be shown to a client user.
+            Text that provide mode details and corrective actions related to the
+            error. This can be shown to a client user.
           type: string
         referenceError:
           description: url pointing to documentation describing the error
@@ -958,7 +956,7 @@ components:
       type: object
     Error400:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
               description: >-
@@ -973,15 +971,15 @@ components:
                 - invalidQuery: The query section of the URI is invalid.
 
                 - invalidBody: The request has an invalid body
-              $ref: '#/components/schemas/Error400Code'
+              $ref: "#/components/schemas/Error400Code"
           required:
             - code
           type: object
       description:
-        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
+        "Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)"
     Error401:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
               description: >-
@@ -991,12 +989,12 @@ components:
 
                 - invalidCredentials: Provided credentials are invalid or
                 expired
-              $ref: '#/components/schemas/Error401Code'
+              $ref: "#/components/schemas/Error401Code"
           required:
             - code
           type: object
       description:
-        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
+        "Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)"
     Error401Code:
       description: |-
         One of the following error codes:
@@ -1008,7 +1006,7 @@ components:
       type: string
     Error403:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
               description: |-
@@ -1018,7 +1016,7 @@ components:
                 - accessDenied: Access denied
                 - forbiddenRequester: Forbidden requester
                 - tooManyUsers: Too many users
-              $ref: '#/components/schemas/Error403Code'
+              $ref: "#/components/schemas/Error403Code"
           required:
             - code
           type: object
@@ -1041,14 +1039,14 @@ components:
       type: string
     Error404:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
               description: >-
                 The following error code:
 
-                - notFound: A current representation for the target resource
-                not found
+                - notFound: A current representation for the target resource not
+                found
               enum:
                 - notFound
               type: string
@@ -1060,7 +1058,7 @@ components:
         (https://tools.ietf.org/html/rfc7231#section-6.5.4)
     Error405:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
               description: |-
@@ -1077,7 +1075,7 @@ components:
         known by the origin server but not supported.
     Error409:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
               description: >-
@@ -1092,10 +1090,10 @@ components:
             - code
           type: object
       description:
-        'Conflict (https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.8)'
+        "Conflict (https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.8)"
     Error422:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
               description: |
@@ -1107,7 +1105,7 @@ components:
                   - unexpectedProperty: Additional property, not expected by the Seller has been provided
                   - tooManyRecords: the number of records to be provided in the response exceeds the Seller's threshold.
                   - otherIssue: Other problem was identified (detailed information provided in a reason)
-              $ref: '#/components/schemas/Error422Code'
+              $ref: "#/components/schemas/Error422Code"
             propertyPath:
               description: >
                 A pointer to a particular property of the payload that caused
@@ -1144,7 +1142,7 @@ components:
       type: string
     Error500:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - properties:
             code:
               description: >-
@@ -1164,8 +1162,8 @@ components:
         (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     EventSubscription:
       description: >-
-        Sets the communication endpoint address the service instance must use
-        to deliver notification information
+        Sets the communication endpoint address the service instance must use to
+        deliver notification information
       properties:
         query:
           description: >-
@@ -1191,25 +1189,23 @@ components:
       properties:
         query:
           description: >-
-            This attribute is used to define to which type of events to
-            register to. Example: "query":"eventType =
-            troubleTicketStatusChangeEvent". To subscribe for more than one
-            event type, put the values separated by comma:
+            This attribute is used to define to which type of events to register
+            to. Example: "query":"eventType = troubleTicketStatusChangeEvent".
+            To subscribe for more than one event type, put the values separated
+            by comma:
             `eventType=troubleTicketStatusChangeEvent,troubleTicketResolvedEvent`.
             The possible values are enumerated by the 'TroubleTicketEventType'
             in troubleTicketNotification.api.yaml. An empty query is treated as
-            specifying no filters - ending in  subscription for all event
-            types.
+            specifying no filters - ending in  subscription for all event types.
           type: string
         callback:
           description: >-
             This callback value must be set to *host* property from Buyer
-            Notification API (troubleTicketNotification.api.yaml). This
-            property is appended with the base path and notification resource
-            path specified in that API to construct an URL to which
-            notification is sent. E.g. for "callback":
-            "http://buyer.co/listenerEndpoint", the state change event
-            notification will be sent to:
+            Notification API (troubleTicketNotification.api.yaml). This property
+            is appended with the base path and notification resource path
+            specified in that API to construct an URL to which notification is
+            sent. E.g. for "callback": "http://buyer.co/listenerEndpoint", the
+            state change event notification will be sent to:
             `http://buyer.co/listenerEndpoint/mefApi/sonata/troubleTicketNotification/v1/listener/troubleTicketStatusChangeEvent`
           type: string
       required:
@@ -1239,8 +1235,8 @@ components:
           type: string
         streetNr:
           description: >-
-            Number identifying a specific property on a public street. It may
-            be combined with streetNrLast for ranged addresses.
+            Number identifying a specific property on a public street. It may be
+            combined with streetNrLast for ranged addresses.
           type: string
         locality:
           description: The locality that the address is in
@@ -1270,7 +1266,7 @@ components:
           description: >-
             Additional fields used to specify an address, as detailed as
             possible.
-          $ref: '#/components/schemas/GeographicSubAddress'
+          $ref: "#/components/schemas/GeographicSubAddress"
         streetSuffix:
           description: A modifier denoting a relative direction
           type: string
@@ -1281,7 +1277,7 @@ components:
       type: object
     GeographicSubAddress:
       description:
-        'Additional fields used to specify an address, as detailed as possible.'
+        "Additional fields used to specify an address, as detailed as possible."
       properties:
         buildingName:
           description: >
@@ -1294,15 +1290,14 @@ components:
             within a subaddress  e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
             UNIT, WHARF.
           items:
-            $ref: '#/components/schemas/MEFSubUnit'
+            $ref: "#/components/schemas/MEFSubUnit"
           type: array
         levelType:
           description: Describes level types within a building
           type: string
         levelNumber:
           description:
-            'Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT
-            2'
+            "Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT 2"
           type: string
         id:
           description: Unique Identifier of the subAddress
@@ -1312,8 +1307,8 @@ components:
           type: string
         privateStreetName:
           description: >-
-            "Private streets internal to a property (e.g. a university) may
-            have internal names that are not recorded by the land title office
+            "Private streets internal to a property (e.g. a university) may have
+            internal names that are not recorded by the land title office
           type: string
       type: object
     MEFBuyerSellerType:
@@ -1332,7 +1327,7 @@ components:
           type: number
         units:
           description: Byte Unit
-          $ref: '#/components/schemas/DataSizeUnit'
+          $ref: "#/components/schemas/DataSizeUnit"
       type: object
     MEFSubUnit:
       description: Allows for sub unit identification
@@ -1344,8 +1339,8 @@ components:
           type: string
         subUnitType:
           description: >-
-            The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
-            UNIT, WHARF.
+            The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT,
+            WHARF.
           type: string
       required:
         - subUnitNumber
@@ -1370,7 +1365,7 @@ components:
           type: string
         source:
           description: Indicates if this Note was added by the Buyer or Seller.
-          $ref: '#/components/schemas/MEFBuyerSellerType'
+          $ref: "#/components/schemas/MEFBuyerSellerType"
         text:
           description: Text of the note
           type: string
@@ -1393,8 +1388,8 @@ components:
     RelatedContactInformation:
       description: >-
         Contact data for a person or organization that is involved in a given
-        context. It is specified by the Seller (e.g. Seller Contact
-        Information) or by the Buyer.
+        context. It is specified by the Seller (e.g. Seller Contact Information)
+        or by the Buyer.
       properties:
         number:
           description: Phone number
@@ -1409,7 +1404,7 @@ components:
           description: >-
             Identifies the postal address of the person or office to be
             contacted.
-          $ref: '#/components/schemas/FieldedAddress'
+          $ref: "#/components/schemas/FieldedAddress"
         organization:
           description: The organization or company that the contact belongs to
           type: string
@@ -1430,7 +1425,7 @@ components:
         A reference to an entity, where the type of the entity is not known in
         advance.
       properties:
-        '@referredType':
+        "@referredType":
           default: Product
           description: >-
             The actual type of the target instance when needed for
@@ -1446,13 +1441,13 @@ components:
           description: Reference of the related entity.
           type: string
       required:
-        - '@referredType'
+        - "@referredType"
         - id
         - role
       type: object
     TroubleTicket:
       allOf:
-        - $ref: '#/components/schemas/TroubleTicket_Common'
+        - $ref: "#/components/schemas/TroubleTicket_Common"
         - description: >-
             A trouble ticket is a record of an issue that is created, tracked,
             and managed by a trouble ticket management system
@@ -1462,20 +1457,20 @@ components:
                 The status change history that are associated to the ticket.
                 Populated by the server
               items:
-                $ref: '#/components/schemas/TroubleTicketStatusChange'
+                $ref: "#/components/schemas/TroubleTicketStatusChange"
               type: array
             sellerPriority:
               description: >-
-                The priority (ITIL) is based on the assessment of the impact
-                and urgency of how quickly the Ticket should be resolved after
+                The priority (ITIL) is based on the assessment of the impact and
+                urgency of how quickly the Ticket should be resolved after
                 evaluation by the Seller of the impact of the Issue on the
                 Buyer.
-              $ref: '#/components/schemas/TroubleTicketPriorityType'
+              $ref: "#/components/schemas/TroubleTicketPriorityType"
             sellerSeverity:
               description: >-
                 The severity or impact (ITIL) of the Ticket on the Buyer as
                 evaluated by the Seller.
-              $ref: '#/components/schemas/TroubleTicketSeverityType'
+              $ref: "#/components/schemas/TroubleTicketSeverityType"
             expectedResolutionDate:
               description: >-
                 The date provided by the Seller to indicate when the Ticket is
@@ -1498,8 +1493,7 @@ components:
                 Ticket.
               type: string
             href:
-              description:
-                'Hyperlink, a reference to the trouble ticket entity'
+              description: "Hyperlink, a reference to the trouble ticket entity"
               type: string
             creationDate:
               description: The date on which the trouble ticket was created
@@ -1507,7 +1501,7 @@ components:
               type: string
             status:
               description: The current status of the trouble ticket
-              $ref: '#/components/schemas/TroubleTicketStatusType'
+              $ref: "#/components/schemas/TroubleTicketStatusType"
           required:
             - creationDate
             - id
@@ -1543,7 +1537,7 @@ components:
         source:
           description:
             Indicates if this Related Object was added by the Buyer or Seller.
-          $ref: '#/components/schemas/MEFBuyerSellerType'
+          $ref: "#/components/schemas/MEFBuyerSellerType"
         creationDate:
           description: The date the Relationship war created
           format: date-time
@@ -1571,7 +1565,7 @@ components:
           type: string
         status:
           description: Reached state
-          $ref: '#/components/schemas/TroubleTicketStatusType'
+          $ref: "#/components/schemas/TroubleTicketStatusType"
       type: object
     TroubleTicketStatusType:
       description: Possible values for the status of the trouble ticket
@@ -1592,8 +1586,7 @@ components:
         - installation: Related to installation of Product, provisioning is
         complete, but Product is not operational.
 
-        - maintenance: Any scheduled or non-scheduled maintenance related
-        Issue.
+        - maintenance: Any scheduled or non-scheduled maintenance related Issue.
 
         - degraded: When the Product is impacted and not meeting the Product
         specifications.
@@ -1622,26 +1615,26 @@ components:
             The severity of the issue. Indicate the implication of the issue on
             the expected functionality e.g. of a system, application, service
             etc..
-          $ref: '#/components/schemas/TroubleTicketSeverityType'
+          $ref: "#/components/schemas/TroubleTicketSeverityType"
         note:
           description: The note(s) that are associated to the ticket.
           items:
-            $ref: '#/components/schemas/Note'
+            $ref: "#/components/schemas/Note"
           type: array
         troubleTicketRelationship:
           description: >-
             A list of trouble ticket relationships (TroubleTicketRelationship
             [*]). Represents a relationship between trouble tickets
           items:
-            $ref: '#/components/schemas/TroubleTicketRelationship'
+            $ref: "#/components/schemas/TroubleTicketRelationship"
           type: array
         attachment:
           description: >-
             Attachments to the Ticket, such as a file, screen shot or embedded
-            content. Attachments may be added but may not be modified or
-            deleted (for historical reasons).
+            content. Attachments may be added but may not be modified or deleted
+            (for historical reasons).
           items:
-            $ref: '#/components/schemas/AttachmentValue'
+            $ref: "#/components/schemas/AttachmentValue"
           type: array
         relatedContactInformation:
           description: >-
@@ -1658,7 +1651,7 @@ components:
 
             Seller Technical Contact ('role=sellerTechnicalContact')
           items:
-            $ref: '#/components/schemas/RelatedContactInformation'
+            $ref: "#/components/schemas/RelatedContactInformation"
           minItems: 1
           type: array
         issueStartDate:
@@ -1672,7 +1665,7 @@ components:
             An entity that is related to the ticket such as a bill, a product,
             etc. The entity against which the ticket is associated.
           items:
-            $ref: '#/components/schemas/RelatedEntity'
+            $ref: "#/components/schemas/RelatedEntity"
           minItems: 1
           type: array
         description:
@@ -1686,14 +1679,14 @@ components:
         ticketType:
           description:
             The presumed cause of the trouble ticket as evaluated by the Buyer.
-          $ref: '#/components/schemas/TroubleTicketType'
+          $ref: "#/components/schemas/TroubleTicketType"
         priority:
           description: >-
             The priority of the trouble ticket and how quickly the issue should
             be resolved. Example: Critical, High, Medium, Low. The value is set
             by the ticket management system considering the severity, ticket
             type etc...
-          $ref: '#/components/schemas/TroubleTicketPriorityType'
+          $ref: "#/components/schemas/TroubleTicketPriorityType"
       required:
         - description
         - priority
@@ -1704,16 +1697,15 @@ components:
       type: object
     TroubleTicket_Create:
       allOf:
-        - $ref: '#/components/schemas/TroubleTicket_Common'
+        - $ref: "#/components/schemas/TroubleTicket_Common"
         - type: object
       description: >-
         A trouble ticket is a record of an issue that is created, tracked, and
         managed by a trouble ticket management system The modeling pattern
         introduces the `Common` supertype to aggregate attributes that are
         common to both `TroubleTicket` and `TroubleTicket_Create`. It this case
-        the Create type has a subset of attributes of the response type and
-        does not introduce any new, thus the `Create` type has an empty
-        definition.
+        the Create type has a subset of attributes of the response type and does
+        not introduce any new, thus the `Create` type has an empty definition.
     TroubleTicket_Find:
       description: >
         This class represents a single list item for the response of
@@ -1723,7 +1715,7 @@ components:
           description: >-
             The severity or impact (ITIL) of the Ticket as evaluated by the
             Buyer.
-          $ref: '#/components/schemas/TroubleTicketSeverityType'
+          $ref: "#/components/schemas/TroubleTicketSeverityType"
         resolutionDate:
           description:
             The date the Ticket status was set to resolved by the Seller
@@ -1734,7 +1726,7 @@ components:
             An entity that is related to the ticket such as a bill, a product,
             etc. The entity against which the ticket is associated.
           items:
-            $ref: '#/components/schemas/RelatedEntity'
+            $ref: "#/components/schemas/RelatedEntity"
           minItems: 1
           type: array
         description:
@@ -1746,7 +1738,7 @@ components:
         ticketType:
           description:
             The presumed cause of the trouble ticket as evaluated by the Buyer.
-          $ref: '#/components/schemas/TroubleTicketType'
+          $ref: "#/components/schemas/TroubleTicketType"
         creationDate:
           description: The date on which the trouble ticket was created
           format: date-time
@@ -1754,21 +1746,21 @@ components:
         priority:
           description: >-
             The priority (ITIL) is based on the assessment of the impact and
-            urgency of how quickly the Ticket should be resolved as evaluated
-            by the Buy-er.   The Priority is used by the Seller to determine
-            the order in which Tickets get resolved across Buyers.
-          $ref: '#/components/schemas/TroubleTicketPriorityType'
+            urgency of how quickly the Ticket should be resolved as evaluated by
+            the Buy-er.   The Priority is used by the Seller to determine the
+            order in which Tickets get resolved across Buyers.
+          $ref: "#/components/schemas/TroubleTicketPriorityType"
         sellerPriority:
           description: >-
             The priority (ITIL) is based on the assessment of the impact and
             urgency of how quickly the Ticket should be resolved after
             evaluation by the Seller of the impact of the Issue on the Buyer.
-          $ref: '#/components/schemas/TroubleTicketPriorityType'
+          $ref: "#/components/schemas/TroubleTicketPriorityType"
         sellerSeverity:
           description: >-
             The severity or impact (ITIL) of the Ticket on the Buyer as
             evaluated by the Seller.
-          $ref: '#/components/schemas/TroubleTicketSeverityType'
+          $ref: "#/components/schemas/TroubleTicketSeverityType"
         expectedResolutionDate:
           description: >-
             The date provided by the Seller to indicate when the Ticket is
@@ -1780,7 +1772,7 @@ components:
           type: string
         status:
           description: The current status of the trouble ticket
-          $ref: '#/components/schemas/TroubleTicketStatusType'
+          $ref: "#/components/schemas/TroubleTicketStatusType"
       required:
         - creationDate
         - description
@@ -1809,25 +1801,25 @@ components:
             The severity of the issue. Indicate the implication of the issue on
             the expected functionality e.g. of a system, application, service
             etc..
-          $ref: '#/components/schemas/TroubleTicketSeverityType'
+          $ref: "#/components/schemas/TroubleTicketSeverityType"
         note:
           description: The note(s) that are associated to the ticket.
           items:
-            $ref: '#/components/schemas/Note'
+            $ref: "#/components/schemas/Note"
           type: array
         troubleTicketRelationship:
           description: >-
             A list of trouble ticket relationships (TroubleTicketRelationship
             [*]). Represents a relationship between trouble tickets
           items:
-            $ref: '#/components/schemas/TroubleTicketRelationship'
+            $ref: "#/components/schemas/TroubleTicketRelationship"
           type: array
         attachment:
           description: >-
             Attachments to the Ticket, such as a file, screen shot or embedded
             content.
           items:
-            $ref: '#/components/schemas/AttachmentValue'
+            $ref: "#/components/schemas/AttachmentValue"
           type: array
         relatedContactInformation:
           description: >-
@@ -1839,7 +1831,7 @@ components:
             and the Seller MUST specify Seller Contact Information
             ('role=sellerContactInformation')
           items:
-            $ref: '#/components/schemas/RelatedContactInformation'
+            $ref: "#/components/schemas/RelatedContactInformation"
           type: array
         issueStartDate:
           description: >-
@@ -1856,5 +1848,5 @@ components:
             be resolved. Example: Critical, High, Medium, Low. The value is set
             by the ticket management system considering the severity, ticket
             type etc...
-          $ref: '#/components/schemas/TroubleTicketPriorityType'
+          $ref: "#/components/schemas/TroubleTicketPriorityType"
       type: object
