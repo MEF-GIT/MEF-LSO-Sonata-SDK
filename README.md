@@ -50,8 +50,8 @@ The maturity per functionality presents as follows:
     - MEF 79 - **Published Standard**
     - *MEF 79.0.2 - **Published Standard**
   - Developer Guide/API:
-    - *MEF W121 - LSO Sonata Address Management API - Developer Guide - **Letter Ballot pending**
-    - *MEF W122 - LSO Sonata Site Management API - Developer Guide - **Letter Ballot pending**
+    - *MEF W121 - Address Management - **Letter Ballot pending**
+    - *MEF W122 - Site Management - **Letter Ballot pending**
 - Product Offering Qualification:
   - Business Requirements:
     - MEF 79 - **Published Standard**
@@ -61,13 +61,13 @@ The maturity per functionality presents as follows:
 - Quote:
   - Business Requirements:
     - *MEF 80 - **Letter Ballot pending**
-  - Developer Guide/API- MEF W115:
-    - *LSO Sonata Quote Management API - Developer Guide - **Letter Ballot pending**
+  - Developer Guide/API:
+    - *MEF W115: - **Letter Ballot pending**
 - Order:
   - Business Requirements:
     - *MEF W57.2 - **work in progress, Draft Release 3**
   - Developer Guide/API:
-    - *MEF W123 - **work in progress - ready fo CfC#2**
+    - *MEF W123 - **work in progress - ready for CfC#2**
 - Inventory:
   - Business Requirements:
     - MEF 81, MEF 81.0.1 **Published Standard**
@@ -77,10 +77,11 @@ The maturity per functionality presents as follows:
   - Business Requirements:
     - *MEF W113 - **work in progress, Draft Release 2**
   - Developer Guide/API
-    - *MEF W124 -  **work in progress - ready fo CfC#2**
+    - *MEF W124 -  **work in progress - ready for CfC#2**
 - Product Specifications:
   - *Access E-Line - MEF W106 **work in progress, CfC#2 reviewed**
   - *Subscriber Ethernet (EPL, EPLAN, EPTREE, EVPL, EVPLAN, EVPTREE) - MEF W125 **work in progress, CfC#1 reviewed**
+  - *Basic Internet Access - schemas only **(member contribution)**
 
 (*) is used to mark item that changes their maturity comparing to previous Billie release.
 
@@ -117,7 +118,10 @@ This SDK contains the following items:
   - `supportingStandards` - The rest of documents and standards.
 - `ProductSchema` - Product Specification schemas for:
   - `carrierEthernet` - Carrier Ethernet product Schemas
-- `generated/staticBinding/full` - contains automatically generated (with help of the open source [Sonata Blending Tool](https://github.com/Amartus/SonataBlendingTool)), not normative static bindings of envelope APIs with all Product Specifications. The Address, Site and Trouble Ticket APIs are not included as they do not carry product information.
+- `generated/staticBinding` - contains automatically generated (with help of the open source [Sonata Blending Tool](https://github.com/Amartus/SonataBlendingTool)), not normative static bindings of envelope APIs with Product Specifications. The Address, Site and Trouble Ticket APIs are not included as they do not carry product information.
+  - `full` - contains static binding of all available product schemas
+  - `carrierEthernet` - contains static binding of only CarrierEthernet products
+  - `ip` - contains static binding of only IP products
 
 ## Issues, Questions, and Feedback
 
