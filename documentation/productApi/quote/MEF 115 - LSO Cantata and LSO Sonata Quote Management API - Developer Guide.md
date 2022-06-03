@@ -232,18 +232,18 @@ they were part of this document, from the GitHub repository
 <https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK>
 
 commit id:
-[2062c16db194adc5109d0b7c0578a1a9128c6471](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/tree/2062c16db194adc5109d0b7c0578a1a9128c6471)
+[415ef5ad60d07cf6bc87c36c684217e98cb9936e](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/tree/415ef5ad60d07cf6bc87c36c684217e98cb9936e)
 
-- [`productApi/quote/quoteManagement.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/blob/2062c16db194adc5109d0b7c0578a1a9128c6471/productApi/quote/quoteManagement.api.yaml)
-- [`productApi/quote/quoteNotification.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/blob/2062c16db194adc5109d0b7c0578a1a9128c6471/productApi/quote/quoteNotification.api.yaml)
+- [`productApi/quote/quoteManagement.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/blob/415ef5ad60d07cf6bc87c36c684217e98cb9936e/productApi/quote/quoteManagement.api.yaml)
+- [`productApi/quote/quoteNotification.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/blob/415ef5ad60d07cf6bc87c36c684217e98cb9936e/productApi/quote/quoteNotification.api.yaml)
 
 <https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK>
 
 commit id:
-[fd4aad8d6417b6aed2fa4e2d4ffa9836648addb0](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/tree/fd4aad8d6417b6aed2fa4e2d4ffa9836648addb0)
+[6a27c0b1a237753ea234a6b4ad10798da837d2e6](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/tree/6a27c0b1a237753ea234a6b4ad10798da837d2e6)
 
-- [`productApi/quote/quoteManagement.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/blob/fd4aad8d6417b6aed2fa4e2d4ffa9836648addb0/productApi/quote/quoteManagement.api.yaml)
-- [`productApi/quote/quoteNotification.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/blob/fd4aad8d6417b6aed2fa4e2d4ffa9836648addb0/productApi/quote/quoteNotification.api.yaml)
+- [`productApi/quote/quoteManagement.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/blob/6a27c0b1a237753ea234a6b4ad10798da837d2e6/productApi/quote/quoteManagement.api.yaml)
+- [`productApi/quote/quoteNotification.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/blob/6a27c0b1a237753ea234a6b4ad10798da837d2e6/productApi/quote/quoteNotification.api.yaml)
 
 # 2. Terminology and Abbreviations
 
