@@ -1,0 +1,153 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class MEFProductOrderChargeItem {
+
+    acceptanceIndicator: MEFAcceptedRejectedType
+    activityType*: MEFProductOrderChargeActivityType
+    blocking*: boolean
+    chargeType*: MEFPriceType
+    description*: MEFProductOrderChargeItemDescription
+    id*: string
+    recurringChargePeriod: MEFChargePeriod
+    state*: MEFProductOrderChargeItemStateType
+    unitOfMeasure: string
+}
+
+MEFProductOrderChargeItem *-->"1" Price : price
+
+enum MEFProductOrderChargeItemDescription {
+
+  expedite
+  construction
+  connection
+  inFlightCancellation
+  disconnect
+}
+
+enum MEFProductOrderChargeStateType {
+
+    awaitingResponse
+    completed
+    withdrawnBySeller
+}
+
+
+enum MEFProductOrderChargeItemStateType {
+
+    awaitingResponse
+    acceptedByBuyer
+    declinedByBuyer
+    withdrawnBySeller
+}
+
+enum MEFAcceptedRejectedType {
+
+    accepted
+    rejected
+}
+
+
+class MEFCancelProductOrderRef {
+
+    href: string
+    id*: string
+}
+
+
+
+class MEFProductOrderCharge {
+
+    creationDate: date-time
+    href: string
+    id*: string
+    responseDueDate*: date-time
+    state*: MEFProductOrderChargeStateType
+}
+
+MEFProductOrderCharge *--> MEFCancelProductOrderRef : cancelProductOrder
+MEFProductOrderCharge *-->"1..*" MEFProductOrderChargeItem : chargeItem
+MEFProductOrderCharge *--> MEFModifyProductOrderItemRequestedDeliveryDateRef : modifyProductOrderItemRequestedDeliveryDate
+MEFProductOrderCharge *--> MEFProductOrderRef : productOrder
+MEFProductOrderCharge *--> MEFProductOrderItemRef : productOrderItem
+MEFProductOrderCharge *--> MEFProductOrderChargeRef : replacedCharge
+
+
+enum MEFProductOrderChargeActivityType {
+
+    new
+    change
+}
+
+MEFProductOrderChargeItem *--> Price : price
+
+
+class MEFProductOrderChargeItem_Update {
+
+    acceptanceIndicator*: MEFAcceptedRejectedType
+    id*: string
+}
+
+
+
+class MEFProductOrderCharge_Update {
+
+}
+
+MEFProductOrderCharge_Update *-->"1..*" MEFProductOrderChargeItem_Update : chargeItem
+
+
+
+class MEFProductOrderItemRef {
+
+    productOrderHref: string
+    productOrderId*: string
+    productOrderItemId*: string
+}
+
+
+enum MEFChargePeriod {
+
+    hour
+    day
+    week
+    month
+    year
+}
+
+enum MEFPriceType {
+
+    recurring
+    nonRecurring
+    usageBased
+}
+
+
+class MEFModifyProductOrderItemRequestedDeliveryDateRef {
+
+    href: string
+    id*: string
+}
+
+
+class Price {
+
+    taxRate: float
+}
+
+Price *--> Money : dutyFreeAmount
+Price *--> Money : taxIncludedAmount
+
+
+class Money {
+
+    unit: string
+    value: float
+}
+
+
+
+@enduml

@@ -1,0 +1,55 @@
+@startuml
+
+hide footbox
+
+participant Buyer
+entity "Cancel Product Order" as CPO
+entity "Product Order" as PO
+entity Charge
+
+autonumber
+activate PO
+note over PO: Product Order in state: inProgress
+Buyer -> CPO : POST cancelProductOrder request
+activate CPO
+CPO -> CPO: validation
+CPO -> CPO: assign id
+CPO -> CPO: state: acknowledged
+CPO --> Buyer: POST cancelProductOrder response
+
+CPO -> PO: (causes state change)
+PO -> PO: state: assessingCancellation
+PO -> Buyer: POST productOrderStateChangeEvent
+
+note over PO, Charge: Cancellation charges identified
+
+PO -> Charge: (causes creation)
+activate Charge
+
+Charge -> Charge: state: awaitingResponse
+Charge -> Buyer: POST chargeCreateEvent
+Charge -> CPO: (causes state change)
+CPO -> CPO: state: inProgress.assessingCharge
+CPO -> Buyer: POST cancelProductOrderStateChangeEvent
+Buyer -> Charge: GET Charge request
+
+...
+note over Buyer: The Buyer decides to accept all charges
+Buyer -> Charge: PATCH Charge (accept all charges)
+
+Charge -> Charge: state: completed
+Charge -> Buyer: POST chargeStateChangeEvent
+Charge -> CPO: (causes state change)
+deactivate Charge
+CPO -> CPO: state: done
+CPO -> Buyer: POST cancelProductOrderStateChangeEvent
+CPO -> PO: (causes state change)
+deactivate CPO
+
+PO -> PO: state: pendingCancellation
+PO -> Buyer: POST productOrderStateChangeEvent
+PO -> PO: state: cancelled
+PO -> Buyer: POST productOrderStateChangeEvent
+deactivate PO
+
+@enduml

@@ -1,0 +1,262 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class Duration {
+
+    amount*: integer
+    units*: TimeUnit
+}
+
+
+
+
+class FieldedAddress {
+
+    city*: string
+    country*: string
+    locality: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+    streetName*: string
+    streetNr: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetNrSuffix: string
+    streetSuffix: string
+    streetType: string
+}
+
+FieldedAddress *--> GeographicSubAddress : geographicSubAddress
+
+
+class GeographicSubAddress {
+
+    buildingName: string
+    levelNumber: string
+    levelType: string
+    privateStreetName: string
+    privateStreetNumber: string
+}
+
+GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+
+
+class MEFBillingAccount {
+
+    id*: string
+    agreementName: string
+}
+
+MEFBillingAccount *--> RelatedContactInformation : billingContact
+
+
+class MEFItemTerm {
+
+    description: string
+    endOfTermAction: MEFEndOfTermAction
+    name: string
+}
+
+MEFItemTerm *--> Duration : duration
+MEFItemTerm *--> Duration : rollInterval
+
+
+class MEFProduct {
+
+    id*: string
+    href: string
+    externalId: string
+    lastUpdateDate: date-time
+    startDate*: date-time
+    terminationDate: date-time
+    status*: MEFProductStatusType
+    @type: string
+}
+
+MEFProduct *--> MEFProductConfiguration : productConfiguration
+MEFProduct *--> MEFBillingAccount : billingAccount
+MEFProduct *--> ProductOfferingRef : productOffering
+MEFProduct *-->"*" MEFProductOrderItemRef : productOrderItem
+MEFProduct *-->"*" ProductPrice : productPrice
+MEFProduct *-->"*" ProductRelationship : productRelationship
+MEFProduct *--> ProductSpecificationRef : productSpecification
+MEFProduct *-->"*" MEFItemTerm : productTerm
+MEFProduct *-->"*" RelatedContactInformation : relatedContactInformation
+MEFProduct *-->"*" RelatedGeographicSite : relatedSite
+MEFProduct *-->"*" MEFProductStatusChange : stateChange
+
+
+class MEFProductConfiguration {
+
+    @type*: string
+}
+
+
+
+class MEFProductOrderItemRef {
+
+    productOrderItemId*: string
+    productOrderHref: string
+    productOrderId*: string
+}
+
+
+
+class MEFProduct_Find {
+
+    id*: string
+    href: string
+    externalId: string
+    lastUpdateDate: date-time
+    startDate: date-time
+    status*: MEFProductStatusType
+}
+
+MEFProduct_Find *--> MEFBillingAccount : billingAccount
+MEFProduct_Find *--> ProductOfferingRef : productOffering
+MEFProduct_Find *-->"*" MEFProductOrderItemRef : productOrderItem
+MEFProduct_Find *-->"*" ProductRelationship : productRelationship
+MEFProduct_Find *--> ProductSpecificationRef : productSpecification
+MEFProduct_Find *-->"*" RelatedGeographicSite : relatedSite
+
+
+class Money {
+
+    unit*: string
+    value*: float
+}
+
+
+
+class Price {
+
+    taxRate: float
+}
+
+Price *--> Money : dutyFreeAmount*
+Price *--> Money : taxIncludedAmount
+
+
+class ProductSpecificationRef {
+
+    href: string
+    id*: string
+}
+
+
+
+class RelatedGeographicSite {
+
+    id*: string
+    href: string
+    role*: string
+}
+
+
+
+enum MEFProductStatusType {
+
+    active
+    active.pendingChange
+    cancelled
+    pendingActive
+    pendingTerminate
+    suspended
+    suspendedPendingTerminate
+    terminated
+}
+enum MEFChargePeriod {
+
+    hour
+    day
+    week
+    month
+    year
+}
+enum MEFPriceType {
+
+    recurring
+    nonRecurring
+    usageBased
+}
+enum MEFEndOfTermAction {
+
+    roll
+    autoDisconnect
+    autoRenew
+}
+class MEFProductStatusChange {
+
+    changeDate*: date-time
+    changeReason: string
+    status*: MEFProductStatusType
+}
+
+
+
+class MEFSubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+
+
+
+class ProductOfferingRef {
+
+    href: string
+    id*: string
+}
+
+
+
+class ProductPrice {
+
+    description: string
+    name: string
+    unitOfMeasure: string
+    priceType*: MEFPriceType
+    recurringChargePeriod: MEFChargePeriod
+}
+
+ProductPrice *-->"1" Price : price
+
+
+class ProductRelationship {
+
+    id*: string
+    href: string
+    relationshipType*: string
+}
+
+
+
+class RelatedContactInformation {
+
+    emailAddress*: string
+    name*: string
+    number*: string
+    numberExtension: string
+    organization: string
+    role*: string
+}
+
+RelatedContactInformation *--> FieldedAddress : postalAddress
+
+
+
+enum TimeUnit {
+
+    calendarMonths
+    calendarDays
+    calendarHours
+    calendarMinutes
+    businessDays
+    businessHours
+    businessMinutes
+}
+@enduml

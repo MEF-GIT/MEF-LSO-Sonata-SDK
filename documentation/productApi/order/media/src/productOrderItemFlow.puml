@@ -1,0 +1,78 @@
+@startuml
+
+'skinparam Linetype polyline
+'skinparam Linetype ortho
+skinparam state {
+    BackgroundColor White
+    BorderColor Black
+}
+hide empty description
+
+'''decisions'''
+state other_errors <<choice>> 
+note right of other_errors : other validation errors in order?
+
+state validation_passed <<choice>> 
+note right of validation_passed : validation passed?
+
+state all_order_validated <<choice>> 
+note right of all_order_validated : all order items must be validated?
+
+state validation_passed_other <<choice>> 
+note right of validation_passed_other : validation passed?
+
+state product_order_moved <<choice>> 
+note right of product_order_moved : product order moved to cancelling?
+
+'''state redefinitions '''
+' state exception <<end>>
+
+'''state rank'''
+other_errors -d[hidden]-> validation_passed
+other_errors -d[hidden]-> all_order_validated
+
+validation_passed_other -d[hidden]-> rejected
+validation_passed_other -d[hidden]-> rejected.validated
+validation_passed_other -d[hidden]-> rejected.unassessed
+
+inProgress -d[hidden]-> product_order_moved
+
+''' diagram'''
+[*] --> acknowledged 
+
+acknowledged --> other_errors
+
+other_errors -[norank]-> validation_passed : no
+other_errors -[norank]-> all_order_validated : yes
+
+validation_passed --> inProgress : yes
+validation_passed -[norank]-> rejected : no
+
+inProgress --> completed
+inProgress -[norank]-> failed
+inProgress -r-> held
+inProgress -l-> pending
+
+held -[norank]-> inProgress
+held -[norank]-> failed
+
+pending -[norank]-> inProgress
+pending --> product_order_moved
+
+product_order_moved --> failed : no
+product_order_moved --> cancelled : yes
+
+all_order_validated -[norank]-> rejected.unassessed : no
+all_order_validated -d-> validation_passed_other : yes
+
+validation_passed_other -[norank]-> rejected : no
+validation_passed_other -[norank]-> rejected.validated : yes
+
+completed --> [*]
+failed --> [*]
+cancelled --> [*]
+rejected.unassessed --> [*]
+rejected.validated --> [*]
+rejected --> [*]
+
+@enduml

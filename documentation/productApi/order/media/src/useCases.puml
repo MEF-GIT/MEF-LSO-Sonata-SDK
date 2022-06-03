@@ -1,0 +1,45 @@
+@startuml
+
+left to right direction
+actor Seller
+actor Buyer
+
+rectangle {
+Buyer --> (1: Create Product Order)
+Buyer --> (2: Update Product Order by Product Order Identifier)
+(1: Create Product Order) --> (1c: Product Order Item to Disconnect Existing Product)
+(1: Create Product Order) --> (1b: Product Order Item to Change Existing Product)
+(1: Create Product Order) --> (1a: Product Order Item to Install Product)
+
+Buyer --> (3: Retrieve List of Product Orders)
+Buyer --> (4: Retrieve Product Order by Product Order Identifier)
+Buyer --> (5: Modify Product Order Item Requested Delivery Date)
+(5: Modify Product Order Item Requested Delivery Date) --> (5b: Modify Requested Completion Date)
+(5: Modify Product Order Item Requested Delivery Date) --> (5a: Modify Expedite Indicator)
+
+Buyer --> (6: Retrieve Modify Product Order Item Requested Delivery Date List)
+Buyer --> (7: Retrieve Modify Product Order Item Requested Delivery Date by Identifier)
+Buyer --> (8: Cancel Product Order)
+Buyer --> (9: Retrieve List of Cancel Product Orders)
+Buyer --> (10: Retrieve Cancel Product Order Request by Cancel Product Order Identifier)
+Buyer --> (11: Initiate Charge)
+
+(11: Initiate Charge) --> (11c: Initiate Charge associated to Cancel Product Order)
+(11: Initiate Charge) --> (11b: Initiate Charge associated to Modify Product Order Item Requested Delivery Date)
+(11: Initiate Charge) --> (11a: Initiate Charge associated to Product Order Item)
+
+Buyer --> (12: Respond to Charge)
+(12: Respond to Charge) --> (12c: Respond to Charge associated to a Cancel Product Order Request)
+(12: Respond to Charge) --> (12b: Respond to Charge associated to a Modify Product Order Item Requested Delivery Date)
+(12: Respond to Charge) --> (12a: Respond to Charge associated to a Product Order Item)
+
+Buyer --> (13: Retrieve List of Charges)
+Buyer --> (14: Retrieve Charge by Charge Identifier)
+Buyer --> (15: Register for Notifications)
+(16. Send Notifications) <-- Seller
+
+Seller -[hidden]up-> (1c: Product Order Item to Disconnect Existing Product)
+
+}
+
+@enduml

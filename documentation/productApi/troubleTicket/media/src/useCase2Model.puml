@@ -1,0 +1,40 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+
+class RelatedEntity {
+
+    id*: string
+    href: string
+    role*: string
+    @referredType*: string
+}
+
+
+
+
+class TroubleTicket_Find {
+
+    creationDate*: date-time
+    description*: string
+    expectedResolutionDate*: date-time
+    externalId*: string
+    id*: string
+    priority*: TroubleTicketPriorityType
+    resolutionDate*: date-time
+    sellerPriority*: TroubleTicketPriorityType
+    sellerSeverity*: TroubleTicketSeverityType
+    severity*: TroubleTicketSeverityType
+    status*: TroubleTicketStatusType
+    ticketType*: TroubleTicketType
+}
+
+TroubleTicket_Find *-->"1..*" RelatedEntity : relatedEntity
+
+
+
+
+@enduml

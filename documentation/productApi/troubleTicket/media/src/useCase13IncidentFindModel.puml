@@ -1,0 +1,62 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class Incident_Find {
+
+    closedDate: date-time
+    creationDate*: date-time
+    description*: string
+    expectedClosedDate: date-time
+    href: string
+    id*: string
+    incidentType*: IncidentType
+    issueStartDate: date-time
+    priority*: TroubleTicketPriorityType
+    severity*: TroubleTicketSeverityType
+    status*: IncidentStatusType
+}
+Incident_Find *-->"1..*" RelatedEntity : relatedEntity
+
+
+class RelatedEntity {
+
+    @referredType*: string
+    href: string
+    id*: string
+    role*: string
+}
+
+
+enum IncidentType {
+
+    degraded
+    down
+    intermittent
+    maintenance
+}
+
+enum TroubleTicketPriorityType {
+
+    low
+    medium
+    high
+    critical
+}
+enum TroubleTicketSeverityType {
+
+    minor
+    moderate
+    significant
+    extensive
+}
+enum IncidentStatusType {
+
+    closed
+    created
+    inProgress
+}
+
+@enduml

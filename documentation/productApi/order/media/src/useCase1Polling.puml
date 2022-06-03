@@ -1,0 +1,28 @@
+@startuml
+hide footbox
+
+hide footbox
+
+participant Buyer
+participant Seller
+
+
+Buyer -> Seller : POST {{baseUrl}}/productOrder (ProductOrder_Create)
+Seller -> Seller : basic validation
+
+alt succesful inquiry
+  Seller --> Buyer : 201 ProductOrder with {{id}}, `acknowledged` state
+  
+  ...
+
+  loop periodically until productOrder in completion state
+      Buyer -> Seller :   GET {{baseUrl}}/productOrder/{{id}}
+      return 200 ProductOrder in current state
+  end
+
+else validation or internal problem
+  Seller --> Buyer : 4xx or 5xx error response
+end
+
+
+@enduml

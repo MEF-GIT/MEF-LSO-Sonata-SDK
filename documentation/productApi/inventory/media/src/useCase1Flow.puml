@@ -1,0 +1,17 @@
+@startuml
+
+hide footbox
+
+participant Buyer
+participant Seller
+
+Buyer -> Seller : GET {{baseUrl}}/product
+
+Seller -> Seller : validate Request
+
+alt success
+    Buyer <-- Seller : 200 MEFProduct_Find[]
+else validation or internal problem
+    Buyer <-- Seller: 4xx/5xx : error response
+end
+@enduml

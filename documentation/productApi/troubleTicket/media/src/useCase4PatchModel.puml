@@ -1,0 +1,136 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class AttachmentValue {
+
+    attachmentId: string
+    author*: string
+    content: string
+    creationDate: date-time
+    description: string
+    mimeType: string
+    name*: string
+    source*: MEFBuyerSellerType
+    url: string
+}
+
+AttachmentValue *--> MEFByteSize : size
+
+
+
+
+
+class FieldedAddress {
+
+    city*: string
+    country*: string
+    locality: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+    streetName*: string
+    streetNr: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetNrSuffix: string
+    streetSuffix: string
+    streetType: string
+}
+RelatedPlaceRefOrValue <|-- FieldedAddress
+
+FieldedAddress *--> GeographicSubAddress : geographicSubAddress
+
+
+class GeographicSubAddress {
+
+    buildingName: string
+    id: string
+    levelNumber: string
+    levelType: string
+    privateStreetName: string
+    privateStreetNumber: string
+}
+
+GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+
+
+
+
+
+class MEFByteSize {
+
+    amount: float
+    units: DataSizeUnit
+}
+
+
+
+
+class Note {
+
+    author*: string
+    date*: date-time
+    id*: string
+    source*: MEFBuyerSellerType
+    text*: string
+}
+
+
+
+
+class MEFSubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+class RelatedContactInformation {
+
+    emailAddress*: string
+    name*: string
+    number*: string
+    numberExtension: string
+    organization: string
+    role*: string
+}
+
+RelatedContactInformation *--> FieldedAddress : postalAddress
+
+class RelatedPlaceRefOrValue {
+
+    @schemaLocation: uri
+    @type*: string
+    role*: string
+}
+
+class IssueRelationship {
+
+    @referredType*: string
+    creationDate*: date-time
+    description*: string
+    href: string
+    id*: string
+    relationshipType*: string
+    source*: MEFBuyerSellerType
+}
+
+
+
+class TroubleTicket_Update {
+
+    externalId: string
+    issueStartDate: date-time
+    priority: TroubleTicketPriorityType
+    severity: TroubleTicketSeverityType
+}
+
+TroubleTicket_Update *-->"*" AttachmentValue : attachment
+TroubleTicket_Update *-->"*" Note : note
+TroubleTicket_Update *-->"*" RelatedContactInformation : relatedContactInformation
+TroubleTicket_Update *-->"*" IssueRelationship : relatedIssue
+
+
+
+@enduml

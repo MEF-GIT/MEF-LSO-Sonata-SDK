@@ -1,0 +1,68 @@
+@startuml
+
+hide footbox
+
+participant Buyer
+participant Seller
+
+Buyer -> Seller : POST {{baseUrl}}/hub with {{callbackUrl}} details\n"query":"eventType=productOrderStateChangeEvent,productOrderItemStateChangeEvent"
+Seller --> Buyer: 201 confirmation with {{id}}
+...
+Buyer -> Seller : POST {{baseUrl}}/productOrder
+Seller -> Seller : basic validation
+
+alt succesful inquiry
+  Seller --> Buyer : 201 ProductOrder with {{id}} in `acknowledged` state \nProductOrderItems in `acknowledged` state
+  
+  ...
+
+  note over Buyer, Seller : First ProductOrderItem moves to `inProgress`
+  Seller -> Buyer:  {{callbackUrl}}/listener/productOrderItemStateChangeEvent {{id}}, {{ProductOrderItem.id}}
+  Buyer --> Seller : 204 confirmation
+  
+  note over Buyer, Seller : ProductOrder moves to `inProgress`
+  Seller -> Buyer: {{callbackUrl}}/listener/productOrderStateChangeEvent {{id}}
+      Buyer --> Seller : 204 confirmation
+
+  ...
+
+  group loop [for each of remaining ProductOrderItems that move to `inProgress`]
+      Seller -> Buyer:  {{callbackUrl}}/listener/productOrderItemStateChangeEvent {{id}}, {{ProductOrderItem.id}}
+      Buyer --> Seller : 204 confirmation
+  end
+
+  ...
+  note over Buyer, Seller : Processing without any issues and additional charges
+  group loop [for each ProductOrderItem that moves to `completed`]
+      Seller -> Buyer:  {{callbackUrl}}/listener/productOrderItemStateChangeEvent {{id}}, {{ProductOrderItem.id}}
+      Buyer --> Seller : 204 confirmation
+  end
+
+  ...
+
+  note over Buyer, Seller : All ProductOrderItems in `completed` state
+  Seller -> Buyer: {{callbackUrl}}/listener/productOrderStateChangeEvent {{id}}
+  Buyer --> Seller : 204 confirmation
+  Buyer -> Seller : GET {{baseUrl}}/productOrder/{{id}}
+  return 200 ProductOrder in  `completed` state
+
+  ...
+
+  group optional [if ProductOrder moves to accepted, declined, or expired]
+    Seller -> Buyer: {{callbackUrl}}/listener/productOrderStateChangeEvent ({{id}})
+    Buyer --> Seller : 204 confirmation
+    Buyer -> Seller : GET {{baseUrl}}/productOrder/{{id}}
+    return 200 ProductOrder in current state
+  end
+
+
+else validation or internal problem
+  Seller --> Buyer : 4xx or 5xx errorresponse
+end 
+
+...
+
+Buyer -> Seller : DELETE {{baseUrl}}/hub/{{id}} 
+Seller -->  Buyer : 204 confirmation
+
+@enduml

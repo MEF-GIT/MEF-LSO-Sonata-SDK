@@ -1,0 +1,41 @@
+@startuml
+
+'skinparam Linetype polyline
+'skinparam Linetype ortho
+skinparam state {
+    BackgroundColor White
+    BorderColor Black
+}
+hide empty description
+
+'''decisions'''
+state acceptable_to_buyer <<choice>> 
+ note left of acceptable_to_buyer : Acceptable to Buyer?
+
+''' diagram'''
+[*] -d-> acknowledged
+
+acknowledged --> assessingCancellation : Buyer requests to cancel 
+acknowledged -d-> inProgress
+
+inProgress --> resolved : Seller requests clearance to close
+inProgress -r-> pending : Seller requires info
+inProgress <-l- pending : Buyer amends info
+inProgress --> assessingCancellation : Buyer requests to cancel
+
+resolved -l-> acceptable_to_buyer : Buyer response
+resolved -d-> closed : No Buyer response\n (Timeout / Pre-agreement)
+
+acceptable_to_buyer -u-> reopened : no
+acceptable_to_buyer -d-> closed : yes
+
+reopened -r-> inProgress
+reopened -[hidden]-> resolved
+pending --> assessingCancellation : Buyer requests to cancel
+
+assessingCancellation --> cancelled : Seller accepts cancel
+
+closed --> [*]
+cancelled --> [*]
+
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+
+' skinparam Linetype polyline
+' skinparam Linetype ortho
+skinparam state {
+    BackgroundColor White
+    BorderColor Black
+}
+hide empty description
+
+''' diagram'''
+[*] --> awaitingResponse
+
+awaitingResponse --> completed
+awaitingResponse --> withdrawnBySeller
+awaitingResponse --> timeout
+
+completed --> [*]
+withdrawnBySeller --> [*]
+timeout --> [*]
+@enduml

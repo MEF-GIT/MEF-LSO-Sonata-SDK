@@ -1,0 +1,117 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class CancelProductOrderEvent {
+
+    eventType*: CancelProductOrderEventType
+}
+Event <|-- CancelProductOrderEvent
+
+CancelProductOrderEvent *-->"1" CancelProductOrderEventPayload : event
+
+
+class CancelProductOrderEventPayload {
+
+    id*: string
+    href: string
+    buyerId: string
+    sellerId: string
+}
+
+
+
+enum CancelProductOrderEventType {
+
+    cancelProductOrderStateChangeEvent
+}
+class ChargeEvent {
+
+    eventType*: ChargeEventType
+}
+Event <|-- ChargeEvent
+
+ChargeEvent *-->"1" ChargeEventPayload : event
+
+
+class ChargeEventPayload {
+
+    id*: string
+    href: string
+    buyerId: string
+    sellerId: string
+}
+
+
+
+enum ChargeEventType {
+
+    chargeCreateEvent
+    chargeStateChangeEvent
+    chargeTimeoutEvent
+}
+
+class ModifyProductOrderItemCompletionDateEvent {
+
+    eventType*: ModifyProductOrderItemCompletionDateEventType
+}
+Event <|-- ModifyProductOrderItemCompletionDateEvent
+
+ModifyProductOrderItemCompletionDateEvent *-->"1" ModifyProductOrderItemCompletionDateEventPayload : event
+
+
+class ProductOrderEvent {
+
+    eventType*: ProductOrderEventType
+}
+Event <|-- ProductOrderEvent
+
+ProductOrderEvent *-->"1" ProductOrderEventPayload : event
+
+
+class Event {
+
+    eventId*: string
+    eventTime*: date-time
+}
+
+
+
+class ModifyProductOrderItemCompletionDateEventPayload {
+
+    id*: string
+    href: string
+    buyerId: string
+    sellerId: string
+}
+
+
+
+class ProductOrderEventPayload {
+
+    id*: string
+    href: string
+    orderItemId: string
+    milestoneName: string
+    buyerId: string
+    sellerId: string
+}
+
+
+
+enum ModifyProductOrderItemCompletionDateEventType {
+
+    modifyProductOrderItemCompletionDateStateChangeEvent
+}
+enum ProductOrderEventType {
+
+    productOrderStateChangeEvent
+    productOrderItemStateChangeEvent
+    productOrderExpectedCompletionDateSet
+    productOrderItemExpectedCompletionDateSet
+    productSpecificProductOrderMilestoneEvent
+    productSpecificProductOrderItemMilestoneEvent
+}
+@enduml

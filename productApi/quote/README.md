@@ -1,5 +1,16 @@
 # Quote Management: Release notes
 
+## Release Dolly:
+
+**Readiness status**: MEF Published standard. 
+
+### List of changes in the API:
+
+- `Price`
+  - `dutyFreeAmount` - made required
+- `GeographicSubAddress`
+  - `id` - removed
+
 ## Release Celine:
 
 **Readiness status**: Requested Letter Ballot. It will be most likely published

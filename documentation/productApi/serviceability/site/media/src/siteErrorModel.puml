@@ -1,0 +1,91 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class Error400 {
+
+    code*: Error400Code
+}
+Error <|-- Error400
+
+
+
+class Error401 {
+
+    code*: Error401Code
+}
+Error <|-- Error401
+
+
+
+class Error403 {
+
+    code*: Error403Code
+}
+Error <|-- Error403
+
+
+
+enum Error403Code {
+
+    accessDenied
+    forbiddenRequester
+    tooManyUsers
+}
+class Error404 {
+
+    code*: string
+}
+Error <|-- Error404
+
+class Error422 {
+
+    code*: Error422Code
+    propertyPath: string
+}
+Error <|-- Error422
+
+
+
+class Error500 {
+
+    code*: string
+}
+Error <|-- Error500
+
+
+
+class Error {
+
+    reason*: string
+    message: string
+    referenceError: uri
+}
+
+enum Error400Code {
+
+    missingQueryParameter
+    missingQueryValue
+    invalidQuery
+    invalidBody
+}
+
+enum Error401Code {
+
+    missingCredentials
+    invalidCredentials
+}
+
+enum Error422Code {
+
+    missingProperty
+    invalidValue
+    invalidFormat
+    referenceNotFound
+    unexpectedProperty
+    tooManyRecords
+    otherIssue
+}
+@enduml

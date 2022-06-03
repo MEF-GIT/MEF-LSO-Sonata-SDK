@@ -1,0 +1,239 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class AttachmentValue {
+
+    attachmentId: string
+    author*: string
+    content: string
+    creationDate: date-time
+    description: string
+    mimeType: string
+    name*: string
+    source*: MEFBuyerSellerType
+    url: string
+}
+AttachmentValue *--> MEFByteSize : size
+
+enum DataSizeUnit {
+
+    BYTES
+    KBYTES
+    MBYTES
+    GBYTES
+    TBYTES
+    PBYTES
+    EBYTES
+    ZBYTES
+    YBYTES
+}
+
+class FieldedAddress {
+
+    city*: string
+    country*: string
+    locality: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+    streetName*: string
+    streetNr: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetNrSuffix: string
+    streetSuffix: string
+    streetType: string
+}
+RelatedPlaceRefOrValue <|-- FieldedAddress
+
+FieldedAddress *--> GeographicSubAddress : geographicSubAddress
+
+
+class GeographicSubAddress {
+
+    buildingName: string
+    id: string
+    levelNumber: string
+    levelType: string
+    privateStreetName: string
+    privateStreetNumber: string
+}
+
+GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+
+
+class MEFByteSize {
+
+    amount: float
+    units: DataSizeUnit
+}
+
+enum MEFObservedImpactType {
+
+    degraded
+    intermittent
+    down
+}
+
+class Note {
+
+    author*: string
+    date*: date-time
+    id*: string
+    source*: MEFBuyerSellerType
+    text*: string
+}
+
+
+
+
+enum MEFBuyerSellerType {
+
+    buyer
+    seller
+}
+
+class MEFSubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+
+
+
+class RelatedContactInformation {
+
+    emailAddress*: string
+    name*: string
+    number*: string
+    numberExtension: string
+    organization: string
+    role*: string
+}
+
+RelatedContactInformation *--> FieldedAddress : postalAddress
+
+
+class RelatedPlaceRefOrValue {
+
+    @schemaLocation: uri
+    @type*: string
+    role*: string
+}
+
+class TroubleTicket {
+
+    creationDate*: date-time
+    expectedResolutionDate: date-time
+    href: string
+    id*: string
+    resolutionDate: date-time
+    sellerPriority*: TroubleTicketPriorityType
+    sellerSeverity*: TroubleTicketSeverityType
+    status*: TroubleTicketStatusType
+}
+TroubleTicket_Common <|-- TroubleTicket
+
+TroubleTicket *-->"*" TroubleTicketStatusChange : statusChange
+TroubleTicket *-->"*" WorkOrderRef : workOrder
+
+class IssueRelationship {
+
+    @referredType*: string
+    creationDate*: date-time
+    description*: string
+    href: string
+    id*: string
+    relationshipType*: string
+    source*: MEFBuyerSellerType
+}
+
+
+class TroubleTicketStatusChange {
+
+    changeDate: date-time
+    changeReason: string
+    status: TroubleTicketStatusType
+}
+
+
+
+enum TroubleTicketType {
+
+    assistance
+    information
+    installation
+    maintenance
+}
+class TroubleTicket_Create {
+
+}
+TroubleTicket_Common <|-- TroubleTicket_Create
+
+
+class WorkOrderRef {
+
+    href: string
+    id*: string
+}
+class RelatedEntity {
+
+    @referredType*: string
+    href: string
+    id*: string
+    role*: string
+}
+
+
+
+class TroubleTicket_Common {
+
+    description*: string
+    externalId: string
+    issueStartDate: date-time
+    observedImpact*: MEFObservedImpactType
+    priority*: TroubleTicketPriorityType
+    severity*: TroubleTicketSeverityType
+    ticketType*: TroubleTicketType
+}
+
+TroubleTicket_Common *-->"*" AttachmentValue : attachment
+TroubleTicket_Common *-->"*" Note : note
+TroubleTicket_Common *-->"1..*" RelatedContactInformation : relatedContactInformation
+TroubleTicket_Common *-->"1..*" RelatedEntity : relatedEntity
+TroubleTicket_Common *-->"*" IssueRelationship : relatedIssue
+
+
+
+
+enum TroubleTicketSeverityType {
+
+    minor
+    moderate
+    significant
+    extensive
+}
+enum TroubleTicketStatusType {
+
+    acknowledged
+    assessingCancellation
+    cancelled
+    closed
+    inProgress
+    pending
+    resolved
+    reopened
+}
+
+
+enum TroubleTicketPriorityType {
+
+    low
+    medium
+    high
+    critical
+}
+@enduml

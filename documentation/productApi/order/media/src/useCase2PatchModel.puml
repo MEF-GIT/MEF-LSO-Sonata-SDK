@@ -1,0 +1,107 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+
+class FieldedAddress {
+
+    city*: string
+    country*: string
+    locality: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+    streetName*: string
+    streetNr: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetNrSuffix: string
+    streetSuffix: string
+    streetType: string
+}
+RelatedPlaceRefOrValue <|-- FieldedAddress
+
+FieldedAddress *--> GeographicSubAddress : geographicSubAddress
+
+class RelatedPlaceRefOrValue {
+
+    @schemaLocation: uri
+    @type*: string
+    role*: string
+}
+
+
+
+class GeographicSubAddress {
+
+    buildingName: string
+    levelNumber: string
+    levelType: string
+    privateStreetName: string
+    privateStreetNumber: string
+}
+
+GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+
+
+class Note {
+
+    author*: string
+    date*: date-time
+    id*: string
+    source*: MEFBuyerSellerType
+    text*: string
+}
+
+
+
+class MEFProductOrderItem_Update {
+
+    endCustomerName: string
+    id*: string
+    relatedBuyerPON: string
+}
+
+MEFProductOrderItem_Update *-->"*" Note : note
+MEFProductOrderItem_Update *-->"*" RelatedContactInformation : relatedContactInformation
+
+
+
+
+class MEFSubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+
+
+class ProductOrder_Update {
+
+    externalId: string
+    orderVersion*: string
+    projectId: string
+}
+
+ProductOrder_Update *-->"*" Note : note
+ProductOrder_Update *-->"*" MEFProductOrderItem_Update : productOrderItem
+ProductOrder_Update *-->"*" RelatedContactInformation : relatedContactInformation
+
+
+
+
+class RelatedContactInformation {
+
+    emailAddress*: string
+    name*: string
+    number*: string
+    numberExtension: string
+    organization: string
+    role*: string
+}
+
+RelatedContactInformation *--> FieldedAddress : postalAddress
+
+
+@enduml

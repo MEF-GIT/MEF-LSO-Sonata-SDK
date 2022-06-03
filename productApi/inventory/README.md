@@ -1,5 +1,15 @@
 # Product Inventory: Release notes
 
+## Release Dolly:
+
+**Readiness status**: MEF Published Standard
+
+### List of changes in the API:
+
+`Price`:
+
+- `dutyFreeAmount` - made required
+
 ## Release Celine:
 
 **Readiness status**: Requested Letter Ballot. It will be most likely published as a standard in this form.

@@ -1,0 +1,17 @@
+@startuml
+
+hide footbox
+
+participant Buyer
+participant Seller
+
+Buyer -> Seller : POST {{baseUrl}}/quote (instantSyncQuote=false)
+
+Seller -> Seller : validate Request
+
+alt successful inquiry (<30sec)
+    Buyer <-- Seller : 201 Quote with {{id}} in completion state
+else validation or internal problem
+    Buyer <-- Seller: 4xx/5xx : error response
+end
+@enduml

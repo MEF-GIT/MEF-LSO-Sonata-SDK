@@ -1,0 +1,51 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class MEFModifyProductOrderItemRequestedDeliveryDate {
+
+    creationDate*: date-time
+    expediteIndicator: boolean
+    href: string
+    id*: string
+    orderVersion*: string
+    requestedCompletionDate: date-time
+    state*: MEFChargeableTaskStateType
+}
+
+MEFModifyProductOrderItemRequestedDeliveryDate *-->"1" MEFProductOrderItemRef : productOrderItem
+
+
+
+class MEFProductOrderItemRef {
+
+    productOrderHref: string
+    productOrderId*: string
+    productOrderItemId*: string
+}
+
+
+
+
+
+class MEFModifyProductOrderItemRequestedDeliveryDate_Create {
+
+    expediteIndicator: boolean
+    orderVersion*: string
+    requestedCompletionDate: date-time
+}
+
+MEFModifyProductOrderItemRequestedDeliveryDate_Create *-->"1" MEFProductOrderItemRef : productOrderItem
+
+enum MEFChargeableTaskStateType {
+
+    acknowledged
+    done
+    done.declined
+    inProgress.assessingCharge
+    rejected
+}
+
+@enduml

@@ -1,0 +1,33 @@
+@startuml
+
+'skinparam Linetype polyline
+'skinparam Linetype ortho
+skinparam state {
+    BackgroundColor White
+    BorderColor Black
+}
+hide empty description
+
+'''decisions'''
+state all_tasks_completed <<choice>> 
+ note left of all_tasks_completed : All tasks completed?
+
+''' diagram'''
+[*] -d-> open
+
+open -d-> inProgress
+open -d-> planned
+planned -d-> inProgress
+
+planned -d-> cancelled
+open -d-> cancelled
+
+inProgress -d-> all_tasks_completed
+all_tasks_completed --> completed : yes
+all_tasks_completed --> unableToComplete : no
+
+cancelled --> [*]
+unableToComplete --> [*]
+completed --> [*]
+
+@enduml

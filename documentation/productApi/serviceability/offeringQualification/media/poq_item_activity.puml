@@ -1,0 +1,25 @@
+@startuml
+
+
+skinparam activity {
+    BackgroundColor White
+    BorderColor Black
+}
+
+start
+if(immediate response?) then (no)
+    :acknowledged;
+    :inProgress;
+else (yes)
+endif
+if(any other item failed?) then (yes)
+    :done
+    .abandoned;
+elseif(sufficient information provided?) then (yes)
+    :done.ready;
+else (no)
+    :terminatedWithError;
+endif
+stop
+
+@enduml

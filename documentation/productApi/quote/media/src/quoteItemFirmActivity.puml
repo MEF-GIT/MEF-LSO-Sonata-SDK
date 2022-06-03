@@ -1,0 +1,43 @@
+@startuml
+
+
+skinparam activity {
+    BackgroundColor White
+    BorderColor Black
+}
+
+start
+if(immediate response?) then (no)
+    :acknowledged;
+    if(rejected?) then (yes)
+        :rejected;
+        stop
+    elseif(other quote item(s) rejected?) then (yes)
+        :abandoned;
+        stop
+    else (no)
+        :inProgress;
+        if(further work needed?) then (yes)
+            :inProgress.
+            draft;
+        else(no)
+        endif
+        'goto information_check
+    endif
+else(yes)
+    'goto information_check
+endif
+'label information_check
+if(other quote item(s) rejected?) then (yes)
+    :abandoned;
+elseif(able to provide a quote?) then (no)
+    :unableToProvide;
+elseif(able to provide as requested?) then (yes)
+    :approved.orderable;
+else(no)
+    :approved.
+    orderableAlternate;
+endif
+stop
+
+@enduml

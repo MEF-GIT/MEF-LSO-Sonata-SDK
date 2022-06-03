@@ -1,0 +1,26 @@
+@startuml
+
+'skinparam Linetype polyline
+'skinparam Linetype ortho
+skinparam state {
+    BackgroundColor White
+    BorderColor Black
+}
+hide empty description
+
+'''decisions'''
+state merge <<choice>> 
+
+''' diagram'''
+[*] -d-> created
+
+created -d-> merge
+merge -d-> inProgress
+inProgress --> merge
+inProgress -d-> closed
+created -d-> closed
+
+
+closed --> [*]
+
+@enduml

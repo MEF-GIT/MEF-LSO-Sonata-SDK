@@ -20,7 +20,7 @@ info:
     by the TM Forum under the Apache License version 2.0. Such content has been
     modified by the MEF Forum and its contributors.
   title: Product Inventory Management
-  version: 7.0.1
+  version: 7.0.2
 servers:
   - url: 'https://{serverBase}/mefApi/sonata/productInventory/v7/'
     variables:
@@ -33,7 +33,7 @@ tags:
 paths:
   /product:
     get:
-      description: This operation list or find Product entities
+      description: This operation lists or finds Product entities
       operationId: listProduct
       parameters:
         - description: The status of the product
@@ -224,8 +224,7 @@ paths:
   '/product/{id}':
     get:
       description: >-
-        This operation retrieves a Product entity. Attribute selection is
-        enabled for all first level attributes.
+        This operation retrieves a Product entity.
       operationId: retrieveProduct
       parameters:
         - description: Identifier of the Product
@@ -985,6 +984,8 @@ components:
           description:
             All taxes excluded amount (expressed in the given currency)
           $ref: '#/components/schemas/Money'
+      required:
+        - dutyFreeAmount
       type: object
     ProductOfferingRef:
       description: >-
