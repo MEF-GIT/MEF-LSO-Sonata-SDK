@@ -122,7 +122,7 @@ contained herein.
       - [7.2.2.2. Type FieldedAddress](#7222-type-fieldedaddress)
       - [7.2.2.3. Type GeographicSubAddress](#7223-type-geographicsubaddress)
       - [7.2.2.4. Type MEFSubUnit](#7224-type-mefsubunit)
-      - [7.2.2.5. Type MEFBillingAccount](#7225-type-mefbillingaccount)
+      - [7.2.2.5. Type MEFBillingAccountRef](#7225-type-mefbillingaccountref)
       - [7.2.2.6. `enum` MEFChargePeriod](#7226-enum-mefchargeperiod)
       - [7.2.2.7. Type MEFItemTerm](#7227-type-mefitemterm)
       - [7.2.2.8. `enum` MEFEndOfTermAction](#7228-enum-mefendoftermaction)
@@ -174,16 +174,16 @@ they were part of this document, from the GitHub repository:
 <https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK>
 
 commit id:
-[415ef5ad60d07cf6bc87c36c684217e98cb9936e](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/tree/415ef5ad60d07cf6bc87c36c684217e98cb9936e)
+[2062c16db194adc5109d0b7c0578a1a9128c6471](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/tree/2062c16db194adc5109d0b7c0578a1a9128c6471)
 
-- [`productApi/inventory/productInventoryManagement.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/blob/415ef5ad60d07cf6bc87c36c684217e98cb9936e/productApi/inventory/productInventoryManagement.api.yaml)
+- [`productApi/inventory/productInventoryManagement.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/blob/2062c16db194adc5109d0b7c0578a1a9128c6471/productApi/inventory/productInventoryManagement.api.yaml)
 
 <https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK>
 
 commit id:
-[6a27c0b1a237753ea234a6b4ad10798da837d2e6](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/tree/6a27c0b1a237753ea234a6b4ad10798da837d2e6)
+[fd4aad8d6417b6aed2fa4e2d4ffa9836648addb0](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/tree/fd4aad8d6417b6aed2fa4e2d4ffa9836648addb0)
 
-- [`productApi/inventory/productInventoryManagement.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/blob/6a27c0b1a237753ea234a6b4ad10798da837d2e6/productApi/inventory/productInventoryManagement.api.yaml)
+- [`productApi/inventory/productInventoryManagement.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/blob/fd4aad8d6417b6aed2fa4e2d4ffa9836648addb0/productApi/inventory/productInventoryManagement.api.yaml)
 
 # 2. Terminology and Abbreviations
 
@@ -485,16 +485,16 @@ states:
 In the API the `buyerId` and `sellerId` are represented as query parameters in
 each operation defined in `productInventoryManagement.api.yaml`.
 
-**[R2]** If the Requesting Entity has the authority to represent more than
-one Buyer the request **MUST** include `buyerId` query parameter that
-identifies the Buyer being represented [MEF81 R12]
+**[R2]** If the Requesting Entity has the authority to represent more than one
+Buyer the request **MUST** include `buyerId` query parameter that identifies
+the Buyer being represented [MEF81 R12]
 
 **[R3]** If the Requesting Entity represents precisely one Buyer with the
 Responding Entity, the request **MUST NOT** specify the `buyerId` [MEF81 R13]
 
-**[R4]** If the Responding Entity represents more than one Seller to this
-Buyer the request **MUST** include `sellerId` query parameter that identifies
-the Seller with whom this request is associated [MEF81 R14]
+**[R4]** If the Responding Entity represents more than one Seller to this Buyer
+the request **MUST** include `sellerId` query parameter that identifies the
+Seller with whom this request is associated [MEF81 R14]
 
 **[R5]** If the Responding Entity represents precisely one Seller to this
 Buyer, the request **MUST NOT** specify the `sellerId` [MEF81 R15]
@@ -583,12 +583,12 @@ Regardless of chosen implementation pattern, the HTTP payload is exactly the
 same. Both implementation approaches must conform to the requirements specified
 below.
 
-**[R6]** `MEFProductConfiguration` type is an extension point that **MUST**
-be used to integrate product specifications' properties into a request/response
+**[R6]** `MEFProductConfiguration` type is an extension point that **MUST** be
+used to integrate product specifications' properties into a request/response
 payload.
 
-**[R7]** The `@type` property of `MEFProductConfiguration` **MUST** be used
-to specify the type of the extending entity.
+**[R7]** The `@type` property of `MEFProductConfiguration` **MUST** be used to
+specify the type of the extending entity.
 
 **[R8]** Product attributes specified in the payload must conform to the
 product specification specified in the `@type` property.
@@ -737,8 +737,7 @@ The snippet below shows an example of a response with 1 product matched:
     "lastUpdateDate": "2021-06-01T08:55:54.155Z",
     "startDate": "2021-05-01T08:55:54.155Z",
     "billingAccount": {
-      "id": "00000000-1111-0000-0000-000000000001",
-      "agreementName": "Buyer-Seller General Agreement 03/2021"
+      "id": "00000000-1111-0000-0000-000000000001"
     },
     "productOffering": {
       "id": "00000000-5555-0000-0000-000000000001"
@@ -775,8 +774,8 @@ query format [rfc3986](#8-references). Section
 [7.1.2.](#712-response-pagination) provides details about the implementation of
 pagination mechanism.
 
-**[R12]** In case no items matching the criteria are found, the Seller
-**MUST** return a valid response with an empty list.
+**[R12]** In case no items matching the criteria are found, the Seller **MUST**
+return a valid response with an empty list.
 
 **[R13]** The Seller **MUST** put the following attributes (if set) into the
 `MEFProduct_Find` object in the response: [MEF81 R8]:
@@ -908,8 +907,7 @@ Example request and response:
     }
   },
   "billingAccount": {
-    "id": "00000000-1111-0000-0000-000000000001",
-    "agreementName": "Buyer-Seller General Agreement 03/2021"
+    "id": "00000000-1111-0000-0000-000000000001"
   },
   "productOffering": {
     "id": "00000000-5555-0000-0000-000000000001"
@@ -1027,10 +1025,10 @@ A detailed description of each of state can be found in the table below.
 Products that are terminated might be removed from the Seller's inventory
 system or shown in the `terminated` state at the Seller's discretion.
 
-**[R14]** The Seller **MUST** provide the following contact information:
-[MEF81 R11]
+**[R14]** The Seller **MUST** provide the following contact information: [MEF81
+R11]
 
-| Contract Role               | `role` value                                                            | Description                                                                           |
+| Contact Role               | `role` value                                                            | Description                                                                           |
 | --------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | Assurance Technical Contact | `buyerAssuranceTechnicalContact`,</br>`sellerAssuranceTechnicalContact` | Operational contact such as Network Operations Center (NOC) for each party.           |
 | Commercial Contact          | `buyerCommercialContact`, </br>`sellerCommercialContact`                | Contact for commercial issues like billing, contract extensions, etc. for each party. |
@@ -1377,7 +1375,7 @@ resource(s).
             <td>Product</td>
         </tr><tr>
             <td>billingAccount</td>
-            <td><a href="#T_MEFBillingAccount">MEFBillingAccount</a></td>
+            <td><a href="#T_MEFBillingAccountRef">MEFBillingAccountRef</a></td>
             <td>The Billing Account associated with the Product</td>
             <td>Billing Account Identifier</td>
         </tr><tr>
@@ -1481,7 +1479,7 @@ list) operation
             <td>Initial Order Completion Date</td>
         </tr><tr>
             <td>billingAccount</td>
-            <td><a href="#T_MEFBillingAccount">MEFBillingAccount</a></td>
+            <td><a href="#T_MEFBillingAccountRef">MEFBillingAccountRef</a></td>
             <td>The Billing Account associated with the Product</td>
             <td>Billing Account Identifier</td>
         </tr><tr>
@@ -1819,12 +1817,12 @@ possible.
     </tbody>
 </table>
 
-#### 7.2.2.5. Type MEFBillingAccount
+#### 7.2.2.5. Type MEFBillingAccountRef
 
 **Description:** References the billing arrangement that a buyer has with a
 seller that provides products to the customer.
 
-<table id="T_MEFBillingAccount">
+<table id="T_MEFBillingAccountRef">
     <thead style="font-weight:bold;">
         <tr>
             <td>Name</td>
@@ -1839,16 +1837,6 @@ seller that provides products to the customer.
             <td>string</td>
             <td>Identifies the buyer&#x27;s billing account to which the recurring and non-recurring charges for this order or order item will be billed. Required if the Buyer has more than one Billing Account with the Seller and for all new Product Orders.</td>
             <td>Billing Account Identifier</td>
-        </tr><tr>
-            <td>billingContact</td>
-            <td><a href="#T_RelatedContactInformation">RelatedContactInformation</a></td>
-            <td>Contact allow to capture contact information. It is used to capture billing account contact information.</td>
-            <td>Not represented in MEF 81</td>
-        </tr><tr>
-            <td>agreementName</td>
-            <td>string</td>
-            <td>The name of the Agreement which is referenced for the Product Order Item.</td>
-            <td>Not represented in MEF 81</td>
         </tr>
     </tbody>
 </table>
@@ -2258,16 +2246,6 @@ role for this Entity. The rule for mapping a represented attribute value to a
     </tbody>
 </table>
 
-The `role` attribute is used to provide a reason the particular party
-information is used. It can result from MEF 57.2 requirements (e.g. Seller
-Contact Information) or from the Product Specification requirements.
-
-The rule for mapping a represented attribute value to a `role` is to use the
-_lowerCamelCase_ pattern e.g.
-
-- Seller Contact: `role` equal to `sellerContact`
-- Buyer Contact Information: `role` equal to `buyerContactInformation`
-
 #### 7.2.2.18. Type RelatedGeographicSite
 
 **Description:** A Geographic Site and an associated role as installation
@@ -2291,7 +2269,7 @@ address, delivery address, etc....
         </tr><tr>
             <td>href</td>
             <td>string</td>
-            <td>Unique reference of the geographic site</td>
+            <td>Hyperlink to the referenced geographic site</td>
             <td>Not represented in MEF 81</td>
         </tr><tr>
             <td>role*</td>
@@ -2366,6 +2344,11 @@ process.
   Requirements and Use Cases, November 2019
 - [MEF80] [MEF 80](https://www.mef.net/wp-content/uploads/MEF-80.pdf), Quote
   Management Requirements and Use Cases, July 2021
+- [MEF81] [MEF 81](https://www.mef.net/wp-content/uploads/2019/11/MEF-81.pdf),
+  Product Inventory Management - Requirements and Use Cases, November 2019
+- [MEF81.0.1]
+  [MEF 81.0.1](https://www.mef.net/wp-content/uploads/2020/02/MEF-81-0-1.pdf),
+  Amendment to MEF 81: Product Inventory Management, February 2020
 - [TMF637]
   [TMF 674](https://projects.tmforum.org/wiki/download/attachments/123080633/TMF637_Product_Inventory_Management_API_REST_Specification_R19.0.0.pdf)
   TMF637 Product Inventory Management API REST Specification R19.0.0, June 2019

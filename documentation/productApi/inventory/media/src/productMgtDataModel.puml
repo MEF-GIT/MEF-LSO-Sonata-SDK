@@ -45,13 +45,10 @@ class GeographicSubAddress {
 GeographicSubAddress *-->"*" MEFSubUnit : subUnit
 
 
-class MEFBillingAccount {
+class MEFBillingAccountRef {
 
     id*: string
-    agreementName: string
 }
-
-MEFBillingAccount *--> RelatedContactInformation : billingContact
 
 
 class MEFItemTerm {
@@ -78,7 +75,7 @@ class MEFProduct {
 }
 
 MEFProduct *--> MEFProductConfiguration : productConfiguration
-MEFProduct *--> MEFBillingAccount : billingAccount
+MEFProduct *--> MEFBillingAccountRef : billingAccount
 MEFProduct *--> ProductOfferingRef : productOffering
 MEFProduct *-->"*" MEFProductOrderItemRef : productOrderItem
 MEFProduct *-->"*" ProductPrice : productPrice
@@ -116,7 +113,7 @@ class MEFProduct_Find {
     status*: MEFProductStatusType
 }
 
-MEFProduct_Find *--> MEFBillingAccount : billingAccount
+MEFProduct_Find *--> MEFBillingAccountRef : billingAccount
 MEFProduct_Find *--> ProductOfferingRef : productOffering
 MEFProduct_Find *-->"*" MEFProductOrderItemRef : productOrderItem
 MEFProduct_Find *-->"*" ProductRelationship : productRelationship
