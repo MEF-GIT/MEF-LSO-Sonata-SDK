@@ -1,5 +1,11 @@
 # Site Retrieval: Release notes
 
+## Release Dolly:
+
+**Readiness status**: MEF Published standard. 
+
+None
+
 ## Release Celine:
 
 **Readiness status**: Requested Letter Ballot. It will be most likely published as a standard in this form.

@@ -1,0 +1,376 @@
+---
+$id: urn:mef:lso:spec:cantata-sonata:basicIaIpvc:v0.1.0:all
+$schema: http://json-schema.org/draft-07/schema#
+title: MEF LSO Basic Internet Access IPVC
+description: >-
+  The Basic Internet Access IPVC is a MEF 69.1 defined version of MEF 61.1 IPVC.
+  Reference MEF 69.1 Section 9.1 Internet Access IPVC Requirements.
+type: object
+properties:
+  basicIaIpvcEndPoint:
+    $ref: "#/definitions/BasicIaIpvcEndPoint"
+    description: >-
+      Basic IPVC End Point. Reference MEF 61.1 Section 10.3 IPVC End Point List
+      Service Attribute. This is narrowed to multiplicity = 1 and to
+      BasicIaIpvcEndPoint type. Reference MEF 69.1 Section 9.1 [R5]
+      AdvancedIaIpvc
+  classOfServiceName:
+    description: >-
+      The Class of Service Name supported by the IPVC. Reference MEF 61.1
+      Section 10.8 IPVC List of Class of Service Names Service Attribute. This
+      is "listOfClassOfServiceNames" attribute narrowed to single ref per
+      Reference MEF 69.1 Section 9.1 [R7]
+    type: string
+  cloud:
+    description: >-
+      Reference MEF 61.1 Section 10.13 IPVC Cloud Service Attribute. The absence
+      of this attribute corresponds to a value of "None".
+    $ref: "#/definitions/BasicIaIpvcCloud"
+  dscpPreservation:
+    $ref: ../../common/ipCommon.yaml#/definitions/EnabledDisabled
+    description: >-
+      Indicates where the SP or Operator is allowed to modify the value of the
+      IP DS field in the IP header of the Subscriber's traffic as it traverses
+      the IPVC. Reference MEF 61.1 Section 10.7 IPVC DSCP Preservation Service
+      Attribute. MEF 69.1 [D3] For an Internet Access Service, IPVC DSCP
+      Preservation SHOULD be Disabled.
+  maximumNumberOfIpv4Routes:
+    description: >-
+      Maximum number of IPv4 routes supported by the service as a whole. Absence
+      of this attribute corresponds to a value of "Unlimited". Reference MEF
+      61.1 Section 10.5 IPVC Maximum Number of IPv4 Routes Service Attribute.
+    type: integer
+  maximumNumberOfIpv6Routes:
+    description: >-
+      Maximum number of IPv6 routes supported by the service as a whole. Absence
+      of this attribute corresponds to a value of "Unlimited". Reference MEF
+      61.1 Section 10.6 IPVC Maximum Number of IPv6 Routes Service Attribute.
+    type: integer
+  maximumTransferUnit:
+    description: >-
+      Indicates the maximum size (in octets) of an IP packet that can traverse
+      the IPVC without fragmentation. Reference MEF 61.1 Section 10.10 IPVC MTU
+      Service Attribute.
+    minimum: 576
+    type: integer
+  pathMtuDiscovery:
+    $ref: ../../common/ipCommon.yaml#/definitions/EnabledDisabled
+    description: >-
+      Indicates whether the Path MTU Discovery is supported for the IPVC.
+      Reference MEF 61.1 Section 10.11 IPVC Path MTU Discovery Service
+      Attribute.
+  reservedPrefixes:
+    $ref: ../../common/ipCommon.yaml#/definitions/Ipv4Ipv6Prefixes
+    description: >-
+      Reference MEF 61.1 Section 10.14 IPVC Reserved Prefixes Service Attribute.
+      For Advanced Internet Access the prefixes must be either empty, or free
+      from any public address prefixes. (Reference MEF 69.1 Section 9.1 [R14])
+  required:
+    - basicIaIpvcEndPoint
+definitions:
+  BasicIaIpvcCloud:
+    description: >-
+      The IPVC Cloud Service Attribute is a set of parameters describing the
+      access connectivity to the cloud service. Reference MEF 61.1 Section 10.13
+      IPVC Cloud Service Attribute. The absence of this attribute corresponds to
+      a value of "None".
+    properties:
+      dataLimit:
+        description: >-
+          Limit on the amount of Data traffic sent to/received from the cloud
+          service. Unlimited or a 4-tupe (scdl, Tcdl, ucdl, dcdl). If not
+          provided, then Unlimited. Reference MEF 61.1 Section 10.13.3 Cloud
+          Data Limit.
+        $ref: ../../common/ipCommon.yaml#/definitions/CloudDataLimit
+      dns:
+        description: >-
+          Specifies whether and how DNS is provided for the service. Reference
+          MEF 61.1 Section 10.13.5 Cloud DNS Service. [R12]	For a Basic Internet
+          Access Service, Cloud DNS MUST NOT be None.
+        $ref: ../../common/ipCommon.yaml#/definitions/CloudDns
+      ingressClassOfServiceMap:
+        $ref: ../internetAccessCommon.yaml#/definitions/IaIngressClassOfServiceMap
+        description: >-
+          Specification of how ingress packets are mapped to different CoS
+          Names. Reference MEF 61.1 Section 10.13.2 Cloud Ingress Class of
+          Service Map.
+      networkAddressTranslation:
+        description: >-
+          Specifies whether Network Address Translation is used, and if so the
+          IPv4 Prefix. If not selected, then Disabled. Reference MEF 61.1
+          Section 10.13.4 Cloud Network Address Translation.
+        $ref: ../../common/ipCommon.yaml#/definitions/Ipv4Prefix
+      subscriberPrefixList:
+        description: >-
+          List of Public IP Prefixes used in the Subscriber Network. Reference
+          MEF 61.1 Section 10.13.6 Cloud Subscriber Prefix List.
+        $ref: ../../common/ipCommon.yaml#/definitions/Ipv4Ipv6Prefixes
+    type: object
+  BasicIaIpvcEndPoint:
+    allOf:
+      - $ref: ../../common/ipSls.yaml#/definitions/SlsReferencePoint
+      - description: >-
+          The Basic Internet Access IPVC End Point is a MEF 69.1 defined version
+          of MEF 61.1 IPVC End Point. Reference MEF 69.1 Section 9.2 Internet
+          Access IPVC End Point Requirements.
+        properties:
+          egressBandwidthProfileEnvelope:
+            $ref: ../../common/ipCommon.yaml#/definitions/IpvcEpEgressBwpEnvelope
+            description: >-
+              Egress Bandwidth Profile Envelope for the IPVC End Point. The
+              absence of this attribute corresponds to a value of "None".
+              Reference MEF 61.1 Section 11.12 IPVC EP Egress Bandwidth Profile
+              Envelope Service Attribute. Reference MEF 69.1 Section 9.2. [D6]
+              For a Basic Internet Access Service, the
+              egressBandwidthProfileEnvelope SHOULD be empty.
+          egressClassOfServiceMap:
+            $ref: ../../common/ipCommon.yaml#/definitions/EgressClassOfServiceMap
+            description: >-
+              Specification of how egress packets are mapped to CoS Name.
+              Reference MEF 61.1 Section 11.10 IPVC EP Egress Class of Service
+              Map Service Attribute.
+          identifier:
+            description: >-
+              A unique identifier for the IPVC End Point for management
+              purposes. Reference MEF 61.1 Section 11.1 IPVC EP Identifier
+              Service Attribute.
+            type: string
+          ingressBandwidthProfileEnvelope:
+            $ref: ../../common/ipCommon.yaml#/definitions/IpvcEpIngressBwpEnvelope
+            description: >-
+              Ingress Bandwidth Profile Envelope for the IPVC End Point. The
+              absence of this attribute corresponds to a value of "None".
+              Reference MEF 61.1 Section 11.11 IPVC EP Ingress Bandwidth Profile
+              Envelope Service Attribute. Reference MEF 69.1 Section 9.2. [D5]
+              For a Basic Internet Access Service, the
+              ingressBandwidthProfileEnvelope SHOULD be empty.
+          ingressClassOfServiceMap:
+            $ref: ../internetAccessCommon.yaml#/definitions/IaIngressClassOfServiceMap
+            description: >-
+              Specification of how ingress packets are mapped to CoS Name.
+              Reference MEF 61.1 Section 11.9 IPVC EP Ingress Class of Service
+              Map Service Attribute.
+          ipUni:
+            $ref: "#/definitions/BasicIaUni"
+            description: >-
+              Indicates where the SP or Operator is allowed to modify the value
+              of the IP DS field in the IP header of the Subscriber's traffic as
+              it traverses the IPVC. Reference MEF 61.1 Section 10.7 IPVC DSCP
+              Preservation Service Attribute.
+          maximumNumberOfIpv4Routes:
+            description: >-
+              Maximum number of IPv4 routes supported by this IPVC End Point.
+              Reference MEF 61.1 Section 11.7 IPVC EP Maximum Number of IPv4
+              Routes Service Attribute. Absence of this attribute corresponds to
+              a value of "Unlimited".
+            type: integer
+          maximumNumberOfIpv6Routes:
+            description: >-
+              Maximum number of IPv6 routes supported by this IPVC End Point.
+              Reference MEF 61.1 Section 11.8 IPVC EP Maximum Number of IPv6
+              Routes Service Attribute. Absence of this attribute corresponds to
+              a value of "Unlimited".
+            type: integer
+        type: object
+        required:
+          - ipUni
+  BasicIaUni:
+    description: >-
+      The Basic Internet Access UNI is a MEF 69.1 defined version of MEF 61.1
+      UNI. Reference MEF 69.1 Section 9.3 Internet Access UNI Requirements.
+    properties:
+      egressBandwidthProfileEnvelope:
+        $ref: ../../common/ipCommon.yaml#/definitions/IpUniEgressBwpEnvelope
+        description: >-
+          Attribute used for an egress UNI Bandwidth Profile. Reference MEF 61.1
+          Section 12.5 UNI Egress Bandwidth Profile Envelope Service Attribute.
+          Absence of this attribute corresponds to a value of "None". [D8]  At a
+          UNI with an IPVC EP for a Basic Internet Ac-cess Service, if the UNI
+          Egress Bandwidth Profile Envelope is not None, it SHOULD have
+          Bandwidth Profile Flows that contain all Egress IP Data Packets at the
+          UNI that are mapped to any of a given set of IPVC EPs (as defined in
+          MEF 61.1 [8] Table 28). Reference MEF 69.1 Section 9.3 Internet Access
+          UNI Requirements.
+      identifier:
+        description: >-
+          Unique identifier for the Basic Internet Access UNI for management
+          purposes. Reference MEF 61.1 Section 12.1 UNI Identifier Service
+          Attribute.
+        maxLength: 53
+        type: string
+      ingressBandwidthProfileEnvelope:
+        $ref: ../../common/ipCommon.yaml#/definitions/IpUniIngressBwpEnvelope
+        description: >-
+          Attribute used for an ingress UNI Bandwidth Profile. Reference MEF
+          61.1 Section 12.4 UNI Ingress Bandwidth Profile Envelope Service
+          Attribute. Absence of this attribute corresponds to a value of "None".
+          [D7]  At a UNI with an IPVC EP for a Basic Internet Access Service, if
+          the UNI Ingress Bandwidth Profile Envelope is not None, it SHOULD have
+          Bandwidth Profile Flows that contain all Ingress IP Data Packets at
+          the UNI that are mapped to any of a given set of IPVC EPs (as defined
+          in MEF 61.1 [8] Table 28). Reference MEF 69.1 Section 9.3 Internet
+          Access UNI Requirements.
+      ipUniAccessLink:
+        $ref: "#/definitions/BasicIaUniAccessLink"
+        description: >-
+          Reference to IP UNI Access Link(s). Reference MEF 61.1 Section 12.3
+          UNI List of UNI Access Links Service Attribute.
+      listOfControlProtocols:
+        description: >
+          Indication of IP Control Protocols that are not forwarded
+          transparently by the SP. Reference MEF 61.1 Section 12.6 UNI List of
+          Control Protocols Service Attribute. Absence of this attribute
+          corresponds to a value of "None". [D9]  At a UNI with an IPVC EP for
+          an Internet Access Service, if the UNI has at least one UNI Access
+          Link where the UNI Access Lin IPv4 Connection Addressing is not None,
+          the UNI List of Control Protocols SHOULD include ICMP with a list of
+          applicable ISP IP addresses. [D10]  At a UNI with an IPVC EP for an
+          Internet Access Service with at least one UNI Access Link where the
+          UNI Access Link IPv6 Connection Addressing is not None, the UNI List
+          of Control Protocols SHOULD include ICMPv6 with a list of applicable
+          SP IP addresses. Reference MEF 69.1 Section 9.3 Internet Access UNI
+          Requirements.
+        items:
+          $ref: ../../common/ipCommon.yaml#/definitions/ControlProtocol
+        type: array
+      managementType:
+        $ref: ../../common/ipCommon.yaml#/definitions/UniManagementType
+        description: >-
+          Attribute indicating whether the CE is the responsibility of the
+          Subscriber or the Service Provider. Reference MEF 61.1 Section 12.2
+          UNI Management Type Service Attribute.
+      reversePathForwarding:
+        $ref: ../../common/ipCommon.yaml#/definitions/EnabledDisabled
+        description: >-
+          Indicates whether Reverse Path Forwarding checks are used by the SP at
+          the UNI. Reference MEF 61.1 Section 12.8 UNI Reverse Path Forwarding
+          Service Attribute. [D11]  At a UNI with an IPVC EP for an Internet
+          Access Service, reversePathForwarding SHOULD be ENABLED. Reference MEF
+          69.1 Section 9.3 Internet Access UNI Requirements.
+    type: object
+    required:
+      - ipUniAccessLink
+  BasicIaUniAccessLink:
+    description: >-
+      An individual connection between the Subscriber and the SP that forms part
+      of a UNI. Reference MEF 61.1[1] Section 7.3 UNIs and UNI Access Link.
+    properties:
+      egressBandwidthProfileEnvelope:
+        $ref: ../../common/ipCommon.yaml#/definitions/IpUniEgressBwpEnvelope
+        description: >-
+          Egress Bandwidth Profile Envelope for the UNI Access Link. Reference
+          MEF 61.1 Section 13.11 UNI Access Link Egress Bandwidth Profile
+          Envelope Service Attribute. Absence of this attribute corresponds to a
+          value of "None". [D13]  At a UNI Access Link in a UNI with an IPVC EP
+          for a Basic Internet Access Service, UNI Access Link Egress Bandwidth
+          Profile Envelope SHOULD be None. Reference MEF 69.1 Section 9.4
+          Internet Access UNI Access Link Service Attributes Requirements
+      ingressBandwidthProfileEnvelope:
+        $ref: ../../common/ipCommon.yaml#/definitions/IpUniIngressBwpEnvelope
+        description: >-
+          Ingress Bandwidth Profile Envelope for the UNI Access Link. Reference
+          MEF 61.1 Section 13.10 UNI Access Link Ingress Bandwidth Profile
+          Envelope Service Attribute. Absence of this attribute corresponds to a
+          value of "None". [D12]  At a UNI Access Link in a UNI with an IPVC EP
+          for a Basic Internet Access Service, UNI Access Link Ingress Bandwidth
+          Profile Envelope SHOULD be None. Reference MEF 69.1 Section 9.4
+          Internet Access UNI Access Link Service Attributes Requirements
+      ipv4ConnectionAddressing:
+        $ref: "#/definitions/BasicIaUniIpv4ConnectionAddressing"
+        description: >
+          ipv4ConnectionAddressing.uniAccessLinkIpv4AddressType MUST be DHCP or
+          None. Reference MEF 69.1 Section 9.4 Subscriber Internet Access
+          Service: UNI Access Link Requirements [R23]. If
+          ipv4ConnectionAddressing.uniAccessLinkIpv4AddressType is DHCP, the UNI
+          Access Link IPv4 Connection Addressing Primary Subnet parameter MUST
+          contain only a single Service Provider IPv4 Address. Reference MEF
+          69.1[1] Section 9.4 Subscriber Internet Access Service: UNI Access
+          Link Requirements [R25].
+      ipv6ConnectionAddressing:
+        $ref: "#/definitions/BasicIaUniIpv6ConnectionAddressing"
+        description: >
+          [R27]  At a UNI Access Link in a UNI with an IPVC EP for a Basic
+          Internet Access Service, UNI Access Link IPv6 Connection Addressing
+          MUST be DHCP or SLAAC or None. Reference MEF 69.1[1] Section 9.4
+          Subscriber Internet Access Service: UNI Access Link Requirements.
+      mtu:
+        description: >-
+          Maximum size, in octets of an IP Packet that can traverse the UNI
+          Access Link. Reference MEF 61.1 Section 13.9 UNI Access Link IP MTU
+          Service Attribute.
+        minimum: 576
+        type: integer
+      prefixDelegation:
+        $ref: ../../common/ipCommon.yaml#/definitions/EnabledDisabled
+        description: >-
+          Indicates whether DHCP Prefix delegation is enabled. Reference MEF
+          61.1 Section 13.7 UNI Access Link Prefix Delegation Service Attribute.
+      reservedVrids:
+        description: |
+          List of VRRP (Virtual Router Redundancy Protocol) VRIDs (Virtual
+          Router Identifier) reserved for use by the SP or Operator. Reference
+          MEF 61.1 Section 13.12 UNI Access Link Reserved VRIDs Service
+          Attribute. [D14]  At a UNI Access Link in a UNI with an IPVC EP for a
+          Basic Internet Access Service, UNI Access Link Reserved VRIDs Service
+          Access UNI Access Link Service Attributes Requirements
+          Attribute SHOULD be None. 
+          Note - The use of VRRP by the ISP is discouraged in the
+          Basic Internet Access Service, as it requires coordination of VRID
+          resources between the Subscriber and ISP, which compromises
+          the simplicity and plug-and-play nature of this service type.
+          Reference MEF 69.1 Section 9.4 Internet
+        items:
+          $ref: ../../common/ipCommon.yaml#/definitions/Vrid
+        type: array
+    type: object
+  BasicIaUniIpv4ConnectionAddressing:
+    description: >-
+      UniIpv4ConnectionAddressing is a data type representing how IPv4 addresses
+      are allocated to the devices on the UNI Access Link. Reference MEF 61
+      Section 13.4 UNI Access Link IPv4 Connection Addressing Service Attribute.
+      [R23]  At a UNI Access Link in a UNI with an IPVC EP for a Basic Internet
+      Access Service, UNI Access Link IPv4 Connection Addressing MUST be DHCP or
+      None. [R25] If IPv4 Connection Addressing is DHCP, the UNI Access Link
+      IPv4 Connection Addressing Primary Subnet parameter MUST contain only a
+      single Service Provider IPv4 Address. Reference MEF 69.1[1] Section 9.4
+      Subscriber Internet Access Service: UNI Access Link Requirements.
+    properties:
+      ipv4PrimarySubnet:
+        $ref: ../../common/ipCommon.yaml#/definitions/Ipv4Subnet
+        description: >-
+          Primary IPv4 Subnet. Includes IPv4 Prefix and Service Provider IPv4
+          Addresses. [R25] If IPv4 Connection Addressing is DHCP, the UNI Access
+          Link IPv4 Connection Addressing Primary Subnet parameter MUST contain
+          only a single Service Provider IPv4 Address. Reference MEF 69.1[1]
+          Section 9.4 Subscriber Internet Access Service: UNI Access Link
+          Requirements
+    type: object
+  BasicIaUniIpv6ConnectionAddressing:
+    description: >-
+      UniIpv6ConnectionAddressing is a data type representing how IPv6 addresses
+      are allocated to the devices on the UNI Access Link. Reference MEF 61
+      Section 13.5 UNI Access Link IPv6 Connection Addressing Service Attribute.
+      [R27]  At a UNI Access Link in a UNI with an IPVC EP for a Basic Internet
+      Access Service, UNI Access Link IPv6 Connection Addressing MUST be DHCP or
+      SLAAC or None. Reference MEF 69.1[1] Section 9.4 Subscriber Internet
+      Access Service: UNI Access Link Requirements. [R29]	At a UNI Access Link in
+      a UNI with an IPVC EP for a Basic Internet Access Service, if the UNI
+      Ac-cess Link IPv6 Connection Addressing is DHCP or SLAAC, the UNI Access
+      Link IPv6 Connection Ad-dressing Subnet List parameter MUST contain only a
+      single Service Provider IPv6 Address.
+    properties:
+      ipv6AddressType:
+        description: Basic Internet Access IPv6 Connection Address mechanism.
+        enum:
+          - DHCP
+          - SLAAC
+        type: string
+      ipv6Subnet:
+        description:
+          IPv6 Subnet. [R29]At a UNI Access Link in a UNI with an IPVC EP for a
+          Basic Internet Access Service, if the UNI Ac-cess Link IPv6 Connection
+          Addressing is DHCP or SLAAC, the UNI Access Link IPv6 Connection
+          Ad-dressing Subnet List parameter MUST contain only a single Service
+          Provider IPv6 Address.
+        $ref: ../../common/ipCommon.yaml#/definitions/Ipv6Subnet
+    type: object

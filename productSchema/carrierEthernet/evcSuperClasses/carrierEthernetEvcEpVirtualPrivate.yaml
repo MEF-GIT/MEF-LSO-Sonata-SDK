@@ -2,13 +2,13 @@
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
     MEF LSO Sonata - Carrier Ethernet EVC EP Virtual Private
-    # MEF Forum - Date: 20220110  Edit-level: 319
+    # MEF Forum - Date: 20220601  Edit-level: 343
     # File: carrierEthernet/evcSuperClasses/carrierEthernetEvcEpVirtualPrivate.yaml
     #
     # ---------------------
     # Disclaimer
     # 
-    # © MEF Forum 2021. All Rights Reserved.
+    # © MEF Forum 2022. All Rights Reserved.
     # 
     # The information in this publication is freely available for reproduction
     # and use by any recipient and is believed to be accurate as of its
@@ -59,13 +59,33 @@ definitions:
                 description:  >-
                     MEF 10.4 sec. 10.4 - The EVC EP Map Service Attribute is used
                     to map Service Frames to the EVC EP. The value of the EVC EP Map
-                    Service Attribute (in MEF 10.4) is one of List, All, or UT/PT.
+                    Service Attribute (in MEF 10.4) is one of ALL, LIST, or UT/PT.
                     This attribute is only available for Virtual Private services since
                     Private services always require All. For Virtual Private Services
-                    it can be UT/PT (Untagged/Priority Tagged) or UT/PT. When the value
+                    it can be UT/PT (Untagged/Priority Tagged) or LIST. When the value
                     of the EVC EP Map Service Attribute = List, a non-empty list of
                     unique integers, each in the range 1,2,…,4094 is specified.
                 # This must be ALL for EPL, EP-LAN, EP-TREE Services, LIST or UT/PT for EVPxxx Services
                 # See additional validation notes in the Schema Guide
-                $ref: "../common/carrierEthernetEndPointMaps.yaml#/definitions/EndPointMapEvc"
+                $ref: "../common/carrierEthernetEndPointMaps.yaml#/definitions/EvcEndPointMap"
+            evcEndPointEnvelopes:
+                description:  >-
+                    The Envelopes and Envelope Coupling Flag values to which Bandwidth
+                    Profile Flows for this EVC End Point can be mapped. Value is list
+                    of {envelopeID, couplingFlagForIndexZero}. Envelopes listed in
+                    the EVC End Point Envelopes Service Attribute can be used when
+                    all of the Bandwidth Profile Flows contained in the Envelope are
+                    specific to a given OVC End Point. They are specified using one
+                    of the following EVC End Point Service Attributes: Ingress Bandwidth
+                    Profile Per EVC End Point Egress Bandwidth Profile Per EVC End
+                    Point Ingress Bandwidth Profile Per Class of Service Name Egress
+                    Bandwidth Profile Per Egress Equivalence Class Name  To create
+                    an Envelope containing Bandwidth Profile Flows for more than one
+                    EVC End Point, the UNI Envelopes Service Attribute must be used.
+                # See additional validation notes in the Schema Guide
+                type: array 
+                minItems: 0
+                uniqueItems: TRUE
+                items:
+                    $ref: "../common/carrierEthernetBandwidthProfile.yaml#/definitions/Envelope"
 

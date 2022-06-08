@@ -1,0 +1,36 @@
+@startuml
+
+'skinparam Linetype polyline
+'skinparam Linetype ortho
+skinparam state {
+    BackgroundColor White
+    BorderColor Black
+}
+hide empty description
+
+'''decisions'''
+state Took_place <<choice>> 
+ note left of Took_place : Took place ?
+
+ '''decisions'''
+state Why_not <<choice>> 
+ note right of Why_not : Why not ?
+
+''' diagram'''
+[*] -d-> Confirmed
+
+Confirmed -d-> Confirmed: Buyer Reschedules
+Confirmed -r[norank]-> Cancelled : Buyer or Seller cancels
+Confirmed -d-> Took_place
+Took_place -d-> Completed: Yes
+
+Took_place -r-> Why_not: No
+Why_not -d-> Missed: Seller issue
+Why_not -d-> Failed: Buyer issue
+
+Missed -d-> [*]
+Completed -d-> [*]
+Failed -d-> [*]
+Cancelled -d-> [*] 
+Missed -l[hidden]-> Failed
+@enduml

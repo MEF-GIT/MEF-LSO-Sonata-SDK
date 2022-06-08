@@ -2,13 +2,13 @@
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
     MEF LSO Sonata - Carrier Ethernet Utility Classes
-    # MEF Forum - Date: 20220110  Edit-level: 319
+    # MEF Forum - Date: 20220601  Edit-level: 343
     # File: carrierEthernet/common/carrierEthernetUtilityClasses.yaml
     #
     # ---------------------
     # Disclaimer
     # 
-    # © MEF Forum 2021. All Rights Reserved.
+    # © MEF Forum 2022. All Rights Reserved.
     # 
     # The information in this publication is freely available for reproduction
     # and use by any recipient and is believed to be accurate as of its
@@ -88,7 +88,7 @@ definitions:
                 description:  >-
                     The time interval in seconds over which the source address
                     limit is evaluated
-                $ref: "#/definitions/ShortDuration"
+                $ref: "#/definitions/TimeDuration"
     AggLinkDepth:
         type: object
         description:  >-
@@ -168,7 +168,7 @@ definitions:
                 description:  >-
                     The unit of measure in the data size. For example, if a burst
                     size is 40 KBYTES, this element is KBYTES. Note that the units
-                    indicate binary values, e.g., KBYTES is 1024 bytes.amd
+                    indicate binary values, e.g., KBYTES is 1024 bytes.
                 type: string
                 enum:
                     - "BYTES"
@@ -180,78 +180,22 @@ definitions:
                     - "EBYTES"
                     - "ZBYTES"
                     - "YBYTES"
-    ShortDuration:
+    TimeDuration:
         type: object
         description:  >-
-            This class is used to describe durations expressed in minutes
-            or smaller time units
+            This class is used to describe durations expressed as a 2-tuple,
+            (value, units). The units from from nanoseconds to years.
         properties:
-            shortDurationValue:
+            timeDurationValue:
                 description:  >-
                     The value of the duration. For example, if the duration is
                     20 ms, this element is 20.
                 type: integer
-            shortDurationUnits:
+            timeDurationUnits:
                 description:  >-
                     The unit of measure in the duration. For example, if an interval
                     is 2ms, this element is MS.
-                type: string
-                enum:
-                    - "NS"
-                    - "US"
-                    - "MS"
-                    - "SEC"
-                    - "MIN"
-    LongDuration:
-        type: object
-        description:  >-
-            This class is used to describe durations expressed in days
-            or larger time units
-        properties:
-            longDurationValue:
-                description:  >-
-                    The value of the duration. For example, if the duration is
-                    20 days, this element is 20.
-                type: integer
-            longDurationUnits:
-                description:  >-
-                    The unit of measure in the duration. For example, if an interval
-                    is 2 weeks, this element is WEEKS.
-                type: string
-                enum:
-                    - "DAY"
-                    - "WEEK"
-                    - "MONTH"
-                    - "YEAR"
-    Time:
-        type: object
-        description:  >-
-            This Class provides full specification for a date and time:
-            year:month:day hour:minute:sec. The time and date are UTC.
-        properties:
-            year:
-                type: integer
-                minimum: 1900
-            month:
-                type: integer
-                minimum: 1
-                maximum: 12
-            day:
-                type: integer
-                minimum: 1
-                maximum: 31
-            hour:
-                type: integer
-                minimum: 0
-                maximum: 23
-            minute:
-                type: integer
-                minimum: 0
-                maximum: 59
-            second:
-                type: integer
-                minimum: 0
-                maximum: 59
+                $ref: "carrierEthernetTypes.yaml#/definitions/TimeDurationUnits"
     Percentage:
         description:  >-
             This is a number of percent - a floating point number between

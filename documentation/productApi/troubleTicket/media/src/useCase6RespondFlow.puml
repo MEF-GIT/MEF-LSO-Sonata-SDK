@@ -21,12 +21,16 @@ TT -> TT: status: resolved
 TT -> Buyer: POST troubleTicketStatusChangeEvent
 TT -> Buyer: POST troubleTicketResolvedEvent
 
+note over Buyer: Buyer checks if Issue is resolved
+
 alt Buyer accepts
   Buyer -> Seller : POST /troubleTicket/{{id}}/close
+  Seller -> Seller: checks if Trouble Ticket `id` has `resolved` status
   Seller -> TT: (closes the Ticket)
   TT -> TT: status: closed
 else Buyer rejects
   Buyer -> Seller : POST /troubleTicket/{{id}}/reopen
+  Seller -> Seller: checks if Trouble Ticket `id` has `resolved` status
   Seller -> TT: (reopens the Ticket)
   TT -> TT: status: reopened
 end

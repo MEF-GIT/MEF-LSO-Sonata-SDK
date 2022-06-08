@@ -1,0 +1,49 @@
+@startuml
+
+hide footbox
+
+participant Buyer
+entity "Trouble Ticket" as TT
+entity "WorkOrder" as WORK
+entity "SearchTimeslot " as SAT
+entity "Appointment" as APO
+
+autonumber
+
+Buyer -> TT : POST /troubleTicket request
+activate TT
+TT -> TT: status: acknowledged
+
+...
+
+note over WORK: The Seller decides WorkOrder for Trouble Ticket is needed.
+WORK -> Buyer: POST /workOrderCreateEvent
+activate WORK
+WORK -> WORK: state: open
+WORK --> TT: (causes status change)
+TT -> TT: status: pending
+
+note over WORK: The Buyer requests detailed information about a WorkOrder based on a WorkOrder Identifier.
+Buyer -> WORK : GET /workOrder/{{id}} request
+WORK --> Buyer: GET /workOrder/{{id}} response \n'appointmentRequired=true'
+
+note over SAT: WorkOrder has 'appointmentRequired=true', \nso the Buyer searches for a time slot for scheduling an Appointment.
+Buyer -> SAT : POST /searchTimeSlot request
+activate SAT
+SAT --> Buyer: POST /searchTimeSlot response
+deactivate SAT
+
+note over APO: The Buyer schedules an Appointment with confirmed time slot.
+Buyer -> APO : POST /appointment request
+activate APO
+APO -> APO: state: confirmed
+APO --> Buyer: /POST appointment response
+APO --> WORK: (causes state change)
+WORK -> WORK: state: planned
+WORK -> Buyer: POST /workOrderStateChangeEvent
+
+WORK --> TT: (causes status change)
+TT -> TT: status: inProgress
+TT -> Buyer: POST /troubleTicketStatusChangeEvent
+...
+@enduml

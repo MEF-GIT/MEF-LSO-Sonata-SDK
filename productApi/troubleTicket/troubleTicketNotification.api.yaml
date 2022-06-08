@@ -14,19 +14,18 @@ info:
     operations of the Product provided by the Seller.
 
     List of supported use cases:
-    - Send Ticket Notification
-    - Send Incident Notification
+    - Send Event Notification
 
-    Copyright 2021 MEF Forum and its contributors
+    Copyright 2022 MEF Forum and its contributors
 
     This file includes content based on the TM Forum Trouble Ticket API (TMF621
     v4.0.0) available at https://github.com/tmforum-apis/TMF621_TroubleTicket,
     which is licensed by the TM Forum under the Apache License version 2.0. Such
     content has been modified by the MEF Forum and its contributors.
   title: Trouble Ticket Notification
-  version: 2.0.0-RC
+  version: 3.0.0-RC
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/troubleTicket/v2/'
+  - url: 'https://{serverBase}/mefApi/sonata/troubleTicketNotification/v3/'
     variables:
       serverBase:
         default: mef.net
@@ -241,12 +240,12 @@ paths:
       tags:
         - Notification listeners
       x-codegen-request-body-name: data
-  /listener/incidentCreatedEvent:
+  /listener/incidentCreateEvent:
     post:
       description: >-
         Client listener for receiving the notification
-        Incident Created Event
-      operationId: listenToIncidentCreatedEvent
+        Incident Create Event
+      operationId: listenToIncidentCreateEvent
       requestBody:
         content:
           application/json;charset=utf-8:
@@ -288,7 +287,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
-      summary: Client listener for entity Incident Created Event
+      summary: Client listener for entity Incident Create Event
       tags:
         - Notification listeners
       x-codegen-request-body-name: data
@@ -340,57 +339,6 @@ paths:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       summary: Client listener for entity Incident Attribute Value Change Event
-      tags:
-        - Notification listeners
-      x-codegen-request-body-name: data
-  /listener/incidentClosedEvent:
-    post:
-      description: >-
-        Client listener for receiving the notification
-        Incident Closed Event
-      operationId: listenToIncidentClosedEvent
-      requestBody:
-        content:
-          application/json;charset=utf-8:
-            schema:
-              $ref: '#/components/schemas/IncidentEvent'
-        description: The event data
-        required: true
-      responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/Error400'
-          description: Bad Request
-        '401':
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/Error401'
-          description: Unauthorized
-        '403':
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/Error403'
-          description: Forbidden
-        '408':
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/Error408'
-          description: Request Time-out
-        '500':
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/Error500'
-          description: Internal Server Error
-      summary: Client listener for entity Incident Closed Event
       tags:
         - Notification listeners
       x-codegen-request-body-name: data
@@ -673,11 +621,17 @@ components:
         - id
       type: object
     IncidentEventType:
-      description: Type of the Incident Event
+      description: |
+        Type of the Incident event.
+        
+        | API name                                 | MEF 113 name          | Description                                                                                                                                                                                                                                                                                                           |
+        | ---------------------------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | `incidentCreateEvent`                    | INCIDENT_CREATE       | A new Incident was created by the Seller.                                                                                                                                                                                                                                                                             |
+        | `incidentAttributeValueChangeEvent`      | INCIDENT_UPDATE       | An open Incident was updated by the Seller.                                                                                                                                                                                                                                                                           |
+        | `incidentStatusChangeEvent`              | INCIDENT_STATE_CHANGE | An Incident `status` was changed by the Seller.                                                                                                                                                                                                                                                                       |
       enum:
-        - incidentCreatedEvent
+        - incidentCreateEvent
         - incidentAttributeValueChangeEvent
-        - incidentClosedEvent
         - incidentStatusChangeEvent
       type: string
     TroubleTicketEvent:
@@ -724,7 +678,15 @@ components:
         - id
       type: object
     TroubleTicketEventType:
-      description: Type of the Trouble Ticket Event
+      description: |
+        Type of the Trouble Ticket event.
+
+        | API name                                 | MEF 113 name          | Description                                                                                                                                                                                                                                                                                                           |
+        | ---------------------------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | `troubleTicketAttributeValueChangeEvent` | TICKET_UPDATE         | The Seller settable attributes for a Ticket were updated by the Seller. Note: Buyer initiated Ticket updates due to Patch operation will not trigger a `troubleTicketAttributeValueChangeEvent`                                                                                                                       |
+        | `troubleTicketInformationRequiredEvent`  | TICKET_STATE_CHANGE   | A Ticket `status` was changed by the Seller.                                                                                                                                                                                                                                                                          |
+        | `troubleTicketResolvedEvent`             | TICKET_INFO_REQUIRED  | The Seller requires more information from the Buyer for a Ticket to continue processing a Ticket. The details on what information is needed from the Buyer will be provided via a Ticket `note`. The Ticket `status` is `pending`. Note: The Buyer uses the Patch operation to provide more information for a Ticket. |
+        | `troubleTicketStatusChangeEvent`         | TICKET_RESOLVED       | The Seller is informing the Buyer the Ticket is resolved and the Buyer to verify that the Issue on which the Ticket was based is no longer observed. The Ticket `status` is `resolved`. Note: The Buyer confirms if the Issue has been resolved satisfactorily or not using close or reopen operations                |
       enum:
         - troubleTicketAttributeValueChangeEvent
         - troubleTicketInformationRequiredEvent

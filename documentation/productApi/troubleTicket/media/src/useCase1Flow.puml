@@ -5,12 +5,22 @@ hide footbox
 participant Buyer
 participant Seller
 
-Buyer -> Seller : POST {{baseUrl}}/troubleTicket (TroubleTicket_Create)
 
+
+note over Buyer : The Buyer experiences an Issue for a Product.id
+
+group optional [The Buyer queries for Incident related to affected Product.id]
+  Buyer -> Seller: GET {{baseUrl}}/incident/    {{Product.id}}
+  return 200 Incident list
+end
+note over Buyer : If Incident found, the Buyer may link the TroubleTicket with it.
+
+Buyer -> Seller : POST {{baseUrl}}/troubleTicket (relatedEntity => Product.id)
 Seller -> Seller : validate Request
 Seller -> Seller : assign id
+Seller -> Seller : status: `acknowledged`
 alt successful inquiry
-    Buyer <-- Seller : 201 TroubleTicket with {{id}}, status: `acknowledged`
+    Buyer <-- Seller : 201 TroubleTicket with {{id}},
 else validation or internal problem
     Buyer <-- Seller: 4xx/5xx : error response
 end

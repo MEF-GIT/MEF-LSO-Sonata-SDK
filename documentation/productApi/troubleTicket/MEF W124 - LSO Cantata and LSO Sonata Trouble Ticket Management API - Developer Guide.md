@@ -13,7 +13,7 @@ img
 <div style="font-weight:bold; font-size:33pt; font-family: sensation;  text-align:center">
 Working Draft
 </br>
-MEF W124 v0.2
+MEF W124 v0.3
 </br>
 </br>
 LSO Cantata and LSO Sonata Trouble Ticket Management API - Developer Guide
@@ -22,7 +22,7 @@ LSO Cantata and LSO Sonata Trouble Ticket Management API - Developer Guide
 <p style="color:red;font-weight:bold; font-size:18pt">This draft represents MEF work in progress and is subject to change.</p>
 </br>
 </br>
-January 2022
+May 2022
 </div>
 
 <div class="page"/>
@@ -88,7 +88,7 @@ contained herein.
   - [4.1. Conventions in the Document](#41-conventions-in-the-document)
   - [4.2. Relation to Other Documents](#42-relation-to-other-documents)
   - [4.3. Approach](#43-approach)
-  - [4.5. High-Level Flow](#45-high-level-flow)
+  - [4.4. High-Level Flow](#44-high-level-flow)
 - [5. API Description](#5-api-description)
   - [5.1. High-level use cases](#51-high-level-use-cases)
   - [5.2. API Endpoint and Operation Description](#52-api-endpoint-and-operation-description)
@@ -100,30 +100,72 @@ contained herein.
 - [6. API Interactions and Flows](#6-api-interactions-and-flows)
   - [6.1. Use case 1: Create Ticket](#61-use-case-1-create-ticket)
     - [6.1.1. Interaction flow](#611-interaction-flow)
-    - [6.1.1. Create Trouble Ticket - Request](#611-create-trouble-ticket---request)
-    - [6.1.2. Create Trouble Ticket - Response](#612-create-trouble-ticket---response)
-    - [6.1.3. Trouble Ticket - Lifecycle](#613-trouble-ticket---lifecycle)
+    - [6.1.2. Create Trouble Ticket - Request](#612-create-trouble-ticket---request)
+    - [6.1.3. Create Trouble Ticket - Response](#613-create-trouble-ticket---response)
+    - [6.1.4. Trouble Ticket - Lifecycle](#614-trouble-ticket---lifecycle)
   - [6.2. Use Case 2: Retrieve Ticket List](#62-use-case-2-retrieve-ticket-list)
   - [6.3. Use Case 3: Retrieve Ticket by Ticket Identifier](#63-use-case-3-retrieve-ticket-by-ticket-identifier)
   - [6.4. Use Case 4: Patch Ticket by Ticket Identifier](#64-use-case-4-patch-ticket-by-ticket-identifier)
   - [6.5. Use case 5: Cancel Ticket by Ticket Identifier](#65-use-case-5-cancel-ticket-by-ticket-identifier)
-  - [6.6 Use Case 6: Respond to Ticket Clearance Notification](#66-use-case-6-respond-to-ticket-clearance-notification)
-  - [6.7. Use Case 12: Retrieve Workorder by Workorder Identifier](#67-use-case-12-retrieve-workorder-by-workorder-identifier)
-  - [6.8. Use Case 13: Retrieve Incident List](#68-use-case-13-retrieve-incident-list)
-  - [6.9. Use Case 14: Retrieve Incident by Incident Identifier](#69-use-case-14-retrieve-incident-by-incident-identifier)
-  - [6.10. Use case 15: Register for Event Notifications](#610-use-case-15-register-for-event-notifications)
-  - [6.11. Use case 16: Send Ticket Notification](#611-use-case-16-send-ticket-notification)
-  - [6.12. Use case 17: Send Incident Notification](#612-use-case-17-send-incident-notification)
+  - [6.6 Use Case 6: Ticket Resolution Confirmation](#66-use-case-6-ticket-resolution-confirmation)
+  - [6.7. Use Case 15: Retrieve Incident List](#67-use-case-15-retrieve-incident-list)
+  - [6.8. Use Case 16: Retrieve Incident by Incident Identifier](#68-use-case-16-retrieve-incident-by-incident-identifier)
+  - [6.9. Use case 17: Register for Event Notifications](#69-use-case-17-register-for-event-notifications)
+  - [6.10. Use case 18: Send Event Notification](#610-use-case-18-send-event-notification)
 - [7. API Details](#7-api-details)
   - [7.1. API patterns](#71-api-patterns)
     - [7.1.1. Indicating errors](#711-indicating-errors)
+      - [7.1.1.1. Type Error](#7111-type-error)
+      - [7.1.1.2. Type Error400](#7112-type-error400)
+      - [7.1.1.3. `enum` Error400Code](#7113-enum-error400code)
+      - [7.1.1.4. Type Error401](#7114-type-error401)
+      - [7.1.1.5. `enum` Error401Code](#7115-enum-error401code)
+      - [7.1.1.6. Type Error403](#7116-type-error403)
+      - [7.1.1.7. `enum` Error403Code](#7117-enum-error403code)
+      - [7.1.1.8. Type Error404](#7118-type-error404)
+      - [7.1.1.9. Type Error409](#7119-type-error409)
+      - [7.1.1.10. Type Error422](#71110-type-error422)
+      - [7.1.1.11. `enum` Error422Code](#71111-enum-error422code)
+      - [7.1.1.12. Type Error500](#71112-type-error500)
+      - [7.1.1.13. Type Error501](#71113-type-error501)
     - [7.1.2. Response pagination](#712-response-pagination)
   - [7.2. Management API Data model](#72-management-api-data-model)
     - [7.2.1. TroubleTicket](#721-troubleticket)
+      - [7.2.1.1. Type TroubleTicket_Common](#7211-type-troubleticket_common)
+      - [7.2.1.2. Type TroubleTicket_Create](#7212-type-troubleticket_create)
+      - [7.2.1.3. Type TroubleTicket](#7213-type-troubleticket)
+      - [7.2.1.4. Type TroubleTicket_Find](#7214-type-troubleticket_find)
+      - [7.2.1.5. Type TroubleTicket_Update](#7215-type-troubleticket_update)
+      - [7.2.1.6. `enum` TroubleTicketPriorityType](#7216-enum-troubleticketprioritytype)
+      - [7.2.1.7. Type IssueRelationship](#7217-type-issuerelationship)
+      - [7.2.1.8. `enum` TroubleTicketSeverityType](#7218-enum-troubleticketseveritytype)
+      - [7.2.1.9. `enum` MEFObservedImpactType](#7219-enum-mefobservedimpacttype)
+      - [7.2.1.10. Type TroubleTicketStatusChange](#72110-type-troubleticketstatuschange)
+      - [7.2.1.11. `enum` TroubleTicketStatusType](#72111-enum-troubleticketstatustype)
+      - [7.2.1.12. `enum` TroubleTicketType](#72112-enum-troubletickettype)
+      - [7.2.1.13. Type Reason](#72113-type-reason)
+      - [7.2.1.14. Type WorkOrderRef](#72114-type-workorderref)
     - [7.2.2. Incident](#722-incident)
-    - [7.2.3. Workorder](#723-workorder)
-    - [7.2.4. Common](#724-common)
-    - [7.2.5. Notification registration](#725-notification-registration)
+      - [7.2.2.1. Type Incident](#7221-type-incident)
+      - [7.2.2.2. Type Incident_Find](#7222-type-incident_find)
+      - [7.2.2.3. `enum` IncidentType](#7223-enum-incidenttype)
+      - [7.2.2.4. `enum` IncidentStatusType](#7224-enum-incidentstatustype)
+      - [7.2.2.5. Type IncidentStatusChange](#7225-type-incidentstatuschange)
+    - [7.2.3. Common](#723-common)
+      - [7.2.3.1. Type AttachmentValue](#7231-type-attachmentvalue)
+      - [7.2.3.2. `enum` DataSizeUnit](#7232-enum-datasizeunit)
+      - [7.2.3.3. Type FieldedAddress](#7233-type-fieldedaddress)
+      - [7.2.3.4. Type GeographicSubAddress](#7234-type-geographicsubaddress)
+      - [7.2.3.5. `enum` MEFBuyerSellerType](#7235-enum-mefbuyersellertype)
+      - [7.2.3.6. Type MEFByteSize](#7236-type-mefbytesize)
+      - [7.2.3.7. Type MEFGeographicPoint](#7237-type-mefgeographicpoint)
+      - [7.2.3.8. Type MEFSubUnit](#7238-type-mefsubunit)
+      - [7.2.3.9. Type Note](#7239-type-note)
+      - [7.2.3.10. Type RelatedContactInformation](#72310-type-relatedcontactinformation)
+      - [7.2.3.11. Type RelatedEntity](#72311-type-relatedentity)
+    - [7.2.4. Notification registration](#724-notification-registration)
+      - [7.2.4.1. Type EventSubscriptionInput](#7241-type-eventsubscriptioninput)
+      - [7.2.4.2. Type EventSubscription](#7242-type-eventsubscription)
   - [7.3. Notification API Data model](#73-notification-api-data-model)
     - [7.3.1. Type Event](#731-type-event)
     - [7.3.2. Type TroubleTicketEvent](#732-type-troubleticketevent)
@@ -235,7 +277,7 @@ MEF or external documents.
 </tr>
 <tr>
   <td>Situation</td>
-  <td>In the context of this document, denotes a problem that is not part of normal operation in the Seller's network that has a possible negative impact on the operability of a Product for one or more Buyers</td>
+  <td>In the context of this document, denotes a problem that is not part of normal operation in the Seller's network</td>
   <td><a href="#8-references">[MEF113]</a></td>
 </tr>
 <tr>
@@ -249,7 +291,7 @@ MEF or external documents.
   <td><a href="#8-references">[MEF113]</a></td>
 </tr>
 <tr>
-  <td>Workorder</td>
+  <td>WorkOrder</td>
   <td>In the context of this document, denotes a set of tasks to be scheduled and performed under the responsibility of a Technician at a given location</td>
   <td><a href="#8-references">[MEF113]</a></td>
 </tr>
@@ -269,6 +311,16 @@ labeled as **[Rx]** for required. Items that are **RECOMMENDED** (contain the
 words **SHOULD** or **SHOULD NOT**) are labeled as **[Dx]** for desirable.
 Items that are **OPTIONAL** (contain the words MAY or OPTIONAL) are labeled as
 **[Ox]** for optional.
+
+A paragraph preceded by **[CRa]<** specifies a conditional mandatory
+requirement that **MUST** be followed if the condition(s) following the "<"
+have been met. For example, **"[CR1]<[D38]"** indicates that Conditional
+Mandatory Requirement 1 must be followed if Desirable Requirement 38 has been
+met. A paragraph preceded by **[CDb]<** specifies a Conditional Desirable
+Requirement that **SHOULD** be followed if the condition(s) following the "<"
+have been met. A paragraph preceded by **[COc]<**specifies a Conditional
+Optional Requirement that **MAY** be followed if the condition(s) following the
+"<" have been met.
 
 # 4. Introduction
 
@@ -305,10 +357,11 @@ Domains. Those are:
 The business requirements and use cases for Trouble Ticketing are defined in
 MEF W113 _Trouble Ticketing Requirements and Use Cases_
 [[MEF113](#8-references)]. MEF W113 defines use cases that cover Trouble
-Ticket, Incident, Appointment and WorkOrder. This API and Developer Guide
-covers the Trouble Ticket related use cases, basing on the
-[[TMF621](#8-references)] Trouble Ticket API, Incident and WorkOrder. The
-support for Appointment use cases will be provided in future releases.
+Ticket, Incident, Appointment, and WorkOrder. The scope of this API and
+Developer Guide covers the Trouble Ticket and Incident related use cases (based
+on the [[TMF621](#8-references)] Trouble Ticket API). The Appointment and Work
+order use cases are covered by _LSO Cantata and LSO Sonata Appointment API
+Developer Guide_ [[MEF137](#8-references)].
 
 This document is structured as follows:
 
@@ -332,7 +385,7 @@ This document is structured as follows:
   cardinality markers are compliant with the UML standard.
 - In the API details tables and UML diagrams required attributes are marked
   with a `*` next to their names.
-- In UML sequence diagrams `{{variable}}` notation is used to indicates a
+- In UML sequence diagrams `{{variable}}` notation is used to indicate a
   variable to be substituted with a correct value.
 
 ## 4.2. Relation to Other Documents
@@ -344,7 +397,7 @@ _TMF621 Trouble Ticket API REST Specification R19.0.1_
 
 ## 4.3. Approach
 
-As presented in Figure 2. both Cantata and Sonata API frameworks consists of
+As presented in Figure 2. both Cantata and Sonata API frameworks consist of
 three structural components:
 
 - Generic API framework
@@ -367,12 +420,12 @@ Finally, the product-specific information part of the framework focuses on MEF
 product specifications that define business-relevant attributes and
 requirements for trading MEF subscriber and MEF operator services.
 
-The Trouble Ticket is product-agnostic in it's nature and is not intended to
-carry any product-specific payloads. It only references product from the
+The Trouble Ticket is product-agnostic in its nature and is not intended to
+carry any product-specific payloads. It only references products from the
 inventory by `id`. It operates using the Generic API Framework and the
 Function-specific Information and Operations.
 
-## 4.5. High-Level Flow
+## 4.4. High-Level Flow
 
 Trouble Ticket is part of a broader Cantata and Sonata End-to-End flow.
 Figure 3. below shows a high-level diagram to get a good understanding of the
@@ -403,13 +456,12 @@ whole process and Trouble Ticket's position within it.
     an existing Product, or a disconnect of an existing Product at the address
     defined by the Buyer.
 - Product Inventory:
-  - Allows the Buyer to retrieve the information about existing Product
+  - Allows the Buyer to retrieve the information about the existing Product
     instances from Seller's Product Inventory.
 - Trouble Ticketing:
   - Allows the Buyer to create, retrieve, and update Trouble Tickets as well as
     receive notifications about Incidents' and Trouble Tickets' updates. This
-    allows managing issues and situations that are not part of normal
-    operations of the Product provided by the Seller.
+    allows managing issues and situations for a Product provided by the Seller.
 
 # 5. API Description
 
@@ -424,11 +476,12 @@ Figure 4 presents a high-level use case diagram as specified in MEF 113
 the endpoint mapping. Use cases are described extensively in
 [chapter 6](#6-api-interactions-and-flows).
 
-**_Note:_** As stated earlier this API does not implement the Appointment
-related use cases. The diagram below lists all use cases defined in MEF 113 to
-highlight which of them are implemented. For easier requirements matching this
-documents keep the original numbering. The remaining use cases will be
-delivered by separate APIs delivered by MEF in future releases.
+**_Note:_** As stated earlier, the scope of this API does not cover the
+Appointment and WorkOrder related use cases. The diagram below lists all use
+cases defined in MEF 113 to highlight which of them are covered. For easier
+requirements matching this document keeps the original MEF 113 numbering. The
+remaining use cases are covered by _LSO Cantata and LSO Sonata Appointment API
+Developer Guide_ [[MEF137](#8-references)].
 
 ![Use cases](media/useCases.png)
 
@@ -439,84 +492,84 @@ delivered by separate APIs delivered by MEF in future releases.
 ### 5.2.1. Seller side API Endpoints
 
 **Base URL for Cantata**:
-`https://{{server}}:{{port}}{{?/seller_prefix}}/mefApi/cantata/troubleTicket/v2/`
+`https://{{serverBase}}:{{port}}{{?/seller_prefix}}/mefApi/cantata/troubleTicket/v3/`
 
 **Base URL for Sonata**:
-`https://{{server}}:{{port}}{{?/seller_prefix}}/mefApi/sonata/troubleTicket/v2/`
+`https://{{serverBase}}:{{port}}{{?/seller_prefix}}}/mefApi/sonata/troubleTicket/v3/`
 
 The following API endpoints are implemented by the Seller and allow the Buyer
 to create, retrieve, modify Trouble Tickets and register for Notifications. The
 endpoints and corresponding data model are defined in
+
 `productApi/troubleTicket/troubleTicketManagement.api.yaml`.
 
-| API endpoint                        | Description                                                                                                                                                                                                                                                                                                                                         | MEF 113 Use Case mapping                          |
-| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| `POST /troubleTicket`               | A request initiated by the Buyer to create a Ticket in the Seller's system to report an Issue experienced by the Buyer or their end user.                                                                                                                                                                                                           | UC 1: Create Ticket                               |
-| `GET /troubleTicket`                | The Buyer requests a list of Tickets from the Seller based on a set of specified filter criteria. The Seller returns a summarized list of Tickets.                                                                                                                                                                                                  | UC 2: Retrieve Ticket List                        |
-| `GET /troubleTicket/{{id}}`         | The Buyer requests detailed information about a single Ticket based on a Ticket Identifier.                                                                                                                                                                                                                                                         | UC 3: Retrieve Ticket by Ticket Identifier        |
-| `PATCH /troubleTicket/{{id}}`       | A request by the Buyer to patch/partial up-date a Ticket created by the Buyer in the Seller's system.                                                                                                                                                                                                                                               | UC 4: Patch Ticket by Ticket Identifier           |
-| `POST /troubleTicket/{{id}}/cancel` | A request by the Buyer to cancel a Ticket created by the Buyer in the Seller's system.                                                                                                                                                                                                                                                              | UC 5: Cancel Ticket by Ticket Identifier          |
-| `POST /troubleTicket/{{id}}/close`  | A request from the Buyer confirming whether they agree that a Ticket created by the Buyer in the Seller's system can be closed, since the reported Issue is no longer observed. This request is the action taken by a Buyer after receiving a Ticket Notification from the Seller with Ticket Notification Event Type `TroubleTicketResolvedEvent`. | UC 6: Respond to Ticket Clearance Notification    |
-| `POST /troubleTicket/{{id}}/reopen` | A request from the Buyer rejecting that a Ticket created by the Buyer in the Seller's system can be closed, because the reported Issue is still observed. This request is the action taken by a Buyer after receiving a Ticket Notification from the Seller with Ticket Notification Event Type `TroubleTicketResolvedEvent`.                       | UC 6: Respond to Ticket Clearance Notification    |
-| `GET /workOrder/{{id}}`             | The Buyer requests detailed information about a Workorder based on a Workorder Identifier.                                                                                                                                                                                                                                                          | UC 12. Retrieve Workorder by Workorder Identifier |
-| `POST /hub`                         | The Buyer requests to subscribe to notifications.                                                                                                                                                                                                                                                                                                   | UC 15: Register for Event Notifications           |
-| `GET /hub/{{id}}`                   | A request initiated by the Buyer to retrieve the details of the notification subscription.                                                                                                                                                                                                                                                          | UC 15: Register for Event Notifications           |
-| `DELETE /hub/{{id}}`                | A request initiated by the Buyer to instruct the Seller to stop sending notifications.                                                                                                                                                                                                                                                              | UC 15: Register for Event Notifications           |
+| API endpoint                        | Description                                                                                                                                                                                                                                                                                                                                  | MEF 113 Use Case mapping                   |
+| ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| `POST /troubleTicket`               | A request initiated by the Buyer to create a Ticket in the Seller's system to report an Issue experienced by the Buyer or their end user.                                                                                                                                                                                                    | UC 1: Create Ticket                        |
+| `GET /troubleTicket`                | The Buyer requests a list of Tickets from the Seller based on a set of specified filter criteria. The Seller returns a summarized list of Tickets.                                                                                                                                                                                           | UC 2: Retrieve Ticket List                 |
+| `GET /troubleTicket/{{id}}`         | The Buyer requests detailed information about a single Ticket based on a Ticket Identifier.                                                                                                                                                                                                                                                  | UC 3: Retrieve Ticket by Ticket Identifier |
+| `PATCH /troubleTicket/{{id}}`       | A request by the Buyer to patch/partial up-date a Ticket created by the Buyer in the Seller's system.                                                                                                                                                                                                                                        | UC 4: Patch Ticket by Ticket Identifier    |
+| `POST /troubleTicket/{{id}}/cancel` | A request by the Buyer to cancel a Ticket created by the Buyer in the Seller's system.                                                                                                                                                                                                                                                       | UC 5: Cancel Ticket by Ticket Identifier   |
+| `POST /troubleTicket/{{id}}/close`  | A request from the Buyer confirming whether they agree that a Ticket created by the Buyer in the Seller's system can be closed, since the reported Issue is no longer observed. This request is the action taken by a Buyer after receiving an Event Notification from the Seller with Notification Event Type `TroubleTicketResolvedEvent`. | UC 6: Ticket Resolution Confirmation       |
+| `POST /troubleTicket/{{id}}/reopen` | A request from the Buyer rejecting that a Ticket created by the Buyer in the Seller's system can be closed, because the reported Issue is still observed. This request is the action taken by a Buyer after receiving a Event Notification from the Seller with Notification Event Type `TroubleTicketResolvedEvent`.                        | UC 6: Ticket Resolution Confirmation       |
+| `POST /hub`                         | The Buyer requests to subscribe to notifications.                                                                                                                                                                                                                                                                                            | UC 17: Register for Event Notifications    |
+| `GET /hub/{{id}}`                   | A request initiated by the Buyer to retrieve the details of the notification subscription.                                                                                                                                                                                                                                                   | UC 17: Register for Event Notifications    |
+| `DELETE /hub/{{id}}`                | A request initiated by the Buyer to instruct the Seller to stop sending notifications.                                                                                                                                                                                                                                                       | UC 17: Register for Event Notifications    |
 
 **Table 2. Seller side mandatory API endpoints**
 
-**[R1]** The Seller **MUST** support API endpoints listed in Table 2. [MEF113
-R1]
+**[R1]** The implementation **MUST** support API endpoints listed in Table 2.
+[MEF113 R1], [MEF113 R2]
 
 | API endpoint           | Description                                                                                                                                            | MEF 113 Use Case mapping                        |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------- |
-| `GET /incident`        | The Buyer requests a list of Incidents from the Seller based on a set of specified filter criteria. The Seller returns a summarized list of Incidents. | UC 13. Retrieve Incident List                   |
-| `GET /incident/{{id}}` | The Buyer requests detailed information about a single Incident based on an Incident Identifier.                                                       | UC 14. Retrieve Incident by Incident Identifier |
+| `GET /incident`        | The Buyer requests a list of Incidents from the Seller based on a set of specified filter criteria. The Seller returns a summarized list of Incidents. | UC 15. Retrieve Incident List                   |
+| `GET /incident/{{id}}` | The Buyer requests detailed information about a single Incident based on an Incident Identifier.                                                       | UC 16. Retrieve Incident by Incident Identifier |
 
 **Table 3. Seller side optional API endpoints**
 
-**[O1]** The Seller **MAY** support API endpoints listed in Table 3. [MEF113
-O1]
+**[O1]** The implementation **MAY** support API endpoints listed in Table 3.
+[MEF113 O1]
 
 ### 5.2.2. Buyer side API Endpoints
 
 **Base URL for Cantata**:
-`https://{{server}}:{{port}}{{?/buyer_prefix}}/mefApi/cantata/troubleTicketNotification/v2/`
+`https://{{serverBase}}:{{port}}{{?/buyer_prefix}}/mefApi/cantata/troubleTicketNotification/v3/`
 
 **Base URL for Sonata**:
-`https://{{server}}:{{port}}{{?/buyer_prefix}}/mefApi/sonata/troubleTicketNotification/v2/`
+`https://{{serverBase}}:{{port}}{{?/buyer_prefix}}/mefApi/sonata/troubleTicketNotification/v3/`
 
 The following API Endpoints are used by the Seller to post notifications to
 registered listeners. The endpoints and corresponding data model are defined in
+
 `productApi/troubleTicket/troubleTicketNotification.api.yaml`
 
-| API Endpoint                                            | Description                                                                                                                     | MEF 113 Use Case Mapping        |
-| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
-| `POST /listener/troubleTicketAttributeValueChangeEvent` | A request initiated by the Seller to notify the Buyer on `TroubleTicket` attribute value change.                                | UC 14: Send Ticket Notification |
-| `POST /listener/troubleTicketStatusChangeEvent`         | A request initiated by the Seller to notify the Buyer on `TroubleTicket` state change.                                          | UC 14: Send Ticket Notification |
-| `POST /listener/troubleTicketResolvedEvent`             | A request initiated by the Seller to notify the Buyer on `TroubleTicket` reaching the `resolved` state.                         | UC 14: Send Ticket Notification |
-| `POST /listener/troubleTicketInformationRequiredEvent`  | A request initiated by the Seller to notify the Buyer that and additional information is required for further Ticket processing | UC 14: Send Ticket Notification |
+| API Endpoint                                            | Description                                                                                                                     | MEF 113 Use Case Mapping       |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| `POST /listener/troubleTicketAttributeValueChangeEvent` | A request initiated by the Seller to notify the Buyer on `TroubleTicket` attribute value change.                                | UC 18: Send Event Notification |
+| `POST /listener/troubleTicketStatusChangeEvent`         | A request initiated by the Seller to notify the Buyer on `TroubleTicket.status` change.                                         | UC 18: Send Event Notification |
+| `POST /listener/troubleTicketResolvedEvent`             | A request initiated by the Seller to notify the Buyer on `TroubleTicket` reaching the `resolved` status.                        | UC 18: Send Event Notification |
+| `POST /listener/troubleTicketInformationRequiredEvent`  | A request initiated by the Seller to notify the Buyer that and additional information is required for further Ticket processing | UC 18: Send Event Notification |
 
 **Table 4. Buyer side mandatory API endpoints**
 
-**[R2]** The Seller **MUST** support API endpoints listed in Table 4. [MEF113
-R1]
+**[R2]** The implementation **MUST** support API endpoints listed in Table 4.
+[MEF113 R2]
 
-| API Endpoint                                       | Description                                                                                      | MEF 113 Use Case Mapping       |
-| -------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------ |
-| `POST /listener/incidentCreatedEvent`              | A request initiated by the Seller to notify the Buyer on `Incident` creation                     | 17. Send Incident Notification |
-| `POST /listener/incidentAttributeValueChangeEvent` | A request initiated by the Seller to notify the Buyer on `Incident` attribute value change.      | 17. Send Incident Notification |
-| `POST /listener/incidentClosedEvent`               | A request initiated by the Seller to notify the Buyer on `Incident` reaching the `closed` state. | 17. Send Incident Notification |
-| `POST /listener/incidentStatusChangeEvent`         | A request initiated by the Seller to notify the Buyer on `Incident` state change.                | 17. Send Incident Notification |
+| API Endpoint                                       | Description                                                                                 | MEF 113 Use Case Mapping       |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------ |
+| `POST /listener/incidentCreateEvent`               | A request initiated by the Seller to notify the Buyer on `Incident` creation                | UC 18: Send Event Notification |
+| `POST /listener/incidentAttributeValueChangeEvent` | A request initiated by the Seller to notify the Buyer on `Incident` attribute value change. | UC 18: Send Event Notification |
+| `POST /listener/incidentStatusChangeEvent`         | A request initiated by the Seller to notify the Buyer on `Incident.status` change.          | UC 18: Send Event Notification |
 
 **Table 5. Buyer side optional API endpoints**
 
-**[O2]** The Seller **MAY** support API endpoints listed in Table 5. [MEF113
-O1]
+**[O2]** The implementation **MAY** support API endpoints listed in Table 5.
+[MEF113 O2]
 
-**[CR1]<([O1], [O2])** If any of endpoints implementing Use Cases 13, 14 or 17
-is supported, then all endpoints implementing Use Cases 13, 14 and 17 **MUST**
-be supported. [MEF113 [CR1]<[O1]]
+**[CR1]<([O1], [O2])** If any of endpoints listed in Table 3 and Table 5 is
+supported, then all endpoints listed in Table 3 and Table 5 **MUST** be
+supported. [MEF113 [CR1]<[O1]], [MEF113 [CR2]<[O2]]
 
 ## 5.3. Specifying the Buyer ID and the Seller ID
 
@@ -577,33 +630,66 @@ There must be an authentication mechanism whereby a Seller can be assured who a
 Buyer is and vice-versa. There must also be authorization mechanisms in place
 to control what a particular Buyer or Seller is allowed to do and what
 information may be obtained. However, the definition of the exact security
-mechanism and configuration is outside the scope of this document. It is being
-worked on by a separate MEF Project (MEF W128).
+mechanism and configuration is outside the scope of this document. It is
+specified by a separate MEF Project (MEF W128).
 
 # 6. API Interactions and Flows
 
 This section provides a detailed insight into the API functionality, use cases,
 and flows. It starts with Table 6 presenting a list and short description of
 all business use cases then presents the variants of end-to-end interaction
-flows, and in following subchapters describes the API usage flow and examples
-for each of the use cases.
+flows, and in the following subchapters describes the API usage flow and
+examples for each of the use cases.
 
-| Use Case # | Use Case Name                              | Use Case Description                                                                                                                                                                                                                                                                                                                                |
-| ---------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1          | Create Ticket                              | A request initiated by the Buyer to create a Ticket in the Seller's system to report an Issue experienced by the Buyer or their end user.                                                                                                                                                                                                           |
-| 2          | Retrieve Ticket List                       | The Buyer requests a list of Tickets from the Seller based on a set of specified filter criteria. The Seller returns a summarized list of Tickets.                                                                                                                                                                                                  |
-| 3          | Retrieve Ticket by Ticket Identifier       | The Buyer requests detailed information about a single Ticket based on a Ticket Identifier.                                                                                                                                                                                                                                                         |
-| 4          | Patch Ticket by Ticket Identifier          | A request by the Buyer to patch/partial update a Ticket created by the Buyer in the Seller's system.                                                                                                                                                                                                                                                |
-| 5          | Cancel Ticket by Ticket Identifier         | A request by the Buyer to cancel a Ticket created by the Buyer in the Seller's system.                                                                                                                                                                                                                                                              |
-| 6          | Respond to Ticket Clearance Notification   | A request from the Buyer confirming whether they agree that a Ticket created by the Buyer in the Seller's system can be closed, since the reported Issue is no longer observed. This request is the action taken by a Buyer after receiving a Ticket Notification from the Seller with Ticket Notification Event Type `TroubleTicketResolvedEvent`. |
-| 12         | Retrieve Workorder by Workorder Identifier | The Buyer requests detailed information about a Workorder based on a Workorder Identifier.                                                                                                                                                                                                                                                          |
-| 13         | Retrieve Incident List                     | The Buyer requests a list of Incidents from the Seller based on a set of specified filter criteria. The Seller returns a summarized list of Incidents.                                                                                                                                                                                              |
-| 14         | Retrieve Incident by Incident Identifier)  | The Buyer requests detailed information about a single Incident based on an Incident Identifier.                                                                                                                                                                                                                                                    |
-| 15         | Register for Event Notifications           | The Buyer requests to subscribe to Ticket Notifications and optionally Incident Notifications.                                                                                                                                                                                                                                                      |
-| 16         | Send Ticket Notification                   | The Seller sends a notification regarding a Ticket to the Buyer (if registered).                                                                                                                                                                                                                                                                    |
-| 17         | Send Incident Notification                 | The Seller sends a notification regarding an Incident to the Buyer (if registered).                                                                                                                                                                                                                                                                 |
+Table 6. lists the use cases supported by Trouble Ticket API (use case numbers
+as in MEF 113 for mapping):
+
+| Use Case # | Use Case Name                            | Use Case Description                                                                                                                                                                                                                                                            |     |
+| ---------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| 1          | Create Ticket                            | A request initiated by the Buyer to create a Ticket in the Seller's system to report an Issue experienced by the Buyer or their end-user.                                                                                                                                       |     |
+| 2          | Retrieve Ticket List                     | The Buyer requests a list of Tickets from the Seller based on a set of specified filter criteria. The Seller returns a summarized list of Tickets.                                                                                                                              |     |
+| 3          | Retrieve Ticket by Ticket Identifier     | The Buyer requests detailed information about a single Ticket based on a Ticket Identifier.                                                                                                                                                                                     |     |
+| 4          | Patch Ticket by Ticket Identifier        | A request by the Buyer to patch/partial update a Ticket based on a Ticket Identifier.                                                                                                                                                                                           |     |
+| 5          | Cancel Ticket by Ticket Identifier       | A request by the Buyer to cancel a Ticket based on a Ticket Identifier.                                                                                                                                                                                                         |     |
+| 6          | Ticket Resolution Confirmation           | A reply from the Buyer confirming whether they agree that a Ticket can be closed, since the reported Issue is no longer observed. This reply is the action taken by a Buyer after receiving an Event Notification from the Seller with Event Notification Type TICKET_RESOLVED. |     |
+| 15         | Retrieve Incident List                   | The Buyer requests a list of Incidents from the Seller based on a set of specified filter criteria. The Seller returns a summarized list of Incidents.                                                                                                                          |     |
+| 16         | Retrieve Incident by Incident Identifier | The Buyer requests detailed information about a single Incident based on an Incident Identifier.                                                                                                                                                                                |     |
+| 17         | Register for Event Notifications         | The Buyer requests to subscribe to Ticket and Incident Notifications.                                                                                                                                                                                                           |     |
+| 18         | Send Event Notification                  | Send Event Notification The Seller sends a notification regarding a Ticket or Incident to the Buyer                                                                                                                                                                             |     |
 
 **Table 6. Use cases description**
+
+MEF 113 defines use cases related to three domains:
+
+- Trouble Ticket
+- WorkOrder
+- Appointment
+
+Figure 5 presents an example of an end-to-end flow that shows dependencies
+between all the domains:
+
+![End-to-End API flow with Workorder and Appointment](media/e2eFlowWithAppointment.png)
+
+**Figure 5. End-to-End API flow with Workorder and Appointment**
+
+- (1) The Buyer experiences the issue in the network and creates the Trouble
+  Ticket.
+- (2) The Seller creates the Trouble Ticket and sets the status:
+  `acknowledged`.
+- The Seller decides that a WorkOrder with Appointment is needed to resolve the
+  issue.
+- The Seller creates a Workorder in state `open` (4) and sends a
+  `workOrderCreateEvent` (3).
+- (7-8) The Buyer requests detailed information about the WorkOrder.
+- (9) The Buyer proposes time slots for scheduling an Appointment, if the
+  WorkOrder requires the Appointment (the parameter set to
+  `appointmentRequired=true`)
+- (10) The Seller responds with the list of available time slots.
+- (11) The Buyer schedules an Appointment with agreed time slot.
+- (12) The Buyer sets the Appointment status to `confirmed`.
+- (14-15) Appointment creation causes the WorkOrder state change to `planned`
+- (17-18) WorkOrder state change to `planned` causes the Trouble Ticket status
+  change back to `in_progress`.
 
 The detailed business requirements of each of the use cases are described in
 sections 7 and 8 of MEF 113 [[MEF113](#8-references)].
@@ -614,32 +700,34 @@ This is the initial step for Trouble Ticket processing.
 
 ### 6.1.1. Interaction flow
 
-The flow of this use case is very simple and is described in Figure 5.
+The flow of this use case is very simple and is described in Figure 6.
 
 ![Use Case 1](media/useCase1Flow.png)
 
-**Figure 5: Use Case 1 - Trouble Ticket create request flow**
+**Figure 6: Use Case 1 - Trouble Ticket create request flow**
 
-The Buyer sends a request with a `TroubleTicket_Create` type in the body. The
-Seller performs request validation, assigns an `id`, and returns
-`TroubleTicket` type in the response body, with a `status` set to
-`acknowledged`. From this point, the Trouble Ticket is ready for further
-processing. The Buyer must track the progress of the process by subscribing for
-notifications (see
-[chapter 6.10](#610-use-case-15-register-for-event-notifications)). The flow
-example with the use of Notifications is presented in Figure 6
+The Buyer experiences an Issue with a Product (Identified by Product.id) and
+may decide to check if there is any Incident related to the affected Product.
+If yes, the Buyer may decide to link it with the new Ticket. The Buyer sends a
+request with a `TroubleTicket_Create` type in the body. The Seller performs
+request validation, assigns an `id`, and returns `TroubleTicket` type in the
+response body, with a `status` set to `acknowledged`. From this point, the
+Trouble Ticket is ready for further processing. The Buyer must track the
+progress of the process by subscribing for notifications (see
+[chapter 6.9](#69-use-case-17-register-for-event-notifications)). The flow
+example with the use of Notifications is presented in Figure 7
 
 ![Trouble Ticket Notifications](media/useCase1Notification.png)
 
-**Figure 6: Trouble Ticket progress tracking - Notifications**
+**Figure 7: Trouble Ticket progress tracking - Notifications**
 
 **_Note_**: The context of notifications is not a part of the considered use
 case itself. It is presented to show the big picture of end-to-end flow. This
 applies also to all further use case flow diagrams with notifications.
 
-### 6.1.1. Create Trouble Ticket - Request
+### 6.1.2. Create Trouble Ticket - Request
 
-Figure 7 presents the data model of the Trouble Ticket. The model of the
+Figure 8 presents the data model of the Trouble Ticket. The model of the
 request message (`TroubleTicket_Create`) is a subset of the `TroubleTicket`
 model and contains only attributes that can (or must) be set by the Buyer. The
 Seller then enriches the entity in the response with additional information.
@@ -651,7 +739,7 @@ the API specification which is an integral part of this standard.
 
 ![Create Trouble Ticket Model](media/useCase1Model.png)
 
-**Figure 7: Create Trouble Ticket Model**
+**Figure 8: Create Trouble Ticket Model**
 
 The snippet below presents an example of the Create Trouble Ticket Request:
 
@@ -710,7 +798,7 @@ The snippet below presents an example of the Create Trouble Ticket Request:
 ```
 
 **[R9]** The Buyer's Create request **MUST** include the following attributes:
-[MEF113 R19]
+[MEF113 R30]
 
 - `description`
 - `observedImpact`
@@ -734,13 +822,13 @@ product `id`. It is done by setting the additional `@referredType` to
 referring also other potential types in MEF (e.g. `Service`). In this version,
 the only type that is mentioned in the implemented requirements document is the
 `Product` and to ease the request `RelatedEntity.@ReferredType` and the
-`relatedEntityType` in the filter criteria have a default value: `Product`.
+`relatedEntityType` in the filter criteria has a default value: `Product`.
 
 **[R10]** If the `attachment` is provided, either the `attachment.url` or
 (`attachment.content` and `attachment.mimeType`) **MUST** be specified. [MEF113
-R8], [MEF113 R9], [MEF113 R20]
+R18], [MEF113 R19], [MEF113 R31]
 
-### 6.1.2. Create Trouble Ticket - Response
+### 6.1.3. Create Trouble Ticket - Response
 
 The Seller responds with a `TroubleTicket` type, which adds some attributes to
 the `TroubleTicket_Create` that was used in the Buyer's request.
@@ -808,7 +896,7 @@ as in the retrieve by identifier operation.
       "organization": "Buyer Example Co.",
       "role": "reporterContact"
     },
-    {<< a new item appended by the Buyer >>
+    {<< a new item appended by the Seller >>
       "emailAddress": "Seller.TicketContact@example.com",
       "name": "Seller Ticket Contact",
       "number": "+98-765-432-10",
@@ -840,32 +928,31 @@ for example, the `resolutionDate` is valid only in the future lifecycle of the
 Trouble Ticket.
 
 **[R11]** The Seller's response **MUST** include all and unchanged attributes'
-values provided in the request. [MEF113 R23]
+values as provided in the request. [MEF113 R34]
 
 These attributes are indicated above with an appropriate comment:
 `<< as provided by the Buyer >>`.
 
 **[R12]** The Seller **MUST** specify the following attributes in a response:
-[MEF113 R25]
+[MEF113 R36]
 
 - `creationDate`
 - `id`
 - `relatedContactInformation` - item with a `role` set to `sellerTicketContact`
-- `relatedEntity` - (pointer to related Product instance)
 - `sellerSeverity`
 - `sellerPriority`
 - `status`
 
 **[R13]** The `status` of the Ticket in the Seller's response **MUST** be
-`acknowledged`. [MEF113 R24]
+`acknowledged`. [MEF113 R35]
 
-### 6.1.3. Trouble Ticket - Lifecycle
+### 6.1.4. Trouble Ticket - Lifecycle
 
-Figure 8 presents the Trouble Ticket state machine:
+Figure 9 presents the Trouble Ticket state machine:
 
 ![Trouble Ticket State Machine](media/troubleTicketStates.png)
 
-**Figure 8: Trouble Ticket State Machine**
+**Figure 9: Trouble Ticket State Machine**
 
 After receiving the request, the Seller performs a validation of the message.
 If any problem is found an Error response is provided. If the validation passes
@@ -881,46 +968,61 @@ cancelled, while in `acknowledged`, `pending`, or `inProgress` state.
 Table 7 presents the mapping between the API `status` names (aligned with TMF)
 and the MEF 113 naming, together with statuses' description.
 
-| status                  | MEF 113 name           | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| ----------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `acknowledged`          | ACKNOWLEDGED           | A request to create a Ticket was received and accepted by the Seller. The Ticket has been validated and created by the Seller and allocated a unique `id`.                                                                                                                                                                                                                                                                                                                                                                |
-| `inProgress`            | IN_PROGRESS            | The Ticket is in the process of being handled and investigated for resolution by the Seller.                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `resolved`              | RESOLVED               | The Buyer's Issue described in the Ticket was resolved by the Seller. The Seller is now waiting for the Buyer to confirm that the Issue they reported is no longer observed.                                                                                                                                                                                                                                                                                                                                              |
-| `closed`                | CLOSED                 | The Buyer that created the Ticket has confirmed that the Issue they reported is no longer observed, or the pre-defined time frame (agreed upon between Buyer and Seller) for confirming that the Issue has been resolved has passed without a response by the Buyer. This is a terminal state.                                                                                                                                                                                                                            |
-| `reopened`              | REOPENED               | The Buyer has confirmed that the Issue described in the Ticket has not been resolved satisfactorily and rejected the Seller's request to close the Ticket. The Ticket has been reopened and is waiting to continue being handled and investigated for resolution by the Seller.                                                                                                                                                                                                                                           |
-| `pending`               | PENDING                | The Seller is waiting on additional information in order to continue the handling of the Ticket. This may result in the clock being stopped for the service level agreement until the Buyer has responded to the request.                                                                                                                                                                                                                                                                                                 |
-| `assessingCancellation` | ASSESSING_CANCELLATION | A request has been made by the Buyer to cancel the Ticket and is being assessed by the Seller to determine whether to just close the Ticket, or may also choose to resolve the Issue to prevent similar Create Ticket requests from other Buyers. If the Seller chooses to resolve the Issue, the Seller might create an Incident or an internal Ticket for the Issue, but that is outside the scope of this document. After the Seller has completed the assessment, the Seller updates the Ticket State to `cancelled`. |
-| `cancelled`             | CANCELLED              | The Ticket has been successfully cancelled by the Buyer. This is a terminal state.                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| status                  | MEF 113 name           | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| ----------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `acknowledged`          | ACKNOWLEDGED           | A request to create a Ticket was received and accepted by the Seller. The Ticket create request has been validated and a Ticket has been created by the Seller and allocated a unique `id`.                                                                                                                                                                                                                                                                                                                        |
+| `inProgress`            | IN_PROGRESS            | The Ticket is in the process of being handled and investigated for resolution by the Seller.                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `resolved`              | RESOLVED               | The Buyer's Issue described in the Ticket was resolved by the Seller. The Seller assumes that normal operation is re-established for the Buyer's product and i snow waiting for the Buyer to confirm that the Issue they reported is no longer observed.                                                                                                                                                                                                                                                           |
+| `closed`                | CLOSED                 | The Buyer has confirmed that the Issue they reported is no longer observed, or the pre-defined time frame (agreed upon between Buyer and Seller) for confirming that the Issue has been resolved has passed without a response by the Buyer. This is a terminal state.                                                                                                                                                                                                                                             |
+| `reopened`              | REOPENED               | The Buyer has verified that the Issue described in the Ticket is still observed and has not been resolved satisfactorily. The Buyer rejects the Seller's request to close the Ticket. The Ticket has been reopened and is waiting for further actions from the Seller.                                                                                                                                                                                                                                             |
+| `pending`               | PENDING                | The Seller is waiting on the Buyer to provide additional information for the Ticket, or the Buyer to schedule an Appointment for the WorkOrder (linked to the Ticket) in order to continue processing the Ticket. This may result in the clock being stopped for the service level agreement until the Buyer has responded to the request.                                                                                                                                                                         |
+| `assessingCancellation` | ASSESSING_CANCELLATION | A request has been made by the Buyer to cancel the Ticket and is being assessed by the Seller to determine whether to just close the Ticket, or continue to resolve the Issue to prevent similar Create Ticket requests from other Buyers. If the Seller chooses to resolve the Issue, the Seller might create an Incident or an internal Ticket for the Issue, but that is outside the scope of this document. After the Seller has completed the assessment, the Seller updates the Ticket State to `cancelled`. |
+| `cancelled`             | CANCELLED              | The Ticket has been successfully cancelled by the Buy-er. The Buyer will receive no further no further Event Notifications for the Ticket. This is a terminal state.                                                                                                                                                                                                                                                                                                                                               |
 
 **Table 7: Trouble Ticket statuses**
 
 **[R14]** The Seller **MUST** support all Trouble Ticket statuses and their
-associated transitions as described in Figure 8 and Table 7. [MEF113 R153]
+associated transitions as described in Figure 9 and Table 7. [MEF113 R173]
 
-**[R15]** The Buyer **MUST** set the `source=buyer` when adding any item to one
-of the following list: `note`, `attachment`, or `relatedIssue`. [MEF113 R11]
+**[R15]** If the Trouble Ticket was in `pending` status and an Appointment is
+created and the related WorkOrder moves to `planned` state, the Seller **MUST**
+update the Trouble Ticket status to `inProgress`. [MEF113 R99], [MEF113 R100]
 
-**[R16]** The Seller **MUST** set the `source=seller` when adding any item to
+**[R16]** The Buyer **MUST** set the respective `source=buyer` attribute when
+adding any item to one of the following list: `note`, `attachment`, or
+`relatedIssue`. [MEF113 R7], [MEF113 R13], [MEF113 R23]
+
+**[R17]** The Buyer **MUST NOT** set the respective `source=seller` attribute
+when adding any item to one of the following list: `note`, `attachment`, or
+`relatedIssue`. [MEF113 R8], [MEF113 R14], [MEF113 R24]
+
+**[R18]** The Seller **MUST** set the `source=seller` when adding any item to
 one of the following list: `note`, `attachment`, or `relatedIssue`. [MEF113
-R12]
+R5], [MEF113 R11], [MEF113 R21]
 
-**[O3]** The Seller **MAY** append an item to `relatedContactInformation`,
-`note`, `attachment`, `relatedEntity`, or `relatedIssue` if required. [MEF113
-O7], [MEF113 O8], [MEF113 O9]
+**[R19]** The Seller **MUST NOT** set the `source=buyer` when adding any item
+to one of the following list: `note`, `attachment`, or `relatedIssue`. [MEF113
+R6], [MEF113 R12], [MEF113 R22]
+
+**[R20]** Any item in a `note`, `attachment` list **MUST NOT** be be modified
+or deleted once added. [MEF113 R9], [MEF113 R15]
+
+**[O3]** The Seller **MAY** append an item to `note`, `attachment`, or
+`relatedIssue` if required. [MEF113 O8], [MEF113 O9], [MEF113 O11]
 
 **[O4]** The Seller **MAY** add, modify, or delete an item in
-`relatedContactInformation` with `role=sellerTechnicalContact`. [MEF113 O9]
+`relatedContactInformation` with `role=sellerTechnicalContact`. [MEF113 O10]
 
 **[O5]** The Seller **MAY** add or modify an item in `workOrder` list. [MEF113
-O11]
+O12]
 
-**[R17]** The Seller **MUST NOT** modify or delete any items provided by the
+**[R21]** The Seller **MUST NOT** modify or delete any items provided by the
 Buyer in following lists: `relatedContactInformation`, `note`, `attachment`,
-`relatedEntity`, or `relatedIssue`. [MEF113 R2], [MEF113 R5], [MEF113 R27],
-[MEF113 R28], [MEF113 R29].
+`relatedEntity`, or `relatedIssue`. [MEF113 R6], [MEF113 R38], [MEF113 R39],
+[MEF113 R40].
 
-**[R18]** The Seller **MUST** add a `note` when any of the following Trouble
-Ticket attributes are updated: [MEF113 R26]
+**[R22]** The Seller **MUST** add a `note` when any of the following Trouble
+Ticket attributes are updated: [MEF113 R37]
 
 - `expectedResolutionDate`
 - `relatedIssue`
@@ -929,7 +1031,7 @@ Ticket attributes are updated: [MEF113 R26]
 
 **[O6]** The Buyer **MAY** retrieve a list of Trouble Tickets by using a
 `GET /troubleTicket` operation with desired filtering criteria. The attributes
-that are available to be used are: [MEF113 O12]
+that are available to be used are: [MEF113 O13]
 
 - `externalId`
 - `priority`
@@ -938,6 +1040,7 @@ that are available to be used are: [MEF113 O12]
 - `sellerSeverity`
 - `ticketType`
 - `status`
+- `observedImpact`
 - `relatedEntityId`
 - `relatedEntityType`
 - `creationDate.gt`
@@ -959,19 +1062,19 @@ https://serverRoot/mefApi/sonata/troubleTicket/v2/troubleTicket?status=inProgres
 
 The example above shows a Buyer's request to get all Trouble Tickets that are
 in the `inProgress` status and with `critical` priority. Additionally, the
-Buyer asks only for a first (`offset=0`) pack of 10 results (`limit=0`) to be
+Buyer asks only for a first (`offset=0`) pack of 10 results (`limit=10`) to be
 returned. The correct response (HTTP code `200`) in the response body contains
 a list of `TroubleTicket_Find` objects matching the criteria. To get more
 details (e.g. the item level information), the Buyer has to query a specific
 `TroubleTicket` by `id`.
 
-**[R19]** The Seller **MUST** put the following attributes (if set) into the
-`TroubleTicket_Find` object in the response: [MEF113 R32]:
+**[R23]** The Seller **MUST** put the following attributes (if set) into the
+`TroubleTicket_Find` object in the response: [MEF113 R43]:
 
 - `id`
 - `externalId`
 - `relatedEntity`
-- `description`
+- `observedImpact`
 - `priority`
 - `sellerPriority`
 - `severity`
@@ -982,28 +1085,29 @@ details (e.g. the item level information), the Buyer has to query a specific
 - `expectedResolutionDate`
 - `resolutionDate`
 
-**[R20]** In case no items matching the criteria are found, the Seller **MUST**
-return a valid response with an empty list. [MEF113 R32]
+**[R24]** In case no items matching the criteria are found, the Seller **MUST**
+return a valid response with an empty list.
 
 ![Use Case 2: Retrieve Ticket List - Model](media/useCase2Model.png)
 
-**Figure 9: Use Case 2: Retrieve Ticket List - Model**
+**Figure 10: Use Case 2: Retrieve Ticket List - Model**
 
 ## 6.3. Use Case 3: Retrieve Ticket by Ticket Identifier
 
 The Buyer can get detailed information about the Trouble Ticket from the Seller
 by using a `GET /troubleTicket/{{id}}` operation.
 
-**[R21]** In case `id` does not allow to find a `TroubleTicket` instance in
+**[R25]** In case `id` does not allow to find a `TroubleTicket` instance in
 Seller's system, an error response `Error404` **MUST** be returned. [MEF113
-R35]
+R46]
 
-**[R22]** The Seller **MUST** put the following attributes into the
-`TroubleTicket` object in the response: [MEF113 R37]
+**[R26]** The Seller **MUST** put the following attributes into the
+`TroubleTicket` object in the response: [MEF113 R48]
 
 - `id`
 - `relatedEntity`
 - `description`
+- `observedImpact`
 - `priority`
 - `sellerPriority`
 - `severity`
@@ -1011,16 +1115,15 @@ R35]
 - `ticketType`
 - `status`
 - `creationDate`
-- `relatedContactInformation` - items with `role` equal to `reporterContact`
-  and `sellerTicketContact`
+- `relatedContactInformation`
 
-**[R23]** The Seller **MUST** provide all remaining optional attributes if they
-were previously set by the Buyer or the Seller. [MEF113 R38]
+**[R27]** The Seller **MUST** provide all remaining optional attributes if they
+were previously set by the Buyer or the Seller. [MEF113 R49]
 
-**[R24]** The Seller's response to a Retrieve Ticket by Ticket Identifier
+**[R28]** The Seller's response to a Retrieve Ticket by Ticket Identifier
 request **MUST** include the `resolutionDate` and a `note` added by the Seller
 describing how the Ticket was resolved if the `status` is `closed` or
-`resolved`. [MEF113 R39]
+`resolved`. [MEF113 R50]
 
 ## 6.4. Use Case 4: Patch Ticket by Ticket Identifier
 
@@ -1032,51 +1135,96 @@ updateable attributes.
 The PATCH usage recommendation follows TMF 621 json/merge
 (https://tools.ietf.org/html/rfc7386).
 
-Figure 10 presents the model used in the PATCH request. The Seller responds
+Figure 11 presents the model used in the PATCH request. The Seller responds
 with a `TroubleTicket` type.
 
 ![Patch request Model](media/useCase4PatchModel.png)
 
-**Figure 10: Patch request Model**
+**Figure 11: Patch request Model**
 
-**[R25]** The Buyer **MUST** include at least one of the following attributes
-of `TroubleTicket_Update` in the PATCH request: [MEF113 R41]
+**[R29]** The Buyer **MUST** include at least one of the following attributes
+of `TroubleTicket_Update` in the PATCH request: [MEF113 R52]
 
 - `externalId`
 - `priority`
 - `severity`
 - `issueStartDate`
+- `attachment` - append only
 - `note` - append only
 - `relatedContactInformation` - append or modify the Buyer settable contacts
 - `relatedIssue`
 
-**[R26]** The Buyer **MUST** add a `note` to a Trouble Ticket when any of the
-following attributes are patched: [MEF113 R42]
+**[R30]** The Buyer **MUST** add a `note` to a Trouble Ticket when any of the
+following attributes are patched: [MEF113 R53]
 
 - `priority`
 - `severity`
 - `issueStartDate`
 - `relatedIssue`
 
-**[R27]** The Buyer **MUST NOT** modify or delete any items provided by the
-Seller in following lists: `relatedContactInformation`, `attachment`. `note`
-`relatedEntity`, or `relatedIssue`. [MEF113 R3], [MEF113 R6], [MEF113 R44]
+**[R31]** If the new item in the `attachment` list is provided, either the
+`attachment.url` or (`attachment.content` and `attachment.mimeType`) **MUST**
+be specified. [MEF113 R54]
 
-**_Note:_** The Buyer can add or update items in above-mentioned lists by
+**[R32]** The Buyer **MUST NOT** modify or delete any items provided by the
+Seller in following lists: `relatedContactInformation` or `relatedIssue`.
+[MEF113 R55]
+
+**_Note:_** The Buyer can add or update items in the above-mentioned lists by
 providing a full list of existing items, and appending them with new ones or
 updating values of existing ones (where possible).
 
-**[R28]** In case `id` does not allow to find a `TroubleTicket` that is to be
+**_Note:_** As stated before, items to the `attachment` and `note` lists may
+only be added.
+
+**[R33]** In case `id` does not allow to find a `TroubleTicket` that is to be
 updated in Seller's system, an error response `Error404` **MUST** be returned.
-[MEF113 R46]
+[MEF113 R57]
 
-**[R29]** The Seller **MUST** return an error (`Error422`) if attributes
-requested to be changed by the Buyer cannot be updated. [MEF113 R47]
+**[R34]** The Seller **MUST** return an error (`Error422`) if attributes
+requested to be changed by the Buyer cannot be updated. [MEF113 R58]
 
-**[R30]** The Seller **MUST** return an error (`Error422`) if the Ticket
-`state` is `closed`, `assessingCancellation` or `cancelled`. [MEF113 R48]
+**[R35]** The Seller **MUST** return an error (`Error422`) if the Ticket
+`state` is `closed`, `assessingCancellation` or `cancelled`. [MEF113 R59]
 
-The example below shows a request to:
+The example below shows a request to patch a `TroubleTicket` that was created
+in section [6.1.3](#613-create-trouble-ticket---response). The first snippet
+provides the existing state of the `TroubleTicket`, showing only parts that are
+to be updated:
+
+```json
+{
+  ...
+  "note": [
+    {<< provided by the Buyer >>
+      "id": "note-1",
+      "author": "John Example",
+      "date": "2021-06-02T14:25:11.090Z",
+      "source": "buyer",
+      "text": "Couldn't reach the support on phone."
+    }
+  ],
+  "relatedContactInformation": [
+    {<< provided by the Buyer >>
+      "emailAddress": "john.example@example.com",
+      "name": "John Example",
+      "number": "+12-345-678-90",
+      "organization": "Buyer Example Co.",
+      "role": "reporterContact"
+    },
+    {<< a new item appended by the Seller >>
+      "emailAddress": "Seller.TicketContact@example.com",
+      "name": "Seller Ticket Contact",
+      "number": "+98-765-432-10",
+      "organization": "Seller Example Co.",
+      "role": "sellerTicketContact"
+    }
+  ],
+  ...
+}
+```
+
+The request below aims to:
 
 - add a new `note` (existing cannot be modified or deleted)
 - change details of Buyer's `reporterContact`
@@ -1107,7 +1255,7 @@ The example below shows a request to:
       "organization": "Buyer Example Co.",
       "role": "reporterContact"
     },
-    {<< provided by Buyer - untouched >>
+    {<< provided by Seller - untouched >>
       "emailAddress": "Seller.TicketContact@example.com",
       "name": "Seller Ticket Contact",
       "number": "+98-765-432-10",
@@ -1118,12 +1266,12 @@ The example below shows a request to:
 }
 ```
 
-**[R31]** If the Trouble Ticket status is `pending`, the Seller **MUST** update
-it to `inProgress`. [MEF113 R53]
+**[R36]** If the Trouble Ticket status is `pending`, the Seller **MUST** update
+it to `inProgress`. [MEF113 R64]
 
 ## 6.5. Use case 5: Cancel Ticket by Ticket Identifier
 
-The Buyer may request to Cancel a Trouble Ticket by using
+The Buyer may request to cancel a Trouble Ticket by using
 `POST /troubleTicket/{{id}}/cancel` endpoint. This operation only requires
 providing the `id` in the path and has an empty `204` confirmation response.
 
@@ -1131,145 +1279,75 @@ The sequence diagram below presents this use case in detail.
 
 ![Cancel Trouble Ticket Flow](media/useCase5CancelFlow.png)
 
-**Figure 11: Cancel Trouble Ticket Flow**
+**Figure 12: Cancel Trouble Ticket Flow**
 
 The Seller verifies the request, then searches for a Trouble Ticket to be
 cancelled by given `id`. If found, the status is verified (`acknowledged`,
-`inProgress` or `pending` allowed). I everything is verified correctly, the
+`inProgress` or `pending` allowed). If everything is verified correctly, the
 Seller moves the ticket to the `assessingCancellation` status, sends a
-successful response to a cancellation request, and starts assessing the
-cancellation process for the ticket.
+successful response to a cancellation request followed by
+`troubleTicketStatusChangeEvent` and starts assessing the cancellation process
+for the ticket. After successful assessment, the ticket moves to `cancelled`
+status and another `troubleTicketStatusChangeEvent` is sent.
 
-**[R32]** In case of a successful validation the Seller **MUST** move the
-ticket to `assessingCancellation` status. [MEF113 R58]
+**[R37]** In case of a successful validation of the cancel request, the Seller
+**MUST** move the ticket to `assessingCancellation` status. [MEF113 R69]
 
-**[R33]** In case `id` does not allow to find a `TroubleTicket` that is to be
-cancelled, an error response `Error404` **MUST** be returned. [MEF113 R56]
+**[R38]** In case `id` does not allow to find a `TroubleTicket` that is to be
+cancelled, an error response `Error404` **MUST** be returned. [MEF113 R67]
 
-**[R34]** In case the `TroubleTicket` is in one of statuses `resolved`,
-`closed`, `reopened`, `assessingCancellation`, or `cancelled` Seller **MUST**
-return an error (`Error422`). [MEF113 R57]
+**[R39]** In case the `TroubleTicket` is in one of statuses: `resolved`,
+`closed`, `reopened`, `assessingCancellation`, or `cancelled` the Seller
+**MUST** return an error (`Error422`). [MEF113 R68]
 
-## 6.6 Use Case 6: Respond to Ticket Clearance Notification
+## 6.6 Use Case 6: Ticket Resolution Confirmation
 
-As shown in Figure 5, the Seller after resolving the Issue moves the Trouble
-Ticket to a `resolved` state. This is the point where the Buyer verifies the
-resolution and chooses to either close or reopen the Trouble Ticket. The Seller
-sends the `troubleTicketResolvedEvent` - a dedicated notification type to the
-Buyer. The Buyer uses one of the dedicated actions:
+As shown in Figure 6, the Seller after resolving the Issue moves the Trouble
+Ticket to a `resolved` state. The Seller sends the
+`troubleTicketResolvedEvent` - a dedicated notification type. This is the point
+where the Buyer verifies the resolution and chooses to either close or reopen
+the Trouble Ticket. The Buyer uses one of the dedicated actions:
 
 - `POST /troubleTicket/{{id}}/close`
 - `POST /troubleTicket/{{id}}/reopen`
 
-![Respond to Ticket Clearance Notification Flow](media/useCase6RespondFlow.png)
+![Ticket Resolution Confirmation Flow](media/useCase6RespondFlow.png)
 
-**Figure 12: Respond to Ticket Clearance Notification Flow**
+**Figure 13: Ticket Resolution Confirmation Flow**
 
-**[R35]** The Buyer **MUST** perform the `reopen` action if the Issue on which
+**[R40]** The Buyer **MUST** perform the `reopen` action if the Issue on which
 the Ticket was based has not been resolved in a satisfactory manner to the
-Buyer. [MEF113 R60]
+Buyer. [MEF113 R71]
 
-**[R36]** If performing the `reopen` action, the Buyer **MUST** include a
+**[R41]** If performing the `reopen` action, the Buyer **MUST** include a
 `reason` describing why the Buyer doesn't agree that the Trouble Ticket has
 been resolved in a satisfactory manner and is requesting the Trouble Ticket to
-be reopened. [MEF113 R61]
+be reopened. [MEF113 R72]
 
-**[R37]** The Buyer **MUST** perform the `close` action if the Issue on which
+**[R42]** The Buyer **MUST** perform the `close` action if the Issue on which
 the Ticket was based has been resolved in a satisfactory manner to the Buyer.
-[MEF113 R62]
+[MEF113 R73]
 
-**[R38]** In case `id` does not allow to find a `TroubleTicket` that is to be
+**[R43]** In case `id` does not allow to find a `TroubleTicket` that is to be
 reopened or closed, an error response `Error404` **MUST** be returned. [MEF113
-R64]
+R75]
 
-**[R39]** If Buyer performs the `reopen` action, the Seller **MUST** change the
-Ticket state to `reopened`. [MEF113 R65]
+**[R44]** If Buyer performs the `reopen` action, the Seller **MUST** change the
+Ticket `status` to `reopened`. [MEF113 R76]
 
-**[R40]** If Buyer performs the `close` action, the Seller **MUST** change the
-Ticket state to `closed`. [MEF113 R66]
+**[R45]** If Buyer performs the `close` action, the Seller **MUST** change the
+Ticket `status` to `closed`. [MEF113 R77]
 
-## 6.7. Use Case 12: Retrieve Workorder by Workorder Identifier
+**_Note:_** The Seller will return an error if the Buyer responds to the
+`troubleTicketResolvedEvent` after the Ticket was closed due to the expiration
+of the pre-agreed timeframe/timeout for the Buyer to confirm that the Issue on
+which the Ticket was based has been resolved satisfactorily.
 
-The Buyer can retrieve detailed information about the Workorder from the Seller
-by using a `GET /workOrder/{{id}}` operation.
-
-**[R41]** In case `id` does not allow to find a `Workorder` instance, an error
-response `Error404` **MUST** be returned. [MEF113 R111]
-
-**[R42]** The Seller **MUST** put the following attributes into the `Workorder`
-object in the response: [MEF113 R113]
-
-- `appointmentRequired`
-- `id`
-- `relatedContactInformation` - item with `role=technicalContact`
-- `relatedEntity`
-- `state`
-- `task`
-
-**[R43]** The Seller **MUST** provide all remaining optional attributes if they
-were previously set by the Buyer or the Seller. [MEF113 R114]
-
-The following Figure presents the model of the WorkOrder.
-
-![Use Case 12: Workorder - Model](media/useCase12WorkOrderModel.png)
-
-**Figure 13: Use Case 12: Workorder - Model**
-
-Table 8 presents the mapping between the API `state` names and the MEF 113
-naming, together with their description.
-
-| state              | MEF 113 name       | Description                                                                                                                                                                                                                                                        |
-| ------------------ | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `completed`        | COMPLETED          | The Seller Technician responsible for the Workorder has successfully completed all the assigned Tasks.                                                                                                                                                             |
-| `cancelled`        | CANCELLED          | The Workorder has been cancelled by the Seller or due to the Buyer requesting to cancel the Ticket.                                                                                                                                                                |
-| `inProgress`       | IN_PROGRESS        | The Seller Technician responsible for the Workorder has been assigned and started one or more of the assigned Tasks.                                                                                                                                               |
-| `open`             | OPEN               | A Workorder was initiated by the Seller to be assigned to a Technician responsible for resolving the Ticket.                                                                                                                                                       |
-| `planned`          | PLANNED            | The Workorder has been given an execution date for resolving one or more Tasks.                                                                                                                                                                                    |
-| `unableToComplete` | UNABLE_TO_COMPLETE | The Seller Technician responsible for the Workorder was unable to complete one or more of the assigned Tasks, because of additional skills or information is required. Additional tasks are required to resolve the Ticket and a new Workorder needs to be opened. |
-
-**Table 8: Workorder states**
-
-Figure 14 presents the WorkOrder state machine:
-
-![WorkOrder state Machine](media/useCase12WorkOrderStates.png)
-
-**Figure 14: WorkOrder State Machine**
-
-**[R44]** The Seller **MUST** support all WorkOrder states and their associated
-transitions as described in Figure 14 and Table 8. [MEF113 R154]
-
-Below you can find a snippet with a Workorder example:
-
-```json
-{
-  "id": "98765432-9876-5432-0000-000000000055",
-  "appointmentRequired": false,
-  "relatedContactInformation": [
-    {
-      "emailAddress": "technical.contact@example.com",
-      "name": "Technical Contact",
-      "number": "+12-345-678-91",
-      "organization": "Seller Example Co.",
-      "role": "technicalContact"
-    }
-  ],
-  "relatedEntity": [
-    {
-      "id": "01494079-6c79-4a25-83f7-48284196d44d",
-      "role": "Issue Source",
-      "@referredType": "Product"
-    }
-  ],
-  "state": "open",
-  "task": ["Replace the broken SFP", "Perform OTDR"]
-}
-```
-
-## 6.8. Use Case 13: Retrieve Incident List
+## 6.7. Use Case 15: Retrieve Incident List
 
 **[O7]** The Buyer **MAY** retrieve a list of Incidents by using a
 `GET /incident` operation with desired filtering criteria. The attributes that
-are available to be used are: [MEF113 O17]
+are available to be used are: [MEF113 O22]
 
 - `priority`
 - `severity`
@@ -1279,8 +1357,8 @@ are available to be used are: [MEF113 O17]
 - `relatedEntityType`
 - `creationDate.gt`
 - `creationDate.lt`
-- `issueStartDate.gt`
-- `issueStartDate.lt`
+- `situationStartDate.gt`
+- `situationStartDate.lt`
 - `expectedClosedDate.gt`
 - `expectedClosedDate.lt`
 - `closedDate.gt`
@@ -1290,8 +1368,8 @@ The example of making a request and using pagination is provided in
 [section 6.2](#62-use-case-2-retrieve-ticket-list) Please refer to it as the
 rules also apply to this case.
 
-**[R45]** The Seller **MUST** put the following attributes (if set) into the
-`Incident_Find` object in the response: [MEF113 R117]:
+**[R46]** The Seller **MUST** put the following attributes (if set) into the
+`Incident_Find` object in the response: [MEF113 R142]:
 
 - `id`
 - `relatedEntity`
@@ -1301,27 +1379,27 @@ rules also apply to this case.
 - `incidentType`
 - `status`
 - `creationDate`
-- `issueStartDate`
+- `situationStartDate`
 - `expectedClosedDate`
 - `closedDate`
 
-**[R46]** In case no items matching the criteria are found, the Seller **MUST**
-return a valid response with an empty list. [MEF113 R117]
+**[R47]** In case no items matching the criteria are found, the Seller **MUST**
+return a valid response with an empty list.
 
-![Use Case 13: Retrieve Incident List - Model](media/useCase13IncidentFindModel.png)
+![Use Case 15: Retrieve Incident List - Model](media/useCase15IncidentFindModel.png)
 
-**Figure 15: Use Case 13: Retrieve Incident List - Model**
+**Figure 14: Use Case 15: Retrieve Incident List - Model**
 
-## 6.9. Use Case 14: Retrieve Incident by Incident Identifier
+## 6.8. Use Case 16: Retrieve Incident by Incident Identifier
 
 The Buyer can get detailed information about the Incident from the Seller by
 using a `GET /incident/{{id}}` operation.
 
-**[R47]** In case `id` does not allow to find an `Incident` instance, an error
-response `Error404` **MUST** be returned. [MEF113 R120]
+**[R48]** In case `id` does not allow to find an `Incident` instance, an error
+response `Error404` **MUST** be returned. [MEF113 R145]
 
-**[R48]** The Seller **MUST** put the following attributes into the `Incident`
-object in the response: [MEF113 R122]
+**[R49]** The Seller **MUST** put the following attributes into the `Incident`
+object in the response: [MEF113 R147]
 
 - `id`
 - `relatedEntity`
@@ -1330,17 +1408,18 @@ object in the response: [MEF113 R122]
 - `severity`
 - `incidentType`
 - `status`
+- `situationStartDate`
 - `creationDate`
 - `relatedContactInformation` - items with `role` equal to `incidentContact`
 
-**[R49]** The Seller **MUST** provide all remaining optional attributes if they
-were previously set by the Buyer or the Seller. [MEF113 R123]
+**[R50]** The Seller **MUST** provide all remaining optional attributes if they
+were previously set. [MEF113 R148]
 
-**[R50]** The Seller's response to a Retrieve Incident by Incident Identifier
+**[R51]** The Seller's response to a Retrieve Incident by Incident Identifier
 request **MUST** include the `closedDate` if the `status` is `closed`. [MEF113
-R124]
+R49]
 
-Table 9 presents the mapping between the API `status` names and the MEF 113
+Table 8 presents the mapping between the API `status` names and the MEF 113
 naming, together with their description.
 
 | status       | MEF 113 name | Description                                                                                 |
@@ -1349,20 +1428,20 @@ naming, together with their description.
 | `inProgress` | IN_PROGRESS  | The Incident is in the process of being handled by the Seller.                              |
 | `closed`     | CLOSED       | The Situation described in the Incident was closed by the Seller. This is a terminal state. |
 
-**Table 9: Incident states**
+**Table 8: Incident states**
 
-Figure 16 presents the Incident state machine:
+Figure 15 presents the Incident state machine:
 
-![Incident state Machine](media/useCase14IncidentStates.png)
+![Incident state Machine](media/useCase16IncidentStates.png)
 
-**Figure 16: Incident State Machine**
+**Figure 15: Incident State Machine**
 
-**[R51]** The Seller **MUST** support all Incident states and their associated
-transitions as described in Figure 16 and Table 9. [MEF113 R155]
+**[R52]** The Seller **MUST** support all Incident statuses and their
+associated transitions as described in Figure 15 and Table 8. [MEF113 R185]
 
-![Use Case 14: Incident Model](media/useCase14IncidentModel.png)
+![Use Case 16: Incident Model](media/useCase16IncidentModel.png)
 
-**Figure 17: Use Case 14: Incident Model**
+**Figure 16: Use Case 16: Incident Model**
 
 ```json
 {
@@ -1388,9 +1467,9 @@ transitions as described in Figure 16 and Table 9. [MEF113 R155]
   "description": "Hardware failure",
   "expectedClosedDate": "2022-01-13T23:09:44.814Z",
   "incidentType": "down",
-  "issueStartDate": "2022-01-12T23:09:44.814Z",
+  "situationStartDate": "2022-01-12T23:09:44.814Z",
   "priority": "critical",
-  "relatedContactInformation": [incidentContact
+  "relatedContactInformation": [
     {
       "emailAddress": "Incident.Contact@example.com",
       "name": "Incident Contact",
@@ -1421,13 +1500,20 @@ transitions as described in Figure 16 and Table 9. [MEF113 R155]
 }
 ```
 
-## 6.10. Use case 15: Register for Event Notifications
+## 6.9. Use case 17: Register for Event Notifications
 
-**[R52]** The Seller **MUST** support Trouble Ticket Notifications. [MEF113
-R129]
+**[R53]** The Seller **MUST** support Event Notifications. [MEF113 R150]
 
-**[R53]** The Buyer **MUST** support and register for Trouble Ticket
-Notifications. [MEF113 R130]
+**[R54]** The Seller **MUST** support all of `TroubleTicketEventType`: [MEF113
+R151]
+
+- `troubleTicketAttributeValueChangeEvent`
+- `troubleTicketInformationRequiredEvent`
+- `troubleTicketResolvedEvent`
+- `troubleTicketStatusChangeEvent`
+
+**[R55]** The Buyer **MUST** support and register for all
+`TroubleTicketEventType`. [MEF113 R152]
 
 To register for notifications the Buyer uses the `registerListener` operation
 from the API: `POST /hub`. The request model contains only 2 attributes:
@@ -1453,9 +1539,8 @@ The Buyer subscribes for notification of all types of events. Those are:
 - `troubleTicketInformationRequiredEvent`
 - `troubleTicketResolvedEvent`
 - `troubleTicketStatusChangeEvent`
-- `incidentCreatedEvent`
+- `incidentCreateEvent`
 - `incidentAttributeValueChangeEvent`
-- `incidentClosedEvent`
 - `incidentStatusChangeEvent`
 
 If the Buyer wishes to receive only notification of a certain type, a `query`
@@ -1486,7 +1571,7 @@ to it, every attribute defined in the Event model (from notification API) can
 be used in the `query`. However, this standard requires only `eventType`
 attribute to be supported.
 
-**[R54]** `eventType` is the only attribute that the Seller **MUST** support in
+**[R56]** `eventType` is the only attribute that the Seller **MUST** support in
 the query.
 
 The Seller responds to the subscription request by adding the `id` of the
@@ -1505,7 +1590,7 @@ Example of a final address that the Notifications will be sent to (for Sonata,
 
 - `https://buyer.com/listenerEndpoint/mefApi/sonata/troubleTicketNotification/v2/listener/troubleTicketResolvedEvent`
 
-## 6.11. Use case 16: Send Ticket Notification
+## 6.10. Use case 18: Send Event Notification
 
 Notifications are used to asynchronously inform the Buyer about the respective
 objects and attributes changes. The Seller's synchronous response to a Trouble
@@ -1513,14 +1598,17 @@ Ticket create requests are considered to act as a Create Notification so there
 is no explicit respective Create Notification type. The next notification must
 be sent when the state changes compared to the previously sent one.
 
-**[R55]** The Seller **MUST** send Ticket Notifications to Buyers who have
-registered for them. [MEF113 R131]
+**[R57]** The Seller **MUST** send Notifications of `eventTypes` to Buyers who
+have registered for them. [MEF113 R158]
+
+**[R58]** The Seller **MUST NOT** send Notifications for `eventTypes` to Buyers
+who have not registered for them. [MEF113 R157]
 
 The Figure below shows all entities involved in the Notification use cases.
 
-![Ticket Notification Data Model](media/useCase15NotificationModel.png)
+![Ticket Notification Data Model](media/useCase18NotificationModel.png)
 
-**Figure 18: Use Case 15. Notification Data Model**
+**Figure 17: Use Case 18. Notification Data Model**
 
 The following snippet presents an example of `troubleTicketResolvedEvent`
 
@@ -1543,109 +1631,66 @@ operation from the `DELETE /hub/{id}` endpoint. The `id` is the identifier
 received from the Seller during the listener registration.
 
 The table below presents the mapping between the API Notification types' names
-and the ones in MEF 113. The inconsistencies are caused by using the TMF event
-types as the base for this API.
+and the ones in MEF 113 together with event descriptions. The inconsistencies
+are caused by API naming convention and using the TMF event types as the base
+for this API.
 
-| API name                                 | MEF 113 name      |
-| ---------------------------------------- | ----------------- |
-| `troubleTicketAttributeValueChangeEvent` | UPDATE            |
-| `troubleTicketInformationRequiredEvent`  | INFO_REQUIRED     |
-| `troubleTicketResolvedEvent`             | CLEARANCE_REQUEST |
-| `troubleTicketStatusChangeEvent`         | STATE_CHANGE      |
+| API name                                 | MEF 113 name          | Description                                                                                                                                                                                                                                                                                                           |
+| ---------------------------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `troubleTicketAttributeValueChangeEvent` | TICKET_UPDATE         | The Seller settable attributes for a Ticket were updated by the Seller. Note: Buyer initiated Ticket updates due to Patch operation will not trigger a `troubleTicketAttributeValueChangeEvent`                                                                                                                       |
+| `troubleTicketInformationRequiredEvent`  | TICKET_STATE_CHANGE   | A Ticket `status` was changed by the Seller.                                                                                                                                                                                                                                                                          |
+| `troubleTicketResolvedEvent`             | TICKET_INFO_REQUIRED  | The Seller requires more information from the Buyer for a Ticket to continue processing a Ticket. The details on what information is needed from the Buyer will be provided via a Ticket `note`. The Ticket `status` is `pending`. Note: The Buyer uses the Patch operation to provide more information for a Ticket. |
+| `troubleTicketStatusChangeEvent`         | TICKET_RESOLVED       | The Seller is informing the Buyer the Ticket is resolved and the Buyer to verify that the Issue on which the Ticket was based is no longer observed. The Ticket `status` is `resolved`. Note: The Buyer confirms if the Issue has been resolved satisfactorily or not using close or reopen operations                |
+| `incidentCreateEvent`                    | INCIDENT_CREATE       | A new Incident was created by the Seller.                                                                                                                                                                                                                                                                             |
+| `incidentAttributeValueChangeEvent`      | INCIDENT_UPDATE       | An open Incident was updated by the Seller.                                                                                                                                                                                                                                                                           |
+| `incidentStatusChangeEvent`              | INCIDENT_STATE_CHANGE | An Incident `status` was changed by the Seller.                                                                                                                                                                                                                                                                       |
 
-**Table 10. Trouble Ticket Notification types mapping**
+**Table 9. Notification types mapping**
 
-**[R56]** The Seller **MUST** send a `troubleTicketAttributeValueChangeEvent`
+**[R59]** The Seller **MUST** send a `troubleTicketAttributeValueChangeEvent`
 whenever the Seller updates any of the following Ticket attributes: [MEF113
-R133]
+R174]
 
 - `sellerSeverity`
 - `sellerPriority`
 - `expectedResolutionDate`
 - `note`
 - `attachment`
-- `relatedContactInformation` - items with `role` equal to
-  `sellerTicketContact` and `sellerTechnicalContact`
-- `relatedIssue`
-- `workOrder` - including updates to a Referenced Workorder
-
-**[R57]** The Seller **MUST** send a `troubleTicketStatusChangeEvent` whenever
-a Ticket `status` change occurs. [MEF113 R124]
-
-**[R58]** The Seller **MUST** set the Ticket's `status` to `pending` and add a
-`note` to the Ticket prior to sending the
-`troubleTicketInformationRequiredEvent` to inform the Buyer about what
-additional information is required to continue processing the Ticket. [MEF113
-R135]
-
-**[R59]** The Buyer **MUST** use the Patch Ticket by Ticket Identifier request
-to provide the missing information before the Seller is able to continue
-processing the Ticket. [MEF113 R137]
-
-**[R60]** The Seller **MUST** send a `troubleTicketResolvedEvent` before
-closing an open Ticket. [MEF113 R138]
-
-## 6.12. Use case 17: Send Incident Notification
-
-**[R61]** The Seller **MUST NOT** send Incidents Notifications to Buyers who
-have not registered for them. [MEF113 R139]
-
-**[R62]** The Seller **MUST** send Incidents Notifications to Buyers who have
-registered for them. [MEF113 R140]
-
-The following snippet presents an example of `incidentClosedEvent`
-
-```json
-{
-  "eventId": "event-011",
-  "eventType": "incidentClosedEvent",
-  "eventTime": "2021-12-22T01:56:08.559Z",
-  "event": {
-    "id": "00000000-4444-5555-6666-000001110654"
-  }
-}
-```
-
-To stop receiving events, the Buyer has to use the `unregisterListener`
-operation from the `DELETE /hub/{id}` endpoint. The `id` is the identifier
-received from the Seller during the listener registration.
-
-The table below presents the mapping between the API Notification types' names
-and the ones in MEF 113. The inconsistencies are caused by using the TMF event
-types as the base for this API.
-
-| API name                            | MEF 113 name |
-| ----------------------------------- | ------------ |
-| `incidentCreatedEvent`              | CREATED      |
-| `incidentAttributeValueChangeEvent` | UPDATE       |
-| `incidentStatusChangeEvent`         | STATE_CHANGE |
-| `incidentClosedEvent`               | CLOSED       |
-
-**Table 11. Incidents Notification types mapping**
-
-**[R63]** The Seller **MUST** send a `incidentCreatedEvent` whenever an
-Incident has been created. [MEF113 R142]
-
-**[R64]** The Seller **MUST** send a `incidentAttributeValueChangeEvent`
-whenever the Seller updates any of the following Incident attributes: [MEF113
-R144]
-
-- `priority`
-- `severity`
-- `incidentType`
-- `issueStartDate`
-- `expectedClosedDate`
-- `note`
-- `attachment`
 - `relatedContactInformation`
 - `relatedIssue`
-- `description`
+- `workOrder` - including updates to a Referenced WorkOrder
 
-**[R65]** The Seller **MUST** send a `incidentStatusChangeEvent` whenever an
-Incident `status` change occurs. [MEF113 R143]
+**[R60]** The Seller **MUST** send a `troubleTicketStatusChangeEvent` whenever
+a Ticket `status` change occurs. [MEF113 R175]
 
-**[R66]** The Seller **MUST** send a `incidentClosedEvent` whenever an Incident
-`status` changes to `closed`. [MEF113 R145]
+**[R61]** Whenever the Ticket `status` is changed to `pending`, the Seller
+**MUST** add a `note` to the Ticket to inform the Buyer about what additional
+information is required for the Ticket or for the Buyer to schedule an
+Appointment to continue processing the Ticket. [MEF113 R176]
+
+**[R62]** The Seller **MUST** send a `troubleTicketInformationRequiredEvent`
+whenever the Ticket `status` has been changed to `pending` and the
+`appointmentRequired` attribute for all WorkOrders linked to the Ticket are
+`false`. [MEF113 R177]
+
+**[R63]** The Seller **MUST** send an `troubleTicketResolvedEvent` whenever the
+Ticket `status` is changed to `resolved`. [MEF113 R178]
+
+**[R64]** The Seller **MUST** send an `incidentCreateEvent` whenever a new
+Incident has been created. [MEF113 R186]
+
+**[R65]** The Seller **MUST** send a `incidentAttributeValueChangeEvent`
+whenever the Seller updates any of the Incident attributes (excluding `status`)
+[MEF113 R187]
+
+**[R66]** The Seller **MUST** send a `incidentStatusChangeEvent` whenever an
+Incident `status` change occurs. [MEF113 R188]
+
+**[R67]** When the Incident `status` moves to `inProgress`, the Seller **MUST**
+set the `expectedClosedDate`. [MEF113 R189]
+
+**[R68]** The Seller **MUST NOT** send an `IncidentEvent` to a Buyer for a
+Product that the Buyer has not activated. [MEF113 R190]
 
 # 7. API Details
 
@@ -1655,8 +1700,8 @@ Incident `status` change occurs. [MEF113 R143]
 
 Erroneous situations are indicated by appropriate HTTP responses. An error
 response is indicated by HTTP status 4xx (for client errors) or 5xx (for server
-errors) and appropriate response payload. The Product Order API uses the error
-responses as depicted and described below.
+errors) and the appropriate response payload. The Product Order API uses the
+error responses as depicted and described below.
 
 Implementations can use HTTP error codes not specified in this standard in
 compliance with rules defined in RFC 7231 [[RFC7231](#8-references)]. In such a
@@ -1664,7 +1709,7 @@ case, the error message body structure might be aligned with the `Error`.
 
 ![Error response data model](media/error_entities.png)
 
-**Figure 19. Data model types to represent an erroneous response**
+**Figure 18. Data model types to represent an erroneous response**
 
 #### 7.1.1.1. Type Error
 
@@ -2003,19 +2048,19 @@ additional results available using:
 - `X-Total-Count` header attribute with the total number of available results
 - `X-Pagination-Throttled` header set to `true`
 
-**[R67]** Seller **MUST** use either `X-Total-Count` or
+**[R69]** Seller **MUST** use either `X-Total-Count` or
 `X-Pagination-Throttled` to indicate that the page was truncated and additional
 results are available.
 
 ## 7.2. Management API Data model
 
-Figure 20 presents the whole Trouble Ticket Management data model the data
-types, requirements related to them and mapping to MEF 113 specifications are
+Figure 19 presents the whole Trouble Ticket Management data model the data
+types, requirements related to them, and mapping to MEF 113 specifications are
 discussed later in this section.
 
 ![Trouble Ticket Management Data Model](media/troubleTicketMgtDataModel.png)
 
-**Figure 20: Trouble Ticket Management Data Model**
+**Figure 19: Trouble Ticket Management Data Model**
 
 ### 7.2.1. TroubleTicket
 
@@ -2058,7 +2103,7 @@ id,href
         </tr><tr>
             <td>note</td>
             <td><a href="#T_Note">Note</a>[]</td>
-            <td>The note(s) that are associated to the ticket. Notes may be added but may not be modified or deleted (for historical reasons).</td>
+            <td>A set of comments or information associated to the Ticket. This list can be empty. Notes may be added but may not be modified or deleted (for historical reasons).</td>
             <td>Notes</td>
         </tr><tr>
             <td>observedImpact*</td>
@@ -2093,7 +2138,7 @@ Seller Technical Contact (&#x27;role&#x3D;sellerTechnicalContact&#x27;)</td>
         </tr><tr>
             <td>severity*</td>
             <td><a href="#T_TroubleTicketSeverityType">TroubleTicketSeverityType</a></td>
-            <td>The severity or impact (ITIL) of the Trouble Ticket as evaluated by the Buyer.</td>
+            <td>The severity or impact (ITIL) of the Issue as evaluated by the Buyer.</td>
             <td>Severity</td>
         </tr><tr>
             <td>ticketType*</td>
@@ -2155,7 +2200,7 @@ Inherits from:
             <td>id*</td>
             <td>string</td>
             <td>Unique (within the Seller Ticket domain) identifier for the Ticket.</td>
-            <td>Seller Ticket Identifier</td>
+            <td>Ticket Identifier</td>
         </tr><tr>
             <td>resolutionDate</td>
             <td>date-time</td>
@@ -2169,7 +2214,7 @@ Inherits from:
         </tr><tr>
             <td>sellerSeverity*</td>
             <td><a href="#T_TroubleTicketSeverityType">TroubleTicketSeverityType</a></td>
-            <td>The severity or impact (ITIL) of the Ticket on the Buyer as evaluated by the Seller.</td>
+            <td>The severity or impact (ITIL) of the Issue on the Buyer as evaluated by the Seller.</td>
             <td>Seller Severity</td>
         </tr><tr>
             <td>status*</td>
@@ -2213,7 +2258,7 @@ Inherits from:
         </tr><tr>
             <td>description*</td>
             <td>string</td>
-            <td>Description of the trouble or issue</td>
+            <td>Summarized description of the Issue the Buyer is experiencing.</td>
             <td>Description</td>
         </tr><tr>
             <td>expectedResolutionDate*</td>
@@ -2229,7 +2274,7 @@ Inherits from:
             <td>id*</td>
             <td>string</td>
             <td>Unique identifier of the Trouble Ticket</td>
-            <td>Seller Ticket Identifier</td>
+            <td>Ticket Identifier</td>
         </tr><tr>
             <td>priority*</td>
             <td><a href="#T_TroubleTicketPriorityType">TroubleTicketPriorityType</a></td>
@@ -2240,6 +2285,11 @@ Inherits from:
             <td><a href="#T_RelatedEntity">RelatedEntity</a>[]</td>
             <td>An entity that is related to the ticket such as a bill, a product, etc. The entity against which the ticket is associated.</td>
             <td>Product Identifier</td>
+        </tr><tr>
+            <td>observedImpact*</td>
+            <td><a href="#T_MEFObservedImpactType">MEFObservedImpactType</a></td>
+            <td>The type of impact observed by the Buyer.</td>
+            <td></td>
         </tr><tr>
             <td>resolutionDate*</td>
             <td>date-time</td>
@@ -2307,7 +2357,7 @@ tracked, and managed by a Trouble Ticket management system
         </tr><tr>
             <td>note</td>
             <td><a href="#T_Note">Note</a>[]</td>
-            <td>The note(s) that are associated to the ticket.</td>
+            <td>A set of comments or information associated to the Ticket. This list can be empty. Notes may be added but may not be modified or deleted (for historical reasons).</td>
             <td>Notes</td>
         </tr><tr>
             <td>priority</td>
@@ -2329,7 +2379,7 @@ and the Seller MUST specify Seller Contact Information (&#x27;role&#x3D;sellerCo
         </tr><tr>
             <td>severity</td>
             <td><a href="#T_TroubleTicketSeverityType">TroubleTicketSeverityType</a></td>
-            <td>The severity of the issue. Indicate the implication of the issue on the expected functionality e.g. of a system, application, service etc..</td>
+            <td>The severity of the issue. Indicate the implication of the issue on the expected functionality e.g. of a system, application, service etc...</td>
             <td>Not represented in MEF 113</td>
         </tr>
     </tbody>
@@ -2376,18 +2426,18 @@ Incidents
         <tr>
             <td>@referredType*</td>
             <td>string</td>
-            <td>The actual type of the target instance when needed for disambiguation (Incident or TroubleTicket)</td>
+            <td>The type of the referred Issue (Incident or TroubleTicket)</td>
             <td>Related Object Type</td>
         </tr><tr>
             <td>creationDate*</td>
             <td>date-time</td>
-            <td>The date the Relationship was created</td>
-            <td>Relation Date</td>
+            <td>The date the relationship was created</td>
+            <td>Relation Creation Date</td>
         </tr><tr>
             <td>description*</td>
             <td>string</td>
-            <td>A description of the reason for the Relationship</td>
-            <td>Relation Description</td>
+            <td>A description of the reason for the Relation Source to set the relationship</td>
+            <td>Relation Reason Description</td>
         </tr><tr>
             <td>href</td>
             <td>string</td>
@@ -2491,7 +2541,7 @@ status changed, populated by the server
         </tr><tr>
             <td>status</td>
             <td><a href="#T_TroubleTicketStatusType">TroubleTicketStatusType</a></td>
-            <td>Reached state</td>
+            <td>Reached status</td>
             <td>Not represented in MEF 113</td>
         </tr>
     </tbody>
@@ -2501,16 +2551,16 @@ status changed, populated by the server
 
 **Description:** Possible values for the status of the Trouble Ticket
 
-| status                  | MEF 113 name           | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| ----------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `acknowledged`          | ACKNOWLEDGED           | A request to create a Ticket was received and accepted by the Seller. The Ticket has been validated and created by the Seller and allocated a unique `id`.                                                                                                                                                                                                                                                                                                                                                                |
-| `inProgress`            | IN_PROGRESS            | The Ticket is in the process of being handled and investigated for resolution by the Seller.                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `resolved`              | RESOLVED               | The Buyer's Issue described in the Ticket was resolved by the Seller. The Seller is now waiting for the Buyer to confirm that the Issue they reported is no longer observed.                                                                                                                                                                                                                                                                                                                                              |
-| `closed`                | CLOSED                 | The Buyer that created the Ticket has confirmed that the Issue they reported is no longer observed, or the pre-defined time frame (agreed upon between Buyer and Seller) for confirming that the Issue has been resolved has passed without a response by the Buyer. This is a terminal state.                                                                                                                                                                                                                            |
-| `reopened`              | REOPENED               | The Buyer has confirmed that the Issue described in the Ticket has not been resolved satisfactorily and rejected the Seller's request to close the Ticket. The Ticket has been reopened and is waiting to continue being handled and investigated for resolution by the Seller.                                                                                                                                                                                                                                           |
-| `pending`               | PENDING                | The Seller is waiting on additional information in order to continue the handling of the Ticket. This may result in the clock being stopped for the service level agreement until the Buyer has responded to the request.                                                                                                                                                                                                                                                                                                 |
-| `assessingCancellation` | ASSESSING_CANCELLATION | A request has been made by the Buyer to cancel the Ticket and is being assessed by the Seller to determine whether to just close the Ticket, or may also choose to resolve the Issue to prevent similar Create Ticket requests from other Buyers. If the Seller chooses to resolve the Issue, the Seller might create an Incident or an internal Ticket for the Issue, but that is outside the scope of this document. After the Seller has completed the assessment, the Seller updates the Ticket State to `cancelled`. |
-| `cancelled`             | CANCELLED              | The Ticket has been successfully cancelled by the Buyer. This is a terminal state.                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| status                  | MEF 113 name           | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| ----------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `acknowledged`          | ACKNOWLEDGED           | A request to create a Ticket was received and accepted by the Seller. The Ticket create request has been validated and a Ticket has been created by the Seller and allocated a unique `id`.                                                                                                                                                                                                                                                                                                                        |
+| `assessingCancellation` | ASSESSING_CANCELLATION | A request has been made by the Buyer to cancel the Ticket and is being assessed by the Seller to determine whether to just close the Ticket, or continue to resolve the Issue to prevent similar Create Ticket requests from other Buyers. If the Seller chooses to resolve the Issue, the Seller might create an Incident or an internal Ticket for the Issue, but that is outside the scope of this document. After the Seller has completed the assessment, the Seller updates the Ticket State to `cancelled`. |
+| `cancelled`             | CANCELLED              | The Ticket has been successfully cancelled by the Buy-er. The Buyer will receive no further no further Event Notifications for the Ticket. This is a terminal state.                                                                                                                                                                                                                                                                                                                                               |
+| `closed`                | CLOSED                 | The Buyer has confirmed that the Issue they reported is no longer observed, or the pre-defined time frame (agreed upon between Buyer and Seller) for confirming that the Issue has been resolved has passed without a response by the Buyer. This is a terminal state.                                                                                                                                                                                                                                             |
+| `inProgress`            | IN_PROGRESS            | The Ticket is in the process of being handled and investigated for resolution by the Seller.                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `pending`               | PENDING                | The Seller is waiting on the Buyer to provide additional information for the Ticket, or the Buyer to schedule an Appointment for the WorkOrder (linked to the Ticket) in order to continue processing the Ticket. This may result in the clock being stopped for the service level agreement until the Buyer has responded to the request.                                                                                                                                                                         |
+| `reopened`              | REOPENED               | The Buyer has verified that the Issue described in the Ticket is still observed and has not been resolved satisfactorily. The Buyer rejects the Seller's request to close the Ticket. The Ticket has been reopened and is waiting for further actions from the Seller.                                                                                                                                                                                                                                             |
+| `resolved`              | RESOLVED               | The Buyer's Issue described in the Ticket was resolved by the Seller. The Seller assumes that normal operation is re-established for the Buyer's product and i snow waiting for the Buyer to confirm that the Issue they reported is no longer observed.                                                                                                                                                                                                                                                           |
 
 #### 7.2.1.12. `enum` TroubleTicketType
 
@@ -2570,6 +2620,35 @@ status changed, populated by the server
     </tbody>
 </table>
 
+#### 7.2.1.14. Type WorkOrderRef
+
+**Description:** A reference to an WorkOrder resource.
+
+<table id="T_WorkOrderRef">
+    <thead style="font-weight:bold;">
+        <tr>
+            <td>Name</td>
+            <td>Type</td>
+            <td>Description</td>
+            <td>MEF 113</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>href</td>
+            <td>string</td>
+            <td>Hyperlink to the referenced WorkOrder.
+</td>
+            <td>Not represented in MEF 113</td>
+        </tr><tr>
+            <td>id*</td>
+            <td>string</td>
+            <td>Identifier of the referenced WorkOrder.</td>
+            <td>Workorder Identifier</td>
+        </tr>
+    </tbody>
+</table>
+
 ### 7.2.2. Incident
 
 #### 7.2.2.1. Type Incident
@@ -2591,7 +2670,7 @@ operability of the network on one or more Buyers.
         <tr>
             <td>attachment</td>
             <td><a href="#T_AttachmentValue">AttachmentValue</a>[]</td>
-            <td>Attachments to the Ticket, such as a file, screen shot or embedded content. Attachments may be added but may not be modified or deleted (for historical reasons).</td>
+            <td>Attachments to the Ticket, such as a file, screenshot, or embedded content. Attachments may be added but may not be modified or deleted (for historical reasons).</td>
             <td>Attachments</td>
         </tr><tr>
             <td>closedDate</td>
@@ -2629,11 +2708,6 @@ operability of the network on one or more Buyers.
             <td>The presumed cause of the Incident as evaluated by the Seller.</td>
             <td>Incident Type</td>
         </tr><tr>
-            <td>issueStartDate</td>
-            <td>date-time</td>
-            <td>The date when the Incident was first identified, for example via error logs.</td>
-            <td>Incident Start Date</td>
-        </tr><tr>
             <td>note</td>
             <td><a href="#T_Note">Note</a>[]</td>
             <td>A set of unstructured comments or information associated to the Incident. Notes may be added but may not be modified or deleted (for historical reasons).</td>
@@ -2646,7 +2720,7 @@ operability of the network on one or more Buyers.
         </tr><tr>
             <td>relatedContactInformation*</td>
             <td><a href="#T_RelatedContactInformation">RelatedContactInformation</a>[]</td>
-            <td>Party playing a role for this Incident.
+            <td>Party playing a role in this Incident.
 The &#x27;role&#x27; is to specify the type of contact as specified in MEF 113:
 Incident Contact (&#x27;role&#x3D;incidentContact&#x27;) - REQUIRED to be set by the Seller
 Incident Technical Contact (&#x27;role&#x3D;incidentTechnicalContact&#x27;)</td>
@@ -2654,7 +2728,7 @@ Incident Technical Contact (&#x27;role&#x3D;incidentTechnicalContact&#x27;)</td>
         </tr><tr>
             <td>relatedEntity*</td>
             <td><a href="#T_RelatedEntity">RelatedEntity</a>[]</td>
-            <td>An entity that is related to the Incident such as a service, a product, etc. The entity which the Incident is associated with.</td>
+            <td>A set of identifiers of the Products on which the Incident could have an impact on the normal operation.</td>
             <td>Product Identifier</td>
         </tr><tr>
             <td>relatedIssue</td>
@@ -2666,6 +2740,11 @@ Incident Technical Contact (&#x27;role&#x3D;incidentTechnicalContact&#x27;)</td>
             <td><a href="#T_TroubleTicketSeverityType">TroubleTicketSeverityType</a></td>
             <td>The severity or impact (ITIL) of the Incident as evaluated by the Seller.</td>
             <td>Incident Severity</td>
+        </tr><tr>
+            <td>situationStartDate*</td>
+            <td>date-time</td>
+            <td>The date when the situation was first identified, for example via error logs.</td>
+            <td></td>
         </tr><tr>
             <td>status*</td>
             <td><a href="#T_IncidentStatusType">IncidentStatusType</a></td>
@@ -2731,10 +2810,10 @@ Incident Technical Contact (&#x27;role&#x3D;incidentTechnicalContact&#x27;)</td>
             <td>The presumed cause of the Incident as evaluated by the Seller.</td>
             <td>Incident Type</td>
         </tr><tr>
-            <td>issueStartDate</td>
+            <td>situationStartDate</td>
             <td>date-time</td>
             <td>The date when the Incident was first identified, for example via error logs.</td>
-            <td>Incident Start Date</td>
+            <td>Situation Start Date</td>
         </tr><tr>
             <td>priority*</td>
             <td><a href="#T_TroubleTicketPriorityType">TroubleTicketPriorityType</a></td>
@@ -2800,9 +2879,9 @@ Incident Technical Contact (&#x27;role&#x3D;incidentTechnicalContact&#x27;)</td>
 
 | status       | MEF 113 name | Description                                                                                 |
 | ------------ | ------------ | ------------------------------------------------------------------------------------------- |
+| `closed`     | CLOSED       | The Situation described in the Incident was closed by the Seller. This is a terminal state. |
 | `created`    | CREATED      | A new Incident has been created and allocated a unique `id`.                                |
 | `inProgress` | IN_PROGRESS  | The Incident is in the process of being handled by the Seller.                              |
-| `closed`     | CLOSED       | The Situation described in the Incident was closed by the Seller. This is a terminal state. |
 
 #### 7.2.2.5. Type IncidentStatusChange
 
@@ -2832,167 +2911,18 @@ status changed, populated by the server
         </tr><tr>
             <td>status</td>
             <td><a href="#T_IncidentStatusType">IncidentStatusType</a></td>
-            <td>Reached state</td>
+            <td>Reached status</td>
             <td>Not represented in MEF 113</td>
         </tr>
     </tbody>
 </table>
 
-### 7.2.3. Workorder
-
-#### 7.2.3.1. Type WorkOrder
-
-**Description:** A set of tasks to be scheduled and performed under the
-responsibility of a Seller Technician(s)
-
-<table id="T_WorkOrder">
-    <thead style="font-weight:bold;">
-        <tr>
-            <td>Name</td>
-            <td>Type</td>
-            <td>Description</td>
-            <td>MEF 113</td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>appointmentRequired*</td>
-            <td>boolean</td>
-            <td>The Seller requires the Buyer to schedule an Appointment. If set to true, the Seller is Requesting the Buyer to schedule an Appointment.</td>
-            <td>Appointment Required</td>
-        </tr><tr>
-            <td>appointment</td>
-            <td><a href="#T_AppointmentRef">AppointmentRef</a>[]</td>
-            <td>A reference to a set of Appointments for the WorkOrder. A WorkOrder may contain only one open Appointment at a time (e.g. with state of &#x27;scheduled&#x27;).</td>
-            <td>Workorder Appointments</td>
-        </tr><tr>
-            <td>href</td>
-            <td>string</td>
-            <td>Hyperlink, a reference to the WorkOrder entity</td>
-            <td>Not represented in MEF 113</td>
-        </tr><tr>
-            <td>id*</td>
-            <td>string</td>
-            <td>Unique (within the Seller domain) identifier for the WorkOrder.</td>
-            <td>Workorder Identifier</td>
-        </tr><tr>
-            <td>note</td>
-            <td><a href="#T_Note">Note</a>[]</td>
-            <td>A set of unstructured comments or information associated to the WorkOrder</td>
-            <td>Workorder Notes</td>
-        </tr><tr>
-            <td>place</td>
-            <td><a href="#T_RelatedPlaceRefOrValue">RelatedPlaceRefOrValue</a>[]</td>
-            <td>The location where the WorkOrder Tasks are to be performed. If an appointment is needed, this will also be the location where the Appointment takes place and includes the site contact which the Seller technician may need to get access to the Buyer&#x27;s site during the Appointment. This could be an end-user, security personnel or any authorized person</td>
-            <td>Workorder Place</td>
-        </tr><tr>
-            <td>relatedContactInformation*</td>
-            <td><a href="#T_RelatedContactInformation">RelatedContactInformation</a>[]</td>
-            <td>Party playing a role for this WorkOrder.
-The &#x27;role&#x27; is to specify the type of contact as specified in MEF 113:
-Technical Contact (&#x27;role&#x3D;technicalContact&#x27;) - REQUIRED to be set by the Seller. The Seller technical contact responsible for the WorkOrder.
-Technician (&#x27;role&#x3D;technician&#x27;) - The Seller technician assigned to the WorkOrder and responsible for performing a set of tasks. In certain instances this could be a Buyer technician that works on behalf of the Seller.</td>
-            <td>Technical Contact, Technician</td>
-        </tr><tr>
-            <td>relatedEntity*</td>
-            <td><a href="#T_RelatedEntity">RelatedEntity</a>[]</td>
-            <td>An entity that is related to the WorkOrder such as a service, a product, etc. The entity which the WorkOrder is associated with.</td>
-            <td>Workorder Related Entity</td>
-        </tr><tr>
-            <td>state*</td>
-            <td><a href="#T_WorkOrderStateType">WorkOrderStateType</a></td>
-            <td>The current status of the WorkOrder</td>
-            <td>Workorder State</td>
-        </tr><tr>
-            <td>task</td>
-            <td>string[]</td>
-            <td>A set of tasks to be performed under the responsibility of the Technician to fulfil the WorkOrder. Each item is a description of a specific task to be performed under the responsibility of the Technician.</td>
-            <td>Tasks</td>
-        </tr>
-    </tbody>
-</table>
-
-#### 7.2.3.2. `enum` WorkOrderStateType
-
-**Description:** Possible values for the status of the WorkOrder
-
-| state              | MEF 113 name       | Description                                                                                                                                                                                                                                                     |
-| ------------------ | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `completed`        | COMPLETED          | The Seller Technician responsible for the Workorder has successfully completed all the assigned Tasks.                                                                                                                                                          |
-| `cancelled`        | CANCELLED          | The WorkOrder has been cancelled by the Seller or due to the Buyer requesting to cancel the Ticket.                                                                                                                                                             |
-| `inProgress`       | IN_PROGRESS        | The Seller Technician responsible for the Workorder has been assigned and started one or more of the assigned Tasks.                                                                                                                                            |
-| `open`             | OPEN               | A WorkOrder was initiated by the Seller to be assigned to a Technician responsible for resolving the Ticket.                                                                                                                                                    |
-| `planned`          | PLANNED            | The WorkOrder has been given an execution date for resolving one or more Tasks.                                                                                                                                                                                 |
-| `unableToComplete` | UNABLE_TO_COMPLETE | The Seller Technician responsible for the Workorder was unable to complete one or more of the assigned Tasks, because additional skills or information is required. Additional tasks are required to resolve the Ticket and a new Workorder needs to be opened. |
-
-<table id="T_WorkOrderStateType">
-</table>
-
-#### 7.2.3.3. Type WorkOrderRef
-
-**Description:** A reference to an WorkOrder resource.
-
-<table id="T_WorkOrderRef">
-    <thead style="font-weight:bold;">
-        <tr>
-            <td>Name</td>
-            <td>Type</td>
-            <td>Description</td>
-            <td>MEF 113</td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>href</td>
-            <td>string</td>
-            <td>Hyperlink to the referenced WorkOrder.
-</td>
-            <td>Not represented in MEF 113</td>
-        </tr><tr>
-            <td>id*</td>
-            <td>string</td>
-            <td>Identifier of the referenced WorkOrder.</td>
-            <td>Workorder Identifier</td>
-        </tr>
-    </tbody>
-</table>
-
-### 7.2.4. Common
+### 7.2.3. Common
 
 Types described in this subsection are shared among two or more Cantata and
 Sonata APIs.
 
-#### 7.2.4.1. Type AppointmentRef
-
-**Description:** A reference to an Appointment resource available through
-Appointment API.
-
-<table id="T_AppointmentRef">
-    <thead style="font-weight:bold;">
-        <tr>
-            <td>Name</td>
-            <td>Type</td>
-            <td>Description</td>
-            <td>MEF 113</td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>href</td>
-            <td>string</td>
-            <td>Hyperlink to the referenced Appointment. Hyperlink MAY be used by the Seller in responses. Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request
-</td>
-            <td>Not represented in MEF 113</td>
-        </tr><tr>
-            <td>id*</td>
-            <td>string</td>
-            <td>Identifier of the referenced Appointment.</td>
-            <td>Appointment Identifier</td>
-        </tr>
-    </tbody>
-</table>
-
-#### 7.2.4.2. Type AttachmentValue
+#### 7.2.3.1. Type AttachmentValue
 
 **Description:** Complements the description of an element (for instance a
 product) through video, pictures...
@@ -3015,7 +2945,7 @@ product) through video, pictures...
         </tr><tr>
             <td>author*</td>
             <td>string</td>
-            <td>Author of the Attachment</td>
+            <td>The name of the person or organization who added the Attachment.</td>
             <td>Attachment Author</td>
         </tr><tr>
             <td>content</td>
@@ -3023,7 +2953,7 @@ product) through video, pictures...
             <td>The actual contents of the attachment object, if embedded, encoded as base64. Either url or (content and mimeType) attributes MUST be provided during creation.</td>
             <td>Content</td>
         </tr><tr>
-            <td>creationDate</td>
+            <td>creationDate*</td>
             <td>date-time</td>
             <td>The date the Attachment was added.</td>
             <td>Attachment Date</td>
@@ -3061,7 +2991,7 @@ product) through video, pictures...
     </tbody>
 </table>
 
-#### 7.2.4.3. `enum` DataSizeUnit
+#### 7.2.3.2. `enum` DataSizeUnit
 
 **Description:** The unit of measure in the data size.
 
@@ -3094,16 +3024,12 @@ product) through video, pictures...
     </tbody>
 </table>
 
-#### 7.2.4.4. Type FieldedAddress
+#### 7.2.3.3. Type FieldedAddress
 
 **Description:** A type of Address that has a discrete field and value for each
 type of boundary or identifier down to the lowest level of detail. For example
 "street number" is one field, "street name" is another field, etc. Reference:
 MEF 79 (Sn 8.9.2)
-
-Inherits from:
-
-- <a href="#T_RelatedPlaceRefOrValue">RelatedPlaceRefOrValue</a>
 
 <table id="T_FieldedAddress">
     <thead style="font-weight:bold;">
@@ -3189,144 +3115,7 @@ Inherits from:
     </tbody>
 </table>
 
-#### 7.2.4.5. Type FormattedAddress
-
-**Description:** A type of Address that has discrete fields for each type of
-boundary or identifier with the exception of street and more specific location
-details, which are combined into a maximum of two strings based on local postal
-addressing conventions. Reference: MEF 79 (Sn 8.9.3)
-
-Inherits from:
-
-- <a href="#T_RelatedPlaceRefOrValue">RelatedPlaceRefOrValue</a>
-
-<table id="T_FormattedAddress">
-    <thead style="font-weight:bold;">
-        <tr>
-            <td>Name</td>
-            <td>Type</td>
-            <td>Description</td>
-            <td>MEF 113</td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>addrLine1*</td>
-            <td>string</td>
-            <td>The first address line in a formatted address</td>
-            <td>Address Line 1</td>
-        </tr><tr>
-            <td>addrLine2</td>
-            <td>string</td>
-            <td>The second address line in a formatted address</td>
-            <td>Address Line 2</td>
-        </tr><tr>
-            <td>city*</td>
-            <td>string</td>
-            <td>The city that the address is in</td>
-            <td>City</td>
-        </tr><tr>
-            <td>country*</td>
-            <td>string</td>
-            <td>Country that the address is in</td>
-            <td>Country</td>
-        </tr><tr>
-            <td>locality</td>
-            <td>string</td>
-            <td>An area of defined or undefined boundaries within a local authority or other legislatively defined area, usually rural or semi-rural in nature</td>
-            <td>Locality</td>
-        </tr><tr>
-            <td>postcode</td>
-            <td>string</td>
-            <td>Descriptor for a postal delivery area, used to speed and simplify the delivery of mail (also known as ZIP code)</td>
-            <td>Postal Code</td>
-        </tr><tr>
-            <td>postcodeExtension</td>
-            <td>string</td>
-            <td>An extension of a postal code. E.g. the part following the dash in an US urban property address</td>
-            <td>Postal Code Extension</td>
-        </tr><tr>
-            <td>stateOrProvince</td>
-            <td>string</td>
-            <td>The State or Province that the address is in</td>
-            <td>State Or Province</td>
-        </tr>
-    </tbody>
-</table>
-
-#### 7.2.4.6. Type GeographicAddressLabel
-
-**Description:** A unique identifier controlled by a generally accepted
-independent administrative authority that specifies a fixed geographical
-location. Reference: MEF 79 (Sn 8.9.4)
-
-Inherits from:
-
-- <a href="#T_RelatedPlaceRefOrValue">RelatedPlaceRefOrValue</a>
-
-<table id="T_GeographicAddressLabel">
-    <thead style="font-weight:bold;">
-        <tr>
-            <td>Name</td>
-            <td>Type</td>
-            <td>Description</td>
-            <td>MEF 113</td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>externalReferenceId*</td>
-            <td>string</td>
-            <td>A reference to an address by id</td>
-            <td>Administrative Authority Address Label</td>
-        </tr><tr>
-            <td>externalReferenceType*</td>
-            <td>string</td>
-            <td>Uniquely identifies the authority that specifies the addresses reference and/or its type (if the authority specifies more than one type of address). The value(s) to be used are to be agreed during the onboarding. For North American providers this would normally be CLLI (Common Language Location Identifier) code.</td>
-            <td>Administrative Authority</td>
-        </tr>
-    </tbody>
-</table>
-
-#### 7.2.4.7. Type GeographicAddressRef
-
-**Description:** A reference to a Geographic Address resource available through
-Address Validation API.
-
-Inherits from:
-
-- <a href="#T_RelatedPlaceRefOrValue">RelatedPlaceRefOrValue</a>
-
-<table id="T_GeographicAddressRef">
-    <thead style="font-weight:bold;">
-        <tr>
-            <td>Name</td>
-            <td>Type</td>
-            <td>Description</td>
-            <td>MEF 113</td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>href</td>
-            <td>string</td>
-            <td>Hyperlink to the referenced GeographicAddress. Hyperlink MAY be used by the Seller in responses. Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request
-</td>
-            <td>Not represented in MEF 113</td>
-        </tr><tr>
-            <td>id*</td>
-            <td>string</td>
-            <td>Identifier of the referenced Geographic Address. This identifier is assigned during a successful address validation request (Geographic Address Validation API)</td>
-            <td>Not represented in MEF 113</td>
-        </tr>
-    </tbody>
-</table>
-
-#### 7.2.4.8. Type GeographicSiteRef
-
-ERROR -> Unrecognized type: 'AppoinGeographicSiteReftmentRef'!
-
-#### 7.2.4.9. Type GeographicSubAddress
+#### 7.2.3.4. Type GeographicSubAddress
 
 **Description:** Additional fields used to specify an address, as detailed as
 possible.
@@ -3376,12 +3165,12 @@ possible.
             <td>subUnit</td>
             <td><a href="#T_MEFSubUnit">MEFSubUnit</a>[]</td>
             <td>Representation of a MEFSubUnit It is used for describing subunit within a subaddress  e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF.</td>
-            <td>Not represented in MEF 80</td>
+            <td>Not represented in MEF 113</td>
         </tr>
     </tbody>
 </table>
 
-#### 7.2.4.10. `enum` MEFBuyerSellerType
+#### 7.2.3.5. `enum` MEFBuyerSellerType
 
 **Description:** An enumeration with buyer and seller values.
 
@@ -3403,7 +3192,7 @@ possible.
     </tbody>
 </table>
 
-#### 7.2.4.11. Type MEFByteSize
+#### 7.2.3.6. Type MEFByteSize
 
 **Description:** A size represented by value and Byte units
 
@@ -3431,7 +3220,7 @@ possible.
     </tbody>
 </table>
 
-#### 7.2.4.12. Type MEFGeographicPoint
+#### 7.2.3.7. Type MEFGeographicPoint
 
 **Description:** A MEFGeographicPoint defines a geographic point through
 coordinates. Reference: MEF 79 (Sn 8.9.5)
@@ -3474,7 +3263,7 @@ Inherits from:
     </tbody>
 </table>
 
-#### 7.2.4.13. Type MEFSubUnit
+#### 7.2.3.8. Type MEFSubUnit
 
 **Description:** Allows for sub unit identification
 
@@ -3502,7 +3291,7 @@ Inherits from:
     </tbody>
 </table>
 
-#### 7.2.4.14. Type Note
+#### 7.2.3.9. Type Note
 
 **Description:** Extra information about a given entity. Only useful in
 processes involving human interaction. Not applicable for automated process.
@@ -3546,7 +3335,7 @@ processes involving human interaction. Not applicable for automated process.
     </tbody>
 </table>
 
-#### 7.2.4.15. Type RelatedContactInformation
+#### 7.2.3.10. Type RelatedContactInformation
 
 **Description:** Contact data for a person or organization that is involved in
 a given context. It is specified by the Seller (e.g. Seller Contact
@@ -3596,12 +3385,12 @@ Information) or by the Buyer.
             <td>role*</td>
             <td>string</td>
             <td>A role the party plays in a given context.</td>
-            <td>Not represented in MEF 80</td>
+            <td>Not represented in MEF 113</td>
         </tr>
     </tbody>
 </table>
 
-#### 7.2.4.16. Type RelatedEntity
+#### 7.2.3.11. Type RelatedEntity
 
 **Description:** A reference to an entity, where the type of the entity is not
 known in advance.
@@ -3640,48 +3429,24 @@ known in advance.
     </tbody>
 </table>
 
-#### 7.2.4.17. Type RelatedPlaceRefOrValue
-
-**Description:** Defines the Place (Address or Site) by reference or by value.
-
-<table id="T_RelatedPlaceRefOrValue">
-    <thead style="font-weight:bold;">
-        <tr>
-            <td>Name</td>
-            <td>Type</td>
-            <td>Description</td>
-            <td>MEF 113</td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>@schemaLocation</td>
-            <td>uri</td>
-            <td>A URI to a JSON-Schema file that defines additional attributes and relationships. May be used to define additional related place types. Usage of this attribute must be agreed upon between Buyer and Seller.</td>
-            <td>Not represented in MEF 113</td>
-        </tr><tr>
-            <td>@type*</td>
-            <td>string</td>
-            <td>This field is used as a discriminator and is used between different place representations. This type might discriminate for additional related place as defined in &#x27;@schemaLocation&#x27;.
-</td>
-            <td>Not represented in MEF 113</td>
-        </tr><tr>
-            <td>role*</td>
-            <td>string</td>
-            <td>Role of this place</td>
-            <td>RelatedPlaceRefOrValue</td>
-        </tr>
-    </tbody>
-</table>
-
-### 7.2.5. Notification registration
+### 7.2.4. Notification registration
 
 Notification registration and management are done through `/hub` API endpoint.
 The below sections describe data models related to this endpoint.
 
-#### 7.2.5.1. Type EventSubscriptionInput
+#### 7.2.4.1. Type EventSubscriptionInput
 
 **Description:** This class is used to register for Notifications.
+
+| API name                                 | MEF 113 name          | Description                                                                                                                                                                                                                                                                                                           |
+| ---------------------------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `troubleTicketAttributeValueChangeEvent` | TICKET_UPDATE         | The Seller settable attributes for a Ticket were updated by the Seller. Note: Buyer initiated Ticket updates due to Patch operation will not trigger a `troubleTicketAttributeValueChangeEvent`                                                                                                                       |
+| `troubleTicketInformationRequiredEvent`  | TICKET_STATE_CHANGE   | A Ticket `status` was changed by the Seller.                                                                                                                                                                                                                                                                          |
+| `troubleTicketResolvedEvent`             | TICKET_INFO_REQUIRED  | The Seller requires more information from the Buyer for a Ticket to continue processing a Ticket. The details on what information is needed from the Buyer will be provided via a Ticket `note`. The Ticket `status` is `pending`. Note: The Buyer uses the Patch operation to provide more information for a Ticket. |
+| `troubleTicketStatusChangeEvent`         | TICKET_RESOLVED       | The Seller is informing the Buyer the Ticket is resolved and the Buyer to verify that the Issue on which the Ticket was based is no longer observed. The Ticket `status` is `resolved`. Note: The Buyer confirms if the Issue has been resolved satisfactorily or not using close or reopen operations                |
+| `incidentCreateEvent`                    | INCIDENT_CREATE       | A new Incident was created by the Seller.                                                                                                                                                                                                                                                                             |
+| `incidentAttributeValueChangeEvent`      | INCIDENT_UPDATE       | An open Incident was updated by the Seller.                                                                                                                                                                                                                                                                           |
+| `incidentStatusChangeEvent`              | INCIDENT_STATE_CHANGE | An Incident `status` was changed by the Seller.                                                                                                                                                                                                                                                                       |
 
 <table id="T_EventSubscriptionInput">
     <thead style="font-weight:bold;">
@@ -3702,12 +3467,12 @@ The below sections describe data models related to this endpoint.
             <td>query</td>
             <td>string</td>
             <td>This attribute is used to define to which type of events to register to. Example: &quot;query&quot;:&quot;eventType &#x3D; troubleTicketStatusChangeEvent&quot;. To subscribe for more than one event type, put the values separated by comma: &#x60;eventType&#x3D;troubleTicketStatusChangeEvent,troubleTicketResolvedEvent&#x60;. The possible values are enumerated by the &#x27;TroubleTicketEventType&#x27; in troubleTicketNotification.api.yaml. An empty query is treated as specifying no filters - ending in  subscription for all event types.</td>
-            <td>List of Notification Event Types, Action</td>
+            <td>List of Event Notification Types, Action</td>
         </tr>
     </tbody>
 </table>
 
-#### 7.2.5.2. Type EventSubscription
+#### 7.2.4.2. Type EventSubscription
 
 **Description:** Sets the communication endpoint address the service instance
 must use to deliver notification information
@@ -3743,11 +3508,11 @@ must use to deliver notification information
 
 ## 7.3. Notification API Data model
 
-Figure 21 presents the Trouble Ticket Management Notification data model.
+Figure 20 presents the Trouble Ticket Management Notification data model.
 
-![Trouble Ticket Management Notification Data Model](media/useCase15NotificationModel.png)
+![Trouble Ticket Management Notification Data Model](media/useCase18NotificationModel.png)
 
-**Figure 21. Trouble Ticket Management Notification Data Model**
+**Figure 20. Trouble Ticket Management Notification Data Model**
 
 This data model is used to construct requests and responses of the API
 endpoints described in [Section 5.2.2](#522-buyer-side-api-endpoints).
@@ -3817,31 +3582,14 @@ Inherits from:
 
 ### 7.3.3. `enum` TroubleTicketEventType
 
-**Description:** Type of the Trouble Ticket Event
+**Description:** Type of the Trouble Ticket event.
 
-<table id="T_TroubleTicketEventType">
-    <thead style="font-weight:bold;">
-        <tr>
-            <td>Value</td>
-            <td>MEF 113</td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>troubleTicketAttributeValueChangeEvent</td>
-            <td>UPDATE</td>
-        </tr><tr>
-            <td>troubleTicketInformationRequiredEvent</td>
-            <td>INFO_REQUIRED</td>
-        </tr><tr>
-            <td>troubleTicketResolvedEvent</td>
-            <td>CLEARANCE_REQUEST</td>
-        </tr><tr>
-            <td>troubleTicketStatusChangeEvent</td>
-            <td>STATE_CHANGE</td>
-        </tr>
-    </tbody>
-</table>
+| API name                                 | MEF 113 name         | Description                                                                                                                                                                                                                                                                                                           |
+| ---------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `troubleTicketAttributeValueChangeEvent` | TICKET_UPDATE        | The Seller settable attributes for a Ticket were updated by the Seller. Note: Buyer initiated Ticket updates due to Patch operation will not trigger a `troubleTicketAttributeValueChangeEvent`                                                                                                                       |
+| `troubleTicketInformationRequiredEvent`  | TICKET_STATE_CHANGE  | A Ticket `status` was changed by the Seller.                                                                                                                                                                                                                                                                          |
+| `troubleTicketResolvedEvent`             | TICKET_INFO_REQUIRED | The Seller requires more information from the Buyer for a Ticket to continue processing a Ticket. The details on what information is needed from the Buyer will be provided via a Ticket `note`. The Ticket `status` is `pending`. Note: The Buyer uses the Patch operation to provide more information for a Ticket. |
+| `troubleTicketStatusChangeEvent`         | TICKET_RESOLVED      | The Seller is informing the Buyer the Ticket is resolved and the Buyer to verify that the Issue on which the Ticket was based is no longer observed. The Ticket `status` is `resolved`. Note: The Buyer confirms if the Issue has been resolved satisfactorily or not using close or reopen operations                |
 
 ### 7.3.4. Type TroubleTicketEventPayload
 
@@ -3956,31 +3704,13 @@ Inherits from:
 
 ### 7.3.7. `enum` IncidentEventType
 
-**Description:** Type of the Incident Event
+**Description:** Type of the Incident event.
 
-<table id="T_IncidentEventType">
-    <thead style="font-weight:bold;">
-        <tr>
-            <td>Value</td>
-            <td>MEF 113</td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>incidentCreatedEvent</td>
-            <td>CREATED</td>
-        </tr><tr>
-            <td>incidentAttributeValueChangeEvent</td>
-            <td>UPDATE</td>
-        </tr><tr>
-            <td>incidentClosedEvent</td>
-            <td>CLOSED</td>
-        </tr><tr>
-            <td>incidentStatusChangeEvent</td>
-            <td>STATE_CHANGE</td>
-        </tr>
-    </tbody>
-</table>
+| API name                            | MEF 113 name          | Description                                     |
+| ----------------------------------- | --------------------- | ----------------------------------------------- |
+| `incidentCreateEvent`               | INCIDENT_CREATE       | A new Incident was created by the Seller.       |
+| `incidentAttributeValueChangeEvent` | INCIDENT_UPDATE       | An open Incident was updated by the Seller.     |
+| `incidentStatusChangeEvent`         | INCIDENT_STATE_CHANGE | An Incident `status` was changed by the Seller. |
 
 # 8. References
 
@@ -3997,9 +3727,13 @@ Inherits from:
 - [MEF80] [MEF 80](https://www.mef.net/wp-content/uploads/MEF-80.pdf), Quote
   Management Requirements and Use Cases, July 2021
 - [MEF113]
-  [MEF W113 0.15](https://www.mef.net/wp-content/uploads/MEF-113-Draft-R2.pdf)Trouble
-  Ticketing Business Requirements and Use Cases, January 2022, Draft Standard
-  (R2)
+  [MEF 113](https://www.mef.net/wp-content/uploads/MEF-113-Draft-R3.pdf)
+  Trouble Ticketing Business Requirements and Use Cases, May 2022, Draft
+  Standard (R3)
+- [MEF137]
+  [MEF W137](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/blob/dolly/documentation/productApi/workforce/MEF%20W137%20-%20LSO%20Cantata%20and%20LSO%20Sonata%20Appointment%20Management%20API%20-%20Developer%20Guide.pdf)
+  LSO Cantata and LSO Sonata Appointment Management API - Developer Guide, May
+  2022, Working Draft
 - [REST]
   [Chapter 5: Representational State Transfer (REST)](http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
   Fielding, Roy Thomas, Architectural Styles and the Design of Network-based
@@ -4010,9 +3744,9 @@ Inherits from:
   Resource Identifier (URI): Generic Syntax, January 2005
 - [RFC8174] [RFC 8174](https://tools.ietf.org/html/rfc8174), Ambiguity of
   Uppercase vs Lowercase in RFC 2119 Key Words, May 2017
-- [TMF630]
-  [TMF 630](https://www.tmforum.org/resources/specification/tmf630-rest-api-design-guidelines-4-2-0/)
-  TMF630 API Design Guidelines 4.2.0
 - [TMF621]
   [TMF 621](https://www.tmforum.org/resources/specification/tmf621-trouble-ticket-management-api-rest-specification-r19-0-0/),
   Trouble Ticket API REST Specification R19.0.1, November 2019
+- [TMF630]
+  [TMF 630](https://www.tmforum.org/resources/specification/tmf630-rest-api-design-guidelines-4-2-0/)
+  TMF630 API Design Guidelines 4.2.0

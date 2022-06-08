@@ -1,0 +1,32 @@
+@startuml
+
+hide footbox
+
+participant Buyer
+participant Seller
+
+
+entity "Appointment" as A
+
+
+autonumber
+
+note over WorkOrder: WorkOrder in `planned`, `inProgress`
+Buyer -> Seller : POST /appointment/{{id}}/cancel request
+
+Seller -> Seller: find Appointment id
+Seller -> Seller: check Appointment status
+
+Seller -> WorkOrder: (causes status change)
+A -> A: status: scheduled
+Seller --> Buyer: POST /appointment/{{id}}/cancel response
+A -> Buyer: POST appointmentStatusChangeEvent
+
+...
+
+A -> A: status: cancelled
+A -> Buyer: POST appointmentStatusChangeEvent
+
+
+
+@enduml

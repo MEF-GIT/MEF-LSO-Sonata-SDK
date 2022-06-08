@@ -1,0 +1,191 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class Appointment_Update {
+
+    status: AppointmentStateType
+}
+
+Appointment_Update *-->"*" AttachmentValue : attachment
+Appointment_Update *-->"*" Note : note
+Appointment_Update *-->"*" RelatedEntity : relatedEntity
+Appointment_Update *--> RelatedPlaceRefOrValue : relatedPlace
+Appointment_Update *-->"1" TimePeriod : validFor
+Appointment_Update *-->"*" RelatedContactInformation : relatedContactInformation
+
+
+class AttachmentValue {
+
+    attachmentId: string
+    author*: string
+    content: string
+    creationDate: date-time
+    description: string
+    mimeType: string
+    name*: string
+    source*: MEFBuyerSellerType
+    url: string
+}
+
+AttachmentValue *--> MEFByteSize : size
+
+
+class FormattedAddress {
+
+    addrLine1*: string
+    addrLine2: string
+    city*: string
+    country*: string
+    locality: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+}
+RelatedPlaceRefOrValue <|-- FormattedAddress
+
+
+
+class GeographicAddressRef {
+
+    href: string
+    id*: string
+}
+RelatedPlaceRefOrValue <|-- GeographicAddressRef
+
+
+
+class GeographicSiteRef {
+
+    href: string
+    id*: string
+}
+RelatedPlaceRefOrValue <|-- GeographicSiteRef
+
+
+
+class GeographicSubAddress {
+
+    buildingName: string
+    id: string
+    levelNumber: string
+    levelType: string
+    privateStreetName: string
+    privateStreetNumber: string
+}
+
+GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+
+class MEFByteSize {
+
+    amount: float
+    units: DataSizeUnit
+}
+
+
+
+class MEFSubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+
+
+
+class Note {
+
+    author*: string
+    date*: date-time
+    id*: string
+    source*: MEFBuyerSellerType
+    text*: string
+}
+
+
+
+class RelatedContactInformation {
+
+    emailAddress*: string
+    name*: string
+    number*: string
+    numberExtension: string
+    organization: string
+    role*: string
+}
+
+RelatedContactInformation *--> FieldedAddress : postalAddress
+
+
+class RelatedEntity {
+
+    @referredType*: string
+    href: string
+    id*: string
+    role*: string
+}
+
+
+class TimePeriod {
+
+    endDateTime: date-time
+    startDateTime: date-time
+}
+
+class FieldedAddress {
+
+    city*: string
+    country*: string
+    locality: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+    streetName*: string
+    streetNr: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetNrSuffix: string
+    streetSuffix: string
+    streetType: string
+}
+RelatedPlaceRefOrValue <|-- FieldedAddress
+
+FieldedAddress *--> GeographicSubAddress : geographicSubAddress
+
+
+class GeographicAddressLabel {
+
+    externalReferenceId*: string
+    externalReferenceType*: string
+}
+RelatedPlaceRefOrValue <|-- GeographicAddressLabel
+
+
+
+class RelatedPlaceRefOrValue {
+
+    @schemaLocation: uri
+    @type*: string
+    role*: string
+}
+
+class MEFGeographicPoint {
+
+    spatialRef*: string
+    x*: string
+    y*: string
+    z: string
+}
+RelatedPlaceRefOrValue <|-- MEFGeographicPoint
+
+
+
+class TimeSlot {
+
+}
+
+TimeSlot *-->"1" TimePeriod : validFor
+
+
+@enduml

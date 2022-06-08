@@ -9,8 +9,9 @@ Buyer -> Seller : POST {{baseUrl}}/productOrder (ProductOrder_Create)
 
 Seller -> Seller : basic validation
 Seller -> Seller : assign id
+Seller -> Seller : state: acknowledged
 alt successful inquiry
-    Buyer <-- Seller : 201 ProductOrder with {{id}} in acknowledged state
+    Buyer <-- Seller : 201 ProductOrder with {{id}}
 else validation or internal problem
     Buyer <-- Seller: 4xx/5xx : error response
 end

@@ -1,0 +1,369 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class AppointmentRef {
+
+    href: string
+    id*: string
+}
+
+
+
+class Error400 {
+
+    code*: Error400Code
+}
+Error <|-- Error400
+
+
+
+class Error401 {
+
+    code*: Error401Code
+}
+Error <|-- Error401
+
+
+
+class Error422 {
+
+    code*: Error422Code
+    propertyPath: string
+}
+Error <|-- Error422
+
+
+
+class Error500 {
+
+    code*: string
+}
+Error <|-- Error500
+
+
+
+class Error501 {
+
+    code*: string
+}
+Error <|-- Error501
+
+
+
+class EventSubscription {
+
+    callback*: string
+    id*: string
+    query: string
+}
+
+
+
+class FieldedAddress {
+
+    city*: string
+    country*: string
+    locality: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+    streetName*: string
+    streetNr: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetNrSuffix: string
+    streetSuffix: string
+    streetType: string
+}
+RelatedPlaceRefOrValue <|-- FieldedAddress
+
+FieldedAddress *--> GeographicSubAddress : geographicSubAddress
+
+
+class GeographicAddressLabel {
+
+    externalReferenceId*: string
+    externalReferenceType*: string
+}
+RelatedPlaceRefOrValue <|-- GeographicAddressLabel
+
+
+
+class TimeDuration {
+
+    timeDurationValue: integer
+    timeDurationUnits: TimeDurationUnits
+}
+
+
+
+enum MEFBuyerSellerType {
+
+    buyer
+    seller
+}
+class WorkOrder_Find {
+
+    appointmentRequired*: boolean
+    id*: string
+    state*: WorkOrderStateType
+}
+
+WorkOrder_Find *-->"*" RelatedPlaceRefOrValue : place
+WorkOrder_Find *-->"1..*" RelatedEntity : relatedEntity
+
+
+enum Error422Code {
+
+    missingProperty
+    invalidValue
+    invalidFormat
+    referenceNotFound
+    unexpectedProperty
+    tooManyRecords
+    otherIssue
+}
+class MEFGeographicPoint {
+
+    spatialRef*: string
+    x*: string
+    y*: string
+    z: string
+}
+RelatedPlaceRefOrValue <|-- MEFGeographicPoint
+
+
+
+enum Error400Code {
+
+    missingQueryParameter
+    missingQueryValue
+    invalidQuery
+    invalidBody
+}
+class Error409 {
+
+    code*: string
+}
+Error <|-- Error409
+
+
+
+class RelatedPlaceRefOrValue {
+
+    @schemaLocation: uri
+    @type*: string
+    role*: string
+}
+
+
+
+class WorkOrder {
+
+    id*: string
+    href: string
+    appointmentRequired*: boolean
+    state*: WorkOrderStateType
+    task: string
+}
+
+WorkOrder *-->"*" AppointmentRef : appointment
+WorkOrder *--> TimeDuration : duration
+WorkOrder *-->"*" Note : note
+WorkOrder *-->"*" RelatedPlaceRefOrValue : place
+WorkOrder *-->"1..*" RelatedContactInformation : relatedContactInformation
+WorkOrder *-->"1..*" RelatedEntity : relatedEntity
+
+
+enum Error401Code {
+
+    missingCredentials
+    invalidCredentials
+}
+class Error404 {
+
+    code*: string
+}
+Error <|-- Error404
+
+
+
+enum DataSizeUnit {
+
+    BYTES
+    KBYTES
+    MBYTES
+    GBYTES
+    TBYTES
+    PBYTES
+    EBYTES
+    ZBYTES
+    YBYTES
+}
+class Error403 {
+
+    code*: Error403Code
+}
+Error <|-- Error403
+
+
+
+class Error {
+
+    message: string
+    reason*: string
+    referenceError: uri
+}
+
+
+
+class EventSubscriptionInput {
+
+    callback*: string
+    query: string
+}
+
+
+
+class FormattedAddress {
+
+    addrLine1*: string
+    addrLine2: string
+    city*: string
+    country*: string
+    locality: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+}
+RelatedPlaceRefOrValue <|-- FormattedAddress
+
+
+
+class GeographicAddressRef {
+
+    href: string
+    id*: string
+}
+RelatedPlaceRefOrValue <|-- GeographicAddressRef
+
+
+
+class GeographicSiteRef {
+
+    href: string
+    id*: string
+}
+RelatedPlaceRefOrValue <|-- GeographicSiteRef
+
+
+
+class GeographicSubAddress {
+
+    buildingName: string
+    id: string
+    levelNumber: string
+    levelType: string
+    privateStreetName: string
+    privateStreetNumber: string
+}
+
+GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+
+
+class Note {
+
+    author*: string
+    date*: date-time
+    id*: string
+    source*: MEFBuyerSellerType
+    text*: string
+}
+
+
+
+class WorkOrderRef {
+
+    href: string
+    id*: string
+}
+
+
+
+enum Error403Code {
+
+    accessDenied
+    forbiddenRequester
+    tooManyUsers
+}
+class MEFByteSize {
+
+    amount: float
+    units: DataSizeUnit
+}
+
+
+
+enum MEFObservedImpactType {
+
+    degraded
+    intermittent
+    down
+}
+class MEFSubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+
+
+
+class RelatedContactInformation {
+
+    emailAddress*: string
+    name*: string
+    number*: string
+    numberExtension: string
+    organization: string
+    role*: string
+}
+
+RelatedContactInformation *--> FieldedAddress : postalAddress
+
+
+class RelatedEntity {
+
+    @referredType*: string
+    href: string
+    id*: string
+    role*: string
+}
+
+
+
+enum TimeDurationUnits {
+
+    NS
+    US
+    MS
+    SEC
+    MIN
+    HOUR
+    DAY
+    WEEK
+    MONTH
+    YEAR
+}
+enum WorkOrderStateType {
+
+    cancelled
+    completed
+    inProgress
+    open
+    planned
+    unableToComplete
+}
+@enduml

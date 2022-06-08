@@ -1,0 +1,177 @@
+---
+$id: urn:mef:lso:spec:cantata-sonata:advancedIaIpvc:v0.1.0:all
+$schema: http://json-schema.org/draft-07/schema#
+title: MEF LSO Advanced Internet Access IPVC
+type: object
+description: >-
+  The Advanced Internet Access IPVC is a MEF 69.1 defined version of MEF 61.1
+  IPVC. Reference MEF 69.1 Section 9.1 Internet Access IPVC Requirements.
+properties:
+  advancedIaIpvcEndPoint:
+    $ref: '#/definitions/AdvancedIaIpvcEndPoint'
+    description: >-
+      Advanced IPVC End Point. Reference MEF 61.1 Section 10.3 IPVC End Point
+      List Service Attribute. This is narrowed to multiplicity = 1 and to
+      AdvancedIaIpvcEndPoint type. Reference MEF 69.1 Section 9.1 [R5]
+      AdvancedIaIpvc
+  classOfServiceName:
+    description: >-
+      The Class of Service Name supported by the IPVC. Reference MEF 61.1
+      Section 10.8 IPVC List of Class of Service Names Service Attribute. This
+      is "listOfClassOfServiceNames" attribute narrowed to single ref per
+      Reference MEF 69.1 Section 9.1 [R7]
+    type: string
+  cloud:
+    $ref: '#/definitions/AdvancedIaIpvcCloud'
+    description: >-
+      Reference MEF 61.1 Section 10.13 IPVC Cloud Service Attribute. The absence
+      of this attribute corresponds to a value of "None". 
+  dscpPreservation:
+    $ref: ../../common/ipCommon.yaml#/definitions/EnabledDisabled
+    description: >-
+      Indicates where the SP or Operator is allowed to modify the value of the
+      IP DS field in the IP header of the Subscriber's traffic as it traverses
+      the IPVC. Reference MEF 61.1 Section 10.7 IPVC DSCP Preservation Service
+      Attribute. The value SHOULD be set to DISABLED. Reference MEF 69.1 Section
+      9.1 [D3]
+  maximumNumberOfIpv4Routes:
+    description: >-
+      Maximum number of IPv4 routes supported by the service as a whole. Absence
+      of this attribute corresponds to a value of "Unlimited". Reference MEF
+      61.1 Section 10.5 IPVC Maximum Number of IPv4 Routes Service Attribute.
+    type: integer
+  maximumNumberOfIpv6Routes:
+    description: >-
+      Maximum number of IPv6 routes supported by the service as a whole. Absence
+      of this attribute corresponds to a value of "Unlimited". Reference MEF
+      61.1 Section 10.6 IPVC Maximum Number of IPv6 Routes Service Attribute.
+    type: integer
+  maximumTransferUnit:
+    description: >-
+      Indicates the maximum size (in octets) of an IP packet that can traverse
+      the IPVC without fragmentation. Reference MEF 61.1 Section 10.10 IPVC MTU
+      Service Attribute.
+    minimum: 576
+    type: integer
+  packetDelivery:
+    $ref: ../../common/ipCommon.yaml#/definitions/PacketDelivery
+    description: >-
+      Indicates whether packets are delivered per standard IP routing behavior
+      or by some other means. Reference MEF 61.1 Section 10.4 IPVC Packet
+      Delivery Service Attribute.
+  pathMtuDiscovery:
+    $ref: ../../common/ipCommon.yaml#/definitions/EnabledDisabled
+    description: >-
+      Indicates whether the Path MTU Discovery is supported for the IPVC.
+      Reference MEF 61.1 Section 10.11 IPVC Path MTU Discovery Service
+      Attribute.
+  reservedPrefixes:
+    $ref: ../../common/ipCommon.yaml#/definitions/Ipv4Ipv6Prefixes
+    description: >-
+      Reference MEF 61.1 Section 10.14 IPVC Reserved Prefixes Service Attribute.
+      For Advanced Internet Access the prefixes must be either empty, or free
+      from any public address pre-fixes. (Reference MEF 69.1 Section 9.1 [R14])
+  serviceLevelSpecification:
+    $ref: ../internetAccessCommon.yaml#/definitions/IaIpSls
+    description: >-
+      The set of performance objectives for CoS Name in the IPVC. The absence of
+      this attribute corresponds to a value of "None". Reference MEF 61.1
+      Section 10.9 IPVC Service Level Specification Service Attribute.
+definitions:
+  AdvancedIaIpvcCloud:
+    description: >-
+      Reference MEF 61.1 Section 10.13 IPVC Cloud Service Attribute. The absence
+      of this attribute corresponds to a value of "None".
+    properties:
+      dataLimit:
+        description: >-
+          Limit on the amount of Data traffic sent to/received from the cloud
+          service. Unlimited or a 4-tupe (scdl, Tcdl, ucdl, dcdl). If not
+          provided, then Unlimited. Reference MEF 61.1 Section 10.13.3 Cloud
+          Data Limit.
+        $ref: ../../common/ipCommon.yaml#/definitions/CloudDataLimit
+      dns:
+        description: >-
+          Specifies whether and how DNS is provided for the service. Reference
+          MEF 61.1 Section 10.13.5 Cloud DNS Service.
+        $ref: ../../common/ipCommon.yaml#/definitions/CloudDns
+      ingressClassOfServiceMap:
+        $ref: ../internetAccessCommon.yaml#/definitions/IaIngressClassOfServiceMap
+        description: >-
+          Specification of how ingress packets are mapped to different CoS
+          Names. Reference MEF 61.1 Section 10.13.2 Cloud Ingress Class of
+          Service Map.
+      networkAddressTranslation:
+        description: >-
+          Specifies whether Network Address Translation is used, and if so the
+          IPv4 Prefix. If not selected, then Disabled. Reference MEF 61.1
+          Section 10.13.4 Cloud Network Address Translation.
+        $ref: ../../common/ipCommon.yaml#/definitions/Ipv4Prefix
+      subscriberPrefixList:
+        description: >-
+          List of Public IP Prefixes used in the Subscriber Network. Reference
+          MEF 61.1 Section 10.13.6 Cloud Subscriber Prefix List.
+        $ref: ../../common/ipCommon.yaml#/definitions/Ipv4Ipv6Prefixes
+    type: object
+  AdvancedIaIpvcEndPoint:
+    allOf:
+      - $ref: ../../common/ipSls.yaml#/definitions/SlsReferencePoint
+      - description: >-
+          The Advanced Internet Access IPVC End Point is a MEF 69.1 defined
+          version of MEF 61.1 IPVC End Point. Reference MEF 69.1 Section 9.2
+          Internet Access IPVC End Point Requirements.
+        properties:
+          egressBandwidthProfileEnvelope:
+            $ref: ../../common/ipCommon.yaml#/definitions/IpvcEpEgressBwpEnvelope
+            description: >-
+              Egress Bandwidth Profile Envelope for the IPVC End Point. The
+              absence of this attribute corresponds to a value of "None".
+              Reference MEF 61.1 Section 11.12 IPVC EP Egress Bandwidth Profile
+              Envelope Service Attribute.
+          egressClassOfServiceMap:
+            $ref: ../../common/ipCommon.yaml#/definitions/EgressClassOfServiceMap
+            description: >-
+              Specification of how egress packets are mapped to CoS Name.
+              Reference MEF 61.1 Section 11.10 IPVC EP Egress Class of Service
+              Map Service Attribute.
+          identifier:
+            description: >-
+              A unique identifier for the IPVC End Point for management
+              purposes. Reference MEF 61.1 Section 11.1 IPVC EP Identifier
+              Service Attribute.
+            type: string
+          ingressBandwidthProfileEnvelope:
+            $ref: ../../common/ipCommon.yaml#/definitions/IpvcEpIngressBwpEnvelope
+            description: >-
+              Ingress Bandwidth Profile Envelope for the IPVC End Point. The
+              absence of this attribute corresponds to a value of "None".
+              Reference MEF 61.1 Section 11.11 IPVC EP Ingress Bandwidth Profile
+              Envelope Service Attribute.
+          ingressClassOfServiceMap:
+            $ref: >-
+              ../internetAccessCommon.yaml#/definitions/IaIngressClassOfServiceMap
+            description: >-
+              Specification of how ingress packets are mapped to CoS Name.
+              Reference MEF 61.1 Section 11.9 IPVC EP Ingress Class of Service
+              Map Service Attribute.
+          maximumNumberOfIpv4Routes:
+            description: >-
+              Maximum number of IPv4 routes supported by this IPVC End Point.
+              Reference MEF 61.1 Section 11.7 IPVC EP Maximum Number of IPv4
+              Routes Service Attribute. Absence of this attribute corresponds to
+              a value of "Unlimited".
+            type: integer
+          maximumNumberOfIpv6Routes:
+            description: >-
+              Maximum number of IPv6 routes supported by this IPVC End Point.
+              Reference MEF 61.1 Section 11.8 IPVC EP Maximum Number of IPv6
+              Routes Service Attribute. Absence of this attribute corresponds to
+              a value of "Unlimited".
+            type: integer
+          prefixMapping:
+            $ref: ../../common/ipCommon.yaml#/definitions/Ipv4Ipv6Prefixes
+            description: >-
+              Indicates which IP Prefixes can send and receive traffic to/from
+              the IPVC. Reference MEF 61.1 Section 11.5 IPVC EP Prefix Mapping
+              Service Attribute.
+        type: object

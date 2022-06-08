@@ -1,0 +1,1770 @@
+openapi: 3.0.1
+info:
+  description: |
+    **This file forms part of MEF W137**
+    
+    **This API implements Business Requirements described in MEF W113.**
+    
+    **This specification represents MEF work in progress and is subject to
+    change.**
+    
+    An Appointment is an arrangement to do something or meet someone at a 
+    particular time and place. It is previously made during an interaction 
+    or may be necessary to solve a customer problem or to deliver a product 
+    order item. The appointment API goal is to manage an appointment with 
+    all the necessary characteristics. 
+
+  
+    List of supported use cases:
+    - Search Appointment Timeslot
+    - Create Appointment
+    - Retrieve Appointment List
+    - Retrieve Appointment by Appointment Identifier
+    - Patch Appointment by Appointment Identifier
+    - Cancel Appointment by Appointment Identifier
+    - Register for Appointment Notifications
+
+    Copyright 2022 MEF Forum and its contributors
+
+    This file includes content based on the TM Forum Appointment Management API (TMF646
+    v4.0.0) available at https://github.com/tmforum-apis/TMF646_AppointmentManagement,
+    which is licensed by the TM Forum under the Apache License version 2.0.
+    Such content has been modified by the MEF Forum and its contributors.
+  title: Appointment Management
+  version: 1.0.0-RC
+servers:
+  - url: 'https://{serverBase}/mefApi/sonata/appointment/v1/'
+    variables:
+      serverBase:
+        default: mef.net
+        description: The base of Seller's URL.
+tags:
+  - name: appointment
+  - name: searchTimeSlot
+  - name: events subscription
+paths:
+  /appointment:
+    get:
+      description: >
+        The Buyer requests a list of Appointment from the Seller based on a set
+        of specified filter criteria. The Seller returns a summarized list of
+        Appointments.
+      operationId: listAppointment
+      parameters:
+        - description: >-
+            A reference to a WorkOrder for which the Appointment is created.
+          in: query
+          name: workOrderId
+          schema:
+            type: string
+        - description: >-
+            The Date and Time the Appointment is confirmed to start and end -
+            greater than.
+          in: query
+          name: validFor.gt
+          schema:
+            format: date-time
+            type: string
+        - description: >-
+            The Date and Time the Appointment is confirmed to start and end -
+            lower than.
+          in: query
+          name: validFor.lt
+          schema:
+            format: date-time
+            type: string
+        - description: >-
+            The status of the Appointment.
+          in: query
+          name: status
+          schema:
+            enum:
+              - confirmed
+              - cancelled
+              - missed
+              - failed
+              - completed
+            type: string
+        - description:
+            A site identifier which is associated to the Appointment.
+          in: query
+          name: geographicSiteId
+          schema:
+            type: string
+        - description:
+            A address identifier which is associated to the Appointment.
+          in: query
+          name: geographicAddressId
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity represents more than one Seller.
+          in: query
+          name: sellerId
+          schema:
+            type: string
+        - description:
+            Requested index for start of resources to be provided in response
+          in: query
+          name: offset
+          schema:
+            type: integer
+        - description: Requested number of resources to be provided in response
+          in: query
+          name: limit
+          schema:
+            format: int32
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Appointment'
+                type: array
+          description: 'OK. (https://tools.ietf.org/html/rfc7231section-6.3.1)'
+          headers:
+            X-Pagination-Throttled:
+              description: >
+                Used to indicate that result page was throttled to maximum
+                possible size  and there are additional results that can be
+                fetched.
+              schema:
+                type: boolean
+            X-Total-Count:
+              description: >
+                The total number of matching records. E.g. if there are 50
+                matching records in total, but the request has offset=10 and
+                limit=10, then the X-Total-Count is 50.
+              schema:
+                type: integer
+            X-Result-Count:
+              description: The number of records included in the response
+              schema:
+                type: integer
+        '400':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request
+        '401':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: Unauthorized
+        '403':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+          description: Forbidden
+        '500':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal Server Error
+      summary: List or found Appointment objects
+      tags:
+        - Appointment
+    post:
+      description: >-
+        A request initiated by the Buyer to create a Appointment in the
+        Seller's system to report an Issue experienced by the Buyer
+      operationId: createAppointment
+      parameters:
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity represents more than one Seller.
+          in: query
+          name: sellerId
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/Appointment_Create'
+        description: The Appointment to be created
+        required: true
+      responses:
+        '201':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+          description:
+            'Created  (https://tools.ietf.org/html/rfc7231section-6.3.2)'
+        '400':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request
+        '401':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: Unauthorized
+        '403':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+          description: Forbidden
+        '422':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Error422'
+                  type: array
+          description:
+            Unprocessable entity due to the business validation problems
+        '500':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal Server Error
+      summary: Creates a appointment
+      tags:
+        - appointment
+      x-codegen-request-body-name: appointment
+  '/appointment/{id}':
+    get:
+      description: >-
+        The Buyer requests detailed information about a single Appointment
+        based on a Appointment Identifier.
+      operationId: retrieveAppointment
+      parameters:
+        - description: >-
+            Unique (within the Seller domain) identifier for the Appointment.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity represents more than one Seller.
+          in: query
+          name: sellerId
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+          description: 'OK. (https://tools.ietf.org/html/rfc7231section-6.3.1)'
+        '400':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request
+        '401':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: Unauthorized
+        '403':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+          description: Forbidden
+        '404':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error404'
+          description: Not Found
+        '500':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal Server Error
+      summary: Retrieves a Appointment by ID
+      tags:
+        - appointment
+    patch:
+      description: >-
+        A request by the Buyer to patch a Appointment created by the Buyer in
+        the Seller's system.
+      operationId: patchAppointment
+      parameters:
+        - description: >-
+            Unique (within the Seller domain) identifier for the Appointment.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity represents more than one Seller.
+          in: query
+          name: sellerId
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/Appointment_Update'
+        description: The Appointment to be updated
+        required: true
+      responses:
+        '200':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+          description: Updated
+        '400':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request
+        '401':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: Unauthorized
+        '403':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+          description: Forbidden
+        '404':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error404'
+          description: Not Found
+        '409':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error409'
+          description: Not Found
+        '422':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Error422'
+                type: array
+          description:
+            Unprocessable entity due to the business validation problems
+        '500':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal Server Error
+      summary: Updates partially a Appointment
+      tags:
+        - appointment
+      x-codegen-request-body-name: appointment
+  '/appointment/{id}/cancel':
+    post:
+      description: This operation sends a cancellation request.
+      operationId: cancelAppointment
+      parameters:
+        - description: >-
+            Unique (within the Seller domain) identifier for the Appointment.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity
+             represents more than one Seller.
+          in: query
+          name: sellerId
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Cancelled
+        '400':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request
+        '401':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: Unauthorized
+        '403':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+          description: Forbidden
+        '404':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error404'
+          description: Not Found
+        '422':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Error422'
+                type: array
+          description:
+            Unprocessable entity due to the business validation problems
+        '500':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal Server Error
+      summary: Cancels a Appointment
+      tags:
+        - appointment operations
+  /searchTimeSlot:
+    post:
+      operationId: createSearchTimeSlot
+      summary: Creates a SearchTimeSlot
+      description:
+        A request by the Buyer to find a set of available time slots for
+        scheduling or rescheduling an Appointment for a Workorder with a Seller
+        Technician.
+      tags:
+        - searchTimeSlot
+      parameters:
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity represents more than one Seller.
+          in: query
+          name: sellerId
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/SearchTimeSlot_Create'
+        description: The Appointment to be created
+        required: true
+      responses:
+        '201':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SearchTimeSlot'
+          description:
+            'Created  (https://tools.ietf.org/html/rfc7231section-6.3.2)'
+        '400':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request
+        '401':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: Unauthorized
+        '403':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+          description: Forbidden
+        '422':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Error422'
+                type: array
+          description:
+            Unprocessable entity due to the business validation problems
+        '500':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal Server Error
+  /hub:
+    post:
+      description:
+        The Buyer requests to subscribe to Appointment Notifications.
+      operationId: registerListener
+      parameters:
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity represents more than one Seller.
+          in: query
+          name: sellerId
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/EventSubscriptionInput'
+        description:
+          Data containing the callback endpoint to deliver the information
+        required: true
+      responses:
+        '201':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/EventSubscription'
+          description:
+            'Subscribed  (https://tools.ietf.org/html/rfc7231section-6.3.2)'
+        '400':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request
+        '401':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: Unauthorized
+        '403':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+          description: Forbidden
+        '500':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal Server Error
+      summary: >-
+        Allows the Buyer to register to Appointment status change notifications
+      tags:
+        - events subscription
+      x-codegen-request-body-name: data
+  '/hub/{id}':
+    delete:
+      description:
+        The Buyer requests to unsubscribe from Appointment Notifications
+      operationId: unregisterListener
+      parameters:
+        - description: The id of the EventSubscription
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity represents more than one Seller.
+          in: query
+          name: sellerId
+          schema:
+            type: string
+      responses:
+        '204':
+          description:
+            'Deleted (https://tools.ietf.org/html/rfc7231section-6.3.5)'
+        '400':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad request
+        '401':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: Unauthorized
+        '403':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+          description: Forbidden
+        '404':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error404'
+          description: Not Found
+        '500':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal Server Error
+      summary: Unregister a listener
+      tags:
+        - events subscription
+components:
+  schemas:
+    Appointment:
+      type: object
+      description:
+        'In the context of MEF 113 document, denotes an arrangement between the
+        Buyer and Seller for a Seller Technician to meet with the Buyer at a
+        specified time and place.'
+      required:
+        - validFor
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the appointment
+        href:
+          type: string
+          description: Unique URI used to access to the appointment resource
+        attachment:
+          type: array
+          description:
+            Attachments to the Appointment, such as a file, screen shot or
+            embedded content.
+          items:
+            $ref: '#/components/schemas/AttachmentValue'
+        note:
+          type: array
+          description:
+            Notes describing the purpose of and the results of the Appointment
+          items:
+            $ref: '#/components/schemas/Note'
+        relatedPlace:
+          $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+          description: The location of the Appointment.
+        status:
+          $ref: '#/components/schemas/AppointmentStatusType'
+          description: The state of the Appointment.
+        validFor:
+          $ref: '#/components/schemas/TimePeriod'
+          description:
+            The Date and Time interval  the Seller Technician is scheduled to
+            arrive at the Appointment.
+        relatedContactInformation:
+          description: >-
+            Party playing a role for this Appointment. The 'role' is to specify
+            the type of contact as specified in MEF 113:
+
+            Appointment Place Contact (role=appointmentPlaceContact) - The site
+            contact(s) which the Seller Technician may need to contact in order
+            to get access to the Appointment Place during the Appointment. This
+            could be an end-user, security personnel or any authorized person 
+
+            Buyer Appointment Contact (role=buyerAppointmentContact)- The Buyer
+            contact(s) assigned to and responsible for the Appointment.
+
+            Seller Appointment Contact (role=sellerAppointmentContact) - The
+            Seller contact(s) assigned to and responsible for the Appointment.
+          items:
+            $ref: '#/components/schemas/RelatedContactInformation'
+          minItems: 1
+          type: array
+        workOrder:
+          description: >-
+            A reference to a WorkOrder for which the Appointment is created.
+          $ref: '#/components/schemas/WorkOrderRef'
+    Appointment_Create:
+      type: object
+      description:
+        In the context of MEF 113 document, denotes an arrangement between the
+        Buyer and Seller for a Seller Technician to meet with the Buyer at a
+        specified time and place.'
+      required:
+        - validFor
+      properties:
+        relatedPlace:
+          $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+          description:
+            Related place defines (by reference or value) the place where the
+            appointment will take place.
+        relatedContactInformation:
+          description: >-
+            Party playing a role for this Appointment. The 'role' is to specify
+            the type of contact as specified in MEF 113:
+
+            Appointment Place Contact (role=appointmentPlaceContact) - The site
+            contact(s) which the Seller Technician may need to contact in order
+            to get access to the Appointment Place during the Appointment. This
+            could be an end-user, security personnel or any authorized person 
+
+            Buyer Appointment Contact (role=buyerAppointmentContact)- The Buyer
+            contact(s) assigned to and responsible for the Appointment.
+
+            Seller Appointment Contact (role=sellerAppointmentContact) - The
+            Seller contact(s) assigned to and responsible for the Appointment.
+          items:
+            $ref: '#/components/schemas/RelatedContactInformation'
+          minItems: 1
+          type: array
+        workOrder:
+          description: >-
+            A reference to a WorkOrder for which the Appointment is created.
+          $ref: '#/components/schemas/WorkOrderRef'
+    Appointment_Find:
+      type: object
+      description:
+        'In the context of MEF 113 document, denotes an arrangement between the
+        Buyer and Seller for a Seller Technician to meet with the Buyer at a
+        specified time and place.'
+      required:
+        - id
+        - href
+        - relatedPlace
+        - status
+        - validFor
+        - workOrder
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the appointment
+        href:
+          type: string
+          description: Unique URI used to access to the appointment resource
+        relatedPlace:
+          $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+          description:
+            Related place defines (by reference or value) the place where the
+            appointment will take place.
+        status:
+          $ref: '#/components/schemas/AppointmentStatusType'
+          description: The state of the Appointment.
+        validFor:
+          $ref: '#/components/schemas/TimePeriod'
+          description:
+            The Date and Time interval the Seller Technician is scheduled to
+            arrive at the Appointment.
+          items:
+            $ref: '#/components/schemas/RelatedContactInformation'
+          minItems: 1
+          type: array
+        workOrder:
+          description: >-
+            A reference to a WorkOrder for which the Appointment is created.
+          $ref: '#/components/schemas/WorkOrderRef'
+    Appointment_Update:
+      type: object
+      description:
+        'In the context of MEF 113 document, denotes an arrangement between the
+        Buyer and Seller for a Seller Technician to meet with the Buyer at a
+        specified time and place.'
+      properties:
+        attachment:
+          type: array
+          description:
+            Attachments to the Appointment, such as a file, screen shot or
+            embedded content.
+          items:
+            $ref: '#/components/schemas/AttachmentValue'
+        note:
+          type: array
+          description:
+            Notes describing the purpose of and the results of the Appointment.
+          items:
+            $ref: '#/components/schemas/Note'
+        validFor:
+          $ref: '#/components/schemas/TimePeriod'
+          description:
+            The Date and Time interval the Seller Technician is scheduled to
+            arrive at the Appointment.
+        relatedContactInformation:
+          description: >-
+            Party playing a role for this Appointment. The 'role' is to specify
+            the type of contact as specified in MEF 113:
+
+            Appointment Place Contact (role=appointmentPlaceContact) - The site
+            contact(s) which the Seller Technician may need to contact in order
+            to get access to the Appointment Place during the Appointment. This
+            could be an end-user, security personnel or any authorized person 
+
+            Buyer Appointment Contact (role=buyerAppointmentContact)- The Buyer
+            contact(s) assigned to and responsible for the Appointment.
+
+            Seller Appointment Contact (role=sellerAppointmentContact) - The
+            Seller contact(s) assigned to and responsible for the Appointment.
+          items:
+            $ref: '#/components/schemas/RelatedContactInformation'
+          minItems: 1
+          type: array
+    AppointmentStatusType:
+      type: string
+      description: Valid values for the lifecycle status of the appointment
+      
+        Possible values for the status of the Trouble Ticket
+
+        | status                  | MEF 113 name           | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+        | ----------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | `confirmed`             | SCHEDULED              | The Buyer has negotiated and scheduled the Appointment with the Seller.                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+        | `cancelled`             | CANCELLED              | The Appointment was cancelled by the Buyer or the Seller determined that an Appointment was not required.  This is a terminal state.                                                                                                                                                                                                                                                                                                                                                                                      |
+        | `missed`                | MISSED                 | The Appointment did not take place, because of a Seller related issue. For example, no Seller Technician was available on the date of the appointment                                                                                                                                                                                                                                                                                                                                                                     |
+        | `failed`                | FAILED                 | The Appointment did not take place, because of an issue with the Buy-er. For example, Seller Technician was unable to get to the Appointment due to an incorrect location or unable to get access to the Buyer`s site. This is a terminal state                                                                                                                                                                                                                                                                           |
+        | `completed`             | COMPLETED              | The Appointment took place as scheduled. This is a terminal state.                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+      
+      enum:
+        - confirmed
+        - cancelled
+        - missed
+        - failed
+        - completed
+    AttachmentValue:
+      description: >-
+        Complements the description of an element (for instance a product)
+        through video, pictures...
+      properties:
+        attachmentId:
+          description: >-
+            locally unique identifier to distinguish items from the Attachment
+            list.
+          type: string
+        author:
+          description: Author of the Attachment
+          type: string
+        content:
+          description: >-
+            The actual contents of the attachment object, if embedded, encoded
+            as base64. Either url or (content and mimeType) attributes MUST be
+            provided during creation.
+          type: string
+        creationDate:
+          description: The date the Attachment was added.
+          format: date-time
+          type: string
+        description:
+          description:
+            A narrative text describing the content of the attachment
+          type: string
+        mimeType:
+          description: >-
+            Attachment mime type such as extension file for video, picture and
+            document
+          type: string
+        name:
+          description: The name of the attachment
+          type: string
+        size:
+          $ref: '#/components/schemas/MEFByteSize'
+          description: The size of the attachment.
+        source:
+          $ref: '#/components/schemas/MEFBuyerSellerType'
+          description:
+            Indicates if the attachment was added by the Buyer or the Seller.
+        url:
+          description:
+            URL where the attachment is located. Either url or (content and
+            mimeType) attributes MUST be provided during creation.
+          type: string
+      type: object
+      required:
+        - author
+        - name
+        - source
+    DataSizeUnit:
+      description: The unit of measure in the data size.
+      enum:
+        - BYTES
+        - KBYTES
+        - MBYTES
+        - GBYTES
+        - TBYTES
+        - PBYTES
+        - EBYTES
+        - ZBYTES
+        - YBYTES
+      type: string
+    Error:
+      description: >
+        Standard Class used to describe API response error
+
+        Not intended to be use directly only via specialization which defines a
+        code
+      properties:
+        message:
+          description: >-
+            Text that provides mode details and corrective actions related to
+            the error. This can be shown to a client user.
+          type: string
+        reason:
+          description: >-
+            Text that explains the reason for error. This can be shown to a
+            client user.
+          maxLength: 255
+          type: string
+        referenceError:
+          description: URL pointing to documentation describing the error
+          format: uri
+          type: string
+      required:
+        - reason
+      type: object
+    Error400:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              $ref: '#/components/schemas/Error400Code'
+              description: >-
+                One of the following error codes:
+
+                - missingQueryParameter: The URI is missing a required
+                query-string parameter
+
+                - missingQueryValue: The URI is missing a required query-string
+                parameter value
+
+                - invalidQuery: The query section of the URI is invalid.
+
+                - invalidBody: The request has an invalid body
+          required:
+            - code
+          type: object
+      description:
+        Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)
+    Error400Code:
+      description: >-
+        One of the following error codes:
+
+        - missingQueryParameter: The URI is missing a required query-string
+        parameter
+
+        - missingQueryValue: The URI is missing a required query-string
+        parameter value
+
+        - invalidQuery: The query section of the URI is invalid.
+
+        - invalidBody: The request has an invalid body
+      enum:
+        - missingQueryParameter
+        - missingQueryValue
+        - invalidQuery
+        - invalidBody
+      type: string
+    Error401:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              $ref: '#/components/schemas/Error401Code'
+              description: >-
+                One of the following error codes:
+
+                - missingCredentials: No credentials provided.
+
+                - invalidCredentials: Provided credentials are invalid or
+                expired
+          required:
+            - code
+          type: object
+      description:
+        Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)
+    Error401Code:
+      description: |-
+        One of the following error codes:
+        - missingCredentials: No credentials provided.
+        - invalidCredentials: Provided credentials are invalid or expired
+      enum:
+        - missingCredentials
+        - invalidCredentials
+      type: string
+    Error403:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              $ref: '#/components/schemas/Error403Code'
+              description: |-
+                This code indicates that the server understood
+                the request but refuses to authorize it because
+                of one of the following error codes:
+                - accessDenied: Access denied
+                - forbiddenRequester: Forbidden requester
+                - tooManyUsers: Too many users
+          required:
+            - code
+          type: object
+      description: >-
+        Forbidden. This code indicates that the server understood the request
+        but refuses to authorize it.
+        (https://tools.ietf.org/html/rfc7231#section-6.5.3)
+    Error403Code:
+      description: |-
+        This code indicates that the server understood
+        the request but refuses to authorize it because
+        of one of the following error codes:
+        - accessDenied: Access denied
+        - forbiddenRequester: Forbidden requester
+        - tooManyUsers: Too many users
+      enum:
+        - accessDenied
+        - forbiddenRequester
+        - tooManyUsers
+      type: string
+    Error404:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              description: >-
+                The following error code:
+
+                - notFound: A current representation for the target resource
+                not found
+              enum:
+                - notFound
+              type: string
+          required:
+            - code
+          type: object
+      description: >-
+        Resource for the requested path not found.
+        (https://tools.ietf.org/html/rfc7231#section-6.5.4)
+    Error409:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              description: >-
+                The following error code:
+
+                - conflict: The client has provided a value whose semantics are
+                not appropriate for the property.
+              enum:
+                - conflict
+              type: string
+          required:
+            - code
+          type: object
+      description:
+        Conflict (https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.8)
+    Error422:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              $ref: '#/components/schemas/Error422Code'
+              description: |
+                One of the following error codes:
+                  - missingProperty: The property the Seller has expected is not present in the payload
+                  - invalidValue: The property has an incorrect value
+                  - invalidFormat: The property value does not comply with the expected value format
+                  - referenceNotFound: The object referenced by the property cannot be identified in the Seller system
+                  - unexpectedProperty: Additional property, not expected by the Seller has been provided
+                  - tooManyRecords: the number of records to be provided in the response exceeds the Seller's threshold.
+                  - otherIssue: Other problem was identified (detailed information provided in a reason)
+            propertyPath:
+              description: >
+                A pointer to a particular property of the payload that caused
+                the validation issue. It is highly recommended that this
+                property should be used.
+
+                Defined using JavaScript Object Notation (JSON) Pointer
+                (https://tools.ietf.org/html/rfc6901).
+              type: string
+          required:
+            - code
+          type: object
+      description: >-
+        Unprocessable entity due to a business validation problem.
+        (https://tools.ietf.org/html/rfc4918#section-11.2)
+    Error422Code:
+      description: |
+        One of the following error codes:
+          - missingProperty: The property the Seller has expected is not present in the payload
+          - invalidValue: The property has an incorrect value
+          - invalidFormat: The property value does not comply with the expected value format
+          - referenceNotFound: The object referenced by the property cannot be identified in the Seller system
+          - unexpectedProperty: Additional property, not expected by the Seller has been provided
+          - tooManyRecords: the number of records to be provided in the response exceeds the Seller's threshold.
+          - otherIssue: Other problem was identified (detailed information provided in a reason)
+      enum:
+        - missingProperty
+        - invalidValue
+        - invalidFormat
+        - referenceNotFound
+        - unexpectedProperty
+        - tooManyRecords
+        - otherIssue
+      type: string
+    Error500:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              description: >-
+                The following error code:
+
+                - internalError: Internal server error - the server encountered
+                an unexpected condition that prevented it from fulfilling the
+                request.
+              enum:
+                - internalError
+              type: string
+          required:
+            - code
+          type: object
+      description: >-
+        Internal Server Error.
+        (https://tools.ietf.org/html/rfc7231#section-6.6.1)
+    Error501:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              description: |-
+                The following error code::
+                - notImplemented: Method not supported by the server
+              enum:
+                - notImplemented
+              type: string
+          required:
+            - code
+          type: object
+      description:
+        'Not Implemented. (https://tools.ietf.org/html/rfc7231#section-6.6.2)'
+    EventSubscription:
+      description: >-
+        Sets the communication endpoint address the service instance must use
+        to deliver notification information
+      properties:
+        callback:
+          description: >-
+            The value provided by the Buyer in `EventSubscriptionInput` during
+            notification registration
+          type: string
+        id:
+          description: >-
+            An identifier of the event subscription assigned by the Seller when
+            a resource is created.
+          type: string
+        query:
+          description: >-
+            This attribute is used to define notification registration
+            constraints.
+          type: string
+      required:
+        - callback
+        - id
+      type: object
+    EventSubscriptionInput:
+      description: This class is used to register for Notifications.
+      properties:
+        callback:
+          description: >-
+            This callback value must be set to *host* property from Buyer
+            Notification API (appointmentNotification.api.yaml). This property
+            is appended with the base path and notification resource path
+            specified in that API to construct an URL to which notification is
+            sent. E.g. for "callback": "http://buyer.com/listenerEndpoint", the
+            status change event notification will be sent to:
+            `http://buyer.com/listenerEndpoint/mefApi/sonata/appointmentNotification/v1/listener/appointmentStatusChangeEvent`
+          type: string
+        query:
+          description: >-
+            This attribute is used to define to which type of events to
+            register to. Example: "query":"eventType =
+            AppointmentStatusChangeEvent". To subscribe for more than one event
+            type, put the values separated by comma:
+            `eventType=AppointmentStatusChangeEvent,AppointmentResolvedEvent`.
+            The possible values are enumerated by the 'AppointmentEventType' in
+            AppointmentNotification.api.yaml. An empty query is treated as
+            specifying no filters - ending in  subscription for all event
+            types.
+          type: string
+      required:
+        - callback
+      type: object
+    FieldedAddress:
+      allOf:
+        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - properties:
+            city:
+              description: The city that the address is in
+              type: string
+            country:
+              description: Country that the address is in
+              type: string
+            geographicSubAddress:
+              $ref: '#/components/schemas/GeographicSubAddress'
+              description:
+                Additional fields used to specify an address, as detailed as
+                possible.
+            locality:
+              description: The locality that the address is in
+              type: string
+            postcode:
+              description: >-
+                Descriptor for a postal delivery area, used to speed and
+                simplify the delivery of mail (also known as zip code)
+              type: string
+            postcodeExtension:
+              description: >-
+                An extension of a postal code. E.g. the part following the dash
+                in a US urban property address
+              type: string
+            stateOrProvince:
+              description: The State or Province that the address is in
+              type: string
+            streetName:
+              description: Name of the street or other street type
+              type: string
+            streetNr:
+              description: >-
+                Number identifying a specific property on a public street. It
+                may be combined with streetNrLast for ranged addresses. MEF 79
+                defines it as required however as in certain countries it is
+                not used we make it optional in API.
+              type: string
+            streetNrLast:
+              description:
+                Last number in a range of street numbers allocated to a
+                property
+              type: string
+            streetNrLastSuffix:
+              description: Last street number suffix for a ranged address
+              type: string
+            streetNrSuffix:
+              description: The first street number suffix
+              type: string
+            streetSuffix:
+              description: A modifier denoting a relative direction
+              type: string
+            streetType:
+              description: >-
+                The type of street (e.g., alley, avenue, boulevard, brae,
+                crescent, drive, highway, lane, terrace, parade, place, tarn,
+                way, wharf)
+              type: string
+          required:
+            - city
+            - country
+            - streetName
+          type: object
+      description: >-
+        A type of Address that has a discrete field and value for each type of
+        boundary or identifier down to the lowest level of detail. For example
+        "street number" is one field, "street name" is another field, etc.
+        Reference: MEF 79 (Sn 8.9.2)
+    FormattedAddress:
+      allOf:
+        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - properties:
+            addrLine1:
+              description: The first address line in a formatted address
+              type: string
+            addrLine2:
+              description: The second address line in a formatted address
+              type: string
+            city:
+              description: The city that the address is in
+              type: string
+            country:
+              description: Country that the address is in
+              type: string
+            locality:
+              description: >-
+                An area of defined or undefined boundaries within a local
+                authority or other legislatively defined area, usually rural or
+                semi-rural in nature
+              type: string
+            postcode:
+              description: >-
+                Descriptor for a postal delivery area, used to speed and
+                simplify the delivery of mail (also known as ZIP code)
+              type: string
+            postcodeExtension:
+              description: >-
+                An extension of a postal code. E.g. the part following the dash
+                in an US urban property address
+              type: string
+            stateOrProvince:
+              description: The State or Province that the address is in
+              type: string
+          required:
+            - addrLine1
+            - city
+            - country
+          type: object
+      description: >-
+        A type of Address that has discrete fields for each type of boundary or
+        identifier with the exception of street and more specific location
+        details, which are combined into a maximum of two strings based on
+        local postal addressing conventions. Reference: MEF 79 (Sn 8.9.3)
+    GeographicAddressLabel:
+      allOf:
+        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - properties:
+            externalReferenceId:
+              description: A reference to an address by id
+              type: string
+            externalReferenceType:
+              description: >-
+                Uniquely identifies the authority that specifies the addresses
+                reference and/or its type (if the authority specifies more than
+                one type of address). The value(s) to be used are to be agreed
+                during the onboarding. For North American providers this would
+                normally be CLLI (Common Language Location Identifier) code.
+              type: string
+          required:
+            - externalReferenceId
+            - externalReferenceType
+          type: object
+      description: >-
+        A unique identifier controlled by a generally accepted independent
+        administrative authority that specifies a fixed geographical location. 
+
+        Reference: MEF 79 (Sn 8.9.4)
+    GeographicAddressRef:
+      allOf:
+        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - properties:
+            href:
+              description: >
+                Hyperlink to the referenced GeographicAddress. Hyperlink MAY be
+                used by the Seller in responses. Hyperlink MUST be ignored by
+                the Seller in case it is provided by the Buyer in a request
+              type: string
+            id:
+              description: >-
+                Identifier of the referenced Geographic Address. This
+                identifier is assigned during a successful address validation
+                request (Geographic Address Validation API)
+              type: string
+          required:
+            - id
+          type: object
+      description: >
+        A reference to a Geographic Address resource available through Address
+        Validation API.
+    GeographicSiteRef:
+      allOf:
+        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - properties:
+            href:
+              description: >
+                Hyperlink to the referenced GeographicSite. Hyperlink MAY be
+                used by the Seller in responses. Hyperlink MUST be ignored by
+                the Seller in case it is provided by the Buyer in a request
+              type: string
+            id:
+              description: Identifier of the referenced Geographic Site.
+              type: string
+          required:
+            - id
+          type: object
+      description: >
+        A reference to a Geographic Site resource available through Service
+        Site API
+    GeographicSubAddress:
+      description:
+        Additional fields used to specify an address, as detailed as possible.
+      properties:
+        buildingName:
+          description: >
+            Allows for identification of places that require building name  as
+            part of addressing information
+          type: string
+        id:
+          description: Unique Identifier of the subAddress
+          type: string
+        levelNumber:
+          description:
+            Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT 2
+          type: string
+        levelType:
+          description: Describes level types within a building
+          type: string
+        privateStreetName:
+          description: >-
+            "Private streets internal to a property (e.g. a university) may
+            have internal names that are not recorded by the land title office
+          type: string
+        privateStreetNumber:
+          description: Private streets numbers internal to a private street
+          type: string
+        subUnit:
+          description: >-
+            Representation of a MEFSubUnit It is used for describing subunit
+            within a subaddress  e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
+            UNIT, WHARF.
+          items:
+            $ref: '#/components/schemas/MEFSubUnit'
+          type: array
+      type: object
+    MEFBuyerSellerType:
+      description: An enumeration with buyer and seller values.
+      enum:
+        - buyer
+        - seller
+      type: string
+    MEFByteSize:
+      description: A size represented by value and Byte units
+      properties:
+        amount:
+          default: 1
+          description: Numeric value in a given unit
+          format: float
+          type: number
+        units:
+          $ref: '#/components/schemas/DataSizeUnit'
+          description: Byte Unit
+      type: object
+    MEFGeographicPoint:
+      allOf:
+        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - properties:
+            spatialRef:
+              description: >-
+                The spatial reference system used to determine the coordinates
+                (e.g. "WGS84"). The system used and the value of this field are
+                to be agreed upon during the onboarding process.
+              type: string
+            x:
+              description: >-
+                The latitude expressed in the format specified by the
+                `spacialRef`
+              type: string
+            'y':
+              description: >-
+                The longitude expressed in the format specified by the
+                `spacialRef`
+              type: string
+            z:
+              description: >-
+                The elevation expressed in the format specified by the
+                `spacialRef`
+              type: string
+          required:
+            - spatialRef
+            - x
+            - 'y'
+          type: object
+      description: >
+        A MEFGeographicPoint defines a geographic point through coordinates.
+        Reference: MEF 79 (Sn 8.9.5)
+    MEFSubUnit:
+      description: Allows for sub unit identification
+      properties:
+        subUnitNumber:
+          description: >-
+            The discriminator used for the subunit, often just a simple number
+            but may also be a range.
+          type: string
+        subUnitType:
+          description: >-
+            The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
+            UNIT, WHARF.
+          type: string
+      required:
+        - subUnitNumber
+        - subUnitType
+      type: object
+    Note:
+      description: >-
+        Extra information about a given entity. Only useful in processes
+        involving human interaction. Not applicable for an automated process.
+      properties:
+        author:
+          description: Author of the note
+          type: string
+        date:
+          description: Date of the note
+          format: date-time
+          type: string
+        id:
+          description: >-
+            Identifier of the note within its containing entity (may or may not
+            be globally unique, depending on provider implementation)
+          type: string
+        source:
+          $ref: '#/components/schemas/MEFBuyerSellerType'
+          description: Indicates if this Note was added by the Buyer or Seller.
+        text:
+          description: Text of the note
+          type: string
+      required:
+        - author
+        - date
+        - id
+        - source
+        - text
+      type: object
+    RelatedContactInformation:
+      description: >-
+        Contact data for a person or organization that is involved in a given
+        context. It is specified by the Seller (e.g. Seller Contact
+        Information) or by the Buyer.
+      properties:
+        emailAddress:
+          description: Email address
+          type: string
+        name:
+          description: Name of the contact
+          type: string
+        number:
+          description: Phone number
+          type: string
+        numberExtension:
+          description: Phone number extension
+          type: string
+        organization:
+          description: The organization or company that the contact belongs to
+          type: string
+        postalAddress:
+          $ref: '#/components/schemas/FieldedAddress'
+          description: >-
+            Identifies the postal address of the person or office to be
+            contacted.
+        role:
+          description: A role the party plays in a given context.
+          type: string
+      required:
+        - emailAddress
+        - name
+        - number
+        - role
+      type: object
+    RelatedEntity:
+      description: >-
+        A reference to an entity, where the type of the entity is not known in
+        advance.
+      properties:
+        '@referredType':
+          default: Product
+          description: >-
+            The actual type of the target instance when needed for
+            disambiguation.
+          type: string
+        href:
+          description: Reference of the related entity.
+          type: string
+        id:
+          description: Unique identifier of a related entity.
+          type: string
+        role:
+          description: The role of an entity.
+          type: string
+      required:
+        - '@referredType'
+        - id
+        - role
+      type: object
+    RelatedPlaceRefOrValue:
+      description:
+        Defines the Place (Address or Site) by reference or by value.
+      discriminator:
+        mapping:
+          FieldedAddress: '#/components/schemas/FieldedAddress'
+          FormattedAddress: '#/components/schemas/FormattedAddress'
+          GeographicAddressLabel: '#/components/schemas/GeographicAddressLabel'
+          GeographicAddressRef: '#/components/schemas/GeographicAddressRef'
+          GeographicSiteRef: '#/components/schemas/GeographicSiteRef'
+          MEFGeographicPoint: '#/components/schemas/MEFGeographicPoint'
+        propertyName: '@type'
+      properties:
+        '@schemaLocation':
+          description: >-
+            A URI to a JSON-Schema file that defines additional attributes and
+            relationships. May be used to define additional related place
+            types. Usage of this attribute must be agreed upon between Buyer
+            and Seller.
+          format: uri
+          type: string
+        '@type':
+          description: >
+            This field is used as a discriminator and is used between different
+            place representations. This type might discriminate for additional
+            related place as defined in '@schemaLocation'.
+          type: string
+        role:
+          description: Role of this place
+          type: string
+      required:
+        - '@type'
+        - role
+      type: object
+    SearchTimeSlot:
+      type: object
+      description:
+        This task resource is used to retrieve available time slots. One of
+        this available time slot is after used to create or reschedule an
+        appointment
+      properties:
+        availableTimeSlot:
+          description:
+            A set of time slots with availability of a Seller’s
+            Technician  returned by the Seller, which the Buyer may select for
+            creating or rescheduling an Appointment.
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeSlot'
+        requestedTimeSlot:
+          description:
+            A set of preferred time slots the Buyer is re-questing the Seller
+            to verify for availability by a Seller’s Technician at the
+            Place  referenced in the Appointment Related Entity. For example
+            Monday thru Friday, or a set of specific time slots.
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeSlot'
+        relatedEntity:
+          description:
+            A Reference to the Related Entity the Appointment is for.
+          type: array
+          items:
+            $ref: '#/components/schemas/RelatedEntity'
+    SearchTimeSlot_Create:
+      type: object
+      description:
+        This task resource is used to retrieve available time slots. One of
+        this available time slot is after used to create or reschedule an
+        appointment
+      properties:
+        requestedTimeSlot:
+          description:
+            A set of preferred time slots the Buyer is re-questing the Seller
+            to verify for availability by a Seller’s Technician at the
+            Place  referenced in the Appointment Related Entity. For example
+            Monday thru Friday, or a set of specific time slots.
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeSlot'
+        relatedEntity:
+          description:
+            A Reference to the Related Entity the Appointment is for.
+          type: array
+          items:
+            $ref: '#/components/schemas/RelatedEntity'
+    TimeSlot:
+      type: object
+      required:
+        - validFor
+      properties:
+        validFor:
+          $ref: '#/components/schemas/TimePeriod'
+          description: Start date and end date of the timeSlot
+    TimePeriod:
+      type: object
+      description:
+        'A period of time, either as a deadline (endDateTime only) a
+        startDateTime only, or both'
+      properties:
+        endDateTime:
+          type: string
+          format: date-time
+          description: 'End of the time period, using IETC-RFC-3339 format'
+        startDateTime:
+          type: string
+          format: date-time
+          description:
+            'Start of the time period, using IETC-RFC-3339 format. If you
+            define a start, you must also define an end'
+    WorkOrderRef:
+      description: |
+        A reference to an WorkOrder resource.
+      properties:
+        href:
+          description: |
+            Hyperlink to the referenced WorkOrder.
+          type: string
+        id:
+          description: Identifier of the referenced WorkOrder.
+          type: string
+      required:
+        - id
+      type: object

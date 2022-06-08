@@ -1,0 +1,38 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+
+
+class Event {
+
+    eventId*: string
+    eventTime*: date-time
+}
+
+
+class AppointmentEventPayload {
+
+    sellerId: string
+    id*: string
+    href: string
+    buyerId: string
+}
+
+class AppointmentEvent {
+
+    eventType*: AppointmentEventType
+}
+Event <|-- AppointmentEvent
+
+AppointmentEvent *-->"1" AppointmentEventPayload : event
+
+
+enum AppointmentEventType {
+
+    AppointmentAttributeValueChangeEvent
+    AppointmentStatusChangeEvent
+}
+@enduml

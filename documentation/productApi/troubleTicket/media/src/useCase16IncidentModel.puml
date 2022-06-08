@@ -1,0 +1,206 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+
+class Incident {
+
+    closedDate: date-time
+    creationDate*: date-time
+    description*: string
+    expectedClosedDate: date-time
+    href: string
+    id*: string
+    incidentType*: IncidentType
+    situationStartDate: date-time
+    priority*: TroubleTicketPriorityType
+    severity*: TroubleTicketSeverityType
+    status*: IncidentStatusType
+}
+
+Incident *-->"*" AttachmentValue : attachment
+Incident *-->"*" Note : note
+Incident *-->"1..*" RelatedContactInformation : relatedContactInformation
+Incident *-->"1..*" RelatedEntity : relatedEntity
+Incident *-->"*" IssueRelationship : relatedIssue
+Incident *-->"*" IncidentStatusChange : statusChange
+
+
+class IssueRelationship {
+
+    @referredType*: string
+    creationDate*: date-time
+    description*: string
+    href: string
+    id*: string
+    relationshipType*: string
+    source*: MEFBuyerSellerType
+}
+
+
+
+class IncidentStatusChange {
+
+    changeDate: date-time
+    changeReason: string
+    status: IncidentStatusType
+}
+
+
+
+class RelatedEntity {
+
+    @referredType*: string
+    href: string
+    id*: string
+    role*: string
+}
+
+
+class IssueRelationship {
+
+    @referredType*: string
+    creationDate*: date-time
+    description*: string
+    href: string
+    id*: string
+    relationshipType*: string
+    source*: MEFBuyerSellerType
+}
+
+
+
+class AttachmentValue {
+
+    attachmentId: string
+    author*: string
+    content: string
+    creationDate*: date-time
+    description: string
+    mimeType: string
+    name*: string
+    source*: MEFBuyerSellerType
+    url: string
+}
+
+AttachmentValue *--> MEFByteSize : size
+
+class MEFByteSize {
+
+    amount: float
+    units: DataSizeUnit
+}
+
+class Note {
+
+    author*: string
+    date*: date-time
+    id*: string
+    source*: MEFBuyerSellerType
+    text*: string
+}
+
+enum MEFBuyerSellerType {
+
+    buyer
+    seller
+}
+
+
+enum DataSizeUnit {
+
+    BYTES
+    KBYTES
+    MBYTES
+    GBYTES
+    TBYTES
+    PBYTES
+    EBYTES
+    ZBYTES
+    YBYTES
+}
+
+enum IncidentType {
+
+    degraded
+    down
+    intermittent
+    maintenance
+}
+
+enum TroubleTicketPriorityType {
+
+    low
+    medium
+    high
+    critical
+}
+enum TroubleTicketSeverityType {
+
+    minor
+    moderate
+    significant
+    extensive
+}
+enum IncidentStatusType {
+
+    closed
+    created
+    inProgress
+}
+class RelatedContactInformation {
+
+    emailAddress*: string
+    name*: string
+    number*: string
+    numberExtension: string
+    organization: string
+    role*: string
+}
+
+RelatedContactInformation *--> FieldedAddress : postalAddress
+
+
+class FieldedAddress {
+
+    city*: string
+    country*: string
+    locality: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+    streetName*: string
+    streetNr: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetNrSuffix: string
+    streetSuffix: string
+    streetType: string
+}
+
+FieldedAddress *--> GeographicSubAddress : geographicSubAddress
+
+class GeographicSubAddress {
+
+    buildingName: string
+    id: string
+    levelNumber: string
+    levelType: string
+    privateStreetName: string
+    privateStreetNumber: string
+}
+
+GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+
+
+
+class MEFSubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+
+
+@enduml

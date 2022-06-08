@@ -1,0 +1,1341 @@
+---
+$schema: http://json-schema.org/draft-07/schema#
+title: MEF LSO IP Common Types
+definitions:
+  AccessLinkBfd:
+    description:
+      The Access Link BFD Service Attribute indicates whether Bidirectional
+      Forwarding Detection (BFD) is enabled on the UNI Access Link. Reference
+      MEF 61.1[1] Section 13.8 UNI Access Link BFD Service Attribute and Section
+      16.5 ENNI Link BFD Attribute.
+    properties:
+      activeEnd:
+        $ref: ../common/ipCommon.yaml#/definitions/BfdActiveEnd
+        description: >-
+          BFD Active End. At least one end of BFD session has to have an active
+          role, meaning that it sends out asynchronous control messages
+          regardless of whether it has received any. Reference MEF 61.1 Section
+          13.8 UNI Access Link BFD Service Attribute.
+      authenticationType:
+        $ref: ../common/ipCommon.yaml#/definitions/BfdAuthenticationType
+        description: >-
+          BFD Authentication as describer in RFC 5880. Reference MEF 61.1
+          Section 13.8 UNI Access Link BFD Service Attribute and Section 16.5
+          ENNI Link BFD Attribute.
+      connectionAddressFamily:
+        $ref: ../common/ipCommon.yaml#/definitions/ConnectionAddressFamily
+        description: >-
+          The Connection Address Family parameter specifies whether the session
+          is established over IPv4 or IPv6 or whether two separate sessions are
+          established using IPv4 and IPv6. Reference MEF 61.1 Section 13.8 UNI
+          Access Link BFD Service Attribute and Section 16.5 ENNI Link BFD
+          Attribute.
+      detectMultiplier:
+        description: >-
+          BFD Detect multiple as an Integer. Reference MEF 61.1 Section 13.8 UNI
+          Access Link BFD Service Attribute and Section 16.5 ENNI Link BFD
+          Attribute.
+        type: integer
+      transmissionInterval:
+        $ref: ../common/ipCommon.yaml#/definitions/BfdTransmissionInterval
+        description: >-
+          BFD allows for asymmetrical operation, where packets can be sent a
+          different interval in each direction, and a different detect
+          multiplier can be used. For simplicity, this specification mandates
+          symmetrical operation. Units are in milliseconds. Reference MEF 61.1
+          Section 13.8 UNI Access Link BFD Service Attribute and Section 16.5
+          ENNI Link BFD Attribute.
+    type: object
+  Addressing:
+    description: |
+      Enumeration representing the Address type for the Control Protocols data
+      type. 
+      - SP_OPERATOR_ADDRESSES: If the addressing information is
+      SP/Operator Addresses, then Ingress IP Packets for the specified  protocol
+      that have a multicast or broadcast destination address, or a unicast
+      destination address  that is reachable within the SP's or Operator's
+      network, are considered to be IP Control Protocol  Packets, and Egress IP
+      Packets for the specified protocol that have a source address that is
+      reachable  within the SP's or Operator's network are considered to be IP
+      Control Protocol Packets.
+      - ANY: If the addressing information is Any, then all IP Packets for the
+      specified protocol that cross the UNI are considered to be 
+      IP Control Protocol Packets.
+    enum:
+      - SP_OPERATOR_ADDRESSES
+      - ANY
+    type: string
+  InformationRate:
+    type: object
+    description:
+      A value and a unit of measure that specifies an Information Rate.
+    properties:
+      irValue:
+        description: >-
+          The value in the information rate. For example if the information rate
+          is 70 kbps this element is 70.
+        type: number
+        minimum: 0
+      irUnits:
+        description: >-
+          The unit of measure for the Information Rate. For example if the
+          Information Rate is 70KBPS this element is KBPS. Note that the values
+          are decimal values. 1 KBPS is 1000 bits per second and 1MBPS is
+          1,000,000 bits per second.
+        type: string
+        enum:
+          - "BPS"
+          - "KBPS"
+          - "MBPS"
+          - "GBPS"
+          - "TBPS"
+          - "PBPS"
+          - "EBPS"
+          - "ZBPS"
+          - "YBPS"
+  BfdActiveEnd:
+    description: |
+      At least one end of the BFD session must have an active role, meaning that
+      it sends out asynchronous control messages regardless of whether it has
+      received any. This enumeration represents the values that can be set for
+      the BFD Active End. Reference MEF 61.1 Section 13.8 UNI Access Link BFD
+      Service Attribute [R171] and [R172].
+      - SUBSCRIBER: Subscriber takes active BFD role.
+      - SP: Service Provider takes active BFD role.
+      - BOTH: Subscriber and Service Provider take active BFD role.
+    type: string
+    enum:
+      - SUBSCRIBER
+      - SP
+      - BOTH
+  BfdAuthenticationType:
+    description: |
+      RFC 7419 specifies a set of common intervals which are used to ensure
+      interoperability.
+      - NONE: No BFD authentication.
+      - SIMPLE_PASSWORD: Simple Password Authentication is the most 
+      straightforward (and weakest) form of authentication. In this method
+      of authentication one or more Passwords (with corresponding Key IDs) 
+      are configured in each system and one of these Password/ID pairs is 
+      carried in each BFD Control packet. The receiving system accepts the 
+      packet if the Password and Key ID matches one of the Password/ID 
+      pairs configured in that system. Reference IETF RFC5880 Section 6.7.2.
+      - KEYED_MD5: The Keyed MD5 and Meticulous Key MD5 Authentication 
+      mechanisms are very similar to those used in other protocols. 
+      In these methods of authentication, one or more security keys 
+      (with corresponding key IDs) are configured in each system. 
+      Reference RFC5880 Section 6.7.3 Keyed MD5 and Meticulous Keyed MD5 
+      Authentication.
+      - METICULOUS_KEYED_MD5: The Keyed MD5 and Meticulous Key MD5 
+      Authentication mechanisms are very similar to those used in other 
+      protocols. In these methods of authentication, one or more security
+      keys (with corresponding key IDs) are configured in each system.
+      Reference RFC5880 Section 6.7.3 Keyed MD5 and Meticulous Keyed MD5
+      Authentication.
+      - KEYED_SHA1: The Keyed SHA1 and Meticulous Key SHA1 Authentication
+      mechanisms are very similar to those used in other protocols. In 
+      these methods of authentication, one or more secret keys (with 
+      corresponding key IDs) are configured in each system. Reference
+      RFC5880 Section 6.7.4 Keyed SHA1 and Meticulous Keyed SHA1 
+      Authentication.
+      - METICULOUS_KEYED_SHA1: The Keyed SHA1 and Meticulous Key 
+      SHA1 Authentication mechanisms are very similar to those used in
+      other protocols. In these methods of authentication, one or more 
+      secret keys (with corresponding key IDs) are configured in each system.
+      Reference RFC5880 Section 6.7.4 Keyed SHA1 and Meticulous Keyed SHA1 
+      Authentication.
+    type: string
+    enum:
+      - NONE
+      - SIMPLE_PASSWORD
+      - KEYED_MD5
+      - METICULOUS_KEYED_MD5
+      - KEYED_SHA1
+      - METICULOUS_KEYED_SHA1
+  BfdTransmissionInterval:
+    description:
+      UNI Access Link BFD authentication type. When Authentication is NOT NONE,
+      RFC5880 Section 6.7 Authentication mechanisms are used.
+    type: string
+    enum:
+      - 3_3_MILLISECONDS
+      - 10_MILLISECONDS
+      - 20_MILLISECONDS
+      - 50_MILLISECONDS
+      - 100_MILLISECONDS
+      - 1_SECOND
+  Bgp:
+    description: >-
+      When an entry in the UNI Routing Protocol is for BGP, BGP as specified in
+      RFC 4271 is used across the UNI to exchange information. Reference MEF
+      61.1 Section 12.7.3 BGP.
+    properties:
+      administrativeDistance:
+        description: BGP Administrative Distance.
+        type: integer
+      asOverride:
+        description: Autonomous System Override.
+        $ref: "#/definitions/EnabledDisabled"
+      authentication:
+        description: BGP Authentication (None or MD5 plus a password).
+        $ref: "#/definitions/BgpAuthentication"
+      bgpCommunityList:
+        description:
+          Used to control which routers are accepted, preferred, distributed, or
+          advertised.
+        items:
+          $ref: "#/definitions/BgpCommunityListItem"
+        type: array
+      bgpExtendedCommunityList:
+        description:
+          Mechanism for labeling information carried in BGP-4. Provide
+          enhancement over existing BGP Community Attribute an extended range,
+          the addition of type field.
+        items:
+          $ref: "#/definitions/BgpExtendedCommunityListItem"
+        type: array
+      connectionAddressFamily:
+        description: Connection Address Family (IPv4 or IPv6).
+        $ref: "#/definitions/ConnectionAddressFamily"
+      damping:
+        $ref: "#/definitions/Damping"
+        description: >-
+          Route flap damping. When the Damping parameter is NONE, the attribute
+          is not set. When not NONE a single set of parameters described in
+          Section 4.3 of RFC 2430 MUST be agreed.
+      holdTime:
+        description:
+          Hold time in seconds. Indicates the agreed Hold Time used for BGP
+          sessions. The possible values are 0 or an integer in the range
+          3-65535.
+        type: integer
+        minimum: 0
+        maximum: 65535
+      ipPrefixes:
+        description: IPv4/IPv6 Prefixes that are advertised using BGP.
+        $ref: "#/definitions/Ipv4Ipv6Prefixes"
+      peerAsNumber:
+        description: BGP Peer Autonomous System Number.
+        type: integer
+      peeringAddresses:
+        description: Peering Addresses.
+        $ref: "#/definitions/PeeringAddress"
+      subscriberAsNumber:
+        description: BGP Subscriber Autonomous System number.
+        type: integer
+    type: object
+  BgpAuthentication:
+    description: |
+      BGP Authentication options as an enumeration.
+      - NONE: No authentication for BGP.
+      - MD5_PASSWORD: BGP Authentication is MD5 plus a password.
+    enum:
+      - NONE
+      - MD5_PASSWORD
+    type: string
+  BgpCommunity:
+    description: |
+      Set of BGP Community enumerations.
+      - NO_ADVERTISE: When a No-Advertise community is attached to a route, the BGP speaker won't advertise the route to any internal or external BGP peers.
+      - NO_EXPORT: When a No-Export community is attached to a route, the router won't advertise the route to external peers--only to internal peers.
+      - LOCAL_AS: To avoid any BGP routing loops, there is an important rule regarding the internal BGP neighbors: an IBGP neighbor cannot advertise a route to an IBGP neighbor if it received that route from another IBGP neighbor.
+      - GRACEFUL_SHUTDOWN: The Graceful SHUTDOWN (65535:0) community is used to smoothly shut down paths a router might use when its peer router is about to be intentionally shut down.
+      - EXTENDED: An Extended community is an 8-byte value that is divided into two main sections:An extended community has three fields: type, administrator, assigned number (type:administrator:assigned-number). Based on the value of the high-order byte in the Type field, the administrator field can be an AS or an IP address.
+      - ROUTE_TARGET: The Route Target community is used in MPLS VPN environments to separate two customers routing tables.
+      - ROUTE_ORIGIN: In an MPLS VPN environment, the route origin community is used to identify where routes originated from, so that readvertisement back to that site is avoided.
+      - LARGE: A Large community is a 12-byte BGP community that was developed when the 4-byte AS began to be allocated. Since each of the standard or extended communi-ties use 2-byte values for the AS, a 4-byte AS would not fit into the standard 2-byte value.
+    enum:
+      - NO_ADVERTISE
+      - NO_EXPORT
+      - LOCAL_AS
+      - GRACEFUL_SHUTDOWN
+      - EXTENDED
+      - ROUTE_TARGET
+      - ROUTE_ORIGIN
+      - LARGE
+    type: string
+  BgpCommunityListItem:
+    description: >-
+      Bgp Community List Item
+    properties:
+      communityId:
+        description: Unique identifier for BGP Community.
+        type: integer
+      communityName:
+        description: The name of BGP Community.
+        type: string
+      communityPrefixes:
+        description: The prefixes that the BGP Community contains
+        $ref: "#/definitions/Ipv4Ipv6Prefixes"
+      communityValue:
+        description: BGP Community value.
+        $ref: "#/definitions/BgpCommunity"
+  BgpExtendedCommunityListItem:
+    description: >-
+      BGP Extended Community List Item
+    properties:
+      routeDistinguisher:
+        description: The prefixes that the BGP Community contains
+        $ref: "#/definitions/RouteDistinguisherFields"
+      routeTargetImport:
+        description: BGP Community value.
+        $ref: "#/definitions/RouteDistinguisherFields"
+      routeTargetExport:
+        description: BGP Community value.
+        $ref: "#/definitions/RouteDistinguisherFields"
+      routeTargetOrigin:
+        description: BGP Community value.
+        $ref: "#/definitions/RouteDistinguisherFields"
+  ClassOfServiceMapEntry:
+    description: >-
+      Values for the Cloud Ingress Class of Service Map. Reference MEF 61.1
+      Table 11 - Values for the Cloud Ingress Class of Service Map, 11.0 IPVC EP
+      Ingress Class of Service Map Service Attribute.
+    properties:
+      cosName:
+        description: Class of Service name
+        type: string
+      destinationIpAddress:
+        $ref: "#/definitions/Ipv4Prefix"
+        description: Destination IP Address
+      destinationL4Port:
+        description: Destination Layer 4 Port
+        type: integer
+      ethernetPcp:
+        description: Ethernet PCP value
+        maximum: 7
+        minimum: 0
+        type: integer
+      ipds:
+        description: DSCP value
+        maximum: 63
+        minimum: 0
+        type: integer
+      l4protocol:
+        description: Layer 4 Protocol
+        type: integer
+      sourceIpAddress:
+        $ref: "#/definitions/Ipv4Prefix"
+        description: Source IP Address
+      sourceL4Port:
+        description: Source Layer 4 Port
+        type: integer
+    type: object
+  CloudDataLimit:
+    description: >-
+      Specifies an absolute limit on the amount of data the Subscriber can
+      transmit to, or receive from, the cloud service in a given time period. It
+      is either Unlimited or a 4-tuple (scdl, tcdl, ucdl, dcdl).  Reference MEF
+      61.1 Section 10.13.3 Cloud Data Limit.
+    properties:
+      download:
+        description: >-
+          An integer indicating a limit, in octets, on the amount of IP traffic
+          received from the cloud service that can be delivered to the
+          Subscriber during each time interval described by startTime and
+          duration.
+        type: integer
+      duration:
+        $ref: "#/definitions/TimeDuration"
+        description: >-
+          Specifies a duration. Together with the start time, it describes a
+          service of contiguous time intervals, starting at the specified start
+          time and each lasting for the specified duration.
+      startTime:
+        description: Specifies a start time.
+        format: date-time
+        type: string
+      upload:
+        description: >-
+          An integer indicating a limit, in octets, on the amount of IP traffic
+          that can be transmitted towards the cloud service during each time
+          interval described by startTime and duration.
+        type: integer
+    type: object
+  CloudDns:
+    description: |
+      Data type representing a Domain Name System. Reference MEF 69.1 Section
+      9.1
+      [R13]  For an Internet Access Service, if the Cloud DNS parameter of the
+      IPVC Cloud Service Attribute is STATIC, the associated list of DNS Servers
+      MUST have at least one entry. 
+      [D4] For an Internet Access Service, if the Cloud DNS parameter of the
+      IPVC Cloud Service Attribute is STATIC, the associated list of DNS Servers
+      SHOULD contain at least two DNS servers.
+    properties:
+      dnsServerIpv4List:
+        description: DNS server list an IPv4 addresses
+        items:
+          type: string
+        type: array
+      dnsServerIpv6List:
+        description: DNS server list an IPv6 addresses
+        items:
+          type: string
+        type: array
+      dnsType:
+        $ref: "#/definitions/DnsType"
+        description: Domain Name System type.
+    type: object
+  ConnectionAddressFamily:
+    description: >-
+      Specifies whether the session is established over IPv4 or IPv6 or whether
+      two separate session are established using IPv4 and IPv6.
+    enum:
+      - IPV4
+      - IPv6
+      - BOTH
+    type: string
+  ControlProtocol:
+    description: >-
+      Data type representing Control Protocol. Each entry consists of a 3-tuple
+      containing the protocol name, addressing information (either SP/Operator
+      Addresses or Any) and one or more references. Reference MEF 61.1 Section
+      12.6 UNI List of Control Protocols Service Attribute
+    properties:
+      addressing:
+        description: Enumeration representing the addressing.
+        $ref: "#/definitions/Addressing"
+      protocolName:
+        description: Protocol name.
+        type: string
+      reference:
+        description: Protocol reference.
+        items:
+          type: string
+        minItems: 1
+        type: array
+    type: object
+  Damping:
+    description: >-
+      Damping parameters as defined in RFC 2439 BGP Route Flap Damping, Section
+      4.2
+    properties:
+      cutoffThreshold:
+        description: >-
+          This value is expressed as a number of route withdrawals.  It is the
+          value above which a route advertisement will be suppressed.
+        type: integer
+      decayHalfLifeWhileReachable:
+        description: >-
+          This value is the time duration in seconds during which the
+          accumulated stability figure of merit will be reduced by half if the
+          route if considered reachable (whether suppressed or not).
+        type: integer
+      decayHalfLifeWhileUnReachable:
+        description: >-
+          This value is the time duration in seconds during which the
+          accumulated stability figure of merit will be reduced by half if the
+          route if considered unreachable.  If not specified or set to zero, no
+          decay will occur while a route remains unreachable.
+        type: integer
+      decayMemoryLimit:
+        description: >-
+          This is the maximum time (in seconds) that any memory of previous
+          instability will be retained given that the route's state remains
+          unchanged, whether reachable or unreachable.  This parameter is
+          generally used to determine array sizes.
+        type: integer
+      maxHoldDownTime:
+        description: >-
+          This value is the maximum time a route can be suppressed no matter how
+          unstable it has been prior to this period of stability. In seconds.
+        type: integer
+      numberOfReuseLists:
+        description: >-
+          This is the number of reuse lists.  It may be determined from
+          reuse-list-max or set explicitly.
+        type: integer
+      reuseListMemoryReuseListMax:
+        description: >-
+          This is the time (in seconds) value corresponding to the last reuse
+          list. This may be the maximum value of T-hold for all parameter sets
+          of may be configured.
+        type: integer
+      reuseListTimeGranularity:
+        description: >-
+          This is the time (in seconds) interval between evaluations of the
+          reuse lists.  Each reuse lists corresponds to an additional time
+          increment.
+        type: integer
+      reuseThreshold:
+        description: >-
+          This value is expressed as a number of route withdrawals.  It is the
+          value below which a suppressed route will now be used again.
+        type: integer
+      timeGranularity:
+        description: >-
+          This is the time granularity in seconds used to perform all decay
+          computations.
+        type: integer
+    type: object
+  DhcpRelay:
+    description:
+      Dynamic Host Configuration Protocol (DHCP) Relay functionality is useful
+      when the Subscriber uses DHCP (per RFC 2131 and RFC 8415) in the
+      Subscriber Network but does not want to place a DHCP server (or possibly a
+      pair of redundant DHCP servers) in each part of the network.
+    properties:
+      dhcpServerList:
+        description: >-
+          Non-empty list of IP addresses for DHCP Servers belonging to the
+          Subscriber. Reference MEF 61.1 Section 13.6 UNI Access Link DHCP Relay
+          Server Attribute.
+        type: array
+        items:
+          $ref: "#/definitions/DhcpServer"
+        minItems: 1
+      ipvcEndPointIdentifier:
+        description: IPVC identifier as described in MEF 61.1 Section 11.1.
+        maxLength: 53
+        type: string
+    type: object
+  DhcpServer:
+    description: Data type representing a DHCP Server
+    properties:
+      ipv4Address:
+        description: DHCP Server IPv4 address.
+        type: string
+      ipv6Address:
+        description: DHCP Server IPv6 address.
+        type: string
+    type: object
+  DnsType:
+    description: Enumeration representing the different types of DNS.
+    enum:
+      - DHCP
+      - PPP
+      - STATIC
+      - SLAAC
+    type: string
+  DscpMapping:
+    description: IP DSCP mapping of CoS name to DSCP value
+    properties:
+      cosName:
+        description: Class of Service name
+        type: string
+      ipds:
+        description: DSCP value
+        maximum: 63
+        minimum: 0
+        type: integer
+    type: object
+  EgressClassOfServiceMap:
+    description: >-
+      Pair of values (D,P). D specifies how to set the DS field in Egress IP
+      Data Packets based on CoS Name. It is either None, or a mapping from CoS
+      Names to DSCP values. P specifies how to set the PCP field in VLAN Tagged
+      Ethernet Frames containing Egress IP Data Packets based on CoS Name. It is
+      eitherNone, or a mapping from CoS Names to PCP values. Reference MEF 61.1
+      Section 11.10 IPVC EP  Egress Class of Service Map Service Attribute.
+    properties:
+      dscpMapping:
+        description: Reference to CoS to IP DSCP mapping.
+        items:
+          $ref: "#/definitions/DscpMapping"
+        type: array
+      pcpMapping:
+        description: Reference to CoS to Ethernet PCP mapping.
+        items:
+          $ref: "#/definitions/PcpMapping"
+        type: array
+    type: object
+  EnabledDisabled:
+    description: Enumeration to indicate Enabled/Disabled state of an attribute
+    type: string
+    enum:
+      - "ENABLED"
+      - "DISABLED"
+  EndPointIdentifierAndCosName:
+    description: >-
+      Data type representing IPVC End Point Identifier and CoS name use for
+      Bandwidth Profiles.
+    properties:
+      cosName:
+        description: Class of Service Name.
+        type: string
+      ipvcEndPointIdentifier:
+        description:
+          IPVC End Point Identifier for an IPVC End Point located at the UNI.
+        type: string
+    type: object
+  HeaderFieldTypes:
+    description:
+      HeaderFieldTypes is an enumeration for fields defined in MEF 61.1[1]
+      Section 10.13.2 Cloud Ingress Class of Service Map.
+    enum:
+      - SOURCE_IP_ADDRESS
+      - DESTINATION_IP_ADDRESS
+      - L4_PROTOCOL
+      - SOURCE_L4_PORT
+      - DESTINATION_L4_PORT
+      - ETHERNET_PCP
+      - IP_DS
+    type: string
+  ForwardingInformation:
+    description: >-
+      Forwarding information, consisting of either a nexthop IP address in the
+      Subscriber Network (if the access medium is multipoint capable, e.g.,
+      Ethernet), or a specific UNI Access Link (if the access medium is strictly
+      point-to-point, e.g., HDLC,  PPP over DSL).
+    properties:
+      nextHopIpAddress:
+        description: Next hop IP address.
+        type: string
+      uniAccessLink:
+        description: UNI Access Link unique identifier.
+        maxLength: 53
+        type: string
+    type: object
+  IpBwpEnvelope:
+    description: >-
+      A BWP Envelope is a list of Bandwidth Profile Flows, plus additional
+      parameters for the BWP as a whole. A BWP Envelope is a set of one or more
+      BWP Flows that are associated such that the amount of traffic for one flow
+      can affect the amount that is permitted for another flow. Reference MEF
+      61.1 Section 17.3 Bandwidth Profile Envelopes.
+    properties:
+      maxIrE:
+        description:
+          The Envelope Maximum Information Rate in bits per second. This is the
+          limit on the total aggregate information rate of traffic across all
+          BWP Flows in the Envelope. Reference MEF 61.1 Section 17.3 Bandwidth
+          Profile Envelopes.
+        $ref: "#/definitions/InformationRate"
+      tE:
+        description: >-
+          The Envelope IR Time in milliseconds. This is the time period over
+          which average Information Rates are calculated and thus it limits the
+          size of a burst. Reference MEF 61.1 Section 17.3 Bandwidth Profile
+          Envelopes.
+        type: integer
+    type: object
+  BurstBehavior:
+    description: |
+      Enumeration used to select the Bandwidth Profile Flow Burst Behavior
+      attribute. Reference MEF 61.1 Section 17.3 Table 29 Bandwidth Profile
+      Parameters for a Bandwidth Profile Flow.
+      - OPTIMIZE_DELAY: Enumeration representing the Burst Behavior of optimization of delay.
+      - OPTIMIZE_THROUGHPUT: Enumeration representing the Burst Behavior of optimization of throughput.
+    enum:
+      - OPTIMIZE_DELAY
+      - OPTIMIZE_THROUGHPUT
+    type: string
+  IpBwpFlow:
+    type: object
+    description: >-
+      A Bandwidth Profile Flow is a stream of IP Packets meeting certain
+      criteria. The criteria than can be used depends on which BWP Envelope the
+      BWP Flow is a part of. Reference MEF 61.1 Section 17.2 Bandwidth Profile
+      Flows.
+    properties:
+      burstBehavior:
+        description: >-
+          Identifier for Burst Behavior either Optimize-Delay or
+          Optimize-Throughput. Whether the SP is requested to optimize the delay
+          characteristic of this flow, or the throughput. Reference MEF 61.1
+          Table 29 - Bandwidth Profile Parameters for a Bandwidth Profile Flow.
+        $ref: "#/definitions/BurstBehavior"
+      cir:
+        description: >-
+          Identifier for Committed Information Rate in bits per second. Average
+          information rate of IP Packets that is committed to this BWP Flow.
+          Reference MEF 61.1 Table 29 - Bandwidth Profile Parameters for a
+          Bandwidth Profile Flow.
+        $ref: "#/definitions/InformationRate"
+      flowIdentifier:
+        description: >-
+          Identifier for the BWP Flow within the BWP Envelope. Unique integer
+          between 1 and n where n is the number of BWP Flows in the BWP
+          Envelope. Reference MEF 61.1 Table 29 - Bandwidth Profile Parameters
+          for a Bandwidth Profile Flow.
+        type: integer
+      maxIr:
+        description: >-
+          Identifier for Maximum Information Rate in bits per second. Limit on
+          the average information rate of IP Packets for this BWP Flow.
+          Reference MEF 61.1 Table 29 - Bandwidth Profile Parameters for a
+          Bandwidth Profile Flow.
+        $ref: "#/definitions/InformationRate"
+      weight:
+        description:
+          Identifier for Weight as an integer greater than or equal to 0.
+          Relative weight for this BWP Flow compared to other BWP Flows in the
+          BWP Envelope. Reference MEF 61.1 Table 29 - Bandwidth Profile
+          Parameters for a Bandwidth Profile Flow.
+  IpUniEgressBwpAccessLink:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - description: >-
+          All Ingress IP Data Packets at the UNI that are received over one of a
+          give set of UNI Access Links. Reference MEF 61.1 Section 12.5 UNI
+          Egress BWP Envelope.
+        properties:
+          uniAccessLinkIdentifier:
+            description: UNI Access Link Identifier.
+            items:
+              type: string
+            minItems: 1
+            type: array
+        type: object
+  IpUniEgressBwpEnvelope:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - description: >-
+          A single Bandwidth Profile Envelope consisting of parameters and
+          Bandwidth Profile  Flow specifications. If specified, the BWP Envelope
+          is used for an egress Bandwidth Profile. The BWP Flows can be defined
+          per UNI, per IPVC EP, per UNI Access Link, per CosName, etc. Reference
+          MEF 61.1 Section 12.5 UNI Egress Bandwidth Profile Envelope Service
+          Attribute.
+        type: object
+        properties:
+          ipUniEgressBwpAccessLink:
+            description: >-
+              All Egress IP Data Packets at the UNI that are mapped to any of a
+              given set of (IPVC, EP, CoS Name) pairs. Reference MEF 61.1
+              Section 12.5 UNI Egress BWP Envelope.
+            items:
+              $ref: "#/definitions/IpUniEgressBwpAccessLink"
+            type: array
+          ipUniEgressBwpIpvcEp:
+            description: >-
+              All Egress IP Data Packets at the UNI that are mapped to any of a
+              given set of IPVC EPs. Reference MEF 61.1 Section 12.5 UNI Egress
+              BWP Envelope.
+            items:
+              $ref: "#/definitions/IpUniEgressBwpIpvcEp"
+            type: array
+          ipUniEgressBwpIpvcEpAccessLink:
+            description: >-
+              All Egress IP Data Packets at the UNI that are received over one
+              of a give set of UNI Access Links. Reference MEF 61.1 Section 12.5
+              UNI Egress BWP Envelope.
+            items:
+              $ref: "#/definitions/IpUniEgressIpvcBwpIpvcEpAccessLink"
+            type: array
+          ipUniEgressBwpIpvcEpCos:
+            description: >-
+              All Egress IP Data Packets at the UNI that are mapped to any of a
+              given set of (IPVC, EP, CoS Name) pairs. Reference MEF 61.1
+              Section 12.5 UNI Egress BWP Envelope.
+            items:
+              $ref: "#/definitions/IpUniEgressBwpIpvcEpCos"
+            type: array
+          ipUniEgressBwpIpvcEpCosAccessLink:
+            description: >-
+              All Egress IP Data Packets at the UNI that are received over one
+              of a given set of UNI Access Links, and that are mapped to the any
+              of a given set of (IPVC EP, Cos Name) pairs. Reference MEF 61.1
+              Section 12.5 UNI Egress BWP Envelope.
+            items:
+              $ref: "#/definitions/IpUniEgressBwpIpvcEpCosAccessLink"
+            type: array
+          ipUniEgressBwpUni:
+            $ref: "#/definitions/IpUniEgressBwpUni"
+            description: >-
+              All Egress IP Data Packets at the UNI. Reference MEF 61.1 Section
+              12.5 UNI Egress BWP Envelope.
+  IpUniEgressBwpIpvcEp:
+    allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+      - description: >-
+          All Ingress IP Data Packets at the UNI that are mapped to any of a
+          given set of IPVC EPs. Reference MEF 61.1 Section 12.5 UNI Egress BWP
+          Envelope.
+        properties:
+          ipvcEndPointIdentifier:
+            description: >-
+              IPVC End Point Identifier for an IPVC End Point located at the
+              UNI.
+            items:
+              type: string
+            minItems: 1
+            type: array
+        type: object
+  IpUniEgressBwpIpvcEpCos:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - description: >-
+          All Ingress IP Data Packets at the UNI that are mapped to any of a
+          given set of (IPVC, EP, CoS Name) pairs. Reference MEF 61.1 Section
+          12.5 UNI Egress BWP Envelope.
+        properties:
+          ipvcEpIdCosName:
+            description:
+              IPVC End Point and CoS Identifier. Reference MEF 61.1 Table 28.
+            items:
+              type: string
+            minItems: 1
+            type: array
+        type: object
+  IpUniEgressBwpIpvcEpCosAccessLink:
+    description: >-
+      All Ingress IP Data Packets at the UNI that are received over one of a
+      given set of UNI Access Links,and that are mapped to the any of a given
+      set of (IPVC EP, Cos Name) pairs. Reference MEF 61.1 Section 12.4 UNI
+      Ingress BWP Envelope.
+    properties:
+      ipvcEpIdCosName:
+        description:
+          IPVC End Point and CoS Identifier. Reference MEF 61.1 Table 28.
+        items:
+          $ref: "#/definitions/EndPointIdentifierAndCosName"
+        minItems: 1
+        type: array
+      uniAccessLinkIdentifier:
+        description: UNI Access Link Identifier.
+        items:
+          type: string
+        minItems: 1
+        type: array
+    type: object
+  IpUniEgressBwpUni:
+    allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+    description: >-
+      All Ingress IP Data Packets at the UNI. Reference MEF 61.1 Section 12.5
+      UNI Egress BWP Envelope.
+  IpUniEgressIpvcBwpIpvcEpAccessLink:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - description: >-
+          All Ingress IP Data Packets at the UNI that are received over one of a
+          give set of UNI Access Links. Reference MEF 61.1 Section 12.4 UNI
+          Ingress BWP Envelope.
+        properties:
+          ipvcEndPointIdentifier:
+            description: IPVC End Point Identifier
+            items:
+              type: string
+            minItems: 1
+            type: array
+          uniAccessLinkIdentifier:
+            description: UNI Access Link Identifier.
+            items:
+              type: string
+            minItems: 1
+            type: array
+        type: object
+  IpUniIngressBwpAccessLink:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - description: >-
+          All Ingress IP Data Packets at the UNI that are received over one of a
+          give set of UNI Access Links. Reference MEF 61.1 Section 12.4 UNI
+          Ingress BWP Envelope.
+        properties:
+          uniAccessLinkIdentifier:
+            description: UNI Access Link Identifier.
+            items:
+              type: string
+            minItems: 1
+            type: array
+        type: object
+  IpUniIngressBwpEnvelope:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - description: >-
+          A single Bandwidth Profile Envelope consisting of parameters and
+          Bandwidth Profile Flow specifications. If specified, the BWP Envelope
+          is used for an ingress Bandwidth Profile. The BWP Flows can be defined
+          per UNI, per IPVC EP, per UNI Access Link, per CosName, etc. Reference
+          MEF 61.1 Section 12.4 UNI Ingress Bandwidth Profile Envelope Service
+          Attribute.
+        properties:
+          ipUniIngressBwpAccessLink:
+            description: >-
+              All Ingress IP Data Packets at the UNI that are mapped to any of a
+              given set of (IPVC, EP, CoS Name) pairs. Reference MEF 61.1
+              Section 12.4 UNI Ingress BWP Envelope.
+            items:
+              $ref: "#/definitions/IpUniIngressBwpAccessLink"
+            type: array
+          ipUniIngressBwpIpvcEp:
+            description: >-
+              All Ingress IP Data Packets at the UNI that are mapped to any of a
+              given set of IPVC EPs. Reference MEF 61.1 Section 12.4 UNI Ingress
+              BWP Envelope.
+            items:
+              $ref: "#/definitions/IpUniIngressBwpIpvcEp"
+            type: array
+          ipUniIngressBwpIpvcEpAccessLink:
+            description: >-
+              All Ingress IP Data Packets at the UNI that are received over one
+              of a give set of UNI Access Links. Reference MEF 61.1 Section 12.4
+              UNI Ingress BWP Envelope.
+            items:
+              $ref: "#/definitions/IpUniIngressIpvcBwpIpvcEpAccessLink"
+            type: array
+          ipUniIngressBwpIpvcEpCos:
+            description: >-
+              All Ingress IP Data Packets at the UNI that are mapped to any of a
+              given set of (IPVC, EP, CoS Name) pairs. Reference MEF 61.1
+              Section 12.4 UNI Ingress BWP Envelope.
+            items:
+              $ref: "#/definitions/IpUniIngressBwpIpvcEpCos"
+            type: array
+          ipUniIngressBwpIpvcEpCosAccessLink:
+            description: >-
+              All Ingress IP Data Packets at the UNI that are received over one
+              of a given set of UNI Access Links, and that are mapped to the any
+              of a given set of (IPVC EP, Cos Name) pairs. Reference MEF 61.1
+              Section 12.4 UNI Ingress BWP Envelope.
+            items:
+              $ref: "#/definitions/IpUniIngressBwpIpvcEpCosAccessLink"
+            type: array
+          ipUniIngressBwpUni:
+            $ref: "#/definitions/IpUniIngressBwpUni"
+            description: >-
+              All Ingress IP Data Packets at the UNI. Reference MEF 61.1 Section
+              12.4 UNI Ingress BWP Envelope.
+        type: object
+  IpUniIngressBwpIpvcEp:
+    allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+      - description: >-
+          All Ingress IP Data Packets at the UNI that are mapped to any of a
+          given set of IPVC EPs. Reference MEF 61.1 Section 12.4 UNI Ingress BWP
+          Envelope.
+        properties:
+          ipvcEndPointIdentifier:
+            description: >-
+              IPVC End Point Identifier for an IPVC End Point located at the
+              UNI.
+            items:
+              type: string
+            minItems: 1
+            type: array
+        type: object
+  IpUniIngressBwpIpvcEpCos:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - description: >-
+          All Ingress IP Data Packets at the UNI that are mapped to any of a
+          given set of (IPVC, EP, CoS Name) pairs. Reference MEF 61.1 Section
+          12.4 UNI Ingress BWP Envelope.
+        properties:
+          ipvcEpIdCosName:
+            description:
+              IPVC End Point and CoS Identifier. Reference MEF 61.1 Table 28.
+            items:
+              type: string
+            minItems: 1
+            type: array
+        type: object
+  IpUniIngressBwpIpvcEpCosAccessLink:
+    description: >-
+      All Ingress IP Data Packets at the UNI that are received over one of a
+      given set of UNI Access Links,and that are mapped to the any of a given
+      set of (IPVC EP, Cos Name) pairs. Reference MEF 61.1 Section 12.4 UNI
+      Ingress BWP Envelope.
+    properties:
+      ipvcEpidCosName:
+        description:
+          IPVC End Point and CoS Identifier. Reference MEF 61.1 Table 28.
+        items:
+          $ref: "#/definitions/EndPointIdentifierAndCosName"
+        minItems: 1
+        type: array
+      uniAccessLinkIdentifier:
+        description: UNI Access Link Identifier.
+        items:
+          type: string
+        minItems: 1
+        type: array
+    type: object
+  IpUniIngressBwpUni:
+    allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+    description: >-
+      All Ingress IP Data Packets at the UNI. Reference MEF 61.1 Section 12.4
+      UNI Ingress BWP Envelope.
+  IpUniIngressIpvcBwpIpvcEpAccessLink:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - description: >-
+          All Ingress IP Data Packets at the UNI that are received over one of a
+          give set of UNI Access Links. Reference MEF 61.1 Section 12.4 UNI
+          Ingress BWP Envelope.
+        properties:
+          ipvcEndPointIdentifier:
+            description: IPVC End Point Identifier
+            items:
+              type: string
+            minItems: 1
+            type: array
+          uniAccessLinkIdentifier:
+            description: UNI Access Link Identifier.
+            items:
+              type: string
+            minItems: 1
+            type: array
+        type: object
+  Ipv4Ipv6Prefixes:
+    description:
+      IPv4 and IPv6 prefix lists.  Includes subnet addresses and prefix length.
+    properties:
+      listOfIpv4ReservedPrefixes:
+        description: List of IPv4 prefixes.
+        items:
+          $ref: "#/definitions/Ipv4Prefix"
+        type: array
+      listOfIpv6ReservedPrefixes:
+        description: List of IPv6 prefixes.
+        items:
+          $ref: "#/definitions/Ipv6Prefix"
+        type: array
+    type: object
+  Ipv4Prefix:
+    description:
+      Data type representing IPv4 address prefix and mask length between 0 and
+      31 bits.
+    properties:
+      ipv4Address:
+        description: IPv4 address.
+        type: string
+      prefixLength:
+        description: IPv4 address prefix. Length 0-31.
+        type: integer
+    type: object
+  Ipv4Subnet:
+    description: >-
+      Ipv4Subnet is a data type representing an IPv4 subnet logical partition of
+      an IP network. Included is list of Service Provider IPv4 addresses.
+    properties:
+      ipv4Prefix:
+        description:
+          IPv4 address prefix (IPv4 address prefix and mask length between 0 and
+          31 in bits).
+        $ref: "#/definitions/Ipv4Prefix"
+      serviceProviderIpv4Addresses:
+        description: List of Service Provider IPv4 addresses.
+        items:
+          type: string
+        minItems: 1
+        type: array
+    type: object
+  Ipv6Prefix:
+    description:
+      Data type representing IPv6 address prefix and mask length between 0 and
+      127 in bits.
+    properties:
+      ipv6Address:
+        description: IPv6 address.
+        type: string
+      prefixLength:
+        description: IPv6 address prefix. Length 0-127.
+        type: integer
+    type: object
+  Ipv6Subnet:
+    description: >-
+      IPv6Subnet is a data type representing an IPv6 subnet logical partition of
+      an IP network. Included is list of Service Provider IPv6 addresses.
+    properties:
+      ipv6Prefix:
+        description:
+          IPv6 Prefix (IPv6 address prefix and mask length between 0 and 127 in
+          bits).
+        $ref: "#/definitions/Ipv6Prefix"
+      serviceProviderIpv6Addresses:
+        description: List of IPv6 Service Provider addresses.
+        items:
+          type: string
+        minItems: 1
+        type: array
+    type: object
+  IpvcEpIngressBwp:
+    allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+      - description:
+          An Ingress Bandwidth for and IPVC End Point with an associated Class
+          of Service identifier.
+        type: object
+        properties:
+          cosName:
+            description: Class of Service name.
+            items:
+              type: string
+            minItems: 1
+            type: array
+  IpvcEpEgressBwp:
+    allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+      - description:
+          An Egress Bandwidth for and IPVC End Point with an associated Class of
+          Service identifier.
+        type: object
+        properties:
+          cosName:
+            description: Class of Service name.
+            items:
+              type: string
+            minItems: 1
+            type: array
+  IpvcEpIngressBwpAll:
+    allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+  IpvcEpEgressBwpAll:
+    allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+  IpvcEpEgressBwpEnvelope:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - description: >-
+          A single Bandwidth Profile Envelope consisting of parameters and
+          Bandwidth Profile specifications. An Egress Bandwidth Profile Envelope
+          can be specified for one of a UNI, a UNI Access Link and ENNI Link or
+          an IPVC End Point. Reference MEF 61.1 Section 11.11 IPVC EP Egress
+          Bandwidth Profile Envelope Service Attribute.
+        properties:
+          ipvcEpEgressBwp:
+            description: Pointer to IpvcEpBwp
+            items:
+              $ref: "#/definitions/IpvcEpEgressBwp"
+            minItems: 1
+            type: array
+          ipvcEpEgressBwpAll:
+            $ref: "#/definitions/IpvcEpEgressBwpAll"
+            description: Pointer to IpvcEpBwpAll
+        type: object
+  IpvcEpIngressBwpEnvelope:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - description: >-
+          A single Bandwidth Profile Envelope consisting of parameters and
+          Bandwidth Profile specifications. An Ingress Bandwidth Profile
+          Envelope can be specified for one of a UNI, a UNI Access Link and ENNI
+          Link or an IPVC End Point. Reference MEF 61.1 Section 11.11 IPVC EP
+          Ingress Bandwidth Profile Envelope Service Attribute.
+        properties:
+          ipvcEpIngressBwp:
+            description: Pointer to IpvcEpBwp
+            items:
+              $ref: "#/definitions/IpvcEpIngressBwp"
+            minItems: 1
+            type: array
+          ipvcEpIngressBwpAll:
+            $ref: "#/definitions/IpvcEpIngressBwpAll"
+            description: Pointer to IpvcEpBwpAll
+        type: object
+  Ospf:
+    description: >-
+      When an entry in the UNI Routing Protocols is for OSPF, OSPF as specified
+      in RFC 2328 (for IPv4) and/or RFC 5340 (for IPv6) is used across each UNI
+      Access Link to exchange routing information. Reference MEF 61.1 Section
+      12.7.2 OSPF.
+    properties:
+      administrativeDistance:
+        description: Administrative distance (integer greater than 0)
+        type: integer
+      areaId:
+        description:
+          Area ID (0-429967295), normally expressed as an IPv4 address.
+        type: integer
+      areaType:
+        description: OSPF Area Type enumeration.
+        $ref: "#/definitions/OspfAreaType"
+      authenticationType:
+        description: OSPF Authentication Type.
+        $ref: "#/definitions/OspfAuthenticationType"
+      deadInterval:
+        description: Dead interval (0-429496295, in seconds)
+        type: integer
+      helloInterval:
+        description: Hello interval (0-65535, in seconds)
+        type: integer
+      ipPrefixes:
+        description: IPv4/IPv6 Prefixes that are advertised using OSPF.
+        $ref: "#/definitions/Ipv4Ipv6Prefixes"
+      retransmissionInterval:
+        description: Retransmit interval (integer greater than 0, in seconds)
+        type: integer
+    type: object
+  OspfAreaType:
+    description: OSPF Area Type enumeration.
+    enum:
+      - NORMAL
+      - STUB
+      - NSSA
+    type: string
+  OspfAuthenticationType:
+    description: OSPF Authentication Type enumeration.
+    enum:
+      - NONE
+      - PASSWORD
+      - MESSAGE_DIGEST
+    type: string
+  PacketDelivery:
+    description: |
+      For each Ingress IP Data Packet that is mapped to one of the IPVC EPs for
+      the IPVC it takes one of two values. STANDARD_ROUTING or
+      POLICY-BASED_ROUTING
+      STANDARD_ROUTING: If the IPVC Packet Delivery is Standard Routing,
+      the egress UNI and UNI Ac-cess Link or egress ENNI and ENNI Link are
+      generally selected by examining the destination IP address in the packet
+      and matching it to an IP Prefix reachable via the IPVC EP at the egress 
+      EI - in other words, by normal IP routing.
+      POLICY_BASED_ROUTING: The behavior and requirements when the
+      IPVC Packet Delivery Service Attribute is set to Policy-Based Routing
+      are deferred to a future revision of this specification (MEF 61.1)
+    enum:
+      - STANDARD_ROUTING
+      - POLICY_BASED_ROUTING
+    type: string
+  PcpMapping:
+    description: Ethernet PCP mapping of CoS name to PCP value
+    properties:
+      cosName:
+        description: Class of Service name
+        type: string
+      ethernetPcp:
+        description: PCP value
+        maximum: 7
+        minimum: 0
+        type: integer
+    type: object
+  PeeringAddress:
+    description: >-
+      Peering Addresses. Connection Addresses, or Loopbacks plus a list of pairs
+      of IP addresses. Reference MEF 61.1 Section 12.7.3 BGP.
+    properties:
+      connectionAddress:
+        description:
+          If the Peering Addresses parameter is Connection Addresses, a separate
+          BGP peering session is established over each UNI Access Link, using
+          the primary IPv4 addresses in the UNI Access Link IPv4 Connection
+          Addressing Service Attribute (section 13.4) or the first IPv6
+          addresses in the UNI Access Link IPv6 Connection Addressing Service
+          Attribute (section 13.5), as indicated by the Connection Address
+          Family parameter.
+        $ref: "#/definitions/EnabledDisabled"
+      loopbacks:
+        description:
+          If the Peering Addresses parameter is Loopbacks, a list of pairs of IP
+          addresses is additionally specified, each pair containing the
+          Subscriber's loopback address and the SP's or Operator's loopback
+          address. A single BGP peering session is established for each pair of
+          addresses.
+        $ref: "#/definitions/EnabledDisabled"
+      serviceProviderLoopback:
+        description: Service Provider IP Loopback address.
+        type: string
+      subscriberLoopback:
+        description: Subscriber IP Loopback address.
+        type: string
+    type: object
+  RouteDistinguisherFields:
+    description: >-
+      BGP Route Distinguisher with two fields.
+    properties:
+      field1:
+        description: Route Distinguisher field 1.
+        type: string
+      field2:
+        description: Route Distinguisher field 2.
+        type: string
+  RoutingProtocols:
+    description: >-
+      Data type to support routing protocols and associated parameters that are
+      used to exchange IP routes across the UNI. The value is a list of
+      protocols (possibly empty), where each entry consists of the protocol name
+      (one of Static, OSPF or BGP) the type of routes that will be exchanged
+      (one of IPv4 or IPv6 or Both) and set of additional parameters as
+      specified.  Reference MEF 61.1 Section 12.7 UNI Routing Protocols Service
+      Attributes.
+    properties:
+      bgp:
+        description: Reference to BGP routing
+        items:
+          $ref: "#/definitions/Bgp"
+        minItems: 1
+        type: array
+      ospf:
+        description: Reference to OSPF routing.
+        items:
+          $ref: "#/definitions/Ospf"
+        minItems: 1
+        type: array
+      static:
+        description: Reference to Static routing
+        items:
+          $ref: "#/definitions/Static"
+        type: array
+    type: object
+  Static:
+    description: >-
+      When an entry in the UNI Routing Protocols list is for Static, the IP
+      Prefixes used in the Subscriber Network that are reachable via this UNI
+      are specified as additional parameters in the entry. These are known as
+      Static IP Prefixes. Reference MEF 61.1 Section 12.7.1 Static.
+    properties:
+      staticIpEntry:
+        description: Static IP address entry.
+        items:
+          $ref: "#/definitions/StaticIpEntry"
+        minItems: 1
+        type: array
+    type: object
+  StaticIpEntry:
+    description: >-
+      StaticIpEntry data type including IPv4/IPv6 prefixes, forwarding
+      information and administrative distance.
+    properties:
+      administrativeDistance:
+        description: Administrative distance, an integer > 0.
+        type: integer
+      forwardingInformation:
+        description:
+          Forwarding information with either Next Hop IP address or UNI Access
+          Link identifier.
+        $ref: "#/definitions/ForwardingInformation"
+      staticPrefix:
+        description:
+          Static IP prefix either IPv4 or IPv6.
+        $ref: "#/definitions/Ipv4Ipv6Prefixes"
+    type: object
+  TimeDuration:
+    type: object
+    description: >-
+      This class is used to describe durations expressed as a 2-tuple, (value,
+      units). The units from from nanoseconds to years.
+    properties:
+      timeDurationValue:
+        description: >-
+          The value of the duration. For example, if the duration is 20 ms, this
+          element is 20.
+        type: integer
+      timeDurationUnits:
+        description: >-
+          The unit of measure in the duration. For example, if an interval is
+          2ms, this element is MS.
+        $ref: "#/definitions/TimeDurationUnits"
+  TimeDurationUnits:
+      description: Enum listing the units of measure for a Time Duration
+      type: string
+      enum:
+          - "NS"
+          - "US"
+          - "MS"
+          - "SEC"
+          - "MIN"
+          - "HOUR"
+          - "DAY"
+          - "WEEK"
+          - "MONTH"
+          - "YEAR"
+  UniManagementType:
+    description: >-
+      Enumeration representing the UNI Management Type options. Reference MEF
+      61.1 Section 12.2 UNI Management Type Service Attribute.
+    enum:
+      - SUBSCRIBER_MANAGEMENT
+      - PROVIDER_MANAGEMENT
+    type: string
+  Vrid:
+    description:
+      VRID (Virtual Router ID) as defined in RFC 5798 is a number between 1
+      and 255
+    maximum: 255
+    minimum: 1
+    type: integer

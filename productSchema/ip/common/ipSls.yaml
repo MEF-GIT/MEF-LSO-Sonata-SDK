@@ -1,0 +1,214 @@
+$schema: http://json-schema.org/draft-07/schema#
+title: MEF LSO Legato - IP Service Level Specification
+definitions:
+  OneWayMeanPacketDelay:
+    type: object
+    description:
+      The One-way Mean Packet Delay Performance Metric is the maximum, over all
+      the ordered pairs of SLS-RPs in a given set S, of the arithmetic mean of
+      one-way packet delay for Qualified Packets for a given ordered pair of
+      SLS-RPs, a given CoS Name, and a  given time period Tk. Reference MEF 61.1
+      Section 10.9.5 One-way Mean Packet Delay Performance Metric.
+    properties:
+      slsRpPair:
+        description:
+          Set of ordered SLS-RP pairs. Reference MEF 61.1 Section 10.9.5 One-way
+          Mean Packet Delay Performance Metric, Table-5.
+        type: array
+        minItems: 1
+        items:
+          $ref: "#/definitions/SlsRpPair"
+      meanPacketDelayObjective:
+        description:
+          Mean Packet Delay Objective. Reference MEF 61.1 Section 10.9.5 One-way
+          Mean Packet Delay Performance Metric, Table-5.
+        type: number
+      cosName:
+        description:
+          One of the values in the IPVC List of Class of Service Names Service
+          Attribute. Reference MEF 61.1 Section 10.9.5 One-way Mean Packet Delay
+          Performance Metric, Table-5.
+        type: string
+  OneWayInterPacketDelayVariation:
+    type: object
+    description:
+      The One-way Inter-Packet Delay Variation Performance Metric is the
+      maximum, over all the ordered pairs of SLS-RPs in a given set S, of the
+      vth percentile of differences between the one-way packet delays of
+      Qualified Packets that arrive at time separated by a given interval tau,
+      for a given ordered pair of SLS-RPs, a given CoS Name, and a given time
+      period Tk. Reference MEF 61.1 Section 10.9.6 One-way Inter-Packet Delay
+      Variation Performance Metric.
+    properties:
+      slsRpPair:
+        description:
+          Set of ordered SLS-RP pairs. Reference MEF 61.1 Section 10.9.5 One-way
+          Mean Packet Delay Performance Metric, Table-5.
+        type: array
+        minItems: 1
+        items:
+          $ref: "#/definitions/SlsRpPair"
+      cosName:
+        description:
+          One of the values in the IPVC List of Class of Service Names Service
+          Attribute. Reference MEF 61.1 Section 10.9.6 One-way Inter-Packet
+          Delay Variation Performance Metric, Table-6.
+        type: string
+      packetArrivalTimeDifference:
+        description:
+          Difference in the time of arrival of packets. Reference MEF 61.1
+          Section 10.9.6 One-way Inter-Packet Delay Variation Performance
+          Metric, Table 6.
+        type: number
+      interPacketDelayVariationPercentile:
+        description:
+          Inter-Packet Delay Variation Percentile. Reference MEF 61.1 Section
+          10.9.6 One-way Inter-Packet Delay Variation Performance Metric, Table
+          6.
+        $ref: "#/definitions/Percentage"
+      interPacketDelayVariationObjective:
+        description:
+          Inter-Packet Delay Variation Objective. Reference MEF 61.1 Section
+          10.9.6 One-way Inter-Packet Delay Variation Performance Metric, Table
+          6.
+        type: number
+  OneWayPacketDelayPercentile:
+    type: object
+    description:
+      The One-way Packet Delay Percentile Performance Metric is the maximum,
+      over all the order pairs of SLS-RPs in a given set S, of the pth
+      percentile of one-way packet delay for Qualified Packets for a given order
+      pair of SLS-RPs, a given CoS Name and a given time period Tk. Reference
+      MEF 61.1 Section 10.9.4 One-way Packet Delay Percentile Performance
+      Metric.
+    properties:
+      slsRpPair:
+        description:
+          Set of ordered SLS-RP pairs. Reference MEF 61.1 Section 10.9.5 One-way
+          Mean Packet Delay Performance Metric, Table-5.
+        type: array
+        minItems: 1
+        items:
+          $ref: "#/definitions/SlsRpPair"
+      cosName:
+        description:
+          One of the values in the IPVC List of Class of Service Names Service
+          Attribute. Reference MEF 61.1 Section 10.9.4 One-way Packet Delay
+          Percentile Performance Metric, Table-4.
+        type: string
+      packetDelayRangePercentile:
+        description:
+          Packet Delay Range Percentile. Reference MEF 61.1 Section 10.9.7
+          One-way Packet Delay Range Performance Metric, Table 7.
+        $ref: "#/definitions/Percentage"
+      packetDelayRangeObjective:
+        description:
+          Packet Delay Objective. Reference MEF 61.1 Section 10.9.4 One-way
+          Packet Delay Percentile Performance Metric, Table-4.
+        type: number
+  OneWayPacketDelayRange:
+    type: object
+    description:
+      The One-way Packet Delay Range Performance Metric is the maximum, over all
+      the ordered pairs of SLS-RPs in a given set S, of the difference between
+      the rth percentile of one-way packet delay and the minimum one-way packet
+      delay, for Qualified Packets for a given ordered pair of SLS-RPs, a given
+      CoS Name, and a given time period Tk. Reference MEF 61.1 Section 10.9.7
+      One-way Packet Delay Range Performance Metric.
+    properties:
+      slsRpPair:
+        description:
+          Set of ordered SLS-RP pairs. Reference MEF 61.1 Section 10.9.5 One-way
+          Mean Packet Delay Performance Metric, Table-5.
+        type: array
+        minItems: 1
+        items:
+          $ref: "#/definitions/SlsRpPair"
+      packetDelayRangePercentile:
+        description:
+          Packet Delay Range Percentile. Reference MEF 61.1 Section 10.9.7
+          One-way Packet Delay Range Performance Metric, Table 7.
+        $ref: "#/definitions/Percentage"
+      packetDelayRangeObjective:
+        description:
+          Packet Delay Range Objective. Reference MEF 61.1 Section 10.9.7
+          One-way Packet Delay Range Performance Metric, Table 7.
+        type: number
+      cosName:
+        description:
+          One of the values in the IPVC List of Class of Service Names Service
+          Attribute. Reference MEF 61.1 Section 10.9.7 One-way Mean Packet Delay
+          Performance Metric, Table-7.
+        type: string
+  OneWayPacketLossRatio:
+    type: object
+    description:
+      The One-way Packet Loss Ratio Performance Metric is the maximum, over the
+      ordered pairs of SLS-RPs in a given set S, of the ratio of lost packets to
+      transmitted packets for a given ordered pair of SLS-RPs, a given CoS Name
+      and a given time period Tk. Reference MEF 61.1 Section 10.9.8 One-way
+      Packet Loss Ratio Performance Metric.
+    properties:
+      slsRpPair:
+        description:
+          Set of ordered SLS-RP pairs. Reference MEF 61.1 Section 10.9.5 One-way
+          Mean Packet Delay Performance Metric, Table-5.
+        type: array
+        minItems: 1
+        items:
+          $ref: "#/definitions/SlsRpPair"
+      packetLossRatioObjective:
+        description:
+          Packet Loss Ratio Objective. Reference MEF 61.1 Section 10.9.8 One-way
+          Packet Loss Ratio Performance Metric, Table 8.
+        $ref: "#/definitions/Percentage"
+      cosName:
+        description:
+          One of the values in the IPVC List of Class of Service Names Service
+          Attribute. Reference MEF 61.1 Section 10.9.8 One-way Packet Loss Ratio
+          Performance Metric, Table-8.
+        type: string
+  ServiceUptime:
+    type: object
+    description:
+      The Service Uptime Performance Metric is the proportion of time, during a
+      given time period Tk, that the service is working from the perspective of
+      the Subscriber (for a Subscriber IP Service) or the  perspective of the
+      SP/SO (for an Operator IP Service), excluding any pre-agreed exceptions,
+      for  example maintenance intervals. Reference MEF 61.1[1] Section 10.9
+      Service Uptime Performance Metric..
+    properties:
+      serviceUptimeObjective:
+        $ref: "#/definitions/Percentage"
+        description:
+          Service Uptime Objective. Reference MEF 61.1 Section 10.9.9 Service
+          Uptime Performance Metric, Table 9.
+  SlsReferencePoint:
+    type: object
+    description:
+      SlsReferencePoint is an abstract data type that can be subclassed to
+      IpvcEndPoint and Location. Reference MEF 61.1 Section 10.9.1 SLS Reference
+      Points.
+  SlsRpPair:
+    type: object
+    description:
+      Service Level Specification Reference Point Pair. In a multipoint or
+      rooted multipoint IPVC, performance objectives are ideally specified as
+      applying between pairs of IPVC EPs - in other words, they apply to the
+      performance that IP Data Packets experience as they flow from one EI to
+      another. The SlsRpPair is a representation of this association. Reference
+      MEF 61.1 Section 10.9.1
+    properties:
+      fromSlsReferencePoint:
+        description: Pointer to the "from" SLS Reference Point.
+        $ref: "#/definitions/SlsReferencePoint"
+      toSlsReferencePoint:
+        description: Pointer to the "to" SLS Reference Point.
+        $ref: "#/definitions/SlsReferencePoint"
+  Percentage:
+      description:  >-
+          This is a number of percent - a floating point number between
+          0 and 100
+      type: number
+      minimum: 0
+      maximum: 100

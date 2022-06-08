@@ -2,13 +2,13 @@
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
     MEF LSO Sonata - Carrier Ethernet EVC Common
-    # MEF Forum - Date: 20220110  Edit-level: 319
+    # MEF Forum - Date: 20220601  Edit-level: 343
     # File: carrierEthernet/evcSuperClasses/carrierEthernetEvcCommon.yaml
     #
     # ---------------------
     # Disclaimer
     # 
-    # © MEF Forum 2021. All Rights Reserved.
+    # © MEF Forum 2022. All Rights Reserved.
     # 
     # The information in this publication is freely available for reproduction
     # and use by any recipient and is believed to be accurate as of its
@@ -79,7 +79,8 @@ definitions:
                     the Service Provider and the Subscriber or between Service Provider
                     and the Operator as part of the Service Level Agreement. A given
                     SLS might contain 0,1 or more Performance Objectives for each Performance
-                    Metric.
+                    Metric. If the value of this attribute is an empty list, it is
+                    equivalent to a value of None per MEF 10.4.
                 type: array 
                 minItems: 0
                 maxItems: 1
@@ -90,10 +91,6 @@ definitions:
                 description:  >-
                     MEF 10.4 sec. 8.10 - Maximum size of Service frames that can
                     be carried over the EVC. This must be at least 1522 (1518+C-tag).
-                    This Service Attribute must be included in POQ, Quote, and Order
-                    if the Buyer requires a value that is different than the value
-                    agreed on during the on-boarding process between the Buyer and
-                    Seller.
                 # See additional validation notes in the Schema Guide
                 type: integer
                 minimum: 1522
@@ -102,8 +99,9 @@ definitions:
                     MEF 10.4 sec. 8.11 - The lowest MEG level for which SOAM Frames
                     are not peered or discarded by the Service Provider. If this attribute
                     is NONE  there is no such level (that is, SOAM frames at all MEG
-                    levels may be peered or discarded by the Service Provider). MEF
-                    6.3 constrains it to 0-6 for all Subscriber Ethernet Services.
+                    levels may be peered or discarded by the Service Provider). For
+                    all Subscriber Ethernet Services defined in MEF 6.3 the value is
+                    constrained to the range 0...6.
                 $ref: "../common/carrierEthernetTypes.yaml#/definitions/AvailableMegList"
     CarrierEthernetEvcEpCommon:
         type: object
@@ -162,8 +160,8 @@ definitions:
                     Attribute is None or a map of the form {Corresponding Ingress Service
                     Frame Class of Service Name, Corresponding Ingress Service Frame
                     Color} to {Egress Service Frame C-Tag PCP value, Egress Service
-                    Frame C-Tag DEI value} or Discard. If this property is not present
-                    or an empty list, the value is assumed to have the value None.
+                    Frame C-Tag DEI value} or Discard. If this property is an empty
+                    list, the value is assumed to have the value None.
                 # See additional validation notes in the Schema Guide
                 type: array 
                 minItems: 0
@@ -179,8 +177,8 @@ definitions:
                     UNI. The value is None or a non-empty list of pairs of the form
                     ⟨x,y⟩, where x is a Class of Service Name that is in the value
                     of the EVC List of Class of Service Names Service Attribute and
-                    y = BWP Flow Parameters. If this property is not present or an
-                    empty list, the value is assumed to have the value None.
+                    y = BWP Flow Parameters. If this property is an empty list, the
+                    value is assumed to have the value None.
                 type: array 
                 minItems: 0
                 uniqueItems: TRUE

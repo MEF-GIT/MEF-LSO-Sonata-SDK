@@ -2,13 +2,13 @@
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
     MEF LSO Sonata - Access Eline OVC Common
-    # MEF Forum - Date: 20220110  Edit-level: 319
+    # MEF Forum - Date: 20220601  Edit-level: 343
     # File: carrierEthernet/ovcSuperClasses/accessElineOvcCommon.yaml
     #
     # ---------------------
     # Disclaimer
     # 
-    # © MEF Forum 2021. All Rights Reserved.
+    # © MEF Forum 2022. All Rights Reserved.
     # 
     # The information in this publication is freely available for reproduction
     # and use by any recipient and is believed to be accurate as of its
@@ -55,13 +55,8 @@ definitions:
     AccessElineOvcCommon:
         type: object
         description:  >-
-            This class contains all of the Access E-Line OVC Services Attributes
-            that are used in all four Business Functions (POQ, Quote, Order,
-            Inventory). At this time, this includes all of the Access Eline
-            OVC Service Attributes. This class is used to compose the AccessElineOvc
-            class which has one file for each Business Function that differ
-            in terms of the Service Attributes that are "Required" for the
-            Business Function (rather than "Optional").
+            This class contains all of the Access E-Line OVC Services Attributes.
+            This class is used to compose the AccessElineOvc class.
         properties:
             maximumFrameSize:
                 description:  >-
@@ -69,10 +64,6 @@ definitions:
                     mapped to an OVC EP associated by the OVC. The length of the frame
                     includes all bytes from the start of the destination MAC address
                     through the Frame Check Sequence. This must be at least 1526 (1518+C-tag+S-tag).
-                    This Service Attribute must be included in POQ, Quote, and Order
-                    if the Buyer requires a value that is different than the value
-                    agreed on during the on-boarding process between the Buyer and
-                    Seller.
                 # See additional validation notes in the Schema Guide
                 type: integer
                 minimum: 1526
@@ -120,6 +111,8 @@ definitions:
                     the Operator as part of the Service Level Agreement. For each Performance
                     Metric included in the SLS, a Performance Objective must be included
                     as well as the parameter values needed for the Performance Metric.
+                    If the value of this attribute is an empty list, it is equivalent
+                    to a value of None per MEF 26.2.
                 type: array 
                 minItems: 0
                 maxItems: 1

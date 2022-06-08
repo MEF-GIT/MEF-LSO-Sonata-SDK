@@ -2,13 +2,13 @@
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
     MEF LSO Sonata - Carrier Ethernet Service Level Specification
-    # MEF Forum - Date: 20220110  Edit-level: 319
+    # MEF Forum - Date: 20220601  Edit-level: 343
     # File: carrierEthernet/common/carrierEthernetServiceLevelSpecification.yaml
     #
     # ---------------------
     # Disclaimer
     # 
-    # © MEF Forum 2021. All Rights Reserved.
+    # © MEF Forum 2022. All Rights Reserved.
     # 
     # The information in this publication is freely available for reproduction
     # and use by any recipient and is believed to be accurate as of its
@@ -74,8 +74,9 @@ definitions:
                     MEF 10.4 sec. 8.8 and MEF 26.2 sec. 12.13 - This represents
                     the date and time for the start of the SLS. It is the beginning
                     of the first timeInterval. This is referred to as ts in MEF 10.4
-                    and MEF 26.2. The time and date are UTC.
-                $ref: "carrierEthernetUtilityClasses.yaml#/definitions/Time"
+                    and MEF 26.2. The value is a string in ISO 8601 format.
+                type: string
+                format: date-time
             timeDuration:
                 description:  >-
                     MEF 10.4 sec. 8.8 and MEF 26.2 sec. 12.13 - The timeDuration
@@ -86,12 +87,12 @@ definitions:
                     in particular, 1 month is an allowable value, corresponding to
                     a calendar month, e.g. from midnight on the 10th of one month up
                     to but not including midnight the 10th of the following month.
-                $ref: "carrierEthernetUtilityClasses.yaml#/definitions/LongDuration"
+                $ref: "carrierEthernetUtilityClasses.yaml#/definitions/TimeDuration"
             slsCosNameEntry:
                 description:  >-
                     MEF 10.4 sec. 8.8 and MEF 26.2 sec. 12.13 - This is a list
                     of Performance Metrics. Each entry contains a set of parameters
-                    and Performance Metrics one one Class of Service.
+                    and Performance Metrics for one Class of Service.
                 type: array 
                 minItems: 1
                 uniqueItems: TRUE
@@ -293,10 +294,10 @@ definitions:
         description:  >-
             MEF 10.4 sec. 8.8.2 and MEF 26.2 sec. 12.13.2 - One Way Frame
             Delay Performance Metric consisting of 2 parameters, a list of
-            Ordered End Point Pairs (referred to as S in the MEF Standards)
-            , a percentile (referred to as Pd in the MEF 10.4 and MEF 26.2),
-            and the One Way Frame Delay Objective for this Class of Service
-            Name and these two parameters.
+            Ordered End Point Pairs (referred to as S in MEF 10.4 and MEF 26.2)
+            , a percentile (referred to as Pd in  MEF 10.4 and MEF 26.2), and
+            the One Way Frame Delay Objective for this Class of Service Name
+            and these two parameters.
         properties:
             orderedPairList:
                 description:  >-
@@ -321,7 +322,7 @@ definitions:
                     MEF 10.4 sec. 8.8.2 and MEF 26.2 sec. 12.13.2 - The Performance
                     Objective for this Performance Metric (this CoS and these 2 parameters).
                     This is a unit of time greater than 0.
-                $ref: "carrierEthernetUtilityClasses.yaml#/definitions/ShortDuration"
+                $ref: "carrierEthernetUtilityClasses.yaml#/definitions/TimeDuration"
     OneWayMeanFrameDelayPmMetric:
         type: object
         description:  >-
@@ -348,14 +349,14 @@ definitions:
                     MEF 10.4 sec. 8.8.3 and MEF 26.2 sec. 12.13.3 - The Performance
                     Objective for this Performance Metric (this CoS and these Ordered
                     End Point Pairs). This is a unit of time >0.
-                $ref: "carrierEthernetUtilityClasses.yaml#/definitions/ShortDuration"
+                $ref: "carrierEthernetUtilityClasses.yaml#/definitions/TimeDuration"
     OneWayFrameDelayRangePmMetric:
         type: object
         description:  >-
             MEF 10.4 sec. 8.8.4 and MEF 26.2 sec. 12.13.4 - One Way Frame
             Delay Range Performance Metric consisting of 2 parameters, a list
             of Ordered End Point Pairs (referred to as S in MEF 10.4 and MEF
-            26.2) , a percentile (referred to as Pr in the MEF Standards),
+            26.2) , a percentile (referred to as Pr in MEF 10.4 and MEF 26.2),
             and the One Way Frame Delay Range Objective for this Class of Service
             Name and these two parameters.
         properties:
@@ -382,18 +383,17 @@ definitions:
                     MEF 10.4 sec. 8.8.4 and MEF 26.2 sec.12.13.4 - The Performance
                     Objective for this Performance Metric (this CoS and these 2 parameters).
                     This is a unit of time >0.
-                $ref: "carrierEthernetUtilityClasses.yaml#/definitions/ShortDuration"
+                $ref: "carrierEthernetUtilityClasses.yaml#/definitions/TimeDuration"
     OneWayInterFrameDelayVariationPmMetric:
         type: object
         description:  >-
             MEF 10.4 sec. 8.8.5 and MEF 26.2 sec. 12.13.5 - One Way Frame
             Inter Frame Delay Variation Performance Metric consisting of 3
             parameters, a list of Ordered End Point Pairs (referred to as S
-            in MEF 10.4 and MEF 26.2) , a time duration (referred to as Δt
-            (the greek letter tau, not t) in the MEF Standards), a percentile
-            (referred to as Pv in the MEF Standards), and the Inter Frame Delay
-            Variation Objective for this Class of Service Name and these three
-            parameters.
+            in MEF 10.4 and MEF 26.2) , a time duration (referred to as delta-tau
+            in MEF 10.4 and MEF 26.2), a percentile (referred to as Pv in MEF
+            10.4 and MEF 26.2), and the Inter Frame Delay Variation Objective
+            for this Class of Service Name and these three parameters.
         properties:
             orderedPairList:
                 description:  >-
@@ -412,7 +412,7 @@ definitions:
                     MEF 10.4 sec. 8.8.5 and MEF 26.2 sec.12.13.5 - A time duration.
                     This is the time difference between frames for which IFDV is measured.
                     It is called delta-tau in MEF 10.4 and MEF 26.2.
-                $ref: "carrierEthernetUtilityClasses.yaml#/definitions/ShortDuration"
+                $ref: "carrierEthernetUtilityClasses.yaml#/definitions/TimeDuration"
             oneWayIfdvPencentile:
                 description:  >-
                     MEF 10.4 sec. 8.8.5 and MEF 26.2 sec.12.13.5 - A percentage
@@ -424,7 +424,7 @@ definitions:
                     MEF 10.4 sec. 8.8.5 and MEF 26.2 sec.12.13.5 - The Performance
                     Objective for this Performance Metric (this CoS and these 3 parameters).
                     This is a unit of time >0.
-                $ref: "carrierEthernetUtilityClasses.yaml#/definitions/ShortDuration"
+                $ref: "carrierEthernetUtilityClasses.yaml#/definitions/TimeDuration"
     OneWayFrameLostRatioPmMetric:
         type: object
         description:  >-
@@ -477,7 +477,7 @@ definitions:
                 description:  >-
                     MEF 10.4 sec. 8.8.7 and MEF 26.2 sec.12.13.7 - The PM Objective
                     for this Performance Metric (this CoS and these Ordered End Point
-                    Pairs) expressed as a oercentage.
+                    Pairs) expressed as a percentage.
                 $ref: "carrierEthernetUtilityClasses.yaml#/definitions/Percentage"
     OneWayHighLossIntervalPmMetric:
         type: object
@@ -513,9 +513,9 @@ definitions:
             MEF 10.4 sec. 8.8.9 and MEF 26.2 sec. 12.13.9 - One Way Frame
             Delay Range Performance Metric consisting of 2 parameters, a list
             of Ordered End Point Pairs (referred to as S in MEF 10.4 and MEF
-            26.2) , a number (referred to as p in the MEF Standards), and the
-            One Way Consecutive High Loss Intervals Objective for this Class
-            of Service Name and these two parameters.
+            26.2) , a number (referred to as p in MEF 10.4 and MEF 26.2), and
+            the One Way Consecutive High Loss Intervals Objective for this
+            Class of Service Name and these two parameters.
         properties:
             orderedPairList:
                 description:  >-
@@ -546,19 +546,19 @@ definitions:
         description:  >-
             MEF 10.4 sec. 8.8.10 - One Way Composite Performance Metric
             consisting of 7 parameters, a list of Ordered End Point Pairs (referred
-            to as S iin MEF 10.4) , a Composite Performance number (referred
-            to as U in the MEF Standards), indicators about Composite Frame
-            Loss, Composite Frame Delay, and Composite Frame Delay Variation
-            (referred to as Wfl, Wfd, and Wfdv in the MEF Standards), Thresholds
-            for Frame Delay and Delay Variation (referred to as DL and Jt in
-            the MEF Standards) and the One Way Composite Objective for this
-            Class of Service Name and these seven parameters. (Note: This Performance
-            Metric is not defined for OVC services).
+            to as S in MEF 10.4) , a Composite Performance number (referred
+            to as U in MEF 10.4), indicators about Composite Frame Loss, Composite
+            Frame Delay, and Composite Frame Delay Variation (referred to as
+            Wfl, Wfd, and Wfdv inMEF 10.4), Thresholds for Frame Delay and
+            Delay Variation (referred to as DL and Jt in MEF 10.4) and the
+            One Way Composite Objective for this Class of Service Name and
+            these seven parameters. (Note: This Performance Metric is not defined
+            for OVC services).
         properties:
             orderedPairList:
                 description:  >-
                     MEF 10.4 sec.  8.8.1.1 - The set (referred to as S in MEF 10.4)
-                    of ordered pairs of EVC or OVC End Points over which this Performance
+                    of ordered pairs of EVC End Points over which this Performance
                     Metric parameters and objective apply.
                 # See additional validation notes in the Schema Guide
                 type: array 
@@ -598,12 +598,12 @@ definitions:
                 description:  >-
                     MEF 10.4 sec. 8.8.10 - Composite One-way Frame Delay threshold
                     in time units.
-                $ref: "carrierEthernetUtilityClasses.yaml#/definitions/ShortDuration"
+                $ref: "carrierEthernetUtilityClasses.yaml#/definitions/TimeDuration"
             oneWayIfdvThreshold:
                 description:  >-
                     MEF 10.4 sec. 8.8.10 - One-way Frame Delay Variation threshold
                     in time units.
-                $ref: "carrierEthernetUtilityClasses.yaml#/definitions/ShortDuration"
+                $ref: "carrierEthernetUtilityClasses.yaml#/definitions/TimeDuration"
             cpmObjective:
                 description:  >-
                     MEF 10.4 sec. 8.8.10 - The PM Objective for this Performance
@@ -618,13 +618,13 @@ definitions:
             to as G in MEF 10.4 and MEF 26.2). (Note that this is different
             than the other Performance Metrics which have a list of Ordered
             End Point Pairs). The second parameter is the number of sets that
-            must be available (referred to as K in the MEF Standards). The
-            third element is the Performance Objective for the One Way Group
-            Availability.
+            must be available (referred to as K in MEF 10.4 and MEF 26.2).
+            The third element is the Performance Objective for the One Way
+            Group Availability.
         properties:
             setOfOrderedPairs:
                 description:  >-
-                    MEF 10.4 sec. 8.8.11 and MEF 26.2 sec. 12.31.10 - This is a
+                    MEF 10.4 sec. 8.8.11 and MEF 26.2 sec. 12.13.10 - This is a
                     list of lists of Ordered End Point Pairs.
                 type: array 
                 minItems: 1
@@ -654,12 +654,12 @@ definitions:
         properties:
             fromCarrierEthernetServiceEndPoint:
                 description:  >-
-                    This is the EVC End Point ID for and EVC End Point in the service
+                    This is the EVC End Point ID for an EVC End Point in the service
                     or OVC End Point ID for an OVC End Point in the service.
                 type: string
             toCarrierEthernetServiceEndPoint:
                 description:  >-
-                    This is the EVC End Point ID for and EVC End Point in the service
+                    This is the EVC End Point ID for an EVC End Point in the service
                     or OVC End Point ID for an OVC End Point in the service.
                 type: string
     OrderedPairList:

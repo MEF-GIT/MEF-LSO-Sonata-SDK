@@ -9,8 +9,8 @@ class MEFProductOrderChargeItem {
     acceptanceIndicator: MEFAcceptedRejectedType
     activityType*: MEFProductOrderChargeActivityType
     blocking*: boolean
-    chargeType*: MEFPriceType
-    description*: MEFProductOrderChargeItemDescription
+    priceType*: MEFPriceType
+    priceCategory*: MEFPriceCategory
     id*: string
     recurringChargePeriod: MEFChargePeriod
     state*: MEFProductOrderChargeItemStateType
@@ -18,14 +18,16 @@ class MEFProductOrderChargeItem {
 }
 
 MEFProductOrderChargeItem *-->"1" Price : price
+MEFProductOrderChargeItem *-->"*" Note : note
 
-enum MEFProductOrderChargeItemDescription {
+enum MEFPriceCategory {
 
   expedite
   construction
   connection
   inFlightCancellation
   disconnect
+  other
 }
 
 enum MEFProductOrderChargeStateType {
@@ -61,7 +63,7 @@ class MEFCancelProductOrderRef {
 
 class MEFProductOrderCharge {
 
-    creationDate: date-time
+    creationDate*: date-time
     href: string
     id*: string
     responseDueDate*: date-time
@@ -73,7 +75,6 @@ MEFProductOrderCharge *-->"1..*" MEFProductOrderChargeItem : chargeItem
 MEFProductOrderCharge *--> MEFModifyProductOrderItemRequestedDeliveryDateRef : modifyProductOrderItemRequestedDeliveryDate
 MEFProductOrderCharge *--> MEFProductOrderRef : productOrder
 MEFProductOrderCharge *--> MEFProductOrderItemRef : productOrderItem
-MEFProductOrderCharge *--> MEFProductOrderChargeRef : replacedCharge
 
 
 enum MEFProductOrderChargeActivityType {
@@ -90,7 +91,7 @@ class MEFProductOrderChargeItem_Update {
     acceptanceIndicator*: MEFAcceptedRejectedType
     id*: string
 }
-
+MEFProductOrderChargeItem_Update *-->"*" Note : note
 
 
 class MEFProductOrderCharge_Update {
@@ -99,6 +100,14 @@ class MEFProductOrderCharge_Update {
 
 MEFProductOrderCharge_Update *-->"1..*" MEFProductOrderChargeItem_Update : chargeItem
 
+class Note {
+
+    author*: string
+    date*: date-time
+    id*: string
+    source*: MEFBuyerSellerType
+    text*: string
+}
 
 
 class MEFProductOrderItemRef {

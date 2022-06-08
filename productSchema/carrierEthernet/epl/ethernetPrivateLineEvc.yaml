@@ -1,15 +1,15 @@
 ---
 "$schema": http://json-schema.org/draft-07/schema#
-"$id": urn:mef:lso:spec:cantata-sonata:epl:v0.2.0:all
+"$id": urn:mef:lso:spec:cantata-sonata:epl:v0.3.0:all
 title: 
-    MEF LSO Cantata-Sonata - Ethernet Private Line EVC (all) Product Specification
-    # MEF Forum - Date: 20220110  Edit-level: 319
-    # File: carrierEthernet/epl/allethernetPrivateLineEvc.yaml
+    MEF LSO Cantata-Sonata - Ethernet Private Line EVC Product Schema
+    # MEF Forum - Date: 20220601  Edit-level: 343
+    # File: carrierEthernet/epl/ethernetPrivateLineEvc.yaml
     #
     # ---------------------
     # Disclaimer
     # 
-    # © MEF Forum 2021. All Rights Reserved.
+    # © MEF Forum 2022. All Rights Reserved.
     # 
     # The information in this publication is freely available for reproduction
     # and use by any recipient and is believed to be accurate as of its
@@ -60,12 +60,19 @@ allOf:
     # EVC Service Attributes applicable to all Subscriber (EVC-based) Ethernet Services.
     - $ref: "../evcSuperClasses/carrierEthernetEvcCommon.yaml#/definitions/CarrierEthernetEvcCommon"
     - type: object
+      required:
+        - evcEndPointA
+        - evcEndPointZ
       properties:
             evcEndPointA:
-                description: MEF 10.4 sec. 10 - EVC End Point at UNI A
+                description:  >-
+                    MEF 10.4 sec. 10 - EVC End Point at UNI A. UNI EVC End Point
+                    A and UNI EVC End Point Z must be included in the EPL Product.
                 $ref: "#/definitions/EplEvcEndPoint"
             evcEndPointZ:
-                description: MEF 10.4 sec. 10 - EVC End Point at UNI Z
+                description:  >-
+                    MEF 10.4 sec. 10 - EVC End Point at UNI Z. UNI EVC End Point
+                    A and UNI EVC End Point Z must be included in the EPL Product.
                 $ref: "#/definitions/EplEvcEndPoint"
 definitions:
     EplEvcEndPoint:
@@ -78,6 +85,8 @@ definitions:
             Services defined in MEF 6.3 based on the Service Attributes in
             MEF 10.4.
         allOf:
+            # EVC End Point Service Attributes applicable to all E-Line Services
+            - $ref: "../evcSuperClasses/carrierEthernetEvcEpEline.yaml#/definitions/CarrierEthernetEvcEpEline"
             # EVC End Point Service Attributes applicable to all Subscriber Ethernet Services
             - $ref: "../evcSuperClasses/carrierEthernetEvcCommon.yaml#/definitions/CarrierEthernetEvcEpCommon"
 

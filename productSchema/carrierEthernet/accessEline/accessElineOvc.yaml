@@ -1,15 +1,15 @@
 ---
 "$schema": http://json-schema.org/draft-07/schema#
-"$id": urn:mef:lso:spec:sonata:access-eline:v3.0.0:all
+"$id": urn:mef:lso:spec:sonata:access-eline:v4.0.0:all
 title: 
-    MEF LSO Sonata - Access Eline OVC (all) Product Specification
-    # MEF Forum - Date: 20220110  Edit-level: 319
-    # File: carrierEthernet/accessEline/allaccessElineOvc.yaml
+    MEF LSO Sonata - Access Eline OVC Product Schema
+    # MEF Forum - Date: 20220601  Edit-level: 343
+    # File: carrierEthernet/accessEline/accessElineOvc.yaml
     #
     # ---------------------
     # Disclaimer
     # 
-    # © MEF Forum 2021. All Rights Reserved.
+    # © MEF Forum 2022. All Rights Reserved.
     # 
     # The information in this publication is freely available for reproduction
     # and use by any recipient and is believed to be accurate as of its
@@ -65,12 +65,21 @@ allOf:
     # Access E-Line OVC Service Attributes used in all 4 Business Functions POQ/Quote/Order/Inventory
     - $ref: "../ovcSuperClasses/accessElineOvcCommon.yaml#/definitions/AccessElineOvcCommon"
     - type: object
+      required:
+        - uniEp
+        - enniEp
       properties:
             uniEp:
-                description: MEF 26.2 sec. 16 - The OVC EP object for the OVC EP at the UNI
+                description:  >-
+                    MEF 26.2 sec. 16 - The OVC EP object for the OVC EP at the
+                    UNI. The UNI OVC End Point must be included in the Access E-Line
+                    Product.
                 $ref: "#/definitions/AccessElineOvcEndPoint"
             enniEp:
-                description: MEF 26.2 sec. 16 - The OVC EP object for the OVC EP at the ENNI
+                description:  >-
+                    MEF 26.2 sec. 16 - The OVC EP object for the OVC EP at the
+                    ENNI. The ENNI OVC End Point must be included in the Access E-Line
+                    Product.
                 $ref: "#/definitions/AccessElineOvcEndPoint"
 definitions:
     AccessElineOvcEndPoint:

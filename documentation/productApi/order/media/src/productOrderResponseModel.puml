@@ -106,11 +106,11 @@ class MEFBillingAccountRef {
 class MEFItemTerm {
 
     description: string
-    endOfTermAction: MEFEndOfTermAction
-    name: string
+    endOfTermAction*: MEFEndOfTermAction
+    name*: string
 }
 
-MEFItemTerm *--> Duration : duration
+MEFItemTerm *--> Duration : duration*
 MEFItemTerm *--> Duration : rollInterval
 
 
@@ -176,11 +176,9 @@ class ProductOrder {
     cancellationDate: date-time
     cancellationReason: string
     completionDate: date-time
-    expectedCompletionDate: date-time
     href: string
     id*: string
     orderDate*: date-time
-    orderVersion: string
     state*: MEFProductOrderStateType
 }
 ProductOrder_Common <|-- ProductOrder
@@ -215,11 +213,18 @@ class ProductOrderItem {
     state: MEFProductOrderItemStateType
 }
 MEFProductOrderItem_Common <|-- ProductOrderItem
-
 ProductOrderItem *-->"*" MEFProductOrderChargeRef : charge
 ProductOrderItem *-->"*" MEFItemTerm : itemTerm
+ProductOrderItem *-->"*" MEFMilestone : milestone
 ProductOrderItem *-->"*" MEFProductOrderItemStateChange : stateChange
 ProductOrderItem *-->"*" TerminationError : terminationError
+
+class MEFMilestone {
+
+    date*: date-time
+    name*: string
+    note: string
+}
 
 
 class MEFProductOrderItem_Common {
@@ -270,7 +275,6 @@ class ProductOrder_Common {
 
     externalId: string
     projectId: string
-    requestedCompletionDate: date-time
 }
 
 ProductOrder_Common *-->"*" Note : note
@@ -279,7 +283,6 @@ ProductOrder_Common *-->"1..*" RelatedContactInformation : relatedContactInforma
 class ProductOrder_Update {
 
     externalId: string
-    orderVersion*: string
     projectId: string
 }
 

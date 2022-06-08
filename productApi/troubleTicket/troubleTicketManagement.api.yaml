@@ -19,22 +19,21 @@ info:
     - Retrieve Ticket by Ticket Identifier
     - Patch Ticket by Ticket Identifier
     - Cancel Ticket by Ticket Identifier
-    - Respond to Ticket Clearance Notification
-    - Retrieve Workorder by Workorder Identifier
+    - Ticket Resolution Confirmation
     - Retrieve Incident List
     - Retrieve Incident by Incident Identifier
     - Register for Event Notifications
 
-    Copyright 2021 MEF Forum and its contributors
+    Copyright 2022 MEF Forum and its contributors
 
     This file includes content based on the TM Forum Trouble Ticket API (TMF621
     v4.0.0) available at https://github.com/tmforum-apis/TMF621_TroubleTicket,
     which is licensed by the TM Forum under the Apache License version 2.0.
     Such content has been modified by the MEF Forum and its contributors.
   title: Trouble Ticket Management
-  version: 2.0.0-RC
+  version: 3.0.0-RC
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/troubleTicket/v2/'
+  - url: 'https://{serverBase}/mefApi/sonata/troubleTicket/v3/'
     variables:
       serverBase:
         default: mef.net
@@ -43,7 +42,6 @@ tags:
   - name: troubleTicket
   - name: troubleTicket operations
   - name: incident
-  - name: workOrder
   - name: events subscription
 paths:
   /troubleTicket:
@@ -136,6 +134,15 @@ paths:
               - pending
               - resolved
               - reopened
+            type: string
+        - description: The type of impact observed by the Buyer.
+          in: query
+          name: observedImpact
+          schema:
+            enum:
+              - degraded
+              - intermittent
+              - down
             type: string
         - description: >-
             ID of a related entity that this ticket is related to and is
@@ -593,8 +600,8 @@ paths:
   '/troubleTicket/{id}/close':
     post:
       description:
-        This operation allows the Buyer to respond to Trouble Ticket
-        Clearance Notification by Closing it
+        This operation allows the Buyer to send Ticket Resolution Confirmation
+        by closing it
       operationId: closeTroubleTicket
       parameters:
         - description: Identifier of the TroubleTicket
@@ -668,8 +675,8 @@ paths:
   '/troubleTicket/{id}/reopen':
     post:
       description:
-        The operation allows the Buyer to respond to Trouble Ticket Clearance
-        Notification by reopening it
+        The operation allows the Buyer to send Ticket Resolution Confirmation
+        by reopening it
       operationId: reopenTroubleTicket
       parameters:
         - description: Identifier of the TroubleTicket
@@ -839,7 +846,7 @@ paths:
             The date when the Incident was first identified, for example via
             error logs - greater than
           in: query
-          name: issueStartDate.gt
+          name: situationStartDate.gt
           schema:
             format: date-time
             type: string
@@ -847,7 +854,7 @@ paths:
             The date when the Incident was first identified, for example via
             error logs - lower than
           in: query
-          name: issueStartDate.lt
+          name: situationStartDate.lt
           schema:
             format: date-time
             type: string
@@ -1053,79 +1060,10 @@ paths:
       summary: Retrieves ac Incident by ID
       tags:
         - incident
-  '/workOrder/{id}':
-    get:
-      description: >-
-        The Buyer requests detailed information about a single WorkOrder based
-        on a WorkOrder Identifier.
-      operationId: retrieveWorkOrder
-      parameters:
-        - description: Identifier of the WorkOrder
-          in: path
-          name: id
-          required: true
-          schema:
-            type: string
-        - description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the requester
-            represents more than one Buyer.
-          in: query
-          name: buyerId
-          schema:
-            type: string
-        - description: >-
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when responding
-            entity represents more than one Seller.
-          in: query
-          name: sellerId
-          schema:
-            type: string
-      responses:
-        '200':
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/WorkOrder'
-          description:
-            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
-        '400':
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/Error400'
-          description: Bad Request
-        '401':
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/Error401'
-          description: Unauthorized
-        '403':
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/Error403'
-          description: Forbidden
-        '404':
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/Error404'
-          description: Not Found
-        '500':
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/Error500'
-          description: Internal Server Error
-      summary: Retrieves a WorkOrder by ID
-      tags:
-        - workOrder
   /hub:
     post:
-      description: The Buyer requests to subscribe to Ticket Notifications.
+      description:
+        The Buyer requests to subscribe to Ticket and Incident Notifications.
       operationId: registerListener
       parameters:
         - description: >-
@@ -1192,7 +1130,9 @@ paths:
       x-codegen-request-body-name: data
   '/hub/{id}':
     delete:
-      description: The Buyer requests to unsubscribe from Ticket Notifications
+      description:
+        The Buyer requests to unsubscribe from Ticket and Incident
+        Notifications
       operationId: unregisterListener
       parameters:
         - description: The id of the EventSubscription
@@ -1256,23 +1196,6 @@ paths:
         - events subscription
 components:
   schemas:
-    AppointmentRef:
-      description: >
-        A reference to an Appointment resource available through Appointment
-        API.
-      properties:
-        href:
-          description: >
-            Hyperlink to the referenced Appointment. Hyperlink MAY be used by
-            the Seller in responses. Hyperlink MUST be ignored by the Seller in
-            case it is provided by the Buyer in a request
-          type: string
-        id:
-          description: Identifier of the referenced Appointment.
-          type: string
-      required:
-        - id
-      type: object
     AttachmentValue:
       description: >-
         Complements the description of an element (for instance a product)
@@ -1284,7 +1207,8 @@ components:
             list.
           type: string
         author:
-          description: Author of the Attachment
+          description:
+            The name of the person or organization who added the Attachment.
           type: string
         content:
           description: >-
@@ -1323,6 +1247,7 @@ components:
       type: object
       required:
         - author
+        - creationDate
         - name
         - source
     DataSizeUnit:
@@ -1340,10 +1265,9 @@ components:
       type: string
     Error:
       description: >
-        Standard Class used to describe API response error
-
-        Not intended to be use directly only via specialization which defines a
-        code
+        Standard Class used to describe API response error Not intended to be
+        used directly. The `code` in the HTTP header is used as a discriminator
+        for the type of error returned in runtime.
       properties:
         message:
           description: >-
@@ -1352,7 +1276,7 @@ components:
           type: string
         reason:
           description: >-
-            Text that explains the reason for error. This can be shown to a
+            Text that explains the reason the for error. This can be shown to a
             client user.
           maxLength: 255
           type: string
@@ -1612,7 +1536,18 @@ components:
         - id
       type: object
     EventSubscriptionInput:
-      description: This class is used to register for Notifications.
+      description: |
+        This class is used to register for Notifications. 
+
+        | API name                                 | MEF 113 name          | Description                                                                                                                                                                                                                                                                                                           |
+        | ---------------------------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | `troubleTicketAttributeValueChangeEvent` | TICKET_UPDATE         | The Seller settable attributes for a Ticket were updated by the Seller. Note: Buyer initiated Ticket updates due to Patch operation will not trigger a `troubleTicketAttributeValueChangeEvent`                                                                                                                       |
+        | `troubleTicketInformationRequiredEvent`  | TICKET_STATE_CHANGE   | A Ticket `status` was changed by the Seller.                                                                                                                                                                                                                                                                          |
+        | `troubleTicketResolvedEvent`             | TICKET_INFO_REQUIRED  | The Seller requires more information from the Buyer for a Ticket to continue processing a Ticket. The details on what information is needed from the Buyer will be provided via a Ticket `note`. The Ticket `status` is `pending`. Note: The Buyer uses the Patch operation to provide more information for a Ticket. |
+        | `troubleTicketStatusChangeEvent`         | TICKET_RESOLVED       | The Seller is informing the Buyer the Ticket is resolved and the Buyer to verify that the Issue on which the Ticket was based is no longer observed. The Ticket `status` is `resolved`. Note: The Buyer confirms if the Issue has been resolved satisfactorily or not using close or reopen operations                |
+        | `incidentCreateEvent`                    | INCIDENT_CREATE       | A new Incident was created by the Seller.                                                                                                                                                                                                                                                                             |
+        | `incidentAttributeValueChangeEvent`      | INCIDENT_UPDATE       | An open Incident was updated by the Seller.                                                                                                                                                                                                                                                                           |
+        | `incidentStatusChangeEvent`              | INCIDENT_STATE_CHANGE | An Incident `status` was changed by the Seller.                                                                                                                                                                                                                                                                       |
       properties:
         callback:
           description: >-
@@ -1641,186 +1576,69 @@ components:
         - callback
       type: object
     FieldedAddress:
-      allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
-        - properties:
-            city:
-              description: The city that the address is in
-              type: string
-            country:
-              description: Country that the address is in
-              type: string
-            geographicSubAddress:
-              $ref: '#/components/schemas/GeographicSubAddress'
-              description:
-                Additional fields used to specify an address, as detailed as
-                possible.
-            locality:
-              description: The locality that the address is in
-              type: string
-            postcode:
-              description: >-
-                Descriptor for a postal delivery area, used to speed and
-                simplify the delivery of mail (also known as zip code)
-              type: string
-            postcodeExtension:
-              description: >-
-                An extension of a postal code. E.g. the part following the dash
-                in a US urban property address
-              type: string
-            stateOrProvince:
-              description: The State or Province that the address is in
-              type: string
-            streetName:
-              description: Name of the street or other street type
-              type: string
-            streetNr:
-              description: >-
-                Number identifying a specific property on a public street. It
-                may be combined with streetNrLast for ranged addresses. MEF 79
-                defines it as required however as in certain countries it is
-                not used we make it optional in API.
-              type: string
-            streetNrLast:
-              description:
-                Last number in a range of street numbers allocated to a
-                property
-              type: string
-            streetNrLastSuffix:
-              description: Last street number suffix for a ranged address
-              type: string
-            streetNrSuffix:
-              description: The first street number suffix
-              type: string
-            streetSuffix:
-              description: A modifier denoting a relative direction
-              type: string
-            streetType:
-              description: >-
-                The type of street (e.g., alley, avenue, boulevard, brae,
-                crescent, drive, highway, lane, terrace, parade, place, tarn,
-                way, wharf)
-              type: string
-          required:
-            - city
-            - country
-            - streetName
-          type: object
       description: >-
         A type of Address that has a discrete field and value for each type of
         boundary or identifier down to the lowest level of detail. For example
         "street number" is one field, "street name" is another field, etc.
         Reference: MEF 79 (Sn 8.9.2)
-    FormattedAddress:
-      allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
-        - properties:
-            addrLine1:
-              description: The first address line in a formatted address
-              type: string
-            addrLine2:
-              description: The second address line in a formatted address
-              type: string
-            city:
-              description: The city that the address is in
-              type: string
-            country:
-              description: Country that the address is in
-              type: string
-            locality:
-              description: >-
-                An area of defined or undefined boundaries within a local
-                authority or other legislatively defined area, usually rural or
-                semi-rural in nature
-              type: string
-            postcode:
-              description: >-
-                Descriptor for a postal delivery area, used to speed and
-                simplify the delivery of mail (also known as ZIP code)
-              type: string
-            postcodeExtension:
-              description: >-
-                An extension of a postal code. E.g. the part following the dash
-                in an US urban property address
-              type: string
-            stateOrProvince:
-              description: The State or Province that the address is in
-              type: string
-          required:
-            - addrLine1
-            - city
-            - country
-          type: object
-      description: >-
-        A type of Address that has discrete fields for each type of boundary or
-        identifier with the exception of street and more specific location
-        details, which are combined into a maximum of two strings based on
-        local postal addressing conventions. Reference: MEF 79 (Sn 8.9.3)
-    GeographicAddressLabel:
-      allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
-        - properties:
-            externalReferenceId:
-              description: A reference to an address by id
-              type: string
-            externalReferenceType:
-              description: >-
-                Uniquely identifies the authority that specifies the addresses
-                reference and/or its type (if the authority specifies more than
-                one type of address). The value(s) to be used are to be agreed
-                during the onboarding. For North American providers this would
-                normally be CLLI (Common Language Location Identifier) code.
-              type: string
-          required:
-            - externalReferenceId
-            - externalReferenceType
-          type: object
-      description: >-
-        A unique identifier controlled by a generally accepted independent
-        administrative authority that specifies a fixed geographical location. 
-
-        Reference: MEF 79 (Sn 8.9.4)
-    GeographicAddressRef:
-      allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
-        - properties:
-            href:
-              description: >
-                Hyperlink to the referenced GeographicAddress. Hyperlink MAY be
-                used by the Seller in responses. Hyperlink MUST be ignored by
-                the Seller in case it is provided by the Buyer in a request
-              type: string
-            id:
-              description: >-
-                Identifier of the referenced Geographic Address. This
-                identifier is assigned during a successful address validation
-                request (Geographic Address Validation API)
-              type: string
-          required:
-            - id
-          type: object
-      description: >
-        A reference to a Geographic Address resource available through Address
-        Validation API.
-    GeographicSiteRef:
-      allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
-        - properties:
-            href:
-              description: >
-                Hyperlink to the referenced GeographicSite. Hyperlink MAY be
-                used by the Seller in responses. Hyperlink MUST be ignored by
-                the Seller in case it is provided by the Buyer in a request
-              type: string
-            id:
-              description: Identifier of the referenced Geographic Site.
-              type: string
-          required:
-            - id
-          type: object
-      description: >
-        A reference to a Geographic Site resource available through Service
-        Site API
+      properties:
+        country:
+          description: Country that the address is in
+          type: string
+        streetType:
+          description: >-
+            The type of street (e.g., alley, avenue, boulevard, brae, crescent,
+            drive, highway, lane, terrace, parade, place, tarn, way, wharf)
+          type: string
+        postcodeExtension:
+          description: >-
+            An extension of a postal code. E.g. the part following the dash in
+            a US urban property address
+          type: string
+        city:
+          description: The city that the address is in
+          type: string
+        streetNr:
+          description: >-
+            Number identifying a specific property on a public street. It may
+            be combined with streetNrLast for ranged addresses. MEF 79 defines
+            it as required however as in certain countries it is not used we
+            make it optional in API.
+          type: string
+        locality:
+          description: The locality that the address is in
+          type: string
+        postcode:
+          description: >-
+            Descriptor for a postal delivery area, used to speed and simplify
+            the delivery of mail (also known as zip code)
+          type: string
+        streetNrLast:
+          description:
+            Last number in a range of street numbers allocated to a property
+          type: string
+        streetNrSuffix:
+          description: The first street number suffix
+          type: string
+        streetName:
+          description: Name of the street or other street type
+          type: string
+        stateOrProvince:
+          description: The State or Province that the address is in
+          type: string
+        streetNrLastSuffix:
+          description: Last street number suffix for a ranged address
+          type: string
+        geographicSubAddress:
+          $ref: '#/components/schemas/GeographicSubAddress'
+        streetSuffix:
+          description: A modifier denoting a relative direction
+          type: string
+      required:
+        - city
+        - country
+        - streetName
+      type: object
     GeographicSubAddress:
       description:
         Additional fields used to specify an address, as detailed as possible.
@@ -1900,12 +1718,6 @@ components:
           $ref: '#/components/schemas/IncidentType'
           description:
             The presumed cause of the Incident as evaluated by the Seller.
-        issueStartDate:
-          description: >-
-            The date when the Incident was first identified, for example via
-            error logs.
-          format: date-time
-          type: string
         note:
           description: >-
             A set of unstructured comments or information associated to the
@@ -1937,8 +1749,8 @@ components:
           type: array
         relatedEntity:
           description: >-
-            An entity that is related to the Incident such as a service, a
-            product, etc. The entity which the Incident is associated with.
+            A set of identifiers of the Products on which the Incident could
+            have an impact on the normal operation.
           items:
             $ref: '#/components/schemas/RelatedEntity'
           minItems: 1
@@ -1955,6 +1767,12 @@ components:
           description: >-
             The severity or impact (ITIL) of the Incident as evaluated by the
             Seller.
+        situationStartDate:
+          description: >-
+            The date when the situation was first identified, for example via
+            error logs.
+          format: date-time
+          type: string
         status:
           $ref: '#/components/schemas/IncidentStatusType'
           description: The current status of the Incident
@@ -1974,6 +1792,7 @@ components:
         - relatedContactInformation
         - relatedEntity
         - severity
+        - situationStartDate
         - incidentType
       type: object
     IncidentStatusChange:
@@ -1990,7 +1809,7 @@ components:
           type: string
         status:
           $ref: '#/components/schemas/IncidentStatusType'
-          description: Reached state
+          description: Reached status
       type: object
     IncidentStatusType:
       description: |
@@ -2060,7 +1879,7 @@ components:
           $ref: '#/components/schemas/IncidentType'
           description:
             The presumed cause of the Incident as evaluated by the Seller.
-        issueStartDate:
+        situationStartDate:
           description: >-
             The date when the Incident was first identified, for example via
             error logs.
@@ -2116,39 +1935,6 @@ components:
           $ref: '#/components/schemas/DataSizeUnit'
           description: Byte Unit
       type: object
-    MEFGeographicPoint:
-      allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
-        - properties:
-            spatialRef:
-              description: >-
-                The spatial reference system used to determine the coordinates
-                (e.g. "WGS84"). The system used and the value of this field are
-                to be agreed upon during the onboarding process.
-              type: string
-            x:
-              description: >-
-                The latitude expressed in the format specified by the
-                `spacialRef`
-              type: string
-            'y':
-              description: >-
-                The longitude expressed in the format specified by the
-                `spacialRef`
-              type: string
-            z:
-              description: >-
-                The elevation expressed in the format specified by the
-                `spacialRef`
-              type: string
-          required:
-            - spatialRef
-            - x
-            - 'y'
-          type: object
-      description: >
-        A MEFGeographicPoint defines a geographic point through coordinates.
-        Reference: MEF 79 (Sn 8.9.5)
     MEFObservedImpactType:
       description: >-
         An enumeration of the possible values of impact observed by the Buyer.
@@ -2287,15 +2073,16 @@ components:
       properties:
         '@referredType':
           description: >-
-            The actual type of the target instance when needed for
-            disambiguation (Incident or TroubleTicket)
+            The type of the referred Issue (Incident or TroubleTicket)
           type: string
         creationDate:
-          description: The date the Relationship was created
+          description: The date the relationship was created
           format: date-time
           type: string
         description:
-          description: A description of the reason for the Relationship
+          description:
+            A description of the reason for the Relation Source to set the
+            relationship
           type: string
         href:
           description: Reference of the Trouble Ticket or Incident
@@ -2323,40 +2110,6 @@ components:
         - description
         - relationshipType
         - source
-    RelatedPlaceRefOrValue:
-      description:
-        Defines the Place (Address or Site) by reference or by value.
-      discriminator:
-        mapping:
-          FieldedAddress: '#/components/schemas/FieldedAddress'
-          FormattedAddress: '#/components/schemas/FormattedAddress'
-          GeographicAddressLabel: '#/components/schemas/GeographicAddressLabel'
-          GeographicAddressRef: '#/components/schemas/GeographicAddressRef'
-          GeographicSiteRef: '#/components/schemas/GeographicSiteRef'
-          MEFGeographicPoint: '#/components/schemas/MEFGeographicPoint'
-        propertyName: '@type'
-      properties:
-        '@schemaLocation':
-          description: >-
-            A URI to a JSON-Schema file that defines additional attributes and
-            relationships. May be used to define additional related place
-            types. Usage of this attribute must be agreed upon between Buyer
-            and Seller.
-          format: uri
-          type: string
-        '@type':
-          description: >
-            This field is used as a discriminator and is used between different
-            place representations. This type might discriminate for additional
-            related place as defined in '@schemaLocation'.
-          type: string
-        role:
-          description: Role of this place
-          type: string
-      required:
-        - '@type'
-        - role
-      type: object
     TroubleTicket:
       allOf:
         - $ref: '#/components/schemas/TroubleTicket_Common'
@@ -2397,7 +2150,7 @@ components:
             sellerSeverity:
               $ref: '#/components/schemas/TroubleTicketSeverityType'
               description: >-
-                The severity or impact (ITIL) of the Ticket on the Buyer as
+                The severity or impact (ITIL) of the Issue on the Buyer as
                 evaluated by the Seller.
             status:
               $ref: '#/components/schemas/TroubleTicketStatusType'
@@ -2453,22 +2206,22 @@ components:
           type: string
         status:
           $ref: '#/components/schemas/TroubleTicketStatusType'
-          description: Reached state
+          description: Reached status
       type: object
     TroubleTicketStatusType:
       description: |
         Possible values for the status of the Trouble Ticket
 
-        | status                  | MEF 113 name           | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-        | ----------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-        | `acknowledged`          | ACKNOWLEDGED           | A request to create a Ticket was received and accepted by the Seller. The Ticket has been validated and created by the Seller and allocated a unique `id`.                                                                                                                                                                                                                                                                                                                                                                |
-        | `assessingCancellation` | ASSESSING_CANCELLATION | A request has been made by the Buyer to cancel the Ticket and is being assessed by the Seller to determine whether to just close the Ticket, or may also choose to resolve the Issue to prevent similar Create Ticket requests from other Buyers. If the Seller chooses to resolve the Issue, the Seller might create an Incident or an internal Ticket for the Issue, but that is outside the scope of this document. After the Seller has completed the assessment, the Seller updates the Ticket State to `cancelled`. |
-        | `cancelled`             | CANCELLED              | The Ticket has been successfully cancelled by the Buyer. This is a terminal state.                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-        | `closed`                | CLOSED                 | The Buyer that created the Ticket has confirmed that the Issue they reported is no longer observed, or the pre-defined time frame (agreed upon between Buyer and Seller) for confirming that the Issue has been resolved has passed without a response by the Buyer. This is a terminal state.                                                                                                                                                                                                                            |
-        | `inProgress`            | IN_PROGRESS            | The Ticket is in the process of being handled and investigated for resolution by the Seller.                                                                                                                                                                                                                                                                                                                                                                                                                              |
-        | `pending`               | PENDING                | The Seller is waiting on additional information in order to continue the handling of the Ticket. This may result in the clock being stopped for the service level agreement until the Buyer has responded to the request.                                                                                                                                                                                                                                                                                                 |
-        | `resolved`              | RESOLVED               | The Buyer's Issue described in the Ticket was resolved by the Seller. The Seller is now waiting for the Buyer to confirm that the Issue they reported is no longer observed.                                                                                                                                                                                                                                                                                                                                              |
-        | `reopened`              | REOPENED               | The Buyer has confirmed that the Issue described in the Ticket has not been resolved satisfactorily and rejected the Seller's request to close the Ticket. The Ticket has been reopened and is waiting to continue being handled and investigated for resolution by the Seller.                                                                                                                                                                                                                                           |
+        | status                  | MEF 113 name           | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+        | ----------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+        | `acknowledged`          | ACKNOWLEDGED           | A request to create a Ticket was received and accepted by the Seller. The Ticket create request has been validated and a Ticket has been created by the Seller and allocated a unique `id`.                                                                                                                                                                                                                                                                                                                        |
+        | `assessingCancellation` | ASSESSING_CANCELLATION | A request has been made by the Buyer to cancel the Ticket and is being assessed by the Seller to determine whether to just close the Ticket, or continue to resolve the Issue to prevent similar Create Ticket requests from other Buyers. If the Seller chooses to resolve the Issue, the Seller might create an Incident or an internal Ticket for the Issue, but that is outside the scope of this document. After the Seller has completed the assessment, the Seller updates the Ticket State to `cancelled`. |
+        | `cancelled`             | CANCELLED              | The Ticket has been successfully cancelled by the Buy-er. The Buyer will receive no further no further Event Notifications for the Ticket. This is a terminal state.                                                                                                                                                                                                                                                                                                                                               |
+        | `closed`                | CLOSED                 | The Buyer has confirmed that the Issue they reported is no longer observed, or the pre-defined time frame (agreed upon between Buyer and Seller) for confirming that the Issue has been resolved has passed without a response by the Buyer. This is a terminal state.                                                                                                                                                                                                                                             |
+        | `inProgress`            | IN_PROGRESS            | The Ticket is in the process of being handled and investigated for resolution by the Seller.                                                                                                                                                                                                                                                                                                                                                                                                                       |
+        | `pending`               | PENDING                | The Seller is waiting on the Buyer to provide additional information for the Ticket, or the Buyer to schedule an Appointment for the WorkOrder (linked to the Ticket) in order to continue processing the Ticket. This may result in the clock being stopped for the service level agreement until the Buyer has responded to the request.                                                                                                                                                                         |
+        | `reopened`              | REOPENED               | The Buyer has verified that the Issue described in the Ticket is still observed and has not been resolved satisfactorily. The Buyer rejects the Seller's request to close the Ticket. The Ticket has been reopened and is waiting for further actions from the Seller.                                                                                                                                                                                                                                             |
+        | `resolved`              | RESOLVED               | The Buyer's Issue described in the Ticket was resolved by the Seller. The Seller assumes that normal operation is re-established for the Buyer's product and i snow waiting for the Buyer to confirm that the Issue they reported is no longer observed.                                                                                                                                                                                                                                                           |
       enum:
         - acknowledged
         - assessingCancellation
@@ -2530,8 +2283,9 @@ components:
           type: string
         note:
           description: >-
-            The note(s) that are associated to the ticket. Notes may be added
-            but may not be modified or deleted (for historical reasons).
+            A set of comments or information associated to the Ticket. This
+            list can be empty. Notes may be added but may not be modified or
+            deleted (for historical reasons).
           items:
             $ref: '#/components/schemas/Note'
           type: array
@@ -2570,6 +2324,7 @@ components:
           items:
             $ref: '#/components/schemas/RelatedEntity'
           minItems: 1
+          maxItems: 1
           type: array
         relatedIssue:
           description: >-
@@ -2581,8 +2336,8 @@ components:
         severity:
           $ref: '#/components/schemas/TroubleTicketSeverityType'
           description: >-
-            The severity or impact (ITIL) of the Trouble Ticket as evaluated by
-            the Buyer.
+            The severity or impact (ITIL) of the Issue as evaluated by the
+            Buyer.
         ticketType:
           $ref: '#/components/schemas/TroubleTicketType'
           description:
@@ -2618,7 +2373,8 @@ components:
           format: date-time
           type: string
         description:
-          description: Description of the trouble or issue
+          description:
+            Summarized description of the Issue the Buyer is experiencing.
           type: string
         expectedResolutionDate:
           description: >-
@@ -2647,6 +2403,9 @@ components:
             $ref: '#/components/schemas/RelatedEntity'
           minItems: 1
           type: array
+        observedImpact:
+          $ref: '#/components/schemas/MEFObservedImpactType'
+          description: The type of impact observed by the Buyer.
         resolutionDate:
           description:
             The date the Ticket status was set to resolved by the Seller
@@ -2681,6 +2440,7 @@ components:
         - expectedResolutionDate
         - externalId
         - id
+        - observedImpact
         - priority
         - relatedEntity
         - resolutionDate
@@ -2712,7 +2472,10 @@ components:
           format: date-time
           type: string
         note:
-          description: The note(s) that are associated to the ticket.
+          description:
+            A set of comments or information associated to the Ticket. This
+            list can be empty. Notes may be added but may not be modified or
+            deleted (for historical reasons).
           items:
             $ref: '#/components/schemas/Note'
           type: array
@@ -2749,98 +2512,6 @@ components:
             the expected functionality e.g. of a system, application, service
             etc...
       type: object
-    WorkOrder:
-      description: >
-        A set of tasks to be scheduled and performed under the responsibility
-        of a Seller Technician(s)
-      properties:
-        appointmentRequired:
-          description: >-
-            The Seller requires the Buyer to schedule an Appointment. If set to
-            true, the Seller is Requesting the Buyer to schedule an
-            Appointment.
-          type: boolean
-        appointment:
-          description: >-
-            A reference to a set of Appointments for the WorkOrder. A WorkOrder
-            may contain only one open Appointment at a time (e.g. with state of
-            'scheduled').
-          items:
-            $ref: '#/components/schemas/AppointmentRef'
-          type: array
-        href:
-          description: Hyperlink, a reference to the WorkOrder entity
-          type: string
-        id:
-          description:
-            Unique (within the Seller domain) identifier for the WorkOrder.
-          type: string
-        note:
-          description: >-
-            A set of unstructured comments or information associated to the
-            WorkOrder
-          items:
-            $ref: '#/components/schemas/Note'
-          type: array
-        place:
-          description: >-
-            The location where the WorkOrder Tasks are to be performed. If an
-            appointment is needed, this will also be the location where the
-            Appointment takes place and includes the site contact which the
-            Seller technician may need to get access to the Buyer's site during
-            the Appointment. This could be an end-user, security personnel or
-            any authorized person
-          items:
-            $ref: '#/components/schemas/RelatedPlaceRefOrValue'
-          type: array
-        relatedContactInformation:
-          description: >-
-            Party playing a role for this WorkOrder.
-
-            The 'role' is to specify the type of contact as specified in MEF
-            113:
-
-            Technical Contact ('role=technicalContact') - REQUIRED to be set by
-            the Seller. The Seller technical contact responsible for the
-            WorkOrder.
-
-            Technician ('role=technician') - The Seller technician assigned to
-            the WorkOrder and responsible for performing a set of tasks. In
-            certain instances this could be a Buyer technician that works on
-            behalf of the Seller.
-          items:
-            $ref: '#/components/schemas/RelatedContactInformation'
-          minItems: 1
-          type: array
-        relatedEntity:
-          description: >-
-            An entity that is related to the WorkOrder such as a service, a
-            product, etc. The entity which the WorkOrder is associated with.
-          items:
-            $ref: '#/components/schemas/RelatedEntity'
-          minItems: 1
-          type: array
-        state:
-          $ref: '#/components/schemas/WorkOrderStateType'
-          description: The current status of the WorkOrder
-        task:
-          description: >-
-            A set of tasks to be performed under the responsibility of the
-            Technician to fulfil the WorkOrder. Each item is a description of a
-            specific task to be performed under the responsibility of the
-            Technician.
-          items:
-            type: string
-          minItems: 1
-          type: array
-      required:
-        - appointmentRequired
-        - id
-        - relatedContactInformation
-        - relatedEntity
-        - state
-        - tasks
-      type: object
     WorkOrderRef:
       description: |
         A reference to an WorkOrder resource.
@@ -2855,24 +2526,3 @@ components:
       required:
         - id
       type: object
-    WorkOrderStateType:
-      description: |
-        Possible values for the status of the WorkOrder
-
-        | state              | MEF 113 name        | Description                                                                                                                                                                                                                                                     |
-        | ------------------ | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-        | `completed`        | COMPLETED           | The Seller Technician responsible for the Workorder has successfully completed all the assigned Tasks.                                                                                                                                                          |
-        | `cancelled`        | CANCELLED           | The WorkOrder has been cancelled by the Seller or due to the Buyer requesting to cancel the Ticket.                                                                                                                                                             |
-        | `inProgress`       | IN_PROGRESS         | The Seller Technician responsible for the Workorder has been assigned and started one or more of the assigned Tasks.                                                                                                                                            |
-        | `open`             | OPEN                | A WorkOrder was initiated by the Seller to be assigned to a Technician responsible for resolving the Ticket.                                                                                                                                                    |
-        | `planned`          | PLANNED             | The WorkOrder has been given an execution date for resolving one or more Tasks.                                                                                                                                                                                 |
-        | `unableToComplete` | UNABLE_TO_COMPLETE  | The Seller Technician responsible for the Workorder was unable to complete one or more of the assigned Tasks, because additional skills or information is required. Additional tasks are required to resolve the Ticket and a new Workorder needs to be opened. |
-      enum:
-        - cancelled
-        - completed
-        - inProgress
-        - open
-        - planned
-        - unableToComplete
-      type: string
-

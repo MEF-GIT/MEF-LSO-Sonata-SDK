@@ -8,7 +8,12 @@ info:
 
     This API implements Business Requirements described in MEF W57.2
 
-    The scope of this API includes the following capabilities to the API:
+    Product Order Management allows the Buyer to request the Seller to initiate and complete the
+    fulfillment process of an installation of a Product Offering, an update to
+    an existing Product, or a disconnect of an existing Product at the address
+    defined by the Buyer.
+
+    List of supported Use Cases:
 
     - Create Product Order
     - Update Product Order by Product Order Identifier
@@ -25,18 +30,17 @@ info:
     - Retrieve List of Charges
     - Retrieve Charge by Charge Identifier
     - Register for Notifications
-    - Send Notifications
 
-    Copyright 2021 MEF Forum and its contributors.
+    Copyright 2022 MEF Forum and its contributors.
 
     This file includes content based on the TM Forum Product Order API (TMF622
     v4.0.0) available at https://github.com/tmforum-apis/TMF622_ProductOrder,
     which is licensed by the TM Forum under the Apache License version 2.0. Such
     content has been modified by the MEF Forum and its contributors.
   title: Product Ordering Management
-  version: 8.0.0-RC
+  version: 9.0.0-RC
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/productOrderingManagement/v8/'
+  - url: 'https://{serverBase}/mefApi/sonata/productOrderingManagement/v9/'
     variables:
       serverBase:
         default: mef.net
@@ -50,7 +54,7 @@ tags:
 paths:
   /productOrder:
     get:
-      description: This operation list or find ProductOrder entities
+      description: This operation lists or finds ProductOrder entities
       operationId: listProductOrder
       parameters:
         - description: State of the Product Order
@@ -112,7 +116,7 @@ paths:
             This is requested date to get this Product Order Item completed
             greater than
           in: query
-          name: requestedCompletionDate.gt
+          name: itemRequestedCompletionDate.gt
           schema:
             format: date-time
             type: string
@@ -120,31 +124,35 @@ paths:
             This is requested date to get this Product Order Item completed
             lesser than
           in: query
-          name: requestedCompletionDate.lt
+          name: itemRequestedCompletionDate.lt
           schema:
             format: date-time
             type: string
-        - description: Seller planned completion date greater than
+        - description:
+            Seller planned completion date of the Product Order Item, greater
+            than
           in: query
-          name: expectedCompletionDate.gt
+          name: itemExpectedCompletionDate.gt
           schema:
             format: date-time
             type: string
-        - description: Seller planned completion date lesser than
+        - description:
+            Seller planned completion date of the Product Order Item, lesser
+            than
           in: query
-          name: expectedCompletionDate.lt
+          name: itemExpectedCompletionDate.lt
           schema:
             format: date-time
             type: string
         - description: order cancellation date greater than
           in: query
-          name: orderCancellationDate.gt
+          name: cancellationDate.gt
           schema:
             format: date-time
             type: string
         - description: order cancellation date lesser than
           in: query
-          name: orderCancellationDate.lt
+          name: cancellationDate.lt
           schema:
             format: date-time
             type: string
@@ -237,7 +245,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
-      summary: List or find ProductOrder objects
+      summary: Lists or finds ProductOrder objects
       tags:
         - productOrder
     post:
@@ -319,8 +327,7 @@ paths:
   '/productOrder/{id}':
     get:
       description: >-
-        This operation retrieves a ProductOrder entity. Attribute selection is
-        enabled for all first level attributes.
+        This operation retrieves a ProductOrder entity.
       operationId: retrieveProductOrder
       parameters:
         - description: Identifier of the ProductOrder
@@ -483,7 +490,7 @@ paths:
       x-codegen-request-body-name: productOrder
   /cancelProductOrder:
     get:
-      description: This operation list or find CancelProductOrder entities
+      description: This operation lists or finds CancelProductOrder entities
       operationId: listCancelProductOrder
       parameters:
         - in: query
@@ -491,8 +498,24 @@ paths:
           schema:
             type: string
         - in: query
-          name: productOrderExternalId
+          name: state
           schema:
+            enum:
+              - acknowledged
+              - done
+              - done.declined
+              - inProgress.assessingCharge
+              - rejected
+            type: string
+        - in: query
+          name: cancellationReasonType
+          description: >-
+            Identifies the type of reason, Technical or Commercial, for the
+            Cancellation request
+          schema:
+            enum:
+              - technical
+              - commercial
             type: string
         - description: >-
             The unique identifier of the organization that is acting as the a
@@ -536,7 +559,7 @@ paths:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: '#/components/schemas/CancelProductOrder'
+                  $ref: '#/components/schemas/CancelProductOrder_Find'
                 type: array
           description: Success
           headers:
@@ -588,7 +611,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error501'
           description: Method not implemented.
-      summary: List or find CancelProductOrder objects
+      summary: Lists or finds CancelProductOrder objects
       tags:
         - cancelProductOrder
     post:
@@ -751,7 +774,7 @@ paths:
         - cancelProductOrder
   /charge:
     get:
-      description: This operation list or find Charge entities
+      description: This operation lists or finds Charge entities
       operationId: listCharge
       parameters:
         - description: id of the Product Order this Charge relates to.
@@ -763,6 +786,20 @@ paths:
           in: query
           name: productOrderItemId
           schema:
+            type: string
+        - description: >-
+            Date that the Charge was created by the Seller (greater than)
+          in: query
+          name: creationDate.gt
+          schema:
+            format: date-time
+            type: string
+        - description: >-
+            Date that the Charge was created by the Seller. (greater than)
+          in: query
+          name: creationDate.lt
+          schema:
+            format: date-time
             type: string
         - description: >-
             The date that the Buyer must respond to the Seller's Charge. If
@@ -824,7 +861,7 @@ paths:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: '#/components/schemas/MEFProductOrderCharge'
+                  $ref: '#/components/schemas/MEFProductOrderCharge_Find'
                 type: array
           description: Success
           headers:
@@ -876,7 +913,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error501'
           description: Method not implemented.
-      summary: List or find Charge objects
+      summary: Lists or finds Charge objects
       tags:
         - charge
   '/charge/{id}':
@@ -1202,8 +1239,7 @@ paths:
         - events subscription
     get:
       description: >-
-        This operation retrieves a hub entity. Attribute selection is enabled
-        for all first level attributes.
+        This operation retrieves a hub entity.
       operationId: retrieveHub
       parameters:
         - description: Identifier of the Hub
@@ -1281,8 +1317,8 @@ paths:
   /modifyProductOrderItemRequestedDeliveryDate:
     get:
       description: >-
-        This operation list or find ModifyProductOrderItemRequestedDeliveryDate
-        entities
+        This operation lists or finds
+        ModifyProductOrderItemRequestedDeliveryDate entities
       operationId: listModifyProductOrderItemRequestedDeliveryDate
       parameters:
         - in: query
@@ -1430,7 +1466,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error501'
           description: Method not implemented.
-      summary: List or find ModifyProductOrderItemRequestedDeliveryDate objects
+      summary:
+        Lists or finds ModifyProductOrderItemRequestedDeliveryDate objects
       tags:
         - modifyProductOrderItemRequestedDeliveryDate
     post:
@@ -1605,8 +1642,8 @@ components:
       properties:
         cancellationDeniedReason:
           description: >-
-            If the Cancel Product Order is denied by the Seller, the Seller
-            provides a reason to the Buyer using this attribute.
+            If the Cancel Product Order request is denied by the Seller, the
+            Seller provides a reason to the Buyer using this attribute.
           type: string
         cancellationReason:
           description: >-
@@ -1618,7 +1655,7 @@ components:
           $ref: '#/components/schemas/CancellationReasonType'
           description: >-
             Identifies the type of reason, Technical or Commercial, for the
-            Cancellation Request
+            Cancellation request
         href:
           description: >
             Hyperlink to the cancellation request. Hyperlink MAY be used by the
@@ -1628,19 +1665,13 @@ components:
         id:
           description: >-
             Unique identifier for the Cancel Product Order that is generated by
-            the Seller when the Cancel Product Order request is acknowledged
-            via an API.
-          type: string
-        orderVersion:
-          description: >-
-            The version of the Product Order. Set by the Buyer using Seller
-            specified Product Order Version of the Product Order that is to be
-            cancelled.
+            the Seller when the Cancel Product Order request `state` is set to
+            `acknowledged`
           type: string
         productOrder:
           $ref: '#/components/schemas/MEFProductOrderRef'
           description: >-
-            A reference to a Product Order that the buyer wishes to cancel.
+            A reference to a Product Order that the Buyer wishes to cancel.
         relatedContactInformation:
           description: >-
             Contact information of an individual or organization playing a role
@@ -1652,7 +1683,8 @@ components:
 
             - Cancel Product Order Contact: `role=cancelProductOrderContact`
 
-            - Seller Contact: `role=sellerContact`
+            - Cancel Product Order Seller Contact:
+            `role=cancelProductOrderSellerContact`
           items:
             $ref: '#/components/schemas/RelatedContactInformation'
           type: array
@@ -1664,7 +1696,6 @@ components:
             Order status during the lifecycle of the Product Order.
       required:
         - id
-        - orderVersion
         - productOrder
         - relatedContactInformation
         - state
@@ -1684,13 +1715,7 @@ components:
           $ref: '#/components/schemas/CancellationReasonType'
           description: >-
             Identifies the type of reason, Technical or Commercial, for the
-            Cancellation Request
-        orderVersion:
-          description: >-
-            The version of the Product Order. Set by the Buyer using Seller
-            specified Product Order Version of the Product Order that is to be
-            cancelled.
-          type: string
+            Cancellation request
         productOrder:
           $ref: '#/components/schemas/MEFProductOrderRef'
           description: >-
@@ -1705,21 +1730,48 @@ components:
             value to a `role` is to use the _lowerCamelCase_ pattern e.g.
 
             - Cancel Product Order Contact: `role=cancelProductOrderContact`
-
-            - Seller Contact: `role=sellerContact`
           items:
             $ref: '#/components/schemas/RelatedContactInformation'
           minItems: 1
           type: array
       required:
-        - orderVersion
         - productOrder
         - relatedContactInformation
+      type: object
+    CancelProductOrder_Find:
+      description: A response to a Buyer's get List of Cancel Product Orders
+      properties:
+        cancellationReasonType:
+          $ref: '#/components/schemas/CancellationReasonType'
+          description: >-
+            Identifies the type of reason, Technical or Commercial, for the
+            Cancellation request
+        id:
+          description: >-
+            Unique identifier for the Cancel Product Order that is generated by
+            the Seller when the Cancel Product Order request `state` is set to
+            `acknowledged`
+          type: string
+        productOrder:
+          $ref: '#/components/schemas/MEFProductOrderRef'
+          description: >-
+            A reference to a Product Order that the Buyer wishes to cancel.
+        state:
+          $ref: '#/components/schemas/MEFChargeableTaskStateType'
+          description: >-
+            The states as defined by TMF622 and extended to meet MEF
+            requirements. These states are used to convey the Cancel Product
+            Order status during the lifecycle of the Product Order.
+      required:
+        - cancellationReasonType
+        - id
+        - productOrder
+        - state
       type: object
     CancellationReasonType:
       description: >-
         Identifies the type of reason, Technical or Commercial, for the
-        Cancellation Request
+        Cancellation request
       enum:
         - technical
         - commercial
@@ -2021,7 +2073,7 @@ components:
             notification is sent. E.g. for "callback":
             "https://buyer.co/listenerEndpoint", the product order state change
             event notification will be sent to:
-            `https://buyer.co/listenerEndpoint/mefApi/sonata/productOrderNotification/v8/listener/productOrderStateChangeEvent`
+            `https://buyer.co/listenerEndpoint/mefApi/sonata/productOrderNotification/v9/listener/productOrderStateChangeEvent`
           type: string
         query:
           description: >-
@@ -2306,9 +2358,9 @@ components:
         | -------------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
         | inProgress.assessingCharge | ACCESSING_CHARGE | The Modify Product Order Item Requested Delivery Date request results in a Charge being initiated by the Seller. The Modify Product Order Item Requested Delivery Date remains in this state until the Charge is completed or withdrawn by the Seller. All charges within a Charge that was initiated due to a Modify Product Order Item Requested Delivery Date are considered Blocking charges. If any charge is not accepted by the Buyer, the Modify Product Order Item Requested Delivery Date moves from the `inProgress.assessingCharge` state to the `done.declined` state. |
         | acknowledged               | ACKNOWLEDGED     | A Modify Product Order Item Requested Delivery Date request has been received and has passed basic validation. The Modify Product Order Item Requested Delivery Date Identifier is assigned in the `acknowledged` state. Validation of Modify Product Order Item Requested Delivery Date attributes as applicable is completed in the `acknowledged` state.                                                                                                                                                                                                                         |
-        | done                       | COMPLETED        | A Modify Product Order Item Requested Delivery Date request has been received, passed all validations, if a Charge is associated all Charge Items have been accepted by the Buyer, and the Product Order Item Completion Date has been updated as requested.                                                                                                                                                                                                                                                                                                                        |
+        | done                       | ACCEPTED         | A Modify Product Order Item Requested Delivery Date request has been received, passed all validations, if a Charge is associated all Charge Items have been accepted by the Buyer, and the Product Order Item Completion Date has been updated as requested.                                                                                                                                                                                                                                                                                                                        |
         | done.declined              | DECLINED         | Blocking charges associated with a Modify Product Order Item Requested Delivery Date have been declined by the Buyer. No updates are made to the Product Order Item.                                                                                                                                                                                                                                                                                                                                                                                                                |
-        | rejected                   | REJECTED         | A Modify Product Order Item Requested Delivery Date request was submitted by the Buyer, and it has failed any validation checks the Seller performs during the `acknowledged` state. No updates are made to the referenced Product Order Item.                                                                                                                                                                          
+        | rejected                   | REJECTED         | A Modify Product Order Item Requested Delivery Date request was submitted by the Buyer, and it has failed any validation checks the Seller performs during the `acknowledged` state. No updates are made to the referenced Product Order Item.
       enum:
         - acknowledged
         - done
@@ -2386,9 +2438,32 @@ components:
         rollInterval:
           $ref: '#/components/schemas/Duration'
           description: >-
-            The recurring period that the Buyer is willing to pay to the end of
-            upon disconnecting the Product after the original term has expired.
+            The recurring period that the Buyer is willing to pay for the
+            Product after the original term has expired.
       type: object
+      required:
+        - name
+        - duration
+        - endOfTermAction
+    MEFMilestone:
+      description: >-
+        Milestones associated to the Product Order Item. Set by the Seller when
+        a Milestone occurs.
+      properties:
+        date:
+          description: The date on when the milestone was reached
+          format: date-time
+          type: string
+        name:
+          type: string
+          description: Name of the Milestone.
+        note:
+          description: Additional comment related to milestone change.
+          type: string
+      type: object
+      required:
+        - date
+        - name
     MEFModifyProductOrderItemRequestedDeliveryDate:
       description: >-
         A response to a request initiated by the Buyer to modify the Requested
@@ -2420,12 +2495,6 @@ components:
             the Seller when the MEFModifyProductOrderItemRequestedDeliveryDate
             request is moved to the 'acknowledged' state.
           type: string
-        orderVersion:
-          description: >-
-            The version of the Product Order. Set by the Buyer using Seller
-            specified Product Order Version of the Product Order that is to be
-            modified.
-          type: string
         productOrderItem:
           $ref: '#/components/schemas/MEFProductOrderItemRef'
           description: A reference to the Product Order Item to be modified.
@@ -2442,7 +2511,6 @@ components:
       required:
         - creationDate
         - id
-        - orderVersion
         - productOrderItem
         - state
       type: object
@@ -2475,12 +2543,6 @@ components:
             Default Value = FALSE. If this is set to TRUE, the Buyer sets the
             Requested Completion Date to the expedited date
           type: boolean
-        orderVersion:
-          description: >-
-            The version of the Product Order. Set by the Buyer using Seller
-            specified Product Order Version of the Product Order that is to be
-            modified.
-          type: string
         productOrderItem:
           $ref: '#/components/schemas/MEFProductOrderItemRef'
           description: A reference to the Product Order Item to be modified.
@@ -2490,7 +2552,6 @@ components:
           format: date-time
           type: string
       required:
-        - orderVersion
         - productOrderItem
       type: object
     MEFOrderItemCoordinatedAction:
@@ -2521,12 +2582,12 @@ components:
       description: |
         Possible values of the Order Item Coordination Dependency
 
-        | OrderItemCoordinationDependencyType | MEF 57.2         | Description                                                                                             |
-        |-------------------------------------|------------------|---------------------------------------------------------------------------------------------------------|
-        | startToStart                        | START_TO_START   | Work on the specified Product Order Item begins at the same time as the related Product Order Item      |
-        | startToFinish                       | START_TO_FINISH  | Work on the specified Product Order Item begins upon the completion of the related Product Order Item   |
-        | finishToStart                       | FINISH_TO_START  | Work on the related Product Order Item begins after the completion of the specified Product Order Item |
-        | finishToFinish                      | FINISH_TO_FINISH | Work on the related Product Order Item completes at the same time as the specified Product Order Item  |
+        | OrderItemCoordinationDependencyType | MEF 57.2         | Description                                                                                                        |
+        |-------------------------------------|------------------|--------------------------------------------------------------------------------------------------------------------|
+        | startToStart                        | START_TO_START   | Work on the Specified Product Order Item can only be started after the Coordinated Product Order Items are started |
+        | startToFinish                       | START_TO_FINISH  | The Coordinated Product Order Items must complete before work on the Specified Product Order Item begins           |
+        | finishToStart                       | FINISH_TO_START  | Work on the Related Product Order Items begins after the completion of the Specified Product Order Item            |
+        | finishToFinish                      | FINISH_TO_FINISH | Work on the Related Product Order Items completes at the same time as the Specified Product Order Item             |
       enum:
         - startToStart
         - startToFinish
@@ -2631,15 +2692,9 @@ components:
             Charge applies to a Product Order Item. (Identified by Seller or
             caused by Modify Product Order Item Requested Delivery Date
             request)
-        replacedCharge:
-          $ref: '#/components/schemas/MEFProductOrderChargeRef'
-          description: >-
-            The Charge that is being replaced by this Charge (had at least one
-            accepted Charge Item when at least one of the Charge Items is being
-            replaced due to changes to the Charge Item)
         responseDueDate:
           description: >-
-            The date that the Buyer must respond to the Seller's Charge. If
+            The date by which the Buyer must respond to the Seller's Charge. If
             there is no response received by the Due Date the Seller will treat
             all charges as declined and move them to `declinedByBuyer` status
             and put the Charge to `completed` status.
@@ -2650,6 +2705,49 @@ components:
           description: The state of the Charge
       required:
         - chargeItem
+        - creationDate
+        - id
+        - responseDueDate
+        - state
+      type: object
+    MEFProductOrderCharge_Find:
+      description: >-
+        A response object for Buyer's get Charge List request.
+      properties:
+        creationDate:
+          description: Date that the Charge was created by the Seller.
+          format: date-time
+          type: string
+        id:
+          description: A unique identifier of the Charge
+          type: string
+        productOrder:
+          $ref: '#/components/schemas/MEFProductOrderRef'
+          description: >-
+            Product Order which the Seller is communicating additional or
+            modified charges to the Buyer. This relation MUST be set when the
+            Charge applies to a Product Order. (Caused by Cancel Product Order
+            request)
+        productOrderItem:
+          $ref: '#/components/schemas/MEFProductOrderItemRef'
+          description: >-
+            Product Order Item which the Seller is communicating additional or
+            modified charges to the Buyer. This relation MUST be set when the
+            Charge applies to a Product Order Item. (Identified by Seller or
+            caused by Modify Product Order Item Requested Delivery Date
+            request)
+        responseDueDate:
+          description: >-
+            The date by which the Buyer must respond to the Seller's Charge. If
+            there is no response received by the Due Date the Seller will treat
+            all charges as declined and move them to `declinedByBuyer` status
+            and put the Charge to `completed` status.
+          format: date-time
+          type: string
+        state:
+          $ref: '#/components/schemas/MEFProductOrderChargeStateType'
+          description: The state of the Charge
+      required:
         - id
         - responseDueDate
         - state
@@ -2672,32 +2770,38 @@ components:
           $ref: '#/components/schemas/MEFProductOrderChargeActivityType'
           description: >-
             Indicates if this is a new charge or a change to a charge provided
-            in a Quote.
+            in a Quote or in a previous accepted Charge Item.
         blocking:
           description: >-
             Indicates if rejecting the charge will cause the Seller to cancel
             the Product Order Item, or close the Cancel Product Order or Modify
             Product Order Item Requested Delivery Date without action.
           type: boolean
-        chargeType:
-          $ref: '#/components/schemas/MEFPriceType'
-          description: The state of the Charge
-        description:
-          $ref: '#/components/schemas/MEFProductOrderChargeItemDescription'
-          description: A description of the cause of the Charge Item
         id:
           description: >-
             An identifier that is unique among all Charge Items within a Charge
-            associated with a Product Order Item
           type: string
+        note:
+          description: >
+            Free form text to clarify or explain the Charge Item. Only new
+            notes can be entered. The Seller cannot modify an existing Note.
+          items:
+            $ref: '#/components/schemas/Note'
+          type: array
         price:
           $ref: '#/components/schemas/Price'
-          description: The value of the Price associated with the charge
+          description: The value of the Price associated with the Charge Item
+        priceCategory:
+          $ref: '#/components/schemas/MEFPriceCategory'
+          description: The category of the price
+        priceType:
+          $ref: '#/components/schemas/MEFPriceType'
+          description: The type of the price.
         recurringChargePeriod:
           $ref: '#/components/schemas/MEFChargePeriod'
           description: >-
-            Used for a Charge Item with a chargeType = recurring to indicate
-            the period
+            Used for a Charge Item with a priceType = recurring to indicate the
+            period
         state:
           $ref: '#/components/schemas/MEFProductOrderChargeItemStateType'
           description: The state of the Charge Item
@@ -2708,14 +2812,14 @@ components:
           type: string
       required:
         - id
-        - chargeType
-        - description
         - activityType
         - blocking
         - price
+        - priceType
+        - priceCategory
         - state
       type: object
-    MEFProductOrderChargeItemDescription:
+    MEFPriceCategory:
       description: A description of the cause of the Charge Item
       enum:
         - cancellation
@@ -2723,17 +2827,18 @@ components:
         - connection
         - disconnect
         - expedite
+        - other
       type: string
     MEFProductOrderChargeItemStateType:
       description: |
         Possible values for the state of the Charge Item
 
-        | State               | Description                                                                                                                                       |
-        | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-        | `acceptedByBuyer`   | A Charge Item identified in the Charge has been accepted by the Buyer.                                                                            |
-        | `awaitingResponse`  | A Charge Item has been identified by the Seller and awaits Buyer's acceptance.                                                                    |
-        | `declinedByBuyer`   | A Charge Item identified in the Charge has been declined by the Buyer. The referenced Product Order and Product Order Items are updated.          |
-        | `withdrawnBySeller` | The Seller determines that the Charge Item is incorrect. They withdraw the Charge Item and initiate a new Charge with the required correction(s). |
+        | State               | MEF 57.2 Name       | Description                                                                                                                                                                                                                                                                                                                                        |
+        | ------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | `awaitingResponse`  | AWAITING_RESPONSE   | A Charge has been initiated by the Buyer. The charge includes one or more charges related to a Product Order or Product Order Item. Buyer has not indicated whether they accept or reject the charges via a Respond to Charge request.                                                                                                             |
+        | `completed`         | COMPLETED           | All Charge Items included in the Charge for a given Product Order Item have moved to either the `acceptedByBuyer` state, the `declinedByBuyer` state, or the `withdrawnBySeller` state.                                                                                                                                                            |
+        | `timeout`           | TIMEOUT             | A Charge Item has been declined by the Buyer. The referenced Product Order and Product Order Items are updated. If a Blocking charge is declined, the Seller may cancel the referenced Product Order Item and any related Product Order Items, the related Cancel Product Order, or the related Modify Product Order Item Requested Delivery Date. |
+        | `withdrawnBySeller` | WITHDRAWN_BY_SELLER | The Seller determines that the Charge Item is incorrect. They withdraw the Charge Item and initiate a new Charge with the required correction(s) if needed.                                                                                                                                                                                        |
       enum:
         - awaitingResponse
         - acceptedByBuyer
@@ -2753,6 +2858,13 @@ components:
             An identifier that is unique among Charge. Used for Charge Item
             matching, not to be update.
           type: string
+        note:
+          description: >
+            Free form text to clarify or explain the Charge Item. Only new
+            notes can be entered. The Seller cannot modify an existing Note.
+          items:
+            $ref: '#/components/schemas/Note'
+          type: array
       required:
         - acceptanceIndicator
         - id
@@ -2878,7 +2990,9 @@ components:
           type: string
         billingAccount:
           $ref: '#/components/schemas/MEFBillingAccountRef'
-          description: A reference to the Buyer's Billing Account
+          description:
+            Billing account information for the billing account the Buyer wants
+            used for the Product Order Item
         coordinatedAction:
           description: >-
             The interval after the completion of one or more related Product
@@ -2915,7 +3029,8 @@ components:
             new notes can be entered. The Buyer and Seller cannot modify an
             existing Note. The Buyer creates a Note when creating the Product
             Order Item or when updating it. The Seller may add notes at any
-            time.
+            time. This is not to be used to inform the Seller of Actions that
+            the Buyer wishes performed.
           items:
             $ref: '#/components/schemas/Note'
           type: array
@@ -3036,8 +3151,8 @@ components:
         relatedContactInformation:
           description: >-
             Contact information of an individual or organization playing a role
-            for this Order Item. Buyer may only update the Buyer-related
-            contacts.
+            for this Order Item. Buyer can modify, add, or delete only
+            Buyer-related contacts.
 
             The rule for mapping a represented attribute
 
@@ -3094,19 +3209,19 @@ components:
         Possible values for the state of the Product Order The following
         mapping has been used between `MEFProductOrderStateType` and MEF 57.2:
 
-        | state                           | MEF 57.2 name          | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-        | ------------------------------- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-        | `acknowledged`                  | ACKNOWLEDGED           | A Product Order has been received by the Seller and has passed basic validation. A `productOrder.id` is assigned in the `acknowledged` state and a response is returned to the Buyer. The Product Order remains in the `acknowledged` state while validations of Product Order and Product Order Item(s) attributes as applicable is completed. If the Product Order and Product Order Item attributes are validated the Product Order moves to the `inProgress` state. If not validated, the Product Order moves to the `rejected` state.                                                                                                                                                                                                                |
-        | `assessingCancellation`         | ASSESSING_CANCELLATION | A request has been made by the Buyer to cancel the Product Order and the Product Order is currently being assessed to determine whether it can be cancelled. If there are any charges associated with the Buyer's Cancel Request, the Seller initiates a Charge which communicates the related charges to the Buyer, the Product Order remains in the `assessingCancellation` state until the Charge is completed or withdrawn by the Seller. Once the cancellation assessment is complete, the Product Order moves to the `pendingCancellation` state.                                                                                                                                                                                                   |
-        | `held.assessingCharge`          | ASSESSING_CHARGE       | A Charge has been initiated by the Seller that is not the result of a Modify Product Order Item Requested Delivery Date or Cancel Product Order request and the Seller is awaiting a Buyer response to the Charge. If a blocking or non-blocking charge is accepted by the Buyer, the Product Order moves to `inProgress`. If a non-blocking charge is declined by the Buyer, the Product Order moves to `inProgress`. If a blocking charge is declined by the Buyer and there are no unrelated Product Order Items in the Product Order, the Product Order moves to the FAILED state. If a blocking charge is declined by the Buyer and there are unrelated Product Order Items in the Product Order, the Product Order moves to the `inProgress` state. |
-        | `pending.assessingModification` | ASSESSING_MODIFICATION | A request has been made by the Buyer to modify either the `expediteIndicator` or the `requestedCompletionDate` of a Product Order Item. The Product Order Item is currently being assessed to determine whether the Modify Product Order Item Requested Delivery Date is valid. If there is a charge associated with the Modify Product Order Item Requested Delivery Date, the Product Order remains in the `pending.assessingModification` state until the Charge is completed or withdrawn by the Seller. Once the Buyer's request has been validated and any associated Charges completed, the Product Order returns to the `inProgress` state.                                                                                                       |
-        | `cancelled`                     | CANCELLED              | The Product Order has been successfully cancelled. This is a terminal state.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-        | `pendingCancellation`           | CANCELLING             | The Buyer's Cancel Request has been assessed and it has been determined that it is feasible to proceed with the cancellation. This state can also result from a Seller cancelling the Product Order within their systems without a request from the Buyer.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-        | `completed`                     | COMPLETED              | The Product Order has completed fulfillment and the Product is now active. This is a terminal state                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-        | `failed`                        | FAILED                 | All Product Order Items have failed which results in the entire Product Order failing. This is a terminal state.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-        | `inProgress`                    | IN_PROGRESS            | The Product Order has been successfully validated, and fulfillment has started.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-        | `partial`                       | PARTIAL                | Fulfillment of at least one Product Order Item has failed, and fulfillment of at least one Product Order Item has been successful. This is a terminal state.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-        | `rejected`                      | REJECTED               | A Product Order was submitted, and it has failed at least one of the validation checks the Seller performs after it reached the `acknowledged` state                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+        | state                           | MEF 57.2 name          | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+        | ------------------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | `acknowledged`                  | ACKNOWLEDGED           | A Product Order has been received by the Seller and has passed basic validation. A `productOrder.id` is assigned in the `acknowledged` state and a response is returned to the Buyer. The Product Order remains in the `acknowledged` state while validations of Product Order and Product Order Item(s) attributes as applicable is completed. If the Product Order and Product Order Item attributes are validated the Product Order moves to the `inProgress` state. If not validated, the Product Order moves to the `rejected` state.                                                                                                                                                                                                                                               |
+        | `assessingCancellation`         | ASSESSING_CANCELLATION | A Cancel Product Order request has been received by the Seller. The Product Order is being assessed to determine if the Product Order can be cancelled. If there are charges associated with cancelling the Product Order, these are communicated to the Buyer using the Charge process. The Product Order remains in the `assessingCancellation` state until any relevant Charge is completed or withdrawn by the Seller. Once the Buyer's request has been validated and any associated Charges completed, the Product Order moves to the `pendingCancellation` state. If the request is not validated or if any associated Charges are not completed, the Product Order moves to the `inProgress` state and the Product Order is not cancelled.                                       |
+        | `held.assessingCharge`          | ASSESSING_CHARGE       | A Charge has been initiated by the Seller that is not the result of a Modify Product Order Item Requested Delivery Date or Cancel Product Order request and the Seller is awaiting a Buyer response to the Charge. If a blocking or non-blocking charge is accepted by the Buyer, the Product Order moves to `inProgress`. If a non-blocking charge is declined by the Buyer, the Product Order moves to `inProgress`. If a blocking charge is declined by the Buyer and there are no unrelated Product Order Items in the Product Order, the Product Order moves to the `inProgress` and then to the `failed` state. If a blocking charge is declined by the Buyer and there are unrelated Product Order Items in the Product Order, the Product Order moves to the `inProgress` state. |
+        | `pending.assessingModification` | ASSESSING_MODIFICATION | A request has been made by the Buyer to modify either the `expediteIndicator` or the `requestedCompletionDate` of a Product Order Item. The Product Order Item is currently being assessed to determine whether the Modify Product Order Item Requested Delivery Date is valid. If there is a charge associated with the Modify Product Order Item Requested Delivery Date, the Product Order remains in the `pending.assessingModification` state until the Charge is completed or withdrawn by the Seller. Once the Buyer's request has been validated and any associated Charges completed, the Product Order returns to the `inProgress` state.                                                                                                                                      |
+        | `cancelled`                     | CANCELLED              | The Product Order has been successfully cancelled. This is a terminal state.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+        | `pendingCancellation`           | CANCELLING             | The Buyer's Cancel Request has been assessed and it has been determined that it is feasible to proceed with the cancellation. This state can also result from a Seller cancelling the Product Order within their systems without a request from the Buyer.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+        | `completed`                     | COMPLETED              | The Product Order has completed fulfillment and the Product is now active. This is a terminal state                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+        | `failed`                        | FAILED                 | All Product Order Items have failed which results in the entire Product Order failing. This is a terminal state.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+        | `inProgress`                    | IN_PROGRESS            | The Product Order has been successfully validated, and fulfillment has started.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+        | `partial`                       | PARTIAL                | Fulfillment of at least one Product Order Item has failed, and fulfillment of at least one Product Order Item has been successful. This is a terminal state.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+        | `rejected`                      | REJECTED               | A Product Order was submitted, and it has failed at least one of the validation checks the Seller performs after it reached the `acknowledged` state                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
       enum:
         - acknowledged
         - assessingCancellation
@@ -3280,6 +3395,8 @@ components:
             'Price Tax Rate. Unit: [%]. E.g. value 16 stand for 16% tax.'
           format: float
           type: number
+      required:
+        - dutyFreeAmount
       type: object
     ProductOfferingQualificationItemRef:
       description: >-
@@ -3360,19 +3477,16 @@ components:
               description: >-
                 An optional free-form text field for the Seller to provide
                 additional information regarding the reason for the
-                cancellation.
+                cancellation. If the Seller cancels the Product Order, the
+                Seller provides the reason. If the Buyer requests the
+                cancellation, the Seller copies the reason provided by the
+                Buyer from the Cancel Product Order request.
               type: string
             completionDate:
               description: >-
                 Identifies the date that all Product Order Items within the
                 Order have reached a terminal state. No further action is
                 permitted on the Product Order.
-              format: date-time
-              type: string
-            expectedCompletionDate:
-              description: >
-                Identifies the date the Seller expects to complete the Product
-                Order.
               format: date-time
               type: string
             href:
@@ -3389,9 +3503,6 @@ components:
                 Date when the Product Order was created in the Seller's system
                 and a Product Order Identifier was assigned
               format: date-time
-              type: string
-            orderVersion:
-              description: The version of the Product Order, set by the Seller
               type: string
             productOrderItem:
               description: |
@@ -3425,7 +3536,9 @@ components:
             one or more order items.
           properties:
             charge:
-              description: The Charges associated to this Product Order Item
+              description:
+                The Charges associated to this Product Order Item. This list
+                contains all completed Charges containing accepted Charge Items
               items:
                 $ref: '#/components/schemas/MEFProductOrderChargeRef'
               type: array
@@ -3458,6 +3571,13 @@ components:
               description: Term of the Product Order Item
               maxItems: 1
               type: array
+            milestone:
+              description:
+                Milestones associated to the Product Order Item. Set by the
+                Seller when a Milestone occurs.
+              items:
+                $ref: '#/components/schemas/MEFMilestone'
+              type: array
             state:
               $ref: '#/components/schemas/MEFProductOrderItemStateType'
               description: State of the Product Order Item
@@ -3476,9 +3596,9 @@ components:
           type: object
     ProductOrder_Common:
       description: >-
-        A Product Order is a type of order which can be used to place an
-        order between a customer and a service provider or between a service
-        provider and a partner and vice versa,
+        A Product Order is a type of order which can be used to place an order
+        between a customer and a service provider or between a service provider
+        and a partner and vice versa,
       properties:
         externalId:
           description:
@@ -3513,11 +3633,6 @@ components:
             $ref: '#/components/schemas/RelatedContactInformation'
           minItems: 1
           type: array
-        requestedCompletionDate:
-          description:
-            This is requested date to get this Product Order completed
-          format: date-time
-          type: string
       required:
         - relatedContactInformation
       type: object
@@ -3572,19 +3687,11 @@ components:
           description: Date when the Product Order was created
           format: date-time
           type: string
-        orderVersion:
-          description: The version of the Product Order, assigned by the Seller
-          type: string
         projectId:
           description: >-
             An identifier that is used to group Product Orders that is
             important to the Buyer. A projectId can be used to relate multiple
             Product Orders together.
-          type: string
-        requestedCompletionDate:
-          description:
-            This is requested date to get this Product Order completed
-          format: date-time
           type: string
         state:
           $ref: '#/components/schemas/MEFProductOrderStateType'
@@ -3595,7 +3702,6 @@ components:
       required:
         - id
         - orderDate
-        - orderVersion
         - state
       type: object
     ProductOrder_Update:
@@ -3615,14 +3721,6 @@ components:
           items:
             $ref: '#/components/schemas/Note'
           type: array
-        orderVersion:
-          description: >-
-            The version of the Product Order. The `orderVersion` attribute
-            cannot be updated. It is used only to identify the version of the
-            Product Order that the Buyer wants to update. If there is a
-            mismatch with the Seller's system, the Seller will reject the
-            request with an error response.
-          type: string
         productOrderItem:
           description: |
             Order Item attributes that may be updated
@@ -3638,14 +3736,12 @@ components:
         relatedContactInformation:
           description: >
             Contact information of an individual or organization playing a role
-            in this context. The Buyer is allowed to update the Product Order
-            Contact: role=productOrderContact;
+            in this context. Buyer can modify, add, or delete only
+            Buyer-related contacts.
           items:
             $ref: '#/components/schemas/RelatedContactInformation'
           minItems: 1
           type: array
-      required:
-        - orderVersion
       type: object
     ProductRelationship:
       description: >-

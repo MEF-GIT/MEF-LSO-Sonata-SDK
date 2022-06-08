@@ -1,0 +1,18 @@
+@startuml
+
+hide footbox
+
+participant Buyer
+participant Seller
+
+Buyer -> Seller : POST {{baseUrl}}/appointment (Appointment_Create)
+
+Seller -> Seller : validate Request
+Seller -> Seller : assign id
+Seller -> Seller : status: confirmed
+alt successful inquiry
+    Buyer <-- Seller : 201 Appointment with {{id}}, status: `confirmed`
+else validation or internal problem
+    Buyer <-- Seller: 4xx/5xx : error response
+end
+@enduml

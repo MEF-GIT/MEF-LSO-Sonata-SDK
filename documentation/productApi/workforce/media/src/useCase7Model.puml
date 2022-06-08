@@ -1,0 +1,48 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+
+class RelatedEntity {
+
+    @referredType*: string
+    href: string
+    id*: string
+    role*: string
+}
+
+
+class SearchTimeSlot {
+
+}
+
+SearchTimeSlot *-->"*" TimeSlot : availableTimeSlot
+SearchTimeSlot *-->"*" TimeSlot : requestedTimeSlot
+SearchTimeSlot *-->"*" RelatedEntity : relatedEntity
+
+
+class SearchTimeSlot_Create {
+
+}
+
+SearchTimeSlot_Create *-->"*" TimeSlot : requestedTimeSlot
+SearchTimeSlot_Create *-->"*" RelatedEntity : relatedEntity
+
+
+class TimePeriod {
+
+    endDateTime: date-time
+    startDateTime: date-time
+}
+
+
+class TimeSlot {
+
+}
+
+TimeSlot *-->"1" TimePeriod : validFor
+
+
+@enduml

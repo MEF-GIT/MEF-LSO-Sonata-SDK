@@ -2,13 +2,13 @@
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
     MEF LSO Sonata - Access Eline OVC EP Common
-    # MEF Forum - Date: 20220110  Edit-level: 319
+    # MEF Forum - Date: 20220601  Edit-level: 343
     # File: carrierEthernet/ovcSuperClasses/accessElineOvcEpCommon.yaml
     #
     # ---------------------
     # Disclaimer
     # 
-    # © MEF Forum 2021. All Rights Reserved.
+    # © MEF Forum 2022. All Rights Reserved.
     # 
     # The information in this publication is freely available for reproduction
     # and use by any recipient and is believed to be accurate as of its
@@ -56,17 +56,12 @@ definitions:
         type: object
         description:  >-
             This class contains all of the Access E-Line OVC End Point
-            Services Attributes that are used in all four Business Functions
-            (POQ, Quote, Order, Inventory). At this time, this includes all
-            of the Access Eline OVC End Point Service Attributes. This class
-            is used to compose the AccessElineOvcEndPoint class which has one
-            file for each Business Function that differ in terms of the Service
-            Attributes that are "Required" for the Business Function (rather
-            than "Optional").
+            Services Attributes. This class is used to compose the AccessElineOvcEndPoint
+            class.
         properties:
             identifier:
                 description:  >-
-                    MEF 26.2 sec. 16.1 - The value of theOVC EP ID Service Attribute
+                    MEF 26.2 sec. 16.1 - The value of the OVC EP ID Service Attribute
                     is a string that is used to allow the Subscriber and Service Provider
                     to uniquely identify the OVC EP for operations purposes.
                 type: string
@@ -162,7 +157,9 @@ definitions:
             egressBandwidthProfilePerEndPoint:
                 description:  >-
                     MEF 26.2 sec. 16.11 - Bandwidth Profile Flow parameters for
-                    all egress Service Frames mapped to the OVC End Point.
+                    all egress Service Frames mapped to the OVC End Point. If the value
+                    of this attribute is an empty list, there is no Egress Bandwidth
+                    Profile per OVC at the OVC End Point.
                 # Per MEF 51.1 this must be Disabled (an empty list) at ENNI EP
                 # See additional validation notes in the Schema Guide
                 type: array 
@@ -188,7 +185,9 @@ definitions:
                 description:  >-
                     MEF 26.2 sec. 16.13 - For each EEC Name listed, Bandwidth Profile
                     Flow parameters, for all egress Service Frames mapped to that EEC
-                    Name at the OVC End Point.
+                    Name at the OVC End Point. If the value of this attribute is an
+                    empty list, there is no Egress Bandwidth Profile per EEC at the
+                    OVC End Point.
                 # See additional validation notes in the Schema Guide
                 type: array 
                 minItems: 0
@@ -211,10 +210,9 @@ definitions:
                 description:  >-
                     MEF 26.2 sec. 16.15 - Specifies a limit on the number of different
                     Source MAC address over a time interval for which ingress Service
-                    Frames at this OVC End Point will be delivered. The absence of
-                    this attribute corresponds to a Service Attribute value of None.
-                    The value is {N,t} where N is an integer greater than or equal
-                    to 1 and t is a time duration.
+                    Frames at this OVC End Point will be delivered. An empty list corresponds
+                    to a Service Attribute value of None. The value is {N,t} where
+                    N is an integer greater than or equal to 1 and t is a time duration.
                 type: array 
                 minItems: 0
                 maxItems: 1
@@ -231,8 +229,8 @@ definitions:
             maintenanceEndPointList:
                 description:  >-
                     MEF 26.2 sec. 16.17 - A list of the MEPs instantiated at this
-                    OVC EP and the direction of each MEP, List of 2-tuples ⟨l, d⟩ where
-                    l is MEG level and d is direction (Up/Down)
+                    OVC EP, if any, and the direction of each MEP, List of 2-tuples
+                    ⟨l, d⟩ where l is MEG level and d is direction (Up/Down).
                 # See additional validation notes in the Schema Guide
                 type: array 
                 minItems: 0

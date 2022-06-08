@@ -174,16 +174,16 @@ they were part of this document, from the GitHub repository:
 <https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK>
 
 commit id:
-[2062c16db194adc5109d0b7c0578a1a9128c6471](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/tree/2062c16db194adc5109d0b7c0578a1a9128c6471)
+[f3c91e572b9bdecce6198fd15141d4f67e92e5f8](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/tree/f3c91e572b9bdecce6198fd15141d4f67e92e5f8)
 
-- [`productApi/inventory/productInventoryManagement.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/blob/2062c16db194adc5109d0b7c0578a1a9128c6471/productApi/inventory/productInventoryManagement.api.yaml)
+- [`productApi/inventory/productInventoryManagement.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/blob/f3c91e572b9bdecce6198fd15141d4f67e92e5f8/productApi/inventory/productInventoryManagement.api.yaml)
 
 <https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK>
 
 commit id:
-[fd4aad8d6417b6aed2fa4e2d4ffa9836648addb0](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/tree/fd4aad8d6417b6aed2fa4e2d4ffa9836648addb0)
+[2e18fa505952a8bc1d3be1ff78306d406ed47b6d](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/tree/2e18fa505952a8bc1d3be1ff78306d406ed47b6d)
 
-- [`productApi/inventory/productInventoryManagement.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/blob/fd4aad8d6417b6aed2fa4e2d4ffa9836648addb0/productApi/inventory/productInventoryManagement.api.yaml)
+- [`productApi/inventory/productInventoryManagement.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/blob/2e18fa505952a8bc1d3be1ff78306d406ed47b6d/productApi/inventory/productInventoryManagement.api.yaml)
 
 # 2. Terminology and Abbreviations
 
@@ -1028,7 +1028,7 @@ system or shown in the `terminated` state at the Seller's discretion.
 **[R14]** The Seller **MUST** provide the following contact information: [MEF81
 R11]
 
-| Contact Role               | `role` value                                                            | Description                                                                           |
+| Contact Role                | `role` value                                                            | Description                                                                           |
 | --------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | Assurance Technical Contact | `buyerAssuranceTechnicalContact`,</br>`sellerAssuranceTechnicalContact` | Operational contact such as Network Operations Center (NOC) for each party.           |
 | Commercial Contact          | `buyerCommercialContact`, </br>`sellerCommercialContact`                | Contact for commercial issues like billing, contract extensions, etc. for each party. |
@@ -2326,15 +2326,25 @@ process.
 - [OAS-v3] [Open API 3.0](http://spec.openapis.org/oas/v3.0.3.html), February
   2020
 - [JS]
-  [JSON Schema draft 7](https://json-schema.org/specification-links.html#draft-7),
+  [IETF JSON Schema draft 7](https://json-schema.org/specification-links.html#draft-7)
   JSON Schema: A Media Type for Describing JSON Documents and associated
   documents, by Austin Wright and Henry Andrews, March 2018. Copyright © 2018
   IETF Trust and the persons identified as the document authors. All rights
   reserved.
-- [REST]
-  [Chapter 5: Representational State Transfer (REST)](http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
-  Fielding, Roy Thomas, Architectural Styles and the Design of Network-based
-  Software Architectures (Ph.D.).
+- [RFC2119] IETF RFC 2119, Key words for use in RFCs to Indicate Requirement
+  Levels, March 1997
+- [RFC 3986] IETF RFC 3986, Uniform Resource Identifier (URI): Generic Syntax,
+  by Tim Berners-Lee and Roy T. Fielding and Larry M Masinter, January 2005.
+  Copyright © The Inter-net Society (2005).
+- [RFC 7231] IETF RFC 7231, Hypertext Transfer Protocol (HTTP/1.1): Semantics
+  and Content, by Roy T. Fielding and Julian Reschke, June 2014. Copyright ©
+  2014 IETF Trust and the persons identified as the document authors. All
+  rights reserved.
+- [RFC 8174] IETF RFC 8174, Ambiguity of Uppercase vs Lowercase in RFC 2119 Key
+  Words, May 2017
+- [ISO 4217:2015] ISO 4217:2015, Currency Codes, August 2018
+- [REST] Fielding, Roy Thomas, Architectural Styles and the Design of
+  Network-based Software Architectures (Ph.D), 2000
 - [MEF55.1]
   [MEF 55.1](https://www.mef.net/wp-content/uploads/2021/02/MEF-55.1.pdf)
   Lifecycle Service Orchestration (LSO): Reference Architecture and Framework,
@@ -2350,5 +2360,5 @@ process.
   [MEF 81.0.1](https://www.mef.net/wp-content/uploads/2020/02/MEF-81-0-1.pdf),
   Amendment to MEF 81: Product Inventory Management, February 2020
 - [TMF637]
-  [TMF 674](https://projects.tmforum.org/wiki/download/attachments/123080633/TMF637_Product_Inventory_Management_API_REST_Specification_R19.0.0.pdf)
+  [TMF 637](https://projects.tmforum.org/wiki/download/attachments/123080633/TMF637_Product_Inventory_Management_API_REST_Specification_R19.0.0.pdf)
   TMF637 Product Inventory Management API REST Specification R19.0.0, June 2019

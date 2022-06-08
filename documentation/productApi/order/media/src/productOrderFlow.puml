@@ -22,7 +22,7 @@ held.assessingCharge -d[hidden]-> partial
 
 acknowledged --> issues_detected
 
-issues_detected -d-> inProgress
+issues_detected -d-> inProgress : no
 issues_detected -l-> rejected : yes
 
 inProgress -l-> pending.assessingModification
@@ -35,8 +35,7 @@ inProgress -r-> pendingCancellation
 
 pending.assessingModification -r-> inProgress
 
-held.assessingCharge --> inProgress 
-held.assessingCharge --> failed 
+held.assessingCharge -l-> inProgress 
 
 assessingCancellation -l-> inProgress
 assessingCancellation -r-> pendingCancellation

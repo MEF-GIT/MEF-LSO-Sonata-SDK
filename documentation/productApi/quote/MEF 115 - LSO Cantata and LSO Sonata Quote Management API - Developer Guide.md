@@ -543,10 +543,10 @@ the endpoint mapping. Use cases are described extensively in
 ### 5.2.1. Seller side API Endpoints
 
 **Base URL for Cantata**:
-`https://{{serverBase}}:{{port}}{{?/buyer_prefix}}/mefApi/cantata/quoteManagement/v2/`
+`https://{{serverBase}}:{{port}}{{?/seller_prefix}}/mefApi/cantata/quoteManagement/v2/`
 
 **Base URL for Sonata**:
-`https://{{serverBase}}:{{port}}{{?/buyer_prefix}}/mefApi/sonata/quoteManagement/v8/`
+`https://{{serverBase}}:{{port}}{{?/seller_prefix}}/mefApi/sonata/quoteManagement/v8/`
 
 The following API endpoints are implemented by the Seller and allow the Buyer
 to send Quote requests, retrieve existing Quotes or Quote details, and manage
@@ -3441,7 +3441,7 @@ expires.
         <tr>
             <td>roll</td>
             <td>ROLL</td>
-            <td>Roll indicates that the Product’s contract will continue on a rolling basis for the duration of the Roll Interval at the end of the Quote Item Term.</td>
+            <td>Roll indicates that the Product's contract will continue on a rolling basis for the duration of the Roll Interval at the end of the Quote Item Term.</td>
         </tr><tr>
             <td>autoDisconnect</td>
             <td>AUTO_DISCONNECT</td>
@@ -3449,7 +3449,7 @@ expires.
         </tr><tr>
             <td>autoRenew</td>
             <td>AUTO_RENEW</td>
-            <td>Auto-renew indicates that the Product’s contract will be automatically renewed for the Quote Item Term Duration at the end of the Quote Item Term.</td>
+            <td>Auto-renew indicates that the Product's contract will be automatically renewed for the Quote Item Term Duration at the end of the Quote Item Term.</td>
         </tr>
     </tbody>
 </table>
@@ -4478,12 +4478,12 @@ Reference: MEF 80 (Sn 8.1.9)
             <td>number*</td>
             <td>string</td>
             <td>Phone number</td>
-            <td>Contract Phone Number</td>
+            <td>Contact Phone Number</td>
         </tr><tr>
             <td>numberExtension</td>
             <td>string</td>
             <td>Phone number extension</td>
-            <td>Contract Phone Number Extension</td>
+            <td>Contact Phone Number Extension</td>
         </tr><tr>
             <td>organization</td>
             <td>string</td>

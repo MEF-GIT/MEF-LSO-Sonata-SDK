@@ -9,47 +9,63 @@ class AttachmentValue {
     attachmentId: string
     author*: string
     content: string
-    creationDate: date-time
+    creationDate*: date-time
     description: string
     mimeType: string
     name*: string
     source*: MEFBuyerSellerType
     url: string
 }
+
 AttachmentValue *--> MEFByteSize : size
-
-enum DataSizeUnit {
-
-    BYTES
-    KBYTES
-    MBYTES
-    GBYTES
-    TBYTES
-    PBYTES
-    EBYTES
-    ZBYTES
-    YBYTES
-}
 
 class FieldedAddress {
 
-    city*: string
     country*: string
+    streetType: string
+    postcodeExtension: string
+    city*: string
+    streetNr: string
     locality: string
     postcode: string
-    postcodeExtension: string
-    stateOrProvince: string
-    streetName*: string
-    streetNr: string
     streetNrLast: string
-    streetNrLastSuffix: string
     streetNrSuffix: string
+    streetName*: string
+    stateOrProvince: string
+    streetNrLastSuffix: string
     streetSuffix: string
-    streetType: string
 }
-RelatedPlaceRefOrValue <|-- FieldedAddress
 
 FieldedAddress *--> GeographicSubAddress : geographicSubAddress
+
+
+class IssueRelationship {
+
+    @referredType*: string
+    creationDate*: date-time
+    description*: string
+    href: string
+    id*: string
+    relationshipType*: string
+    source*: MEFBuyerSellerType
+}
+
+
+enum TroubleTicketSeverityType {
+
+    minor
+    moderate
+    significant
+    extensive
+}
+class TroubleTicketStatusChange {
+
+    changeDate: date-time
+    changeReason: string
+    status: TroubleTicketStatusType
+}
+
+
 
 
 class GeographicSubAddress {
@@ -64,7 +80,6 @@ class GeographicSubAddress {
 
 GeographicSubAddress *-->"*" MEFSubUnit : subUnit
 
-
 class MEFByteSize {
 
     amount: float
@@ -77,6 +92,24 @@ enum MEFObservedImpactType {
     intermittent
     down
 }
+enum DataSizeUnit {
+
+    BYTES
+    KBYTES
+    MBYTES
+    GBYTES
+    TBYTES
+    PBYTES
+    EBYTES
+    ZBYTES
+    YBYTES
+}
+class MEFSubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+
 
 class Note {
 
@@ -86,23 +119,6 @@ class Note {
     source*: MEFBuyerSellerType
     text*: string
 }
-
-
-
-
-enum MEFBuyerSellerType {
-
-    buyer
-    seller
-}
-
-class MEFSubUnit {
-
-    subUnitNumber*: string
-    subUnitType*: string
-}
-
-
 
 class RelatedContactInformation {
 
@@ -117,12 +133,15 @@ class RelatedContactInformation {
 RelatedContactInformation *--> FieldedAddress : postalAddress
 
 
-class RelatedPlaceRefOrValue {
+class RelatedEntity {
 
-    @schemaLocation: uri
-    @type*: string
+    @referredType*: string
+    href: string
+    id*: string
     role*: string
 }
+
+
 
 class TroubleTicket {
 
@@ -140,26 +159,6 @@ TroubleTicket_Common <|-- TroubleTicket
 TroubleTicket *-->"*" TroubleTicketStatusChange : statusChange
 TroubleTicket *-->"*" WorkOrderRef : workOrder
 
-class IssueRelationship {
-
-    @referredType*: string
-    creationDate*: date-time
-    description*: string
-    href: string
-    id*: string
-    relationshipType*: string
-    source*: MEFBuyerSellerType
-}
-
-
-class TroubleTicketStatusChange {
-
-    changeDate: date-time
-    changeReason: string
-    status: TroubleTicketStatusType
-}
-
-
 
 enum TroubleTicketType {
 
@@ -168,27 +167,42 @@ enum TroubleTicketType {
     installation
     maintenance
 }
+class WorkOrderRef {
+
+    href: string
+    id*: string
+}
+
+enum TroubleTicketStatusType {
+
+    acknowledged
+    assessingCancellation
+    cancelled
+    closed
+    inProgress
+    pending
+    resolved
+    reopened
+}
+enum TroubleTicketPriorityType {
+
+    low
+    medium
+    high
+    critical
+}
 class TroubleTicket_Create {
 
 }
 TroubleTicket_Common <|-- TroubleTicket_Create
 
 
-class WorkOrderRef {
 
-    href: string
-    id*: string
+enum MEFBuyerSellerType {
+
+    buyer
+    seller
 }
-class RelatedEntity {
-
-    @referredType*: string
-    href: string
-    id*: string
-    role*: string
-}
-
-
-
 class TroubleTicket_Common {
 
     description*: string
@@ -207,33 +221,4 @@ TroubleTicket_Common *-->"1..*" RelatedEntity : relatedEntity
 TroubleTicket_Common *-->"*" IssueRelationship : relatedIssue
 
 
-
-
-enum TroubleTicketSeverityType {
-
-    minor
-    moderate
-    significant
-    extensive
-}
-enum TroubleTicketStatusType {
-
-    acknowledged
-    assessingCancellation
-    cancelled
-    closed
-    inProgress
-    pending
-    resolved
-    reopened
-}
-
-
-enum TroubleTicketPriorityType {
-
-    low
-    medium
-    high
-    critical
-}
 @enduml

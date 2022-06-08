@@ -1,0 +1,107 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class Error400 {
+
+    code*: Error400Code
+}
+Error <|-- Error400
+
+
+
+class Error401 {
+
+    code*: Error401Code
+}
+Error <|-- Error401
+
+
+
+class Error403 {
+
+    code*: Error403Code
+}
+Error <|-- Error403
+
+
+
+class Error408 {
+
+    code*: string
+}
+Error <|-- Error408
+
+
+
+class Error500 {
+
+    code*: string
+}
+Error <|-- Error500
+
+
+
+class Error {
+
+    reason*: string
+    message: string
+    referenceError: uri
+}
+
+
+
+class WorkOrderEvent {
+
+    eventType*: WorkOrderEventType
+}
+Event <|-- WorkOrderEvent
+
+WorkOrderEvent *-->"1" WorkOrderEventPayload : event
+
+
+class Event {
+
+    eventId*: string
+    eventTime*: date-time
+}
+
+
+
+class WorkOrderEventPayload {
+
+    sellerId: string
+    id*: string
+    href: string
+    buyerId: string
+}
+
+
+
+enum WorkOrderEventType {
+
+    workOrderCreateEvent
+    workOrderStateChangeEvent
+    workOrderAppointmentRequiredEvent
+}
+enum Error401Code {
+
+    missingCredentials
+    invalidCredentials
+}
+enum Error403Code {
+
+    accessDenied
+    forbiddenRequester
+    tooManyUsers
+}
+enum Error400Code {
+
+    missingQueryParameter
+    missingQueryValue
+    invalidQuery
+    invalidBody
+}
+@enduml

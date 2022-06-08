@@ -1,0 +1,33 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+
+
+class Event {
+
+    eventId*: string
+    eventTime*: date-time
+}
+
+class WorkOrderEventPayload {
+
+    sellerId: string
+    id*: string
+    href: string
+    buyerId: string
+}
+
+Event <|-- WorkOrderEvent
+WorkOrderEvent *-->"1" WorkOrderEventPayload : event
+
+
+enum WorkOrderEventType {
+
+    WorkOrderAttributeValueChangeEvent
+    WorkOrderStateChangeEvent
+    WorkOrderAppointmentRequiredEvent
+}
+@enduml

@@ -15,7 +15,6 @@ class RelatedEntity {
 
 
 
-
 class TroubleTicket_Find {
 
     creationDate*: date-time
@@ -24,6 +23,7 @@ class TroubleTicket_Find {
     externalId*: string
     id*: string
     priority*: TroubleTicketPriorityType
+    observedImpact*: MEFObservedImpactType
     resolutionDate*: date-time
     sellerPriority*: TroubleTicketPriorityType
     sellerSeverity*: TroubleTicketSeverityType
@@ -33,8 +33,45 @@ class TroubleTicket_Find {
 }
 
 TroubleTicket_Find *-->"1..*" RelatedEntity : relatedEntity
+enum TroubleTicketType {
 
+    assistance
+    information
+    installation
+    maintenance
+}
 
+enum TroubleTicketSeverityType {
 
+    minor
+    moderate
+    significant
+    extensive
+}
+enum MEFObservedImpactType {
+
+    degraded
+    intermittent
+    down
+}
+
+enum TroubleTicketStatusType {
+
+    acknowledged
+    assessingCancellation
+    cancelled
+    closed
+    inProgress
+    pending
+    resolved
+    reopened
+}
+enum TroubleTicketPriorityType {
+
+    low
+    medium
+    high
+    critical
+}
 
 @enduml

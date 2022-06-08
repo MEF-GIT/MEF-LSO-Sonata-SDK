@@ -1,0 +1,106 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class AppointmentEvent {
+
+    eventType*: AppointmentEventType
+}
+Event <|-- AppointmentEvent
+
+AppointmentEvent *-->"1" AppointmentEventPayload : event
+
+
+class AppointmentEventPayload {
+
+    sellerId: string
+    id*: string
+    href: string
+    buyerId: string
+}
+
+
+
+class Error400 {
+
+    code*: Error400Code
+}
+Error <|-- Error400
+
+
+
+class Error401 {
+
+    code*: Error401Code
+}
+Error <|-- Error401
+
+
+
+class Error403 {
+
+    code*: Error403Code
+}
+Error <|-- Error403
+
+
+
+class Error408 {
+
+    code*: string
+}
+Error <|-- Error408
+
+
+
+class Error500 {
+
+    code*: string
+}
+Error <|-- Error500
+
+
+
+class Error {
+
+    reason*: string
+    message: string
+    referenceError: uri
+}
+
+
+
+class Event {
+
+    eventId*: string
+    eventTime*: date-time
+}
+
+
+
+enum AppointmentEventType {
+
+    AppointmentAttributeValueChangeEvent
+    AppointmentStatusChangeEvent
+}
+enum Error401Code {
+
+    missingCredentials
+    invalidCredentials
+}
+enum Error403Code {
+
+    accessDenied
+    forbiddenRequester
+    tooManyUsers
+}
+enum Error400Code {
+
+    missingQueryParameter
+    missingQueryValue
+    invalidQuery
+    invalidBody
+}
+@enduml

@@ -2,13 +2,13 @@
 "$schema": http://json-schema.org/draft-07/schema#
 title: 
     MEF LSO Sonata - Carrier Ethernet Egress Maps
-    # MEF Forum - Date: 20220110  Edit-level: 319
+    # MEF Forum - Date: 20220601  Edit-level: 343
     # File: carrierEthernet/common/carrierEthernetEgressMaps.yaml
     #
     # ---------------------
     # Disclaimer
     # 
-    # © MEF Forum 2021. All Rights Reserved.
+    # © MEF Forum 2022. All Rights Reserved.
     # 
     # The information in this publication is freely available for reproduction
     # and use by any recipient and is believed to be accurate as of its
@@ -213,11 +213,15 @@ definitions:
             This map is a table with one entries for each CosName, that
             includes the CoSName, a PCP value for green frames, a PCP value
             for yellow frames, a DEI value for green frames and a DEI value
-            for yellow frames. Any of the values can be DISCARD (in which case
-            they are all treated as DISCARD). This table is used at the UNI
-            for EVCs.
+            for yellow frames. Any of the values can be DISCARD. This table
+            is used at the UNI for EVCs.
         properties:
             evcEgressMapEntries:
+                description:  >-
+                    This is a table of EVC Egress Map entries. An empty list indicates
+                    a value of None. Per R140 in MEF 10.4, the value of the EVC EP
+                    Egress Map Service Attribute MUST NOT be None unless one of the
+                    conditions noted in the requirement is met. (See Validation Notes)
                 type: array 
                 minItems: 0
                 uniqueItems: TRUE
@@ -237,7 +241,6 @@ definitions:
                 $ref: "carrierEthernetTypes.yaml#/definitions/PcpValueAndDiscard"
             pcpYellow:
                 description: A PCP value (0-7) or DISCARD to use for Yellow frames
-                # See additional validation notes in the Schema Guide
                 $ref: "carrierEthernetTypes.yaml#/definitions/PcpValueAndDiscard"
             deiGreen:
                 description: A DEI value to use for Green frames

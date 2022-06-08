@@ -1,5 +1,79 @@
 # Product Order Management: Release notes
 
+## Release Dolly:
+
+**Readiness status**: Work in progress and is subject to change. Completed and
+resolved Call for Comments #2
+
+### List of changes in the API:
+
+**productOrderManagement.yaml:**
+
+- `/productOrder/`
+  - `GET`
+    - `requestedCompletionDate.gt` - renamed to  `itemRequestedCompletionDate.gt`
+    - `requestedCompletionDate.lt` - renamed to `itemRequestedCompletionDate.lt`
+    - `expectedCompletionDate.gt` - renamed to `itemExpectedCompletionDate.gt` 
+    - `expectedCompletionDate.lt` - renamed to `itemExpectedCompletionDate.lt`
+    - `orderCancellationDate.gt` - renamed to `cancellationDate.gt`
+    - `orderCancellationDate.lt` - renamed to `cancellationDate.lt`
+- `/cancelProductOrder/`
+  - `GET`
+    - `productOrderExternalId` - removed
+    - `state` - added
+    - `cancellationReasonType` - added
+- `/charge/`
+  - `GET`
+    - `creationDate.gt` - added
+    - `creationDate.lt` - added
+
+- `ProductOrder`
+  - `orderVersion` - removed
+  - `expectedCompletionDate` - removed
+- `ProductOrder_Common`
+  - `requestedCompletionDate` - removed
+- `ProductOrder_Find`
+  - `orderVersion` - removed
+  - `requestedCompletionDate` - removed
+- `ProductOrder_Update`
+  - `orderVersion` - removed
+- `CancelProductOrder`
+  - `orderVersion` - removed
+- `CancelProductOrder_Create`
+  - `orderVersion` - removed
+- `MEFModifyProductOrderItemRequestedDeliveryDate`
+  - `orderVersion` - removed
+- `MEFModifyProductOrderItemRequestedDeliveryDate_Create`
+  - `orderVersion` - removed
+- `ProductOrderItem`
+  - `milestone` - added
+- `CancelProductOrder`
+  - `relatedContactInformation` - required role `sellerContact` renamed to `cancelProductOrderSellerContact`
+- `CancelProductOrder_Find` - added and set as result type of `listCancelProductOrder` list operation
+
+- `MEFProductOrderCharge`
+  - `replacedCharge` - removed
+  - `creationDate` - made required
+- `MEFProductOrderChargeItem`
+  - `chargeType` - renamed to `priceType`
+  - `description` - renamed to `priceCategory`
+  - `note` - added
+- `MEFProductOrderChargeItem_Update`
+  - `note` - added
+- `MEFProductOrderCharge_Find` - added and set as result type of `listCharge` list operation
+- `MEFProductOrderChargeItemDescription` - renamed to `MEFPriceCategory`
+  - `other` - added to enumeration
+- `MEFMilestone` - added
+- `MEFItemTerm`
+  - made required:
+    - `name`
+    - `duration`
+    - `endOfTermAction`
+
+**productOrderNotification.yaml:**
+
+- server URL `/mefApi/sonata/productOrderingManagement/` changed to `/mefApi/sonata/productOrderingNotification/`
+
 ## Release Celine:
 
 **Readiness status**: Work in progress and is subject to change. Completed and
