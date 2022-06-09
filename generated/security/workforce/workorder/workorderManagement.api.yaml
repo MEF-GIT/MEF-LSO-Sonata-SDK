@@ -31,6 +31,12 @@ servers:
       serverBase:
         default: mef.net
         description: The base of Seller's URL.
+security:
+  - oauth2MefLsoApi:
+      - retrieveWorkOrder
+      - listWorkOrder
+      - registerListener
+      - unregisterListener
 tags:
   - name: workorder
 paths:
@@ -43,9 +49,8 @@ paths:
       parameters:
       - description: >-
           Unique (within the Seller domain) identifier for the WorkOrder.
-        in: path
+        in: query
         name: id
-        required: true
         schema:
           type: string
       - description: >-
@@ -357,6 +362,27 @@ paths:
       tags:
         - events subscription
 components:
+  securitySchemes:
+    oauth2MefLsoApi:
+      type: oauth2
+      description:
+        Example of a security scheme conforming to MEF 128 LSO API Security
+        Profiles standard
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth2/lsoApiToken/
+          refreshUrl: /oauth2/refreshLsoApiToken/
+          scopes:
+            retrieveWorkOrder:
+              The Buyer requests detailed information about a single WorkOrder based
+              on a WorkOrder Identifier.
+            listWorkOrder:
+              The Buyer requests detailed information about a single WorkOrder based
+              on a WorkOrder Identifier.
+            registerListener:
+              The Buyer requests to subscribe to WorkOrder Notifications.
+            unregisterListener:
+              The Buyer requests to unsubscribe from WorkOrder Notifications
   schemas:
     AppointmentRef:
       description: >

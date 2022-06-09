@@ -1,53 +1,55 @@
 openapi: 3.0.1
 info:
   description: |
-    **This file forms part of MEF W137**
-    
-    **This API implements Business Requirements described in MEF W113.**
-    
-    **This specification represents MEF work in progress and is subject to
-    change.**
-    
-    An Appointment is an arrangement to do something or meet someone at a 
-    particular time and place. It is previously made during an interaction 
-    or may be necessary to solve a customer problem or to deliver a product 
-    order item. The appointment API goal is to manage an appointment with 
-    all the necessary characteristics. 
+    **This file forms part of MEF 115**
 
-  
-    List of supported use cases:
-    - Send Appointment Notification
+    This API implements Business Requirements described in MEF 80
 
-    Copyright 2022 MEF Forum and its contributors
+    Quote API allows the Buyer to submit a request to find out how much the installation
+    of an instance of a Product Offering, an update to an existing Product, or
+    a disconnect of an existing Product will cost.
 
-    This file includes content based on the TM Forum Appointment Management API (TMF646
-    v4.0.0) available at https://github.com/tmforum-apis/TMF646_AppointmentManagement,
-    which is licensed by the TM Forum under the Apache License version 2.0.
-    Such content has been modified by the MEF Forum and its contributors.
-  title: Appointment Management Notification
-  version: 1.0.0-RC
+    List of supported Use Cases:
+    - Send Quote Notification
+
+    Copyright 2021 MEF Forum and its contributors.
+
+    This file includes content based on the TM Forum Quote Management API
+    (TMF648 v4.0.0) available at
+    https://github.com/tmforum-apis/TMF648_QuoteManagement, which is licensed by
+    the TM Forum under the Apache License version 2.0. Such content has been
+    modified by the MEF Forum and its contributors.
+  title: Quote Notification
+  version: 8.0.1
+  x-logo:
+    url: /redoc/logo.png
+    backgroundColor: '#FFFFFF'
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/appointmentNotification/v1/'
+  - url: 'https://{serverBase}/mefApi/sonata/quoteNotification/v8/'
     variables:
       serverBase:
         default: mef.net
         description: The base of Buyer's URL.
+security:
+  - oauth2MefLsoApi:
+      - listenToQuoteStateChangeEvent
+      - listenToQuoteItemStateChangeEvent
 tags:
   - description: |
       The Buyer's endpoint to send particular event types notifications to.
     name: Notification listeners
 paths:
-  /listener/appointmentAttributeValueChangeEvent:
+  /listener/quoteStateChangeEvent:
     post:
-      description: >-
-        Client listener for receiving the appointmentAttributeValueChangeEvent notification
-      operationId: listenToAppointmentAttributeValueChangeEvent
+      deprecated: false
+      description: |
+        This endpoint is used to receive notifications on Quote state change
+      operationId: listenToQuoteStateChangeEvent
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/AppointmentEvent'
-        description: The event data
+              $ref: '#/components/schemas/Event'
         required: true
       responses:
         '204':
@@ -71,34 +73,28 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error403'
           description: Forbidden
-        '408':
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/Error408'
-          description: Request Time-out
         '500':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
-      summary:
-        Client listener for entity appointmentAttributeValueChangeEvent
+      summary: Quote State Change Notification endpoint
       tags:
         - Notification listeners
       x-codegen-request-body-name: data
-  /listener/appointmentStatusChangeEvent:
+  /listener/quoteItemStateChangeEvent:
     post:
-      description: >-
-        Client listener for receiving the appointmentStatusChangeEvent notification 
-      operationId: listenToAppointmentStatusChangeEvent
+      deprecated: false
+      description: >
+        This endpoint is used to receive notifications on Quote Item state
+        change
+      operationId: listenToQuoteItemStateChangeEvent
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/AppointmentEvent'
-        description: The event data
+              $ref: '#/components/schemas/Event'
         required: true
       responses:
         '204':
@@ -122,23 +118,34 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error403'
           description: Forbidden
-        '408':
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/Error408'
-          description: Request Time-out
         '500':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
-      summary: Client listener for entity appointmentStatusChangeEvent
+      summary: Quote Item State Change Notification endpoint
       tags:
         - Notification listeners
       x-codegen-request-body-name: data
 components:
+  securitySchemes:
+    oauth2MefLsoApi:
+      type: oauth2
+      description:
+        Example of a security scheme conforming to MEF 128 LSO API Security
+        Profiles standard
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth2/lsoApiToken/
+          refreshUrl: /oauth2/refreshLsoApiToken/
+          scopes:
+            listenToQuoteStateChangeEvent:
+              This endpoint is used to receive notifications on Quote state
+              change
+            listenToQuoteItemStateChangeEvent:
+              This endpoint is used to receive notifications on Quote Item
+              state change
   schemas:
     Error400Code:
       description: >-
@@ -163,22 +170,22 @@ components:
       description: >
         Standard Class used to describe API response error
 
-        Not intended to be use directly. The `code` in the HTTP header is used
+        Not intended to be used directly. The `code` in the HTTP header is used
         as a discriminator for the type of error returned in runtime.
       properties:
         reason:
           description: >-
-            Text that explains the reason for error. This can be shown to a
+            Text that explains the reason for the error. This can be shown to a
             client user.
           maxLength: 255
           type: string
         message:
           description: >-
-            Text that provide mode details and corrective actions related to
+            Text that provides more details and corrective actions related to
             the error. This can be shown to a client user.
           type: string
         referenceError:
-          description: url pointing to documentation describing the error
+          description: URL pointing to documentation describing the error
           format: uri
           type: string
       required:
@@ -265,25 +272,6 @@ components:
         - forbiddenRequester
         - tooManyUsers
       type: string
-    Error408:
-      allOf:
-        - $ref: '#/components/schemas/Error'
-        - properties:
-            code:
-              description: >-
-                List of supported error codes:
-
-                - timeOut: Request Time-out - indicates that the server did not
-                receive a complete request message within the time that it was
-                prepared to wait.
-              enum:
-                - timeOut
-              type: string
-          required:
-            - code
-          type: object
-      description:
-        'Request Time-out (https://tools.ietf.org/html/rfc7231#section-6.5.7)'
     Error500:
       allOf:
         - $ref: '#/components/schemas/Error'
@@ -313,61 +301,57 @@ components:
           description: Id of the event
           type: string
         eventTime:
-          description: Date time when the event occurred
+          description: Datetime when the event occurred
           format: date-time
           type: string
+        eventType:
+          $ref: '#/components/schemas/QuoteEventType'
+        event:
+          $ref: '#/components/schemas/QuoteEvent'
       required:
         - event
         - eventId
         - eventTime
         - eventType
       type: object
-    AppointmentEvent:
-      allOf:
-        - $ref: '#/components/schemas/Event'
-        - properties:
-            eventType:
-              description: |
-                Indicates the type of the event.
-              $ref: >-
-                #/components/schemas/AppointmentEventType
-            event:
-              description: |
-                A reference to the object that is source of the notification.
-              $ref: >-
-                #/components/schemas/AppointmentEventPayload
-          required:
-            - event
-            - eventType
-          type: object
-    AppointmentEventPayload:
-      description:
-        The identifier of the Appointment being subject of this event.
+    QuoteEvent:
+      description: >-
+        The identifier of the Quote and/or Quote Item being subject of this
+        event.
       properties:
         sellerId:
           description: >-
             The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when requester entity
-            represents more than one Seller.
+            Seller. MUST be specified in the request only when the requester
+            entity represents more than one Seller.
+
+            Reference: MEF 79 (Sn 8.8)
           type: string
         id:
-          description: ID of the Appointment attributed by quoting system
+          description: ID of the Quote attributed by quoting system
           type: string
         href:
-          description: Hyperlink to access the Appointment
+          description: Hyperlink to access the quote
+          type: string
+        quoteItemId:
+          description: >-
+            ID of the Quote Item (within the Quote) which state change
+            triggered the event
           type: string
         buyerId:
           description: >-
             The unique identifier of the organization that is acting as the a
             Buyer. MUST be specified in the request only when the responding
             represents more than one Buyer.
+
+            Reference: MEF 79 (Sn 8.8)
           type: string
       required:
         - id
       type: object
-    AppointmentEventType:
-      description: Type of the Appointment Event
+    QuoteEventType:
+      description: Type of the Event
       enum:
-        - appointmentAttributeValueChangeEvent
-        - appointmentStatusChangeEvent
+        - quoteStateChangeEvent
+        - quoteItemStateChangeEvent
       type: string

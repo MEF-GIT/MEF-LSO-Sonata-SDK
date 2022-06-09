@@ -1,29 +1,29 @@
 openapi: 3.0.1
 info:
-  description: |
+  description: >
     **This file forms part of MEF W137**
-    
+
     **This API implements Business Requirements described in MEF W113.**
-    
+
     **This specification represents MEF work in progress and is subject to
     change.**
-    
-    An Appointment is an arrangement to do something or meet someone at a 
-    particular time and place. It is previously made during an interaction 
-    or may be necessary to solve a customer problem or to deliver a product 
-    order item. The appointment API goal is to manage an appointment with 
-    all the necessary characteristics. 
 
-  
-    List of supported use cases:
-    - Send Appointment Notification
+    An Appointment is an arrangement to do something or meet someone at a
+    particular time and place. It is previously made during an interaction  or
+    may be necessary to solve a customer problem or to deliver a product  order
+    item. The appointment API goal is to manage an appointment with  all the
+    necessary characteristics. 
+
+
+    List of supported use cases: - Send Appointment Notification
 
     Copyright 2022 MEF Forum and its contributors
 
-    This file includes content based on the TM Forum Appointment Management API (TMF646
-    v4.0.0) available at https://github.com/tmforum-apis/TMF646_AppointmentManagement,
-    which is licensed by the TM Forum under the Apache License version 2.0.
-    Such content has been modified by the MEF Forum and its contributors.
+    This file includes content based on the TM Forum Appointment Management API
+    (TMF646 v4.0.0) available at
+    https://github.com/tmforum-apis/TMF646_AppointmentManagement, which is
+    licensed by the TM Forum under the Apache License version 2.0. Such content
+    has been modified by the MEF Forum and its contributors.
   title: Appointment Management Notification
   version: 1.0.0-RC
 servers:
@@ -32,6 +32,10 @@ servers:
       serverBase:
         default: mef.net
         description: The base of Buyer's URL.
+security:
+  - oauth2MefLsoApi:
+      - listenToAppointmentAttributeValueChangeEvent
+      - listenToAppointmentStatusChangeEvent
 tags:
   - description: |
       The Buyer's endpoint to send particular event types notifications to.
@@ -40,7 +44,8 @@ paths:
   /listener/appointmentAttributeValueChangeEvent:
     post:
       description: >-
-        Client listener for receiving the appointmentAttributeValueChangeEvent notification
+        Client listener for receiving the appointmentAttributeValueChangeEvent
+        notification
       operationId: listenToAppointmentAttributeValueChangeEvent
       requestBody:
         content:
@@ -83,15 +88,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
-      summary:
-        Client listener for entity appointmentAttributeValueChangeEvent
+      summary: Client listener for entity appointmentAttributeValueChangeEvent
       tags:
         - Notification listeners
       x-codegen-request-body-name: data
   /listener/appointmentStatusChangeEvent:
     post:
       description: >-
-        Client listener for receiving the appointmentStatusChangeEvent notification 
+        Client listener for receiving the appointmentStatusChangeEvent
+        notification
       operationId: listenToAppointmentStatusChangeEvent
       requestBody:
         content:
@@ -139,6 +144,23 @@ paths:
         - Notification listeners
       x-codegen-request-body-name: data
 components:
+  securitySchemes:
+    oauth2MefLsoApi:
+      type: oauth2
+      description:
+        Example of a security scheme conforming to MEF 128 LSO API Security
+        Profiles standard
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth2/lsoApiToken/
+          refreshUrl: /oauth2/refreshLsoApiToken/
+          scopes:
+            listenToAppointmentAttributeValueChangeEvent:
+              Client listener for receiving the
+              appointmentAttributeValueChangeEvent notification
+            listenToAppointmentStatusChangeEvent:
+              Client listener for receiving the appointmentStatusChangeEvent
+              notification
   schemas:
     Error400Code:
       description: >-

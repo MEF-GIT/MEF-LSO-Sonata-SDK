@@ -41,7 +41,10 @@ It also provides Product Schemas for:
   - MEF 122 - LSO Cantata and LSO Sonata Site Management API - Developer Guide
 - All APIs have been reviewed and updated to follow their respective Business Requirements & Use Cases and Developer Guides documents
 - New documents:
-  - MEF W139 - LSO Sonata Internet Access Product Schemas and Developer Guide
+  - MEF W137 - LSO Cantata and LSO Sonata Appointment Management API - Developer Guide
+  - MEF W139 - Internet Access Product Schemas and Developer Guide
+- New artifacts:
+  - generated/security - A not normative version of the standard APIs including the security profiles as required by MEF 128. Provided for evaluation.
 
 **NOTE:** Please note the Readme files in particular productApi directories to see detailed release notes per API.
 
@@ -128,10 +131,12 @@ This SDK contains the following items:
 - `ProductSchema` - Product Specification schemas for:
   - `carrierEthernet` - Carrier Ethernet product Schemas
   - `ip` - Basic and Advanced Internet Access product schemas
-- `generated/staticBinding` - contains automatically generated (with help of the open source [Sonata Blending Tool](https://github.com/Amartus/SonataBlendingTool)), not normative static bindings of envelope APIs with Product Specifications. The Address, Site and Trouble Ticket APIs are not included as they do not carry product information.
-  - `full` - contains static binding of all available product schemas
-  - `carrierEthernet` - contains static binding of only CarrierEthernet products
-  - `ip` - contains static binding of only IP products
+- `generated`
+  - `staticBinding` - contains automatically generated (with help of the open source [Sonata Blending Tool](https://github.com/Amartus/SonataBlendingTool)), not normative static bindings of envelope APIs with Product Specifications. The Address, Site and Trouble Ticket APIs are not included as they do not carry product information.
+    - `full` - contains static binding of all available product schemas
+    - `carrierEthernet` - contains static binding of only CarrierEthernet products
+    - `ip` - contains static binding of only IP products
+  - `security` - A not normative version of the standard APIs including the security profiles as required by MEF W128. Provided for evaluation.
 
 ## Issues, Questions, and Feedback
 

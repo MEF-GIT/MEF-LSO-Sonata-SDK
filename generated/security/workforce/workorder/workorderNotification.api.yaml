@@ -1,52 +1,56 @@
 openapi: 3.0.1
 info:
-  description: |
+  description: > 
     **This file forms part of MEF W137**
-    
+
     **This API implements Business Requirements described in MEF W113.**
     
     **This specification represents MEF work in progress and is subject to
     change.**
     
-    An Appointment is an arrangement to do something or meet someone at a 
-    particular time and place. It is previously made during an interaction 
-    or may be necessary to solve a customer problem or to deliver a product 
-    order item. The appointment API goal is to manage an appointment with 
-    all the necessary characteristics. 
+    It allows the Buyer to create, retrieve, and update  WorkOrders as well
+    as receive notifications about Incidents' and  WorkOrders' updates.
+    This allows managing issues and situations that are not part of normal
+    operations of the Product provided by the Seller.
 
-  
     List of supported use cases:
-    - Send Appointment Notification
+    - Send Workorder Notification
 
     Copyright 2022 MEF Forum and its contributors
 
-    This file includes content based on the TM Forum Appointment Management API (TMF646
-    v4.0.0) available at https://github.com/tmforum-apis/TMF646_AppointmentManagement,
+    This file includes content based on the TM Forum Work Order API (TMF697
+    v4.0.0) available at https://github.com/tmforum-apis/TMF697_Work_Order,
     which is licensed by the TM Forum under the Apache License version 2.0.
     Such content has been modified by the MEF Forum and its contributors.
-  title: Appointment Management Notification
+  title: WorkOrder Management Notification
   version: 1.0.0-RC
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/appointmentNotification/v1/'
+  - url: 'https://{serverBase}/mefApi/sonata/workOrderNotification/v1/'
     variables:
       serverBase:
         default: mef.net
         description: The base of Buyer's URL.
+security:
+  - oauth2MefLsoApi:
+      - listenToWorkOrderCreateEvent
+      - listenToWorkOrderStateChangeEvent
+      - listenToWorkOrderAppointmentRequiredEvent
 tags:
   - description: |
       The Buyer's endpoint to send particular event types notifications to.
     name: Notification listeners
 paths:
-  /listener/appointmentAttributeValueChangeEvent:
+  /listener/workorderCreateEvent:
     post:
       description: >-
-        Client listener for receiving the appointmentAttributeValueChangeEvent notification
-      operationId: listenToAppointmentAttributeValueChangeEvent
+        Client listener for receiving the notification
+        WorkOrder Create Event
+      operationId: listenToIncidentCreateEvent
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/AppointmentEvent'
+              $ref: '#/components/schemas/WorkOrderEvent'
         description: The event data
         required: true
       responses:
@@ -83,21 +87,20 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
-      summary:
-        Client listener for entity appointmentAttributeValueChangeEvent
+      summary: Client listener for entity WorkOrder Create Event
       tags:
         - Notification listeners
       x-codegen-request-body-name: data
-  /listener/appointmentStatusChangeEvent:
+  /listener/workOrderStateChangeEvent:
     post:
       description: >-
-        Client listener for receiving the appointmentStatusChangeEvent notification 
-      operationId: listenToAppointmentStatusChangeEvent
+        Client listener for receiving the workOrderStateChangeEvent notification
+      operationId: listenToWorkOrderStateChangeEvent
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/AppointmentEvent'
+              $ref: '#/components/schemas/WorkOrderEvent'
         description: The event data
         required: true
       responses:
@@ -134,11 +137,79 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
-      summary: Client listener for entity appointmentStatusChangeEvent
+      summary: Client listener for entity workOrderStateChangeEvent
+      tags:
+        - Notification listeners
+      x-codegen-request-body-name: data
+  /listener/workOrderAppointmentRequiredEvent:
+    post:
+      description: >-
+        Client listener for receiving the workOrderStateChangeEvent notification
+      operationId: listenToWorkOrderStateChangeEvent
+      requestBody:
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/WorkOrderEvent'
+        description: The event data
+        required: true
+      responses:
+        '204':
+          description:
+            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
+        '400':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request
+        '401':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: Unauthorized
+        '403':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+          description: Forbidden
+        '408':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error408'
+          description: Request Time-out
+        '500':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal Server Error
+      summary: Client listener for entity workOrderAppointmentRequiredEvent
       tags:
         - Notification listeners
       x-codegen-request-body-name: data
 components:
+  securitySchemes:
+    oauth2MefLsoApi:
+      type: oauth2
+      description:
+        Example of a security scheme conforming to MEF 128 LSO API Security
+        Profiles standard
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth2/lsoApiToken/
+          refreshUrl: /oauth2/refreshLsoApiToken/
+          scopes:
+            listenToWorkOrderCreateEvent:
+              Client listener for receiving the notification
+              WorkOrder Create Event
+            listenToWorkOrderStateChangeEvent:
+              Client listener for receiving the workOrderStateChangeEvent notification
+            listenToWorkOrderAppointmentRequiredEvent:
+              Client listener for receiving the workOrderAppointmentRequiredEvent notification
   schemas:
     Error400Code:
       description: >-
@@ -322,27 +393,25 @@ components:
         - eventTime
         - eventType
       type: object
-    AppointmentEvent:
+    WorkOrderEvent:
       allOf:
         - $ref: '#/components/schemas/Event'
         - properties:
             eventType:
               description: |
                 Indicates the type of the event.
-              $ref: >-
-                #/components/schemas/AppointmentEventType
+              $ref: '#/components/schemas/WorkOrderEventType'
             event:
               description: |
                 A reference to the object that is source of the notification.
-              $ref: >-
-                #/components/schemas/AppointmentEventPayload
+              $ref: '#/components/schemas/WorkOrderEventPayload'
           required:
             - event
             - eventType
           type: object
-    AppointmentEventPayload:
+    WorkOrderEventPayload:
       description:
-        The identifier of the Appointment being subject of this event.
+        The identifier of the WorkOrder being subject of this event.
       properties:
         sellerId:
           description: >-
@@ -351,10 +420,10 @@ components:
             represents more than one Seller.
           type: string
         id:
-          description: ID of the Appointment attributed by quoting system
+          description: ID of the WorkOrder attributed by quoting system
           type: string
         href:
-          description: Hyperlink to access the Appointment
+          description: Hyperlink to access the WorkOrder
           type: string
         buyerId:
           description: >-
@@ -365,9 +434,10 @@ components:
       required:
         - id
       type: object
-    AppointmentEventType:
-      description: Type of the Appointment Event
+    WorkOrderEventType:
+      description: Type of the WorkOrder Event
       enum:
-        - appointmentAttributeValueChangeEvent
-        - appointmentStatusChangeEvent
+        - workOrderCreateEvent
+        - workOrderStateChangeEvent
+        - workOrderAppointmentRequiredEvent
       type: string
