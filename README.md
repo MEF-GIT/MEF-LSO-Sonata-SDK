@@ -41,6 +41,7 @@ It also provides Product Schemas for:
   - MEF 122 - LSO Cantata and LSO Sonata Site Management API - Developer Guide
 - All APIs have been reviewed and updated to follow their respective Business Requirements & Use Cases and Developer Guides documents
 - New documents:
+  - MEF W134 - Invoice Business Requirements and Use Cases
   - MEF W137 - LSO Cantata and LSO Sonata Appointment Management API - Developer Guide
   - MEF W139 - Internet Access Product Schemas and Developer Guide
 - New artifacts:
