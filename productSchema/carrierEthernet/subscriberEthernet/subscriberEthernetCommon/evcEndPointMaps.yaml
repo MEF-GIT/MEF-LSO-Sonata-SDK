@@ -1,0 +1,87 @@
+---
+"$schema": http://json-schema.org/draft-07/schema#
+title: 
+    MEF LSO Sonata - EVC End Point Maps
+    # MEF Forum - Date: 20220908  Edit-level: 388
+    # File: carrierEthernet/subscriberEthernet/subscriberEthernetCommon/evcEndPointMaps.yaml
+    #
+    # ---------------------
+    # Disclaimer
+    # 
+    # © MEF Forum 2022. All Rights Reserved.
+    # 
+    # The information in this publication is freely available for reproduction
+    # and use by any recipient and is believed to be accurate as of its
+    # publication date. Such information is subject to change without notice
+    # and MEF Forum (MEF) is not responsible for any errors. MEF does not
+    # assume responsibility to update or correct any information in this
+    # publication. No representation or warranty, expressed or implied, is
+    # made by MEF concerning the completeness, accuracy, or applicability of
+    # any information contained herein and no liability of any kind shall be
+    # assumed by MEF as a result of reliance upon such information.
+    # 
+    # The information contained herein is intended to be used without
+    # modification by the recipient or user of this document. MEF is not
+    # responsible or liable for any modifications to this document made by any
+    # other party.
+    # 
+    # The receipt or any use of this document or its contents
+    # does not in any way create, by implication or otherwise:
+    # 
+    # a) any express or implied license or right to or under any patent,
+    # copyright, trademark or trade secret rights held or claimed by any MEF
+    # member which are or may be associated with the ideas, techniques,
+    # concepts or expressions contained herein; nor
+    # 
+    # b) any warranty or representation that any MEF members will announce
+    # any product(s) and/or service(s) related thereto, or if such
+    # announcements are made, that such announced product(s) and/or service(s)
+    # embody any or all of the ideas, technologies, or concepts contained
+    # herein; nor
+    # 
+    # c) any form of relationship between any MEF member and the recipient
+    # or user of this document.
+    # 
+    # Implementation or use of specific MEF standards, specifications, or
+    # recommendations will be voluntary, and no Member shall be obliged to
+    # implement them by virtue of participation in MEF Forum. MEF is a
+    # non-profit international organization to enable the development and
+    # worldwide adoption of agile, assured and orchestrated network services.
+    # MEF does not, expressly or otherwise, endorse or promote any specific
+    # products or services.
+    # ---------------------
+    #
+definitions:
+    EvcEndPointMap:
+        type: object
+        description:  >-
+            MEF 10.4 sec. 10.4 - This is specifications for which Service
+            Frames are mapped to the EVC End Point. The allowed values in MEF
+            10.4 are ALL, LIST, and UT/PT. Since Private services must be ALL,
+            the map isn't needed for those services, and therefore the type
+            does not include ALL. If the type is LIST there must be a list
+            of VLAN IDs specified.
+        properties:
+            vlanType:
+                description:  >-
+                    An indication of the type of EVC End Point Map. If the value
+                    is UT/PT then no additional information is required. If the value
+                    is LIST then a list of C-VLAN ID values must be specified.
+                type: string
+                enum:
+                    - "LIST"
+                    - "UT/PT"
+            vlanId:
+                description:  >-
+                    A list of VLAN IDs if the value of vlanType is "LIST" *** Validation
+                    Notes: This element must be specified if and only if EndPointMapEvc.vlanType
+                    = "LIST"
+                type: array 
+                minItems: 1
+                maxItems: 4094
+                uniqueItems: TRUE
+                items:
+                    type: integer
+                    minimum: 1
+                    maximum: 4094
+

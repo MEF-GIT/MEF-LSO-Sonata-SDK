@@ -1,0 +1,186 @@
+---
+"$schema": http://json-schema.org/draft-07/schema#
+title: 
+    MEF LSO Sonata - Carrier Ethernet Utility Classes
+    # MEF Forum - Date: 20220908  Edit-level: 388
+    # File: carrierEthernet/carrierEthernetCommon/carrierEthernetUtilityClasses.yaml
+    #
+    # ---------------------
+    # Disclaimer
+    # 
+    # © MEF Forum 2022. All Rights Reserved.
+    # 
+    # The information in this publication is freely available for reproduction
+    # and use by any recipient and is believed to be accurate as of its
+    # publication date. Such information is subject to change without notice
+    # and MEF Forum (MEF) is not responsible for any errors. MEF does not
+    # assume responsibility to update or correct any information in this
+    # publication. No representation or warranty, expressed or implied, is
+    # made by MEF concerning the completeness, accuracy, or applicability of
+    # any information contained herein and no liability of any kind shall be
+    # assumed by MEF as a result of reliance upon such information.
+    # 
+    # The information contained herein is intended to be used without
+    # modification by the recipient or user of this document. MEF is not
+    # responsible or liable for any modifications to this document made by any
+    # other party.
+    # 
+    # The receipt or any use of this document or its contents
+    # does not in any way create, by implication or otherwise:
+    # 
+    # a) any express or implied license or right to or under any patent,
+    # copyright, trademark or trade secret rights held or claimed by any MEF
+    # member which are or may be associated with the ideas, techniques,
+    # concepts or expressions contained herein; nor
+    # 
+    # b) any warranty or representation that any MEF members will announce
+    # any product(s) and/or service(s) related thereto, or if such
+    # announcements are made, that such announced product(s) and/or service(s)
+    # embody any or all of the ideas, technologies, or concepts contained
+    # herein; nor
+    # 
+    # c) any form of relationship between any MEF member and the recipient
+    # or user of this document.
+    # 
+    # Implementation or use of specific MEF standards, specifications, or
+    # recommendations will be voluntary, and no Member shall be obliged to
+    # implement them by virtue of participation in MEF Forum. MEF is a
+    # non-profit international organization to enable the development and
+    # worldwide adoption of agile, assured and orchestrated network services.
+    # MEF does not, expressly or otherwise, endorse or promote any specific
+    # products or services.
+    # ---------------------
+    #
+definitions:
+    MepLevelAndDirection:
+        type: object
+        description:  >-
+            A 2-tuple <level, direction> that defines the MEG Level and
+            MEP direction.
+        properties:
+            level:
+                description: The MEG level
+                type: integer
+                minimum: 0
+                maximum: 7
+            mepDirection:
+                description: Indicates whether this is an Up MEP or Down MEP
+                type: string
+                enum:
+                    - "UP"
+                    - "DOWN"
+    SourceMacAddressLimit:
+        type: object
+        description:  >-
+            This limits the number of source MAC addresses that can be
+            used in ingress  frame mapped to the End Point of all types over
+            a time interval. It is a recommendation that each Ingress EI Frame
+            with a source MAC address that would exceed the limit be discarded
+            by the Carrier Ethernet Network.
+        properties:
+            limit:
+                description:  >-
+                    The number of MAC source addresses that will not subject an
+                    Ingress EI Frame to discard during the time interval.
+                type: integer
+                minimum: 1
+            interval:
+                description:  >-
+                    The time interval in seconds over which the source address
+                    limit is evaluated
+                $ref: "#/definitions/TimeDuration"
+    AggLinkDepth:
+        type: object
+        description:  >-
+            For an Operator Service, this is a pair of <VLAN ID, link depth>
+            indicating that a given VLAN ID maps to a given number of links
+            in the Port Conversation ID to Aggregation Link Map.
+        properties:
+            vlanID:
+                description: The VLAN ID
+                type: integer
+                minimum: 1
+                maximum: 4094
+            lagDepth:
+                description: The number of Link Aggregation links available to the VLAN
+                type: integer
+                minimum: 1
+    FrameDisposition:
+        type: object
+        description:  >-
+            A 3-tuple that indicates how Unicast, Multicast, and Broadcast
+            Frames are delivered by the service. For each, the value can be
+            UNCONDITIONAL, the frames are delivered without condition, CONDITIONAL,
+            the frames are delivered based on conditions agreed to between
+            buyer and seller (e.g., based on learned addresses), and DISCARD.
+        properties:
+            unicast:
+                $ref: "#/definitions/FrameDispEnum"
+            multicast:
+                $ref: "#/definitions/FrameDispEnum"
+            broadcast:
+                $ref: "#/definitions/FrameDispEnum"
+    FrameDispEnum:
+        type: string
+        enum:
+            - "DISCARD"
+            - "DELIVER_UNCONDITIONALLY"
+            - "DELIVER_CONDITIONALLY"
+    InformationRate:
+        type: object
+        description: A value and a unit of measure that specifies an Information Rate.
+        properties:
+            irValue:
+                description:  >-
+                    The value in the information rate. For example if the information
+                    rate is 70 kbps this element is 70.
+                type: number
+                minimum: 0
+            irUnits:
+                description:  >-
+                    The unit of measure for the Information Rate. For example if
+                    the Information Rate is 70KBPS this element is KBPS. Note that
+                    the values are decimal values. 1 KBPS is 1000 bits per second and
+                    1MBPS is 1,000,000 bits per second.
+                $ref: "carrierEthernetEnums.yaml#/definitions/InformationRateUnits"
+    DataSize:
+        type: object
+        description:  >-
+            A value and a unit of measure that specifies a data size for
+            example for a buffer or a burst size.
+        properties:
+            dataSizeValue:
+                description:  >-
+                    The value in the data size. For example, if a burst size is
+                    40 KBYTES, this element is 40.
+                type: integer
+            dataSizeUnits:
+                description:  >-
+                    The unit of measure in the data size. For example, if a burst
+                    size is 40 KBYTES, this element is KBYTES. Note that the units
+                    indicate binary values, e.g., KBYTES is 1024 bytes.
+                $ref: "carrierEthernetEnums.yaml#/definitions/DataSizeUnits"
+    TimeDuration:
+        type: object
+        description:  >-
+            This class is used to describe durations expressed as a 2-tuple,
+            (value, units). The units from from nanoseconds to years.
+        properties:
+            timeDurationValue:
+                description:  >-
+                    The value of the duration. For example, if the duration is
+                    20 ms, this element is 20.
+                type: integer
+            timeDurationUnits:
+                description:  >-
+                    The unit of measure in the duration. For example, if an interval
+                    is 2ms, this element is MS.
+                $ref: "carrierEthernetEnums.yaml#/definitions/TimeDurationUnits"
+    Percentage:
+        description:  >-
+            This is a number of percent - a floating point number between
+            0 and 100
+        type: number
+        minimum: 0
+        maximum: 100
+

@@ -1,0 +1,235 @@
+---
+"$schema": http://json-schema.org/draft-07/schema#
+title: 
+    MEF LSO Sonata - Carrier Ethernet EVC Common
+    # MEF Forum - Date: 20220908  Edit-level: 388
+    # File: carrierEthernet/subscriberEthernet/evcProductComponents/carrierEthernetEvcCommon.yaml
+    #
+    # ---------------------
+    # Disclaimer
+    # 
+    # © MEF Forum 2022. All Rights Reserved.
+    # 
+    # The information in this publication is freely available for reproduction
+    # and use by any recipient and is believed to be accurate as of its
+    # publication date. Such information is subject to change without notice
+    # and MEF Forum (MEF) is not responsible for any errors. MEF does not
+    # assume responsibility to update or correct any information in this
+    # publication. No representation or warranty, expressed or implied, is
+    # made by MEF concerning the completeness, accuracy, or applicability of
+    # any information contained herein and no liability of any kind shall be
+    # assumed by MEF as a result of reliance upon such information.
+    # 
+    # The information contained herein is intended to be used without
+    # modification by the recipient or user of this document. MEF is not
+    # responsible or liable for any modifications to this document made by any
+    # other party.
+    # 
+    # The receipt or any use of this document or its contents
+    # does not in any way create, by implication or otherwise:
+    # 
+    # a) any express or implied license or right to or under any patent,
+    # copyright, trademark or trade secret rights held or claimed by any MEF
+    # member which are or may be associated with the ideas, techniques,
+    # concepts or expressions contained herein; nor
+    # 
+    # b) any warranty or representation that any MEF members will announce
+    # any product(s) and/or service(s) related thereto, or if such
+    # announcements are made, that such announced product(s) and/or service(s)
+    # embody any or all of the ideas, technologies, or concepts contained
+    # herein; nor
+    # 
+    # c) any form of relationship between any MEF member and the recipient
+    # or user of this document.
+    # 
+    # Implementation or use of specific MEF standards, specifications, or
+    # recommendations will be voluntary, and no Member shall be obliged to
+    # implement them by virtue of participation in MEF Forum. MEF is a
+    # non-profit international organization to enable the development and
+    # worldwide adoption of agile, assured and orchestrated network services.
+    # MEF does not, expressly or otherwise, endorse or promote any specific
+    # products or services.
+    # ---------------------
+    #
+definitions:
+    CarrierEthernetEvcCommon:
+        type: object
+        description:  >-
+            These are the MEF 10.4 EVC Service Attributes that are common
+            to all Subscriber (EVC-based) Ethernet Services defined in MEF
+            6.3.
+        properties:
+            listOfCosNames:
+                description:  >-
+                    MEF 10.4 sec. 8.7 - The EVC List of Class of Service Names
+                    Service Attribute is used to specify all of the Class of Service
+                    Names supported by an EVC. The value of the EVC List of Class of
+                    Service Names Service Attribute is a non-empty list of Class of
+                    Service Names (which may include one or more of the CoS Labels
+                    defined in MEF 23.2).
+                type: array 
+                minItems: 1
+                uniqueItems: TRUE
+                items:
+                    type: string
+            carrierEthernetSls:
+                description:  >-
+                    MEF 10.4 sec. 8.8 - The SLS includes technical details of the
+                    service level in terms of Performance Objectives, agreed between
+                    the Service Provider and the Subscriber or between Service Provider
+                    and the Operator as part of the Service Level Agreement. A given
+                    SLS might contain 0,1 or more Performance Objectives for each Performance
+                    Metric. If the value of this attribute is an empty list, it is
+                    equivalent to a value of None per MEF 10.4.
+                type: array 
+                minItems: 0
+                maxItems: 1
+                uniqueItems: TRUE
+                items:
+                    $ref: "../../carrierEthernetCommon/carrierEthernetServiceLevelSpecification.yaml#/definitions/CarrierEthernetSls"
+            maximumFrameSize:
+                description:  >-
+                    MEF 10.4 sec. 8.10 - Maximum size of Service frames that can
+                    be carried over the EVC. This must be at least 1522 (1518+C-tag).
+                    *** Validation Notes: The value of the EVC Maximum Service Frame
+                    Size Service Attribute MUST be less than or equal to the value
+                    of the Subscriber UNI Maximum Service Frame Size Service Attribute,
+                    SubscriberUniCommon.maximumServiceFrameSize, for all UNIs in the
+                    EVC.
+                type: integer
+                minimum: 1522
+            availableMegLevel:
+                description:  >-
+                    MEF 10.4 sec. 8.11 - The lowest MEG level for which SOAM Frames
+                    are not peered or discarded by the Service Provider. If this attribute
+                    is NONE  there is no such level (that is, SOAM frames at all MEG
+                    levels may be peered or discarded by the Service Provider). For
+                    all Subscriber Ethernet Services defined in MEF 6.3 the value is
+                    constrained to the range 0...6.
+                $ref: "../../carrierEthernetCommon/carrierEthernetEnums.yaml#/definitions/AvailableMegList"
+    CarrierEthernetEvcEpCommon:
+        type: object
+        description:  >-
+            This set of EVC End Point Service Attributes are applicable
+            to all Subscriber (EVC-based) Ethernet Services defined in MEF
+            6.3 based on the Service Attributes in MEF 10.4.
+        properties:
+            identifier:
+                description:  >-
+                    MEF 10.4 sec. 10.1 - The value of the EVC EP ID Service Attribute
+                    is a string that is used to allow the Subscriber and Service Provider
+                    to uniquely identify the EVC EP for operations purposes.
+                type: string
+                minLength: 1
+                maxLength: 45
+                pattern: "[\x20-\x7F]+"
+            evcEndPointEnvelopes:
+                description:  >-
+                    The Envelopes and Envelope Coupling Flag values to which Bandwidth
+                    Profile Flows for this EVC End Point can be mapped. Value is list
+                    of {envelopeID, couplingFlagForIndexZero}. Envelopes listed in
+                    the EVC End Point Envelopes Service Attribute can be used when
+                    all of the Bandwidth Profile Flows contained in the Envelope are
+                    specific to a given EVC End Point. They are specified using one
+                    of the following EVC End Point Service Attributes: Ingress Bandwidth
+                    Profile Per EVC End Point Egress Bandwidth Profile Per EVC End
+                    Point Ingress Bandwidth Profile Per Class of Service Name Egress
+                    Bandwidth Profile Per Egress Equivalence Class Name  To create
+                    an Envelope containing Bandwidth Profile Flows for more than one
+                    EVC End Point, the UNI Envelopes Service Attribute must be used.
+                    If this is an empty list, then there are no Envelopes defined at
+                    this End Point or the Envelopes are defined at the UNI. *** Validation
+                    Notes: All Bandwidth Profile Flows in the specified envelopes must
+                    be for this EVC End Point. The envelopIDs specified in this Service
+                    Attribute must be unique with the envelopIDs specified in the UNI
+                    Envelopes Service Attribute (as appropriate for the EVC End Point).
+                type: array 
+                minItems: 0
+                uniqueItems: TRUE
+                items:
+                    $ref: "../../carrierEthernetCommon/carrierEthernetBandwidthProfile.yaml#/definitions/Envelope"
+            ingressClassOfServiceMap:
+                description:  >-
+                    MEF 10.4 sec. 10.5 and MEF 45.1 sec. 6.2 - The value of the
+                    EVC EP Ingress Class of Service Map Service Attribute is a 3-tuple
+                    of the form 〈F, M, P〉 where: F is one of the values ENDPOINT, C_TAG_PCP,
+                    or DSCP, M is a map that can be used to assign Class of Service
+                    Names to Service Frames. (The form of M depends on the value of
+                    F.), and P is a map with entries of the form ⟨Layer 2 Control Protocol
+                    type → Class of Service Name⟩ where the Layer 2 Control Protocol
+                    type is determined by the Protocol Identifier (see Section 6.2
+                    of MEF 45.1). *** Validation Notes: The Class of Service Name or
+                    Names must be included in the CarrierEthernetEvcCommon.listOfCosNames.
+                    Per MEF 6.3 if there is only one Class of Service in CarrierEthernetEvcCommon.listOfCosNames
+                    the mapType element of this property should be ENDPOINT.
+                oneOf:
+                    - $ref: "../../carrierEthernetCommon/carrierEthernetClassOfService.yaml#/definitions/CosNameFromEp"
+                    - $ref: "../../carrierEthernetCommon/carrierEthernetClassOfService.yaml#/definitions/CosNameFromCtagPcp"
+                    - $ref: "../../carrierEthernetCommon/carrierEthernetClassOfService.yaml#/definitions/CosNameFromDscp"
+                    # discriminator:
+                    # propertyName: mapType
+            colorMap:
+                description:  >-
+                    MEF 10.4 sec. 10.6 - The value of the EVC EP Color Map Service
+                    Attribute is a pair of the form 〈F, M〉 where: F is one of the values
+                    ENDPOINT, DEI, PCP, or DSCP and M is a map that can be used to
+                    assign Color to each Ingress Service Frame. (The form of M depends
+                    on the value of F.). The EVC EP Color Map Service Attribute is
+                    the mechanism by which the Color for an Ingress Service Frame that
+                    is mapped to an EVC EP is indicated by the content in the Service
+                    Frame header.
+                oneOf:
+                    - $ref: "../../carrierEthernetCommon/carrierEthernetColorIdentifier.yaml#/definitions/ColorFromEp"
+                    - $ref: "../../carrierEthernetCommon/carrierEthernetColorIdentifier.yaml#/definitions/ColorFromDei"
+                    - $ref: "../../carrierEthernetCommon/carrierEthernetColorIdentifier.yaml#/definitions/ColorFromPCP"
+                    - $ref: "../../carrierEthernetCommon/carrierEthernetColorIdentifier.yaml#/definitions/ColorFromDscp"
+                    # discriminator:
+                    # propertyName: mapType
+            egressMap:
+                description:  >-
+                    MEF 10.4 sec. 10.7 - The value of the EVC EP Egress Map Service
+                    Attribute is None or a map of the form {Corresponding Ingress Service
+                    Frame Class of Service Name, Corresponding Ingress Service Frame
+                    Color} to {Egress Service Frame C-Tag PCP value, Egress Service
+                    Frame C-Tag DEI value} or Discard. An empty list indicates the
+                    value None. *** Validation Notes: Per R140 in MEF 10.4, the value
+                    of the EVC EP Egress Map Service Attribute MUST NOT be None (an
+                    empty list) unless one of the following conditions :     The value
+                    of the EVC EP Map Service Attribute (MEF 10.4, section 10.4) is
+                    UT/PT.      The value of the EVC C-Tag PCP Preservation Service
+                    Attribute (MEF 10.4, section 8.5) = Enabled, the value of the EVC
+                    C-Tag DEI Preservation Service Attribute (MEF 10.4, section 8.6)
+                    = Enabled, and the value of the EVC EP Map Service Attribute (MEF
+                    10.4, section 10.4) = List for all EVC EPs in the EVC.      The
+                    value of the EVC C-Tag PCP Preservation Service Attribute (MEF
+                    10.4, section 8.5) = Enabled, the value of the EVC C-Tag DEI Preservation
+                    Service Attribute (MEF 10.4, section 8.6) = Enabled, and the value
+                    of the EVC EP Map Service Attribute (MEF 10.4, section 10.4) =
+                    All.
+                type: array 
+                minItems: 0
+                maxItems: 1
+                uniqueItems: TRUE
+                items:
+                    $ref: "../subscriberEthernetCommon/evcEgressMaps.yaml#/definitions/EvcEgressMap"
+            ingressBandwidthProfilePerClassofServiceName:
+                description:  >-
+                    MEF 10.4 sec. 10.9 - The EVC EP Class of Service Name Ingress
+                    Bandwidth Profile Service Attribute is used to limit the rate of
+                    Ingress Service Frames with a given Class of Service Name at a
+                    UNI. The value is None or a non-empty list of pairs of the form
+                    ⟨x,y⟩, where x is a Class of Service Name that is in the value
+                    of the EVC List of Class of Service Names Service Attribute and
+                    y = BWP Flow Parameters. An empty list indicates the value None.
+                type: array 
+                minItems: 0
+                uniqueItems: TRUE
+                items:
+                    $ref: "../../carrierEthernetCommon/carrierEthernetBandwidthProfile.yaml#/definitions/BandwidthProfilePerClassOfServiceName"
+            subscriberMegMip:
+                description:  >-
+                    MEF 10.4 sec. 10.13 - The value of the EVC EP Subscriber MEG
+                    MIP Service Attribute is either None or an integer in the range
+                    0 – 7 that indicates the MEG Level of a Subscriber MEG MIP.
+                $ref: "../../carrierEthernetCommon/carrierEthernetEnums.yaml#/definitions/MegList"
+
