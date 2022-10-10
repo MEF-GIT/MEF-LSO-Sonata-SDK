@@ -1,5 +1,28 @@
 # Product Order Management: Release notes
 
+## Release Ella:
+
+**Readiness status**: Requested Letter Ballot. It will be most likely published as a standard without further changes.
+
+**Summary** - Only small updates introduced:
+
+- 1 attribute added,
+- 1 attributes marked as required.
+
+### List of changes in the API:
+
+**productOrderManagement.yaml:**
+
+- `CancelProductOrder`
+  - `charge` - added
+- `MEFProductOrderCharge_Find`
+  - marked as required:
+    - `creationDate`
+
+**productOrderNotification.yaml:**
+
+None
+
 ## Release Dolly:
 
 **Readiness status**: Work in progress and is subject to change. Completed and

@@ -1,12 +1,9 @@
 openapi: 3.0.1
 info:
   description: |
-    **This file forms part of MEF W123** 
+    **This file forms part of MEF 123** 
 
-    **This specification represents MEF work in progress and is subject to
-    change.** 
-
-    This API implements Business Requirements described in MEF W57.2
+    This API implements Business Requirements described in MEF 57.2
 
     Product Order Management allows the Buyer to request the Seller to initiate and complete the
     fulfillment process of an installation of a Product Offering, an update to
@@ -38,9 +35,9 @@ info:
     which is licensed by the TM Forum under the Apache License version 2.0. Such
     content has been modified by the MEF Forum and its contributors.
   title: Product Ordering Management
-  version: 9.0.0-RC
+  version: 10.0.0
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/productOrderingManagement/v9/'
+  - url: 'https://{serverBase}/mefApi/sonata/productOrderingManagement/v10/'
     variables:
       serverBase:
         default: mef.net
@@ -1656,6 +1653,11 @@ components:
           description: >-
             Identifies the type of reason, Technical or Commercial, for the
             Cancellation request
+        charge:
+          description:
+            The Charge Identifier of any charges that are related to the Cancel
+            Product Order.
+          $ref: '#/components/schemas/MEFProductOrderChargeRef'
         href:
           description: >
             Hyperlink to the cancellation request. Hyperlink MAY be used by the
@@ -2073,7 +2075,7 @@ components:
             notification is sent. E.g. for "callback":
             "https://buyer.co/listenerEndpoint", the product order state change
             event notification will be sent to:
-            `https://buyer.co/listenerEndpoint/mefApi/sonata/productOrderNotification/v9/listener/productOrderStateChangeEvent`
+            `https://buyer.co/listenerEndpoint/mefApi/sonata/productOrderNotification/v10/listener/productOrderStateChangeEvent`
           type: string
         query:
           description: >-
@@ -2749,6 +2751,7 @@ components:
           description: The state of the Charge
       required:
         - id
+        - creationDate
         - responseDueDate
         - state
       type: object
@@ -2836,7 +2839,7 @@ components:
         | State               | MEF 57.2 Name       | Description                                                                                                                                                                                                                                                                                                                                        |
         | ------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
         | `awaitingResponse`  | AWAITING_RESPONSE   | A Charge has been initiated by the Buyer. The charge includes one or more charges related to a Product Order or Product Order Item. Buyer has not indicated whether they accept or reject the charges via a Respond to Charge request.                                                                                                             |
-        | `completed`         | COMPLETED           | All Charge Items included in the Charge for a given Product Order Item have moved to either the `acceptedByBuyer` state, the `declinedByBuyer` state, or the `withdrawnBySeller` state.                                                                                                                                                            |
+        | `completed`         | COMPLETED           | All Charge Items included in the Charge have moved to either the `acceptedByBuyer` state, the `declinedByBuyer` state, or the `withdrawnBySeller` state.                                                                                                                                                                                           |
         | `timeout`           | TIMEOUT             | A Charge Item has been declined by the Buyer. The referenced Product Order and Product Order Items are updated. If a Blocking charge is declined, the Seller may cancel the referenced Product Order Item and any related Product Order Items, the related Cancel Product Order, or the related Modify Product Order Item Requested Delivery Date. |
         | `withdrawnBySeller` | WITHDRAWN_BY_SELLER | The Seller determines that the Charge Item is incorrect. They withdraw the Charge Item and initiate a new Charge with the required correction(s) if needed.                                                                                                                                                                                        |
       enum:
@@ -2870,7 +2873,7 @@ components:
         - id
       type: object
     MEFProductOrderChargeRef:
-      description: a reference to a Charge instance
+      description: A reference to a Charge instance
       properties:
         href:
           description: Hyperlink to access the Charge
@@ -2976,7 +2979,8 @@ components:
     MEFProductOrderItem_Common:
       description: >
         An identified part of the order. A product order is decomposed into one
-        or more order items.
+        or more order items. This type hold the attributes common to request
+        and response representation of the Product Order Item.
       properties:
         action:
           $ref: '#/components/schemas/MEFProductActionType'
@@ -3115,9 +3119,14 @@ components:
     MEFProductOrderItem_Create:
       allOf:
         - $ref: '#/components/schemas/MEFProductOrderItem_Common'
-        - description: >
+        - description: |
             An identified part of the order. A product order is decomposed into
-            one or more order items.
+            one or more order items. 
+            The modelling pattern introduces the `Common` supertype to
+            aggregate attributes that are common to both `ProductOrderItem` and
+            `ProductOrderItem_Create`. The `Create` type has a subset of
+            attributes of the response type and does not introduce any new,
+            thus the `Create` type has an empty definition.
           type: object
     MEFProductOrderItem_Update:
       description: |
@@ -3151,12 +3160,8 @@ components:
         relatedContactInformation:
           description: >-
             Contact information of an individual or organization playing a role
-            for this Order Item. Buyer can modify, add, or delete only
+            for this Order Item. Buyer may modify, add, or delete only
             Buyer-related contacts.
-
-            The rule for mapping a represented attribute
-
-            value to a `role` is to use the _lowerCamelCase_ pattern e.g.
 
             - Buyer Product Order Item Contact:
             `role=buyerProductOrderItemContact`
@@ -3539,6 +3544,9 @@ components:
               description:
                 The Charges associated to this Product Order Item. This list
                 contains all completed Charges containing accepted Charge Items
+                initiated by the Seller. Any Charge that is withdrawn or
+                containing all declined Charge Items must not be included in
+                this list.
               items:
                 $ref: '#/components/schemas/MEFProductOrderChargeRef'
               type: array
