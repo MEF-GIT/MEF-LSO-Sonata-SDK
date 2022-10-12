@@ -1,12 +1,9 @@
 openapi: 3.0.1
 info:
   description: |
-    **This file forms part of MEF W124**
+    **This file forms part of MEF 124**
 
-    This API implements Business Requirements described in MEF W113
-
-    **This specification represents MEF work in progress and is subject to
-    change.** 
+    This API implements Business Requirements described in MEF 113
 
     It allows the Buyer to create, retrieve, and update Trouble Tickets as well
     as receive notifications about Incidents' and Trouble Tickets' updates.
@@ -31,9 +28,9 @@ info:
     which is licensed by the TM Forum under the Apache License version 2.0.
     Such content has been modified by the MEF Forum and its contributors.
   title: Trouble Ticket Management
-  version: 3.0.0-RC
+  version: 4.0.0
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/troubleTicket/v3/'
+  - url: 'https://{serverBase}/mefApi/sonata/troubleTicket/v4/'
     variables:
       serverBase:
         default: mef.net
@@ -793,16 +790,24 @@ paths:
               - significant
               - extensive
             type: string
+        - description: The type of impact observed by the Buyer.
+          in: query
+          name: impact
+          schema:
+            enum:
+              - degraded
+              - down
+              - intermittent
+            type: string
         - description:
             The presumed cause of the Incident as evaluated by the Seller.
           in: query
           name: incidentType
           schema:
             enum:
-              - degraded
-              - down
-              - intermittent
               - maintenance
+              - repair
+              - installation
             type: string
         - description: The current status of the Incident
           in: query
@@ -1714,6 +1719,9 @@ components:
           description:
             Unique (within the Seller domain) identifier for the Incident.
           type: string
+        impact:
+          $ref: '#/components/schemas/MEFObservedImpactType'
+          description: The type of impact observed by the Buyer.
         incidentType:
           $ref: '#/components/schemas/IncidentType'
           description:
@@ -1793,6 +1801,7 @@ components:
         - relatedEntity
         - severity
         - situationStartDate
+        - impact
         - incidentType
       type: object
     IncidentStatusChange:
@@ -1815,11 +1824,11 @@ components:
       description: |
         Possible values for the status of the Incident
 
-        | status       | MEF 113 name | Description                                                                                 |
-        | ------------ | ------------ | ------------------------------------------------------------------------------------------- |
-        | `closed`     | CLOSED       | The Situation described in the Incident was closed by the Seller. This is a terminal state. |
-        | `created`    | CREATED      | A new Incident has been created and allocated a unique `id`.                                |
-        | `inProgress` | IN_PROGRESS  | The Incident is in the process of being handled by the Seller.                              |
+        | status       | MEF 113 name | Description                                                                                                                                                              |
+        | ------------ | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+        | `closed`     | CLOSED       | The Situation described in the Incident was closed by has been resolved and normal operation has been restored on the Seller.Seller's network. This is a terminal state. |
+        | `created`    | CREATED      | A new Incident has been created and allocated a unique `id`.                                                                                                             |
+        | `inProgress` | IN_PROGRESS  | The Incident is in the process of being handled and investigated for resolution by the Seller. 
       enum:
         - closed
         - created
@@ -1832,18 +1841,14 @@ components:
         - maintenance: Any scheduled or non-scheduled maintenance related
         Incident.
 
-        - degraded: When the Product is impacted and not meeting the Product
-        specifications.
+        - repair: Any non-scheduled Situation requiring repair by the Seller.
 
-        - intermittent: When the Product is not operational as intended on an
-        intermittent basis
-
-        - down: When the Product is non-operational.
+        - installation: Any installation related Situation requiring action by
+        the Seller.
       enum:
-        - degraded
-        - down
-        - intermittent
         - maintenance
+        - repair
+        - installation
       type: string
     Incident_Find:
       description: >
@@ -1875,6 +1880,9 @@ components:
           description:
             Unique (within the Seller domain) identifier for the Incident.
           type: string
+        impact:
+          $ref: '#/components/schemas/MEFObservedImpactType'
+          description: The type of impact observed by the Buyer.
         incidentType:
           $ref: '#/components/schemas/IncidentType'
           description:
@@ -1915,6 +1923,7 @@ components:
         - priority
         - relatedEntity
         - severity
+        - impact
         - incidentType
       type: object
     MEFBuyerSellerType:
@@ -2216,7 +2225,7 @@ components:
         | ----------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
         | `acknowledged`          | ACKNOWLEDGED           | A request to create a Ticket was received and accepted by the Seller. The Ticket create request has been validated and a Ticket has been created by the Seller and allocated a unique `id`.                                                                                                                                                                                                                                                                                                                        |
         | `assessingCancellation` | ASSESSING_CANCELLATION | A request has been made by the Buyer to cancel the Ticket and is being assessed by the Seller to determine whether to just close the Ticket, or continue to resolve the Issue to prevent similar Create Ticket requests from other Buyers. If the Seller chooses to resolve the Issue, the Seller might create an Incident or an internal Ticket for the Issue, but that is outside the scope of this document. After the Seller has completed the assessment, the Seller updates the Ticket State to `cancelled`. |
-        | `cancelled`             | CANCELLED              | The Ticket has been successfully cancelled by the Buy-er. The Buyer will receive no further no further Event Notifications for the Ticket. This is a terminal state.                                                                                                                                                                                                                                                                                                                                               |
+        | `cancelled`             | CANCELLED              | The Ticket has been successfully cancelled by the Buy-er. The Buyer will receive no further Event Notifications for the Ticket. This is a terminal state.                                                                                                                                                                                                                                                                                                                                               |
         | `closed`                | CLOSED                 | The Buyer has confirmed that the Issue they reported is no longer observed, or the pre-defined time frame (agreed upon between Buyer and Seller) for confirming that the Issue has been resolved has passed without a response by the Buyer. This is a terminal state.                                                                                                                                                                                                                                             |
         | `inProgress`            | IN_PROGRESS            | The Ticket is in the process of being handled and investigated for resolution by the Seller.                                                                                                                                                                                                                                                                                                                                                                                                                       |
         | `pending`               | PENDING                | The Seller is waiting on the Buyer to provide additional information for the Ticket, or the Buyer to schedule an Appointment for the WorkOrder (linked to the Ticket) in order to continue processing the Ticket. This may result in the clock being stopped for the service level agreement until the Buyer has responded to the request.                                                                                                                                                                         |
@@ -2471,6 +2480,9 @@ components:
             provide the Seller with additional insight.
           format: date-time
           type: string
+        observedImpact:
+          $ref: '#/components/schemas/MEFObservedImpactType'
+          description: The type of impact observed by the Buyer.
         note:
           description:
             A set of comments or information associated to the Ticket. This
