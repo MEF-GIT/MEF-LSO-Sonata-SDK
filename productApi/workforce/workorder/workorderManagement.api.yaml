@@ -1,32 +1,29 @@
 openapi: 3.0.1
 info:
   description: |
-   **This file forms part of MEF W137**
-    
-    **This API implements Business Requirements described in MEF W113.**
-    
-    **This specification represents MEF work in progress and is subject to
-    change.**
-    
-    It allows the Buyer to create, retrieve, and update  WorkOrders as well
-    as receive notifications about Incidents' and  WorkOrders' updates.
-    This allows managing issues and situations that are not part of normal
-    operations of the Product provided by the Seller.
+    **This file forms part of MEF 137**
+     
+     **This API implements Business Requirements described in MEF 113.**
+     
+     It allows the Buyer to create, retrieve, and update  WorkOrders as well
+     as receive notifications about Incidents and  WorkOrders updates.
+     This allows managing issues and situations that are not part of normal
+     operations of the Product provided by the Seller.
 
-    List of supported use cases:
-    - Retrieve WorkOrder by WorkOrder Identifier
-    - Register for Workorder Notifications
+     List of supported use cases:
+     - Retrieve WorkOrder by WorkOrder Identifier
+     - Register for Workorder Notifications
 
-    Copyright 2022 MEF Forum and its contributors
+     Copyright 2022 MEF Forum and its contributors
 
-    This file includes content based on the TM Forum Work Order API (TMF697
-    v4.0.0) available at https://github.com/tmforum-apis/TMF697_Work_Order,
-    which is licensed by the TM Forum under the Apache License version 2.0.
-    Such content has been modified by the MEF Forum and its contributors.
+     This file includes content based on the TM Forum Work Order API (TMF697
+     v4.0.0) available at https://github.com/tmforum-apis/TMF697_Work_Order,
+     which is licensed by the TM Forum under the Apache License version 2.0.
+     Such content has been modified by the MEF Forum and its contributors.
   title: WorkOrder Management
-  version: 1.0.0-RC
+  version: 2.0.0
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/workOrderManagement/v1/'
+  - url: 'https://{serverBase}/mefApi/sonata/workOrderManagement/v2/'
     variables:
       serverBase:
         default: mef.net
@@ -41,28 +38,28 @@ paths:
         on a WorkOrder Identifier.
       operationId: retrieveWorkOrder
       parameters:
-      - description: >-
-          Unique (within the Seller domain) identifier for the WorkOrder.
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      - description: >-
-          The unique identifier of the organization that is acting as the a
-          Buyer. MUST be specified in the request only when the requester
-          represents more than one Buyer.
-        in: query
-        name: buyerId
-        schema:
-          type: string
-      - description: >-
-          The unique identifier of the organization that is acting as the
-          Seller. MUST be specified in the request only when responding
-          entity represents more than one Seller.
-        in: query
-        name: sellerId
-        schema:
+        - description: >-
+            Unique (within the Seller domain) identifier for the WorkOrder.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity represents more than one Seller.
+          in: query
+          name: sellerId
+          schema:
             type: string
       responses:
         '200':
@@ -112,84 +109,84 @@ paths:
         on a WorkOrder Identifier.
       operationId: listWorkOrder
       parameters:
-      - description: >-
-          Unique (within the Seller domain) identifier for the WorkOrder.
-        in: query
-        name: id
-        schema:
-          type: string
-      - description: >-
-          ID of a related entity that this WorkOrder is related to and is
-          present in the `relatedEntity` list
-        in: query
-        name: relatedEntityId
-        schema:
+        - description: A site identifier that is associated to the Appointment.
+          in: query
+          name: geographicalSiteId
+          schema:
             type: string
-      - description:
-           A site identifier which is associated to the Appointment.
-        in: query
-        name: geographicalSiteId
-        schema:
+        - description:
+            A address identifier that is associated to the Appointment.
+          in: query
+          name: geographicalAddressId
+          schema:
             type: string
-      - description: A address identifier which is associated to the Appointment.
-        in: query
-        name: geographicalAddressId
-        schema:
+        - description: >-
+            The type of Related Entity (e.g. Trouble Ticket).
+          in: query
+          name: relatedEntityType
+          schema:
             type: string
-      - description: >-
-          The state of the WorkOrder.
-        in: query
-        name: state
-        schema:
-          enum:
-          - cancelled
-          - completed
-          - inProgress
-          - open
-          - planned
-          - unableToComplete
-          type: string
-      - description: >-
-          Indicates that the Buyer must schedule an Appointment to fulfill the WorkOder.
-        in: query
-        name: appointmentRequired
-        schema:
-          type: boolean 
-      - description: >-
-          The unique identifier of the organization that is acting as the a
-          Buyer. MUST be specified in the request only when the requester
-          represents more than one Buyer.
-        in: query
-        name: buyerId
-        schema:
+        - description: >-
+            Identifier of the Related Entity.
+          in: query
+          name: relatedEntityId
+          schema:
             type: string
-      - description: >-
-          The unique identifier of the organization that is acting as the
-          Seller. MUST be specified in the request only when responding
-          entity represents more than one Seller.
-        in: query
-        name: sellerId
-        schema:
-          type: string
-      - description:
-          Requested index for start of resources to be provided in response
-        in: query
-        name: offset
-        schema:
-          type: integer
-      - description: 
-            Requested number of resources to be provided in response
-        in: query
-        name: limit
-        schema:
-          format: int32
-          type: integer
+        - description: >-
+            The state of the WorkOrder.
+          in: query
+          name: state
+          schema:
+            enum:
+              - cancelled
+              - completed
+              - inProgress
+              - open
+              - planned
+              - unableToComplete
+            type: string
+        - description: >-
+            Indicates that the Buyer must schedule an Appointment to fulfill
+            the WorkOder.
+          in: query
+          name: appointmentRequired
+          schema:
+            type: boolean
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity represents more than one Seller.
+          in: query
+          name: sellerId
+          schema:
+            type: string
+        - description:
+            Requested index for the start of resources to be provided in
+            response
+          in: query
+          name: offset
+          schema:
+            type: integer
+        - description: Requested number of resources to be provided in response
+          in: query
+          name: limit
+          schema:
+            format: int32
+            type: integer
       responses:
         '200':
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/WorkOrder_Find' 
+                $ref: '#/components/schemas/WorkOrder_Find'
           description:
             'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
         '400':
@@ -287,14 +284,14 @@ paths:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       summary: >-
-        Allows the Buyer to register to WorkOrder state change
-        notifications
+        Allows the Buyer to register to WorkOrder state change notifications
       tags:
         - events subscription
       x-codegen-request-body-name: data
   '/hub/{id}':
     delete:
-      description: The Buyer requests to unsubscribe from WorkOrder Notifications
+      description:
+        The Buyer requests to unsubscribe from WorkOrder Notifications
       operationId: unregisterListener
       parameters:
         - description: The id of the EventSubscription
@@ -375,19 +372,6 @@ components:
       required:
         - id
       type: object
-    DataSizeUnit:
-      description: The unit of measure in the data size.
-      enum:
-        - BYTES
-        - KBYTES
-        - MBYTES
-        - GBYTES
-        - TBYTES
-        - PBYTES
-        - EBYTES
-        - ZBYTES
-        - YBYTES
-      type: string
     EventSubscription:
       description: >-
         Sets the communication endpoint address the service instance must use
@@ -418,23 +402,22 @@ components:
         callback:
           description: >-
             This callback value must be set to *host* property from Buyer
-            Notification API (WorkOrderNotification.api.yaml). This
-            property is appended with the base path and notification resource
-            path specified in that API to construct an URL to which
-            notification is sent. E.g. for "callback":
-            "http://buyer.com/listenerEndpoint", the state change event
-            notification will be sent to:
-            `http://buyer.com/listenerEndpoint/mefApi/sonata/workOrderNotification/v1/listener/workOrderStateChangeEvent`
+            Notification API (WorkOrderNotification.api.yaml). This property is
+            appended with the base path and notification resource path
+            specified in that API to construct an URL to which notification is
+            sent. E.g. for "callback": "http://buyer.com/listenerEndpoint", the
+            state change event notification will be sent to:
+            `http://buyer.com/listenerEndpoint/mefApi/sonata/workOrderNotification/v2/listener/workOrderStateChangeEvent`
           type: string
         query:
           description: >-
             This attribute is used to define to which type of events to
             register to. Example: "query":"eventType =
-            WorkOrderStateChangeEvent". To subscribe for more than one
-            event type, put the values separated by comma:
-            `eventType=WorkOrderStateChangeEvent,WorkOrderResolvedEvent`.
-            The possible values are enumerated by the 'WorkOrderEventType'
-            in WorkOrderNotification.api.yaml. An empty query is treated as
+            WorkOrderStateChangeEvent". To subscribe for more than one event
+            type, put the values separated by comma:
+            `eventType=WorkOrderStateChangeEvent,WorkOrderResolvedEvent`. The
+            possible values are enumerated by the 'WorkOrderEventType' in
+            WorkOrderNotification.api.yaml. An empty query is treated as
             specifying no filters - ending in  subscription for all event
             types.
           type: string
@@ -443,10 +426,8 @@ components:
       type: object
     Error:
       description: >
-        Standard Class used to describe API response error
-
-        Not intended to be use directly only via specialization which defines a
-        code
+        Standard Class used to describe API response error Not intended to be
+        use directly only via specialization which defines a code
       properties:
         message:
           description: >-
@@ -455,7 +436,7 @@ components:
           type: string
         reason:
           description: >-
-            Text that explains the reason for error. This can be shown to a
+            Text that explains the reason for the error. This can be shown to a
             client user.
           maxLength: 255
           type: string
@@ -576,8 +557,8 @@ components:
               description: >-
                 The following error code:
 
-                - notFound: A current representation for the target resource
-                not found
+                - notFound: A current representation of the target resource not
+                found
               enum:
                 - notFound
               type: string
@@ -587,73 +568,6 @@ components:
       description: >-
         Resource for the requested path not found.
         (https://tools.ietf.org/html/rfc7231#section-6.5.4)
-    Error409:
-      allOf:
-        - $ref: '#/components/schemas/Error'
-        - properties:
-            code:
-              description: >-
-                The following error code:
-
-                - conflict: The client has provided a value whose semantics are
-                not appropriate for the property.
-              enum:
-                - conflict
-              type: string
-          required:
-            - code
-          type: object
-      description:
-        Conflict (https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.8)
-    Error422:
-      allOf:
-        - $ref: '#/components/schemas/Error'
-        - properties:
-            code:
-              $ref: '#/components/schemas/Error422Code'
-              description: |
-                One of the following error codes:
-                  - missingProperty: The property the Seller has expected is not present in the payload
-                  - invalidValue: The property has an incorrect value
-                  - invalidFormat: The property value does not comply with the expected value format
-                  - referenceNotFound: The object referenced by the property cannot be identified in the Seller system
-                  - unexpectedProperty: Additional property, not expected by the Seller has been provided
-                  - tooManyRecords: the number of records to be provided in the response exceeds the Seller's threshold.
-                  - otherIssue: Other problem was identified (detailed information provided in a reason)
-            propertyPath:
-              description: >
-                A pointer to a particular property of the payload that caused
-                the validation issue. It is highly recommended that this
-                property should be used.
-
-                Defined using JavaScript Object Notation (JSON) Pointer
-                (https://tools.ietf.org/html/rfc6901).
-              type: string
-          required:
-            - code
-          type: object
-      description: >-
-        Unprocessable entity due to a business validation problem.
-        (https://tools.ietf.org/html/rfc4918#section-11.2)
-    Error422Code:
-      description: |
-        One of the following error codes:
-          - missingProperty: The property the Seller has expected is not present in the payload
-          - invalidValue: The property has an incorrect value
-          - invalidFormat: The property value does not comply with the expected value format
-          - referenceNotFound: The object referenced by the property cannot be identified in the Seller system
-          - unexpectedProperty: Additional property, not expected by the Seller has been provided
-          - tooManyRecords: the number of records to be provided in the response exceeds the Seller's threshold.
-          - otherIssue: Other problem was identified (detailed information provided in a reason)
-      enum:
-        - missingProperty
-        - invalidValue
-        - invalidFormat
-        - referenceNotFound
-        - unexpectedProperty
-        - tooManyRecords
-        - otherIssue
-      type: string
     Error500:
       allOf:
         - $ref: '#/components/schemas/Error'
@@ -674,22 +588,6 @@ components:
       description: >-
         Internal Server Error.
         (https://tools.ietf.org/html/rfc7231#section-6.6.1)
-    Error501:
-      allOf:
-        - $ref: '#/components/schemas/Error'
-        - properties:
-            code:
-              description: |-
-                The following error code::
-                - notImplemented: Method not supported by the server
-              enum:
-                - notImplemented
-              type: string
-          required:
-            - code
-          type: object
-      description:
-        'Not Implemented. (https://tools.ietf.org/html/rfc7231#section-6.6.2)'
     FieldedAddress:
       allOf:
         - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
@@ -698,7 +596,7 @@ components:
               description: The city that the address is in
               type: string
             country:
-              description: Country that the address is in
+              description: The country that the address is in
               type: string
             geographicSubAddress:
               $ref: '#/components/schemas/GeographicSubAddress'
@@ -710,7 +608,7 @@ components:
               type: string
             postcode:
               description: >-
-                Descriptor for a postal delivery area, used to speed and
+                The descriptor for a postal delivery area, used to speed and
                 simplify the delivery of mail (also known as zip code)
               type: string
             postcodeExtension:
@@ -775,17 +673,17 @@ components:
               description: The city that the address is in
               type: string
             country:
-              description: Country that the address is in
+              description: The country that the address is in
               type: string
             locality:
               description: >-
                 An area of defined or undefined boundaries within a local
-                authority or other legislatively defined area, usually rural or
-                semi-rural in nature
+                authority or another legislatively defined area, usually rural
+                or semi-rural in nature
               type: string
             postcode:
               description: >-
-                Descriptor for a postal delivery area, used to speed and
+                The descriptor for a postal delivery area, used to speed and
                 simplify the delivery of mail (also known as ZIP code)
               type: string
             postcodeExtension:
@@ -803,9 +701,10 @@ components:
           type: object
       description: >-
         A type of Address that has discrete fields for each type of boundary or
-        identifier with the exception of street and more specific location
-        details, which are combined into a maximum of two strings based on
-        local postal addressing conventions. Reference: MEF 79 (Sn 8.9.3)
+        an identifier with the exception of the street and more specific
+        location details, which are combined into a maximum of two strings
+        based on local postal addressing conventions. Reference: MEF 79 (Sn
+        8.9.3)
     GeographicAddressLabel:
       allOf:
         - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
@@ -908,23 +807,11 @@ components:
           type: array
       type: object
     MEFBuyerSellerType:
-      description: An enumeration with buyer and seller values.
+      description: An enumeration of buyer and seller values.
       enum:
         - buyer
         - seller
       type: string
-    MEFByteSize:
-      description: A size represented by value and Byte units
-      properties:
-        amount:
-          default: 1
-          description: Numeric value in a given unit
-          format: float
-          type: number
-        units:
-          $ref: '#/components/schemas/DataSizeUnit'
-          description: Byte Unit
-      type: object
     MEFGeographicPoint:
       allOf:
         - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
@@ -958,24 +845,8 @@ components:
       description: >
         A MEFGeographicPoint defines a geographic point through coordinates.
         Reference: MEF 79 (Sn 8.9.5)
-    MEFObservedImpactType:
-      description: >-
-        An enumeration of the possible values of impact observed by the Buyer.
-
-        - degraded: When the Product is impacted and not meeting the Product
-        specifications.
-
-        - intermittent: When the Product is not operational as intended on an
-        intermittent basis.
-
-        - down: When the Product is non-operational.
-      enum:
-        - degraded
-        - intermittent
-        - down
-      type: string
     MEFSubUnit:
-      description: Allows for sub unit identification
+      description: Allows for sub-unit identification
       properties:
         subUnitNumber:
           description: >-
@@ -994,7 +865,7 @@ components:
     Note:
       description: >-
         Extra information about a given entity. Only useful in processes
-        involving human interaction. Not applicable for an automated process.
+        involving human interaction. Not applicable to an automated process.
       properties:
         author:
           description: Author of the note
@@ -1118,35 +989,38 @@ components:
     TimeDuration:
       type: object
       description: >-
-        This class is used to describe durations expressed as a 2-tuple, (value,
-        units). The units from from nanoseconds to years.
+        This class is used to describe durations expressed as a 2-tuple,
+        (value, units). The units from nanoseconds to years.
       properties:
-          timeDurationValue:
-            description: >-
-              The value of the duration. For example, if the duration is 20 ms, this
-              element is 20.
-            type: integer
-          timeDurationUnits:
-            description: >-
-              The unit of measure in the duration. For example, if an interval is
-              2ms, this element is MS.
-            $ref: '#/components/schemas/TimeDurationUnits'
+        timeDurationValue:
+          description: >-
+            The value of the duration. For example, if the duration is 20 ms,
+            this element is 20.
+          type: integer
+        timeDurationUnits:
+          description: >-
+            The unit of measure in the duration. For example, if an interval is
+            2ms, this element is MS.
+          $ref: '#/components/schemas/TimeDurationUnits'
+      required:
+        - timeDurationValue
+        - timeDurationUnits
     TimeDurationUnits:
       type: string
       description: >-
-        The unit of measure in the duration. For example, if an interval is 2ms,
-        this element is MS.
+        The unit of measure in the duration. For example, if an interval is
+        2ms, this element is MS.
       enum:
-        - "NS"
-        - "US"
-        - "MS"
-        - "SEC"
-        - "MIN"
-        - "HOUR"
-        - "DAY"
-        - "WEEK"
-        - "MONTH"
-        - "YEAR"
+        - 'NS'
+        - 'US'
+        - 'MS'
+        - 'SEC'
+        - 'MIN'
+        - 'HOUR'
+        - 'DAY'
+        - 'WEEK'
+        - 'MONTH'
+        - 'YEAR'
     WorkOrder:
       description: >
         A set of tasks to be scheduled and performed under the responsibility
@@ -1168,14 +1042,14 @@ components:
         appointment:
           description: >-
             A reference to a set of Appointments for the WorkOrder. A WorkOrder
-            may contain only one open Appointment at a time (e.g. with state of
-            'scheduled').
+            may contain only one open Appointment at a time (e.g. with the
+            state of 'scheduled').
           items:
             $ref: '#/components/schemas/AppointmentRef'
-          type: array 
+          type: array
         duration:
           $ref: '#/components/schemas/TimeDuration'
-          description: The current state of the WorkOrder    
+          description: The current state of the WorkOrder
         note:
           description: >-
             A set of unstructured comments or information associated to the
@@ -1194,18 +1068,22 @@ components:
           items:
             $ref: '#/components/schemas/RelatedPlaceRefOrValue'
           type: array
+        plannedExecutionDate:
+          description: >-
+            The date provided by the Seller to indicate when the Workorder is
+            expected to be started.
+          type: string
+          format: date-time
         relatedContactInformation:
           description: >-
-            Party playing a role for this WorkOrder.
-            The 'role' is to specify the type of contact as specified in MEF
-            113:
-            Technical Contact ('role=technicalContact') - REQUIRED to be set by
-            the Seller. The Seller technical contact responsible for the
-            WorkOrder.
-            Technician ('role=technician') - The Seller technician assigned to
-            the WorkOrder and responsible for performing a set of tasks. In
-            certain instances this could be a Buyer technician that works on
-            behalf of the Seller.
+            Party playing a role in this WorkOrder. The 'role' is to specify
+            the type of contact as specified in MEF 113: Technical Contact
+            ('role=technicalContact') - REQUIRED to be set by the Seller. The
+            Seller technical contact responsible for the WorkOrder. Technician
+            ('role=technician') - The Seller technician assigned to the
+            WorkOrder and responsible for performing a set of tasks. In certain
+            instances this could be a Buyer technician that works on behalf of
+            the Seller.
           items:
             $ref: '#/components/schemas/RelatedContactInformation'
           minItems: 1
@@ -1232,26 +1110,14 @@ components:
           minItems: 1
           type: array
       required:
-        - appointmentRequired
         - id
+        - appointmentRequired
+        - duration
+        - place
         - relatedContactInformation
         - relatedEntity
         - state
-        - tasks
-      type: object
-    WorkOrderRef:
-      description: |
-        A reference to an WorkOrder resource.
-      properties:
-        href:
-          description: |
-            Hyperlink to the referenced WorkOrder.
-          type: string
-        id:
-          description: Identifier of the referenced WorkOrder.
-          type: string
-      required:
-        - id
+        - task
       type: object
     WorkOrderStateType:
       description: |
@@ -1278,16 +1144,16 @@ components:
         A set of tasks to be scheduled and performed under the responsibility
         of a Seller Technician(s)
       properties:
+        id:
+          description:
+            Unique (within the Seller domain) identifier for the WorkOrder.
+          type: string
         appointmentRequired:
           description: >-
             The Seller requires the Buyer to schedule an Appointment. If set to
             true, the Seller is Requesting the Buyer to schedule an
             Appointment.
           type: boolean
-        id:
-          description:
-            Unique (within the Seller domain) identifier for the WorkOrder.
-          type: string
         place:
           description: >-
             The location where the WorkOrder Tasks are to be performed. If an
@@ -1311,12 +1177,9 @@ components:
           $ref: '#/components/schemas/WorkOrderStateType'
           description: The current state of the WorkOrder
       required:
-        - appointmentRequired
         - id
-        - relatedContactInformation
+        - appointmentRequired
+        - place
         - relatedEntity
         - state
-        - tasks
       type: object
- 
-

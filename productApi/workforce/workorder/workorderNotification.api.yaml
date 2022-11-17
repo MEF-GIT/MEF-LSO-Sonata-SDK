@@ -1,15 +1,12 @@
 openapi: 3.0.1
 info:
-  description: | 
-    **This file forms part of MEF W137**
+  description: |
+    **This file forms part of MEF 137**
 
-    **This API implements Business Requirements described in MEF W113.**
-    
-    **This specification represents MEF work in progress and is subject to
-    change.**
-    
+    **This API implements Business Requirements described in MEF 113.**
+
     It allows the Buyer to create, retrieve, and update  WorkOrders as well
-    as receive notifications about Incidents' and  WorkOrders' updates.
+    as receive notifications about Incidents and  WorkOrders updates.
     This allows managing issues and situations that are not part of normal
     operations of the Product provided by the Seller.
 
@@ -23,9 +20,9 @@ info:
     which is licensed by the TM Forum under the Apache License version 2.0.
     Such content has been modified by the MEF Forum and its contributors.
   title: WorkOrder Management Notification
-  version: 1.0.0-RC
+  version: 2.0.0
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/workOrderNotification/v1/'
+  - url: 'https://{serverBase}/mefApi/sonata/workOrderNotification/v2/'
     variables:
       serverBase:
         default: mef.net
@@ -38,8 +35,7 @@ paths:
   /listener/workOrderCreateEvent:
     post:
       description: >-
-        Client listener for receiving the notification
-        WorkOrder Create Event
+        Client listener for receiving the notification WorkOrder Create Event
       operationId: listenToWorkOrderCreateEvent
       requestBody:
         content:
@@ -89,7 +85,8 @@ paths:
   /listener/workOrderStateChangeEvent:
     post:
       description: >-
-        Client listener for receiving the workOrderStateChangeEvent notification
+        Client listener for receiving the workOrderStateChangeEvent
+        notification
       operationId: listenToWorkOrderStateChangeEvent
       requestBody:
         content:
@@ -139,7 +136,8 @@ paths:
   /listener/workOrderAppointmentRequiredEvent:
     post:
       description: >-
-        Client listener for receiving the workOrderAppointmentRequiredEvent notification
+        Client listener for receiving the workOrderAppointmentRequiredEvent
+        notification
       operationId: listenToWorkOrderAppointmentRequiredEvent
       requestBody:
         content:
@@ -209,20 +207,19 @@ components:
       type: string
     Error:
       description: >
-        Standard Class used to describe API response error
-
-        Not intended to be use directly. The `code` in the HTTP header is used
-        as a discriminator for the type of error returned in runtime.
+        Standard Class used to describe API response error Not intended to be
+        use directly. The `code` in the HTTP header is used as a discriminator
+        for the type of error returned in runtime.
       properties:
         reason:
           description: >-
-            Text that explains the reason for error. This can be shown to a
+            Text that explains the reason for the error. This can be shown to a
             client user.
           maxLength: 255
           type: string
         message:
           description: >-
-            Text that provide mode details and corrective actions related to
+            Text that provides mode details and corrective actions related to
             the error. This can be shown to a client user.
           type: string
         referenceError:
@@ -354,7 +351,7 @@ components:
         (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     Event:
       description: >-
-        Event class is used to describe information structure used for
+        Event class is used to describe the information structure used for
         notification.
       properties:
         eventId:
@@ -380,21 +377,20 @@ components:
               $ref: '#/components/schemas/WorkOrderEventType'
             event:
               description: |
-                A reference to the object that is source of the notification.
+                A reference to the object that is the source of the notification.
               $ref: '#/components/schemas/WorkOrderEventPayload'
           required:
             - event
             - eventType
           type: object
     WorkOrderEventPayload:
-      description:
-        The identifier of the WorkOrder being subject of this event.
+      description: The identifier of the WorkOrder is subject of this event.
       properties:
         sellerId:
           description: >-
             The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when requester entity
-            represents more than one Seller.
+            Seller. MUST be specified in the request only when the requester
+            entity represents more than one Seller.
           type: string
         id:
           description: ID of the WorkOrder attributed by quoting system

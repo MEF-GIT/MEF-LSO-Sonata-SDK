@@ -1,20 +1,17 @@
 openapi: 3.0.1
 info:
   description: |
-    **This file forms part of MEF W137**
-    
-    **This API implements Business Requirements described in MEF W113.**
-    
-    **This specification represents MEF work in progress and is subject to
-    change.**
-    
+    **This file forms part of MEF 137**
+
+    **This API implements Business Requirements described in MEF 113.**
+
     An Appointment is an arrangement to do something or meet someone at a 
     particular time and place. It is previously made during an interaction 
     or may be necessary to solve a customer problem or to deliver a product 
     order item. The appointment API goal is to manage an appointment with 
     all the necessary characteristics. 
 
-  
+
     List of supported use cases:
     - Search Appointment Timeslot
     - Create Appointment
@@ -31,9 +28,9 @@ info:
     which is licensed by the TM Forum under the Apache License version 2.0.
     Such content has been modified by the MEF Forum and its contributors.
   title: Appointment Management
-  version: 1.0.0-RC
+  version: 2.0.0
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/appointment/v1/'
+  - url: 'https://{serverBase}/mefApi/sonata/appointment/v2/'
     variables:
       serverBase:
         default: mef.net
@@ -80,19 +77,20 @@ paths:
           schema:
             enum:
               - confirmed
+              - inProgress
               - cancelled
               - missed
               - failed
               - completed
             type: string
         - description:
-            A site identifier which is associated to the Appointment.
+            A site identifier that is associated with the Appointment.
           in: query
           name: geographicSiteId
           schema:
             type: string
         - description:
-            A address identifier which is associated to the Appointment.
+            An address identifier that is associated with the Appointment.
           in: query
           name: geographicAddressId
           schema:
@@ -114,7 +112,8 @@ paths:
           schema:
             type: string
         - description:
-            Requested index for start of resources to be provided in response
+            Requested index for the start of resources to be provided in
+            response
           in: query
           name: offset
           schema:
@@ -131,13 +130,13 @@ paths:
             application/json;charset=utf-8:
               schema:
                 items:
-                  $ref: '#/components/schemas/Appointment'
+                  $ref: '#/components/schemas/Appointment_Find'
                 type: array
           description: 'OK. (https://tools.ietf.org/html/rfc7231section-6.3.1)'
           headers:
             X-Pagination-Throttled:
               description: >
-                Used to indicate that result page was throttled to maximum
+                Used to indicate that the result page was throttled to maximum
                 possible size  and there are additional results that can be
                 fetched.
               schema:
@@ -179,7 +178,7 @@ paths:
           description: Internal Server Error
       summary: List or found Appointment objects
       tags:
-        - Appointment
+        - appointment
     post:
       description: >-
         A request initiated by the Buyer to create a Appointment in the
@@ -250,7 +249,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
-      summary: Creates a appointment
+      summary: Creates an appointment
       tags:
         - appointment
       x-codegen-request-body-name: appointment
@@ -258,7 +257,7 @@ paths:
     get:
       description: >-
         The Buyer requests detailed information about a single Appointment
-        based on a Appointment Identifier.
+        based on the Appointment Identifier.
       operationId: retrieveAppointment
       parameters:
         - description: >-
@@ -321,12 +320,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
-      summary: Retrieves a Appointment by ID
+      summary: Retrieves an Appointment by ID
       tags:
         - appointment
     patch:
       description: >-
-        A request by the Buyer to patch a Appointment created by the Buyer in
+        A request by the Buyer to patch an Appointment created by the Buyer in
         the Seller's system.
       operationId: patchAppointment
       parameters:
@@ -412,7 +411,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
-      summary: Updates partially a Appointment
+      summary: Updates partially an Appointment
       tags:
         - appointment
       x-codegen-request-body-name: appointment
@@ -487,7 +486,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
-      summary: Cancels a Appointment
+      summary: Cancels an Appointment
       tags:
         - appointment operations
   /searchTimeSlot:
@@ -705,8 +704,6 @@ components:
         'In the context of MEF 113 document, denotes an arrangement between the
         Buyer and Seller for a Seller Technician to meet with the Buyer at a
         specified time and place.'
-      required:
-        - validFor
       properties:
         id:
           type: string
@@ -717,7 +714,7 @@ components:
         attachment:
           type: array
           description:
-            Attachments to the Appointment, such as a file, screen shot or
+            Attachments to the Appointment, such as a file, screenshot or
             embedded content.
           items:
             $ref: '#/components/schemas/AttachmentValue'
@@ -736,15 +733,15 @@ components:
         validFor:
           $ref: '#/components/schemas/TimePeriod'
           description:
-            The Date and Time interval  the Seller Technician is scheduled to
+            The Date and Time interval the Seller Technician is scheduled to
             arrive at the Appointment.
         relatedContactInformation:
           description: >-
-            Party playing a role for this Appointment. The 'role' is to specify
+            Party playing a role in this Appointment. The 'role' is to specify
             the type of contact as specified in MEF 113:
 
             Appointment Place Contact (role=appointmentPlaceContact) - The site
-            contact(s) which the Seller Technician may need to contact in order
+            contact(s) that the Seller Technician may need to contact in order
             to get access to the Appointment Place during the Appointment. This
             could be an end-user, security personnel or any authorized person 
 
@@ -761,56 +758,69 @@ components:
           description: >-
             A reference to a WorkOrder for which the Appointment is created.
           $ref: '#/components/schemas/WorkOrderRef'
+      required:
+        - id
+        - relatedPlace
+        - relatedContactInformation
+        - status
+        - validFor
+        - workOrder
     Appointment_Create:
       type: object
       description:
         In the context of MEF 113 document, denotes an arrangement between the
         Buyer and Seller for a Seller Technician to meet with the Buyer at a
         specified time and place.'
-      required:
-        - validFor
       properties:
-        relatedPlace:
-          $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        attachment:
+          type: array
           description:
-            Related place defines (by reference or value) the place where the
-            appointment will take place.
+            Attachments to the Appointment, such as a file, screen shot or
+            embedded content.
+          items:
+            $ref: '#/components/schemas/AttachmentValue'
+        note:
+          type: array
+          description:
+            Notes describing the purpose of and the results of the Appointment
+          items:
+            $ref: '#/components/schemas/Note'
         relatedContactInformation:
           description: >-
-            Party playing a role for this Appointment. The 'role' is to specify
+            Party playing a role in this Appointment. The 'role' is to specify
             the type of contact as specified in MEF 113:
 
             Appointment Place Contact (role=appointmentPlaceContact) - The site
-            contact(s) which the Seller Technician may need to contact in order
+            contact(s) that the Seller Technician may need to contact in order
             to get access to the Appointment Place during the Appointment. This
-            could be an end-user, security personnel or any authorized person 
-
+            could be an end-user, security personnel or any authorized person
             Buyer Appointment Contact (role=buyerAppointmentContact)- The Buyer
+            contact(s) assigned to and responsible for the Appointment. Seller
+            Appointment Contact (role=sellerAppointmentContact) - The Seller
             contact(s) assigned to and responsible for the Appointment.
-
-            Seller Appointment Contact (role=sellerAppointmentContact) - The
-            Seller contact(s) assigned to and responsible for the Appointment.
           items:
             $ref: '#/components/schemas/RelatedContactInformation'
           minItems: 1
           type: array
+        validFor:
+          $ref: '#/components/schemas/TimePeriod'
+          description:
+            The Date and Time interval  the Seller Technician is scheduled to
+            arrive at the Appointment.
         workOrder:
           description: >-
             A reference to a WorkOrder for which the Appointment is created.
           $ref: '#/components/schemas/WorkOrderRef'
+      required:
+        - relatedContactInformation
+        - validFor
+        - workOrder
     Appointment_Find:
       type: object
       description:
         'In the context of MEF 113 document, denotes an arrangement between the
         Buyer and Seller for a Seller Technician to meet with the Buyer at a
         specified time and place.'
-      required:
-        - id
-        - href
-        - relatedPlace
-        - status
-        - validFor
-        - workOrder
       properties:
         id:
           type: string
@@ -831,14 +841,16 @@ components:
           description:
             The Date and Time interval the Seller Technician is scheduled to
             arrive at the Appointment.
-          items:
-            $ref: '#/components/schemas/RelatedContactInformation'
-          minItems: 1
-          type: array
         workOrder:
           description: >-
             A reference to a WorkOrder for which the Appointment is created.
           $ref: '#/components/schemas/WorkOrderRef'
+      required:
+        - id
+        - relatedPlace
+        - status
+        - validFor
+        - workOrder
     Appointment_Update:
       type: object
       description:
@@ -859,18 +871,18 @@ components:
             Notes describing the purpose of and the results of the Appointment.
           items:
             $ref: '#/components/schemas/Note'
-        validFor:
-          $ref: '#/components/schemas/TimePeriod'
+        relatedPlace:
+          $ref: '#/components/schemas/RelatedPlaceRefOrValue'
           description:
-            The Date and Time interval the Seller Technician is scheduled to
-            arrive at the Appointment.
+            Related place defines (by reference or value) the place where the
+            appointment will take place.
         relatedContactInformation:
           description: >-
-            Party playing a role for this Appointment. The 'role' is to specify
+            Party playing a role in this Appointment. The 'role' is to specify
             the type of contact as specified in MEF 113:
 
             Appointment Place Contact (role=appointmentPlaceContact) - The site
-            contact(s) which the Seller Technician may need to contact in order
+            contact(s) that the Seller Technician may need to contact in order
             to get access to the Appointment Place during the Appointment. This
             could be an end-user, security personnel or any authorized person 
 
@@ -883,22 +895,28 @@ components:
             $ref: '#/components/schemas/RelatedContactInformation'
           minItems: 1
           type: array
+        validFor:
+          $ref: '#/components/schemas/TimePeriod'
+          description:
+            The Date and Time interval the Seller Technician is scheduled to
+            arrive at the Appointment.
     AppointmentStatusType:
       type: string
-      description: Valid values for the lifecycle status of the appointment
-      
-        Possible values for the status of the Trouble Ticket
+      description: |
+        Valid values for the lifecycle status of the appointment.
 
         | status                  | MEF 113 name           | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
         | ----------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
         | `confirmed`             | SCHEDULED              | The Buyer has negotiated and scheduled the Appointment with the Seller.                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+        | `inProgress`            | IN_PROGRESS            | The Appointment can no longer be cancelled (point of no return), this is up to the Seller’s discretion.                         |
         | `cancelled`             | CANCELLED              | The Appointment was cancelled by the Buyer or the Seller determined that an Appointment was not required.  This is a terminal state.                                                                                                                                                                                                                                                                                                                                                                                      |
         | `missed`                | MISSED                 | The Appointment did not take place, because of a Seller related issue. For example, no Seller Technician was available on the date of the appointment                                                                                                                                                                                                                                                                                                                                                                     |
         | `failed`                | FAILED                 | The Appointment did not take place, because of an issue with the Buy-er. For example, Seller Technician was unable to get to the Appointment due to an incorrect location or unable to get access to the Buyer`s site. This is a terminal state                                                                                                                                                                                                                                                                           |
         | `completed`             | COMPLETED              | The Appointment took place as scheduled. This is a terminal state.                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-      
+
       enum:
         - confirmed
+        - inProgress
         - cancelled
         - missed
         - failed
@@ -970,10 +988,8 @@ components:
       type: string
     Error:
       description: >
-        Standard Class used to describe API response error
-
-        Not intended to be use directly only via specialization which defines a
-        code
+        Standard Class used to describe API response error Not intended to be
+        use directly only via specialization which defines a code
       properties:
         message:
           description: >-
@@ -982,7 +998,7 @@ components:
           type: string
         reason:
           description: >-
-            Text that explains the reason for error. This can be shown to a
+            Text that explains the reason for the error. This can be shown to a
             client user.
           maxLength: 255
           type: string
@@ -1103,8 +1119,8 @@ components:
               description: >-
                 The following error code:
 
-                - notFound: A current representation for the target resource
-                not found
+                - notFound: A current representation of the target resource not
+                found
               enum:
                 - notFound
               type: string
@@ -1201,22 +1217,6 @@ components:
       description: >-
         Internal Server Error.
         (https://tools.ietf.org/html/rfc7231#section-6.6.1)
-    Error501:
-      allOf:
-        - $ref: '#/components/schemas/Error'
-        - properties:
-            code:
-              description: |-
-                The following error code::
-                - notImplemented: Method not supported by the server
-              enum:
-                - notImplemented
-              type: string
-          required:
-            - code
-          type: object
-      description:
-        'Not Implemented. (https://tools.ietf.org/html/rfc7231#section-6.6.2)'
     EventSubscription:
       description: >-
         Sets the communication endpoint address the service instance must use
@@ -1252,7 +1252,7 @@ components:
             specified in that API to construct an URL to which notification is
             sent. E.g. for "callback": "http://buyer.com/listenerEndpoint", the
             status change event notification will be sent to:
-            `http://buyer.com/listenerEndpoint/mefApi/sonata/appointmentNotification/v1/listener/appointmentStatusChangeEvent`
+            `http://buyer.com/listenerEndpoint/mefApi/sonata/appointmentNotification/v2/listener/appointmentStatusChangeEvent`
           type: string
         query:
           description: >-
@@ -1289,7 +1289,7 @@ components:
               type: string
             postcode:
               description: >-
-                Descriptor for a postal delivery area, used to speed and
+                The descriptor for a postal delivery area, used to speed and
                 simplify the delivery of mail (also known as zip code)
               type: string
             postcodeExtension:
@@ -1364,7 +1364,7 @@ components:
               type: string
             postcode:
               description: >-
-                Descriptor for a postal delivery area, used to speed and
+                The descriptor for a postal delivery area, used to speed and
                 simplify the delivery of mail (also known as ZIP code)
               type: string
             postcodeExtension:
@@ -1456,7 +1456,7 @@ components:
       properties:
         buildingName:
           description: >
-            Allows for identification of places that require building name  as
+            Allows for identification of places that require building name as
             part of addressing information
           type: string
         id:
@@ -1538,7 +1538,7 @@ components:
         A MEFGeographicPoint defines a geographic point through coordinates.
         Reference: MEF 79 (Sn 8.9.5)
     MEFSubUnit:
-      description: Allows for sub unit identification
+      description: Allows for sub-unit identification
       properties:
         subUnitNumber:
           description: >-
@@ -1557,7 +1557,7 @@ components:
     Note:
       description: >-
         Extra information about a given entity. Only useful in processes
-        involving human interaction. Not applicable for an automated process.
+        involving human interaction. Not applicable to an automated process.
       properties:
         author:
           description: Author of the note
@@ -1619,31 +1619,6 @@ components:
         - number
         - role
       type: object
-    RelatedEntity:
-      description: >-
-        A reference to an entity, where the type of the entity is not known in
-        advance.
-      properties:
-        '@referredType':
-          default: Product
-          description: >-
-            The actual type of the target instance when needed for
-            disambiguation.
-          type: string
-        href:
-          description: Reference of the related entity.
-          type: string
-        id:
-          description: Unique identifier of a related entity.
-          type: string
-        role:
-          description: The role of an entity.
-          type: string
-      required:
-        - '@referredType'
-        - id
-        - role
-      type: object
     RelatedPlaceRefOrValue:
       description:
         Defines the Place (Address or Site) by reference or by value.
@@ -1687,27 +1662,29 @@ components:
       properties:
         availableTimeSlot:
           description:
-            A set of time slots with availability of a Seller’s
-            Technician  returned by the Seller, which the Buyer may select for
-            creating or rescheduling an Appointment.
+            A set of time slots with the availability of a Seller Technician
+            returned by the Seller, which the Buyer may select for creating or
+            rescheduling an Appointment.
           type: array
           items:
             $ref: '#/components/schemas/TimeSlot'
         requestedTimeSlot:
           description:
-            A set of preferred time slots the Buyer is re-questing the Seller
-            to verify for availability by a Seller’s Technician at the
-            Place  referenced in the Appointment Related Entity. For example
-            Monday thru Friday, or a set of specific time slots.
+            A set of preferred time slots the Buyer is requesting the Seller to
+            verify for availability by a Sellers Technician at the Place
+            referenced in the Appointment Related Entity. For example Monday
+            thru Friday, or a set of specific time slots.
           type: array
           items:
             $ref: '#/components/schemas/TimeSlot'
-        relatedEntity:
-          description:
-            A Reference to the Related Entity the Appointment is for.
-          type: array
-          items:
-            $ref: '#/components/schemas/RelatedEntity'
+        workOrder:
+          description: >-
+            A reference to a WorkOrder for which the Appointment is created.
+          $ref: '#/components/schemas/WorkOrderRef'
+      required:
+        - availableTimeSlot
+        - workOrder
+        - requestedTimeSlot
     SearchTimeSlot_Create:
       type: object
       description:
@@ -1717,19 +1694,20 @@ components:
       properties:
         requestedTimeSlot:
           description:
-            A set of preferred time slots the Buyer is re-questing the Seller
-            to verify for availability by a Seller’s Technician at the
-            Place  referenced in the Appointment Related Entity. For example
-            Monday thru Friday, or a set of specific time slots.
+            A set of preferred time slots the Buyer is requesting the Seller to
+            verify for availability by a Sellers Technician at the Place
+            referenced in the Appointment Related Entity. For example Monday
+            thru Friday, or a set of specific time slots.
           type: array
           items:
             $ref: '#/components/schemas/TimeSlot'
-        relatedEntity:
-          description:
-            A Reference to the Related Entity the Appointment is for.
-          type: array
-          items:
-            $ref: '#/components/schemas/RelatedEntity'
+        workOrder:
+          description: >-
+            A reference to a WorkOrder for which the Appointment is created.
+          $ref: '#/components/schemas/WorkOrderRef'
+      required:
+        - workOrder
+        - requestedTimeSlot
     TimeSlot:
       type: object
       required:
@@ -1754,6 +1732,9 @@ components:
           description:
             'Start of the time period, using IETC-RFC-3339 format. If you
             define a start, you must also define an end'
+      required:
+        - endDateTime
+        - startDateTime
     WorkOrderRef:
       description: |
         A reference to an WorkOrder resource.

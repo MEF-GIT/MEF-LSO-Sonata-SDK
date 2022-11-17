@@ -1,20 +1,17 @@
 openapi: 3.0.1
 info:
   description: |
-    **This file forms part of MEF W137**
-    
-    **This API implements Business Requirements described in MEF W113.**
-    
-    **This specification represents MEF work in progress and is subject to
-    change.**
-    
+    **This file forms part of MEF 137**
+
+    **This API implements Business Requirements described in MEF 113.**
+
     An Appointment is an arrangement to do something or meet someone at a 
     particular time and place. It is previously made during an interaction 
     or may be necessary to solve a customer problem or to deliver a product 
     order item. The appointment API goal is to manage an appointment with 
     all the necessary characteristics. 
 
-  
+
     List of supported use cases:
     - Send Appointment Notification
 
@@ -25,9 +22,9 @@ info:
     which is licensed by the TM Forum under the Apache License version 2.0.
     Such content has been modified by the MEF Forum and its contributors.
   title: Appointment Management Notification
-  version: 1.0.0-RC
+  version: 2.0.0
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/appointmentNotification/v1/'
+  - url: 'https://{serverBase}/mefApi/sonata/appointmentNotification/v2/'
     variables:
       serverBase:
         default: mef.net
@@ -40,7 +37,8 @@ paths:
   /listener/appointmentAttributeValueChangeEvent:
     post:
       description: >-
-        Client listener for receiving the appointmentAttributeValueChangeEvent notification
+        Client listener for receiving the appointmentAttributeValueChangeEvent
+        notification
       operationId: listenToAppointmentAttributeValueChangeEvent
       requestBody:
         content:
@@ -83,15 +81,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
-      summary:
-        Client listener for entity appointmentAttributeValueChangeEvent
+      summary: Client listener for entity appointmentAttributeValueChangeEvent
       tags:
         - Notification listeners
       x-codegen-request-body-name: data
   /listener/appointmentStatusChangeEvent:
     post:
       description: >-
-        Client listener for receiving the appointmentStatusChangeEvent notification 
+        Client listener for receiving the appointmentStatusChangeEvent
+        notification
       operationId: listenToAppointmentStatusChangeEvent
       requestBody:
         content:
@@ -161,20 +159,19 @@ components:
       type: string
     Error:
       description: >
-        Standard Class used to describe API response error
-
-        Not intended to be use directly. The `code` in the HTTP header is used
-        as a discriminator for the type of error returned in runtime.
+        Standard Class used to describe API response error Not intended to be
+        use directly. The `code` in the HTTP header is used as a discriminator
+        for the type of error returned in runtime.
       properties:
         reason:
           description: >-
-            Text that explains the reason for error. This can be shown to a
+            Text that explains the reason for the error. This can be shown to a
             client user.
           maxLength: 255
           type: string
         message:
           description: >-
-            Text that provide mode details and corrective actions related to
+            Text that provides mode details and corrective actions related to
             the error. This can be shown to a client user.
           type: string
         referenceError:
@@ -306,7 +303,7 @@ components:
         (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     Event:
       description: >-
-        Event class is used to describe information structure used for
+        Event class is used to describe the information structure used for
         notification.
       properties:
         eventId:
@@ -333,7 +330,7 @@ components:
                 #/components/schemas/AppointmentEventType
             event:
               description: |
-                A reference to the object that is source of the notification.
+                A reference to the object that is the source of the notification.
               $ref: >-
                 #/components/schemas/AppointmentEventPayload
           required:
@@ -341,14 +338,13 @@ components:
             - eventType
           type: object
     AppointmentEventPayload:
-      description:
-        The identifier of the Appointment being subject of this event.
+      description: The identifier of the Appointment is subject of this event.
       properties:
         sellerId:
           description: >-
             The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when requester entity
-            represents more than one Seller.
+            Seller. MUST be specified in the request only when the requester
+            entity represents more than one Seller.
           type: string
         id:
           description: ID of the Appointment attributed by quoting system
