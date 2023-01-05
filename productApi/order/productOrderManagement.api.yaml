@@ -2075,7 +2075,7 @@ components:
             notification is sent. E.g. for "callback":
             "https://buyer.co/listenerEndpoint", the product order state change
             event notification will be sent to:
-            `https://buyer.co/listenerEndpoint/mefApi/sonata/productOrderNotification/v10/listener/productOrderStateChangeEvent`
+            `https://buyer.co/listenerEndpoint/mefApi/sonata/productOrderingNotification/v10/listener/productOrderStateChangeEvent`
           type: string
         query:
           description: >-
@@ -2554,8 +2554,8 @@ components:
       type: object
     MEFOrderItemCoordinatedAction:
       description: >-
-        The interval after the completion of one or more related Product Order
-        Items that this Product Order Item can be started or completed
+        The interval after the completion of one or more related Order
+        Items that this Order Item can be started or completed
       properties:
         coordinatedActionDelay:
           $ref: '#/components/schemas/Duration'
@@ -2564,12 +2564,11 @@ components:
         coordinationDependency:
           $ref: '#/components/schemas/MEFOrderItemCoordinationDependencyType'
           description: >-
-            A dependency between the Product Order Item and a related Product
-            Order Item
+            A dependency between the Order Item and a related Order Item
         itemId:
           description: >-
-            Specifies Product Order Item that is to be coordinated with this
-            Product Order Item.
+            Specifies Order Item that is to be coordinated with this
+            Order Item.
           type: string
       required:
         - coordinatedActionDelay
@@ -2580,12 +2579,12 @@ components:
       description: |
         Possible values of the Order Item Coordination Dependency
 
-        | OrderItemCoordinationDependencyType | MEF 57.2         | Description                                                                                                        |
-        |-------------------------------------|------------------|--------------------------------------------------------------------------------------------------------------------|
-        | startToStart                        | START_TO_START   | Work on the Specified Product Order Item can only be started after the Coordinated Product Order Items are started |
-        | startToFinish                       | START_TO_FINISH  | The Coordinated Product Order Items must complete before work on the Specified Product Order Item begins           |
-        | finishToStart                       | FINISH_TO_START  | Work on the Related Product Order Items begins after the completion of the Specified Product Order Item            |
-        | finishToFinish                      | FINISH_TO_FINISH | Work on the Related Product Order Items completes at the same time as the Specified Product Order Item             |
+        | OrderItemCoordinationDependencyType | MEF 57.2         | Description                                                                                        |
+        |-------------------------------------|------------------|----------------------------------------------------------------------------------------------------|
+        | startToStart                        | START_TO_START   | Work on the Specified Order Item can only be started after the Coordinated Order Items are started |
+        | startToFinish                       | START_TO_FINISH  | The Coordinated Order Items must complete before work on the Specified Order Item begins           |
+        | finishToStart                       | FINISH_TO_START  | Work on the Related Order Items begins after the completion of the Specified Order Item            |
+        | finishToFinish                      | FINISH_TO_FINISH | Work on the Related Order Items completes at the same time as the Specified Order Item             |
       enum:
         - startToStart
         - startToFinish
@@ -2975,7 +2974,7 @@ components:
     MEFProductOrderItem_Common:
       description: >
         An identified part of the order. A product order is decomposed into one
-        or more order items. This type hold the attributes common to request
+        or more order items. This type holds the attributes common to request
         and response representation of the Product Order Item.
       properties:
         action:
@@ -3371,7 +3370,7 @@ components:
         relationshipType:
           description: >-
             Specifies the nature of the relationship to the related Product
-            Order Items. A string that is one of the relationship types
+            Order Item. A string that is one of the relationship types
             specified in the Product Specification.
           type: string
       required:

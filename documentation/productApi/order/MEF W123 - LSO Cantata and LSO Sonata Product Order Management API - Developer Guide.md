@@ -11,18 +11,18 @@ img
 ![MEF_LOGO](media/mefLogo.png)
 
 <div style="font-weight:bold; font-size:33pt; font-family: sensation;  text-align:center">
-Working Draft
+Letter Ballot
 </br>
-MEF W123, v0.3
+MEF W123
 </br>
 </br>
 LSO Cantata and LSO Sonata Product Order Management API - Developer Guide
 </br>
 </br>
-<p style="color:red;font-weight:bold; font-size:18pt">This draft represents MEF work in progress and is subject to change.</p>
+October 2022
 </br>
 </br>
-June 2022
+<p style="color:red;font-weight:bold; font-size:18pt">EXPORT CONTROL: This document contains technical data. The download, export, re-export or disclosure of the technical data contained in this document may be restricted by applicable U.S. or foreign export laws, regulations and rules and/or applicable U.S. or foreign sanctions ("Export Control Laws or Sanctions"). You agree that you are solely responsible for determining whether any Export Control Laws or Sanctions may apply to your download, export, reexport or disclosure of this document, and for obtaining (if available) any required U.S. or foreign export or reexport licenses and/or other required authorizations.</p>
 </div>
 
 <div class="page"/>
@@ -127,7 +127,7 @@ contained herein.
     - [6.5.1. Use case 5a: Modify Expedite Indicator](#651-use-case-5a-modify-expedite-indicator)
     - [6.5.2. Use case 5b: Modify Product Order Item Requested Delivery Date](#652-use-case-5b-modify-product-order-item-requested-delivery-date)
   - [6.6. Use case 6: Retrieve Modify Product Order Item Requested Delivery Date List](#66-use-case-6-retrieve-modify-product-order-item-requested-delivery-date-list)
-  - [6.7. Use case 7: Retrieve Modify Product Order Item Requested Delivery Date by Identifier](#67-use-case-7-retrieve-modify-product-order-item-requested-delivery-date-by-identifier)
+  - [6.7. Use case 7: Retrieve Modify Product Order Item Requested Delivery Date by Modify Product Order Item Requested Delivery Date Identifier](#67-use-case-7-retrieve-modify-product-order-item-requested-delivery-date-by-modify-product-order-item-requested-delivery-date-identifier)
   - [6.8. Use case 8: Cancel Product Order](#68-use-case-8-cancel-product-order)
   - [6.9. Use case 9: Retrieve List of Cancel Product Orders](#69-use-case-9-retrieve-list-of-cancel-product-orders)
   - [6.10. Use case 10: Retrieve Cancel Product Order by Cancel Product Order Identifier](#610-use-case-10-retrieve-cancel-product-order-by-cancel-product-order-identifier)
@@ -159,18 +159,18 @@ contained herein.
     - [7.1.2. Response pagination](#712-response-pagination)
   - [7.2. Management API Data model](#72-management-api-data-model)
     - [7.2.1. ProductOrder](#721-productorder)
-      - [7.2.1.1 Type ProductOrder_Common](#7211-type-productorder_common)
-      - [7.2.1.2. Type ProductOrder_Create](#7212-type-productorder_create)
+      - [7.2.1.1 Type ProductOrder\_Common](#7211-type-productorder_common)
+      - [7.2.1.2. Type ProductOrder\_Create](#7212-type-productorder_create)
       - [7.2.1.3. Type ProductOrder](#7213-type-productorder)
-      - [7.2.1.4. Type ProductOrder_Update](#7214-type-productorder_update)
-      - [7.2.1.5. Type ProductOrder_Find](#7215-type-productorder_find)
+      - [7.2.1.4. Type ProductOrder\_Update](#7214-type-productorder_update)
+      - [7.2.1.5. Type ProductOrder\_Find](#7215-type-productorder_find)
       - [7.2.1.6. `enum` MEFProductOrderStateType](#7216-enum-mefproductorderstatetype)
       - [7.2.1.7. Type MEFProductOrderStateChange](#7217-type-mefproductorderstatechange)
     - [7.2.2. Product Order Item](#722-product-order-item)
-      - [7.2.2.1 Type MEFProductOrderItem_Common](#7221-type-mefproductorderitem_common)
-      - [7.2.2.2. Type MEFProductOrderItem_Create](#7222-type-mefproductorderitem_create)
+      - [7.2.2.1 Type MEFProductOrderItem\_Common](#7221-type-mefproductorderitem_common)
+      - [7.2.2.2. Type MEFProductOrderItem\_Create](#7222-type-mefproductorderitem_create)
       - [7.2.2.3. Type ProductOrderItem](#7223-type-productorderitem)
-      - [7.2.2.4. Type MEFProductOrderItem_Update](#7224-type-mefproductorderitem_update)
+      - [7.2.2.4. Type MEFProductOrderItem\_Update](#7224-type-mefproductorderitem_update)
       - [7.2.2.5. `enum` MEFProductActionType](#7225-enum-mefproductactiontype)
       - [7.2.2.6. `enum` MEFProductOrderItemStateType](#7226-enum-mefproductorderitemstatetype)
       - [7.2.2.7. Type MEFProductOrderItemStateChange](#7227-type-mefproductorderitemstatechange)
@@ -198,25 +198,25 @@ contained herein.
       - [7.2.4.8. Type GeographicAddressLabel](#7248-type-geographicaddresslabel)
       - [7.2.4.9. Type MEFSubUnit](#7249-type-mefsubunit)
     - [7.2.5. Cancel Product Order](#725-cancel-product-order)
-      - [7.2.5.1. Type CancelProductOrder_Create](#7251-type-cancelproductorder_create)
+      - [7.2.5.1. Type CancelProductOrder\_Create](#7251-type-cancelproductorder_create)
       - [7.2.5.2. Type CancelProductOrder](#7252-type-cancelproductorder)
-      - [7.2.5.3. Type CancelProductOrder_Find](#7253-type-cancelproductorder_find)
+      - [7.2.5.3. Type CancelProductOrder\_Find](#7253-type-cancelproductorder_find)
       - [7.2.5.4. `enum` CancellationReasonType](#7254-enum-cancellationreasontype)
       - [7.2.5.5. Type MEFProductOrderRef](#7255-type-mefproductorderref)
     - [7.2.6. Charge](#726-charge)
       - [7.2.6.1. Type MEFProductOrderCharge](#7261-type-mefproductordercharge)
-      - [7.2.6.2. Type MEFProductOrderCharge_Update](#7262-type-mefproductordercharge_update)
-      - [7.2.6.3. Type MEFProductOrderCharge_Find](#7263-type-mefproductordercharge_find)
+      - [7.2.6.2. Type MEFProductOrderCharge\_Update](#7262-type-mefproductordercharge_update)
+      - [7.2.6.3. Type MEFProductOrderCharge\_Find](#7263-type-mefproductordercharge_find)
       - [7.2.6.4. `enum` MEFProductOrderChargeActivityType](#7264-enum-mefproductorderchargeactivitytype)
       - [7.2.6.5. `enum` MEFProductOrderChargeStateType](#7265-enum-mefproductorderchargestatetype)
       - [7.2.6.6. Type MEFProductOrderChargeItem](#7266-type-mefproductorderchargeitem)
-      - [7.2.6.7. Type MEFProductOrderChargeItem_Update](#7267-type-mefproductorderchargeitem_update)
+      - [7.2.6.7. Type MEFProductOrderChargeItem\_Update](#7267-type-mefproductorderchargeitem_update)
       - [7.2.6.8. `enum` MEFProductOrderChargeItemStateType](#7268-enum-mefproductorderchargeitemstatetype)
       - [7.2.6.9. `enum` MEFPriceCategory](#7269-enum-mefpricecategory)
       - [7.2.6.10. Type MEFCancelProductOrderRef](#72610-type-mefcancelproductorderref)
       - [7.2.6.11. Type MEFModifyProductOrderItemRequestedDeliveryDateRef](#72611-type-mefmodifyproductorderitemrequesteddeliverydateref)
     - [7.2.7. Modify Product Order Item Requested Delivery Date](#727-modify-product-order-item-requested-delivery-date)
-      - [7.2.7.1. Type MEFModifyProductOrderItemRequestedDeliveryDate_Create](#7271-type-mefmodifyproductorderitemrequesteddeliverydate_create)
+      - [7.2.7.1. Type MEFModifyProductOrderItemRequestedDeliveryDate\_Create](#7271-type-mefmodifyproductorderitemrequesteddeliverydate_create)
       - [7.2.7.2. Type MEFModifyProductOrderItemRequestedDeliveryDate](#7272-type-mefmodifyproductorderitemrequesteddeliverydate)
     - [7.2.8. Notification registration](#728-notification-registration)
       - [7.2.8.1. Type EventSubscriptionInput](#7281-type-eventsubscriptioninput)
@@ -252,6 +252,7 @@ contained herein.
     - [7.3.12. Type ChargeEventPayload](#7312-type-chargeeventpayload)
     - [7.3.13. `enum` ChargeEventType](#7313-enum-chargeeventtype)
 - [8. References](#8-references)
+- [Appendix A Acknowledgments](#appendix-a-acknowledgments)
 
 <!-- /code_chunk_output -->
 
@@ -262,11 +263,13 @@ contained herein.
 The following members of the MEF participated in the development of this
 document and have requested to be included in this list.
 
-| Member |
-| ------ |
-|        |
-|        |
-|        |
+| Member                 |
+| ---------------------- |
+| Amartus                |
+| Lumen Technologies     |
+| NEC/Netcracker         |
+| Proximus               |
+| Spirent Communications |
 
 **Table 1. Contributing Members**
 
@@ -281,17 +284,25 @@ complementary API definitions for Product Order Management and Product Order
 Notification.
 
 This standard normatively incorporates the following files by reference as if
-they were part of this document, from the GitHub repository
+they were part of this document, from the GitHub repository:
 
 <https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK>
 
-- `productApi/order/productOrderManagement.api.yaml`
-- `productApi/order/productOrderNotification.api.yaml`
+commit id:
+[441ed1cc7e37cfbf666f46e746d6d546e27c0624](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/tree/441ed1cc7e37cfbf666f46e746d6d546e27c0624)
+
+- [`productApi/order/productOrderManagement.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/blob/441ed1cc7e37cfbf666f46e746d6d546e27c0624/productApi/order/productOrderManagement.api.yaml)
+- [`productApi/order/productOrderNotification.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/blob/441ed1cc7e37cfbf666f46e746d6d546e27c0624/productApi/order/productOrderNotification.api.yaml)
 
 <https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK>
 
-- `productApi/order/productOrderManagement.api.yaml`
-- `productApi/order/productOrderNotification.api.yaml`
+commit id:
+[c5c0a815a24fa5e230d5a668724d8e69a0b92b64](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/tree/c5c0a815a24fa5e230d5a668724d8e69a0b92b64)
+
+- [`productApi/order/productOrderManagement.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/blob/c5c0a815a24fa5e230d5a668724d8e69a0b92b64/productApi/order/productOrderManagement.api.yaml)
+- [`productApi/order/productOrderNotification.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/blob/c5c0a815a24fa5e230d5a668724d8e69a0b92b64/productApi/order/productOrderNotification.api.yaml)
+
+<div class="page"/>
 
 # 2. Terminology and Abbreviations
 
@@ -300,6 +311,14 @@ normative definitions of terms are found in other documents. In these cases,
 the third column is used to provide the reference that is controlling, in other
 MEF or external documents.
 
+In addition, terms defined in the standards referenced below are included in
+this document by reference and are not repeated in the table below:
+
+- MEF 55.1
+- MEF 57.2
+- MEF 79
+- MEF 80
+
 <table>
 <tr>
   <th>Term</th>
@@ -307,7 +326,7 @@ MEF or external documents.
   <th>Reference</th>
 </tr>
 <tr>
-  <td>Application Program Interface (API)</td>
+  <td>Application Program Interface</td>
   <td>In the context of LSO, API describes one of the Management Interface Reference Points based on the requirements specified in an Interface Profile, along with a data model, the protocol that defines operations on the data and the encoding format used to encode data according to the data model. In this document, API is used synonymously with REST API.</td>
   <td><a href="#8-references">[MEF55.1]</td>
 </tr>
@@ -358,7 +377,7 @@ MEF or external documents.
 </tr>
 <tr>
   <td>REST API</td>
-  <td>Representational State Transfer. REST provides a set of architectural constraints that, when applied as a whole, emphasizes scalability of component interactions, generality of interfaces, independent deployment of components, and intermediary components to reduce interaction latency, enforce security, and encapsulate legacy systems.</td>
+  <td>REST provides a set of architectural constraints that, when applied as a whole, emphasizes scalability of component interactions, generality of interfaces, independent deployment of components, and intermediary components to reduce interaction latency, enforce security, and encapsulate legacy systems.</td>
   <td><a href="#8-references">[REST]</a> </td>
 </tr>
 <tr>
@@ -367,6 +386,30 @@ MEF or external documents.
   <td>This document; adapted from <a href="#8-references">[MEF80]</td>
 </tr>
 </table>
+
+**Table 2. Terminology**
+
+<table>
+<tr>
+  <th>Term</th>
+  <th>Description</th>
+  <th>Reference</th>
+</tr>
+<tr>
+  <td>API</td>
+  <td>Application Program Interface</td>
+  <td><a href="#8-references">[MEF55.1]</td>
+</tr>
+<tr>
+  <td>REST API</td>
+  <td>Representational State Transfer API</td>
+  <td><a href="#8-references">[REST]</a> </td>
+</tr>
+</table>
+
+**Table 3. Abbreviations**
+
+<div class="page"/>
 
 # 3. Compliance Levels
 
@@ -392,6 +435,8 @@ Requirement that **SHOULD** be followed if the condition(s) following the "<"
 have been met. A paragraph preceded by **[COc]<**specifies a Conditional
 Optional Requirement that **MAY** be followed if the condition(s) following the
 "<" have been met.
+
+<div class="page"/>
 
 # 4. Introduction
 
@@ -510,8 +555,8 @@ that are applied across all Cantata or Sonata APIs.
 Secondly, the product-independent information of the framework focuses on a
 model of a particular Cantata or Sonata functionality and is agnostic to any of
 the product specifications. For example, this standard is describing the
-Product Order model and operations that allow performing quoting of any product
-that is aligned with either MEF or custom product specifications.  
+Product Order model and operations that allow ordering of any product that is
+aligned with either MEF or custom product specifications.  
 Finally, the product-specific information part of the framework focuses on MEF
 product specifications that define business-relevant attributes and
 requirements for trading MEF subscriber and MEF operator services.
@@ -558,6 +603,8 @@ the whole process and Product Order Management's position within it.
     receive notifications about Incidents' and Trouble Tickets' updates. This
     allows managing issues and situations for a Product provided by the Seller.
 
+<div class="page"/>
+
 # 5. API Description
 
 This section presents the API structure and design patterns. It starts with the
@@ -583,10 +630,10 @@ the endpoint mapping. Use cases are described extensively in
 ### 5.2.1. Seller side API Endpoints
 
 **Base URL for Cantata**:
-`https://{{serverBase}}:{{port}}:{{port}}{{?/seller_prefix}}/mefApi/cantata/productOrderingManagement/v3/`
+`https://{{serverBase}}:{{port}}{{?/seller_prefix}}/mefApi/cantata/productOrderingManagement/v5/`
 
 **Base URL for Sonata**:
-`https://{{serverBase}}:{{port}}:{{port}}{{?/seller_prefix}}/mefApi/sonata/productOrderingManagement/v8/`
+`https://{{serverBase}}:{{port}}{{?/seller_prefix}}/mefApi/sonata/productOrderingManagement/v10/`
 
 The following API endpoints are implemented by the Seller and allow the Buyer
 to send Product Order requests, retrieve existing Product Orders or Product
@@ -603,9 +650,9 @@ the optional ones.
 | `GET /productOrder`        | A request initiated by the Buyer to retrieve a list of Product Orders that match the provided filter criteria                              | UC 3: Retrieve List of Product Orders                                                                                                                                                             |
 | `GET /productOrder/{{id}}` | A request initiated by the Buyer to retrieve the details associated with a specific Product Order with the given Product Order Identifier. | UC 4: Retrieve Product Order by Product Order Identifier                                                                                                                                          |
 
-**Table 2. Seller side mandatory API endpoints**
+**Table 4. Seller side mandatory API endpoints**
 
-**[R1]** The Seller **MUST** support API endpoints listed in Table 2. [*MEF57.2
+**[R1]** The Seller **MUST** support API endpoints listed in Table 4. [MEF57.2
 R1]
 
 | API endpoint                                              | Description                                                                                                                                                                                                        | MEF 57.2 Use Case mapping                                                                                                                                                                                                                                           |
@@ -619,15 +666,15 @@ R1]
 | `PATCH /charge/{{id}}`                                    | A Buyer communicates to the Seller if they Accept or Decline Charge Items.                                                                                                                                         | UC 12: Respond to Charge</br>UC 12a: Respond to Charge Associated to a Product Order Item</br> UC 12b: Respond to Charge Associated to a Modify Product Order Item Requested Delivery Date</br> UC 12c: Respond to Charge Associated to a Cancel Product Order</br> |
 | `POST /modifyProductOrderItemRequestedDeliveryDate`       | A request initiated by the Buyer to modify the requested delivery date of a Product Order Item.                                                                                                                    | UC 5: Modify Product Order Item Requested Delivery Date </br> UC 5a: Modify Expedite Indicator </br> UC 5b: Modify Product Order Item Requested Delivery Date RequestRequest                                                                                        |
 | `GET /modifyProductOrderItemRequestedDeliveryDate`        | A request initiated by the Buyer to retrieve a list of Modify Product Order Item Requested Delivery Date that matches the provided filter criteria                                                                 | UC 6: Retrieve Modify Product Order Item Requested Delivery Date List                                                                                                                                                                                               |
-| `GET /modifyProductOrderItemRequestedDeliveryDate/{{id}}` | A request initiated by the Buyer to retrieve the details associated with a specific Modify Product Order Item Requested Delivery Date with the given Modify Product Order Item Requested Delivery Date Identifier. | UC 7: Retrieve Modify Product Order Item Requested Delivery Date by Identifier                                                                                                                                                                                      |
+| `GET /modifyProductOrderItemRequestedDeliveryDate/{{id}}` | A request initiated by the Buyer to retrieve the details associated with a specific Modify Product Order Item Requested Delivery Date with the given Modify Product Order Item Requested Delivery Date Identifier. | UC 7: Retrieve Modify Product Order Item Requested Delivery Date by Modify Product Order Item Requested Delivery Date Identifier                                                                                                                                    |
 | `POST /hub`                                               | The Buyer requests to subscribe to notifications.                                                                                                                                                                  | UC 15: Register for Notifications                                                                                                                                                                                                                                   |
 | `GET /hub/{{id}}`                                         | A request initiated by the Buyer to retrieve the details of the notification subscription.                                                                                                                         | UC 15: Register for Notifications                                                                                                                                                                                                                                   |
 | `DELETE /hub/{{id}}`                                      | A request initiated by the Buyer to instruct the Seller to stop sending notifications.                                                                                                                             | UC 15: Register for Notifications                                                                                                                                                                                                                                   |
 
-**Table 3. Seller side optional API endpoints**
+**Table 5. Seller side optional API endpoints**
 
-**[O1]** The Seller **MAY** support API endpoints listed in Table 3. [*MEF57.2
-R2]
+**[O1]** The Seller **MAY** support API endpoints listed in Table 5. [MEF57.2
+O1]
 
 **[CR1]<[O1]** If any of the endpoints implementing Use Cases 5, 5a, 5b, 6, or
 7 is supported then all endpoints implementing Use Cases 5, 5a, 5b, 6, and 7
@@ -649,10 +696,10 @@ supported. [MEF57.2 CR4<O1]
 ### 5.2.2. Buyer side API Endpoints
 
 **Base URL for Cantata**:
-`https://{{serverBase}}:{{port}}{{?/buyer_prefix}}/mefApi/cantata/productOrderNotification/v3/`
+`https://{{serverBase}}:{{port}}{{?/buyer_prefix}}/mefApi/cantata/productOrderingNotification/v5/`
 
 **Base URL for Sonata**:
-`https://{{serverBase}}:{{port}}{{?/buyer_prefix}}/mefApi/sonata/productOrderNotification/v8/`
+`https://{{serverBase}}:{{port}}{{?/buyer_prefix}}/mefApi/sonata/productOrderingNotification/v10/`
 
 The following API Endpoints are used by the Seller to post notifications to
 registered listeners. The endpoints and corresponding data model are defined in
@@ -671,7 +718,7 @@ requirements stated in the previous chapter for more details.
 | `POST /listener/chargeCreateEvent`                             | A request initiated by the Seller to notify the Buyer on `Charge` create event to initiate the charge process.             | UC 11: Initiate Charge<br/>UC 11a: Initiate Charge associated to Product Order<br/>UC 11b: Initiate Charge Associated to Modify Product Order Item Requested Delivery Date<br/>UC 11c: Initiate Charge Associated to Cancel Product Order<br/>UC 15: Send Notification |
 | `POST /listener/chargeStateChangeEvent`                        | A request initiated by the Seller to notify the Buyer on `Charge` state change.                                            | UC 15: Send Notification                                                                                                                                                                                                                                               |
 
-**Table 4. Buyer side API endpoints**
+**Table 6. Buyer side API endpoints**
 
 ## 5.3. Specifying the Buyer ID and the Seller ID
 
@@ -850,7 +897,7 @@ these data models in which:
 - some relations and attributes that are not essential to the understanding of
   the product specification model are omitted.
 
-The red color in figures 6 and 7 below highlights the data model of Access
+The red color in Figures 6 and 7 below highlights the data model of Access
 E-Line.
 
 ![Access ELine Product Specification Example](media/product_spec_AEL.png)
@@ -913,43 +960,46 @@ There must be an authentication mechanism whereby a Seller can be assured who a
 Buyer is and vice-versa. There must also be authorization mechanisms in place
 to control what a particular Buyer or Seller is allowed to do and what
 information may be obtained. However, the definition of the exact security
-mechanism and configuration is outside the scope of this document. It is being
-worked on by a separate MEF Project (MEF W128).
+mechanism and configuration is outside the scope of this document. The LSO
+Security mechanisms are defined by MEF 128 _LSO API Security Profiles_
+[[MEF128](#8-references)].
+
+<div class="page"/>
 
 # 6. API Interactions and Flows
 
 This section provides a detailed insight into the API functionality, use cases,
-and flows. It starts with Table 5 presenting a list and short description of
+and flows. It starts with Table 7 presenting a list and short description of
 all business use cases then presents the variants of end-to-end interaction
 flows, and in following subchapters describes the API usage flow and examples
 for each of the use cases.
 
-| Use Case # | Use Case Name                                                                                                                                                       | Use Case Description                                                                                                                                                                                                                                                                                                                                                 | Mandatory or optional |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
-| 1          | [Create Product Order](#61-use-case-1-create-product-order)                                                                                                         | A request initiated by the Buyer to Product Order a new product or service component(s). A Product Order must contain at least one Product Order Item (Use Case # 1-a, 1-b, or 1-c) as shown below. A Product Order may contain more than one Product Order Item and Product Order Items within a Product Order are not required to have relationships between them. | Mandatory             |
-| 1-a        | [Product Order Item to Install Product](#616-use-case-1a-product-order-item-to-install-product)                                                                     | Product Order Item installs a new Product.                                                                                                                                                                                                                                                                                                                           | Mandatory             |
-| 1-b        | [Product Order Item to Change Existing Product](#617-use-case-1b-product-order-item-to-change-existing-product)                                                     | Product Order Item changes attributes of a specific active Product.                                                                                                                                                                                                                                                                                                  | Mandatory             |
-| 1-c        | [Product Order Item to Disconnect Existing Product](#618-use-case-1c-product-order-item-to-disconnect-existing-product)                                             | Product Order Item disconnects an active Product.                                                                                                                                                                                                                                                                                                                    | Mandatory             |
-| 2          | [Update Product Order](#62-use-case-2-update-product-order)                                                                                                         | Allows the Buyer to update some Product Order and Product Order Item Attributes                                                                                                                                                                                                                                                                                      | Optional              |
-| 3          | [Retrieve List of Product Orders](#63-use-case-3-retrieve-list-of-product-orders)                                                                                   | A request initiated by the Buyer to retrieve a list of Product Orders that match the provided filter criteria                                                                                                                                                                                                                                                        | Mandatory             |
-| 4          | [Retrieve Product Order by Product Order Identifier](#64-use-case-4-retrieve-product-order-by-product-order-identifier)                                             | A request initiated by the Buyer to retrieve the details associated with a specific Product Order with the given Product Order Identifier.                                                                                                                                                                                                                           | Mandatory             |
-| 5          | [Modify Product Order Item Requested Delivery Date](#65-use-case-5-modify-product-order-item-requested-delivery-date)                                               | A request initiated by the Buyer to modify either the Expedite Indicator or the Requested Completion Date of a Product Order Item.                                                                                                                                                                                                                                   | Optional              |
-| 6          | [Retrieve Modify Product Order Item Requested Delivery Date List](#66-use-case-6-retrieve-modify-product-order-item-requested-delivery-date-list)                   | A request initiated by the Buyer to retrieve a list of Modify Product Order Item Requested Delivery Date that match the provided filter criteria                                                                                                                                                                                                                     | Optional              |
-| 7          | [Retrieve Modify Product Order Item Requested Delivery Date by Identifier](#67-use-case-7-retrieve-modify-product-order-item-requested-delivery-date-by-identifier) | A request initiated by the Buyer to retrieve the details associated with a specific Modify Product Order Item Requested Delivery Date with the given Modify Product Order Item Requested Delivery Date Identifier.                                                                                                                                                   | Optional              |
-| 8          | [Cancel Product Order](#68-use-case-8-cancel-product-order)                                                                                                         | A request initiated by the Buyer to cancel an Product Order.                                                                                                                                                                                                                                                                                                         | Optional              |
-| 9          | [Retrieve List of Cancel Requests](#69-use-case-9-retrieve-list-of-cancel-requests)                                                                                 | A request initiated by the Buyer to retrieve a list of Cancel Product Order requests that match the provided filter criteria                                                                                                                                                                                                                                         | Optional              |
-| 10         | [Retrieve Cancel Product Order by Cancel Product Order Identifier](#610-use-case-10-retrieve-cancel-product-order-by-cancel-product-order-identifier)               | A request initiated by the Buyer to retrieve the details associated with a specific Cancel Product Order with the given Cancel Product Order Identifier.                                                                                                                                                                                                             | Optional              |
-| 11         | [Initiate Charge](#611-use-case-11-initiate-charge)                                                                                                                 | Process to communicate charges from the Seller to Buyer                                                                                                                                                                                                                                                                                                              | Optional              |
-| 12         | [Respond to Charge](#612-use-case-12-respond-to-charge)                                                                                                             | Process to communicate if the Buyer accepts or rejects the charges.                                                                                                                                                                                                                                                                                                  | Optional              |
-| 13         | [Retrieve List of Charges](#613-use-case-13-retrieve-list-of-charges)                                                                                               | A request initiated by the Buyer to retrieve a list of Charges that match the provided filter criteria                                                                                                                                                                                                                                                               | Optional              |
-| 14         | [Retrieve Charge by Identifier](#614-use-case-14-retrieve-charge-by-identifier)                                                                                     | A request initiated by the Buyer to retrieve the details associated with a specific Charge with the given ChargeIdentifier.                                                                                                                                                                                                                                          | Optional              |
-| 15         | [Register for Notifications](#615-use-case-15-register-for-notifications)                                                                                           | The Buyer requests to subscribe to notifications for the Use Cas-es which the Seller supports including Create Product Order, Cancel Product Order, Charges, or Modify Product Order Item Requested Delivery Date.                                                                                                                                                   | Optional              |
-| 16         | [Send Notification](#616-use-case-16-send-notification)                                                                                                             | A notification initiated by the Seller to the Buyer providing subsequent status information on Create Product Order, Cancel Product Order, Modify Product Order Item Requested Delivery Date, and Initiate Charge.                                                                                                                                                   | Optional              |
+| Use Case # | Use Case Name                                                                                                                                                                                                                                                           | Use Case Description                                                                                                                                                                                                                                                                                                                                                 | Mandatory or optional |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
+| 1          | [Create Product Order](#61-use-case-1-create-product-order)                                                                                                                                                                                                             | A request initiated by the Buyer to order a new product or product component(s). A Product Order must contain at least one Product Order Item (Use Case # 1-a, 1-b, or 1-c) as shown below. A Product Order may contain more than one Product Order Item and Product Order Items within a Product Order are not required to have relationships between them. | Mandatory             |
+| 1-a        | [Product Order Item to Install Product](#616-use-case-1a-product-order-item-to-install-product)                                                                                                                                                                         | Product Order Item installs a new Product.                                                                                                                                                                                                                                                                                                                           | Mandatory             |
+| 1-b        | [Product Order Item to Change Existing Product](#617-use-case-1b-product-order-item-to-change-existing-product)                                                                                                                                                         | Product Order Item changes attributes of a specific active Product.                                                                                                                                                                                                                                                                                                  | Mandatory             |
+| 1-c        | [Product Order Item to Disconnect Existing Product](#618-use-case-1c-product-order-item-to-disconnect-existing-product)                                                                                                                                                 | Product Order Item disconnects an active Product.                                                                                                                                                                                                                                                                                                                    | Mandatory             |
+| 2          | [Update Product Order](#62-use-case-2-update-product-order)                                                                                                                                                                                                             | Allows the Buyer to update some Product Order and Product Order Item Attributes                                                                                                                                                                                                                                                                                      | Optional              |
+| 3          | [Retrieve List of Product Orders](#63-use-case-3-retrieve-list-of-product-orders)                                                                                                                                                                                       | A request initiated by the Buyer to retrieve a list of Product Orders that match the provided filter criteria                                                                                                                                                                                                                                                        | Mandatory             |
+| 4          | [Retrieve Product Order by Product Order Identifier](#64-use-case-4-retrieve-product-order-by-product-order-identifier)                                                                                                                                                 | A request initiated by the Buyer to retrieve the details associated with a specific Product Order with the given Product Order Identifier.                                                                                                                                                                                                                           | Mandatory             |
+| 5          | [Modify Product Order Item Requested Delivery Date](#65-use-case-5-modify-product-order-item-requested-delivery-date)                                                                                                                                                   | A request initiated by the Buyer to modify either the Expedite Indicator or the Requested Completion Date of a Product Order Item.                                                                                                                                                                                                                                   | Optional              |
+| 6          | [Retrieve Modify Product Order Item Requested Delivery Date List](#66-use-case-6-retrieve-modify-product-order-item-requested-delivery-date-list)                                                                                                                       | A request initiated by the Buyer to retrieve a list of Modify Product Order Item Requested Delivery Date that match the provided filter criteria                                                                                                                                                                                                                     | Optional              |
+| 7          | [Retrieve Modify Product Order Item Requested Delivery Date by Modify Product Order Item Requested Delivery Date Identifier](#67-use-case-7-retrieve-modify-product-order-item-requested-delivery-date-by-modify-product-order-item-requested-delivery-date-identifier) | A request initiated by the Buyer to retrieve the details associated with a specific Modify Product Order Item Requested Delivery Date with the given Modify Product Order Item Requested Delivery Date Identifier.                                                                                                                                                   | Optional              |
+| 8          | [Cancel Product Order](#68-use-case-8-cancel-product-order)                                                                                                                                                                                                             | A request initiated by the Buyer to cancel an Product Order.                                                                                                                                                                                                                                                                                                         | Optional              |
+| 9          | [Retrieve List of Cancel Requests](#69-use-case-9-retrieve-list-of-cancel-requests)                                                                                                                                                                                     | A request initiated by the Buyer to retrieve a list of Cancel Product Order requests that match the provided filter criteria                                                                                                                                                                                                                                         | Optional              |
+| 10         | [Retrieve Cancel Product Order by Cancel Product Order Identifier](#610-use-case-10-retrieve-cancel-product-order-by-cancel-product-order-identifier)                                                                                                                   | A request initiated by the Buyer to retrieve the details associated with a specific Cancel Product Order with the given Cancel Product Order Identifier.                                                                                                                                                                                                             | Optional              |
+| 11         | [Initiate Charge](#611-use-case-11-initiate-charge)                                                                                                                                                                                                                     | Process to communicate charges from the Seller to Buyer                                                                                                                                                                                                                                                                                                              | Optional              |
+| 12         | [Respond to Charge](#612-use-case-12-respond-to-charge)                                                                                                                                                                                                                 | Process to communicate if the Buyer accepts or rejects the charges.                                                                                                                                                                                                                                                                                                  | Optional              |
+| 13         | [Retrieve List of Charges](#613-use-case-13-retrieve-list-of-charges)                                                                                                                                                                                                   | A request initiated by the Buyer to retrieve a list of Charges that match the provided filter criteria                                                                                                                                                                                                                                                               | Optional              |
+| 14         | [Retrieve Charge by Identifier](#614-use-case-14-retrieve-charge-by-identifier)                                                                                                                                                                                         | A request initiated by the Buyer to retrieve the details associated with a specific Charge with the given ChargeIdentifier.                                                                                                                                                                                                                                          | Optional              |
+| 15         | [Register for Notifications](#615-use-case-15-register-for-notifications)                                                                                                                                                                                               | The Buyer requests to subscribe to notifications for the Use Cases which the Seller supports including Create Product Order, Cancel Product Order, Charges, or Modify Product Order Item Requested Delivery Date.                                                                                                                                                   | Optional              |
+| 16         | [Send Notification](#616-use-case-16-send-notification)                                                                                                                                                                                                                 | A notification initiated by the Seller to the Buyer providing subsequent status information on Create Product Order, Cancel Product Order, Modify Product Order Item Requested Delivery Date, and Initiate Charge.                                                                                                                                                   | Optional              |
 
-**Table 5. Use cases description**
+**Table 7. Use cases description**
 
 The detailed business requirements of each of the use cases are described in
-sections 8 and 10 of MEF 57.2 [[MEF57.2](#8-references)].
+sections 7 and 1 of MEF 57.2 [[MEF57.2](#8-references)].
 
 ## 6.1. Use case 1: Create Product Order
 
@@ -1161,6 +1211,9 @@ potential delay between the events.
 **[R13]** The Buyer's request **MUST** specify a `relatedContactInformation`
 item with a `role` set to `productOrderContact`. [MEF57.2 R61]
 
+**[O2]** The Buyer and Seller **MAY** agree on using other contact `roles`.
+[MEF57.2 O3]
+
 **_Note:_** During the onboarding the Seller may require to provide an
 additional contact `role`.
 
@@ -1171,7 +1224,7 @@ message stating which `roles` are accepted. It may also be ignored
 
 For each `productOrderItem`:
 
-**[R14]** The Buyer's Create Product Order request **MUST** contain: [*MEF57.2
+**[R14]** The Buyer's Create Product Order request **MUST** contain: [MEF57.2
 R22], [MEF57.2 R16]
 
 - `id`,
@@ -1182,20 +1235,20 @@ R22], [MEF57.2 R16]
   - `buyerImplementationContact`,
   - `buyerTechnicalContact`.
 
-**[O2]** The Seller **MAY** require that the `billingAccount` attributes be the
+**[O3]** The Seller **MAY** require that the `billingAccount` attributes be the
 same for all Product Order Items in a Product Order. [MEF57.2 O8]
 
-**[O3]** The Seller **MAY** require the Buyer to perform a POQ prior to
-submitting the Product Order. [MEF57.2 O5]
+**[O4]** The Seller **MAY** require the Buyer to perform a POQ prior to
+submitting the Product Order. [MEF57.2 O7]
 
-**[CR5]<[O3]** The Buyer's request **MUST** provide the
-`productOfferingQualificationItem` if required by the Seller. [MEF57.2 CR5<O5]
+**[CR5]<[O4]** The Buyer's request **MUST** provide the
+`productOfferingQualificationItem` if required by the Seller. [MEF57.2 CR5<O7]
 
-**[O4]** The Seller **MAY** require the Buyer to perform a Quote prior to
-submitting the Product Order. [MEF57.2 O6]
+**[O5]** The Seller **MAY** require the Buyer to perform a Quote prior to
+submitting the Product Order. [MEF57.2 O8]
 
-**[CR6]<[O4]** The Buyer's request **MUST** provide the `quoteItem` if required
-by the Seller.[MEF57.2 CR6<O6]
+**[CR6]<[O5]** The Buyer's request **MUST** provide the `quoteItem` if required
+by the Seller.[MEF57.2 CR6<O8]
 
 **[R15]** If the Buyer requires the `tspRestorationPriority` to be specified
 for the Product Order Item, the Buyer's Create Product Order request **MUST**
@@ -1348,7 +1401,7 @@ Some of them are valid only in the future lifecycle of the `Product Order`
 (e.g. `cancellationDate`, `cancellationReason`, `completionDate`).
 
 **[R16]** The Seller's response **MUST** include all and unchanged attributes'
-values provided in the request. [MEF57.2 R19], [MEF57.2 R34]
+values as provided in the request. [MEF57.2 R19], [MEF57.2 R33]
 
 These attributes are indicated above with an appropriate comment:
 `<< as provided by the Buyer >>`.
@@ -1370,16 +1423,9 @@ Order. [MEF57.2 R17]
 **[R19]** The `stateChange` **MUST** contain a full history of the
 `productOrder.state`. [MEF57.2 R20], , [MEF57.2 R57]
 
-**[O5]** The Seller **MAY** support Product Order Item Milestones.
-
-**[CR7]<[O5]** If the Seller supports Milestones, the Seller **MUST** also
-suport Milestone Notifications.
-
-**[CR8]<[O5]** If the Seller supports Milestones, the Seller **MUST** store the
-Milestone history in `milestone` attribute.
-
 **[O6]** The Seller **MAY** add a `note` to any Product Order that is not in
-the `completed`, `partial`, or `failed` states. [MEF57.2 O7]
+the `completed`, `partial`, `rejected`, `cancelled`, or `failed` states.
+[MEF57.2 O9]
 
 **[R20]** The Seller **MUST** add a `note` only with `source=seller`. [MEF57.2
 R9], [MEF57.2 R10]
@@ -1389,34 +1435,34 @@ R9], [MEF57.2 R10]
 
 For each `productOrderItem`:
 
-**[R22]** The response **MUST** have the `state` attribute set. [MEF57.2 R33]
+**[R22]** The response **MUST** have the `state` attribute set. [MEF57.2 R32]
 
 **[R23]** The `stateChange` **MUST** contain a full history of the `state`.
 [MEF57.2 R51], [MEF57.2 R60]
 
 **[R24]** If in the request the `expediteIndicator` is `false`, the Seller's
 response **MUST NOT** have the `expediteAcceptedIndicator` attribute set to
-`true`. [MEF57.2 R35]
+`true`. [MEF57.2 R34]
 
 **[R25]** The response **MUST NOT** include the `expediteAcceptedIndicator`
 attribute set to `true` until the Charge process for any charges associated
-with the expedite is complete. [MEF57.2 R36]
+with the expedite is complete. [MEF57.2 R35]
 
 **[R26]** If there are any additional costs associated with the Product Order
 Item and it's `state` is `held.assessingCharge`, the Seller's response **MUST**
-have the `charge` attribute filled with these costs. [MEF57.2 R40]
+have the `charge` attribute filled with these costs. [MEF57.2 R39]
 
 **[R27]** If the Product Order Item `state` in the Seller's response is
 `cancelled` or `failed`, the `expectedCompletionDate` attribute **MUST NOT** be
-provided. [MEF57.2 R37]
+provided. [MEF57.2 R36]
 
 **[R28]** If the Product Order Item `state` in the Seller's response is
 `inProgress`, the `expectedCompletionDate` attribute **MUST** be provided.
-[MEF57.2 R38]
+[MEF57.2 R37]
 
 **[R29]** If the Product Order Item `state` in the Seller's response is not
-`completed`, the response **MUST NOT** contain the `expectedCompletionDate`.
-[MEF57.2 R39]
+`completed`, the response **MUST NOT** contain the `completionDate`.
+[MEF57.2 R38]
 
 ### 6.1.6. Use Case 1a: Product Order Item to Install Product
 
@@ -1670,7 +1716,7 @@ The following requirements apply to `productOrderItem` when `action` is
 
 **[R39]** The modify request **MUST** specify a reference (provide
 `product.id`) to an existing product which is a subject of this order and
-provide the desired `product.productConfiguration`. [MEF57.2 R24], [*MEF57.2
+provide the desired `product.productConfiguration`. [MEF57.2 R24], [MEF57.2
 R56]
 
 **[R40]** The modify request **MUST** repeat the same values (specified or
@@ -1684,11 +1730,10 @@ same Product Order, the `productOrderItemRelationship` **MUST** be specified.
 
 **[R42]** The Buyer **MUST** provide the `requestedItemTerm`. [MEF57.2 R54]
 
-**[O7]** The Buyer **MAY** include the `billingAccount`. [MEF57.2 O10],
-[MEF57.2 O12]
+**[O7]** The Buyer **MAY** include the `billingAccount`. [MEF57.2 O12]
 
 **[O8]** The Seller **MAY** require that the `billingAccount` attributes be the
-same for all Product Order Items in a Product Order. [MEF57.2 O8]
+same for all Product Order Items in a Product Order. [MEF57.2 O10]
 
 There is no possibility to send an update to single attributes. The Buyer must
 send a full product description (the whole `product.productConfiguration`
@@ -1900,7 +1945,7 @@ Error response cannot be provided anymore so the order moves to a `rejected`
 state if some issues are found. The `productOrderItem.terminationError` acts as
 a placeholder to provide a detailed description of what caused the problem.
 
-Table 6 presents the mapping between the API `state` names (aligned with TMF)
+Table 8 presents the mapping between the API `state` names (aligned with TMF)
 and the MEF 57.2 naming, together with states' description.
 
 | state                           | MEF 57.2 name          | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
@@ -1911,13 +1956,13 @@ and the MEF 57.2 naming, together with states' description.
 | `pending.assessingModification` | ASSESSING_MODIFICATION | A request has been made by the Buyer to modify either the `expediteIndicator` or the `requestedCompletionDate` of a Product Order Item. The Product Order Item is currently being assessed to determine whether the Modify Product Order Item Requested Delivery Date is valid. If there is a charge associated with the Modify Product Order Item Requested Delivery Date, the Product Order remains in the `pending.assessingModification` state until the Charge is completed or withdrawn by the Seller. Once the Buyer's request has been validated and any associated Charges completed, the Product Order returns to the `inProgress` state.                                                                                                                                      |
 | `cancelled`                     | CANCELLED              | The Product Order has been successfully cancelled. This is a terminal state.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `pendingCancellation`           | CANCELLING             | The Buyer's Cancel Request has been assessed and it has been determined that it is feasible to proceed with the cancellation. This state can also result from a Seller cancelling the Product Order within their systems without a request from the Buyer.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| `completed`                     | COMPLETED              | The Product Order has completed fulfillment and the Product is now active. This is a terminal state                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `completed`                     | COMPLETED              | The Product Order has completed fulfillment. This is a terminal state                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | `failed`                        | FAILED                 | All Product Order Items have failed which results in the entire Product Order failing. This is a terminal state.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | `inProgress`                    | IN_PROGRESS            | The Product Order has been successfully validated, and fulfillment has started.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | `partial`                       | PARTIAL                | Fulfillment of at least one Product Order Item has failed, and fulfillment of at least one Product Order Item has been successful. This is a terminal state.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `rejected`                      | REJECTED               | A Product Order was submitted, and it has failed at least one of the validation checks the Seller performs after it reached the `acknowledged` state                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 
-**Table 6. Product Order states**
+**Table 8. Product Order states**
 
 ### 6.1.10 Product Order Item State Machine
 
@@ -1925,7 +1970,7 @@ and the MEF 57.2 naming, together with states' description.
 
 **Figure 14. Product Order Item State Machine**
 
-Table 7 presents the mapping between the API `state` names (aligned with TMF)
+Table 9 presents the mapping between the API `state` names (aligned with TMF)
 and the MEF 57.2 naming, together with the corresponding descriptions.
 
 | state                 | MEF 57.2 name | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
@@ -1941,7 +1986,7 @@ and the MEF 57.2 naming, together with the corresponding descriptions.
 | `rejected.unassessed` | UNASSESSED    | A Product Order was submitted and all validation checks the Seller performs during the `acknowledged` state have not been completed, but another Product Order Item in the Product Order has moved to the `rejected` state.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `rejected.validated`  | VALIDATED     | A Product Order was submitted, and it has passed all validation checks the Seller performs during the `acknowledged` state, but another Product Order Item in the Product Order has moved to the `rejected` state                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 
-**Table 7. Product Order Item states**
+**Table 9. Product Order Item states**
 
 ### 6.1.11. Requirements for Product Order and Product Order Item Lifecycle
 
@@ -1954,15 +1999,15 @@ the response **MUST** contain the `completionDate` attribute. [MEF57.2 R21]
 
 **[R46]** If the Product Order Item `state` in the Seller's response is
 `inProgress`, the `expectedCompletionDate` attribute **MUST** be provided.
-[MEF57.2 R41]
+[MEF57.2 R40]
 
 **[R47]** If the Product Order Item `state` in the Seller's response is
 `cancelled`, the `expectedCompletionDate` attribute **MUST NOT** be provided.
-[MEF57.2 R32]
+[MEF57.2 R42]
 
 **[R48]** If the Product Order Item `state` in the Seller's response is
 `completed`, the response **MUST** contain the `completionDate` attribute.
-[MEF57.2 R42]
+[MEF57.2 R41]
 
 **[R49]** If the Product Order Item `state` in the Seller's response is not
 `completed`, the response **MUST NOT** contain the `completionDate` attribute.
@@ -2190,18 +2235,21 @@ If the Buyer wishes to update a Product Order Item:
 **_Note:_** The `productOrderItem.id` attribute cannot be updated. It is used
 only to refer to identify and items to be updated.
 
-**[R55]** A Buyer's wants to update a Product Order Item, the Patch request
+**[R55]** If a Buyer wants to update a Product Order Item, the Patch request
 **MUST** contain one or more of the `ProductOrderItem` updateable attributes.
 [MEF57.2 R69]
 
-**_Note:_** The Buyer can update a Buyer-related contact by providing a full
-list of existing `relatedContactInformation` items, and updating the value
-those with Buyer-related `roles`.
+**[R56]** The Buyer **MUST** only be able to modify hte Buyer-related contact
+information. [MEF57.2 R4]
 
-**[R56]** The Buyer **MUST** add a `note` only with `source=note`. [*MEF57.2
+**_Note:_** The Buyer can update a Buyer-related contact by providing a full
+list of existing `relatedContactInformation` items, and making updates within
+it.
+
+**[R57]** The Buyer **MUST** add a `note` only with `source=note`. [MEF57.2
 R11], [MEF57.2 R12]
 
-**[R57]** When the Buyer is adding a Note, the `note` list **MUST** be appended
+**[R58]** When the Buyer is adding a Note, the `note` list **MUST** be appended
 with the new `note` item. [MEF57.2 R14]
 
 ## 6.3. Use Case 3: Retrieve List of Product Orders
@@ -2210,7 +2258,7 @@ The Buyer can retrieve a list of `ProductOrders` by using a `GET /productOrder`
 operation with desired filtering criteria.
 
 **[O9]** The Buyer's request **MAY** contain none or more of the following
-attributes: [MEF57.2 O15]
+attributes: [MEF57.2 O16]
 
 - `state`
 - `externalId`
@@ -2223,7 +2271,7 @@ attributes: [MEF57.2 O15]
 - `cancellationDate.lt`
 
 **[O10]** The Buyer's request **MAY** contain any of the following attributes:
-[MEF57.2 O16]
+[MEF57.2 O17]
 
 - `itemRequestedCompletionDate.gt`
 - `itemRequestedCompletionDate.lt`
@@ -2237,7 +2285,7 @@ query format [RFC3986](#8-references). Section
 pagination mechanism.
 
 ```
-https://serverRoot/mefApi/sonata/productOrderingManagement/v8/productOrder?state=completed&projectId=myProject&limit=10&offset=0
+https://serverRoot/mefApi/sonata/productOrderingManagement/v10/productOrder?state=completed&projectId=myProject&limit=10&offset=0
 ```
 
 The example above shows a Buyer's request to get all `ProductOrders` that are
@@ -2248,8 +2296,8 @@ a list of `ProductOrder_Find` objects matching the criteria. To get more
 details (e.g. the item level information), the Buyer has to query a specific
 `ProductOrder` by `id`.
 
-**[R58]** The Seller **MUST** put the following attributes (if set) into the
-`ProductOrder_Find` object in the response: [MEF57.2 R98]
+**[R59]** The Seller **MUST** put the following attributes (if set) into the
+`ProductOrder_Find` object in the response: [MEF57.2 R99]
 
 - `id`
 - `cancellationDate`
@@ -2259,8 +2307,8 @@ details (e.g. the item level information), the Buyer has to query a specific
 - `projectId`
 - `state`
 
-**[R59]** In case no items matching the criteria are found, the Seller **MUST**
-return a valid response with an empty list. [MEF57.2 R100]
+**[R60]** In case no items matching the criteria are found, the Seller **MUST**
+return a valid response with an empty list. [MEF57.2 R101]
 
 ## 6.4. Use Case 4: Retrieve Product Order by Product Order Identifier
 
@@ -2272,12 +2320,12 @@ Buyer has provided while sending a Product Order create request. The attributes
 provided by the Seller depend on the status of the `ProductOrder` and may
 require some time to be set.
 
-**[R60]** Once the product identifier
+**[R61]** Once the product identifier
 (`productOrder.productOrderItem.product.id`) is assigned, it **MUST** be
 provided in the Seller's response.
 
-**[R61]** The Seller's response **MUST** comply with the states and attributes
-detailed in Table 8 and Table 9. [MEF57.2 R102]
+**[R62]** The Seller's response **MUST** comply with the states and attributes
+detailed in Table 10 and Table 11. [MEF57.2 R103]
 
 Please note that for readability purposes following tables do not show
 attributes specified by the Buyer that must be only echoed back ("E") by the
@@ -2299,7 +2347,7 @@ the Buyer, the second for the Values set by the Seller.
 | completionDate            |              |                       |                      | R         |                     | R         | R      |            | R       | R        |
 | note                      | E / PR       | E / PR                | E / PR               | E / PR    | E / PR              | E / PR    | E / PR | E / PR     | E / PR  | E / PR   |
 
-**Table 8. Seller Response Product Order Attributes Based on Product Order
+**Table 10. Seller Response Product Order Attributes Based on Product Order
 State**
 
 |                           | acknowledged | cancelled | completed | failed | held   | inProgress | pending | rejected | rejected.validated | rejected.unassessed |
@@ -2315,8 +2363,8 @@ State**
 | itemTerm                  |              | PR        | PR        | PR     | PR     | PR         | PR      | PR       | PR                 |                     |
 | terminationError          |              |           |           | R      |        |            |         | R        |                    |                     |
 
-**Table 9. Seller Response Product Order Item Attributes Based on Product Order
-Item State**
+**Table 11. Seller Response Product Order Item Attributes Based on Product
+Order Item State**
 
 ## 6.5. Use case 5: Modify Product Order Item Requested Delivery Date
 
@@ -2345,7 +2393,7 @@ Requested Delivery Date use cases:
 **Figure 16. Modify Product Order Item Requested Delivery Date Model**
 
 The state transition and detailed description are presented in Figure 17 and
-Table 10:
+Table 12:
 
 ![Figure 17. Modify Product Order Item Requested Delivery Date States](media/useCase5ModifyStates.png)
 
@@ -2359,7 +2407,7 @@ Table 10:
 | done.declined              | DECLINED         | Blocking charges associated with a Modify Product Order Item Requested Delivery Date have been declined by the Buyer. No updates are made to the Product Order Item.                                                                                                                                                                                                                                                                                                                                                                                                                |
 | rejected                   | REJECTED         | A Modify Product Order Item Requested Delivery Date request was submitted by the Buyer, and it has failed any validation checks the Seller performs during the `acknowledged` state. No updates are made to the referenced Product Order Item.                                                                                                                                                                                                                                                                                                                                      |
 
-**Table 10. Modify Product Order Item Requested Delivery Date States**
+**Table 12. Modify Product Order Item Requested Delivery Date States**
 
 Example of a Buyer's request
 (`modifyProductOrderItemRequestedDeliveryDate_Create`):
@@ -2392,7 +2440,7 @@ Example of a Seller's response (`modifyProductOrderItemRequestedDeliveryDate`):
 
 Below you can find a flow of this use case when there are no additional charges
 identified. A case with additional charges handling is presented in
-[Section 6.12.2](#6122-use-case-11b-initiate-charge-associated-to-modify-product-order-item-requested-delivery-date)
+[Section 6.11.2](#6112-use-case-11b-initiate-charge-associated-to-modify-product-order-item-requested-delivery-date)
 
 ![Figure 18. Modify Product Order Item Requested Delivery Date Flow](media/useCase5ModifyFlow.png)
 
@@ -2412,7 +2460,7 @@ identified. A case with additional charges handling is presented in
   the `modifyProductOrderItemRequestedDeliveryDate` is in the `acknowledged`
   state (The details of the Charge process are not present here for clarity.
   They are provided in
-  [Section 6.12.2](#6122-use-case-11b-initiate-charge-associated-to-modify-product-order-item-requested-delivery-date)
+  [Section 6.11.2](#6112-use-case-11b-initiate-charge-associated-to-modify-product-order-item-requested-delivery-date)
   for details).
 - The Seller accepts the requested change. The
   `modifyProductOrderItemRequestedDeliveryDate` is set to `done` **(12)** and
@@ -2432,7 +2480,7 @@ Seller's implementation.
 
 In this case, the Buyer requests to expedite a Product Order.
 
-**[R62]** The Buyer's sent `modifyProductOrderItemRequestedDeliveryDate_Create`
+**[R63]** The Buyer's sent `modifyProductOrderItemRequestedDeliveryDate_Create`
 **MUST** contain the following attributes: [MEF57.2 R74]
 
 - `productOrderItem`
@@ -2453,10 +2501,10 @@ provided a date they would like it fulfilled by. The `requestedCompletionDate`
 must indicate a shorter time period than the `installationInterval`. The Seller
 may try to honor the date or may ignore it.
 
-**[R63]** The Seller's response **MUST** specify the `id`, `state`, and
+**[R64]** The Seller's response **MUST** specify the `id`, `state`, and
 `creationDate` attributes. [MEF57.2 R75]
 
-**[R64]** The Seller's response **MUST** echo back all attributes and values in
+**[R65]** The Seller's response **MUST** echo back all attributes and values in
 the Buyer's request. [MEF57.2 R76]
 
 ### 6.5.2. Use case 5b: Modify Product Order Item Requested Delivery Date
@@ -2464,7 +2512,7 @@ the Buyer's request. [MEF57.2 R76]
 In this case, the Buyer requests to change the `expectedCompletionDate` of a
 Product Order Item.
 
-**[R65]** The Buyer's sent `modifyProductOrderItemRequestedDeliveryDate_Create`
+**[R66]** The Buyer's sent `modifyProductOrderItemRequestedDeliveryDate_Create`
 **MUST** contain the following attributes: [MEF57.2 R78]
 
 - `productOrderItem`
@@ -2475,10 +2523,10 @@ Item, they set a new `requestedCompletionDate` and the `expediteIndicator` to
 `false` (or just not specify it all as the default value for
 `expediteIndicator` is `false`).
 
-**[R66]** The Seller's response **MUST** specify the `id`, `state`, and
+**[R67]** The Seller's response **MUST** specify the `id`, `state`, and
 `creationDate` attributes. [MEF57.2 R79]
 
-**[R67]** The Seller's response **MUST** echo back all attributes and values in
+**[R68]** The Seller's response **MUST** echo back all attributes and values in
 the Buyer's request. [MEF57.2 R80]
 
 ## 6.6. Use case 6: Retrieve Modify Product Order Item Requested Delivery Date List
@@ -2488,7 +2536,7 @@ by using a `GET /modifyProductOrderItemRequestedDeliveryDate` operation with
 desired filtering criteria.
 
 **[O12]** The Buyer's request **MAY** contain none or any of the following
-attributes: [MEF57.2 O17]
+attributes: [MEF57.2 O18]
 
 - `state`
 - `expediteIndicator`
@@ -2502,8 +2550,8 @@ The rules of using pagination and an example request are provided in
 [section 6.3](#63-use-case-3-retrieve-list-of-product-orders). Please refer to
 it as the rules also apply to this case.
 
-**[R68]** The Seller **MUST** put the following attributes (if set) into the
-response: [MEF57.2 R103]
+**[R69]** The Seller **MUST** put the following attributes (if set) into the
+response: [MEF57.2 R104]
 
 - `id`
 - `creationDate`
@@ -2512,17 +2560,17 @@ response: [MEF57.2 R103]
 - `requestedCompletionDate`
 - `state`
 
-**[R69]** In case no items matching the criteria are found, the Seller **MUST**
-return a valid response with an empty list. [MEF57.2 R104]
+**[R70]** In case no items matching the criteria are found, the Seller **MUST**
+return a valid response with an empty list. [MEF57.2 R105]
 
-## 6.7. Use case 7: Retrieve Modify Product Order Item Requested Delivery Date by Identifier
+## 6.7. Use case 7: Retrieve Modify Product Order Item Requested Delivery Date by Modify Product Order Item Requested Delivery Date Identifier
 
 The Buyer can get detailed information about the Modify Product Order Item
 Requested Delivery Date from the Seller by using a
 `GET /modifyProductOrderItemRequestedDeliveryDate/{{id}}` operation.
 
-**[R70]** The Seller **MUST** put the following attributes (if set) into the
-response: [MEF57.2 R107]
+**[R71]** The Seller **MUST** put the following attributes (if set) into the
+response: [MEF57.2 R108]
 
 - `id`
 - `creationDate`
@@ -2531,9 +2579,9 @@ response: [MEF57.2 R107]
 - `requestedCompletionDate`
 - `state`
 
-**[R71]** In case `id` does not allow to find a
+**[R72]** In case `id` does not allow to find a
 `modifyProductOrderItemRequestedDeliveryDate` in Seller's Inventory, an error
-response `404` must be returned. [MEF57.2 R108]
+response `404` must be returned. [MEF57.2 R109]
 
 ## 6.8. Use case 8: Cancel Product Order
 
@@ -2548,7 +2596,7 @@ The following Figures present the use case's model and flow diagrams.
 **Figure 19. Cancel Product Order Model**
 
 The state transition and detailed description are presented in Figure 20 and
-Table 11:
+Table 13:
 
 ![Figure 20. Cancel Product Order States](media/useCase8CancelStates.png)
 
@@ -2562,7 +2610,7 @@ Table 11:
 | `done.declined`              | DECLINED         | Blocking charges associated with a Cancel Product Order have been declined by the Buyer. No updates are made to the Product Order.                                                                                                   |
 | `rejected`                   | REJECTED         | A Cancel Request was submitted, and it has failed any validation checks the Seller performs during the `acknowledged` state e.g. the Product Order being in an incorrect state. No updates are made to the referenced Product Order. |
 
-**Table 11. Cancel Product Order States**
+**Table 13. Cancel Product Order States**
 
 Example of a Buyer's request (`CancelProductOrder_Create`):
 
@@ -2594,11 +2642,11 @@ Example of a Buyer's request (`CancelProductOrder_Create`):
 }
 ```
 
-**[R72]** A Buyer **MUST** have submitted the Product Order Request to be able
-to submit a Cancel Request on the Product Order. [MEF57.2 R92]
+**[R73]** A Buyer **MUST** have submitted the Product Order Request to be able
+to submit a Cancel Request on the Product Order. [MEF57.2 R93]
 
-**[R73]** The Buyer's Cancel Product Order request **MUST** contain the
-following attributes: [MEF57.2 R93]
+**[R74]** The Buyer's Cancel Product Order request **MUST** contain the
+following attributes: [MEF57.2 R94]
 
 - `productOrder`
 - `relatedContactInformation` (`role=cancelProductOrderContact`)
@@ -2642,11 +2690,11 @@ following attributes: [MEF57.2 R93]
 }
 ```
 
-**[R74]** The Seller **MUST** echo back all Buyer specified attributes in the
-Buyer's Cancel Product Order request. [MEF57.2 R94]
+**[R75]** The Seller **MUST** echo back all Buyer specified attributes in the
+Buyer's Cancel Product Order request. [MEF57.2 R95]
 
-**[R75]** The Seller **MUST** specify the following attributes in the response:
-[MEF57.2 R95]
+**[R76]** The Seller **MUST** specify the following attributes in the response:
+[MEF57.2 R96]
 
 - `id`
 - `state`
@@ -2668,7 +2716,7 @@ Buyer's Cancel Product Order request. [MEF57.2 R94]
   referenced Product Order while the Cancel Request is in the `acknowledged`
   state (The details of the Charge process are not present here for clarity.
   They are provided in
-  [Section 6.12.3](#6123-use-case-11c-initiate-charge-associated-to-cancel-product-order)
+  [Section 6.11.3](#6113-use-case-11c-initiate-charge-associated-to-cancel-product-order)
   for details).
 - The Seller accepts the Cancel Request. The `CancelProductOrder.state` is set
   to `done` **(9)** and the referenced `ProductOrder.state` is set to
@@ -2682,7 +2730,7 @@ The Buyer can retrieve a list of `CancelProductOrder` by using a
 `GET /cancelProductOrder` operation with desired filtering criteria.
 
 **[O13]** The Buyer's request **MAY** contain none or any of the following
-attributes: [MEF57.2 O18]
+attributes: [MEF57.2 O19]
 
 - `productOrderId`
 - `state`
@@ -2692,25 +2740,25 @@ The rules of using pagination and an example request are provided in
 [section 6.3](#63-use-case-3-retrieve-list-of-product-orders). Please refer to
 it as the rules also apply to this case.
 
-**[R76]** The Seller **MUST** put the following attributes (if set) into the
-response: [MEF57.2 R109]
+**[R77]** The Seller **MUST** put the following attributes (if set) into the
+response: [MEF57.2 R110]
 
 - `id`
 - `cancellationReasonType`
 - `productOrder`
 - `state`
 
-**[R77]** In case no items matching the criteria are found, the Seller **MUST**
-return a valid response with an empty list. [MEF57.2 R110]
+**[R78]** In case no items matching the criteria are found, the Seller **MUST**
+return a valid response with an empty list. [MEF57.2 R111]
 
 ## 6.10. Use case 10: Retrieve Cancel Product Order by Cancel Product Order Identifier
 
 The Buyer can get detailed information about the Cancel Product Order request
 from the Seller by using a `GET /cancelProductOrder/{{id}}` operation.
 
-**[R78]** The Seller's response **MUST** echo back all attributes provided by
+**[R79]** The Seller's response **MUST** echo back all attributes provided by
 the Buyer in the request and provide the following attributes (if set):
-[MEF57.2 R113]
+[MEF57.2 R114]
 
 - `id`
 - `cancellationDeniedReason`
@@ -2764,7 +2812,7 @@ The Figures and Tables below present the Charge and Charge Item states.
 | `timeout`           | TIMEOUT             | A Charge Item has been declined by the Buyer. The referenced Product Order and Product Order Items are updated. If a Blocking charge is declined, the Seller may cancel the referenced Product Order Item and any related Product Order Items, the related Cancel Product Order, or the related Modify Product Order Item Requested Delivery Date. |
 | `withdrawnBySeller` | WITHDRAWN_BY_SELLER | The Seller determines that the Charge Item is incorrect. They withdraw the Charge Item and initiate a new Charge with the required correction(s) if needed.                                                                                                                                                                                        |
 
-**Table 12. Charge States**
+**Table 14. Charge States**
 
 ![Figure 24. Charge Item State Machine](media/useCase11ChargeItemState.png)
 
@@ -2777,39 +2825,39 @@ The Figures and Tables below present the Charge and Charge Item states.
 | `declinedByBuyer`   | A Charge Item identified in the Charge has been declined by the Buyer. The referenced Product Order and Product Order Items are updated.          |
 | `withdrawnBySeller` | The Seller determines that the Charge Item is incorrect. They withdraw the Charge Item and initiate a new Charge with the required correction(s). |
 
-**Table 13. Charge Item States**
+**Table 15. Charge Item States**
 
-**[R79]** The Charge **MUST** contain only Charge Items related to the same
+**[R80]** The Charge **MUST** contain only Charge Items related to the same
 Product Order Item (or Product Order, depending on the Use Case).
 
-**[R80]** A Product Order **MUST NOT** have more than one Charge in
+**[R81]** A Product Order **MUST NOT** have more than one Charge in
+`state=awaitingResponse` at the same time. [MEF57.2 R88]
+
+**[R82]** A Product Order Item **MUST NOT** have more than one Charge in
 `state=awaitingResponse` at the same time. [MEF57.2 R87]
 
-**[R81]** A Product Order Item **MUST NOT** have more than one Charge in
-`state=awaitingResponse` at the same time. [MEF57.2 R86]
-
-**[R82]** A Product Order and a Product Order Item within the Product Order
+**[R83]** A Product Order and a Product Order Item within the Product Order
 **MUST NOT** have Charges `state=awaitingResponse` at both the Product Order
-and Product Order Item at the same time. [MEF57.2 R88]
+and Product Order Item at the same time. [MEF57.2 R89]
 
-**[R83]** A Charge **MUST** be initiated for a Product Order only in one of the
+**[R84]** A Charge **MUST** be initiated for a Product Order only in one of the
 following states: `assessingCancellation` or `pending.assessingModification`.
 
-**[R84]** A Charge **MUST** be initiated for a Product Order Item only in one
+**[R85]** A Charge **MUST** be initiated for a Product Order Item only in one
 of the following states: `inProgress`, or `pending` state.
 
-**[R85]** The Seller **MUST** support the `chargeCreateEvent` and
+**[R86]** The Seller **MUST** support the `chargeCreateEvent` notification if
+the Seller supports Charge use cases. [MEF57.2 R8]
+
+**[O14]** The Seller **MAY** support the `chargeStateChangeEvent` and
 `chargeTimeoutEvent` notifications if the Seller supports Charge use cases.
-[MEF57.2 R8]
+[MEF57.2 O5]
 
-**[O14]** The Seller **MAY** support the `chargeStateChangeEvent` notification
-if the Seller supports Charge use cases. [MEF57.2 O3]
-
-**[R86]** The Buyer **MUST** register for `chargeCreateEvent` notifications if
-the Seller supports charge use cases. [MEF57.2 R6]
-
-**[R87]** The Buyer **MUST** register for other Charge related notifications if
+**[R87]** The Buyer **MUST** register for `chargeCreateEvent` notifications if
 the Seller supports charge use cases. [MEF57.2 R7]
+
+**[O15]** The Buyer **MAY** register for other Charge related notifications if
+they are supported by the Seller [MEF57.2 O4]
 
 **[R88]** When the Seller creates a Charge, the following attributes **MUST**
 be set: [MEF57.2 R82]
@@ -2817,11 +2865,12 @@ be set: [MEF57.2 R82]
 - `id`
 - `productOrder` XOR `productOrderItem`
 - `chargeItem`
+- `creationDate`
 - `responseDueDate`
 - `state`
 
 **[R89]** When the Seller initiates the Charge associated to a Cancel Product
-Order the `productOrder` attribute **MUST** provided. [MEF57.2 R82]
+Order the `productOrder` attribute **MUST** provided. [MEF57.2 R84]
 
 **[R90]** When the Charge was identified as an effect of a Modify Product Order
 Item Requested Delivery Date request the Seller **MUST** provide the
@@ -2833,7 +2882,7 @@ request the Seller **MUST** provide the `productOrder` and `cancelProductOrder`
 attributes. [MEF57.2 R82]
 
 **[R92]** For each Charge Item included in the Charge, the Seller **MUST**
-include the following attributes: [MEF57.2 R84]
+include the following attributes: [MEF57.2 R85]
 
 - `id`
 - `activityType`
@@ -2843,8 +2892,8 @@ include the following attributes: [MEF57.2 R84]
 - `price`
 - `state`
 
-**[R93]** Table 14 shows the attributes that **MUST** be included in the Charge
-Item based on the `priceType`: [MEF57.2 R85]
+**[R93]** Table 16 shows the attributes that **MUST** be included in the Charge
+Item based on the `priceType`: [MEF57.2 R86]
 
 | `priceType`    | `recurringChargePeriod` | `unitOfMeasure` | `price.dutyFreeAmount` |
 | -------------- | ----------------------- | --------------- | ---------------------- |
@@ -2852,7 +2901,7 @@ Item based on the `priceType`: [MEF57.2 R85]
 | `nonRecurring` |                         |                 | X                      |
 | `usageBased`   |                         | X               | X                      |
 
-**Table 14. Price Type Required Information**
+**Table 16. Price Type Required Information**
 
 ### 6.11.1 Use case 11a: Initiate Charge Associated to Product Order Item
 
@@ -2977,7 +3026,7 @@ Flow**
 
 The Buyer must respond to a Charge initiated by the Seller with the use of a
 `PATCH /charge/{{id}}` operation. The model for this case is in Figure 22
-[section 6.12](#612-use-case-11-initiate-charge).
+[section 6.11](#611-use-case-11-initiate-charge)
 
 The PATCH usage recommendation follows TMF 622 json/merge
 (https://tools.ietf.org/html/rfc7386).
@@ -2997,17 +3046,20 @@ Below is an example of such a Charge response - PATCH request:
 
 **[R94]** The Buyer's response to the Charge **MUST** update the
 `acceptanceIndicator` for each and every Charge Item included in the Charge.
-[MEF57.2 R89]
+[MEF57.2 R90]
 
 **[R95]** The Buyer **MUST** update all Charge Items included in a Charge at
-once. [MEF57.2 R90]
+once. [MEF57.2 R91]
 
-**[O15]** The Buyer **MAY** add notes to Charge Items by appending the existing
-`note` list with a new item.
+**[O16]** The Buyer **MAY** add notes to Charge Items by appending the existing
+`note` list with a new item. [MEF57.2 O14]
 
 **[R96]** If there is no response received by the `responseDueDate` is passed
 the Seller **MUST** treat all Charge Items as `declinedByBuyer` and put the
-Charge in `timeout` state. [MEF57.2 R91]
+Charge in `timeout` state. [MEF57.2 R92]
+
+**[R97]** Once a Charge Item has been accepted by the Buyer, the Seller **MUST
+NOT** withdraw or modify the Charge Item. [MEF57.2 R124]
 
 If in Use Case 11a the Buyer rejects a Charge Item that is identified as
 Blocking, the Seller changes the state of the Charge to `completed`, changes
@@ -3029,8 +3081,8 @@ Product Order is not cancelled.
 The Buyer can retrieve a list of `Charges` by using a `GET /charge` operation
 with desired filtering criteria.
 
-**[O16]** The Buyer's request **MAY** contain none or any of the following
-attributes: [MEF57.2 O19]
+**[O17]** The Buyer's request **MAY** contain none or any of the following
+attributes: [MEF57.2 O20]
 
 - `productOrderId`
 - `productOrderItemId`
@@ -3044,25 +3096,25 @@ The rules of using pagination and an example request are provided in
 [section 6.3](#63-use-case-3-retrieve-list-of-product-orders). Please refer to
 it as the rules also apply to this case.
 
-**[R97]** The Seller must put the following attributes into the response (if
-set): [MEF57.2 R115]:
+**[R98]** The Seller must put the following attributes into the response (if
+set): [MEF57.2 R116]:
 
 - `id`
 - `productOrder` or `productOrderItem`
 - `state`
+- `creationDate`
 - `responseDueDate`
-- `chargeItem`
 
-**[R98]** In case no items matching the criteria are found, the Seller **MUST**
-return a valid response with an empty list. [MEF57.2 R114]
+**[R99]** In case no items matching the criteria are found, the Seller **MUST**
+return a valid response with an empty list. [MEF57.2 R115]
 
 ## 6.14. Use case 14: Retrieve Charge by Charge Identifier
 
 The Buyer can get detailed information about the Charge communicated by the
 Seller by using a `GET /charge/{{id}}` operation.
 
-**[R99]** The Seller's response **MUST** provide the following Charge
-attributes (if set): [MEF57.2 R118]
+**[R100]** The Seller's response **MUST** provide the following Charge
+attributes (if set): [MEF57.2 R119]
 
 - `id`
 - `chargeItem`
@@ -3087,8 +3139,8 @@ from the API: `POST /hub`. The request model contains only 2 attributes:
   notified to,
 - `query` - optional, to provide the required types of event.
 
-The usage of a combination of these attributes fulfills the [MEF57.2 CR7<O20],
-and [MEF57.2 CR8<O20] requirements.
+The usage of a combination of these attributes fulfills the [MEF57.2 CR7<O21],
+and [MEF57.2 CR8<O21] requirements.
 
 The figure below shows all entities involved in the Notification use cases.
 
@@ -3139,13 +3191,13 @@ or
 eventType=productOrderStateChangeEvent&eventType=chargeCreateEvent
 ```
 
-The `query` formatting complies to RCF3986 [RFC3986](#8-references). According
+The `query` formatting complies to RFC3986 [RFC3986](#8-references). According
 to it, every attribute defined in the Event model (from notification API) can
 be used in the `query`. However, this standard requires only `eventType`
 attribute to be supported.
 
-**[R100]** The Seller **MAY** support registration for Notifications other than
-`chargeCreateEvent`. [MEF57.2 O20]
+**[O18]** The Seller **MAY** support registration for Notifications other than
+`chargeCreateEvent`. [MEF57.2 O21]
 
 **[R101]** `eventType` is the only attribute that the Seller **MUST** support
 in the query.
@@ -3154,10 +3206,10 @@ If any of Charge related use cases are supported, the following 2 requirements
 apply:
 
 **[R102]** The Seller **MUST** support `chargeCreateEvent` notifications.
-[MEF57.2 R119]
+[MEF57.2 R120]
 
 **[R103]** The Buyer **MUST** subscribe to `chargeCreateEvent` notifications.
-[MEF57.2 R120]
+[MEF57.2 R121]
 
 The Seller responds to the subscription request by adding the `id` of the
 subscription to the message that must be further used for unsubscribing.
@@ -3173,7 +3225,7 @@ subscription to the message that must be further used for unsubscribing.
 Example of a final address that the Notifications will be sent to (for Sonata,
 `productOrderStateChangeEvent`):
 
-- `https://buyer.com/listenerEndpoint/mefApi/sonata/productOrderNotification/v8/listener/productOrderStateChangeEvent`
+- `https://buyer.com/listenerEndpoint/mefApi/sonata/productOrderingNotification/v10/listener/productOrderStateChangeEvent`
 
 ## 6.16. Use case 16: Send Notification
 
@@ -3212,10 +3264,10 @@ set for Product Order and Product Order Items reaching the `acknowledged`
 state.
 
 **[R104]** The Seller **MUST NOT** send Notifications to Buyers who have not
-registered for them. [MEF57.2 R121]
+registered for them. [MEF57.2 R122]
 
 **[R105]** The Seller **MUST** send Notifications to Buyers who have registered
-for them. [MEF57.2 R122]
+for them. [MEF57.2 R123]
 
 Following snippets present example of `productOrderStateChangeEvent` and
 `productOrderItemStateChangeEvent`:
@@ -3235,10 +3287,17 @@ Following snippets present example of `productOrderStateChangeEvent` and
 (`productOrderItemStateChangeEvent`,
 `productOrderItemExpectedCompletionDateSet`,
 `productSpecificProductOrderItemMilestoneEvent`) **MUST** additionally contain
-the relative `orderItemId`. [MEF57.2 R123]
+the relative `orderItemId`. [MEF57.2 R124]
 
-**[R107]** The `productSpecificProductOrderItemMilestoneEvent` must have the
-`milestoneName` attribute set. [MEF57.2 R123]
+**[O19]** The Seller **MAY** support
+`productSpecificProductOrderItemMilestoneEvent`. [MEF57.2 O22]
+
+**[CR7]<[O19]** If the Seller supports Milestones, the
+`productSpecificProductOrderItemMilestoneEvent` must have the `milestoneName`
+attribute set. [MEF57.2 R124]
+
+**[CR8]<[O19]** If the Seller supports Milestones, the Seller **MUST** store
+the Milestone history in `milestone` attribute. [MEF57.2 CR9<O22]
 
 ```json
 {
@@ -3258,6 +3317,8 @@ Buyer needs to query it later by `id` to get details.
 To stop receiving events, the Buyer has to use the `unregisterListener`
 operation from the `DELETE /hub/{id}` endpoint. The `id` is the identifier
 received from the Seller during the listener registration.
+
+<div class="page"/>
 
 # 7. API Details
 
@@ -3615,7 +3676,7 @@ additional results available using:
 - `X-Total-Count` header attribute with the total number of available results
 - `X-Pagination-Throttled` header set to `true`
 
-**[R108]** Seller **MUST** use either `X-Total-Count` or
+**[R107]** Seller **MUST** use either `X-Total-Count` or
 `X-Pagination-Throttled` to indicate that the page was truncated and additional
 results are available.
 
@@ -3891,7 +3952,7 @@ following mapping has been used between `MEFProductOrderStateType` and MEF
 | state                           | MEF 57.2 name          | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | ------------------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `acknowledged`                  | ACKNOWLEDGED           | A Product Order has been received by the Seller and has passed basic validation. A `productOrder.id` is assigned in the `acknowledged` state and a response is returned to the Buyer. The Product Order remains in the `acknowledged` state while validations of Product Order and Product Order Item(s) attributes as applicable is completed. If the Product Order and Product Order Item attributes are validated the Product Order moves to the `inProgress` state. If not validated, the Product Order moves to the `rejected` state.                                                                                                                                                                                                                                               |
-| `assessingCancellation`         | ASSESSING_CANCELLATION | A Cancel Product Order request has been received by the Seller. The Product Order is being assessed to determine if the Product Order can be cancelled. If there are charges associated with cancelling the Product Order, these are communicated to the Buyer using the Charge process. The Product Order remains in the `assessingCancellation` state until any relevant Charge is completed or withdrawn by the Seller. Once the Buyer's request has been validated and any associated Charges completed, the Product Order moves to the `pendingCancellation` state. If the request is not validated or if any associated Charges are not completed, the Product Order moves to the `inProgress` state and the Product Order is not cancelled.                                       |
+| `assessingCancellation`         | ASSESSING_CANCELLATION | A Cancel Product Order request has been received by the Seller. The Product Order is being assessed to determine if the Product Order can be cancelled. If there are charges associated with cancelling the Product Order, these are communicated to the Buyer using the Charge process. The Product Order remains in the `assessingCancellation` state until any relevant Charge is completed or withdrawn by the Seller. Once the Buyer's Cancel Product Order request has been validated and any associated Charges completed, the Product Order moves to the `pendingCancellation` state. If the request is not validated or if any associated Charges are not completed, the Product Order moves to the `inProgress` state and the Product Order is not cancelled.                  |
 | `held.assessingCharge`          | ASSESSING_CHARGE       | A Charge has been initiated by the Seller that is not the result of a Modify Product Order Item Requested Delivery Date or Cancel Product Order request and the Seller is awaiting a Buyer response to the Charge. If a blocking or non-blocking charge is accepted by the Buyer, the Product Order moves to `inProgress`. If a non-blocking charge is declined by the Buyer, the Product Order moves to `inProgress`. If a blocking charge is declined by the Buyer and there are no unrelated Product Order Items in the Product Order, the Product Order moves to the `inProgress` and then to the `failed` state. If a blocking charge is declined by the Buyer and there are unrelated Product Order Items in the Product Order, the Product Order moves to the `inProgress` state. |
 | `pending.assessingModification` | ASSESSING_MODIFICATION | A request has been made by the Buyer to modify either the `expediteIndicator` or the `requestedCompletionDate` of a Product Order Item. The Product Order Item is currently being assessed to determine whether the Modify Product Order Item Requested Delivery Date is valid. If there is a charge associated with the Modify Product Order Item Requested Delivery Date, the Product Order remains in the `pending.assessingModification` state until the Charge is completed or withdrawn by the Seller. Once the Buyer's request has been validated and any associated Charges completed, the Product Order returns to the `inProgress` state.                                                                                                                                      |
 | `cancelled`                     | CANCELLED              | The Product Order has been successfully cancelled. This is a terminal state.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
@@ -4100,7 +4161,7 @@ Inherits from:
         <tr>
             <td>charge</td>
             <td><a href="#T_MEFProductOrderChargeRef">MEFProductOrderChargeRef</a>[]</td>
-            <td>The Charges associated to this Product Order Item</td>
+            <td>The Charges associated to this Product Order Item. This list contains all completed Charges containing accepted Charge Items initiated by the Seller. Any Charge that is withdrawn or containing all declined Charge Items must not be included in this list.</td>
             <td>Related Charges</td>
         </tr><tr>
             <td>completionDate</td>
@@ -4665,7 +4726,7 @@ usage for given Product are described in the Product Specification.
 There are several formats in which place information can be introduced to the
 Product Order request.
 
-**[R109]** `GeographicAddressRef` or `GeographicSiteRef` **MUST** be used to
+**[R108]** `GeographicAddressRef` or `GeographicSiteRef` **MUST** be used to
 provide place information by reference. This method is referred to as "Known
 Address ID method" in MEF 79 Sn 8.9.3.1.
 
@@ -5164,6 +5225,11 @@ value to a &#x60;role&#x60; is to use the _lowerCamelCase_ pattern e.g.
             <td>Identifies the type of reason, Technical or Commercial, for the Cancellation request</td>
             <td>Cancellation Reason Type</td>
         </tr><tr>
+            <td>charge</td>
+            <td><a href="#T_MEFProductOrderChargeRef">MEFProductOrderChargeRef</a></td>
+            <td>The Charge Identifier of any charges that are related to the Cancel Product Order.</td>
+            <td>Related Charge</td>
+        </tr><tr>
             <td>href</td>
             <td>string</td>
             <td>Hyperlink to the cancellation request. Hyperlink MAY be used by the Seller in responses Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request
@@ -5403,7 +5469,7 @@ updated by the Buyer
     </thead>
     <tbody>
         <tr>
-            <td>creationDate</td>
+            <td>creationDate*</td>
             <td>date-time</td>
             <td>Date that the Charge was created by the Seller.</td>
             <td>Charge Creation Date</td>
@@ -5462,12 +5528,12 @@ updated by the Buyer
 
 **Description:** Possible values for the state of the Charge
 
-| State               | Description                                                                                                                               |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `completed`         | All Charge Items included in the Charge for a given Product Order Item have moved to either the `accepted` state or the `declined` state. |
-| `awaitingResponse`  | A Charge has been initiated by the Buyer. The charge includes one or more charges.                                                        |
-| `timeout`           | A response has not been received from the Buyer within the `responseDueDate`. This is treated as if the Buyer declined the Charge Items.  |
-| `withdrawnBySeller` | The Seller determines that the Charge is incorrect. They withdraw the Charge and initiate a new Charge with the required correction(s).   |
+| State               | Description                                                                                                                              |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `completed`         | All Charge Items included in the Charge have moved to either the `accepted` state or the `declined` state.                               |
+| `awaitingResponse`  | A Charge has been initiated by the Buyer. The charge includes one or more charges.                                                       |
+| `timeout`           | A response has not been received from the Buyer within the `responseDueDate`. This is treated as if the Buyer declined the Charge Items. |
+| `withdrawnBySeller` | The Seller determines that the Charge is incorrect. They withdraw the Charge and initiate a new Charge with the required correction(s).  |
 
 #### 7.2.6.6. Type MEFProductOrderChargeItem
 
@@ -5616,6 +5682,9 @@ accept or reject it.
         </tr><tr>
             <td>expedite</td>
             <td>EXPEDITE</td>
+        </tr><tr>
+            <td>other</td>
+            <td>OTHER</td>
         </tr>
     </tbody>
 </table>
@@ -5777,7 +5846,7 @@ The below sections describe data models related to this endpoint.
 
 The `query` attribute is used to constrain the notification types that the
 Buyer is willing to receive to the callback endpoint. The `query` formatting
-complies to RCF3986 [RFC3986](#8-references) and [TMF630](#8-references). Every
+complies to RFC3986 [RFC3986](#8-references) and [TMF630](#8-references). Every
 attribute defined in the Event model (from notification API) can be used in the
 `query`. Example:
 
@@ -5806,7 +5875,7 @@ possible syntax variants:
         <tr>
             <td>callback*</td>
             <td>string</td>
-            <td>This callback value must be set to *host* property from Buyer Product Order Notification API (productOrderNotification.api.yaml). This property is appended with the base path and notification resource path specified in that API to construct an URL to which notification is sent. E.g. for &quot;callback&quot;: &quot;https://buyer.co/listenerEndpoint&quot;, the product order state change event notification will be sent to: &#x60;https://buyer.co/listenerEndpoint/mefApi/sonata/productOrderNotification/v9/listener/productOrderStateChangeEvent&#x60;</td>
+            <td>This callback value must be set to *host* property from Buyer Product Order Notification API (productOrderNotification.api.yaml). This property is appended with the base path and notification resource path specified in that API to construct an URL to which notification is sent. E.g. for &quot;callback&quot;: &quot;https://buyer.co/listenerEndpoint&quot;, the product order state change event notification will be sent to: &#x60;https://buyer.co/listenerEndpoint/mefApi/sonata/productOrderingNotification/v10/listener/productOrderStateChangeEvent&#x60;</td>
             <td>Notification Target Information</td>
         </tr><tr>
             <td>query</td>
@@ -6347,7 +6416,7 @@ Defined using JavaScript Object Notation (JSON) Pointer (https://tools.ietf.org/
     </tbody>
 </table>
 
-**[R110]** The clarification of what Business days, hours, and minutes mean
+**[R109]** The clarification of what Business days, hours, and minutes mean
 **MUST** be done between the Buyer and the Seller during the onboarding
 process.
 
@@ -6792,11 +6861,14 @@ Reference: MEF 79 (Sn 8.8)</td>
     </tbody>
 </table>
 
+<div class="page"/>
+
 # 8. References
 
-- [ISO4217]
-  [Currency Codes](https://www.currency-iso.org/en/home/tables/table-a1.html)
-  International Standards Organization ISO 4217:2015, 2015
+- [ISO4217]  
+  International Standards Organization ISO 4217:2015,
+  [Currency Codes](https://www.currency-iso.org/en/home/tables/table-a1.html),
+  August 2018
 - [JS]
   [JSON Schema draft 7](https://json-schema.org/specification-links.html#draft-7),
   JSON Schema: A Media Type for Describing JSON Documents and associated
@@ -6807,23 +6879,30 @@ Reference: MEF 79 (Sn 8.8)</td>
   [MEF 55.1](https://www.mef.net/wp-content/uploads/2021/02/MEF-55.1.pdf)
   Lifecycle Service Orchestration (LSO): Reference Architecture and Framework,
   February 2021
-- [MEF57.2]
-  [MEF W57.2](https://www.mef.net/wp-content/uploads/MEF-57.2-Draft-R4.pdf)
+- [MEF57.2] [MEF 57.2](https://www.mef.net/wp-content/uploads/MEF-57.2.pdf)
   Product Order Management Requirements and Use Cases, Product Order
-  Management, Draft (R4), June 2022
+  Management, June 2022
 - [MEF79] [MEF 79](https://www.mef.net/wp-content/uploads/2019/11/MEF-79.pdf),
   Address, Service Site, and Product Offering Qualification Management,
   Requirements and Use Cases, November 2019
 - [MEF80] [MEF 80](https://www.mef.net/wp-content/uploads/MEF-80.pdf), Quote
   Management Requirements and Use Cases, July 2021
+- [MEF128] [MEF 128](https://www.mef.net/wp-content/uploads/MEF-128.pdf), LSO
+  API Security Profile, July 2022
 - [OAS-V3] [Open API 3.0](http://spec.openapis.org/oas/v3.0.3.html), February
   2020
 - [REST]
   [Chapter 5: Representational State Transfer (REST)](http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
   Fielding, Roy Thomas, Architectural Styles and the Design of Network-based
   Software Architectures (Ph.D.).
+- [RFC2119] [RFC 2119](https://tools.ietf.org/html/rfc2119), Key words for use
+  in RFCs to Indicate Requirement Levels, by S. Bradner, March 1997
 - [RFC3986] [RFC 3986](https://tools.ietf.org/html/rfc3986#section-3) Uniform
   Resource Identifier (URI): Generic Syntax, January 2005
+- [RFC8174] [RFC 8174](https://tools.ietf.org/html/rfc8174), Ambiguity of
+  Uppercase vs Lowercase in RFC 2119 Key Words, by B. Leiba, May 2017,
+  Copyright (c) 2017 IETF Trust and the persons identified as the document
+  authors. All rights reserved.
 - [RFC7231] [RFC 7231](https://tools.ietf.org/html/rfc7231), Hypertext Transfer
   Protocol (HTTP/1.1): Semantics and Content, June 2014
   https://tools.ietf.org/html/rfc7231
@@ -6833,3 +6912,17 @@ Reference: MEF 79 (Sn 8.8)</td>
 - [TMF630]
   [TMF 630](https://www.tmforum.org/resources/specification/tmf630-rest-api-design-guidelines-4-2-0/)
   TMF630 API Design Guidelines 4.2.0
+
+<div class="page"/>
+
+# Appendix A Acknowledgments
+
+Mike **BENCHECK**
+
+Michał **ŁĄCZYŃSKI**
+
+Jack **PUGACZEWSKI**
+
+Patrick **ROOSEN**
+
+Karthik **SETHURAMAN**

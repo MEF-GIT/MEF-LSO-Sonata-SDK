@@ -696,6 +696,75 @@ paths:
       summary: Unregister a listener
       tags:
         - events subscription
+    get:
+      description: >-
+        This operation retrieves a hub entity.
+      operationId: retrieveHub
+      parameters:
+        - description: Identifier of the Hub
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+            Reference: MEF 57.2 (Sn 9.18)
+          in: query
+          name: buyerId
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity  represents more than one Seller.
+            Reference: MEF 57.2 (Sn 9.18)
+          in: query
+          name: sellerId
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/EventSubscription'
+          description: Success
+        '400':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request
+        '401':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: Unauthorized
+        '403':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+          description: Forbidden
+        '404':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error404'
+          description: Not Found
+        '500':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal Server Error
+      summary: Retrieves a Hub by ID
+      tags:
+        - events subscription
 components:
   schemas:
     Appointment:

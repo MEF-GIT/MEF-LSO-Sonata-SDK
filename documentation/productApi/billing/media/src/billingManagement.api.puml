@@ -1,0 +1,377 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class AppliedPayment {
+
+}
+
+AppliedPayment *--> Money : appliedAmount
+AppliedPayment *--> PaymentItem : payment
+
+
+class AttachmentURL {
+
+    url: string
+}
+
+
+
+class BillingAccountRef {
+
+    id*: string
+}
+
+
+
+class CustomerBill {
+
+    id*: string
+    href: string
+    billCycle*: string
+    billDate*: date-time
+    billNo*: string
+    category*: CustomerBillCategory
+    lastUpdate*: date-time
+    paymentDueDate*: date-time
+    runType*: CustomerBillRunType
+    state*: CustomerBillStateType
+}
+
+CustomerBill *-->"1" Money : amountDue
+CustomerBill *-->"1..*" AppliedPayment : appliedPayment
+CustomerBill *-->"1" BillingAccountRef : billingAccount
+CustomerBill *-->"1" AttachmentURL : billDocument
+CustomerBill *-->"1" TimePeriod : billingPeriod
+CustomerBill *-->"1" Money : credits
+CustomerBill *-->"1..*" CustomerBillItemRef : customerBillItem
+CustomerBill *-->"1" Money : discounts
+CustomerBill *-->"1" Money : fees
+CustomerBill *-->"1" FinancialAccountRef : financialAccount
+CustomerBill *-->"1..*" RelatedContactInformation : relatedContactInformation
+CustomerBill *-->"1" Money : remainingAmount
+CustomerBill *-->"1" Money : taxExcludedAmount
+CustomerBill *-->"1" Money : taxIncludedAmount
+CustomerBill *-->"1..*" TaxItem : taxItem
+
+
+class CustomerBillItem {
+
+    id*: string
+    href: string
+    description*: string
+    productName*: string
+    state*: CustomerBillItemStateType
+    type*: MEFPriceType
+    unit*: string
+    unitQuantity*: null
+}
+
+CustomerBillItem *-->"1..*" CustomerBillItemTax : appliedTax
+CustomerBillItem *-->"1..*" CustomerBillItemFee : appliedFee
+CustomerBillItem *-->"1" TimePeriod : periodCoverage
+CustomerBillItem *-->"1" ProductRef : product
+CustomerBillItem *-->"1" MEFProductOrderItemRef : productOrderItem
+CustomerBillItem *-->"1" Money : taxExcludedAmount
+CustomerBillItem *-->"1" Money : unitRate
+
+
+class CustomerBillItemFee {
+
+    category: CustomerBillItemFeeCategory
+    rate: float
+    description: string
+}
+
+CustomerBillItemFee *--> Money : amount
+
+
+enum CustomerBillCategory {
+
+    normal
+    duplicate
+    trial
+}
+class CustomerBillItemRef {
+
+    href: string
+    id*: string
+}
+
+
+
+class CustomerBillItemTax {
+
+    category: CustomerBillItemTaxCategory
+    rate: float
+    description: string
+}
+
+CustomerBillItemTax *--> Money : amount
+
+
+class CustomerBill_Find {
+
+    id*: string
+    billNo*: string
+    category*: CustomerBillCategory
+    state*: CustomerBillStateType
+}
+
+CustomerBill_Find *--> BillingAccountRef : billingAccount
+CustomerBill_Find *--> TimePeriod : billingPeriod
+
+
+class Error400 {
+
+    code*: Error400Code
+}
+Error <|-- Error400
+
+
+
+class Error401 {
+
+    code*: Error401Code
+}
+Error <|-- Error401
+
+
+
+class Error403 {
+
+    code*: Error403Code
+}
+Error <|-- Error403
+
+
+
+class Error500 {
+
+    code*: string
+}
+Error <|-- Error500
+
+
+
+enum CustomerBillRunType {
+
+    onCycle
+    offCycle
+}
+class EventSubscription {
+
+    id*: string
+    callback*: string
+    query: string
+}
+
+
+
+class FieldedAddress {
+
+    city*: string
+    country*: string
+    locality: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+    streetName*: string
+    streetNr: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetNrSuffix: string
+    streetSuffix: string
+    streetType: string
+}
+
+FieldedAddress *--> GeographicSubAddress : geographicSubAddress
+
+
+class FinancialAccountRef {
+
+    id*: string
+    href: string
+    name: string
+    type: string
+}
+
+
+
+class Money {
+
+    unit*: string
+    value*: float
+}
+
+
+
+class PaymentItem {
+
+    id*: string
+    paymentMethod: PaymentMethod
+    paymentDate: date-time
+}
+
+PaymentItem *--> Money : amount
+
+
+class ProductRef {
+
+    id*: string
+    href: string
+}
+
+
+
+class RelatedContactInformation {
+
+    emailAddress*: string
+    name*: string
+    number*: string
+    numberExtension: string
+    organization: string
+    role*: string
+}
+
+RelatedContactInformation *--> FieldedAddress : postalAddress
+
+
+enum Error401Code {
+
+    missingCredentials
+    invalidCredentials
+}
+enum Error400Code {
+
+    missingQueryParameter
+    missingQueryValue
+    invalidQuery
+    invalidBody
+}
+class Error404 {
+
+    code*: string
+}
+Error <|-- Error404
+
+
+
+class Error {
+
+    code*: string
+    reason*: string
+    message: string
+    status: string
+    referenceError: uri
+}
+
+
+
+class EventSubscriptionInput {
+
+    callback*: string
+    query: string
+}
+
+
+
+class GeographicSubAddress {
+
+    buildingName: string
+    id: string
+    levelNumber: string
+    levelType: string
+    privateStreetName: string
+    privateStreetNumber: string
+}
+
+GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+
+
+class TaxItem {
+
+    taxCategory: string
+    taxRate: float
+}
+
+TaxItem *--> Money : taxAmount
+
+
+enum CustomerBillItemFeeCategory {
+
+    recurring
+    nonRecurring
+    other
+}
+enum Error403Code {
+
+    accessDenied
+    forbiddenRequester
+    tooManyUsers
+}
+enum CustomerBillItemTaxCategory {
+
+    country
+    state
+    county
+    city
+    other
+}
+enum CustomerBillItemStateType {
+
+    credit
+    disputeBeingInvestigated
+    generated
+    paymentDue
+    settled
+    withDrawn
+}
+enum MEFPriceType {
+
+    recurring
+    nonRecurring
+    usageBased
+}
+enum CustomerBillStateType {
+
+    generated
+    paymentDue
+    settled
+}
+class MEFProductOrderItemRef {
+
+    productOrderHref: string
+    productOrderId*: string
+    productOrderItemId*: string
+}
+
+
+
+class MEFSubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+
+
+
+enum PaymentMethod {
+
+    check
+    wireTransfer
+    electronic
+    cash
+    other
+}
+class TimePeriod {
+
+    endDateTime: date-time
+    startDateTime: date-time
+}
+
+
+
+@enduml

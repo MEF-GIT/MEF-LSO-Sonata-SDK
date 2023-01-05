@@ -1,46 +1,46 @@
 openapi: 3.0.1
 info:
-  description: |
-    **This file forms part of MEF W123** 
+  description: >
+    **This file forms part of MEF 123** 
 
-    **This specification represents MEF work in progress and is subject to
-    change.** 
 
-    This API implements Business Requirements described in MEF W57.2
+    This API implements Business Requirements described in MEF 57.2
 
-    Product Order Management allows the Buyer to request the Seller to initiate and complete the
+
+    Product Order Management allows the Buyer to request the Seller to initiate
+    and complete the
+
     fulfillment process of an installation of a Product Offering, an update to
+
     an existing Product, or a disconnect of an existing Product at the address
+
     defined by the Buyer.
 
+
     List of supported Use Cases:
+
     - Send Notifications This API must be
- 
+
+
     Copyright 2022 MEF Forum and its contributors.
 
+
     This file includes content based on the TM Forum Product Order API (TMF622
+
     v4.0.0) available at https://github.com/tmforum-apis/TMF622_ProductOrder,
-    which is licensed by the TM Forum under the Apache License version 2.0. Such
+
+    which is licensed by the TM Forum under the Apache License version 2.0.
+    Such
+
     content has been modified by the MEF Forum and its contributors.
   title: Product Ordering Notification
-  version: 9.0.0-RC
+  version: 10.0.0
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/productOrderingNotification/v9/'
+  - url: 'https://{serverBase}/mefApi/sonata/productOrderingNotification/v10/'
     variables:
       serverBase:
         default: mef.net
         description: The base of Buyer's URL.
-security:
-  - oauth2MefLsoApi:
-      - productOrderStateChangeEvent
-      - productOrderItemStateChangeEvent
-      - productOrderItemExpectedCompletionDateSet
-      - productSpecificProductOrderItemMilestoneEvent
-      - cancelProductOrderStateChangeEvent
-      - chargeCreateEvent
-      - chargeStateChangeEvent
-      - chargeTimeoutEvent
-      - modifyProductOrderItemRequestedDeliveryDateStateChangeEvent
 tags:
   - description: |
       The Seller's endpoint to send particular event types notifications to.
@@ -93,6 +93,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
+      security:
+        - oauth2MEFLSOAPI:
+            - productOrderStateChangeEvent
       summary: Product Order State Change Notification endpoint
       tags:
         - Notification listeners
@@ -144,6 +147,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
+      security:
+        - oauth2MEFLSOAPI:
+            - productOrderItemStateChangeEvent
       summary: Product Order Item State Change Notification endpoint
       tags:
         - Notification listeners
@@ -195,6 +201,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
+      security:
+        - oauth2MEFLSOAPI:
+            - productOrderItemExpectedCompletionDateSet
       summary:
         Product Order Item Expected Completion Date Set Notification endpoint
       tags:
@@ -247,6 +256,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
+      security:
+        - oauth2MEFLSOAPI:
+            - productSpecificProductOrderItemMilestoneEvent
       summary:
         Product Specific Product Order Item Milestone Notification endpoint
       tags:
@@ -299,6 +311,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
+      security:
+        - oauth2MEFLSOAPI:
+            - cancelProductOrderStateChangeEvent
       summary: Cancel Product Order State Change Notification endpoint
       tags:
         - Notification listeners
@@ -349,6 +364,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
+      security:
+        - oauth2MEFLSOAPI:
+            - chargeCreateEvent
       summary: Charge Create Notification endpoint
       tags:
         - Notification listeners
@@ -400,6 +418,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
+      security:
+        - oauth2MEFLSOAPI:
+            - chargeStateChangeEvent
       summary: Charge State Change Notification endpoint
       tags:
         - Notification listeners
@@ -450,6 +471,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
+      security:
+        - oauth2MEFLSOAPI:
+            - chargeTimeoutEvent
       summary: Charge State Change Notification endpoint
       tags:
         - Notification listeners
@@ -464,7 +488,8 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/ModifyProductOrderItemRequestedDeliveryDateEvent'
+              $ref: >-
+                #/components/schemas/ModifyProductOrderItemRequestedDeliveryDateEvent
         description: The event data
         required: true
       responses:
@@ -501,152 +526,112 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
+      security:
+        - oauth2MEFLSOAPI:
+            - modifyProductOrderItemRequestedDeliveryDateStateChangeEvent
       summary: >-
-        Modify Product Order Item Requested Delivery Date State Change Notification
-        endpoint
+        Modify Product Order Item Requested Delivery Date State Change
+        Notification endpoint
       tags:
         - Notification listeners
       x-codegen-request-body-name: ModifyProductOrderItemRequestedDeliveryDateStateChangeEvent
 components:
-  securitySchemes:
-    oauth2MefLsoApi:
-      type: oauth2
-      description:
-        Example of a security scheme conforming to MEF 128 LSO API Security
-        Profiles standard
-      flows:
-        clientCredentials:
-          tokenUrl: /oauth2/lsoApiToken/
-          refreshUrl: /oauth2/refreshLsoApiToken/
-          scopes:
-            productOrderStateChangeEvent:
-              This endpoint is used to receive notifications on Product Order
-              state change
-            productOrderItemStateChangeEvent:
-              This endpoint is used to receive notifications on Product Order
-              Item state change
-            productOrderItemExpectedCompletionDateSet:
-              This endpoint is used to receive notifications on Product Order
-              Item Expected Completion Date Set
-            productSpecificProductOrderItemMilestoneEvent:
-              This endpoint is used to receive notifications on Product
-              Specific Product Order Item Milestone reached
-            cancelProductOrderStateChangeEvent:
-              This endpoint is used to receive notifications on Cancel Product
-              Order State Change Event
-            chargeCreateEvent:
-              This endpoint is used to receive notifications on Charge state
-              change event
-            chargeStateChangeEvent:
-              This endpoint is used to receive notifications on Charge timeout
-              event
-            chargeTimeoutEvent: This operation lists or finds Charge entities
-            modifyProductOrderItemRequestedDeliveryDateStateChangeEvent:
-              This endpoint is used to receive notifications on Modify Product
-              Order Item Requested Delivery Date State Change Event
   schemas:
     CancelProductOrderEvent:
       allOf:
         - $ref: '#/components/schemas/Event'
-        - properties:
+        - type: object
+          properties:
             eventType:
-              description: |
-                Indicates the type of the event.
               $ref: '#/components/schemas/CancelProductOrderEventType'
             event:
-              description: |
-                A reference to the object that is source of the notification.
               $ref: '#/components/schemas/CancelProductOrderEventPayload'
           required:
             - event
             - eventType
-          type: object
     CancelProductOrderEventPayload:
+      type: object
       description:
         The identifier of the Cancel Product Order being subject of this event.
       properties:
         sellerId:
+          type: string
           description: >-
             The unique identifier of the organization that is acting as the
             Seller. MUST be specified in the request only when requester entity
             represents more than one Seller.
 
             Reference: MEF 79 (Sn 8.8)
-          type: string
         id:
+          type: string
           description: ID of the Cancel Product Order
-          type: string
         href:
-          description: Hyperlink to access the Cancel Product Order
           type: string
+          description: Hyperlink to access the Cancel Product Order
         buyerId:
+          type: string
           description: >-
             The unique identifier of the organization that is acting as the a
             Buyer. MUST be specified in the request only when the responding
             represents more than one Buyer.
 
             Reference: MEF 79 (Sn 8.8)
-          type: string
       required:
         - id
-      type: object
     CancelProductOrderEventType:
+      type: string
       description: Indicates the type of Cancel Product Order event.
       enum:
         - cancelProductOrderStateChangeEvent
-      type: string
     ChargeEvent:
       allOf:
         - $ref: '#/components/schemas/Event'
-        - properties:
+        - type: object
+          properties:
             eventType:
-              description: |
-                Indicates the type of the event.
               $ref: '#/components/schemas/ChargeEventType'
             event:
-              description: |
-                A reference to the object that is source of the notification.
               $ref: '#/components/schemas/ChargeEventPayload'
           required:
             - event
             - eventType
-          type: object
     ChargeEventPayload:
+      type: object
       description: The identifier of the Charge being subject of this event.
       properties:
         sellerId:
+          type: string
           description: >-
             The unique identifier of the organization that is acting as the
             Seller. MUST be specified in the request only when requester entity
             represents more than one Seller.
 
             Reference: MEF 79 (Sn 8.8)
-          type: string
         id:
+          type: string
           description: ID of the Charge
-          type: string
         href:
-          description: Hyperlink to access the Charge
           type: string
+          description: Hyperlink to access the Charge
         buyerId:
+          type: string
           description: >-
             The unique identifier of the organization that is acting as the a
             Buyer. MUST be specified in the request only when the responding
             represents more than one Buyer.
 
             Reference: MEF 79 (Sn 8.8)
-          type: string
       required:
         - id
-      type: object
     ChargeEventType:
+      type: string
       description: Indicates the type of Charge event.
       enum:
         - chargeCreateEvent
         - chargeStateChangeEvent
         - chargeTimeoutEvent
-      type: string
     Error400Code:
+      type: string
       description: >-
         One of the following error codes:
 
@@ -664,8 +649,8 @@ components:
         - missingQueryValue
         - invalidQuery
         - invalidBody
-      type: string
     Error:
+      type: object
       description: >
         Standard Class used to describe API response error
 
@@ -673,65 +658,46 @@ components:
         as a discriminator for the type of error returned in runtime.
       properties:
         reason:
+          type: string
           description: >-
             Text that explains the reason for error. This can be shown to a
             client user.
           maxLength: 255
-          type: string
         message:
+          type: string
           description: >-
             Text that provide mode details and corrective actions related to
             the error. This can be shown to a client user.
-          type: string
         referenceError:
-          description: url pointing to documentation describing the error
-          format: uri
           type: string
+          format: uri
+          description: url pointing to documentation describing the error
       required:
         - reason
-      type: object
     Error400:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
-              description: >-
-                One of the following error codes:
-
-                - missingQueryParameter: The URI is missing a required
-                query-string parameter
-
-                - missingQueryValue: The URI is missing a required query-string
-                parameter value
-
-                - invalidQuery: The query section of the URI is invalid.
-
-                - invalidBody: The request has an invalid body
               $ref: '#/components/schemas/Error400Code'
           required:
             - code
-          type: object
       description:
         'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
     Error401:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
-              description: >-
-                One of the following error codes:
-
-                - missingCredentials: No credentials provided.
-
-                - invalidCredentials: Provided credentials are invalid or
-                expired
               $ref: '#/components/schemas/Error401Code'
           required:
             - code
-          type: object
       description:
         'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
     Error401Code:
+      type: string
       description: |-
         One of the following error codes:
         - missingCredentials: No credentials provided.
@@ -739,26 +705,19 @@ components:
       enum:
         - missingCredentials
         - invalidCredentials
-      type: string
     Error403:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
-              description: |-
-                This code indicates that the server understood
-                the request but refuses to authorize it because
-                of one of the following error codes:
-                - accessDenied: Access denied
-                - forbiddenRequester: Forbidden requester
-                - tooManyUsers: Too many users
               $ref: '#/components/schemas/Error403Code'
           required:
             - code
-          type: object
       description:
         'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
     Error403Code:
+      type: string
       description: |-
         This code indicates that the server understood
         the request but refuses to authorize it because
@@ -770,12 +729,13 @@ components:
         - accessDenied
         - forbiddenRequester
         - tooManyUsers
-      type: string
     Error408:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
+              type: string
               description: >-
                 List of supported error codes:
 
@@ -784,17 +744,17 @@ components:
                 prepared to wait.
               enum:
                 - timeOut
-              type: string
           required:
             - code
-          type: object
       description:
         'Request Time-out (https://tools.ietf.org/html/rfc7231#section-6.5.7)'
     Error500:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
+              type: string
               description: >-
                 One of the following error codes:
 
@@ -803,148 +763,165 @@ components:
                 request.
               enum:
                 - internalError
-              type: string
           required:
             - code
-          type: object
       description: >-
         Internal Server Error.
         (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     Event:
+      type: object
       description: >-
         Event class is used to describe information structure used for
         notification.
       properties:
         eventId:
+          type: string
           description: Id of the event
-          type: string
         eventTime:
-          description: Date-time when the event occurred
-          format: date-time
           type: string
+          format: date-time
+          description: Date-time when the event occurred
       required:
         - eventId
         - eventTime
-      type: object
     ModifyProductOrderItemRequestedDeliveryDateEvent:
       allOf:
         - $ref: '#/components/schemas/Event'
-        - properties:
+        - type: object
+          properties:
             eventType:
-              description: |
-                Indicates the type of the event.
               $ref: >-
                 #/components/schemas/ModifyProductOrderItemRequestedDeliveryDateEventType
             event:
-              description: |
-                A reference to the object that is source of the notification.
               $ref: >-
                 #/components/schemas/ModifyProductOrderItemRequestedDeliveryDateEventPayload
           required:
             - event
             - eventType
-          type: object
     ModifyProductOrderItemRequestedDeliveryDateEventPayload:
+      type: object
       description: >-
-        The identifier of the Modify Product Order Item Requested Delivery Date being
-        subject of this event.
+        The identifier of the Modify Product Order Item Requested Delivery Date
+        being subject of this event.
       properties:
         sellerId:
+          type: string
           description: >-
             The unique identifier of the organization that is acting as the
             Seller. MUST be specified in the request only when requester entity
             represents more than one Seller.
 
             Reference: MEF 79 (Sn 8.8)
-          type: string
         id:
-          description: ID of the Modify Product Order Item Requested Delivery Date
           type: string
-        href:
           description:
-            Hyperlink to access the Modify Product Order Item Requested Delivery Date
+            ID of the Modify Product Order Item Requested Delivery Date
+        href:
           type: string
+          description: >-
+            Hyperlink to access the Modify Product Order Item Requested
+            Delivery Date
         buyerId:
+          type: string
           description: >-
             The unique identifier of the organization that is acting as the a
             Buyer. MUST be specified in the request only when the responding
             represents more than one Buyer.
 
             Reference: MEF 79 (Sn 8.8)
-          type: string
       required:
         - id
-      type: object
     ModifyProductOrderItemRequestedDeliveryDateEventType:
-      description:
-        Indicates the type of Modify Product Order Item Requested Delivery Date event.
+      type: string
+      description: >-
+        Indicates the type of Modify Product Order Item Requested Delivery Date
+        event.
       enum:
         - modifyProductOrderItemRequestedDeliveryDateStateChangeEvent
-      type: string
     ProductOrderEvent:
       allOf:
         - $ref: '#/components/schemas/Event'
-        - properties:
+        - type: object
+          properties:
             eventType:
-              description: |
-                Indicates the type of the event.
               $ref: '#/components/schemas/ProductOrderEventType'
             event:
-              description: >
-                A reference to the Product Order that is source of the
-                notification.
               $ref: '#/components/schemas/ProductOrderEventPayload'
           required:
             - event
             - eventType
-          type: object
     ProductOrderEventPayload:
+      type: object
       description: >-
         The identifier of the Product Order and/or Order Item being subject of
         this event.
       properties:
         sellerId:
+          type: string
           description: >-
             The unique identifier of the organization that is acting as the
             Seller. MUST be specified in the request only when requester entity
             represents more than one Seller.
 
             Reference: MEF 79 (Sn 8.8)
-          type: string
         milestoneName:
+          type: string
           description: >-
             The name of the Milestone that was reached by give Product Order or
             Product Order Item. Mandatory for Product Specific Milestone
             reached events.
-          type: string
         orderItemId:
+          type: string
           description: >-
             ID of the Product Order Item (within the Product Order) which state
             change triggered the event. Mandatory for Product Order Item
             related events.
-          type: string
         id:
+          type: string
           description: ID of the Product Order
-          type: string
         href:
-          description: Hyperlink to access the Product Order
           type: string
+          description: Hyperlink to access the Product Order
         buyerId:
+          type: string
           description: >-
             The unique identifier of the organization that is acting as the a
             Buyer. MUST be specified in the request only when the responding
             represents more than one Buyer.
 
             Reference: MEF 79 (Sn 8.8)
-          type: string
       required:
         - id
-      type: object
     ProductOrderEventType:
+      type: string
       description: Indicates the type of Product Order event.
       enum:
         - productOrderStateChangeEvent
         - productOrderItemStateChangeEvent
         - productOrderItemExpectedCompletionDateSet
         - productSpecificProductOrderItemMilestoneEvent
-      type: string
+  securitySchemes:
+    oauth2MEFLSOAPI:
+      description: Default m2m client code
+      flows:
+        clientCredentials:
+          refreshUrl: 'http://mef.net/example/refresh'
+          scopes:
+            productOrderStateChangeEvent:
+              Scope for operation productOrderStateChangeEvent
+            productOrderItemStateChangeEvent:
+              Scope for operation productOrderItemStateChangeEvent
+            productOrderItemExpectedCompletionDateSet:
+              Scope for operation productOrderItemExpectedCompletionDateSet
+            productSpecificProductOrderItemMilestoneEvent:
+              Scope for operation productSpecificProductOrderItemMilestoneEvent
+            cancelProductOrderStateChangeEvent:
+              Scope for operation cancelProductOrderStateChangeEvent
+            chargeCreateEvent: Scope for operation chargeCreateEvent
+            chargeStateChangeEvent: Scope for operation chargeStateChangeEvent
+            chargeTimeoutEvent: Scope for operation chargeTimeoutEvent
+            modifyProductOrderItemRequestedDeliveryDateStateChangeEvent: >-
+              Scope for operation
+              modifyProductOrderItemRequestedDeliveryDateStateChangeEvent
+          tokenUrl: 'http://mef.net/example/token'
+      type: oauth2

@@ -27,10 +27,6 @@ servers:
       serverBase:
         default: mef.net
         description: The base of Seller's URL.
-security:
-  - oauth2MefLsoApi:
-    - listProduct
-    - retrieveProduct
 tags:
   - name: product
   - name: events subscription
@@ -41,9 +37,12 @@ paths:
       operationId: listProduct
       parameters:
         - description: The status of the product
+          explode: true
           in: query
           name: status
+          required: false
           schema:
+            type: string
             enum:
               - active
               - active.pendingChange
@@ -53,121 +52,166 @@ paths:
               - suspended
               - suspendedPendingTerminate
               - terminated
-            type: string
+          style: form
         - description: A reference to a product spec by id
+          explode: true
           in: query
           name: productSpecificationId
+          required: false
           schema:
             type: string
+          style: form
         - description: A reference to a product offering by id
+          explode: true
           in: query
           name: productOfferingId
+          required: false
           schema:
             type: string
+          style: form
         - description: A reference to the externalId provided in the order
+          explode: true
           in: query
           name: externalId
+          required: false
           schema:
             type: string
+          style: form
         - description: A site identifier which is associated to the product
+          explode: true
           in: query
           name: geographicalSiteId
+          required: false
           schema:
             type: string
+          style: form
         - description: >-
             This criteria allows to retrieve all Product records with a Product
             Relationship to a specified Product.
 
             E.g. All Products related to Product with ID 5
+          explode: true
           in: query
           name: relatedProductId
+          required: false
           schema:
             type: string
+          style: form
         - description: The Billing Account associated with the Product.
+          explode: true
           in: query
           name: billingAccountId
+          required: false
           schema:
             type: string
+          style: form
         - description: Identifies Product Order associated with the Product
+          explode: true
           in: query
           name: productOrderId
+          required: false
           schema:
             type: string
+          style: form
         - description:
             Less than the date that is the initial install date for the Product
+          explode: true
           in: query
           name: startDate.lt
+          required: false
           schema:
-            format: date-time
             type: string
+            format: date-time
+          style: form
         - description: >-
             Greater than the date that is the initial install date for the
             Product
+          explode: true
           in: query
           name: startDate.gt
+          required: false
           schema:
-            format: date-time
             type: string
+            format: date-time
+          style: form
         - description: >-
             Less than date that the last change affecting this Product was
             completed
+          explode: true
           in: query
           name: lastUpdateDate.lt
+          required: false
           schema:
-            format: date-time
             type: string
+            format: date-time
+          style: form
         - description: >-
             Greater than the date that the last change affecting this Product
             was completed
+          explode: true
           in: query
           name: lastUpdateDate.gt
+          required: false
           schema:
-            format: date-time
             type: string
+            format: date-time
+          style: form
         - description: >-
             The unique identifier of the organization that is acting as the a
             Buyer. MUST be specified in the request only when the requester
             represents more than one Buyer.
 
             Reference: MEF 81 (Sn 8.3)
+          explode: true
           in: query
           name: buyerId
+          required: false
           schema:
             type: string
+          style: form
         - description: >-
             The unique identifier of the organization that is acting as the
             Seller. MUST be specified in the request only when responding
             entity  represents more than one Seller.
 
             Reference: MEF 81 (Sn 8.3)
+          explode: true
           in: query
           name: sellerId
+          required: false
           schema:
             type: string
+          style: form
         - description: >-
             Requested index for start of item to be provided in response
             requested by client. Note that the index starts with "0".
+          explode: true
           in: query
           name: offset
+          required: false
           schema:
-            format: int32
             type: integer
+            format: int32
+          style: form
         - description: >-
             Requested number of items to be provided in response requested by
             client
+          explode: true
           in: query
           name: limit
+          required: false
           schema:
-            format: int32
             type: integer
+            format: int32
+          style: form
       responses:
         '200':
           content:
             application/json;charset=utf-8:
               schema:
+                type: array
                 items:
                   $ref: '#/components/schemas/MEFProduct_Find'
-                type: array
           description:
             'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
           headers:
@@ -176,19 +220,25 @@ paths:
                 Used to indicate that result page was throttled to maximum
                 possible size  and there are additional results that can be
                 fetched
+              explode: false
               schema:
                 type: boolean
+              style: simple
             X-Total-Count:
               description: >
                 The total number of matching items. E.g. if there are 50
                 matching items in total, but the request has offset=10 and
                 limit=10, then the X-Total-Count is 50.
+              explode: false
               schema:
                 type: integer
+              style: simple
             X-Result-Count:
               description: The number of items included in the response
+              explode: false
               schema:
                 type: integer
+              style: simple
         '400':
           content:
             application/json;charset=utf-8:
@@ -211,9 +261,9 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
+                type: array
                 items:
                   $ref: '#/components/schemas/Error422'
-                type: array
           description:
             Unprocessable entity due to the business validation problems
         '500':
@@ -222,46 +272,59 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
+      security:
+        - oauth2MEFLSOAPI:
+            - listProduct
       summary: List or find Product objects
       tags:
         - product
   '/product/{id}':
     get:
-      description: >-
-        This operation retrieves a Product entity.
+      description: This operation retrieves a Product entity.
       operationId: retrieveProduct
       parameters:
         - description: Identifier of the Product
+          explode: false
           in: path
           name: id
           required: true
           schema:
             type: string
+          style: simple
         - description: Comma-separated properties to provide in response
+          explode: true
           in: query
           name: fields
+          required: false
           schema:
             type: string
+          style: form
         - description: >-
             The unique identifier of the organization that is acting as the a
             Buyer. MUST be specified in the request only when the requester
             represents more than one Buyer.
 
             Reference: MEF 81 (Sn 8.3)
+          explode: true
           in: query
           name: buyerId
+          required: false
           schema:
             type: string
+          style: form
         - description: >-
             The unique identifier of the organization that is acting as the
             Seller. MUST be specified in the request only when responding
             entity  represents more than one Seller.
 
             Reference: MEF 81 (Sn 8.3)
+          explode: true
           in: query
           name: sellerId
+          required: false
           schema:
             type: string
+          style: form
       responses:
         '200':
           content:
@@ -300,23 +363,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
+      security:
+        - oauth2MEFLSOAPI:
+            - retrieveProduct
       summary: Retrieves a Product by ID
       tags:
         - product
 components:
-  securitySchemes:
-      oauth2MefLsoApi:
-        type: oauth2
-        description: Example of a security scheme conforming to MEF 128 LSO API Security Profiles standard
-        flows: 
-          clientCredentials:
-            tokenUrl: /oauth2/lsoApiToken/
-            refreshUrl: /oauth2/refreshLsoApiToken/
-            scopes: 
-              listProduct: This operations list or finds Product entities
-              retrieveProduct: This operation retrieves a Product entity.
   schemas:
     Error400Code:
+      type: string
       description: >-
         One of the following error codes:
 
@@ -334,87 +390,67 @@ components:
         - missingQueryValue
         - invalidQuery
         - invalidBody
-      type: string
     Duration:
+      type: object
       description:
         'A Duration in a given unit of time e.g. 3 hours, or 5 days.'
       properties:
         amount:
-          description: 'Duration (number of seconds, minutes, hours, etc.)'
           type: integer
+          description: 'Duration (number of seconds, minutes, hours, etc.)'
         units:
-          description: Time unit type
           $ref: '#/components/schemas/TimeUnit'
       required:
         - amount
         - units
-      type: object
     Error:
+      type: object
       description: >
         Standard Class used to describe API response error Not intended to be
         used directly. The `code` in the HTTP header is used as a discriminator
         for the type of error returned in runtime.
       properties:
         reason:
+          type: string
           description: >-
             Text that explains the reason for the error. This can be shown to a
             client user.
           maxLength: 255
-          type: string
         message:
+          type: string
           description: >-
             Text that provides mode details and corrective actions related to
             the error. This can be shown to a client user.
-          type: string
         referenceError:
-          description: URL pointing to documentation describing the error
-          format: uri
           type: string
+          format: uri
+          description: URL pointing to documentation describing the error
       required:
         - reason
-      type: object
     Error400:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
-              description: >-
-                One of the following error codes:
-
-                - missingQueryParameter: The URI is missing a required
-                query-string parameter
-
-                - missingQueryValue: The URI is missing a required query-string
-                parameter value
-
-                - invalidQuery: The query section of the URI is invalid.
-
-                - invalidBody: The request has an invalid body
               $ref: '#/components/schemas/Error400Code'
           required:
             - code
-          type: object
       description:
         'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
     Error401:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
-              description: >-
-                One of the following error codes:
-
-                - missingCredentials: No credentials provided.
-
-                - invalidCredentials: Provided credentials are invalid or
-                expired
               $ref: '#/components/schemas/Error401Code'
           required:
             - code
-          type: object
       description:
         'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
     Error401Code:
+      type: string
       description: |-
         One of the following error codes:
         - missingCredentials: No credentials provided.
@@ -422,28 +458,21 @@ components:
       enum:
         - missingCredentials
         - invalidCredentials
-      type: string
     Error403:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
-              description: |-
-                This code indicates that the server understood
-                the request but refuses to authorize it because
-                of one of the following error codes:
-                - accessDenied: Access denied
-                - forbiddenRequester: Forbidden requester
-                - tooManyUsers: Too many users
               $ref: '#/components/schemas/Error403Code'
           required:
             - code
-          type: object
       description: >-
         Forbidden. This code indicates that the server understood the request
         but refuses to authorize it.
         (https://tools.ietf.org/html/rfc7231#section-6.5.3)
     Error403Code:
+      type: string
       description: |-
         This code indicates that the server understood
         the request but refuses to authorize it because
@@ -455,12 +484,13 @@ components:
         - accessDenied
         - forbiddenRequester
         - tooManyUsers
-      type: string
     Error404:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
+              type: string
               description: >-
                 The following error code:
 
@@ -468,29 +498,20 @@ components:
                 not found
               enum:
                 - notFound
-              type: string
           required:
             - code
-          type: object
       description: >-
         Resource for the requested path not found.
         (https://tools.ietf.org/html/rfc7231#section-6.5.4)
     Error422:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
-              description: |
-                One of the following error codes:
-                  - missingProperty: The property the Seller has expected is not present in the payload
-                  - invalidValue: The property has an incorrect value
-                  - invalidFormat: The property value does not comply with the expected value format
-                  - referenceNotFound: The object referenced by the property cannot be identified in the Seller system
-                  - unexpectedProperty: Additional property, not expected by the Seller has been provided
-                  - tooManyRecords: the number of records to be provided in the response exceeds the Seller's threshold.
-                  - otherIssue: Other problem was identified (detailed information provided in a reason)
               $ref: '#/components/schemas/Error422Code'
             propertyPath:
+              type: string
               description: >
                 A pointer to a particular property of the payload that caused
                 the validation issue. It is highly recommended that this
@@ -498,14 +519,13 @@ components:
 
                 Defined using JavaScript Object Notation (JSON) Pointer
                 (https://tools.ietf.org/html/rfc6901).
-              type: string
           required:
             - code
-          type: object
       description: >-
         Unprocessable entity due to a business validation problem.
         (https://tools.ietf.org/html/rfc4918#section-11.2)
     Error422Code:
+      type: string
       description: |
         One of the following error codes:
           - missingProperty: The property the Seller has expected is not present in the payload
@@ -523,12 +543,13 @@ components:
         - unexpectedProperty
         - tooManyRecords
         - otherIssue
-      type: string
     Error500:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
+              type: string
               description: >-
                 The following error code:
 
@@ -537,14 +558,13 @@ components:
                 request.
               enum:
                 - internalError
-              type: string
           required:
             - code
-          type: object
       description: >-
         Internal Server Error.
         (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     FieldedAddress:
+      type: object
       description: >-
         A type of Address that has a discrete field and value for each type of
         boundary or identifier down to the lowest level of detail. For example
@@ -552,110 +572,110 @@ components:
         Reference: MEF 79 (Sn 8.9.2)
       properties:
         country:
-          description: Country that the address is in
           type: string
+          description: Country that the address is in
         streetType:
+          type: string
           description: >-
             The type of street (e.g., alley, avenue, boulevard, brae, crescent,
             drive, highway, lane, terrace, parade, place, tarn, way, wharf)
-          type: string
         postcodeExtension:
+          type: string
           description: >-
             An extension of a postal code. E.g. the part following the dash in
             a US urban property address
-          type: string
         city:
-          description: The city that the address is in
           type: string
+          description: The city that the address is in
         streetNr:
+          type: string
           description: >-
             Number identifying a specific property on a public street. It may
             be combined with streetNrLast for ranged addresses. MEF 79 defines
             it as required however as in certain countries it is not used we
             make it optional in API.
-          type: string
         locality:
-          description: The locality that the address is in
           type: string
+          description: The locality that the address is in
         postcode:
+          type: string
           description: >-
             Descriptor for a postal delivery area, used to speed and simplify
             the delivery of mail (also known as zip code)
-          type: string
         streetNrLast:
+          type: string
           description:
             Last number in a range of street numbers allocated to a property
-          type: string
         streetNrSuffix:
+          type: string
           description: The first street number suffix
-          type: string
         streetName:
+          type: string
           description: Name of the street or other street type
-          type: string
         stateOrProvince:
+          type: string
           description: The State or Province that the address is in
-          type: string
         streetNrLastSuffix:
-          description: Last street number suffix for a ranged address
           type: string
+          description: Last street number suffix for a ranged address
         geographicSubAddress:
           $ref: '#/components/schemas/GeographicSubAddress'
         streetSuffix:
-          description: A modifier denoting a relative direction
           type: string
+          description: A modifier denoting a relative direction
       required:
         - city
         - country
         - streetName
-      type: object
     GeographicSubAddress:
+      type: object
       description:
         'Additional fields used to specify an address, as detailed as possible.'
       properties:
         buildingName:
+          type: string
           description: >
             Allows for identification of places that require building name  as
             part of addressing information
-          type: string
         subUnit:
+          type: array
           description: >-
             Representation of a MEFSubUnit It is used for describing subunit
             within a subAddress e.g. BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
             UNIT, WHARF.
           items:
             $ref: '#/components/schemas/MEFSubUnit'
-          type: array
         levelType:
-          description: Describes level types within a building
           type: string
+          description: Describes level types within a building
         levelNumber:
+          type: string
           description:
             'Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT
             2'
-          type: string
         privateStreetNumber:
-          description: Private streets numbers internal to a private street
           type: string
+          description: Private streets numbers internal to a private street
         privateStreetName:
+          type: string
           description: >-
             "Private streets internal to a property (e.g. a university) may
             have internal names that are not recorded by the land title office
-          type: string
-      type: object
     MEFBillingAccountRef:
+      type: object
       description: A reference to the Buyer's Billing Account
       properties:
         id:
+          type: string
           description: >-
             Identifies the buyer's billing account to which the recurring and
             non-recurring charges for this order or order item will be billed.
             Required if the Buyer has more than one Billing Account with the
             Seller and for all new Product Orders.
-          type: string
       required:
         - id
-      type: object
     MEFChargePeriod:
+      type: string
       description: Used for a recurring charge to indicate period.
       enum:
         - hour
@@ -663,144 +683,128 @@ components:
         - week
         - month
         - year
-      type: string
     MEFEndOfTermAction:
+      type: string
       description: The action the Seller will take once the term expires.
       enum:
         - roll
         - autoDisconnect
         - autoRenew
-      type: string
     MEFItemTerm:
+      type: object
       description: The term of the Item
       properties:
         duration:
-          description: Duration of the term
           $ref: '#/components/schemas/Duration'
         endOfTermAction:
-          description: >-
-            The action that needs to be taken by the Seller once the term
-            expires
           $ref: '#/components/schemas/MEFEndOfTermAction'
         name:
+          type: string
           description: Name of the term
-          type: string
         description:
-          description: Description of the term
           type: string
+          description: Description of the term
         rollInterval:
-          description: >-
-            The recurring period that the Buyer is willing to pay to the end of
-            upon disconnecting the Product after the original term has expired.
           $ref: '#/components/schemas/Duration'
-      type: object
     MEFPriceType:
+      type: string
       description:
         Indicates if the price is for recurring or non-recurring charges.
       enum:
         - recurring
         - nonRecurring
         - usageBased
-      type: string
     MEFProduct:
+      type: object
       description:
         A product is realized as one or more service(s) and / or resource(s).
       properties:
         productSpecification:
-          description: A reference to a Product Specification of the Product
           $ref: '#/components/schemas/ProductSpecificationRef'
         relatedSite:
+          type: array
           description: Reference to a Site where the PRoduct is provided.
           items:
             $ref: '#/components/schemas/RelatedGeographicSite'
-          type: array
         productOffering:
-          description: >-
-            A particular Product Offering defines the technical and commercial
-            attributes and behaviors of a Product.
           $ref: '#/components/schemas/ProductOfferingRef'
         lastUpdateDate:
-          description: Latest date when the product has been updated.
-          format: date-time
           type: string
+          format: date-time
+          description: Latest date when the product has been updated.
         relatedContactInformation:
+          type: array
           description: Party playing a role for this Product
           items:
             $ref: '#/components/schemas/RelatedContactInformation'
-          type: array
         '@type':
+          type: string
           description:
             'When sub-classing, this defines the sub-class entity name'
-          type: string
         externalId:
-          description: Buyer identifier of the product
           type: string
+          description: Buyer identifier of the product
         statusChange:
+          type: array
           description: status change for the Product
           items:
             $ref: '#/components/schemas/MEFProductStatusChange'
-          type: array
         billingAccount:
-          description: The Billing Account associated with the Product
           $ref: '#/components/schemas/MEFBillingAccountRef'
         productOrderItem:
+          type: array
           description: >-
             The Product Order Item of the associated Product order that
             resulted in the creation of this Product.
           items:
             $ref: '#/components/schemas/MEFProductOrderItemRef'
-          type: array
         productTerm:
+          type: array
           description: Term of the Product
           items:
             $ref: '#/components/schemas/MEFItemTerm'
-          type: array
         terminationDate:
+          type: string
+          format: date-time
           description: >-
             Is the date when the product was terminated. MEF: Termination date
             (commercial) is when the product has been terminated (when the
             disconnect in the product order has been processed).
-          format: date-time
-          type: string
         productConfiguration:
-          description: >-
-            MEFProductConfiguration is used to specify the MEF specific product
-            payload.
           $ref: '#/components/schemas/MEFProductConfiguration'
         productRelationship:
+          type: array
           description: >-
             A list of references to existing products that are related to the
             Product.
           items:
             $ref: '#/components/schemas/ProductRelationship'
-          type: array
         id:
+          type: string
           description: Unique identifier of the product
-          type: string
         href:
-          description: Reference of the product
           type: string
+          description: Reference of the product
         startDate:
+          type: string
+          format: date-time
           description: >-
             Is the date from which the product starts. MEF: Start date is when
             the product is active for the first time (when the install in the
             product order has been processed).
-          format: date-time
-          type: string
         productPrice:
+          type: array
           description: A list of Prices associated with the Product
           items:
             $ref: '#/components/schemas/ProductPrice'
-          type: array
         status:
-          description: The lifecycle status of the product.
           $ref: '#/components/schemas/MEFProductStatusType'
       required:
         - id
         - startDate
         - status
-      type: object
     MEFProductConfiguration:
+      type: object
       description: >-
         MEFProductConfiguration is used as an extension point for MEF specific
         product/service payload.  The `@type` attribute is used as a
@@ -809,50 +813,49 @@ components:
         propertyName: '@type'
       properties:
         '@type':
+          type: string
           description: >-
             The name of the type, defined in the JSON schema specified  above,
             for the product that is the subject of the POQ Request. The named
             type must be a subclass of MEFProductConfiguration.
-          type: string
       required:
         - '@type'
-      type: object
     MEFProductOrderItemRef:
+      type: object
       description: A reference to a ProductOrder item
       properties:
         productOrderHref:
+          type: string
           description: Reference of the related ProductOrder.
-          type: string
         productOrderItemId:
+          type: string
           description: Id of an Item within the Product Order
-          type: string
         productOrderId:
-          description: Unique identifier of a ProductOrder.
           type: string
+          description: Unique identifier of a ProductOrder.
       required:
         - productOrderId
         - productOrderItemId
-      type: object
     MEFProductStatusChange:
+      type: object
       description: >-
         Holds the reached status, reasons and associated date the Product Order
         status changed, populated by the Seller.
       properties:
         changeReason:
+          type: string
           description: The reason why the status changed.
-          type: string
         changeDate:
-          description: The date and time the status changed.
-          format: date-time
           type: string
+          format: date-time
+          description: The date and time the status changed.
         status:
-          description: Status of the product
           $ref: '#/components/schemas/MEFProductStatusType'
       required:
         - changeDate
         - status
-      type: object
     MEFProductStatusType:
+      type: string
       description: |-
         Possible values for the status of a MEF product
 
@@ -875,122 +878,112 @@ components:
         - suspended
         - suspendedPendingTerminate
         - terminated
-      type: string
     MEFProduct_Find:
+      type: object
       description: >-
         Class used to provide product overview retrieved in GET (by list)
         operation
       properties:
         productSpecification:
-          description: A reference to a Product Specification of the Product
           $ref: '#/components/schemas/ProductSpecificationRef'
         relatedSite:
+          type: array
           description: Reference to a Site where the PRoduct is provided.
           items:
             $ref: '#/components/schemas/RelatedGeographicSite'
-          type: array
         productOffering:
-          description: >-
-            A particular Product Offering defines the technical and commercial
-            attributes and behaviors of a Product.
           $ref: '#/components/schemas/ProductOfferingRef'
         lastUpdateDate:
-          description: Latest date when the product has been updated.
-          format: date-time
           type: string
+          format: date-time
+          description: Latest date when the product has been updated.
         externalId:
+          type: string
           description: >-
             This identifier is optionally provided during the product ordering
             and stored for informative purpose in the seller inventory
-          type: string
         productRelationship:
+          type: array
           description: >-
             A list of references to existing products that are related to the
             Product.
           items:
             $ref: '#/components/schemas/ProductRelationship'
-          type: array
         id:
+          type: string
           description: Unique identifier of the product
-          type: string
         href:
-          description: Reference of the product
           type: string
+          description: Reference of the product
         billingAccount:
-          description: The Billing Account associated with the Product
           $ref: '#/components/schemas/MEFBillingAccountRef'
         productOrderItem:
+          type: array
           description: >-
             The Product Order Item of the associated Product order that
             resulted in the creation of this Product.
           items:
             $ref: '#/components/schemas/MEFProductOrderItemRef'
-          type: array
         startDate:
-          description: The date from which the product starts
-          format: date-time
           type: string
+          format: date-time
+          description: The date from which the product starts
         status:
-          description: The lifecycle status of the product.
           $ref: '#/components/schemas/MEFProductStatusType'
       required:
         - id
         - status
-      type: object
     MEFSubUnit:
+      type: object
       description: Allows for sub unit identification
       properties:
         subUnitNumber:
+          type: string
           description: >-
             The discriminator used for the subunit, often just a simple number
             but may also be a range.
-          type: string
         subUnitType:
+          type: string
           description: >-
             The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
             UNIT, WHARF.
-          type: string
       required:
         - subUnitNumber
         - subUnitType
-      type: object
     Money:
+      type: object
       description: A base / value business entity used to represent money
       properties:
         unit:
+          type: string
           description:
             Currency (ISO4217 norm uses 3 letters to define the currency)
-          type: string
         value:
-          description: A positive floating point number
-          format: float
           type: number
+          format: float
+          description: A positive floating point number
       required:
         - unit
         - value
-      type: object
     Price:
+      type: object
       description: >-
         Provides all amounts (tax included, duty free, tax rate), used currency
         and percentage to apply for Price Alteration.
       properties:
         taxRate:
+          type: number
+          format: float
           description:
             'Price Tax Rate. Unit: [%]. E.g. value 16 stand for 16% tax.'
-          format: float
-          type: number
         taxIncludedAmount:
-          description:
-            All taxes included amount (expressed in the given currency)
           $ref: '#/components/schemas/Money'
         dutyFreeAmount:
-          description:
-            All taxes excluded amount (expressed in the given currency)
           $ref: '#/components/schemas/Money'
       required:
         - dutyFreeAmount
-      type: object
     ProductOfferingRef:
+      type: object
       description: >-
         A reference to a Product Offering offered by the Seller to the Buyer. A
         Product Offering contains the commercial and technical details of a
@@ -1002,59 +995,55 @@ components:
         associated Product Specification.
       properties:
         href:
+          type: string
           description: >
             Hyperlink to a Product Offering in Sellers catalog. In case Seller
             is not providing a catalog API this field is not used. The catalog
             is provided by the Seller to the Buyer during onboarding.
-          type: string
         id:
+          type: string
           description: >-
             id of a Product Offering. It is assigned by the Seller. The Buyer
             and the Seller exchange information about offerings' ids during the
             onboarding process.
-          type: string
       required:
         - id
-      type: object
     ProductPrice:
+      type: object
       description: >-
         An amount, usually of money, that represents the actual price paid by a
         Customer for a purchase, a rent or a lease of a Product. The price is
         valid for a defined period of time.
       properties:
         unitOfMeasure:
+          type: string
           description:
             'Unit of Measure if price depending on it (Gb, SMS volume, etc..)'
-          type: string
         price:
-          description: Value of the Price
           $ref: '#/components/schemas/Price'
         name:
-          description: A short descriptive name such as "Subscription price".
           type: string
+          description: A short descriptive name such as "Subscription price".
         priceType:
-          description: >-
-            A category that describes the price, such as recurring,
-            nonRecurring, usageBased
           $ref: '#/components/schemas/MEFPriceType'
         description:
+          type: string
           description: >-
             A narrative that explains in detail the semantics of this product
             price.
-          type: string
         recurringChargePeriod:
-          description: Charge period for recurring charge.
           $ref: '#/components/schemas/MEFChargePeriod'
       required:
         - price
         - priceType
-      type: object
     ProductRelationship:
+      type: object
       description: >-
         A relationship to existing Product. The requirements for usage for
         given Product are described in the Product Specification.
       properties:
         relationshipType:
+          type: string
           description: >-
             Specifies the type (nature) of the relationship to the related
             Product. The nature of required relationships vary for Products of
@@ -1065,36 +1054,35 @@ components:
             Products may have more complex relationships. As a result, the
             allowed and mandatory `relationshipType` values are defined in the
             Product Specification.
-          type: string
         id:
+          type: string
           description: unique identifier
-          type: string
         href:
-          description: Hyperlink of the referenced product
           type: string
+          description: Hyperlink of the referenced product
       required:
         - id
         - relationshipType
-      type: object
     ProductSpecificationRef:
+      type: object
       description: >-
         A reference to a structured set of well-defined technical attributes
         and/or behaviors that are used to construct a Product Offering for sale
         to a market.
       properties:
         href:
+          type: string
           description: >
             Hyperlink to a Product Specification in Sellers catalog. In case
             Seller is not providing a catalog API this field is not used. The
             catalog is provided by the Seller to the Buyer during onboarding.
-          type: string
         id:
-          description: Unique identifier of the product specification
           type: string
+          description: Unique identifier of the product specification
       required:
         - id
-      type: object
     RelatedContactInformation:
+      type: object
       description: |
         Contact information of an individual or organization playing a role for
         this Entity. The rule for mapping a represented attribute value to a
@@ -1104,56 +1092,53 @@ components:
         - Buyer Technical Contact: `role=buyerTechnicalContact`
       properties:
         number:
+          type: string
           description: Phone number
-          type: string
         emailAddress:
+          type: string
           description: Email address
-          type: string
         role:
-          description: A role the party plays in a given context.
           type: string
+          description: A role the party plays in a given context.
         postalAddress:
-          description: >-
-            Identifies the postal address of the person or office to be
-            contacted.
           $ref: '#/components/schemas/FieldedAddress'
         organization:
+          type: string
           description: The organization or company that the contact belongs to
-          type: string
         name:
+          type: string
           description: Name of the contact
-          type: string
         numberExtension:
-          description: Phone number extension
           type: string
+          description: Phone number extension
       required:
         - emailAddress
         - name
         - number
         - role
-      type: object
     RelatedGeographicSite:
+      type: object
       description: >-
         A  Geographic Site  and an associated role as installation address,
         delivery address, etc....
       properties:
         role:
+          type: string
           description: >-
             Role of the geographic site, such as: [home delivery], [shop
             retrieval]) MEF: The role that the Site plays, e.g. Billing
             Address, UNI Site, or ENNI Site.
-          type: string
         id:
+          type: string
           description: Unique identifier of the geographic site
-          type: string
         href:
-          description: Hyperlink to the referenced geographic site
           type: string
+          description: Hyperlink to the referenced geographic site
       required:
         - id
         - role
-      type: object
     TimeUnit:
+      type: string
       description: |
         Represents a unit of time.
         Reference: MEF 79 (Sn 8.4.3.1/8.4.3.2)
@@ -1165,4 +1150,14 @@ components:
         - businessDays
         - businessHours
         - businessMinutes
-      type: string
+  securitySchemes:
+    oauth2MEFLSOAPI:
+      description: Default m2m client code
+      flows:
+        clientCredentials:
+          refreshUrl: 'http://mef.net/example/refresh'
+          scopes:
+            listProduct: Scope for operation listProduct
+            retrieveProduct: Scope for operation retrieveProduct
+          tokenUrl: 'http://mef.net/example/token'
+      type: oauth2

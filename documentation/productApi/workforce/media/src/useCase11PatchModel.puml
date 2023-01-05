@@ -11,10 +11,9 @@ class Appointment_Update {
 
 Appointment_Update *-->"*" AttachmentValue : attachment
 Appointment_Update *-->"*" Note : note
-Appointment_Update *-->"*" RelatedEntity : relatedEntity
 Appointment_Update *--> RelatedPlaceRefOrValue : relatedPlace
-Appointment_Update *-->"1" TimePeriod : validFor
 Appointment_Update *-->"*" RelatedContactInformation : relatedContactInformation
+Appointment_Update *--> TimePeriod : validFor
 
 
 class AttachmentValue {
@@ -118,15 +117,6 @@ class RelatedContactInformation {
 RelatedContactInformation *--> FieldedAddress : postalAddress
 
 
-class RelatedEntity {
-
-    @referredType*: string
-    href: string
-    id*: string
-    role*: string
-}
-
-
 class TimePeriod {
 
     endDateTime: date-time
@@ -178,14 +168,5 @@ class MEFGeographicPoint {
     z: string
 }
 RelatedPlaceRefOrValue <|-- MEFGeographicPoint
-
-
-
-class TimeSlot {
-
-}
-
-TimeSlot *-->"1" TimePeriod : validFor
-
 
 @enduml

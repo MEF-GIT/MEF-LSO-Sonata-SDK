@@ -6,34 +6,35 @@ skinparam {
 
 class Appointment {
 
-    id: string
+    id*: string
     href: string
-    status: AppointmentStatusType
+    status*: AppointmentStatusType
 }
 
 Appointment *-->"*" AttachmentValue : attachment
 Appointment *-->"*" Note : note
-Appointment *--> RelatedPlaceRefOrValue : relatedPlace
+Appointment *-->"1" RelatedPlaceRefOrValue : relatedPlace
 Appointment *-->"1" TimePeriod : validFor
-Appointment *-->"*" RelatedContactInformation : relatedContactInformation
-Appointment *--> WorkOrderRef : workOrder
+Appointment *-->"1..*" RelatedContactInformation : relatedContactInformation
+Appointment *-->"1" WorkOrderRef : workOrder
 
 
 class Appointment_Find {
 
     id*: string
-    href*: string
+    href: string
     status*: AppointmentStatusType
 }
 
 Appointment_Find *-->"1" RelatedPlaceRefOrValue : relatedPlace
-Appointment_Find *-->"1..*" RelatedContactInformation : validFor
+Appointment_Find *-->"1" TimePeriod : validFor
 Appointment_Find *-->"1" WorkOrderRef : workOrder
 
 
 enum AppointmentStatusType {
 
     confirmed
+    inProgress
     cancelled
     missed
     failed
@@ -43,9 +44,11 @@ class Appointment_Create {
 
 }
 
-Appointment_Create *--> RelatedPlaceRefOrValue : relatedPlace
-Appointment_Create *-->"*" RelatedContactInformation : relatedContactInformation
-Appointment_Create *--> WorkOrderRef : workOrder
+Appointment_Create *-->"*" AttachmentValue : attachment
+Appointment_Create *-->"*" Note : note
+Appointment_Create *-->"1..*" RelatedContactInformation : relatedContactInformation
+Appointment_Create *-->"1" TimePeriod : validFor
+Appointment_Create *-->"1" WorkOrderRef : workOrder
 
 
 class Appointment_Update {
@@ -54,8 +57,9 @@ class Appointment_Update {
 
 Appointment_Update *-->"*" AttachmentValue : attachment
 Appointment_Update *-->"*" Note : note
-Appointment_Update *--> TimePeriod : validFor
+Appointment_Update *--> RelatedPlaceRefOrValue : relatedPlace
 Appointment_Update *-->"*" RelatedContactInformation : relatedContactInformation
+Appointment_Update *--> TimePeriod : validFor
 
 
 class AttachmentValue {
@@ -159,8 +163,8 @@ class SearchTimeSlot_Create {
 
 }
 
-SearchTimeSlot_Create *-->"*" TimeSlot : requestedTimeSlot
-SearchTimeSlot_Create *-->"*" RelatedEntity : relatedEntity
+SearchTimeSlot_Create *-->"1..*" TimeSlot : requestedTimeSlot
+SearchTimeSlot_Create *-->"1" WorkOrderRef : workOrder
 
 
 enum Error422Code {
@@ -353,29 +357,19 @@ class RelatedContactInformation {
 RelatedContactInformation *--> FieldedAddress : postalAddress
 
 
-class RelatedEntity {
-
-    @referredType*: string
-    href: string
-    id*: string
-    role*: string
-}
-
-
-
 class SearchTimeSlot {
 
 }
 
-SearchTimeSlot *-->"*" TimeSlot : availableTimeSlot
-SearchTimeSlot *-->"*" TimeSlot : requestedTimeSlot
-SearchTimeSlot *-->"*" RelatedEntity : relatedEntity
+SearchTimeSlot *-->"1..*" TimeSlot : availableTimeSlot
+SearchTimeSlot *-->"1..*" TimeSlot : requestedTimeSlot
+SearchTimeSlot *-->"1" WorkOrderRef : workOrder
 
 
 class TimePeriod {
 
-    endDateTime: date-time
-    startDateTime: date-time
+    endDateTime*: date-time
+    startDateTime*: date-time
 }
 
 

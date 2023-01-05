@@ -1,0 +1,51 @@
+@startuml
+
+'skinparam nodesep 10'
+'skinparam ranksep 20'
+
+skinparam state {
+    BackgroundColor White
+    BorderColor Black
+}
+hide empty description
+
+'''decisions'''
+state Disputed <<choice>>: 
+note left of Disputed : Any Line-Item in disputeBeingInvestigated state
+
+'''decisions'''
+state Payment <<choice>>: 
+note left of Payment : Any Line-Item in paymentDue state
+
+'''decisions'''
+state Whitdrawn <<choice>>: 
+note left of Whitdrawn : Any Line-Item in withdrawn state
+
+'''decisions'''
+state Credit <<choice>>: 
+note left of Credit : Any Line-Item in credit state
+
+'''decisions'''
+state Settled <<choice>>: 
+note left of Settled : Any Line-Item in settled state
+
+
+
+''' diagram'''
+[*] -d-> generated
+generated -d->Disputed
+Disputed -r-> paymentDue: Yes
+Disputed -d-> Payment: No
+Payment -r-> paymentDue: Yes
+Payment -d-> Whitdrawn: No 
+Whitdrawn -r-> paymentDue: Yes
+Whitdrawn -d-> Credit: No
+Credit -r-> paymentDue: Yes
+Credit -d-> Settled: No
+Settled-r-> settled: Yes
+paymentDue -r->Disputed
+settled -r->[*]
+
+
+
+@enduml

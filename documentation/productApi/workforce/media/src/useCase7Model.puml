@@ -4,31 +4,21 @@ skinparam {
     ClassBorderColor Black
 }
 
-
-class RelatedEntity {
-
-    @referredType*: string
-    href: string
-    id*: string
-    role*: string
-}
-
-
 class SearchTimeSlot {
 
 }
 
-SearchTimeSlot *-->"*" TimeSlot : availableTimeSlot
-SearchTimeSlot *-->"*" TimeSlot : requestedTimeSlot
-SearchTimeSlot *-->"*" RelatedEntity : relatedEntity
+SearchTimeSlot *-->"1..*" TimeSlot : availableTimeSlot
+SearchTimeSlot *-->"1..*" TimeSlot : requestedTimeSlot
+SearchTimeSlot *-->"1" WorkOrderRef : workOrder
 
 
 class SearchTimeSlot_Create {
 
 }
 
-SearchTimeSlot_Create *-->"*" TimeSlot : requestedTimeSlot
-SearchTimeSlot_Create *-->"*" RelatedEntity : relatedEntity
+SearchTimeSlot_Create *-->"1..*" TimeSlot : requestedTimeSlot
+SearchTimeSlot_Create *-->"1" WorkOrderRef : workOrder
 
 
 class TimePeriod {
@@ -43,6 +33,12 @@ class TimeSlot {
 }
 
 TimeSlot *-->"1" TimePeriod : validFor
+
+class WorkOrderRef {
+
+    href: string
+    id*: string
+}
 
 
 @enduml

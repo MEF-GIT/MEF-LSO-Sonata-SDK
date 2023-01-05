@@ -14,8 +14,16 @@ class CancelProductOrder {
     state*: MEFChargeableTaskStateType
 }
 
+CancelProductOrder *-->"0..*" MEFProductOrderChargeRef : charge
 CancelProductOrder *-->"1" MEFProductOrderRef : productOrder
 CancelProductOrder *-->"1..*" RelatedContactInformation : relatedContactInformation
+
+class MEFProductOrderChargeRef {
+
+    href: string
+    id*: string
+}
+
 
 class CancelProductOrder_Create {
 

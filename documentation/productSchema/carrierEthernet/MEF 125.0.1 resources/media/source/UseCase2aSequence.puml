@@ -1,0 +1,79 @@
+@startuml
+
+participant Buyer
+participant Seller
+
+== Build request ==
+activate Buyer
+
+group POQ
+Buyer -> Buyer : new ProductOfferingQualification_Create
+Buyer -> Buyer : set mandatory and optional attributes
+
+  group POQ Item (item-001, carries EPL)
+    Buyer -> Buyer : new ProductOfferingQualificationItem_Create
+    Buyer -> Buyer : id=item-001
+    Buyer -> Buyer : action=add
+    Buyer -> Buyer : set mandatory and optional attributes
+    
+    group Product: EPL
+          Buyer -> Buyer : new urn:mef:lso:spec:cantata-sonata:epl-evc:v1.0.0:all
+          Buyer -> Buyer : set desired product configuration
+    end
+
+    Buyer -> Buyer : set product.productConfiguration with EPL
+    Buyer -> Buyer : set qualificationItemRelationship with (CONNECTS_TO_UNI, "item-002")
+    Buyer -> Buyer : set qualificationItemRelationship with (CONNECTS_TO_UNI, "item-003")
+    
+  end
+
+Buyer -> Buyer : add POQ Item ("item-001")
+
+  group POQ Item (item-002, carries UNI)
+    Buyer -> Buyer : new ProductOfferingQualificationItem_Create
+    Buyer -> Buyer : id=item-002
+    Buyer -> Buyer : action=add
+    Buyer -> Buyer : set mandatory and optional attributes
+    
+    group Product: UNI
+          Buyer -> Buyer : new urn:mef:lso:spec:cantata-sonata:carrier-ethernet-subscriber-uni:v1.0.0:all
+          Buyer -> Buyer : set desired product configuration
+    end
+    Buyer -> Buyer : set product.productConfiguration with UNI
+
+  end
+Buyer -> Buyer : add POQ Item ("item-002")
+
+group POQ Item (item-003, carries UNI)
+    Buyer -> Buyer : new ProductOfferingQualificationItem_Create
+    Buyer -> Buyer : id=item-003
+    Buyer -> Buyer : action=add
+    Buyer -> Buyer : set mandatory and optional attributes
+    
+    group Product: UNI
+          Buyer -> Buyer : new urn:mef:lso:spec:cantata-sonata:carrier-ethernet-subscriber-uni:v1.0.0:all
+          Buyer -> Buyer : set desired product configuration
+    end
+    Buyer -> Buyer : set product.productConfiguration with UNI
+
+  end
+  Buyer -> Buyer : add POQ Item ("item-003")
+end
+
+== Send request ==
+
+Buyer -> Seller : POST {{baseUrl}}/productOfferingQualification
+activate Seller
+
+alt succesful inquiry
+Seller --> Buyer : 201 POQ created
+
+else validation or internal problem
+
+Seller --> Buyer : 4xx or 5xx response
+
+deactivate Seller
+deactivate Buyer
+
+end 
+@enduml

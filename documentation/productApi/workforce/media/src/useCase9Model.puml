@@ -12,9 +12,9 @@ class Appointment_Find {
     status*: AppointmentStateType
 }
 
-Appointment_Find *-->"1..*" RelatedEntity : relatedEntity
 Appointment_Find *-->"1" RelatedPlaceRefOrValue : relatedPlace
 Appointment_Find *-->"1..*" RelatedContactInformation : validFor
+Appointment_Find *-->"1" WorkOrderRef : workOrder
 
 
 class FormattedAddress {
@@ -82,15 +82,6 @@ class RelatedContactInformation {
 
 RelatedContactInformation *--> FieldedAddress : postalAddress
 
-
-class RelatedEntity {
-
-    @referredType*: string
-    href: string
-    id*: string
-    role*: string
-}
-
 class FieldedAddress {
 
     city*: string
@@ -137,9 +128,11 @@ class MEFGeographicPoint {
 }
 RelatedPlaceRefOrValue <|-- MEFGeographicPoint
 
+class WorkOrderRef {
 
-
-
+    href: string
+    id*: string
+}
 
 
 @enduml

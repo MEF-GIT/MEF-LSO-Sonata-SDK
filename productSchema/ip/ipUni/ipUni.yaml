@@ -1,0 +1,47 @@
+---
+$id: urn:mef:lso:spec:cantata-sonata:ip-uni:v0.2.0:all
+$schema: http://json-schema.org/draft-07/schema#
+title: MEF LSO IP UNI - Product Specification
+type: object
+description: >-
+  The IP UNI is a MEF 69.1 defined version of MEF 61.1
+  UNI. Reference MEF 69.1 Section 8.3 Internet Access UNI Requirements.
+allOf: 
+  - $ref: "../common/ipCommon.yaml#/definitions/IpUniCommon"
+  - type: object
+    properties:
+      egressBandwidthProfileEnvelope:
+        $ref: "../common/ipCommon.yaml#/definitions/IpUniBwpEnvelope"
+        description: >-
+          Attribute used for an egress UNI Bandwidth Profile. Reference MEF 61.1
+          Section 12.5 UNI Egress Bandwidth Profile Envelope Service Attribute.
+          Absence of this attribute corresponds to a value of "None". [D8]  At a
+          UNI with an IPVC EP for a Basic Internet Access Service, if the UNI
+          Egress Bandwidth Profile Envelope is not None, it SHOULD have
+          Bandwidth Profile Flows that contain all Egress IP Data Packets at the
+          UNI that are mapped to any of a given set of IPVC EPs (as defined in
+          MEF 61.1 [8] Table 28). Reference MEF 69.1 Section 9.3 Internet Access
+          UNI Requirements.
+        nullable: true
+      ingressBandwidthProfileEnvelope:
+        $ref: "../common/ipCommon.yaml#/definitions/IpUniBwpEnvelope"
+        description: >-
+          Attribute used for an ingress UNI Bandwidth Profile. Reference MEF
+          61.1 Section 12.4 UNI Ingress Bandwidth Profile Envelope Service
+          Attribute. Absence of this attribute corresponds to a value of "None".
+          [D7]  At a UNI with an IPVC EP for a Basic Internet Access Service, if
+          the UNI Ingress Bandwidth Profile Envelope is not None, it SHOULD have
+          Bandwidth Profile Flows that contain all Ingress IP Data Packets at
+          the UNI that are mapped to any of a given set of IPVC EPs (as defined
+          in MEF 61.1 [8] Table 28). Reference MEF 69.1 Section 9.3 Internet
+          Access UNI Requirements.
+        nullable: true
+      routingProtocols:
+        $ref: "../common/ipCommon.yaml#/definitions/RoutingProtocols"
+        description: >-
+          List of Routing Protocols used across the UNI. Reference MEF 61.1
+          Section 12.7 UNI Routing Protocols Service Attribute. Absence of this
+          attribute corresponds to a value of "None". [R21] At a UNI with an
+          IPVC EP for a Basic Internet Access Service, the UNI Routing Protocols
+          list MUST be empty.
+        nullable: true

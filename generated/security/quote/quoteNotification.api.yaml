@@ -1,23 +1,37 @@
 openapi: 3.0.1
 info:
-  description: |
+  description: >
     **This file forms part of MEF 115**
+
 
     This API implements Business Requirements described in MEF 80
 
-    Quote API allows the Buyer to submit a request to find out how much the installation
+
+    Quote API allows the Buyer to submit a request to find out how much the
+    installation
+
     of an instance of a Product Offering, an update to an existing Product, or
+
     a disconnect of an existing Product will cost.
 
+
     List of supported Use Cases:
+
     - Send Quote Notification
+
 
     Copyright 2021 MEF Forum and its contributors.
 
+
     This file includes content based on the TM Forum Quote Management API
+
     (TMF648 v4.0.0) available at
-    https://github.com/tmforum-apis/TMF648_QuoteManagement, which is licensed by
+
+    https://github.com/tmforum-apis/TMF648_QuoteManagement, which is licensed
+    by
+
     the TM Forum under the Apache License version 2.0. Such content has been
+
     modified by the MEF Forum and its contributors.
   title: Quote Notification
   version: 8.0.1
@@ -30,10 +44,6 @@ servers:
       serverBase:
         default: mef.net
         description: The base of Buyer's URL.
-security:
-  - oauth2MefLsoApi:
-      - listenToQuoteStateChangeEvent
-      - listenToQuoteItemStateChangeEvent
 tags:
   - description: |
       The Buyer's endpoint to send particular event types notifications to.
@@ -79,6 +89,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
+      security:
+        - oauth2MEFLSOAPI:
+            - listenToQuoteStateChangeEvent
       summary: Quote State Change Notification endpoint
       tags:
         - Notification listeners
@@ -124,30 +137,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
+      security:
+        - oauth2MEFLSOAPI:
+            - listenToQuoteItemStateChangeEvent
       summary: Quote Item State Change Notification endpoint
       tags:
         - Notification listeners
       x-codegen-request-body-name: data
 components:
-  securitySchemes:
-    oauth2MefLsoApi:
-      type: oauth2
-      description:
-        Example of a security scheme conforming to MEF 128 LSO API Security
-        Profiles standard
-      flows:
-        clientCredentials:
-          tokenUrl: /oauth2/lsoApiToken/
-          refreshUrl: /oauth2/refreshLsoApiToken/
-          scopes:
-            listenToQuoteStateChangeEvent:
-              This endpoint is used to receive notifications on Quote state
-              change
-            listenToQuoteItemStateChangeEvent:
-              This endpoint is used to receive notifications on Quote Item
-              state change
   schemas:
     Error400Code:
+      type: string
       description: >-
         One of the following error codes:
 
@@ -165,8 +165,8 @@ components:
         - missingQueryValue
         - invalidQuery
         - invalidBody
-      type: string
     Error:
+      type: object
       description: >
         Standard Class used to describe API response error
 
@@ -174,65 +174,46 @@ components:
         as a discriminator for the type of error returned in runtime.
       properties:
         reason:
+          type: string
           description: >-
             Text that explains the reason for the error. This can be shown to a
             client user.
           maxLength: 255
-          type: string
         message:
+          type: string
           description: >-
             Text that provides more details and corrective actions related to
             the error. This can be shown to a client user.
-          type: string
         referenceError:
-          description: URL pointing to documentation describing the error
-          format: uri
           type: string
+          format: uri
+          description: URL pointing to documentation describing the error
       required:
         - reason
-      type: object
     Error400:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
-              description: >-
-                One of the following error codes:
-
-                - missingQueryParameter: The URI is missing a required
-                query-string parameter
-
-                - missingQueryValue: The URI is missing a required query-string
-                parameter value
-
-                - invalidQuery: The query section of the URI is invalid.
-
-                - invalidBody: The request has an invalid body
               $ref: '#/components/schemas/Error400Code'
           required:
             - code
-          type: object
       description:
         'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
     Error401:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
-              description: >-
-                One of the following error codes:
-
-                - missingCredentials: No credentials provided.
-
-                - invalidCredentials: Provided credentials are invalid or
-                expired
               $ref: '#/components/schemas/Error401Code'
           required:
             - code
-          type: object
       description:
         'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
     Error401Code:
+      type: string
       description: |-
         One of the following error codes:
         - missingCredentials: No credentials provided.
@@ -240,26 +221,19 @@ components:
       enum:
         - missingCredentials
         - invalidCredentials
-      type: string
     Error403:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
-              description: |-
-                This code indicates that the server understood
-                the request but refuses to authorize it because
-                of one of the following error codes:
-                - accessDenied: Access denied
-                - forbiddenRequester: Forbidden requester
-                - tooManyUsers: Too many users
               $ref: '#/components/schemas/Error403Code'
           required:
             - code
-          type: object
       description:
         'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
     Error403Code:
+      type: string
       description: |-
         This code indicates that the server understood
         the request but refuses to authorize it because
@@ -271,12 +245,13 @@ components:
         - accessDenied
         - forbiddenRequester
         - tooManyUsers
-      type: string
     Error500:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
+              type: string
               description: >-
                 One of the following error codes:
 
@@ -285,25 +260,24 @@ components:
                 request.
               enum:
                 - internalError
-              type: string
           required:
             - code
-          type: object
       description: >-
         Internal Server Error.
         (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     Event:
+      type: object
       description: >-
         Event class is used to describe information structure used for
         notification.
       properties:
         eventId:
+          type: string
           description: Id of the event
-          type: string
         eventTime:
-          description: Datetime when the event occurred
-          format: date-time
           type: string
+          format: date-time
+          description: Datetime when the event occurred
         eventType:
           $ref: '#/components/schemas/QuoteEventType'
         event:
@@ -313,45 +287,57 @@ components:
         - eventId
         - eventTime
         - eventType
-      type: object
     QuoteEvent:
+      type: object
       description: >-
         The identifier of the Quote and/or Quote Item being subject of this
         event.
       properties:
         sellerId:
+          type: string
           description: >-
             The unique identifier of the organization that is acting as the
             Seller. MUST be specified in the request only when the requester
             entity represents more than one Seller.
 
             Reference: MEF 79 (Sn 8.8)
-          type: string
         id:
+          type: string
           description: ID of the Quote attributed by quoting system
-          type: string
         href:
-          description: Hyperlink to access the quote
           type: string
+          description: Hyperlink to access the quote
         quoteItemId:
+          type: string
           description: >-
             ID of the Quote Item (within the Quote) which state change
             triggered the event
-          type: string
         buyerId:
+          type: string
           description: >-
             The unique identifier of the organization that is acting as the a
             Buyer. MUST be specified in the request only when the responding
             represents more than one Buyer.
 
             Reference: MEF 79 (Sn 8.8)
-          type: string
       required:
         - id
-      type: object
     QuoteEventType:
+      type: string
       description: Type of the Event
       enum:
         - quoteStateChangeEvent
         - quoteItemStateChangeEvent
-      type: string
+  securitySchemes:
+    oauth2MEFLSOAPI:
+      description: Default m2m client code
+      flows:
+        clientCredentials:
+          refreshUrl: 'http://mef.net/example/refresh'
+          scopes:
+            listenToQuoteStateChangeEvent:
+              Scope for operation listenToQuoteStateChangeEvent
+            listenToQuoteItemStateChangeEvent:
+              Scope for operation listenToQuoteItemStateChangeEvent
+          tokenUrl: 'http://mef.net/example/token'
+      type: oauth2

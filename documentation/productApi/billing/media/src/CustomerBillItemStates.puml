@@ -1,0 +1,48 @@
+@startuml
+
+'skinparam nodesep 10'
+'skinparam ranksep 20'
+
+skinparam state {
+    BackgroundColor White
+    BorderColor Black
+}
+hide empty description
+
+'''decisions'''
+state Disputed <<choice>>: 
+note right of Disputed : Has Buyer disputed any Items? 
+
+'''decisions'''
+state Agree <<choice>> 
+note left of Agree : Seller agrees Billing incorrect
+
+'''decisions'''
+state Buyer_Agree <<choice>>
+note left of Buyer_Agree : Buyer agrees Billing is correct 
+
+
+'''decisions'''
+state Withdraws <<choice>> 
+note right of Withdraws : Seller withdraws Billing.  
+
+''' diagram'''
+[*] -d-> generated
+generated -d-> Disputed
+Disputed -l-> disputeBeingInvestigated: Yes
+Disputed -r-> settled: No
+Disputed -d->Agree
+disputeBeingInvestigated -d-> Agree
+Agree -r->Withdraws: Yes
+Withdraws -d-> withdrawn: Yes
+Withdraws -d-> credit: No
+Agree -d--> Buyer_Agree: No
+Buyer_Agree -r--->paymentDue
+Buyer_Agree -r-> disputeBeingInvestigated
+withdrawn -r->[*]
+settled -d-> [*]
+paymentDue -r->settled
+credit -d->settled
+
+ 
+@enduml

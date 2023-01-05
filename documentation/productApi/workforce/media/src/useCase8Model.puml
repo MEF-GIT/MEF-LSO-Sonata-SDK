@@ -6,29 +6,29 @@ skinparam {
 
 class Appointment {
 
-    id: string
+    id*: string
     href: string
-    status: AppointmentStateType
+    status*: AppointmentStateType
 }
 
 Appointment *-->"*" AttachmentValue : attachment
 Appointment *-->"*" Note : note
-Appointment *-->"*" RelatedEntity : relatedEntity
-Appointment *--> RelatedPlaceRefOrValue : relatedPlace
+Appointment *-->"1" RelatedPlaceRefOrValue : relatedPlace
 Appointment *-->"1" TimePeriod : validFor
-Appointment *-->"*" RelatedContactInformation : relatedContactInformation
+Appointment *-->"1..*" RelatedContactInformation : relatedContactInformation
+Appointment *-->"1" WorkOrderRef : workOrder
 
 
 class Appointment_Create {
 
-    id: string
-    status: AppointmentStateType
 }
 
-Appointment_Create *--> RelatedPlaceRefOrValue : relatedPlace
-Appointment_Create *-->"*" RelatedContactInformation : relatedContactInformation
 
-
+Appointment_Create *-->"*" AttachmentValue : attachment
+Appointment_Create *-->"*" Note : note
+Appointment_Create *-->"1..*" RelatedContactInformation : relatedContactInformation
+Appointment_Create *-->"1" TimePeriod : validFor
+Appointment_Create *-->"1" WorkOrderRef : workOrder
 
 
 class AttachmentValue {
@@ -160,17 +160,6 @@ class RelatedContactInformation {
 
 RelatedContactInformation *--> FieldedAddress : postalAddress
 
-
-class RelatedEntity {
-
-    @referredType*: string
-    href: string
-    id*: string
-    role*: string
-}
-
-
-
 class RelatedPlaceRefOrValue {
 
     @schemaLocation: uri
@@ -192,6 +181,12 @@ class MEFGeographicPoint {
     z: string
 }
 RelatedPlaceRefOrValue <|-- MEFGeographicPoint
+
+class WorkOrderRef {
+
+    href: string
+    id*: string
+}
 
 
 @enduml

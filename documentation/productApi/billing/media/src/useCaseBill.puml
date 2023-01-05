@@ -1,0 +1,35 @@
+@startuml
+
+hide footbox
+
+participant Buyer
+entity "CustomerBill" as B
+entity "CustomerBillItem" as BI
+
+autonumber
+
+activate B
+activate BI
+' Seller creates the CustomerBill
+note over B: The Seller creates the CustomerBill.
+
+B -> B: state: generated
+BI -> BI: state: generated
+B -> Buyer: POST /customerBillCreateEvent
+' Add the initial state of BI
+note over B: The Buyer requests detailed information about a CustomerBill.
+Buyer -> B : GET /customerBill/{{id}} request
+B --> Buyer: GET /customerBill/{{id}} response
+note over BI: The Buyer requests detailed information about a CustomerBillItem based on a CustomerBillItem Identifier.
+Buyer -> BI : GET /customerBillItem/{{id}} request
+BI --> Buyer: GET /customerBillItem/{{id}} response
+note over BI: The Buyer makes the payment.
+BI -> BI: state: settled
+note over BI: If all of the CustomerBillItem are **settled** then CustomerBill changes the state to **settled**.
+BI --> B: (causes state change)
+B -> B: state: settled
+B -> Buyer: POST /customerBillStateChangeEvent
+Buyer -> B : GET /customerBill/{{id}} request
+B --> Buyer: GET /customerBill/{{id}} response
+
+@enduml

@@ -20,17 +20,18 @@ state Why_not <<choice>>
 [*] -d-> Confirmed
 
 Confirmed -d-> Confirmed: Buyer Reschedules
-Confirmed -r[norank]-> Cancelled : Buyer or Seller cancels
-Confirmed -d-> Took_place
+Confirmed -d-> In_Progress
+In_Progress -d-> Took_place
 Took_place -d-> Completed: Yes
-
 Took_place -r-> Why_not: No
 Why_not -d-> Missed: Seller issue
 Why_not -d-> Failed: Buyer issue
+Confirmed -r[norank]-> Cancelled : Buyer or Seller cancels
 
+Cancelled -d-> [*]
 Missed -d-> [*]
 Completed -d-> [*]
 Failed -d-> [*]
-Cancelled -d-> [*] 
-Missed -l[hidden]-> Failed
+
+ 
 @enduml

@@ -23,17 +23,12 @@ info:
   title: Product Offering Qualification Notification
   version: 7.0.1
 servers:
-  - url: 
+  - url: >-
       https://{serverBase}/mefApi/sonata/productOfferingQualificationNotification/v7/
     variables:
       serverBase:
         default: mef.net
         description: The base of Buyer's URL.
-security:
-  - oauth2MefLsoApi:
-      - poqCreateEvent
-      - poqStateChangeEvent
-      - listenToPoqItemStateChangeEvent
 tags:
   - description: |
       The Buyer's endpoint to send particular event types notifications to.
@@ -80,6 +75,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
+      security:
+        - oauth2MEFLSOAPI:
+            - poqCreateEvent
       summary: Product Offering Qualification Creation Notification endpoint
       tags:
         - Notification listeners
@@ -125,6 +123,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
+      security:
+        - oauth2MEFLSOAPI:
+            - poqStateChangeEvent
       summary: Product Offering Qualification Change Notification endpoint
       tags:
         - Notification listeners
@@ -169,30 +170,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
+      security:
+        - oauth2MEFLSOAPI:
+            - listenToPoqItemStateChangeEvent
       summary: Poq Item State Change Notification endpoint
       tags:
         - Notification listeners
       x-codegen-request-body-name: data
 components:
-  securitySchemes:
-    oauth2MefLsoApi:
-      type: oauth2
-      description:
-        Example of a security scheme conforming to MEF 128 LSO API Security
-        Profiles standard
-      flows:
-        clientCredentials:
-          tokenUrl: /oauth2/lsoApiToken/
-          refreshUrl: /oauth2/refreshLsoApiToken/
-          scopes:
-            poqCreateEvent:
-              This endpoint is used to receive notifications on POQ creation
-            poqStateChangeEvent:
-              This endpoint is used to receive notifications on POQ state change
-            listenToPoqItemStateChangeEvent:
-              This endpoint is used to receive notifications on Poq Item state change
   schemas:
     Error400Code:
+      type: string
       description: >-
         One of the following error codes:
 
@@ -210,73 +198,54 @@ components:
         - missingQueryValue
         - invalidQuery
         - invalidBody
-      type: string
     Error:
+      type: object
       description: >
         Standard Class used to describe API response error Not intended to be
         used directly. The `code` in the HTTP header is used as a discriminator
         for the type of error returned in runtime.
       properties:
         reason:
+          type: string
           description: >-
             Text that explains the reason for the error. This can be shown to a
             client user.
           maxLength: 255
-          type: string
         message:
+          type: string
           description: >-
             Text that provides more details and corrective actions related to
             the error. This can be shown to a client user.
-          type: string
         referenceError:
-          description: url pointing to documentation describing the error
-          format: uri
           type: string
+          format: uri
+          description: url pointing to documentation describing the error
       required:
         - reason
-      type: object
     Error400:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
-              description: >-
-                One of the following error codes:
-
-                - missingQueryParameter: The URI is missing a required
-                query-string parameter
-
-                - missingQueryValue: The URI is missing a required query-string
-                parameter value
-
-                - invalidQuery: The query section of the URI is invalid.
-
-                - invalidBody: The request has an invalid body
               $ref: '#/components/schemas/Error400Code'
           required:
             - code
-          type: object
       description:
         'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
     Error401:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
-              description: >-
-                One of the following error codes:
-
-                - missingCredentials: No credentials provided.
-
-                - invalidCredentials: Provided credentials are invalid or
-                expired
               $ref: '#/components/schemas/Error401Code'
           required:
             - code
-          type: object
       description:
         'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
     Error401Code:
+      type: string
       description: |-
         One of the following error codes:
         - missingCredentials: No credentials provided.
@@ -284,26 +253,19 @@ components:
       enum:
         - missingCredentials
         - invalidCredentials
-      type: string
     Error403:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
-              description: |-
-                This code indicates that the server understood
-                the request but refuses to authorize it because
-                of one of the following error codes:
-                - accessDenied: Access denied
-                - forbiddenRequester: Forbidden requester
-                - tooManyUsers: Too many users
               $ref: '#/components/schemas/Error403Code'
           required:
             - code
-          type: object
       description:
         'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
     Error403Code:
+      type: string
       description: |-
         This code indicates that the server understood
         the request but refuses to authorize it because
@@ -315,12 +277,13 @@ components:
         - accessDenied
         - forbiddenRequester
         - tooManyUsers
-      type: string
     Error500:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
+              type: string
               description: >-
                 One of the following error codes:
 
@@ -329,73 +292,80 @@ components:
                 request.
               enum:
                 - internalError
-              type: string
           required:
             - code
-          type: object
       description: >-
         Internal Server Error.
         (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     Event:
+      type: object
       description: >-
         Event class is used to describe information structure used for
         notification. Reference: MEF 79 (Sn 8.5)
       properties:
         eventId:
+          type: string
           description: Id of the event
-          type: string
         eventTime:
-          description: Date-time when the event occurred
-          format: date-time
           type: string
+          format: date-time
+          description: Date-time when the event occurred
         eventType:
-          description: |
-            Indicates the type of the POQ event.
           $ref: '#/components/schemas/PoqEventType'
         event:
-          description: |
-            A reference to the POQ that is source of the notification.
           $ref: '#/components/schemas/PoqEvent'
       required:
         - event
         - eventId
         - eventTime
         - eventType
-      type: object
     PoqEvent:
+      type: object
       description:
         A reference to the POQ that is the source of the notification.
       properties:
         sellerId:
+          type: string
           description: >
             The unique identifier of the organization that is acting as the
             Seller. MUST be specified in the request only when the requester
             entity  represents more than one Seller. Reference: MEF 79 (Sn 8.8)
-          type: string
         poqItemId:
+          type: string
           description: >-
             ID of the Poq Item (within the Poq) which state change triggered
             the event
-          type: string
         id:
+          type: string
           description: The POQ unique identifier.
-          type: string
         href:
-          description: Link to the POQ
           type: string
+          description: Link to the POQ
         buyerId:
+          type: string
           description: >
             The unique identifier of the organization that is acting as the
             Buyer. MUST be specified in the request only when the responding
             represents more than one Buyer. Reference: MEF 79 (Sn 8.8)
-          type: string
       required:
         - id
-      type: object
     PoqEventType:
+      type: string
       description: Indicates the type of product offering qualification event.
       enum:
         - poqCreateEvent
         - poqStateChangeEvent
         - poqItemStateChangeEvent
-      type: string
+  securitySchemes:
+    oauth2MEFLSOAPI:
+      description: Default m2m client code
+      flows:
+        clientCredentials:
+          refreshUrl: 'http://mef.net/example/refresh'
+          scopes:
+            poqCreateEvent: Scope for operation poqCreateEvent
+            poqStateChangeEvent: Scope for operation poqStateChangeEvent
+            listenToPoqItemStateChangeEvent:
+              Scope for operation listenToPoqItemStateChangeEvent
+          tokenUrl: 'http://mef.net/example/token'
+      type: oauth2

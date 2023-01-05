@@ -1,0 +1,148 @@
+@startjson
+
+#highlight "uniEp" / "ovcEndPointMap" / "ovcEndPointMapFormU"
+#highlight "uniEp" / "ovcEndPointMap" / "ovcEndPointMapFormU" / "2"
+
+{
+  "@type": "urn:mef:lso:spec:sonata:access-eline-ovc:v5.0.0:all",
+  "maximumFrameSize": 1526,
+  "ceVlanIdPreservation": "PRESERVE",
+  "cTagPcpPreservation": "ENABLED",
+  "cTagDeiPreservation": "ENABLED",
+  "listOfClassOfServiceNames": ["low"],
+  "carrierEthernetSls": [
+    {
+      "startTime": "2021-09-01T00:00:00Z",
+      "timeDuration": {
+        "timeDurationValue": 1,
+        "timeDurationUnits": "MONTH"
+      },
+      "slsCosNameEntry": "<<skipped>>"
+    }
+  ],
+  "frameDisposition": {
+    "unicast": "DELIVER_CONDITIONALLY",
+    "multicast": "DELIVER_UNCONDITIONALLY",
+    "broadcast": "DELIVER_UNCONDITIONALLY"
+  },
+  "availableMegLevel": "6",
+  "ovcL2cpAddressSet": "CTA",
+  "uniEp": {
+    "identifier": "NewYork_UNI-EP1",
+    "ovcEndPointMap": {
+      "mapType": "FORM_U",
+      "ovcEndPointMapFormU": [1, 2, 3]
+    },
+    "ingressClassOfServiceMap": {
+      "map_M": "low",
+      "mapType": "ENDPOINT",
+      "l2cp_P": {
+        "l2cpIdentifier": {
+          "l2cpProtocolType": "LLC",
+          "llcAddressOrEtherType": 66
+        },
+        "l2cpCosName": "low"
+      }
+    },
+    "colorMap": {
+      "mapType": "DEI"
+    },
+    "ovcEgressMap": [
+      {
+        "mapType": "CN_PCP",
+        "cnPcpEntries": [
+          {
+            "cosName": "low",
+            "pcpValue": "1"
+          }
+        ]
+      }
+    ],
+    "ingressBandwidthProfilePerClassOfServiceName": [
+      {
+        "classOfServiceName": "low",
+        "bwpFlow": {
+          "cir": {
+            "irValue": 0,
+            "irUnits": "MBPS"
+          },
+          "cirMax": {
+            "irValue": 0,
+            "irUnits": "MBPS"
+          },
+          "cbs": {
+            "dataSizeValue": 40,
+            "dataSizeUnits": "KBYTES"
+          },
+          "eir": {
+            "irValue": 100,
+            "irUnits": "MBPS"
+          },
+          "eirMax": {
+            "irValue": 100,
+            "irUnits": "MBPS"
+          },
+          "ebs": {
+            "dataSizeValue": 40,
+            "dataSizeUnits": "KBYTES"
+          },
+          "couplingFlag": true,
+          "colorMode": "COLOR_BLIND",
+          "envelopeId": "env1",
+          "envelopeRank": 1,
+          "tokenRequestOffset": 0
+        }
+      }
+    ],
+    "egressBwpPerEgressEquivalenceClassName": [],
+    "maintenanceIntermediatePoint": "6",
+    "maintenanceEndPointList": [
+      {
+        "level": 7,
+        "mepDirection": "UP"
+      }
+    ]
+  },
+  "enniEp": {
+    "identifier": "SP1_ENNI-EP1",
+    "ovcEndPointMap": {
+      "mapType": "FORM_E",
+      "ovcEndPointMapFormE": [13]
+    },
+    "ingressClassOfServiceMap": {
+      "map_M": "low",
+      "mapType": "ENDPOINT",
+      "l2cp_P": {
+        "l2cpIdentifier": {
+          "l2cpProtocolType": "LLC",
+          "llcAddressOrEtherType": 66
+        },
+        "l2cpCosName": "low"
+      }
+    },
+    "colorMap": {
+      "mapType": "DEI"
+    },
+    "ovcEgressMap": [
+      {
+        "mapType": "CN_PCP",
+        "cnPcpEntries": [
+          {
+            "cosName": "low",
+            "pcpValue": "1"
+          }
+        ]
+      }
+    ],
+    "ingressBandwidthProfilePerClassOfServiceName": [],
+    "egressBwpPerEgressEquivalenceClassName": [],
+    "maintenanceIntermediatePoint": "6",
+    "maintenanceEndPointList": [
+      {
+        "level": 7,
+        "mepDirection": "UP"
+      }
+    ]
+  }
+}
+@endjson

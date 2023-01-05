@@ -1,24 +1,37 @@
 openapi: 3.0.1
 info:
-  description: |
+  description: >
     **This file forms part of MEF 121**
+
 
     This API implements Business Requirements described in MEF 79
 
-    It allows the Buyer to retrieve address information from the Seller, including
+
+    It allows the Buyer to retrieve address information from the Seller,
+    including
+
     exact formats, for addresses known to the Seller.
 
+
     List of supported use cases:
-    
+
+
     - Validate Address
+
     - Retrieve Address by Identifier
+
 
     Copyright 2021 MEF Forum and its contributors
 
+
     This file includes content based on the TM Forum Geographic Address API
+
     (TMF673 v4.0.1) available at
+
     https://github.com/tmforum-apis/TMF673_GeographicAddress, which is licensed
+
     by the TM Forum under the Apache License version 2.0. Such content has been
+
     modified by the MEF Forum and its contributors.
   title: Geographic Address Management
   version: 7.0.1
@@ -28,10 +41,6 @@ servers:
       serverBase:
         default: mef.net
         description: The base of Seller's URL.
-security:
-  - oauth2MefLsoApi:
-      - createGeographicAddressValidation
-      - retrieveGeographicAddress
 tags:
   - name: geographicAddressValidation
   - name: geographicAddress
@@ -48,20 +57,26 @@ paths:
             represents more than one Buyer.
 
             Reference: MEF 79 (Sn 8.8)
+          explode: true
           in: query
           name: buyerId
+          required: false
           schema:
             type: string
+          style: form
         - description: >-
             The unique identifier of the organization that is acting as the
             Seller. MUST be specified in the request only when responding
             entity  represents more than one Seller.
 
             Reference: MEF 79 (Sn 8.8)
+          explode: true
           in: query
           name: sellerId
+          required: false
           schema:
             type: string
+          style: form
       requestBody:
         content:
           application/json;charset=utf-8:
@@ -99,9 +114,9 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
+                type: array
                 items:
                   $ref: '#/components/schemas/Error422'
-                type: array
           description:
             Unprocessable entity due to the business validation problems
         '500':
@@ -110,42 +125,52 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
+      security:
+        - oauth2MEFLSOAPI:
+            - createGeographicAddressValidation
       summary: Creates a GeographicAddressValidation
       tags:
         - geographicAddressValidation
       x-codegen-request-body-name: geographicAddressValidation
   '/geographicAddress/{id}':
     get:
-      description: >-
-        This operation retrieves a GeographicAddress entity.
+      description: This operation retrieves a GeographicAddress entity.
       operationId: retrieveGeographicAddress
       parameters:
         - description: Identifier of the GeographicAddress
+          explode: false
           in: path
           name: id
           required: true
           schema:
             type: string
+          style: simple
         - description: >-
             The unique identifier of the organization that is acting as the a
             Buyer. MUST be specified in the request only when the requester
             represents more than one Buyer.
 
             Reference: MEF 79 (Sn 8.8)
+          explode: true
           in: query
           name: buyerId
+          required: false
           schema:
             type: string
+          style: form
         - description: >-
             The unique identifier of the organization that is acting as the
             Seller. MUST be specified in the request only when responding
             entity  represents more than one Seller.
 
             Reference: MEF 79 (Sn 8.8)
+          explode: true
           in: query
           name: sellerId
+          required: false
           schema:
             type: string
+          style: form
       responses:
         '200':
           content:
@@ -183,27 +208,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
+      security:
+        - oauth2MEFLSOAPI:
+            - retrieveGeographicAddress
       summary: Retrieves a GeographicAddress by ID
       tags:
         - geographicAddress
 components:
-  securitySchemes:
-    oauth2MefLsoApi:
-      type: oauth2
-      description:
-        Example of a security scheme conforming to MEF 128 LSO API Security
-        Profiles standard
-      flows:
-        clientCredentials:
-          tokenUrl: /oauth2/lsoApiToken/
-          refreshUrl: /oauth2/refreshLsoApiToken/
-          scopes:
-            createGeographicAddressValidation:
-              This operation creates a GeographicAddressValidation entity.
-            retrieveGeographicAddress:
-              This operation retrieves a GeographicAddress entity.
   schemas:
     Error400Code:
+      type: string
       description: >-
         One of the following error codes:
 
@@ -221,54 +235,54 @@ components:
         - missingQueryValue
         - invalidQuery
         - invalidBody
-      type: string
     Error:
+      type: object
       description: >
         Standard Class used to describe API response error Not intended to be
         used directly. The `code` in the HTTP header is used as a discriminator
         for the type of error returned in runtime.
       properties:
         reason:
+          type: string
           description: >-
             Text that explains the reason for error. This can be shown to a
             client user.
           maxLength: 255
-          type: string
         message:
+          type: string
           description: >-
             Text that provides mode details and corrective actions related to
             the error. This can be shown to a client user.
-          type: string
         referenceError:
-          description: URL pointing to documentation describing the error
-          format: uri
           type: string
+          format: uri
+          description: URL pointing to documentation describing the error
       required:
         - reason
-      type: object
     Error400:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
               $ref: '#/components/schemas/Error400Code'
           required:
             - code
-          type: object
       description:
         'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
     Error401:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
               $ref: '#/components/schemas/Error401Code'
           required:
             - code
-          type: object
       description:
         'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
     Error401Code:
+      type: string
       description: |-
         One of the following error codes:
         - missingCredentials: No credentials provided.
@@ -276,19 +290,19 @@ components:
       enum:
         - missingCredentials
         - invalidCredentials
-      type: string
     Error403:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
               $ref: '#/components/schemas/Error403Code'
           required:
             - code
-          type: object
       description:
         'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
     Error403Code:
+      type: string
       description: |-
         This code indicates that the server understood
         the request but refuses to authorize it because
@@ -300,12 +314,13 @@ components:
         - accessDenied
         - forbiddenRequester
         - tooManyUsers
-      type: string
     Error404:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
+              type: string
               description: >-
                 The following error code:
 
@@ -313,20 +328,20 @@ components:
                 not found
               enum:
                 - notFound
-              type: string
           required:
             - code
-          type: object
       description: >-
         Resource for the requested path not found.
         (https://tools.ietf.org/html/rfc7231#section-6.5.4)
     Error422:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
               $ref: '#/components/schemas/Error422Code'
             propertyPath:
+              type: string
               description: >
                 A pointer to a particular property of the payload that caused
                 the validation issue. It is highly recommended that this
@@ -334,14 +349,13 @@ components:
 
                 Defined using JavaScript Object Notation (JSON) Pointer
                 (https://tools.ietf.org/html/rfc6901).
-              type: string
           required:
             - code
-          type: object
       description: >-
         Unprocessable entity due to a business validation problem.
         (https://tools.ietf.org/html/rfc4918#section-11.2)
     Error422Code:
+      type: string
       description: |
         One of the following error codes:
           - missingProperty: The property the Seller has expected is not present in the payload
@@ -359,12 +373,13 @@ components:
         - unexpectedProperty
         - tooManyRecords
         - otherIssue
-      type: string
     Error500:
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
+              type: string
               description: >-
                 The following error code:
 
@@ -373,81 +388,76 @@ components:
                 request.
               enum:
                 - internalError
-              type: string
           required:
             - code
-          type: object
       description: >-
         Internal Server Error.
         (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     FieldedAddress:
       allOf:
         - $ref: '#/components/schemas/GeographicAddress'
-        - properties:
+        - type: object
+          properties:
             country:
-              description: The country that the address is in
               type: string
+              description: The country that the address is in
             streetType:
+              type: string
               description: >-
                 The type of street (e.g., alley, avenue, boulevard, brae,
                 crescent, drive, highway, lane, terrace, parade, place, tarn,
                 way, wharf)
-              type: string
             postcodeExtension:
+              type: string
               description: >-
                 An extension of a postal code. E.g. the part following the dash
                 in a US urban property address
-              type: string
             city:
-              description: The city that the address is in
               type: string
+              description: The city that the address is in
             streetNr:
+              type: string
               description: >-
                 Number identifying a specific property on a public street. It
                 may be combined with streetNrLast for ranged addresses. MEF 79
                 defines it as required however as in certain countries it is
                 not used we make it optional in API.
-              type: string
             locality:
-              description: The locality that the address is in
               type: string
+              description: The locality that the address is in
             postcode:
+              type: string
               description: >-
                 A descriptor for a postal delivery area used to speed and
                 simplify the delivery of mail (also known as zip code) MEF 79
                 defines it as required however as in certain countries it is
                 not used we make it optional in API.
-              type: string
             streetNrLast:
+              type: string
               description:
                 Last number in a range of street numbers allocated to a
                 property
-              type: string
             streetNrSuffix:
+              type: string
               description: The first street number suffix
-              type: string
             streetName:
+              type: string
               description: Name of the street or other street type
-              type: string
             stateOrProvince:
+              type: string
               description: The State or Province that the address is in
-              type: string
             streetNrLastSuffix:
-              description: Last street number suffix for a ranged address
               type: string
+              description: Last street number suffix for a ranged address
             geographicSubAddress:
               $ref: '#/components/schemas/GeographicSubAddress'
-              description:
-                Additional fields used to specify an address, as detailed as
-                possible.
             streetSuffix:
-              description: A modifier denoting a relative direction
               type: string
+              description: A modifier denoting a relative direction
           required:
             - city
             - country
             - streetName
-          type: object
       description: >-
         A type of Address that has a discrete field and value for each type of
         boundary or identifier down to the lowest level of detail. For example
@@ -456,49 +466,50 @@ components:
     FormattedAddress:
       allOf:
         - $ref: '#/components/schemas/GeographicAddress'
-        - properties:
+        - type: object
+          properties:
             country:
-              description: The country that the address is in
               type: string
+              description: The country that the address is in
             postcodeExtension:
+              type: string
               description: >-
                 An extension of a postal code. E.g. the part following the dash
                 in a US urban property address
-              type: string
             stateOrProvince:
+              type: string
               description: The State or Province that the address is in
-              type: string
             city:
+              type: string
               description: The city that the address is in
-              type: string
             addrLine2:
+              type: string
               description: The second address line in a formatted address
-              type: string
             addrLine1:
-              description: The first address line in a formatted address
               type: string
+              description: The first address line in a formatted address
             locality:
+              type: string
               description: >-
                 An area of defined or undefined boundaries within a local
                 authority or other legislatively defined area, usually rural or
                 semi-rural in nature
-              type: string
             postcode:
+              type: string
               description: >-
                 A descriptor for a postal delivery area used to speed and
                 simplify the delivery of mail (also known as ZIP code)
-              type: string
           required:
             - addrLine1
             - city
             - country
-          type: object
       description: >-
         A type of Address that has discrete fields for each type of boundary or
         identifier with the exception of street and more specific location
         details, which are combined into a maximum of two strings based on
         local postal addressing conventions.  Reference: MEF 79 (Sn 8.9.3)
     GeographicAddress:
+      type: object
       description: >-
         Structured textual way of describing how to find a property in an urban
         area (country properties are often defined differently).
@@ -513,21 +524,27 @@ components:
         propertyName: '@type'
       properties:
         hasPublicSite:
+          type: boolean
           description: >-
             This attribute specifies if that Address contains Service Sites
             that are public such as Meet-Me-Rooms at an interconnect location
             or a shared telecom room in the basement of a multi-tenant building
           readOnly: true
-          type: boolean
         '@type':
+          type: string
           description: >
             This field is used as discriminator. The value is the name of one
             of the types that inherit from it using 'allOf', i.e. one of
             FieldedAddress, FormattedAddress, GeographicAddressLabel,
             MEFGeographicPoint. Moreover, it might discriminate for an
             additional related place as defined in '@schemaLocation'.
-          type: string
+          enum:
+            - FieldedAddress
+            - FormattedAddress
+            - MEFGeographicPoint
+            - GeographicAddressLabel
         allowsNewSite:
+          type: boolean
           description: >-
             This attribute specifies if a Buyer must use one of the known
             existing Service Sites at this location for any Products delivered
@@ -536,42 +553,38 @@ components:
             Meet-Me-Room, this attribute would be set to False for that
             Address.
           readOnly: true
-          type: boolean
         id:
+          type: string
           description: Unique identifier of the place
           readOnly: true
-          type: string
         href:
+          type: string
           description: Unique reference of the place
           readOnly: true
-          type: string
         '@schemaLocation':
+          type: string
+          format: uri
           description: >-
             A URI to a JSON-Schema file that defines additional attributes and
             relationships. May be used to define additional GeographicAddress
             types. Usage of this attribute must be agreed upon between Buyer
             and Seller.
-          format: uri
-          type: string
         associatedGeographicAddress:
           $ref: '#/components/schemas/FieldedAddress'
-          readOnly: true
-          description:
-            A Fielded Address that is associated with the Geographic Point or
-            the Geographic Address Label.
       required:
         - '@type'
-      type: object
     GeographicAddressLabel:
       allOf:
         - $ref: '#/components/schemas/GeographicAddress'
-        - properties:
+        - type: object
+          properties:
             externalReferenceId:
+              type: string
               description: >-
                 The unique reference to an Address as provided by the
                 Administrative Authority.
-              type: string
             externalReferenceType:
+              type: string
               description: >-
                 The organization or standard from the organization that
                 administers this Geographic Address Label ensuring it is unique
@@ -579,33 +592,31 @@ components:
                 are to be agreed during the onboarding. For North American
                 providers this would normally be CLLI (Common Language Location
                 Identifier) code.
-              type: string
           required:
             - externalReferenceId
             - externalReferenceType
-          type: object
       description: >-
         A unique identifier controlled by a generally accepted independent
         administrative authority that specifies a fixed geographical location. 
 
         Reference: MEF 79 (Sn 8.9.4)
     GeographicAddressValidation:
+      type: object
       description: This resource is used to manage address validation response.
       properties:
         validationResult:
           $ref: '#/components/schemas/MEFValidationResultType'
-          description:
-            Result of the address validation (success, partial, fail)
         alternateGeographicAddress:
-          items:
-            $ref: '#/components/schemas/GeographicAddress'
           type: array
           description: |
             An array of zero or more Addresses known to the Seller that are
             considered by the Seller to match the submittedGeographicAddress.
             Not including the bestMatchAddress. MEF: Alternatives should be
             provided regardless of whether best match was found.
+          items:
+            $ref: '#/components/schemas/GeographicAddress'
         provideAlternative:
+          type: boolean
           description: >
             Indicator provided by the requester to specify if alternate
             addresses must be provided in case of partial or fail result. MEF:
@@ -613,22 +624,15 @@ components:
             attribute always to be set to 'true'. Alternatives should be
             provided regardless of whether best match was found. The Seller is
             allowed not to implement the support for 'false'
-          type: boolean
         submittedGeographicAddress:
           $ref: '#/components/schemas/GeographicAddress'
-          description:
-            'The address as submitted to validation. MEF: Structure used by the
-            buyer to request geographic address validation'
         bestMatchGeographicAddress:
           $ref: '#/components/schemas/GeographicAddress'
-          description:
-            Represents that the Seller is confident this is likely a direct
-            match to the submittedGeographicAddress
       required:
         - provideAlternative
         - submittedGeographicAddress
-      type: object
     GeographicAddressValidation_Create:
+      type: object
       description: >-
         This resource is used to manage address validation request.
 
@@ -637,6 +641,7 @@ components:
         bestMatchGeographicAddress, validationResult.
       properties:
         provideAlternative:
+          type: boolean
           description: >
             Indicator provided by the requester to specify if alternate
             addresses must be provided in case of partial or fail result. MEF:
@@ -644,101 +649,97 @@ components:
             attribute always to be set to 'true'. Alternatives should be
             provided regardless of whether best match was found. The Seller is
             allowed not to implement the support for 'false'
-          type: boolean
         submittedGeographicAddress:
           $ref: '#/components/schemas/GeographicAddress'
-          description:
-            'The address as submitted to validation. MEF: Structure used by the
-            buyer to request geographic address validation'
       required:
         - provideAlternative
         - submittedGeographicAddress
-      type: object
     GeographicSubAddress:
+      type: object
       description:
         'Additional fields used to specify an address, as detailed as possible.'
       properties:
         buildingName:
+          type: string
           description: >
             Allows for identification of places that require building name  as
             part of addressing information
-          type: string
         subUnit:
+          type: array
           description: >-
             Representation of a MEFSubUnit It is used for describing subunit
             within a subAddress e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
             UNIT, WHARF.
           items:
             $ref: '#/components/schemas/MEFSubUnit'
-          type: array
         levelType:
-          description: Describes level types within a building
           type: string
+          description: Describes level types within a building
         levelNumber:
+          type: string
           description:
             'Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT
             2'
-          type: string
         privateStreetNumber:
-          description: Private streets numbers internal to a private street
           type: string
+          description: Private streets numbers internal to a private street
         privateStreetName:
+          type: string
           description: >-
             Private streets internal to a property (e.g. a university) may have
             internal names that are not recorded by the land title office
-          type: string
-      type: object
     MEFGeographicPoint:
       allOf:
         - $ref: '#/components/schemas/GeographicAddress'
-        - properties:
+        - type: object
+          properties:
             spatialRef:
+              type: string
               description: >-
                 The spatial reference system used to determine the coordinates.
                 The system used and the value of this field are to be agreed
                 during the onboarding process.
-              type: string
             x:
+              type: string
               description: >-
                 The latitude expressed in the format specified by the
                 `spacialRef`
-              type: string
             'y':
+              type: string
               description: >-
                 The longitude expressed in the format specified by the
                 `spacialRef`
-              type: string
             z:
+              type: string
               description: >-
                 The elevation expressed in the format specified by the
                 `spacialRef`
-              type: string
           required:
             - spatialRef
             - x
             - 'y'
-          type: object
       description: >
         A MEFGeographicPoint defines a geographic point through coordinates.
         Reference: MEF 79 (Sn 8.9.5), MEF 79.0.2 (Sn 8.9.5)
     MEFSubUnit:
+      type: object
       description: Allows for sub unit identification
       properties:
         subUnitNumber:
+          type: string
           description: >-
             The discriminator used for the subunit, often just a simple number
             but may also be a range.
-          type: string
         subUnitType:
+          type: string
           description: >-
             The type of subunit e.g. BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
             UNIT, WHARF.
-          type: string
       required:
         - subUnitNumber
         - subUnitType
-      type: object
     MEFValidationResultType:
+      type: string
       description: |
         Result of the address validation:
         - success - best match found,
@@ -748,4 +749,16 @@ components:
         - success
         - partial
         - fail
-      type: string
+  securitySchemes:
+    oauth2MEFLSOAPI:
+      description: Default m2m client code
+      flows:
+        clientCredentials:
+          refreshUrl: 'http://mef.net/example/refresh'
+          scopes:
+            createGeographicAddressValidation:
+              Scope for operation createGeographicAddressValidation
+            retrieveGeographicAddress:
+              Scope for operation retrieveGeographicAddress
+          tokenUrl: 'http://mef.net/example/token'
+      type: oauth2

@@ -1,0 +1,23 @@
+@startuml
+
+'skinparam Linetype polyline
+'skinparam Linetype ortho
+skinparam state {
+    BackgroundColor White
+    BorderColor Black
+}
+hide empty description
+
+'''decisions'''
+state Full_Payment <<choice>> 
+note left of Full_Payment : Full Payment made?
+
+''' diagram'''
+[*] -d-> generated
+generated -d-> Full_Payment
+Full_Payment -d-> paymentDue: No
+paymentDue -u-> Full_Payment
+Full_Payment -r-> settled: Yes
+settled -d-> [*]
+
+@enduml

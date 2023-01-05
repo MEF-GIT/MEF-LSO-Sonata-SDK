@@ -15,6 +15,7 @@ class CancelProductOrder {
     state*: MEFChargeableTaskStateType
 }
 
+CancelProductOrder *-->"0..*" MEFProductOrderChargeRef : charge
 CancelProductOrder *-->"1" MEFProductOrderRef : productOrder
 CancelProductOrder *-->"1..*" RelatedContactInformation : relatedContactInformation
 
@@ -762,7 +763,7 @@ class ProductOrder_Find {
 
 class MEFProductOrderCharge_Find {
 
-    creationDate: date-time
+    creationDate*: date-time
     id*: string
     responseDueDate*: date-time
     state*: MEFProductOrderChargeStateType

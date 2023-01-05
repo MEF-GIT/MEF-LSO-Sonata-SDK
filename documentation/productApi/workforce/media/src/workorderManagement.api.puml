@@ -28,15 +28,20 @@ Error <|-- Error401
 
 
 
-class Error422 {
+class Error403 {
 
-    code*: Error422Code
-    propertyPath: string
+    code*: Error403Code
 }
-Error <|-- Error422
+Error <|-- Error403
 
 
 
+enum Error403Code {
+
+    accessDenied
+    forbiddenRequester
+    tooManyUsers
+}
 class Error500 {
 
     code*: string
@@ -45,11 +50,12 @@ Error <|-- Error500
 
 
 
-class Error501 {
+class Error {
 
-    code*: string
+    message: string
+    reason*: string
+    referenceError: uri
 }
-Error <|-- Error501
 
 
 
@@ -57,6 +63,14 @@ class EventSubscription {
 
     callback*: string
     id*: string
+    query: string
+}
+
+
+
+class EventSubscriptionInput {
+
+    callback*: string
     query: string
 }
 
@@ -83,151 +97,6 @@ RelatedPlaceRefOrValue <|-- FieldedAddress
 FieldedAddress *--> GeographicSubAddress : geographicSubAddress
 
 
-class GeographicAddressLabel {
-
-    externalReferenceId*: string
-    externalReferenceType*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicAddressLabel
-
-
-
-class TimeDuration {
-
-    timeDurationValue: integer
-    timeDurationUnits: TimeDurationUnits
-}
-
-
-
-enum MEFBuyerSellerType {
-
-    buyer
-    seller
-}
-class WorkOrder_Find {
-
-    appointmentRequired*: boolean
-    id*: string
-    state*: WorkOrderStateType
-}
-
-WorkOrder_Find *-->"*" RelatedPlaceRefOrValue : place
-WorkOrder_Find *-->"1..*" RelatedEntity : relatedEntity
-
-
-enum Error422Code {
-
-    missingProperty
-    invalidValue
-    invalidFormat
-    referenceNotFound
-    unexpectedProperty
-    tooManyRecords
-    otherIssue
-}
-class MEFGeographicPoint {
-
-    spatialRef*: string
-    x*: string
-    y*: string
-    z: string
-}
-RelatedPlaceRefOrValue <|-- MEFGeographicPoint
-
-
-
-enum Error400Code {
-
-    missingQueryParameter
-    missingQueryValue
-    invalidQuery
-    invalidBody
-}
-class Error409 {
-
-    code*: string
-}
-Error <|-- Error409
-
-
-
-class RelatedPlaceRefOrValue {
-
-    @schemaLocation: uri
-    @type*: string
-    role*: string
-}
-
-
-
-class WorkOrder {
-
-    id*: string
-    href: string
-    appointmentRequired*: boolean
-    state*: WorkOrderStateType
-    task: string
-}
-
-WorkOrder *-->"*" AppointmentRef : appointment
-WorkOrder *--> TimeDuration : duration
-WorkOrder *-->"*" Note : note
-WorkOrder *-->"*" RelatedPlaceRefOrValue : place
-WorkOrder *-->"1..*" RelatedContactInformation : relatedContactInformation
-WorkOrder *-->"1..*" RelatedEntity : relatedEntity
-
-
-enum Error401Code {
-
-    missingCredentials
-    invalidCredentials
-}
-class Error404 {
-
-    code*: string
-}
-Error <|-- Error404
-
-
-
-enum DataSizeUnit {
-
-    BYTES
-    KBYTES
-    MBYTES
-    GBYTES
-    TBYTES
-    PBYTES
-    EBYTES
-    ZBYTES
-    YBYTES
-}
-class Error403 {
-
-    code*: Error403Code
-}
-Error <|-- Error403
-
-
-
-class Error {
-
-    message: string
-    reason*: string
-    referenceError: uri
-}
-
-
-
-class EventSubscriptionInput {
-
-    callback*: string
-    query: string
-}
-
-
-
 class FormattedAddress {
 
     addrLine1*: string
@@ -240,6 +109,15 @@ class FormattedAddress {
     stateOrProvince: string
 }
 RelatedPlaceRefOrValue <|-- FormattedAddress
+
+
+
+class GeographicAddressLabel {
+
+    externalReferenceId*: string
+    externalReferenceType*: string
+}
+RelatedPlaceRefOrValue <|-- GeographicAddressLabel
 
 
 
@@ -274,6 +152,25 @@ class GeographicSubAddress {
 GeographicSubAddress *-->"*" MEFSubUnit : subUnit
 
 
+class MEFGeographicPoint {
+
+    spatialRef*: string
+    x*: string
+    y*: string
+    z: string
+}
+RelatedPlaceRefOrValue <|-- MEFGeographicPoint
+
+
+
+class MEFSubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+
+
+
 class Note {
 
     author*: string
@@ -281,42 +178,6 @@ class Note {
     id*: string
     source*: MEFBuyerSellerType
     text*: string
-}
-
-
-
-class WorkOrderRef {
-
-    href: string
-    id*: string
-}
-
-
-
-enum Error403Code {
-
-    accessDenied
-    forbiddenRequester
-    tooManyUsers
-}
-class MEFByteSize {
-
-    amount: float
-    units: DataSizeUnit
-}
-
-
-
-enum MEFObservedImpactType {
-
-    degraded
-    intermittent
-    down
-}
-class MEFSubUnit {
-
-    subUnitNumber*: string
-    subUnitType*: string
 }
 
 
@@ -344,6 +205,86 @@ class RelatedEntity {
 
 
 
+class RelatedPlaceRefOrValue {
+
+    @schemaLocation: uri
+    @type*: string
+    role*: string
+}
+
+
+
+class TimeDuration {
+
+    timeDurationValue: integer
+    timeDurationUnits: TimeDurationUnits
+}
+
+
+
+class WorkOrder {
+
+    id*: string
+    href: string
+    appointmentRequired*: boolean
+    plannedExecutionDate: date-time
+    state*: WorkOrderStateType
+    task*: string
+}
+
+WorkOrder *-->"*" AppointmentRef : appointment
+WorkOrder *-->"1" TimeDuration : duration
+WorkOrder *-->"*" Note : note
+WorkOrder *-->"1..*" RelatedPlaceRefOrValue : place
+WorkOrder *-->"1..*" RelatedContactInformation : relatedContactInformation
+WorkOrder *-->"1..*" RelatedEntity : relatedEntity
+
+
+enum WorkOrderStateType {
+
+    cancelled
+    completed
+    inProgress
+    open
+    planned
+    unableToComplete
+}
+class WorkOrder_Find {
+
+    id*: string
+    appointmentRequired*: boolean
+    state*: WorkOrderStateType
+}
+
+WorkOrder_Find *-->"1..*" RelatedPlaceRefOrValue : place
+WorkOrder_Find *-->"1..*" RelatedEntity : relatedEntity
+
+
+enum Error401Code {
+
+    missingCredentials
+    invalidCredentials
+}
+enum Error400Code {
+
+    missingQueryParameter
+    missingQueryValue
+    invalidQuery
+    invalidBody
+}
+class Error404 {
+
+    code*: string
+}
+Error <|-- Error404
+
+
+
+enum MEFBuyerSellerType {
+
+    buyer
+    seller
+}
 enum TimeDurationUnits {
 
     NS
@@ -356,14 +297,5 @@ enum TimeDurationUnits {
     WEEK
     MONTH
     YEAR
-}
-enum WorkOrderStateType {
-
-    cancelled
-    completed
-    inProgress
-    open
-    planned
-    unableToComplete
 }
 @enduml

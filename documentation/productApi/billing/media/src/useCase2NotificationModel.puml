@@ -1,0 +1,38 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+
+
+class Event {
+
+    eventId*: string
+    eventTime*: date-time
+}
+
+
+class BillingEventPayload {
+
+    sellerId: string
+    id*: string
+    href: string
+    buyerId: string
+}
+
+class BillingEvent {
+
+    eventType*: BillingEventType
+}
+Event <|-- BillingEvent
+
+BillingEvent *-->"1" BillingEventPayload : event
+
+
+enum BillingEventType {
+
+    BillingAttributeValueChangeEvent
+    BillingStatusChangeEvent
+}
+@enduml

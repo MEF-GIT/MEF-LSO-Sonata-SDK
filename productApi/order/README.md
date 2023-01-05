@@ -2,16 +2,17 @@
 
 ## Release Ella:
 
-**Readiness status**: Requested Letter Ballot. It will be most likely published as a standard without further changes.
+**Readiness status**: Requested Letter Ballot. It will be most likely published
+as a standard without further changes.
 
 **Summary** - Only small updates introduced:
 
 - 1 attribute added,
-- 1 attributes marked as required.
+- 1 attribute marked as required.
 
 ### List of changes in the API:
 
-**productOrderManagement.yaml:**
+**productOrderManagement.api.yaml:**
 
 - `CancelProductOrder`
   - `charge` - added
@@ -19,7 +20,7 @@
   - marked as required:
     - `creationDate`
 
-**productOrderNotification.yaml:**
+**productOrderNotification.api.yaml:**
 
 None
 
@@ -30,13 +31,15 @@ resolved Call for Comments #2
 
 ### List of changes in the API:
 
-**productOrderManagement.yaml:**
+**productOrderManagement.api.yaml:**
 
 - `/productOrder/`
   - `GET`
-    - `requestedCompletionDate.gt` - renamed to  `itemRequestedCompletionDate.gt`
-    - `requestedCompletionDate.lt` - renamed to `itemRequestedCompletionDate.lt`
-    - `expectedCompletionDate.gt` - renamed to `itemExpectedCompletionDate.gt` 
+    - `requestedCompletionDate.gt` - renamed to
+      `itemRequestedCompletionDate.gt`
+    - `requestedCompletionDate.lt` - renamed to
+      `itemRequestedCompletionDate.lt`
+    - `expectedCompletionDate.gt` - renamed to `itemExpectedCompletionDate.gt`
     - `expectedCompletionDate.lt` - renamed to `itemExpectedCompletionDate.lt`
     - `orderCancellationDate.gt` - renamed to `cancellationDate.gt`
     - `orderCancellationDate.lt` - renamed to `cancellationDate.lt`
@@ -46,6 +49,7 @@ resolved Call for Comments #2
     - `state` - added
     - `cancellationReasonType` - added
 - `/charge/`
+
   - `GET`
     - `creationDate.gt` - added
     - `creationDate.lt` - added
@@ -71,8 +75,10 @@ resolved Call for Comments #2
 - `ProductOrderItem`
   - `milestone` - added
 - `CancelProductOrder`
-  - `relatedContactInformation` - required role `sellerContact` renamed to `cancelProductOrderSellerContact`
-- `CancelProductOrder_Find` - added and set as result type of `listCancelProductOrder` list operation
+  - `relatedContactInformation` - required role `sellerContact` renamed to
+    `cancelProductOrderSellerContact`
+- `CancelProductOrder_Find` - added and set as result type of
+  `listCancelProductOrder` list operation
 
 - `MEFProductOrderCharge`
   - `replacedCharge` - removed
@@ -83,7 +89,8 @@ resolved Call for Comments #2
   - `note` - added
 - `MEFProductOrderChargeItem_Update`
   - `note` - added
-- `MEFProductOrderCharge_Find` - added and set as result type of `listCharge` list operation
+- `MEFProductOrderCharge_Find` - added and set as result type of `listCharge`
+  list operation
 - `MEFProductOrderChargeItemDescription` - renamed to `MEFPriceCategory`
   - `other` - added to enumeration
 - `MEFMilestone` - added
@@ -93,9 +100,10 @@ resolved Call for Comments #2
     - `duration`
     - `endOfTermAction`
 
-**productOrderNotification.yaml:**
+**productOrderNotification.api.yaml:**
 
-- server URL `/mefApi/sonata/productOrderingManagement/` changed to `/mefApi/sonata/productOrderingNotification/`
+- server URL `/mefApi/sonata/productOrderingManagement/` changed to
+  `/mefApi/sonata/productOrderingNotification/`
 
 ## Release Celine:
 
@@ -104,7 +112,7 @@ resolved Call for Comments #1
 
 ### List of changes in the API:
 
-**productOrderManagement.yaml:**
+**productOrderManagement.api.yaml:**
 
 - `/productOrder/`
   - `GET`
@@ -176,7 +184,7 @@ resolved Call for Comments #1
 - `MEFProductOrderRef`
   - `productOrderId` - made required
 
-**productOrderNotification.yaml:**
+**productOrderNotification.api.yaml:**
 
 Changed the url from `/productOrderNotification` to
 `productOrderingNotification`
