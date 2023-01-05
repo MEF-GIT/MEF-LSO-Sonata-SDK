@@ -8,6 +8,7 @@
 
 - added `observedImpact` to Trouble Ticket search criteria
 - introduced `impact` attribute to Incident, aligned with Trouble Ticket's `observedImpact`
+- added `/hub/{id}/get` operation
 
 ### List of changes in the API:
 
@@ -18,6 +19,8 @@
 - `/incident/`
   - `get`
     - `impact` query parameter added
+- `/hub/{id}`
+  - `get` - operation added
 - `Incident`
   - `impact` - added, required
 - `Incident_Find`
