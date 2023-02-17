@@ -1,5 +1,11 @@
 # Quote Management: Release notes
 
+## Release Ella:
+
+**Readiness status**: MEF Published Standard
+
+No changes.
+
 ## Release Dolly:
 
 **Readiness status**: MEF Published standard. 
