@@ -1,19 +1,19 @@
 ---
-$id: urn:mef:lso:spec:cantata-sonata:ethernet-uni-access-link-trunk:v0.2.0:all
+$id: urn:mef:lso:spec:cantata-sonata:ethernet-uni-access-link-trunk:v0.3.0:all
 $schema: http://json-schema.org/draft-07/schema#
 type: object
-description:
+description: |
   A single point-to-point physical Ethernet channel or multiple physical
   Ethernet links combined into a Link Aggregation Group. The Ethernet frames
   associated with a given UNI Access Link can be either untagged/priority-tagged
-  or VLAN tagged. Reference MEF 61.1.1 A1-1.3 Ethernet UNI Access Link Trunk
+  or VLAN tagged. Reference - MEF 61.1.1 A1-1.3 Ethernet UNI Access Link Trunk
   Service Attributes
 title:
   MEF LSO Ethernet Uni Access Link Trunk - Product Specification
   # ---------------------
   # Disclaimer
   #
-  # © MEF Forum 2022. All Rights Reserved.
+  # © MEF Forum 2023. All Rights Reserved.
   #
   # The information in this publication is freely available for reproduction
   # and use by any recipient and is believed to be accurate as of its
@@ -57,7 +57,7 @@ title:
   # ---------------------
   #
 allOf:
-  - $ref: "../common/ipCommon.yaml#/definitions/IpUniAccessLinkTrunk"
+  - $ref: "./ipUniCommon.yaml#/definitions/IpUniAccessLinkTrunk"
   - properties:
       ethernetPhysicalLink:
         description:
@@ -71,7 +71,9 @@ allOf:
         description:
           Configuration of Link Aggregation for the UNI Access Link Trunk
         $ref: "../common/ipCommon.yaml#/definitions/UniAccessLinkEthernetLinkAggregation"
+        nullable: true
       ethernetLinkOam:
         description:
           Indicates whether Link OAM is used on the UNI Access Link Trunk
         $ref: "../common/ipCommon.yaml#/definitions/EnabledDisabled"
+    type: object

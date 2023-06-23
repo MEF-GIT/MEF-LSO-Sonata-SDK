@@ -1,0 +1,59 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+    shadowing true
+    RoundCorner 0
+    LineColor DarkRed
+    ArrowColor DarkRed
+    ArrowThickness 1
+}
+
+class ProductOffering_Common {
+    id*: string
+    href: string
+    name*: string
+    description: string
+    lastUpdate*: date-time
+    lifecycleStatus*: ProductOfferingLifecycleStatus
+    channel: List<string>
+    agreement: List<string>
+    marketSegment: List<string>
+}
+
+class  ProductOffering_Find {
+
+}
+
+ProductOffering_Common <|-- ProductOffering_Find
+
+class CategoryRef {
+    id*: string
+    href: string
+    name: string
+}
+
+class Region {
+    country*: string
+    locality: string
+    city: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+}
+
+ProductOffering_Common *-->"0..*" Region : region
+ProductOffering_Common *-->"0..*" CategoryRef : category
+
+
+enum ProductOfferingLifecycleStatusType {
+    pilotBeta
+    rejected
+    active
+    endOfSale
+    endOfSupport
+    obsolete
+    onHold
+    orderable
+}
+@enduml

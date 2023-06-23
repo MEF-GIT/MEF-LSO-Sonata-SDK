@@ -1,0 +1,92 @@
+@startjson
+
+#highlight "@type" 
+#highlight "egressBandwidthProfileEnvelope" 
+#highlight "ingressBandwidthProfileEnvelope"
+#highlight "ingressBandwidthProfileEnvelope" / "maxIrE" 
+
+#highlight "ingressBandwidthProfileEnvelope" / "bwpFlowPerIpvcEp"
+#highlight "ingressBandwidthProfileEnvelope" / "bwpFlowPerIpvcEp" / "0" / "cir"
+#highlight "ingressBandwidthProfileEnvelope" / "bwpFlowPerIpvcEp" / "0" / "maxIr" 
+#highlight "ingressBandwidthProfileEnvelope" / "bwpFlowPerIpvcEp" / "0" / "burstBehavior"
+#highlight "routingProtocols"
+
+{
+  "@type": "urn:mef:lso:spec:cantata-sonata:ip-uni:v0.3.0:all",
+  "managementType": "SUBSCRIBER_MANAGED",
+  "reversePathForwarding": "ENABLED",
+  "listOfControlProtocols": [
+    {
+      "addressing": "SP_OPERATOR_ADDRESSES",
+      "protocolName": "ICMP",
+      "reference": ["RFC 792"]
+    },
+    {
+      "addressing": "ANY",
+      "protocolName": "DHCP",
+      "reference": ["RFC 2131", "RFC 2132"]
+    },
+    {
+      "addressing": "ANY",
+      "protocolName": "DHCPv6",
+      "reference": ["RFC 8415"]
+    }
+  ],
+  "egressBandwidthProfileEnvelope": null,
+  "ingressBandwidthProfileEnvelope": {
+    "maxIrE": {
+      "irValue": 1,
+      "irUnits": "GBPS"
+    },
+    "tE": 10,
+    "bwpFlowPerIpvcEp": [
+      {
+        "flowIdentifier": 1,
+        "cir": {
+          "irValue": 500,
+          "irUnits": "MBPS"
+        },
+        "maxIr": {
+          "irValue": 500,
+          "irUnits": "MBPS"
+        },
+        "weight": 0,
+        "burstBehavior": "OPTIMIZE_THROUGHPUT",
+        "ipvcEndPointIdentifier": ["IPVCEP.Budapest.66.1.1"]
+      }
+    ]
+  },
+  "routingProtocols": {
+    "bgp": null,
+    "ospf": null,
+    "static": {
+      "staticIpEntry": [
+        {
+          "administrativeDistance": 10,
+          "forwardingInformation": {
+            "nextHopIpAddress": "203.0.113.1"
+          },
+          "staticPrefix": {
+            "ipv4Prefix": {
+              "ipv4Address": "192.0.2.0",
+              "prefixLength": 29
+            }
+          }
+        },
+        {
+          "administrativeDistance": 10,
+          "forwardingInformation": {
+            "nextHopIpAddress": "203.0.113.1"
+          },
+          "staticPrefix": {
+            "ipv6Prefix": {
+              "ipv6Address": "2001:0DB8:0066::",
+              "prefixLength": 56
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+@endjson

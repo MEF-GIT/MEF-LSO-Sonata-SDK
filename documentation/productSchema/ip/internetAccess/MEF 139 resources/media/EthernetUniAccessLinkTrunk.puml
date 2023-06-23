@@ -1,0 +1,54 @@
+@startuml
+
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class EthernetUniAccessLinkTrunk {
+
+    ethernetLinkOam: EnabledDisabled
+}
+IpUniAccessLinkTrunk <|-- EthernetUniAccessLinkTrunk
+
+EthernetUniAccessLinkTrunk *-->"*" EthernetPhysicalLink : ethernetPhysicalLink
+EthernetUniAccessLinkTrunk *--> UniAccessLinkEthernetLinkAggregation : ethernetLinkAggregation
+
+class IpUniAccessLinkTrunk {
+
+}
+
+class EthernetPhysicalLink {
+    identifier: IdentifierString
+    physicalLayer: EthernetPhysicalLayer
+    synchronousEthernet: SynchronousEthernet
+    connectorType: ConnectorType
+    gender: Gender
+}
+
+class UniAccessLinkEthernetLinkAggregation {
+
+    lacpVersion: LacpVersion
+}
+
+UniAccessLinkEthernetLinkAggregation *-->"*" ConversationIdToAggregationLinkMap : portMap
+
+
+
+
+class ConversationIdToAggregationLinkMap {
+
+    aggLinkList: integer
+}
+
+ConversationIdToAggregationLinkMap *-->"*" ConversationIdRange : conversationIDs
+
+
+class ConversationIdRange {
+
+    start: integer
+    end: integer
+}
+
+
+@enduml

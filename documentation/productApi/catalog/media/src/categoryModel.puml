@@ -1,0 +1,49 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+    shadowing true
+    RoundCorner 0
+    LineColor DarkRed
+    ArrowColor DarkRed
+    ArrowThickness 1
+}
+
+
+class ProductCategory {
+
+    id*: string
+    href: string
+    name*: string
+    description*: string
+    lastUpdate*: date-time
+    lifecycleStatus* CategoryLifecycleStatus
+}
+
+
+
+class CategoryRef {
+
+    id*: string
+    href: string
+    name: string
+}
+
+class ProductOfferingRef {
+
+    id*: string
+    href: string
+    name: string
+}
+
+ProductCategory *-->"0..1" CategoryRef : parentCategory
+ProductCategory *-->"0..*" CategoryRef : subCategory
+ProductCategory *-->"0..*" ProductOfferingRef : productOffering
+
+enum CategoryLifecycleStatusType {
+
+    active
+    obsolete
+}
+
+@enduml

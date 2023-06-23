@@ -1,0 +1,39 @@
+@startuml
+
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class IpUniAccessLinkCommon {
+
+    identifier: IdentifierString
+    prefixDelegation: EnabledDisabled
+    connectionType: ConnectionType
+    mtu: integer
+    reservedVrids: Vrid[]
+    l2Technology: L2Technology
+}
+
+
+class BasicIaIpUniAccessLink {
+  egressBwpEnvelope: BasicIaBwpEnvelope
+  ingressBwpEnvelope: BasicIaBwpEnvelope
+  ipv4ConnectionAddressing: BasicIaUniIpv4ConnectionAddressing
+  ipv6ConnectionAddressing: BasicIaUniIpv6ConnectionAddressing
+}
+IpUniAccessLinkCommon <|-- BasicIaIpUniAccessLink
+
+
+class IpUniAccessLink {
+  dhcpRelay: DhcpRelay
+  bfd: AccessLinkBfd
+  egressBwpEnvelope: IpUniAccessLinkBwpEnvelope
+  ingressBwpEnvelope: IpUniAccessLinkBwpEnvelope
+  ipv4ConnectionAddressing: UniIpv4ConnectionAddressing
+  ipv6ConnectionAddressing: UniIpv6ConnectionAddressing
+}
+IpUniAccessLinkCommon <|-- IpUniAccessLink
+
+
+@enduml

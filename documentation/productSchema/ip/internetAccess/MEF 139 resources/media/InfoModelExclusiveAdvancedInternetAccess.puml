@@ -1,0 +1,58 @@
+@startuml
+
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+rectangle "Product: Exclusive Advanced Internet Access" { 
+
+
+class ExclusiveAdvancedInternetAccess {
+
+}
+class AdvancedInternetAccessIpvc {
+
+}
+class AdvancedIaIpvcEndPoint {
+
+}
+
+AdvancedInternetAccessIpvc *-->"1" AdvancedIaIpvcEndPoint : ipvcEndPoint
+
+
+
+class IpUni {
+
+}
+class IpUniAccessLink {
+
+}
+ExclusiveAdvancedInternetAccess *-d-> "1" IpUni : ipUni
+
+ExclusiveAdvancedInternetAccess *-d-> "1" AdvancedInternetAccessIpvc : ipvc
+ExclusiveAdvancedInternetAccess *-d-> "1" IpUniAccessLink : ipUniAccessLink
+
+}
+
+
+rectangle "Product: Ethernet UNI Access Link Trunk" { 
+
+class EthernetUniAccessLinkTrunk {
+
+}
+  
+}
+
+AdvancedInternetAccessIpvc "0..*" o-r[hidden]-> "1" EthernetUniAccessLinkTrunk : PROVIDED_BY
+IpUni "0..*" o-r[hidden]--> "1" EthernetUniAccessLinkTrunk : PROVIDED_BY
+IpUniAccessLink "0..*" o-r-> "1" EthernetUniAccessLinkTrunk : CARRIED_OVER_TRUNK
+
+EthernetUniAccessLinkTrunk "0..*" o-d-> "1" RelatedPlaceRefOrValue : INSTALL_LOCATION
+
+' extra for alignment
+' BasicIaIpUniAccessLink "0..*" o-[hidden]-> "1" RelatedPlaceRefOrValue : INSTALL_LOCATION
+
+' BasicIaIpvcEndPoint "0..*" o-[hidden]-> "1" RelatedPlaceRefOrValue : INSTALL_LOCATION
+
+@enduml

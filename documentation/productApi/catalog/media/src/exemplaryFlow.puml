@@ -1,0 +1,99 @@
+@startuml
+skinparam {
+participantBorderColor DarkRed
+participantBorderThickness 1
+participantBackgroundColor BUSINESS
+
+LifeLineBorderColor DarkRed
+LifeLineBackgroundColor DarkRed
+
+databaseBorderColor Grey
+databaseBorderThickness 1
+
+shadowing true
+RoundCorner 0
+LineColor DarkRed
+ArrowColor DarkRed
+ArrowThickness 1
+}
+
+hide footbox
+
+participant Buyer as b
+participant Seller as s
+
+autonumber
+
+opt 
+note over b
+Buyer registers subscription to the events related to the Product Offerings:
+- productOfferingCreateEvent
+- productOfferingStatusChangeEvent
+- productOfferingAttributeValueChangeEvent
+end note
+b -> s++: POST {{baseUrl}}/hub
+activate b
+b <-- s--: HTTP 201 Created (confirmation with subscription {{id}})
+deactivate b
+end opt
+
+note over s
+Product Offering created, 
+active but not published for marketing/ordering
+end note
+s -> s: ProductOffering.lifecycleStatus=active
+opt
+    activate s
+    b <- s++: POST {baseUrl}/listener/productOfferingCreateEvent
+    b -->s--: HTTP 204 No Content (confirmation with event {{id}})
+    deactivate s
+end opt
+
+note over s
+Product Offering published for marketing/ordering
+end note
+s -> s: ProductOffering.lifecycleStatus=orderable
+opt 
+    activate s
+    b <- s++: POST {baseUrl}/listener/productOfferingStatusChangeEvent
+    b -->s--: HTTP 204 No Content (confirmation with event {{id}})
+    deactivate s
+end opt
+
+note over b
+Buyer wants to retrieve Product Offerings available for ordering
+end note
+b -> s++: GET {{baseUrl}}/productOffering?lifecycleStatus=orderable
+activate b
+b <-- s--: HTTP 200 Ok (list with one element)
+
+
+note over b
+Buyer wants to retrieve previously queries Product Offering details
+end note
+b -> b: Retrieve offering details
+b -> s++: GET {{baseUrl}}/productOffering/{{id}}
+b <-- s--: HTTP 200 Ok
+deactivate b
+
+note over s
+Product Offering end of marketing
+end note
+s -> s: ProductOffering.lifecycleStatus=endOfSale
+opt
+    activate s
+    b <- s++: POST {baseUrl}/listener/productOfferingStatusChangeEvent
+    b -->s--: HTTP 204 No Content (confirmation with event {{id}})
+    deactivate s
+end opt
+note over b
+Buyer wants to retrieve Product Offerings available for ordering
+end note
+
+b -> s++: GET {{baseUrl}}/productOffering?lifecycleStatus=orderable
+activate b
+b <-- s--: HTTP 200 ok (an empty list)
+deactivate b
+
+...
+@enduml

@@ -22,11 +22,14 @@ info:
   title: Trouble Ticket and Incident Notification
   version: 4.0.0
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/troubleTicketNotification/v4/'
+  - url: "https://{serverBase}/mefApi/sonata/troubleTicketNotification/v4/"
     variables:
       serverBase:
         default: mef.net
         description: The base of Buyer's URL.
+security:
+  - oauth2MEFLSOAPI:
+      - default
 tags:
   - description: |
       The Buyer's endpoint to send particular event types notifications to.
@@ -34,105 +37,98 @@ tags:
 paths:
   /listener/troubleTicketAttributeValueChangeEvent:
     post:
-      description: >-
-        Client listener for receiving the notification
-        TroubleTicketAttributeValueChangeEvent
+      description: Client listener for receiving the notification TroubleTicketAttributeValueChangeEvent
       operationId: listenToTroubleTicketAttributeValueChangeEvent
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/TroubleTicketEvent'
+              $ref: "#/components/schemas/TroubleTicketEvent"
         description: The event data
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '408':
+        "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error408'
+                $ref: "#/components/schemas/Error408"
           description: Request Time-out
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
             - listenToTroubleTicketAttributeValueChangeEvent
-      summary:
-        Client listener for entity TroubleTicketAttributeValueChangeEvent
+      summary: Client listener for entity TroubleTicketAttributeValueChangeEvent
       tags:
         - Notification listeners
       x-codegen-request-body-name: data
   /listener/troubleTicketStatusChangeEvent:
     post:
-      description: >-
-        Client listener for receiving the notification
-        TroubleTicketStatusChangeEvent
+      description: Client listener for receiving the notification TroubleTicketStatusChangeEvent
       operationId: listenToTroubleTicketStatusChangeEvent
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/TroubleTicketEvent'
+              $ref: "#/components/schemas/TroubleTicketEvent"
         description: The event data
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '408':
+        "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error408'
+                $ref: "#/components/schemas/Error408"
           description: Request Time-out
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -143,50 +139,47 @@ paths:
       x-codegen-request-body-name: data
   /listener/troubleTicketResolvedEvent:
     post:
-      description: >-
-        Client listener for receiving the notification
-        TroubleTicketResolvedEvent
+      description: Client listener for receiving the notification TroubleTicketResolvedEvent
       operationId: listenToTroubleTicketResolvedEvent
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/TroubleTicketEvent'
+              $ref: "#/components/schemas/TroubleTicketEvent"
         description: The event data
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '408':
+        "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error408'
+                $ref: "#/components/schemas/Error408"
           description: Request Time-out
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -197,50 +190,47 @@ paths:
       x-codegen-request-body-name: data
   /listener/troubleTicketInformationRequiredEvent:
     post:
-      description: >-
-        Client listener for receiving the notification
-        TroubleTicketInformationRequiredEvent
+      description: Client listener for receiving the notification TroubleTicketInformationRequiredEvent
       operationId: listenToTroubleTicketInformationRequiredEvent
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/TroubleTicketEvent'
+              $ref: "#/components/schemas/TroubleTicketEvent"
         description: The event data
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '408':
+        "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error408'
+                $ref: "#/components/schemas/Error408"
           description: Request Time-out
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -252,48 +242,48 @@ paths:
   /listener/incidentCreateEvent:
     post:
       description:
-        Client listener for receiving the notification Incident Create Event
+        Client listener for receiving the notification Incident Create
+        Event
       operationId: listenToIncidentCreateEvent
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/IncidentEvent'
+              $ref: "#/components/schemas/IncidentEvent"
         description: The event data
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '408':
+        "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error408'
+                $ref: "#/components/schemas/Error408"
           description: Request Time-out
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -304,50 +294,49 @@ paths:
       x-codegen-request-body-name: data
   /listener/incidentAttributeValueChangeEvent:
     post:
-      description: >-
-        Client listener for receiving the notification Incident Attribute Value
-        Change Event
+      description:
+        Client listener for receiving the notification Incident Attribute
+        Value Change Event
       operationId: listenToIncidentAttributeValueChangeEvent
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/IncidentEvent'
+              $ref: "#/components/schemas/IncidentEvent"
         description: The event data
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '408':
+        "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error408'
+                $ref: "#/components/schemas/Error408"
           description: Request Time-out
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -358,50 +347,49 @@ paths:
       x-codegen-request-body-name: data
   /listener/incidentStatusChangeEvent:
     post:
-      description: >-
-        Client listener for receiving the notification Incident Status Change
-        Event
+      description:
+        Client listener for receiving the notification Incident Status
+        Change Event
       operationId: listenToIncidentStatusChangeEvent
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/IncidentEvent'
+              $ref: "#/components/schemas/IncidentEvent"
         description: The event data
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '408':
+        "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error408'
+                $ref: "#/components/schemas/Error408"
           description: Request Time-out
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -414,17 +402,11 @@ components:
   schemas:
     Error400Code:
       type: string
-      description: >-
+      description: |-
         One of the following error codes:
-
-        - missingQueryParameter: The URI is missing a required query-string
-        parameter
-
-        - missingQueryValue: The URI is missing a required query-string
-        parameter value
-
+        - missingQueryParameter: The URI is missing a required query-string parameter
+        - missingQueryValue: The URI is missing a required query-string parameter value
         - invalidQuery: The query section of the URI is invalid.
-
         - invalidBody: The request has an invalid body
       enum:
         - missingQueryParameter
@@ -433,23 +415,21 @@ components:
         - invalidBody
     Error:
       type: object
-      description: >
+      description: |
         Standard Class used to describe API response error
-
-        Not intended to be use directly. The `code` in the HTTP header is used
-        as a discriminator for the type of error returned in runtime.
+        Not intended to be use directly. The `code` in the HTTP header is used as a discriminator for the type of error returned in runtime.
       properties:
         reason:
           type: string
-          description: >-
-            Text that explains the reason for error. This can be shown to a
-            client user.
+          description:
+            Text that explains the reason for error. This can be shown
+            to a client user.
           maxLength: 255
         message:
           type: string
-          description: >-
-            Text that provide mode details and corrective actions related to
-            the error. This can be shown to a client user.
+          description:
+            Text that provide mode details and corrective actions related
+            to the error. This can be shown to a client user.
         referenceError:
           type: string
           format: uri
@@ -458,26 +438,24 @@ components:
         - reason
     Error400:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error400Code'
+              $ref: "#/components/schemas/Error400Code"
           required:
             - code
-      description:
-        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
+      description: Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)
     Error401:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error401Code'
+              $ref: "#/components/schemas/Error401Code"
           required:
             - code
-      description:
-        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
+      description: Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)
     Error401Code:
       type: string
       description: |-
@@ -489,15 +467,14 @@ components:
         - invalidCredentials
     Error403:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error403Code'
+              $ref: "#/components/schemas/Error403Code"
           required:
             - code
-      description:
-        'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
+      description: Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)
     Error403Code:
       type: string
       description: |-
@@ -513,46 +490,37 @@ components:
         - tooManyUsers
     Error408:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
               type: string
-              description: >-
+              description: |-
                 List of supported error codes:
-
-                - timeOut: Request Time-out - indicates that the server did not
-                receive a complete request message within the time that it was
-                prepared to wait.
+                - timeOut: Request Time-out - indicates that the server did not receive a complete request message within the time that it was prepared to wait.
               enum:
                 - timeOut
           required:
             - code
-      description:
-        'Request Time-out (https://tools.ietf.org/html/rfc7231#section-6.5.7)'
+      description: Request Time-out (https://tools.ietf.org/html/rfc7231#section-6.5.7)
     Error500:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
               type: string
-              description: >-
+              description: |-
                 One of the following error codes:
-
-                - internalError: Internal server error - the server encountered
-                an unexpected condition that prevented it from fulfilling the
-                request.
+                - internalError: Internal server error - the server encountered an unexpected condition that prevented it from fulfilling the request.
               enum:
                 - internalError
           required:
             - code
-      description: >-
-        Internal Server Error.
-        (https://tools.ietf.org/html/rfc7231#section-6.6.1)
+      description: Internal Server Error. (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     Event:
       type: object
-      description: >-
+      description:
         Event class is used to describe information structure used for
         notification.
       properties:
@@ -570,13 +538,13 @@ components:
         - eventType
     IncidentEvent:
       allOf:
-        - $ref: '#/components/schemas/Event'
+        - $ref: "#/components/schemas/Event"
         - type: object
           properties:
             eventType:
-              $ref: '#/components/schemas/IncidentEventType'
+              $ref: "#/components/schemas/IncidentEventType"
             event:
-              $ref: '#/components/schemas/IncidentEventPayload'
+              $ref: "#/components/schemas/IncidentEventPayload"
           required:
             - event
             - eventType
@@ -586,9 +554,9 @@ components:
       properties:
         sellerId:
           type: string
-          description: >-
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when requester entity
+          description:
+            The unique identifier of the organization that is acting as
+            the Seller. MUST be specified in the request only when requester entity
             represents more than one Seller.
         id:
           type: string
@@ -598,66 +566,47 @@ components:
           description: Hyperlink to access the Incident
         buyerId:
           type: string
-          description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the responding
+          description:
+            The unique identifier of the organization that is acting as
+            the a Buyer. MUST be specified in the request only when the responding
             represents more than one Buyer.
       required:
         - id
     IncidentEventType:
       type: string
-      description: >
+      description: |
         Type of the Incident event.
 
-
-        | API name                                 | MEF 113 name          |
-        Description                                                                                                                                                                                                                                                                                                          
-        |
-
-        | ---------------------------------------- | --------------------- |
-        ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        |
-
-        | `incidentCreateEvent`                    | INCIDENT_CREATE       | A
-        new Incident was created by the
-        Seller.                                                                                                                                                                                                                                                                            
-        |
-
-        | `incidentAttributeValueChangeEvent`      | INCIDENT_UPDATE       | An
-        open Incident was updated by the
-        Seller.                                                                                                                                                                                                                                                                          
-        |
-
-        | `incidentStatusChangeEvent`              | INCIDENT_STATE_CHANGE | An
-        Incident `status` was changed by the
-        Seller.                                                                                                                                                                                                                                                                      
-        |
+        | API name                                 | MEF 113 name          | Description                                                                                                                                                                                                                                                                                                           |
+        | ---------------------------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | `incidentCreateEvent`                    | INCIDENT_CREATE       | A new Incident was created by the Seller.                                                                                                                                                                                                                                                                             |
+        | `incidentAttributeValueChangeEvent`      | INCIDENT_UPDATE       | An open Incident was updated by the Seller.                                                                                                                                                                                                                                                                           |
+        | `incidentStatusChangeEvent`              | INCIDENT_STATE_CHANGE | An Incident `status` was changed by the Seller.                                                                                                                                                                                                                                                                       |
       enum:
         - incidentCreateEvent
         - incidentAttributeValueChangeEvent
         - incidentStatusChangeEvent
     TroubleTicketEvent:
       allOf:
-        - $ref: '#/components/schemas/Event'
+        - $ref: "#/components/schemas/Event"
         - type: object
           properties:
             eventType:
-              $ref: '#/components/schemas/TroubleTicketEventType'
+              $ref: "#/components/schemas/TroubleTicketEventType"
             event:
-              $ref: '#/components/schemas/TroubleTicketEventPayload'
+              $ref: "#/components/schemas/TroubleTicketEventPayload"
           required:
             - event
             - eventType
     TroubleTicketEventPayload:
       type: object
-      description:
-        The identifier of the Trouble Ticket being subject of this event.
+      description: The identifier of the Trouble Ticket being subject of this event.
       properties:
         sellerId:
           type: string
-          description: >-
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when requester entity
+          description:
+            The unique identifier of the organization that is acting as
+            the Seller. MUST be specified in the request only when requester entity
             represents more than one Seller.
         id:
           type: string
@@ -667,51 +616,23 @@ components:
           description: Hyperlink to access the Trouble Ticket
         buyerId:
           type: string
-          description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the responding
+          description:
+            The unique identifier of the organization that is acting as
+            the a Buyer. MUST be specified in the request only when the responding
             represents more than one Buyer.
       required:
         - id
     TroubleTicketEventType:
       type: string
-      description: >
+      description: |
         Type of the Trouble Ticket event.
 
-
-        | API name                                 | MEF 113 name          |
-        Description                                                                                                                                                                                                                                                                                                          
-        |
-
-        | ---------------------------------------- | --------------------- |
-        ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        |
-
-        | `troubleTicketAttributeValueChangeEvent` | TICKET_UPDATE         |
-        The Seller settable attributes for a Ticket were updated by the Seller.
-        Note: Buyer initiated Ticket updates due to Patch operation will not
-        trigger a
-        `troubleTicketAttributeValueChangeEvent`                                                                                                                      
-        |
-
-        | `troubleTicketInformationRequiredEvent`  | TICKET_STATE_CHANGE   | A
-        Ticket `status` was changed by the
-        Seller.                                                                                                                                                                                                                                                                         
-        |
-
-        | `troubleTicketResolvedEvent`             | TICKET_INFO_REQUIRED  |
-        The Seller requires more information from the Buyer for a Ticket to
-        continue processing a Ticket. The details on what information is needed
-        from the Buyer will be provided via a Ticket `note`. The Ticket
-        `status` is `pending`. Note: The Buyer uses the Patch operation to
-        provide more information for a Ticket. |
-
-        | `troubleTicketStatusChangeEvent`         | TICKET_RESOLVED       |
-        The Seller is informing the Buyer the Ticket is resolved and the Buyer
-        to verify that the Issue on which the Ticket was based is no longer
-        observed. The Ticket `status` is `resolved`. Note: The Buyer confirms
-        if the Issue has been resolved satisfactorily or not using close or
-        reopen operations                |
+        | API name                                 | MEF 113 name          | Description                                                                                                                                                                                                                                                                                                           |
+        | ---------------------------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | `troubleTicketAttributeValueChangeEvent` | TICKET_UPDATE         | The Seller settable attributes for a Ticket were updated by the Seller. Note: Buyer initiated Ticket updates due to Patch operation will not trigger a `troubleTicketAttributeValueChangeEvent`                                                                                                                       |
+        | `troubleTicketInformationRequiredEvent`  | TICKET_STATE_CHANGE   | A Ticket `status` was changed by the Seller.                                                                                                                                                                                                                                                                          |
+        | `troubleTicketResolvedEvent`             | TICKET_INFO_REQUIRED  | The Seller requires more information from the Buyer for a Ticket to continue processing a Ticket. The details on what information is needed from the Buyer will be provided via a Ticket `note`. The Ticket `status` is `pending`. Note: The Buyer uses the Patch operation to provide more information for a Ticket. |
+        | `troubleTicketStatusChangeEvent`         | TICKET_RESOLVED       | The Seller is informing the Buyer the Ticket is resolved and the Buyer to verify that the Issue on which the Ticket was based is no longer observed. The Ticket `status` is `resolved`. Note: The Buyer confirms if the Issue has been resolved satisfactorily or not using close or reopen operations                |
       enum:
         - troubleTicketAttributeValueChangeEvent
         - troubleTicketInformationRequiredEvent
@@ -722,22 +643,8 @@ components:
       description: Default m2m client code
       flows:
         clientCredentials:
-          refreshUrl: 'http://mef.net/example/refresh'
+          refreshUrl: http://mef.net/example/refresh
           scopes:
-            listenToTroubleTicketAttributeValueChangeEvent:
-              Scope for operation
-              listenToTroubleTicketAttributeValueChangeEvent
-            listenToTroubleTicketStatusChangeEvent:
-              Scope for operation listenToTroubleTicketStatusChangeEvent
-            listenToTroubleTicketResolvedEvent:
-              Scope for operation listenToTroubleTicketResolvedEvent
-            listenToTroubleTicketInformationRequiredEvent:
-              Scope for operation listenToTroubleTicketInformationRequiredEvent
-            listenToIncidentCreateEvent:
-              Scope for operation listenToIncidentCreateEvent
-            listenToIncidentAttributeValueChangeEvent:
-              Scope for operation listenToIncidentAttributeValueChangeEvent
-            listenToIncidentStatusChangeEvent:
-              Scope for operation listenToIncidentStatusChangeEvent
-          tokenUrl: 'http://mef.net/example/token'
+            default: default scope
+          tokenUrl: http://mef.net/example/token
       type: oauth2

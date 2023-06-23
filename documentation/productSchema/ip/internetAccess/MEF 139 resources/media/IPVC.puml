@@ -1,0 +1,84 @@
+@startuml
+
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+
+class BasicIaIpvc {
+
+}
+IaIpvcCommon <|-- BasicIaIpvc
+
+BasicIaIpvc *-->"1" BasicIaIpvcEndPoint : ipvcEndPoint
+
+
+class BasicIaIpvcEndPoint {
+
+}
+IaIpvcEndPointCommon <|-- BasicIaIpvcEndPoint
+
+BasicIaIpvcEndPoint *--> BasicIaBwpEnvelope : egressBandwidthProfileEnvelope
+BasicIaIpvcEndPoint *--> BasicIaBwpEnvelope : ingressBandwidthProfileEnvelope
+
+class AdvancedIaIpvcEndPoint {
+
+}
+IaIpvcEndPointCommon <|-- AdvancedIaIpvcEndPoint
+BasicIaIpvcEndPoint <|-d[hidden]- AdvancedIaIpvcEndPoint
+AdvancedIaIpvcEndPoint *-->"*" Ipv4OrIpv6Prefix : prefixMapping
+AdvancedIaIpvcEndPoint *--> IpvcEpBwpEnvelope : egressBandwidthProfileEnvelope
+AdvancedIaIpvcEndPoint *--> IpvcEpBwpEnvelope : ingressBandwidthProfileEnvelope
+
+class AdvancedInternetAccessIpvc {
+
+}
+IaIpvcCommon <|-- AdvancedInternetAccessIpvc
+
+AdvancedInternetAccessIpvc *-->"1" AdvancedIaIpvcEndPoint : ipvcEndPoint
+
+class IaIpvcCommon {
+
+    maximumNumberOfIpv4Routes: integer
+    pathMtuDiscovery: EnabledDisabled
+    dscpPreservation: EnabledDisabled
+    classOfServiceName: string
+    maximumNumberOfIpv6Routes: integer
+    mtu: integer
+}
+
+IaIpvcCommon *--> IaIpvcCloud : cloud
+IaIpvcCommon *--> IpSls : serviceLevelSpecification
+IaIpvcCommon *-->"*" Ipv4OrIpv6Prefix : reservedPrefixes
+
+class IaIpvcCloud {
+  <<skipped>>
+}
+
+class IaIpvcEndPointCommon {
+    identifier: IdentifierString
+    egressClassOfServiceMap: DscpValue
+    maximumNumberOfIpv4Routes: integer
+    maximumNumberOfIpv6Routes: integer
+}
+
+
+class BasicIaBwpEnvelope {
+<<skipped>>
+}
+class IpvcEpBwpEnvelope {
+<<skipped>>
+}
+
+
+
+class IpSls {
+  <<skipped>>
+}
+class Ipv4OrIpv6Prefix {
+  <<skipped>>
+}
+
+
+@enduml

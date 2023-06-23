@@ -1,0 +1,55 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+
+class IpBwpEnvelope {
+
+    tE: integer
+}
+
+IpBwpEnvelope *--> InformationRate : maxIrE
+
+class IpvcEpBwpEnvelope {
+
+}
+IpBwpEnvelope <|-- IpvcEpBwpEnvelope
+
+IpvcEpBwpEnvelope *-->"*" IpBwpFlowPerCosName : bwpFlowPerCosName
+IpvcEpBwpEnvelope *--> IpBwpFlowAll : bwpFlowAll
+
+
+
+class InformationRate {
+
+    irValue: number
+    irUnits: IrUnits
+}
+
+
+class IpBwpFlowAll {
+
+}
+IpBwpFlow <|-- IpBwpFlowAll
+
+
+class IpBwpFlowPerCosName {
+
+    cosName: string
+}
+IpBwpFlow <|-- IpBwpFlowPerCosName
+
+class IpBwpFlow {
+
+    flowIdentifier: integer
+    weight: integer
+    burstBehavior: BurstBehavior
+}
+
+IpBwpFlow *--> InformationRate : maxIr
+IpBwpFlow *--> InformationRate : cir
+
+
+@enduml

@@ -1,0 +1,303 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+    shadowing true
+    RoundCorner 0
+    LineColor DarkRed
+    ArrowColor DarkRed
+    ArrowThickness 1
+}
+
+
+class ProductCategory {
+
+    id*: string
+    href: string
+    name*: string
+    description*: string
+    lastUpdate*: date-time
+    lifecycleStatus* CategoryLifecycleStatus
+}
+
+class CategoryRef {
+
+    id*: string
+    href: string
+}
+
+class ProductOfferingRef {
+
+    id*: string
+    href: string
+}
+
+ProductCategory *-->"0..1" CategoryRef : parentCategory
+ProductCategory *-->"0..*" CategoryRef : subCategory
+ProductCategory *-->"0..*" ProductOfferingRef : productOffering
+
+enum CategoryLifecycleStatusType {
+
+    active
+    obsolete
+}
+
+class ProductOffering_Common {
+    id*: string
+    href: string
+    name*: string
+    description: string
+    productType* string
+    lastUpdate*: date-time
+    lifecycleStatus*: ProductOfferingLifecycleStatus
+    agreement: List<string>
+    channel: List<string>
+    marketSegment: List<string>
+}
+
+class ProductOffering {
+    productOfferingStatusReason string
+}
+
+class  ProductOffering_Common {
+
+}
+
+ProductOffering_Common <|-- ProductOffering_Find
+ProductOffering_Common <|-- ProductOffering
+
+class Region {
+    country*: string
+    locality: string
+    city: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+}
+
+class AttachmentValue {
+    attachmentId*: string
+    author*: string
+    content: string
+    creationDate*: string
+    description: string
+    mimeType: string
+    name*: string
+    source: MEFBuyerSellerType
+    url: string
+}
+
+class MEFByteSize {
+   ammount*: float
+   units*: DataSizeUnit
+}
+
+class ProductOfferingLifecycleStatusTransition {
+
+    transitionDate*: date-time
+    plannedLifecycleStatus*: ProductOfferingLifecycleStatus
+}
+
+class RelatedContactInformation{
+    emailAddress*: string
+    name*: string
+    number*: string
+    numberExtension: string
+    organization: string
+    role*: string
+}
+
+class FieldedAddress {
+
+    country*: string
+    streetType: string
+    postcodeExtension: string
+    city*: string
+    streetNr: string
+    locality: string
+    postcode: string
+    streetNrLast: string
+    streetNrSuffix: string
+    streetName*: string
+    stateOrProvince: string
+    streetNrLastSuffix: string
+    streetSuffix: string
+}
+
+class GeographicSubAddress {
+
+    buildingName: string
+    id: string
+    levelNumber: string
+    levelType: string
+    privateStreetName: string
+    privateStreetNumber: string
+}
+
+class MEFSubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+
+class MEFItemTerm {
+    description: string
+    endOfTermAction: MEFEndOfTermAction
+    name*: string
+}
+
+class Duration {
+    amount*: number
+    units*: TimeUnit
+}
+
+class ProductSpecificationRef {
+    id*: string
+    href: string
+    name: string
+}
+
+class ProductOfferingContextualInfo{
+    contextSchema*: string
+}
+
+class Context {
+    productAction*: MEFProductAction
+    businessFunction*: MEFBusinessFunction
+}
+
+class SchemaRefOrValue {
+    schema: string
+    schemaLocation: string
+}
+
+ProductOffering_Common *-->"0..*" Region : region
+AttachmentValue *-->"0..1" MEFByteSize : region
+ProductOffering_Common *-->"0..*" CategoryRef : category
+ProductOffering *-->"0..*" AttachmentValue : attachment
+ProductOffering *-->"0..*" ProductOfferingLifecycleStatusTransition : upcomingStatusTransitions
+ProductOffering *-->"1..*" RelatedContactInformation : relatedContactInformation
+RelatedContactInformation *-->"0..*" FieldedAddress: postalAddress
+FieldedAddress *--> GeographicSubAddress : geographicSubAddress
+GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+ProductOffering *-->"0..*" MEFItemTerm: productOfferingTerm
+MEFItemTerm *-->"1..1" Duration: duration
+MEFItemTerm *-->"1..1" Duration: rollInterval
+ProductOffering *-->"0..*" Note: note
+ProductOffering *-->"1..1" ProductSpecificationRef: productSpecification
+ProductOfferingContextualInfo *-->"1..1" Context: context
+ProductOffering *-->"0..14" ProductOfferingContextualInfo: productOfferingContextualInfo
+ProductOffering *-->"1..1" SchemaRefOrValue: productOfferingSpecification
+
+enum MEFProductAction{
+    add
+    modify
+    all
+}
+
+enum MEFBusinessFunction{
+    productOfferingQualification
+    quote
+    productOrder
+    productInventory
+    all
+}
+
+enum TimeUnit{
+    calendarMonths
+    calendarDays
+    calendarHours
+    calendarMinutes
+    businessDays
+    businessHours
+    businessMinutes
+}
+
+enum MEFEndOfTermAction{
+    roll
+    autoDisconnect
+    autoRenew
+}
+
+enum MEFBuyerSellerType{
+    buyer
+    seller
+}
+
+enum DataSizeUnit{
+    BYTES
+    KBYTES
+    MBYTES
+    GBYTES
+    TBYTES
+    PBYTES
+    EBYTES
+    ZBYTES
+    YBYTES
+}
+
+enum ProductOfferingLifecycleStatusType {
+    pilotBeta
+    rejected
+    active
+    endOfSale
+    endOfSupport
+    obsolete
+    onHold
+    orderable
+}
+
+class ProductSpecification_Common {
+    id*: string
+    href: string
+    name*: string
+    description: string
+    lastUpdate*: date-time
+    lifecycleStatus*: ProductSpecificationLifecycleStatus
+}
+
+class ProductSpecification {
+    brand: string
+    producNumber: string
+}
+
+class  ProductSpecification_Find {
+
+}
+
+ProductSpecification_Common <|-- ProductSpecification_Find
+ProductSpecification_Common <|-- ProductSpecification
+
+class Note {
+
+    author*: string
+    date*: date-time
+    id*: string
+    source*: MEFBuyerSellerType
+    text*: string
+}
+
+class ProductSpecificationRelationship {
+    id*: string
+    type*: string
+    minCardinality*: number
+    maxCardinality*: number
+}
+
+ProductSpecification *-->"0..*" AttachmentValue : attachment
+ProductSpecification *-->"0..*" Note: note
+ProductSpecification *-->"1..1" SchemaRefOrValue: sourceSchema
+ProductSpecification *-->"0..*" ProductSpecificationRelationship: productSpecificationRelationship
+
+enum ProductSpecificationLifecycleStatus {
+    pilotBeta
+    rejected
+    active
+    endOfSale
+    endOfSupport
+    obsolete
+    onHold
+    orderable
+}
+
+@enduml

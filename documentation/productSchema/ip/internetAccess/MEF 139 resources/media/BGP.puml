@@ -1,0 +1,75 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class Bgp {
+
+    connectionAddressFamily: AddressFamilyIpv4Ipv6
+    authentication: string
+    asOverride: EnabledDisabled
+    administrativeDistance: integer
+    holdTime: TwoOctetInteger
+    subscriberAsNumber: FourOctetInteger
+    peerAsNumber: FourOctetInteger
+}
+
+
+Bgp *--> PeeringAddress : peeringAddresses
+Bgp *-->"*" BgpCommunity : bgpCommunityList
+Bgp *-->"*" BgpExtendedCommunity : bgpExtendedCommunityList
+Bgp *--> Damping : damping
+
+
+class BgpCommunity {
+    autonomousSystemNumber: TwoOctetInteger 
+    autonomousSystemDefined: TwoOctetInteger
+    semantics: string
+}
+
+
+
+class BgpExtendedCommunity {
+
+    regularType*: integer
+    regularValue*: integer
+    extendedType: TwoOctetInteger
+    extendedValue*: integer
+    semantics: string
+}
+
+class Damping {
+
+    cutoffThreshold: integer
+    decayHalfLifeWhileReachable: integer
+    decayHalfLifeWhileUnReachable: integer
+    decayMemoryLimit: integer
+    maxHoldDownTime: integer
+    numberOfReuseLists: integer
+    reuseListMemory: integer
+    reuseListTimeGranularity: integer
+    reuseThreshold: integer
+    timeGranularity: integer
+    reuseIndexArraySize: integer
+}
+
+
+
+
+class PeeringAddress {
+
+    peeringAddressType: PeeringAddressType
+}
+
+PeeringAddress *-->"*" SubscriberAndSpLoopbackAddresses : subscriberAndSpLoopbackAddresses
+
+class SubscriberAndSpLoopbackAddresses {
+
+}
+
+SubscriberAndSpLoopbackAddresses *--> Ipv4OrIpv6Address : subscriberLoopbackAddress
+SubscriberAndSpLoopbackAddresses *--> Ipv4OrIpv6Address : spLoopbackAddress
+
+
+@enduml

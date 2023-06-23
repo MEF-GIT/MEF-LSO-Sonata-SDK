@@ -1,5 +1,11 @@
 # Workorder Management: Release notes
 
+## Release Fergie:
+
+**Readiness status**: MEF Published Standard
+
+No changes.
+
 ## Release Ella:
 
 **Readiness status**: Requested Letter Ballot. It will be most likely published

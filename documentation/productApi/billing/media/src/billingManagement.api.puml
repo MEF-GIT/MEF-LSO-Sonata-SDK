@@ -3,7 +3,7 @@ skinparam {
     ClassBackgroundColor White
     ClassBorderColor Black
 }
-
+scale 4096 width
 class AppliedPayment {
 
 }
@@ -61,10 +61,10 @@ class CustomerBillItem {
 
     id*: string
     href: string
+    customerBillItemType*: MEFPriceType
     description*: string
     productName*: string
     state*: CustomerBillItemStateType
-    type*: MEFPriceType
     unit*: string
     unitQuantity*: null
 }
@@ -153,6 +153,13 @@ class Error500 {
     code*: string
 }
 Error <|-- Error500
+
+
+class Error501 {
+
+    code*: string
+}
+Error <|-- Error501
 
 
 
@@ -261,10 +268,8 @@ Error <|-- Error404
 
 class Error {
 
-    code*: string
     reason*: string
     message: string
-    status: string
     referenceError: uri
 }
 
@@ -281,7 +286,6 @@ class EventSubscriptionInput {
 class GeographicSubAddress {
 
     buildingName: string
-    id: string
     levelNumber: string
     levelType: string
     privateStreetName: string

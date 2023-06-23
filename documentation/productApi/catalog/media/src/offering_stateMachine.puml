@@ -1,0 +1,33 @@
+@startuml
+skinparam state {
+    BackgroundColor White
+    BorderColor Black
+    ArrowColor DarkRed
+    shadowing true
+}
+hide empty description
+
+state c <<choice>>
+ note top of c :  Pilot/Beta Needed?
+
+''' diagram'''
+[*] -d-> c
+c -d-> active: No
+state Testing #line.dotted{
+c -r-> inTest: Yes
+inTest -d-> rejected: Testing Failed
+}
+inTest -r-> active: Testing Approved
+rejected -d-> [*]
+active -d-> orderable: General Availability
+active -r-> onHold
+onHold -l-> active
+onHold -d-> endOfSale
+orderable -d-> endOfSale
+endOfSale -d-> endOfSupport
+endOfSale -d-> obsolete
+endOfSupport -d-> obsolete
+
+obsolete --> [*]
+
+@enduml

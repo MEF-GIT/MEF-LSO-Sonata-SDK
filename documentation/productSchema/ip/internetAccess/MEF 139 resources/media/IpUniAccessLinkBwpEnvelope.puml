@@ -1,0 +1,74 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class IpBwpEnvelope {
+
+    tE: integer
+}
+
+IpBwpEnvelope *--> InformationRate : maxIrE
+
+
+
+class IpUniAccessLinkBwpEnvelope {
+
+}
+IpBwpEnvelope <|-- IpUniAccessLinkBwpEnvelope
+
+IpUniAccessLinkBwpEnvelope *-->"*" IpBwpFlowPerIpvcEp : bwpFlowPerIpvcEp
+IpUniAccessLinkBwpEnvelope *--> IpBwpFlowAll : bwpFlowAll
+IpUniAccessLinkBwpEnvelope *-->"*" IpBwpFlowPerIpvcEpAndCosName : bwpFlowPerIpvcEpAndCosName
+
+
+class InformationRate {
+
+    irValue: number
+    irUnits: IrUnits
+}
+
+
+class IpBwpFlowAll {
+
+}
+IpBwpFlow <|-- IpBwpFlowAll
+
+
+
+class IpBwpFlowPerIpvcEp {
+
+}
+IpBwpFlow <|-- IpBwpFlowPerIpvcEp
+
+IpBwpFlowPerIpvcEp *-->"*" IpvcEndPointIdentifier : ipvcEndPointIdentifier
+
+
+class IpBwpFlowPerIpvcEpAndCosName {
+
+}
+IpBwpFlow <|-- IpBwpFlowPerIpvcEpAndCosName
+
+IpBwpFlowPerIpvcEpAndCosName *-->"*" IpvcEpAndCosName : ipvcEpAndCosName
+
+
+
+class IpvcEpAndCosName {
+
+    cosName: string
+}
+
+IpvcEpAndCosName *--> IpvcEndPointIdentifier : ipvcEndPointIdentifier
+class IpBwpFlow {
+
+    flowIdentifier: integer
+    weight: integer
+    burstBehavior: BurstBehavior
+}
+
+IpBwpFlow *-u-> InformationRate : maxIr
+IpBwpFlow *-u-> InformationRate : cir
+
+
+@enduml

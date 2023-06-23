@@ -1,55 +1,40 @@
 openapi: 3.0.1
 info:
-  description: >
+  description: |
     **This file forms part of MEF 115**
-
 
     This API implements Business Requirements described in MEF 80
 
-
-    Quote API allows the Buyer to submit a request to find out how much the
-    installation
-
+    Quote API allows the Buyer to submit a request to find out how much the installation
     of an instance of a Product Offering, an update to an existing Product, or
-
     a disconnect of an existing Product will cost.
 
-
     List of supported Use Cases:
-
     - Create Quote
-
     - Retrieve Quote List
-
     - Retrieve Quote by Quote Identifier
-
     - Cancel Quote by Quote Identifier
-
     - Decline Quote by Quote Identifier
-
     - Register for Quote Notification
-
 
     Copyright 2021 MEF Forum and its contributors.
 
-
     This file includes content based on the TM Forum Quote Management API
-
     (TMF648 v4.0.0) available at
-
     https://github.com/tmforum-apis/TMF648_QuoteManagement, which is licensed
-
     by the TM Forum under the Apache License version 2.0. Such content has been
-
     modified by the MEF Forum and its contributors.
   title: Quote Management
   version: 8.0.1
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/quoteManagement/v8/'
+  - url: "https://{serverBase}/mefApi/sonata/quoteManagement/v8/"
     variables:
       serverBase:
         default: mef.net
         description: The base of Seller's URL.
+security:
+  - oauth2MEFLSOAPI:
+      - default
 tags:
   - name: quote
   - name: quote operations
@@ -57,19 +42,18 @@ tags:
 paths:
   /quote:
     get:
-      description: >-
-        The Buyer requests a list of Quotes from the Seller based on a set of
-        filter criteria (as described in MEF 80).  For each Quote returned, the
-        Seller also provides a Quote Identifier that uniquely identifies this
-        Quote within the Seller. The order of the elements returned to the
-        Buyer is defined by the Seller (e.g. natural order) and does not change
-        between the pages.
+      description:
+        "The Buyer requests a list of Quotes from the Seller based on a\
+        \ set of filter criteria (as described in MEF 80).  For each Quote returned,\
+        \ the Seller also provides a Quote Identifier that uniquely identifies this\
+        \ Quote within the Seller. The order of the elements returned to the Buyer\
+        \ is defined by the Seller (e.g. natural order) and does not change between\
+        \ the pages."
       operationId: listQuote
       parameters:
-        - description: >-
-            State of the Quote to be retrieved. See `MEFQuoteStateType`
-            definition for details
-          explode: true
+        - description:
+            State of the Quote to be retrieved. See `MEFQuoteStateType` definition
+            for details
           in: query
           name: state
           required: false
@@ -88,11 +72,9 @@ paths:
               - inProgress
               - inProgress.draft
               - rejected
-          style: form
-        - description: >-
-            Level of the quote - could be budgetary,
-            firmSubjectToFeasibilityCheck, firm
-          explode: true
+        - description:
+            "Level of the quote - could be budgetary, firmSubjectToFeasibilityCheck,\
+            \ firm"
           in: query
           name: quoteLevel
           required: false
@@ -102,207 +84,161 @@ paths:
               - budgetary
               - firmSubjectToFeasibilityCheck
               - firm
-          style: form
-        - description: >-
-            ID given by the consumer and only understandable by him (to
-            facilitate his searches afterward)
-          explode: true
+        - description:
+            ID given by the consumer and only understandable by him (to facilitate
+            his searches afterward)
           in: query
           name: externalId
           required: false
           schema:
             type: string
-          style: form
-        - description: >-
-            An identifier that is used to group Quotes that represent a unit of
-            functionality that is important to a Buyer. A Project can be used
-            to relate multiple Quotes together
-          explode: true
+        - description:
+            An identifier that is used to group Quotes that represent a unit
+            of functionality that is important to a Buyer. A Project can be used to
+            relate multiple Quotes together
           in: query
           name: projectId
           required: false
           schema:
             type: string
-          style: form
         - description: Date when the quote was created - greater than
-          explode: true
           in: query
           name: quoteDate.gt
           required: false
           schema:
             type: string
             format: date-time
-          style: form
         - description: Date when the quote was created - lower than
-          explode: true
           in: query
           name: quoteDate.lt
           required: false
           schema:
             type: string
             format: date-time
-          style: form
         - description: Requested Quote Completion Date - greater than
-          explode: true
           in: query
           name: requestedQuoteCompletionDate.gt
           required: false
           schema:
             type: string
             format: date-time
-          style: form
         - description: Requested Quote Completion Date - lower than
-          explode: true
           in: query
           name: requestedQuoteCompletionDate.lt
           required: false
           schema:
             type: string
             format: date-time
-          style: form
         - description: Expected Quote Completion Date - greater than
-          explode: true
           in: query
           name: expectedQuoteCompletionDate.gt
           required: false
           schema:
             type: string
             format: date-time
-          style: form
         - description: Expected Quote Completion Date - lower than
-          explode: true
           in: query
           name: expectedQuoteCompletionDate.lt
           required: false
           schema:
             type: string
             format: date-time
-          style: form
-        - description: >-
-            Date when the Quote State was set to one of the Completion States -
-            greater than
-          explode: true
+        - description:
+            Date when the Quote State was set to one of the Completion States
+            - greater than
           in: query
           name: effectiveQuoteCompletionDate.gt
           required: false
           schema:
             type: string
             format: date-time
-          style: form
-        - description: >-
-            Date when the Quote State was set to one of the Completion States -
-            lower than
-          explode: true
+        - description:
+            Date when the Quote State was set to one of the Completion States
+            - lower than
           in: query
           name: effectiveQuoteCompletionDate.lt
           required: false
           schema:
             type: string
             format: date-time
-          style: form
-        - description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the requester
-            represents more than one Buyer.
-
+        - description: |-
+            The unique identifier of the organization that is acting as the a Buyer. MUST be specified in the request only when the requester represents more than one Buyer.
             Reference: MEF 79 (Sn 8.8)
-          explode: true
           in: query
           name: buyerId
           required: false
           schema:
             type: string
-          style: form
-        - description: >-
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when the responding
-            entity
+        - description: |-
+            The unique identifier of the organization that is acting as the Seller. MUST be specified in the request only when the responding entity
              represents more than one Seller.
 
             Reference: MEF 79 (Sn 8.8)
-          explode: true
           in: query
           name: sellerId
           required: false
           schema:
             type: string
-          style: form
-        - description:
-            Requested index for start of resources to be provided in response
-          explode: true
+        - description: Requested index for start of resources to be provided in response
           in: query
           name: offset
           required: false
           schema:
             type: integer
-          style: form
         - description: Requested number of resources to be provided in response
-          explode: true
           in: query
           name: limit
           required: false
           schema:
             type: integer
             format: int32
-          style: form
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Quote_Find'
-          description:
-            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
+                  $ref: "#/components/schemas/Quote_Find"
+          description: OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)
           headers:
             X-Pagination-Throttled:
-              description: >
-                Used to indicate that result page was throttled to maximum
-                possible size  and there are additional results that can be
-                fetched
-              explode: false
+              description: |
+                Used to indicate that result page was throttled to maximum possible size  and there are additional results that can be fetched
               schema:
                 type: boolean
-              style: simple
             X-Total-Count:
-              description: >
-                The total number of matching records. E.g. if there are 50
-                matching records in total, but the request has offset=10 and
-                limit=10, then the X-Total-Count is 50.
-              explode: false
+              description: |
+                The total number of matching records. E.g. if there are 50 matching records in total, but the request has offset=10 and limit=10, then the X-Total-Count is 50.
               schema:
                 type: integer
-              style: simple
             X-Result-Count:
               description: The number of records included in the response
-              explode: false
               schema:
                 type: integer
-              style: simple
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -314,81 +250,71 @@ paths:
       description: This operation creates a Quote entity.
       operationId: createQuote
       parameters:
-        - description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the requester
-            represents more than one Buyer.
-
+        - description: |-
+            The unique identifier of the organization that is acting as the a Buyer. MUST be specified in the request only when the requester represents more than one Buyer.
             Reference: MEF 79 (Sn 8.8)
-          explode: true
           in: query
           name: buyerId
           required: false
           schema:
             type: string
-          style: form
-        - description: >-
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when the responding
-            entity
+        - description: |-
+            The unique identifier of the organization that is acting as the Seller. MUST be specified in the request only when the responding entity
              represents more than one Seller.
 
             Reference: MEF 79 (Sn 8.8)
-          explode: true
           in: query
           name: sellerId
           required: false
           schema:
             type: string
-          style: form
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/Quote_Create'
+              $ref: "#/components/schemas/Quote_Create"
         description: The Quote to be created
         required: true
       responses:
-        '201':
+        "201":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Quote'
-          description:
-            'Created  (https://tools.ietf.org/html/rfc7231#section-6.3.2)'
-        '400':
+                $ref: "#/components/schemas/Quote"
+          description: Created  (https://tools.ietf.org/html/rfc7231#section-6.3.2)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '422':
+        "422":
           content:
             application/json;charset=utf-8:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Error422'
-          description: >-
-            Unprocessable entity due to the business validation problems in the
-            Quote or one of the Quote items
-        '500':
+                  $ref: "#/components/schemas/Error422"
+          description:
+            Unprocessable entity due to the business validation problems
+            in the Quote or one of the Quote items
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -397,85 +323,73 @@ paths:
       tags:
         - quote
       x-codegen-request-body-name: quote
-  '/quote/{id}':
+  /quote/{id}:
     get:
-      description: >-
-        This operation retrieves a Quote entity. Attribute selection is enabled
-        for all first level attributes.
+      description:
+        This operation retrieves a Quote entity. Attribute selection is
+        enabled for all first level attributes.
       operationId: retrieveQuote
       parameters:
         - description: Identifier of the Quote
-          explode: false
           in: path
           name: id
           required: true
           schema:
             type: string
-          style: simple
-        - description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the requester
-            represents more than one Buyer.
-
+        - description: |-
+            The unique identifier of the organization that is acting as the a Buyer. MUST be specified in the request only when the requester represents more than one Buyer.
             Reference: MEF 79 (Sn 8.8)
-          explode: true
           in: query
           name: buyerId
           required: false
           schema:
             type: string
-          style: form
-        - description: >-
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when the responding
-            entity
+        - description: |-
+            The unique identifier of the organization that is acting as the Seller. MUST be specified in the request only when the responding entity
              represents more than one Seller.
 
             Reference: MEF 79 (Sn 8.8)
-          explode: true
           in: query
           name: sellerId
           required: false
           schema:
             type: string
-          style: form
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Quote'
-          description:
-            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
-        '400':
+                $ref: "#/components/schemas/Quote"
+          description: OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -488,80 +402,71 @@ paths:
       description: This operation sends a cancellation request.
       operationId: cancelQuote
       parameters:
-        - description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the requester
-            represents more than one Buyer.
-
+        - description: |-
+            The unique identifier of the organization that is acting as the a Buyer. MUST be specified in the request only when the requester represents more than one Buyer.
             Reference: MEF 79 (Sn 8.8)
-          explode: true
           in: query
           name: buyerId
           required: false
           schema:
             type: string
-          style: form
-        - description: >-
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when the responding
-            entity
+        - description: |-
+            The unique identifier of the organization that is acting as the Seller. MUST be specified in the request only when the responding entity
              represents more than one Seller.
 
             Reference: MEF 79 (Sn 8.8)
-          explode: true
           in: query
           name: sellerId
           required: false
           schema:
             type: string
-          style: form
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/QuoteOperationData'
+              $ref: "#/components/schemas/QuoteOperationData"
         description: The details of the Quote Operation
         required: true
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/QuoteOperationData'
+                $ref: "#/components/schemas/QuoteOperationData"
           description: Success
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '422':
+        "422":
           content:
             application/json;charset=utf-8:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Error422'
-          description: >-
-            Unprocessable entity due to the business validation problems in the
-            Quote or one of the Quote items
-        '500':
+                  $ref: "#/components/schemas/Error422"
+          description:
+            Unprocessable entity due to the business validation problems
+            in the Quote or one of the Quote items
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -575,80 +480,71 @@ paths:
       description: This operation sends a rejection request.
       operationId: rejectQuote
       parameters:
-        - description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the requester
-            represents more than one Buyer.
-
+        - description: |-
+            The unique identifier of the organization that is acting as the a Buyer. MUST be specified in the request only when the requester represents more than one Buyer.
             Reference: MEF 79 (Sn 8.8)
-          explode: true
           in: query
           name: buyerId
           required: false
           schema:
             type: string
-          style: form
-        - description: >-
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when the responding
-            entity
+        - description: |-
+            The unique identifier of the organization that is acting as the Seller. MUST be specified in the request only when the responding entity
              represents more than one Seller.
 
             Reference: MEF 79 (Sn 8.8)
-          explode: true
           in: query
           name: sellerId
           required: false
           schema:
             type: string
-          style: form
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/QuoteOperationData'
+              $ref: "#/components/schemas/QuoteOperationData"
         description: The details of the Quote Operation
         required: true
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/QuoteOperationData'
+                $ref: "#/components/schemas/QuoteOperationData"
           description: Success
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '422':
+        "422":
           content:
             application/json;charset=utf-8:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Error422'
-          description: >-
-            Unprocessable entity due to the business validation problems in the
-            Quote or one of the Quote items
-        '500':
+                  $ref: "#/components/schemas/Error422"
+          description:
+            Unprocessable entity due to the business validation problems
+            in the Quote or one of the Quote items
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -659,85 +555,74 @@ paths:
       x-codegen-request-body-name: rejectQuote
   /hub:
     post:
-      description: >-
+      description:
         A request initiated by the Buyer to instruct the Seller to send
-        notifications of Quote state changes in the event the Seller uses the
-        Deferred Response pattern to respond to a Create Quote request.
+        notifications of Quote state changes in the event the Seller uses the Deferred
+        Response pattern to respond to a Create Quote request.
       operationId: registerListener
       parameters:
-        - description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the requester
-            represents more than one Buyer.
-
+        - description: |-
+            The unique identifier of the organization that is acting as the a Buyer. MUST be specified in the request only when the requester represents more than one Buyer.
             Reference: MEF 79 (Sn 8.8)
-          explode: true
           in: query
           name: buyerId
           required: false
           schema:
             type: string
-          style: form
-        - description: >-
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when the responding
-            entity
+        - description: |-
+            The unique identifier of the organization that is acting as the Seller. MUST be specified in the request only when the responding entity
              represents more than one Seller.
 
             Reference: MEF 79 (Sn 8.8)
-          explode: true
           in: query
           name: sellerId
           required: false
           schema:
             type: string
-          style: form
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/EventSubscriptionInput'
-        description:
-          Data containing the callback endpoint to deliver the information
+              $ref: "#/components/schemas/EventSubscriptionInput"
+        description: Data containing the callback endpoint to deliver the information
         required: true
       responses:
-        '201':
+        "201":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/EventSubscription'
-          description:
-            'Subscribed  (https://tools.ietf.org/html/rfc7231#section-6.3.2)'
-        '400':
+                $ref: "#/components/schemas/EventSubscription"
+          description: Subscribed  (https://tools.ietf.org/html/rfc7231#section-6.3.2)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
-        '501':
+        "501":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error501'
-          description: >-
+                $ref: "#/components/schemas/Error501"
+          description:
             Method not implemented. Used in case Seller is not supporting
             Notification mechanism
       security:
@@ -747,89 +632,77 @@ paths:
       tags:
         - events subscription
       x-codegen-request-body-name: data
-  '/hub/{id}':
+  /hub/{id}:
     delete:
-      description: >-
-        Resets the communication endpoint address the service instance must use
-        to deliver information about its health state, execution state,
-        failures and metrics.
+      description:
+        "Resets the communication endpoint address the service instance\
+        \ must use to deliver information about its health state, execution state,\
+        \ failures and metrics."
       operationId: unregisterListener
       parameters:
         - description: The id of the EventSubscription
-          explode: false
           in: path
           name: id
           required: true
           schema:
             type: string
-          style: simple
-        - description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the requester
-            represents more than one Buyer.
-
+        - description: |-
+            The unique identifier of the organization that is acting as the a Buyer. MUST be specified in the request only when the requester represents more than one Buyer.
             Reference: MEF 79 (Sn 8.8)
-          explode: true
           in: query
           name: buyerId
           required: false
           schema:
             type: string
-          style: form
-        - description: >-
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when the responding
-            entity
+        - description: |-
+            The unique identifier of the organization that is acting as the Seller. MUST be specified in the request only when the responding entity
              represents more than one Seller.
 
             Reference: MEF 79 (Sn 8.8)
-          explode: true
           in: query
           name: sellerId
           required: false
           schema:
             type: string
-          style: form
       responses:
-        '204':
-          description:
-            'Deleted (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: Deleted (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
-        '501':
+        "501":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error501'
-          description: >-
+                $ref: "#/components/schemas/Error501"
+          description:
             Method not implemented. Used in case Seller is not supporting
             Notification mechanism
       security:
@@ -842,35 +715,32 @@ components:
   schemas:
     Duration:
       type: object
-      description:
-        'A Duration in a given unit of time e.g. 3 hours, or 5 days.'
+      description: "A Duration in a given unit of time e.g. 3 hours, or 5 days."
       properties:
         amount:
           type: integer
-          description: 'Duration (number of seconds, minutes, hours, etc.)'
+          description: "Duration (number of seconds, minutes, hours, etc.)"
         units:
-          $ref: '#/components/schemas/TimeUnit'
+          $ref: "#/components/schemas/TimeUnit"
       required:
         - amount
         - units
     Error:
       type: object
-      description: >
-        Standard Class used to describe API response error Not intended to be
-        used directly. The `code` in the HTTP header is used as a discriminator
-        for the type of error returned in runtime.
+      description: |
+        Standard Class used to describe API response error Not intended to be used directly. The `code` in the HTTP header is used as a discriminator for the type of error returned in runtime.
       properties:
         reason:
           type: string
-          description: >-
-            Text that explains the reason for the error. This can be shown to a
-            client user.
+          description:
+            Text that explains the reason for the error. This can be shown
+            to a client user.
           maxLength: 255
         message:
           type: string
-          description: >-
-            Text that provides mode details and corrective actions related to
-            the error. This can be shown to a client user.
+          description:
+            Text that provides mode details and corrective actions related
+            to the error. This can be shown to a client user.
         referenceError:
           type: string
           format: uri
@@ -879,28 +749,21 @@ components:
         - reason
     Error400:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error400Code'
+              $ref: "#/components/schemas/Error400Code"
           required:
             - code
-      description:
-        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
+      description: Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)
     Error400Code:
       type: string
-      description: >-
+      description: |-
         One of the following error codes:
-
-        - missingQueryParameter: The URI is missing a required query-string
-        parameter
-
-        - missingQueryValue: The URI is missing a required query-string
-        parameter value
-
+        - missingQueryParameter: The URI is missing a required query-string parameter
+        - missingQueryValue: The URI is missing a required query-string parameter value
         - invalidQuery: The query section of the URI is invalid.
-
         - invalidBody: The request has an invalid body
       enum:
         - missingQueryParameter
@@ -909,15 +772,14 @@ components:
         - invalidBody
     Error401:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error401Code'
+              $ref: "#/components/schemas/Error401Code"
           required:
             - code
-      description:
-        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
+      description: Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)
     Error401Code:
       type: string
       description: |-
@@ -929,17 +791,16 @@ components:
         - invalidCredentials
     Error403:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error403Code'
+              $ref: "#/components/schemas/Error403Code"
           required:
             - code
-      description: >-
+      description:
         Forbidden. This code indicates that the server understood the request
-        but refuses to authorize it.
-        (https://tools.ietf.org/html/rfc7231#section-6.5.3)
+        but refuses to authorize it. (https://tools.ietf.org/html/rfc7231#section-6.5.3)
     Error403Code:
       type: string
       description: |-
@@ -955,44 +816,34 @@ components:
         - tooManyUsers
     Error404:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
               type: string
-              description: >-
+              description: |-
                 The following error code:
-
-                - notFound: A current representation for the target resource
-                not found
+                - notFound: A current representation for the target resource not found
               enum:
                 - notFound
           required:
             - code
-      description: >-
-        Resource for the requested path not found.
-        (https://tools.ietf.org/html/rfc7231#section-6.5.4)
+      description: Resource for the requested path not found. (https://tools.ietf.org/html/rfc7231#section-6.5.4)
     Error422:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error422Code'
+              $ref: "#/components/schemas/Error422Code"
             propertyPath:
               type: string
-              description: >
-                A pointer to a particular property of the payload that caused
-                the validation issue. It is highly recommended that this
-                property should be used.
-
-                Defined using JavaScript Object Notation (JSON) Pointer
-                (https://tools.ietf.org/html/rfc6901).
+              description: |
+                A pointer to a particular property of the payload that caused the validation issue. It is highly recommended that this property should be used.
+                Defined using JavaScript Object Notation (JSON) Pointer (https://tools.ietf.org/html/rfc6901).
           required:
             - code
-      description: >-
-        Unprocessable entity due to a business validation problem.
-        (https://tools.ietf.org/html/rfc4918#section-11.2)
+      description: Unprocessable entity due to a business validation problem. (https://tools.ietf.org/html/rfc4918#section-11.2)
     Error422Code:
       type: string
       description: |
@@ -1014,27 +865,22 @@ components:
         - otherIssue
     Error500:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
               type: string
-              description: >-
+              description: |-
                 The following error code:
-
-                - internalError: Internal server error - the server encountered
-                an unexpected condition that prevented it from fulfilling the
-                request.
+                - internalError: Internal server error - the server encountered an unexpected condition that prevented it from fulfilling the request.
               enum:
                 - internalError
           required:
             - code
-      description: >-
-        Internal Server Error.
-        (https://tools.ietf.org/html/rfc7231#section-6.6.1)
+      description: Internal Server Error. (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     Error501:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
@@ -1046,8 +892,7 @@ components:
                 - notImplemented
           required:
             - code
-      description:
-        'Not Implemented. (https://tools.ietf.org/html/rfc7231#section-6.6.2)'
+      description: Not Implemented. (https://tools.ietf.org/html/rfc7231#section-6.6.2)
     EventSubscription:
       type: object
       description: |
@@ -1055,19 +900,19 @@ components:
         Reference: MEF 79 (Sn 8.3)
       properties:
         query:
-          description: >-
-            The value provided by the Buyer in `EventSubscriptionInput` during
-            notification registration
+          description:
+            The value provided by the Buyer in `EventSubscriptionInput`
+            during notification registration
         callback:
           type: string
-          description: >-
-            The value provided by the Buyer in `EventSubscriptionInput` during
-            notification registration
+          description:
+            The value provided by the Buyer in `EventSubscriptionInput`
+            during notification registration
         id:
           type: string
-          description: >-
-            An identifier of the event subscription assigned by the Seller when
-            a resource is created.
+          description:
+            An identifier of the event subscription assigned by the Seller
+            when a resource is created.
       required:
         - callback
         - id
@@ -1077,30 +922,28 @@ components:
       properties:
         query:
           type: string
-          description: >-
-            This attribute is used to define to which type of events to
-            register to. Example: "query":"eventType = quoteStateChangeEvent".
-            To subscribe for more than one event type, put the values separated
-            by comma:
-            `eventType=quoteStateChangeEvent,quoteItemStateChangeEvent`. The
-            possible values are enumerated by the 'QuoteEventType' in
-            quoteNotification.api.yaml. An empty query is treated as specifying
-            no filters - ending in  subscription for all event types.
+          description:
+            "This attribute is used to define to which type of events to\
+            \ register to. Example: \"query\":\"eventType = quoteStateChangeEvent\"\
+            . To subscribe for more than one event type, put the values separated\
+            \ by comma: `eventType=quoteStateChangeEvent,quoteItemStateChangeEvent`.\
+            \ The possible values are enumerated by the 'QuoteEventType' in quoteNotification.api.yaml.\
+            \ An empty query is treated as specifying no filters - ending in  subscription\
+            \ for all event types."
         callback:
           type: string
-          description: >-
-            This callback value must be set to *host* property from Buyer
-            Notification API (quoteNotification.api.yaml). This property is
-            appended with the base path and notification resource path
-            specified in that API to construct an URL to which notification is
-            sent. E.g. for "callback": "http://buyer.co/listenerEndpoint", the
-            state change event notification will be sent to:
-            `http://buyer.co/listenerEndpoint/mefApi/sonata/quoteNotification/v8/listener/quoteStateChangeEvent`
+          description:
+            "This callback value must be set to *host* property from Buyer\
+            \ Notification API (quoteNotification.api.yaml). This property is appended\
+            \ with the base path and notification resource path specified in that\
+            \ API to construct an URL to which notification is sent. E.g. for \"callback\"\
+            : \"http://buyer.co/listenerEndpoint\", the state change event notification\
+            \ will be sent to: `http://buyer.co/listenerEndpoint/mefApi/sonata/quoteNotification/v8/listener/quoteStateChangeEvent`"
       required:
         - callback
     FieldedAddress:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - type: object
           properties:
             country:
@@ -1108,35 +951,33 @@ components:
               description: Country that the address is in
             streetType:
               type: string
-              description: >-
-                Alley, avenue, boulevard, brae, crescent, drive, highway, lane,
-                terrace, parade, place, tarn, way, wharf
+              description:
+                "Alley, avenue, boulevard, brae, crescent, drive, highway,\
+                \ lane, terrace, parade, place, tarn, way, wharf"
             postcodeExtension:
               type: string
-              description: >-
-                An extension of a postal code. E.g. the part following the dash
-                in an american urban property address
+              description:
+                An extension of a postal code. E.g. the part following the
+                dash in an american urban property address
             city:
               type: string
               description: The city that the address is in
             streetNr:
               type: string
-              description: >-
-                Number identifying a specific property on a public street. It
-                may be combined with streetNrLast for ranged addresses.
+              description:
+                Number identifying a specific property on a public street.
+                It may be combined with streetNrLast for ranged addresses.
             locality:
               type: string
               description: The locality that the address is in
             postcode:
               type: string
-              description: >-
-                Descriptor for a postal delivery area used to speed and
-                simplify the delivery of mail (also known as zip code)
+              description:
+                Descriptor for a postal delivery area used to speed and simplify
+                the delivery of mail (also known as zip code)
             streetNrLast:
               type: string
-              description:
-                Last number in a range of street numbers allocated to a
-                property
+              description: Last number in a range of street numbers allocated to a property
             streetNrSuffix:
               type: string
               description: The first street number suffix
@@ -1150,7 +991,7 @@ components:
               type: string
               description: Last street number suffix for a ranged address
             geographicSubAddress:
-              $ref: '#/components/schemas/GeographicSubAddress'
+              $ref: "#/components/schemas/GeographicSubAddress"
             streetSuffix:
               type: string
               description: A modifier denoting a relative direction
@@ -1158,13 +999,13 @@ components:
             - city
             - country
             - streetName
-      description: >-
-        A type of Address that has a discrete field and value for each type of
-        boundary or identifier down to the lowest level of detail. For example
-        "street number" is one field, "street name" is another field, etc.
+      description:
+        "A type of Address that has a discrete field and value for each\
+        \ type of boundary or identifier down to the lowest level of detail. For example\
+        \ \"street number\" is one field, \"street name\" is another field, etc."
     FormattedAddress:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - type: object
           properties:
             country:
@@ -1172,9 +1013,9 @@ components:
               description: Country that the address is in
             postcodeExtension:
               type: string
-              description: >-
-                An extension of a postal code. E.g. the part following the dash
-                in an US urban property address
+              description:
+                An extension of a postal code. E.g. the part following the
+                dash in an US urban property address
             stateOrProvince:
               type: string
               description: The State or Province that the address is in
@@ -1189,133 +1030,123 @@ components:
               description: The first address line in a formatted address
             locality:
               type: string
-              description: >-
-                An area of defined or undefined boundaries within a local
-                authority or other legislatively defined area, usually rural or
-                semi-rural in nature
+              description:
+                "An area of defined or undefined boundaries within a local\
+                \ authority or other legislatively defined area, usually rural or semi-rural\
+                \ in nature"
             postcode:
               type: string
-              description: >-
-                Descriptor for a postal delivery area used to speed and
-                simplify the delivery of mail (also known as ZIP code)
+              description:
+                Descriptor for a postal delivery area used to speed and simplify
+                the delivery of mail (also known as ZIP code)
           required:
             - addrLine1
             - city
             - country
-      description: >-
-        A type of Address that has discrete fields for each type of boundary or
-        an identifier with the exception of the street and more specific
-        location details, which are combined into a maximum of two strings
-        based on local postal addressing conventions.
+      description:
+        "A type of Address that has discrete fields for each type of boundary\
+        \ or an identifier with the exception of the street and more specific location\
+        \ details, which are combined into a maximum of two strings based on local\
+        \ postal addressing conventions."
     GeographicAddressLabel:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - type: object
           properties:
             externalReferenceId:
               type: string
-              description: >-
-                The unique reference to an Address as provided by the
-                Administrative Authority.
+              description:
+                The unique reference to an Address as provided by the Administrative
+                Authority.
             externalReferenceType:
               type: string
-              description: >-
-                The organization or standard from the organization that
-                administers this Geographic Address Label ensuring it is unique
-                within the Administrative Authority. The value(s) to be used
-                are to be agreed upon during the onboarding. For North American
-                providers this would normally be CLLI (Common Language Location
-                Identifier) code.
+              description:
+                The organization or standard from the organization that administers
+                this Geographic Address Label ensuring it is unique within the Administrative
+                Authority. The value(s) to be used are to be agreed upon during the
+                onboarding. For North American providers this would normally be CLLI
+                (Common Language Location Identifier) code.
           required:
             - externalReferenceId
             - externalReferenceType
-      description: >-
-        A unique identifier controlled by a generally accepted independent
-        administrative authority that specifies a fixed geographical location. 
-
-        Reference: MEF 79 (Sn 8.9.4), MEF 79.0.2 (Sn 8.9.4)
+      description:
+        "A unique identifier controlled by a generally accepted independent\
+        \ administrative authority that specifies a fixed geographical location. \n\
+        Reference: MEF 79 (Sn 8.9.4), MEF 79.0.2 (Sn 8.9.4)"
     GeographicAddressRef:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - type: object
           properties:
             href:
               type: string
-              description: >
-                Hyperlink to the referenced GeographicAddress. Hyperlink MAY be
-                used by the Seller in responses. Hyperlink MUST be ignored by
-                the Seller in case it is provided by the Buyer in a request
+              description: |
+                Hyperlink to the referenced GeographicAddress. Hyperlink MAY be used by the Seller in responses. Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request
             id:
               type: string
-              description: >-
-                Identifier of the referenced Geographic Address. This
-                identifier is assigned during a successful address validation
-                request (Geographic Address Validation API)
+              description:
+                Identifier of the referenced Geographic Address. This identifier
+                is assigned during a successful address validation request (Geographic
+                Address Validation API)
           required:
             - id
-      description: >
-        A reference to a Geographic Address resource available through Address
-        Validation API.
+      description: |
+        A reference to a Geographic Address resource available through Address Validation API.
     GeographicSiteRef:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - type: object
           properties:
             href:
               type: string
-              description: >
-                Hyperlink to the referenced GeographicSite. Hyperlink MAY be
-                used by the Seller in responses. Hyperlink MUST be ignored by
-                the Seller in case it is provided by the Buyer in a request
+              description: |
+                Hyperlink to the referenced GeographicSite. Hyperlink MAY be used by the Seller in responses. Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request
             id:
               type: string
               description: Identifier of the referenced Geographic Site.
           required:
             - id
-      description: >
-        A reference to a Geographic Site resource available through Service
-        Site API
+      description: |
+        A reference to a Geographic Site resource available through Service Site API
     GeographicSubAddress:
       type: object
-      description:
-        'Additional fields used to specify an address, as detailed as possible.'
+      description: "Additional fields used to specify an address, as detailed as possible."
       properties:
         buildingName:
           type: string
-          description: >
-            Allows for identification of places that require building name as
-            part of addressing information
+          description: |
+            Allows for identification of places that require building name as part of addressing information
         subUnit:
           type: array
-          description: >-
-            Representation of a MEFSubUnit It is used for describing subunit
-            within a subaddress  e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
-            UNIT, WHARF.
+          description:
+            "Representation of a MEFSubUnit It is used for describing subunit\
+            \ within a subaddress  e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT,\
+            \ WHARF."
           items:
-            $ref: '#/components/schemas/MEFSubUnit'
+            $ref: "#/components/schemas/MEFSubUnit"
         levelType:
           type: string
           description: Describes level types within a building
         levelNumber:
           type: string
           description:
-            'Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT
-            2'
+            "Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT\
+            \ 2"
         privateStreetNumber:
           type: string
           description: Private streets numbers internal to a private street
         privateStreetName:
           type: string
-          description: >-
-            Private streets internal to a property (e.g. a university) may have
-            internal names that are not recorded by the land title office
+          description:
+            Private streets internal to a property (e.g. a university)
+            may have internal names that are not recorded by the land title office
     MEFBuyerQuoteLevel:
       type: string
-      description: >-
+      description:
         An indication of whether the Buyer's Quote Request is for a Budgetary
-        or Firm Quote Level. Set by the Buyer. Buyer Requested Quote Level
-        contains the possible values and may be set by the Buyer on the
-        Request. All Quote Items in a Quote have the same Quote Level.
+        or Firm Quote Level. Set by the Buyer. Buyer Requested Quote Level contains
+        the possible values and may be set by the Buyer on the Request. All Quote
+        Items in a Quote have the same Quote Level.
       enum:
         - budgetary
         - firm
@@ -1330,59 +1161,51 @@ components:
         - year
     MEFEndOfTermAction:
       type: string
-      description:
-        The action that needs to be taken by the Seller once the term expires.
+      description: The action that needs to be taken by the Seller once the term expires.
       enum:
         - roll
         - autoDisconnect
         - autoRenew
     MEFGeographicPoint:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - type: object
           properties:
             spatialRef:
               type: string
-              description: >-
+              description:
                 The spatial reference system used to determine the coordinates
-                (e.g. `WGS84`). The system used and the value of this field are
-                to be agreed upon during the onboarding process.
+                (e.g. `WGS84`). The system used and the value of this field are to be
+                agreed upon during the onboarding process.
             x:
               type: string
-              description: >-
-                The latitude expressed in the format specified by the
-                `spacialRef`
-            'y':
+              description: The latitude expressed in the format specified by the `spacialRef`
+            "y":
               type: string
-              description: >-
-                The longitude expressed in the format specified by the
-                `spacialRef`
+              description: The longitude expressed in the format specified by the `spacialRef`
             z:
               type: string
-              description: >-
-                The elevation expressed in the format specified by the
-                `spacialRef`
+              description: The elevation expressed in the format specified by the `spacialRef`
           required:
             - spatialRef
             - x
-            - 'y'
-      description: >
-        A MEFGeographicPoint defines a geographic point through coordinates.
-        Reference: MEF 79 (Sn 8.9.5)
+            - "y"
+      description: |
+        A MEFGeographicPoint defines a geographic point through coordinates. Reference: MEF 79 (Sn 8.9.5)
     MEFItemTerm:
       type: object
-      description: >-
-        The terms of the Quote Item. Used to describe a term (also known as
-        commitment) for a Quote Item. Each Quote Item in a Quote Request could
-        have a different Requested Quote Item Term. The Buyer specifies the
-        longest term that they would accept. The Buyer may be willing to accept
-        a shorter term. If the Seller responds with a term longer than the
-        Buyer's request, it is treated as an alternate response.
+      description:
+        "The terms of the Quote Item. Used to describe a term (also known\
+        \ as commitment) for a Quote Item. Each Quote Item in a Quote Request could\
+        \ have a different Requested Quote Item Term. The Buyer specifies the longest\
+        \ term that they would accept. The Buyer may be willing to accept a shorter\
+        \ term. If the Seller responds with a term longer than the Buyer's request,\
+        \ it is treated as an alternate response."
       properties:
         duration:
-          $ref: '#/components/schemas/Duration'
+          $ref: "#/components/schemas/Duration"
         endOfTermAction:
-          $ref: '#/components/schemas/MEFEndOfTermAction'
+          $ref: "#/components/schemas/MEFEndOfTermAction"
         name:
           type: string
           description: Name of the term
@@ -1390,15 +1213,14 @@ components:
           type: string
           description: Description of the term
         rollInterval:
-          $ref: '#/components/schemas/Duration'
+          $ref: "#/components/schemas/Duration"
       required:
         - duration
         - endOfTermAction
         - name
     MEFPriceType:
       type: string
-      description:
-        Indicates if the price is for recurring or non-recurring charges.
+      description: Indicates if the price is for recurring or non-recurring charges.
       enum:
         - recurring
         - nonRecurring
@@ -1420,50 +1242,36 @@ components:
         - delete
     MEFProductConfiguration:
       type: object
-      description: >-
+      description:
         MEFProductConfiguration is used as an extension point for MEF specific
-        product/service payload. The `@type` attribute is used as a
-        discriminator
+        product/service payload. The `@type` attribute is used as a discriminator
       discriminator:
-        propertyName: '@type'
+        propertyName: "@type"
       properties:
-        '@type':
+        "@type":
           type: string
-          description: >-
-            The name of the type that uniquely identifies the type of the
-            product that is the subject of the POQ Request. In the case of the
-            MEF product, this is the URN provided in the Product Specification.
+          description:
+            "The name of the type that uniquely identifies the type of\
+            \ the product that is the subject of the POQ Request. In the case of the\
+            \ MEF product, this is the URN provided in the Product Specification."
       required:
-        - '@type'
+        - "@type"
     MEFQuoteItemStateType:
       type: string
-      description: >
+      description: |
         Possible values for the status of a QuoteItem.
-
-        Following mapping has been used between `MEFQuoteItemStateType` and MEF
-        80:
-
+        Following mapping has been used between `MEFQuoteItemStateType` and MEF 80:
 
         | MEFQuoteItemStateType       | MEF 80                            |
-
         | ----------------------------| --------------------------------- |
-
         | answered                    | ANSWERED                          |
-
         | acknowledged                | ACKNOWLEDGED                      |
-
         | approved.orderable          | ORDERABLE                         |
-
         | approved.orderableAlternate | ORDERABLE_ALTERNATE               |
-
         | inProgress                  | IN_PROGRESS                       |
-
         | inProgress.draft            | IN_PROGRESS_DRAFT                 |
-
         | abandoned                   | ABANDONED                         |
-
         | rejected                    | REJECTED                          |
-
         | unableToProvide             | UNABLE_TO_PROVIDE                 |
       enum:
         - answered
@@ -1477,81 +1285,74 @@ components:
         - unableToProvide
     MEFQuoteItem_Common:
       type: object
-      description: >-
-        Quote items describe an action to be performed on a productOffering or
-        a product in order to get pricing elements and conditions.
+      description:
+        Quote items describe an action to be performed on a productOffering
+        or a product in order to get pricing elements and conditions.
       properties:
         requestedQuoteItemTerm:
-          $ref: '#/components/schemas/MEFItemTerm'
+          $ref: "#/components/schemas/MEFItemTerm"
         note:
           type: array
-          description: >-
-            Free form text associated with the quote item. Only useful in
-            processes involving human interaction. Not applicable for the
-            automated process.
+          description:
+            Free form text associated with the quote item. Only useful
+            in processes involving human interaction. Not applicable for the automated
+            process.
           items:
-            $ref: '#/components/schemas/Note'
+            $ref: "#/components/schemas/Note"
         product:
-          $ref: '#/components/schemas/MEFProductRefOrValueQuote'
+          $ref: "#/components/schemas/MEFProductRefOrValueQuote"
         productOfferingQualificationItem:
-          $ref: '#/components/schemas/ProductOfferingQualificationItemRef'
+          $ref: "#/components/schemas/ProductOfferingQualificationItemRef"
         relatedContactInformation:
           type: array
-          description: >
-            Contact information of an individual or organization playing a role
-            for this Quote. If `instantSyncQuote` equals `false`  then 'Quote
-            Item Technical Contact' must be specified (`role:
-            quoteItemTechnicalContact`). If `instantSyncQuote` equals `false`
-            and the Quote Item requires a location,  the Buyer MUST provide the
-            Quote Item Location Contact Information `role:
-            quoteItemLocationContact`.
+          description: |
+            Contact information of an individual or organization playing a role for this Quote. If `instantSyncQuote` equals `false`  then 'Quote Item Technical Contact' must be specified (`role: quoteItemTechnicalContact`). If `instantSyncQuote` equals `false` and the Quote Item requires a location,  the Buyer MUST provide the Quote Item Location Contact Information `role: quoteItemLocationContact`.
           items:
-            $ref: '#/components/schemas/RelatedContactInformation'
+            $ref: "#/components/schemas/RelatedContactInformation"
         agreementName:
           type: string
-          description: >-
-            Name of the agreement. The name is unique between the Buyer and the
-            Seller.
+          description:
+            Name of the agreement. The name is unique between the Buyer
+            and the Seller.
         action:
-          $ref: '#/components/schemas/MEFProductActionType'
+          $ref: "#/components/schemas/MEFProductActionType"
         dealReference:
           type: string
-          description: >-
-            A pre-agreed pricing modifier reference that the Seller is offering
-            to the Buyer which will impact the price.
+          description:
+            A pre-agreed pricing modifier reference that the Seller is
+            offering to the Buyer which will impact the price.
         id:
           type: string
-          description: >-
-            Identifier of the quote item (generally it is a sequence number 01,
-            02, 03, ...)
+          description:
+            "Identifier of the quote item (generally it is a sequence number\
+            \ 01, 02, 03, ...)"
         requestedQuoteItemInstallationInterval:
-          $ref: '#/components/schemas/Duration'
+          $ref: "#/components/schemas/Duration"
         quoteItemRelationship:
           type: array
           description: A relationship from item within a quote
           items:
-            $ref: '#/components/schemas/QuoteItemRelationship'
+            $ref: "#/components/schemas/QuoteItemRelationship"
       required:
         - action
         - id
     MEFQuoteItem_Create:
       allOf:
-        - $ref: '#/components/schemas/MEFQuoteItem_Common'
+        - $ref: "#/components/schemas/MEFQuoteItem_Common"
         - type: object
-          description: >-
-            A quote item describes an action to be performed on a
-            productOffering or a product in order to get pricing elements and
-            condition. The modeling pattern introduces the
-            `MEFQuoteItem_Common` supertype to aggregate attributes that are
-            common to both `QuoteItem` and `MEFQuoteItem_Create`. In this case
-            the create type has a subset of attributes of the response type and
-            does not introduce any new, thus the `MEFQuoteItem_Create` type has
-            an empty definition.
+          description:
+            "A quote item describes an action to be performed on a productOffering\
+            \ or a product in order to get pricing elements and condition. The modeling\
+            \ pattern introduces the `MEFQuoteItem_Common` supertype to aggregate attributes\
+            \ that are common to both `QuoteItem` and `MEFQuoteItem_Create`. In this\
+            \ case the create type has a subset of attributes of the response type and\
+            \ does not introduce any new, thus the `MEFQuoteItem_Create` type has an\
+            \ empty definition."
     MEFQuoteStateChange:
       type: object
-      description: >-
-        Holds the reached state, reasons, and associated date the Quote state
-        changed, populated by the Seller.
+      description:
+        "Holds the reached state, reasons, and associated date the Quote\
+        \ state changed, populated by the Seller."
       properties:
         changeReason:
           type: string
@@ -1561,7 +1362,7 @@ components:
           format: date-time
           description: The date on when the state was reached
         state:
-          $ref: '#/components/schemas/MEFQuoteStateType'
+          $ref: "#/components/schemas/MEFQuoteStateType"
       required:
         - changeDate
         - state
@@ -1600,12 +1401,11 @@ components:
         - rejected
     MEFSellerQuoteLevel:
       type: string
-      description: >-
-        An indication of whether the Seller's Quote Response is Budgetary, Firm
-        - Subject to Feasibility Check, or Firm. The Seller Quote Level is
-        provided by the Seller when responding to a Quote request.  This
-        represents the lowest Quote Item Level of all Quote Items included in
-        the Quote.
+      description:
+        "An indication of whether the Seller's Quote Response is Budgetary,\
+        \ Firm - Subject to Feasibility Check, or Firm. The Seller Quote Level is\
+        \ provided by the Seller when responding to a Quote request.  This represents\
+        \ the lowest Quote Item Level of all Quote Items included in the Quote."
       enum:
         - budgetary
         - firmSubjectToFeasibilityCheck
@@ -1616,71 +1416,64 @@ components:
       properties:
         subUnitNumber:
           type: string
-          description: >-
-            The discriminator used for the subunit, often just a simple number
-            but may also be a range.
+          description:
+            "The discriminator used for the subunit, often just a simple\
+            \ number but may also be a range."
         subUnitType:
           type: string
-          description: >-
-            The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
-            UNIT, WHARF.
+          description:
+            "The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,\
+            \ UNIT, WHARF."
       required:
         - subUnitNumber
         - subUnitType
     MEFProductRefOrValueQuote:
       type: object
-      description: >-
-        One or more services sold to a Buyer by a Seller. A particular Product
-        Offering defines the technical and commercial attributes and behaviors
+      description:
+        One or more services sold to a Buyer by a Seller. A particular
+        Product Offering defines the technical and commercial attributes and behaviors
         of a Product.
       properties:
         id:
           type: string
-          description: >
-            The unique identifier of an in-service Product that is the
-            quotation's subject.  This field MUST be populated if an item
-            `action` is either `modify` or `delete`.  This field MUST NOT be
-            populated if an item `action` is `add`.
+          description: |
+            The unique identifier of an in-service Product that is the quotation's subject.  This field MUST be populated if an item `action` is either `modify` or `delete`.  This field MUST NOT be populated if an item `action` is `add`.
         href:
           type: string
-          description: >
-            Hyperlink to the product in Seller's inventory that is the
-            quotation's subject. Hyperlink MAY be used when providing a
-            response by the Seller. Hyperlink MUST be ignored by the Seller in
-            case it is provided by the Buyer in a request
+          description: |
+            Hyperlink to the product in Seller's inventory that is the quotation's subject. Hyperlink MAY be used when providing a response by the Seller. Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request
         place:
           type: array
-          description: >-
-            A list of places that are related to the Product. For example an
-            installation location
+          description:
+            A list of places that are related to the Product. For example
+            an installation location
           items:
-            $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+            $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         productConfiguration:
-          $ref: '#/components/schemas/MEFProductConfiguration'
+          $ref: "#/components/schemas/MEFProductConfiguration"
         productOffering:
-          $ref: '#/components/schemas/ProductOfferingRef'
+          $ref: "#/components/schemas/ProductOfferingRef"
         productRelationship:
           type: array
-          description: >-
-            A list of references to existing products that are related to the
-            Product that would be delivered to fulfill the Quote Item
+          description:
+            A list of references to existing products that are related
+            to the Product that would be delivered to fulfill the Quote Item
           items:
-            $ref: '#/components/schemas/ProductRelationshipWithGrouping'
+            $ref: "#/components/schemas/ProductRelationshipWithGrouping"
     Money:
       type: object
       description: A base/value business entity used to represent money
       properties:
         unit:
           type: string
-          description:
-            Currency (ISO4217 norm uses 3 letters to define the currency)
+          description: Currency (ISO4217 norm uses 3 letters to define the currency)
         value:
           type: number
           format: float
           description: A positive floating point number
     Note:
       type: object
-      description: >-
+      description:
         Extra information about a given entity. Only useful in processes
         involving human interaction. Not applicable for the automated process.
       properties:
@@ -1693,11 +1486,11 @@ components:
           description: Author of the note
         id:
           type: string
-          description: >-
-            Identifier of the note within its containing entity (may or may not
-            be globally unique, depending on provider implementation)
+          description:
+            "Identifier of the note within its containing entity (may or\
+            \ may not be globally unique, depending on provider implementation)"
         source:
-          $ref: '#/components/schemas/MEFBuyerSellerType'
+          $ref: "#/components/schemas/MEFBuyerSellerType"
         text:
           type: string
           description: Text of the note
@@ -1715,37 +1508,35 @@ components:
         - seller
     Price:
       type: object
-      description: >-
-        Provides all amounts (tax included, duty-free, tax rate), used currency
-        and percentage to apply for Price Alteration.
+      description:
+        "Provides all amounts (tax included, duty-free, tax rate), used\
+        \ currency and percentage to apply for Price Alteration."
       properties:
         taxRate:
           type: number
           format: float
-          description:
-            'Price Tax Rate. Unit: [%]. E.g. value 16 stand for 16% tax.'
+          description: "Price Tax Rate. Unit: [%]. E.g. value 16 stand for 16% tax."
         taxIncludedAmount:
-          $ref: '#/components/schemas/Money'
+          $ref: "#/components/schemas/Money"
         dutyFreeAmount:
-          $ref: '#/components/schemas/Money'
+          $ref: "#/components/schemas/Money"
       required:
         - dutyFreeAmount
     ProductOfferingQualificationItemRef:
       type: object
-      description: >-
+      description:
         It's a productOfferingQualification item that has been executed
         previously.
       properties:
         productOfferingQualificationId:
           type: string
-          description:
-            Unique identifier of related Product Offering Qualification.
+          description: Unique identifier of related Product Offering Qualification.
         alternateProductProposalId:
           type: string
-          description: >-
-            A unique identifier for the Alternate Product Proposal assigned by
-            the Seller, if the referenced qualification comes from an alternate
-            product proposal.
+          description:
+            "A unique identifier for the Alternate Product Proposal assigned\
+            \ by the Seller, if the referenced qualification comes from an alternate\
+            \ product proposal."
         productOfferingQualificationHref:
           type: string
           description: Reference of the related Product Offering Qualification.
@@ -1757,131 +1548,106 @@ components:
         - productOfferingQualificationId
     ProductOfferingRef:
       type: object
-      description: >
-        A reference to a Product Offering offered by the Seller to the Buyer. A
-        Product Offering contains the commercial and technical details of a
-        Product sold by a particular Seller. A Product Offering defines all of
-        the commercial terms and, through association with a particular Product
-        Specification defines all the technical attributes and behaviors of the
-        Product. A Product Offering may constrain the allowable set of
-        configurable technical attributes and/or behaviors specified in the
-        associated Product Specification.
-
-        The id of the Product offering is assigned by the Seller. The Buyer and
-        the Seller exchange information about offerings' ids during the
-        onboarding process.
+      description: |
+        A reference to a Product Offering offered by the Seller to the Buyer. A Product Offering contains the commercial and technical details of a Product sold by a particular Seller. A Product Offering defines all of the commercial terms and, through association with a particular Product Specification defines all the technical attributes and behaviors of the Product. A Product Offering may constrain the allowable set of configurable technical attributes and/or behaviors specified in the associated Product Specification.
+        The id of the Product offering is assigned by the Seller. The Buyer and the Seller exchange information about offerings' ids during the onboarding process.
       properties:
         id:
           type: string
           description: unique identifier of the Product Offering.
         href:
           type: string
-          description: >-
-            Hyperlink to a Product Offering in Sellers catalog. In case Seller
-            is not providing catalog capabilities this field is not used. The
-            catalog API definition is provided by the Seller to Buyer during
-            onboarding Hyperlink MAY be used when providing response by the
-            Seller Hyperlink MUST be ignored by the Seller in case it is
-            provided by the Buyer in a requestHyperlink reference
+          description:
+            Hyperlink to a Product Offering in Sellers catalog. In case
+            Seller is not providing catalog capabilities this field is not used. The
+            catalog API definition is provided by the Seller to Buyer during onboarding
+            Hyperlink MAY be used when providing response by the Seller Hyperlink
+            MUST be ignored by the Seller in case it is provided by the Buyer in a
+            requestHyperlink reference
       required:
         - id
     ProductRelationshipWithGrouping:
       type: object
-      description: >-
-        A relationship to an existing Product. The requirements for usage for
-        given Product are described in the Product Specification. The
-        "WithGrouping" flavor of the Product Relationship allows for providing
-        a list of related product identifiers within a single Product
-        Relationship. This can be later used while processing the request as
-        defined in the Product Specification. The `groupingKey` attribute is
-        used to achieve this behavior in the API by marking the list of
-        `ProductRelationshipWithGroupings` within a `product` with a common
-        key.
+      description:
+        A relationship to an existing Product. The requirements for usage
+        for given Product are described in the Product Specification. The "WithGrouping"
+        flavor of the Product Relationship allows for providing a list of related
+        product identifiers within a single Product Relationship. This can be later
+        used while processing the request as defined in the Product Specification.
+        The `groupingKey` attribute is used to achieve this behavior in the API by
+        marking the list of `ProductRelationshipWithGroupings` within a `product`
+        with a common key.
       properties:
         relationshipType:
           type: string
-          description: >
-            Specifies the type (nature) of the relationship to the related
-            Product. The nature of required relationships varies for Products
-            of different types. For example, a UNI or ENNI Product may not have
-            any relationships, but an Access E-Line may have two mandatory
-            relationships (related to the UNI on one end and the ENNI on the
-            other). More complex Products such as multipoint IP or Firewall
-            Products may have more complex relationships. As a result, the
-            allowed and mandatory `relationshipType` values are defined in the
-            Product Specification.
+          description: |
+            Specifies the type (nature) of the relationship to the related Product. The nature of required relationships varies for Products of different types. For example, a UNI or ENNI Product may not have any relationships, but an Access E-Line may have two mandatory relationships (related to the UNI on one end and the ENNI on the other). More complex Products such as multipoint IP or Firewall Products may have more complex relationships. As a result, the allowed and mandatory `relationshipType` values are defined in the Product Specification.
         id:
           type: string
           description: unique identifier of a Product that is referenced.
         href:
           type: string
-          description: >-
+          description:
             Hyperlink to the product in Seller's inventory that is referenced
-            Hyperlink MAY be used when providing a response by the Seller
-            Hyperlink MUST be ignored by the Seller in case it is provided by
-            the Buyer in a request
+            Hyperlink MAY be used when providing a response by the Seller Hyperlink
+            MUST be ignored by the Seller in case it is provided by the Buyer in a
+            request
         groupingKey:
           type: string
-          description: >
-            MEF 80 Introduces a list of related ids for the
-            ProductRelationship. For sake of TMF compliance, a `groupingKey` is
-            introduced to retain id as a simple attribute. Ids from
-            relationships having the same `groupingKey` and `relationshipType`
-            MUST be treated as a list of identifiers.
-
+          description: |
+            MEF 80 Introduces a list of related ids for the ProductRelationship. For sake of TMF compliance, a `groupingKey` is introduced to retain id as a simple attribute. Ids from relationships having the same `groupingKey` and `relationshipType` MUST be treated as a list of identifiers.
             Reference: MEF 80 (Sn 8.1.8.)
       required:
         - id
         - relationshipType
     Quote:
       allOf:
-        - $ref: '#/components/schemas/Quote_Common'
+        - $ref: "#/components/schemas/Quote_Common"
         - type: object
-          description: >-
-            Quote can be used to negotiate service and product acquisition or
-            modification between a customer and a service provider. Quote
-            contains a list of quote items, a reference to a customer, a list
-            of productOfferings, and attached prices and conditions.
+          description:
+            "Quote can be used to negotiate service and product acquisition\
+            \ or modification between a customer and a service provider. Quote contains\
+            \ a list of quote items, a reference to a customer, a list of productOfferings,\
+            \ and attached prices and conditions."
           properties:
             effectiveQuoteCompletionDate:
               type: string
               format: date-time
-              description: >-
+              description:
                 Date when the Quote State was set to one of the Completion
                 States.
             expectedQuoteCompletionDate:
               type: string
               format: date-time
-              description: >-
-                This is the date provided by the Seller to indicate the date by
-                which the Quote is expected to reach a Quote Completion State
+              description:
+                This is the date provided by the Seller to indicate the date
+                by which the Quote is expected to reach a Quote Completion State
             validFor:
-              $ref: '#/components/schemas/TimePeriod'
+              $ref: "#/components/schemas/TimePeriod"
             quoteLevel:
-              $ref: '#/components/schemas/MEFSellerQuoteLevel'
+              $ref: "#/components/schemas/MEFSellerQuoteLevel"
             quoteItem:
               type: array
-              description: >-
-                An item of the quote - it is used to describe an operation on a
-                product to be quoted
+              description:
+                An item of the quote - it is used to describe an operation
+                on a product to be quoted
               items:
-                $ref: '#/components/schemas/QuoteItem'
+                $ref: "#/components/schemas/QuoteItem"
               minItems: 1
             stateChange:
               type: array
               description: State change for the Quote
               items:
-                $ref: '#/components/schemas/MEFQuoteStateChange'
+                $ref: "#/components/schemas/MEFQuoteStateChange"
             id:
               type: string
               description: Unique identifier - attributed by quoting system
             href:
               type: string
-              description: >
-                Hyperlink representing this Quote. Hyperlink MAY be used when
-                providing a response by the Seller
+              description: |
+                Hyperlink representing this Quote. Hyperlink MAY be used when providing a response by the Seller
             state:
-              $ref: '#/components/schemas/MEFQuoteStateType'
+              $ref: "#/components/schemas/MEFQuoteStateType"
             quoteDate:
               type: string
               format: date-time
@@ -1892,64 +1658,62 @@ components:
             - quoteItem
     QuoteItem:
       allOf:
-        - $ref: '#/components/schemas/MEFQuoteItem_Common'
+        - $ref: "#/components/schemas/MEFQuoteItem_Common"
         - type: object
-          description: >-
+          description:
             Quote items describe an action to be performed on a productOffering
             or a product in order to get pricing elements and conditions.
           properties:
             terminationError:
               type: array
-              description: >-
-                When the Seller cannot process the Quote Item Request, the
-                Seller returns a text-based list of reasons here.
+              description:
+                "When the Seller cannot process the Quote Item Request, the\
+                \ Seller returns a text-based list of reasons here."
               items:
-                $ref: '#/components/schemas/TerminationError'
+                $ref: "#/components/schemas/TerminationError"
             quoteItemInstallationInterval:
-              $ref: '#/components/schemas/Duration'
+              $ref: "#/components/schemas/Duration"
             subjectToFeasibilityCheck:
               type: boolean
-              description: >-
-                For a Firm Quote Level indicates if the pricing requires a
-                Feasibility Check. The Seller indicates if the Quote Item
-                requires a Feasibility Check. This is not used for a Budgetary
-                Quote Level.
+              description:
+                For a Firm Quote Level indicates if the pricing requires
+                a Feasibility Check. The Seller indicates if the Quote Item requires
+                a Feasibility Check. This is not used for a Budgetary Quote Level.
             quoteItemTerm:
               type: array
-              description: >-
-                Quote Item Term as defined by the Seller and part of the Quote
-                for the Quote Item.
+              description:
+                Quote Item Term as defined by the Seller and part of the
+                Quote for the Quote Item.
               items:
-                $ref: '#/components/schemas/MEFItemTerm'
+                $ref: "#/components/schemas/MEFItemTerm"
               maxItems: 1
             state:
-              $ref: '#/components/schemas/MEFQuoteItemStateType'
+              $ref: "#/components/schemas/MEFQuoteItemStateType"
             quoteItemPrice:
               type: array
               description: Price for this quote item
               items:
-                $ref: '#/components/schemas/QuotePrice'
+                $ref: "#/components/schemas/QuotePrice"
           required:
             - state
     QuoteItemRelationship:
       type: object
-      description: >-
-        Used to describe the relationship between quote items. These
-        relationships could have an impact on pricing and conditions
+      description:
+        Used to describe the relationship between quote items. These relationships
+        could have an impact on pricing and conditions
       properties:
         relationshipType:
           type: string
-          description: >-
-            Relationship type as relies on, bundles, etc... MEF: Specifies the
-            nature of the relationship to the related Quote Items. The nature
-            of required relationships varies for Products of different types.
-            For example, a UNI or ENNI Product may not have any relationships,
-            but an Access E-Line may have two mandatory relationships (related
-            to the UNI on one end and the ENNI on the other). More complex
-            Products such as multipoint IP or Firewall Products may have more
-            complex relationships. As a result, the allowed and mandatory
-            Relationship Nature values are defined in the Product
-            Specification.
+          description:
+            "Relationship type as relies on, bundles, etc... MEF: Specifies\
+            \ the nature of the relationship to the related Quote Items. The nature\
+            \ of required relationships varies for Products of different types. For\
+            \ example, a UNI or ENNI Product may not have any relationships, but an\
+            \ Access E-Line may have two mandatory relationships (related to the UNI\
+            \ on one end and the ENNI on the other). More complex Products such as\
+            \ multipoint IP or Firewall Products may have more complex relationships.\
+            \ As a result, the allowed and mandatory Relationship Nature values are\
+            \ defined in the Product Specification."
         id:
           type: string
           description: ID of the related quote item (must be in the same quote)
@@ -1958,19 +1722,18 @@ components:
         - relationshipType
     QuoteOperationData:
       type: object
-      description:
-        Request for operation on an existing Quote (cancel or decline)
+      description: Request for operation on an existing Quote (cancel or decline)
       properties:
         reason:
           type: string
-          description: >-
+          description:
             Allows the Buyer to specify a reason for the Cancel or Decline
             Quote request.
         quoteId:
           type: string
-          description: >-
-            Unique (within the Seller quoting domain) identifier for the quote,
-            as attributed by the Seller.
+          description:
+            "Unique (within the Seller quoting domain) identifier for the\
+            \ quote, as attributed by the Seller."
       required:
         - quoteId
     QuotePrice:
@@ -1979,140 +1742,132 @@ components:
       properties:
         unitOfMeasure:
           type: string
-          description: >-
-            Unit of Measure if price depending on it (Gb, SMS volume, etc..)
-            MEF: if Quote Item Price Type equals usageBased
+          description:
+            "Unit of Measure if price depending on it (Gb, SMS volume,\
+            \ etc..) MEF: if Quote Item Price Type equals usageBased"
         price:
-          $ref: '#/components/schemas/Price'
+          $ref: "#/components/schemas/Price"
         name:
           type: string
           description: Name of the quote/quote item price
         priceType:
-          $ref: '#/components/schemas/MEFPriceType'
+          $ref: "#/components/schemas/MEFPriceType"
         description:
           type: string
           description: Description of the quote/quote item price
         recurringChargePeriod:
-          $ref: '#/components/schemas/MEFChargePeriod'
+          $ref: "#/components/schemas/MEFChargePeriod"
     Quote_Common:
       type: object
-      description: >-
-        Quote can be used to negotiate service and product acquisition or
-        modification between a customer and a service provider. Quote contains
-        a list of quote items, a reference to a customer, a list of
-        productOfferings, and attached prices and conditions.
+      description:
+        "Quote can be used to negotiate service and product acquisition\
+        \ or modification between a customer and a service provider. Quote contains\
+        \ a list of quote items, a reference to a customer, a list of productOfferings,\
+        \ and attached prices and conditions."
       properties:
         note:
           type: array
-          description: >-
+          description:
             Free form text associated with the quote. Only useful in processes
-            involving human interaction. Not applicable for the automated
-            process.
+            involving human interaction. Not applicable for the automated process.
           items:
-            $ref: '#/components/schemas/Note'
+            $ref: "#/components/schemas/Note"
         requestedQuoteCompletionDate:
           type: string
           format: date-time
-          description: >-
+          description:
             This is requested date - from quote requester - to get a complete
             response for this quote
         relatedContactInformation:
           type: array
-          description: >-
-            Party playing a role for this quote. If `instantSyncQuote` equals
-            `false` 
-
-            then the Buyer MUST specify Buyer Contact Information ('role:
-            buyerContactInformation') 
-
-            and the Seller MUST specify Seller Contact Information ('role:
-            sellerContactInformation')
+          description:
+            "Party playing a role for this quote. If `instantSyncQuote`\
+            \ equals `false` \nthen the Buyer MUST specify Buyer Contact Information\
+            \ ('role: buyerContactInformation') \nand the Seller MUST specify Seller\
+            \ Contact Information ('role: sellerContactInformation')"
           items:
-            $ref: '#/components/schemas/RelatedContactInformation'
+            $ref: "#/components/schemas/RelatedContactInformation"
         description:
           type: string
           description: Description of the quote
         externalId:
           type: string
-          description: >-
+          description:
             ID given by the consumer and only understandable by him (to
             facilitate his searches afterwards)
         buyerRequestedQuoteLevel:
-          $ref: '#/components/schemas/MEFBuyerQuoteLevel'
+          $ref: "#/components/schemas/MEFBuyerQuoteLevel"
         projectId:
           type: string
-          description: >-
-            An identifier that is used to group Quotes that represent a unit of
-            functionality that is important to a Buyer. A Project can be used
+          description:
+            An identifier that is used to group Quotes that represent a
+            unit of functionality that is important to a Buyer. A Project can be used
             to relate multiple Quotes together.
         instantSyncQuote:
           type: boolean
-          description: >-
-            If this flag is set to true, the Buyer requests an immediate Quote
-            to be provided in the response to the creation of a Quote.
+          description:
+            "If this flag is set to true, the Buyer requests an immediate\
+            \ Quote to be provided in the response to the creation of a Quote."
       required:
         - buyerRequestedQuoteLevel
         - instantSyncQuote
     Quote_Create:
       allOf:
-        - $ref: '#/components/schemas/Quote_Common'
+        - $ref: "#/components/schemas/Quote_Common"
         - type: object
-          description: >
-            Quote can be used to negotiate service and product acquisition or
-            modification between a customer and a service provider. Quote
-            contains a list of quote items, a reference to a customer, a list
-            of productOfferings, and attached prices and conditions.
+          description: |
+            Quote can be used to negotiate service and product acquisition or modification between a customer and a service provider. Quote contains a list of quote items, a reference to a customer, a list of productOfferings, and attached prices and conditions.
           properties:
             quoteItem:
               type: array
-              description: >-
+              description:
                 An item of the quote - used to describe an operation on a
                 product to be quoted
               items:
-                $ref: '#/components/schemas/MEFQuoteItem_Create'
+                $ref: "#/components/schemas/MEFQuoteItem_Create"
               minItems: 1
           required:
             - quoteItem
     Quote_Find:
       type: object
-      description: >
-        This class represents a single list item for the response of
-        `listQuote` operation.
+      description: |
+        This class represents a single list item for the response of `listQuote` operation.
       properties:
         effectiveQuoteCompletionDate:
           type: string
           format: date-time
           description:
-            Date when the Quote State was set to one of the Completion States
+            Date when the Quote State was set to one of the Completion
+            States
         expectedQuoteCompletionDate:
           type: string
           format: date-time
-          description: >-
-            This is the date provided by the Seller to indicate expected Quote
-            completion date
+          description:
+            This is the date provided by the Seller to indicate expected
+            Quote completion date
         requestedQuoteCompletionDate:
           type: string
           format: date-time
-          description: >-
+          description:
             This is requested date - from quote requester - to get a complete
             response for this quote
         quoteLevel:
-          $ref: '#/components/schemas/MEFSellerQuoteLevel'
+          $ref: "#/components/schemas/MEFSellerQuoteLevel"
         externalId:
           type: string
-          description: >-
+          description:
             ID given by the consumer and only understandable by him (to
             facilitate his searches afterward)
         id:
           type: string
           description: Unique identifier - attributed by quoting system
         state:
-          $ref: '#/components/schemas/MEFQuoteStateType'
+          $ref: "#/components/schemas/MEFQuoteStateType"
         projectId:
           type: string
-          description: >-
-            An identifier that is used to group Quotes that represent a unit of
-            functionality that is important to a Buyer. A Project can be used
+          description:
+            An identifier that is used to group Quotes that represent a
+            unit of functionality that is important to a Buyer. A Project can be used
             to relate multiple Quotes together.
         quoteDate:
           type: string
@@ -2122,12 +1877,10 @@ components:
         - state
     RelatedContactInformation:
       type: object
-      description: >-
-        Contact data for a person or organization that is involved in a given
-        context. It is specified by the Seller (e.g. Seller Contact
-        Information) or by the Buyer. 
-
-        Reference: MEF 80 (Sn 8.1.9)
+      description:
+        "Contact data for a person or organization that is involved in\
+        \ a given context. It is specified by the Seller (e.g. Seller Contact Information)\
+        \ or by the Buyer. \nReference: MEF 80 (Sn 8.1.9)"
       properties:
         number:
           type: string
@@ -2139,7 +1892,7 @@ components:
           type: string
           description: The role of the particular contact in a given context.
         postalAddress:
-          $ref: '#/components/schemas/FieldedAddress'
+          $ref: "#/components/schemas/FieldedAddress"
         organization:
           type: string
           description: The organization or company that the contact belongs to
@@ -2157,26 +1910,25 @@ components:
     RelatedPlaceRefOrValue:
       type: object
       description:
-        Place defines the places where the products' quotation must be done.
+        Place defines the places where the products' quotation must be
+        done.
       discriminator:
         mapping:
-          FieldedAddress: '#/components/schemas/FieldedAddress'
-          FormattedAddress: '#/components/schemas/FormattedAddress'
-          GeographicAddressLabel: '#/components/schemas/GeographicAddressLabel'
-          GeographicAddressRef: '#/components/schemas/GeographicAddressRef'
-          GeographicSiteRef: '#/components/schemas/GeographicSiteRef'
-          MEFGeographicPoint: '#/components/schemas/MEFGeographicPoint'
-        propertyName: '@type'
+          FieldedAddress: "#/components/schemas/FieldedAddress"
+          FormattedAddress: "#/components/schemas/FormattedAddress"
+          GeographicAddressLabel: "#/components/schemas/GeographicAddressLabel"
+          GeographicAddressRef: "#/components/schemas/GeographicAddressRef"
+          GeographicSiteRef: "#/components/schemas/GeographicSiteRef"
+          MEFGeographicPoint: "#/components/schemas/MEFGeographicPoint"
+        propertyName: "@type"
       properties:
         role:
           type: string
           description: Role of this place
-        '@type':
+        "@type":
           type: string
-          description: >
-            This field is used as a discriminator and is used between different
-            place representations. This type might discriminate for the
-            additional related place as defined in '@schemaLocation'.
+          description: |
+            This field is used as a discriminator and is used between different place representations. This type might discriminate for the additional related place as defined in '@schemaLocation'.
           enum:
             - FieldedAddress
             - FormattedAddress
@@ -2184,55 +1936,50 @@ components:
             - GeographicAddressRef
             - GeographicSiteRef
             - MEFGeographicPoint
-        '@schemaLocation':
+        "@schemaLocation":
           type: string
           format: uri
-          description: >-
-            A URI to a JSON-Schema file that defines additional attributes and
-            relationships. May be used to define additional related place
-            types. Usage of this attribute must be agreed upon between Buyer
-            and Seller.
+          description:
+            A URI to a JSON-Schema file that defines additional attributes
+            and relationships. May be used to define additional related place types.
+            Usage of this attribute must be agreed upon between Buyer and Seller.
       required:
-        - '@type'
+        - "@type"
         - role
     TerminationError:
       type: object
-      description: >-
-        This indicates an error that caused an Item to be terminated. The code
-        and propertyPath should be used like in Error422.
+      description:
+        This indicates an error that caused an Item to be terminated. The
+        code and propertyPath should be used like in Error422.
       properties:
         code:
-          $ref: '#/components/schemas/Error422Code'
+          $ref: "#/components/schemas/Error422Code"
         propertyPath:
           type: string
-          description: >
-            A pointer to a particular property of the payload that caused the
-            validation issue. It is highly recommended that this property
-            should be used.
-
-            Defined using JavaScript Object Notation (JSON) Pointer
-            (https://tools.ietf.org/html/rfc6901).
+          description: |
+            A pointer to a particular property of the payload that caused the validation issue. It is highly recommended that this property should be used.
+            Defined using JavaScript Object Notation (JSON) Pointer (https://tools.ietf.org/html/rfc6901).
         value:
           type: string
           description: Text to describe the reason of the termination.
     TimePeriod:
       type: object
-      description: >-
-        A period of time, either as a deadline (endDateTime only) a
-        startDateTime only, or both.
+      description:
+        "A period of time, either as a deadline (endDateTime only) a startDateTime\
+        \ only, or both."
       properties:
         startDateTime:
           type: string
           format: date-time
-          description: >-
-            Start of the time period, using IETC-RFC-3339 format. If you define
-            a start, you must also define an end
-          example: 1985-04-12T23:20:50.520Z
+          description:
+            "Start of the time period, using IETC-RFC-3339 format. If you\
+            \ define a start, you must also define an end"
+          example: 1985-04-12T23:20:50.52Z
         endDateTime:
           type: string
           format: date-time
-          description: 'End of the time period, using IETC-RFC-3339 format'
-          example: 1985-04-12T23:20:50.520Z
+          description: "End of the time period, using IETC-RFC-3339 format"
+          example: 1985-04-12T23:20:50.52Z
     TimeUnit:
       type: string
       description: |
@@ -2251,14 +1998,8 @@ components:
       description: Default m2m client code
       flows:
         clientCredentials:
-          refreshUrl: 'http://mef.net/example/refresh'
+          refreshUrl: http://mef.net/example/refresh
           scopes:
-            listQuote: Scope for operation listQuote
-            createQuote: Scope for operation createQuote
-            retrieveQuote: Scope for operation retrieveQuote
-            cancelQuote: Scope for operation cancelQuote
-            rejectQuote: Scope for operation rejectQuote
-            registerListener: Scope for operation registerListener
-            unregisterListener: Scope for operation unregisterListener
-          tokenUrl: 'http://mef.net/example/token'
+            default: default scope
+          tokenUrl: http://mef.net/example/token
       type: oauth2

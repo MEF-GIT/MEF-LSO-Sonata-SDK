@@ -1,0 +1,73 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+
+class Ipv4Address {
+
+}
+
+class Ipv4OrIpv6Address {
+
+}
+
+Ipv4OrIpv6Address -u[hidden]-> Ipv4OrIpv6Prefix
+
+
+class Ipv4PrimarySubnet {
+
+}
+Ipv4SecondarySubnet <|-- Ipv4PrimarySubnet
+
+Ipv4PrimarySubnet *--> Ipv4Address : subscriberIpv4Address
+
+class Ipv4SecondarySubnet {
+
+}
+
+Ipv4SecondarySubnet *--> Ipv4Prefix : ipv4Prefix
+Ipv4SecondarySubnet *-->"*" Ipv4Address : serviceProviderIpv4Addresses
+Ipv4SecondarySubnet *-->"*" Ipv4Prefix : reservedPrefixes
+
+
+
+class Ipv4OrIpv6Prefix {
+
+}
+
+Ipv4OrIpv6Prefix *--> Ipv6Prefix : ipv6Prefix
+Ipv4OrIpv6Prefix *--> Ipv4Prefix : ipv4Prefix
+
+
+class Ipv4Prefix {
+
+    prefixLength: integer
+}
+
+Ipv4Prefix *--> Ipv4Address : ipv4Address
+
+
+class Ipv6Address {
+
+}
+
+class Ipv6Subnet {
+
+}
+
+Ipv6Subnet *--> Ipv6Prefix : ipv6Prefix
+Ipv6Subnet *-->"*" Ipv6Address : serviceProviderIpv6Addresses
+Ipv6Subnet *-->"*" Ipv6Prefix : reservedPrefixes
+
+
+class Ipv6Prefix {
+
+    prefixLength: integer
+}
+
+Ipv6Prefix *--> Ipv6Address : ipv6Address
+
+
+@enduml

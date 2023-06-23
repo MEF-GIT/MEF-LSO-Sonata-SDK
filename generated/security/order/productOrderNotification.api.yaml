@@ -1,46 +1,27 @@
 openapi: 3.0.1
 info:
-  description: >
-    **This file forms part of MEF 123** 
-
-
-    This API implements Business Requirements described in MEF 57.2
-
-
-    Product Order Management allows the Buyer to request the Seller to initiate
-    and complete the
-
-    fulfillment process of an installation of a Product Offering, an update to
-
-    an existing Product, or a disconnect of an existing Product at the address
-
-    defined by the Buyer.
-
-
-    List of supported Use Cases:
-
-    - Send Notifications This API must be
-
-
-    Copyright 2022 MEF Forum and its contributors.
-
-
-    This file includes content based on the TM Forum Product Order API (TMF622
-
-    v4.0.0) available at https://github.com/tmforum-apis/TMF622_ProductOrder,
-
-    which is licensed by the TM Forum under the Apache License version 2.0.
-    Such
-
-    content has been modified by the MEF Forum and its contributors.
+  description:
+    "**This file forms part of MEF 123** \n\nThis API implements Business\
+    \ Requirements described in MEF 57.2\n\nProduct Order Management allows the Buyer\
+    \ to request the Seller to initiate and complete the\nfulfillment process of an\
+    \ installation of a Product Offering, an update to\nan existing Product, or a\
+    \ disconnect of an existing Product at the address\ndefined by the Buyer.\n\n\
+    List of supported Use Cases:\n- Send Notifications This API must be\n\nCopyright\
+    \ 2022 MEF Forum and its contributors.\n\nThis file includes content based on\
+    \ the TM Forum Product Order API (TMF622\nv4.0.0) available at https://github.com/tmforum-apis/TMF622_ProductOrder,\n\
+    which is licensed by the TM Forum under the Apache License version 2.0. Such\n\
+    content has been modified by the MEF Forum and its contributors.\n"
   title: Product Ordering Notification
   version: 10.0.0
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/productOrderingNotification/v10/'
+  - url: "https://{serverBase}/mefApi/sonata/productOrderingNotification/v10/"
     variables:
       serverBase:
         default: mef.net
         description: The base of Buyer's URL.
+security:
+  - oauth2MEFLSOAPI:
+      - default
 tags:
   - description: |
       The Seller's endpoint to send particular event types notifications to.
@@ -49,49 +30,48 @@ paths:
   /listener/productOrderStateChangeEvent:
     post:
       deprecated: false
-      description: >-
-        This endpoint is used to receive notifications on Product Order state
-        change
+      description:
+        This endpoint is used to receive notifications on Product Order
+        state change
       operationId: productOrderStateChangeEvent
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/ProductOrderEvent'
+              $ref: "#/components/schemas/ProductOrderEvent"
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '408':
+        "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error408'
+                $ref: "#/components/schemas/Error408"
           description: Request Time-out
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -103,49 +83,48 @@ paths:
   /listener/productOrderItemStateChangeEvent:
     post:
       deprecated: false
-      description: >-
-        This endpoint is used to receive notifications on Product Order Item
-        state change
+      description:
+        This endpoint is used to receive notifications on Product Order
+        Item state change
       operationId: productOrderItemStateChangeEvent
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/ProductOrderEvent'
+              $ref: "#/components/schemas/ProductOrderEvent"
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '408':
+        "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error408'
+                $ref: "#/components/schemas/Error408"
           description: Request Time-out
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -157,62 +136,60 @@ paths:
   /listener/productOrderItemExpectedCompletionDateSet:
     post:
       deprecated: false
-      description: >-
-        This endpoint is used to receive notifications on Product Order Item
-        Expected Completion Date Set
+      description:
+        This endpoint is used to receive notifications on Product Order
+        Item Expected Completion Date Set
       operationId: productOrderItemExpectedCompletionDateSet
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/ProductOrderEvent'
+              $ref: "#/components/schemas/ProductOrderEvent"
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '408':
+        "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error408'
+                $ref: "#/components/schemas/Error408"
           description: Request Time-out
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
             - productOrderItemExpectedCompletionDateSet
-      summary:
-        Product Order Item Expected Completion Date Set Notification endpoint
+      summary: Product Order Item Expected Completion Date Set Notification endpoint
       tags:
         - Notification listeners
       x-codegen-request-body-name: productOrderItemExpectedCompletionDateSet
   /listener/productSpecificProductOrderItemMilestoneEvent:
     post:
       deprecated: false
-      description: >-
+      description:
         This endpoint is used to receive notifications on Product Specific
         Product Order Item Milestone reached
       operationId: productSpecificProductOrderItemMilestoneEvent
@@ -220,96 +197,93 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/ProductOrderEvent'
+              $ref: "#/components/schemas/ProductOrderEvent"
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '408':
+        "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error408'
+                $ref: "#/components/schemas/Error408"
           description: Request Time-out
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
             - productSpecificProductOrderItemMilestoneEvent
-      summary:
-        Product Specific Product Order Item Milestone Notification endpoint
+      summary: Product Specific Product Order Item Milestone Notification endpoint
       tags:
         - Notification listeners
       x-codegen-request-body-name: productSpecificProductOrderItemMilestoneEvent
   /listener/cancelProductOrderStateChangeEvent:
     post:
-      description: >-
-        This endpoint is used to receive notifications on Cancel Product Order
-        State Change Event
+      description:
+        This endpoint is used to receive notifications on Cancel Product
+        Order State Change Event
       operationId: cancelProductOrderStateChangeEvent
       requestBody:
         content:
-          '*/*':
+          "*/*":
             schema:
-              $ref: '#/components/schemas/CancelProductOrderEvent'
+              $ref: "#/components/schemas/CancelProductOrderEvent"
         description: The event data
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '408':
+        "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error408'
+                $ref: "#/components/schemas/Error408"
           description: Request Time-out
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -321,48 +295,48 @@ paths:
   /listener/chargeCreateEvent:
     post:
       description:
-        This endpoint is used to receive notifications on Charge Create Event
+        This endpoint is used to receive notifications on Charge Create
+        Event
       operationId: chargeCreateEvent
       requestBody:
         content:
-          '*/*':
+          "*/*":
             schema:
-              $ref: '#/components/schemas/ChargeEvent'
+              $ref: "#/components/schemas/ChargeEvent"
         description: The event data
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '408':
+        "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error408'
+                $ref: "#/components/schemas/Error408"
           description: Request Time-out
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -373,50 +347,49 @@ paths:
       x-codegen-request-body-name: chargeCreateEvent
   /listener/chargeStateChangeEvent:
     post:
-      description: >-
-        This endpoint is used to receive notifications on Charge state change
-        event
+      description:
+        This endpoint is used to receive notifications on Charge state
+        change event
       operationId: chargeStateChangeEvent
       requestBody:
         content:
-          '*/*':
+          "*/*":
             schema:
-              $ref: '#/components/schemas/ChargeEvent'
+              $ref: "#/components/schemas/ChargeEvent"
         description: The event data
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '408':
+        "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error408'
+                $ref: "#/components/schemas/Error408"
           description: Request Time-out
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -428,48 +401,48 @@ paths:
   /listener/chargeTimeoutEvent:
     post:
       description:
-        This endpoint is used to receive notifications on Charge timeout event
+        This endpoint is used to receive notifications on Charge timeout
+        event
       operationId: chargeTimeoutEvent
       requestBody:
         content:
-          '*/*':
+          "*/*":
             schema:
-              $ref: '#/components/schemas/ChargeEvent'
+              $ref: "#/components/schemas/ChargeEvent"
         description: The event data
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '408':
+        "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error408'
+                $ref: "#/components/schemas/Error408"
           description: Request Time-out
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -480,58 +453,56 @@ paths:
       x-codegen-request-body-name: chargeTimeoutEvent
   /listener/modifyProductOrderItemRequestedDeliveryDateStateChangeEvent:
     post:
-      description: >-
-        This endpoint is used to receive notifications on Modify Product Order
-        Item Requested Delivery Date State Change Event
+      description:
+        This endpoint is used to receive notifications on Modify Product
+        Order Item Requested Delivery Date State Change Event
       operationId: modifyProductOrderItemRequestedDeliveryDateStateChangeEvent
       requestBody:
         content:
-          '*/*':
+          "*/*":
             schema:
-              $ref: >-
-                #/components/schemas/ModifyProductOrderItemRequestedDeliveryDateEvent
+              $ref: "#/components/schemas/ModifyProductOrderItemRequestedDeliveryDateEvent"
         description: The event data
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '408':
+        "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error408'
+                $ref: "#/components/schemas/Error408"
           description: Request Time-out
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
             - modifyProductOrderItemRequestedDeliveryDateStateChangeEvent
-      summary: >-
-        Modify Product Order Item Requested Delivery Date State Change
-        Notification endpoint
+      summary:
+        Modify Product Order Item Requested Delivery Date State Change Notification
+        endpoint
       tags:
         - Notification listeners
       x-codegen-request-body-name: ModifyProductOrderItemRequestedDeliveryDateStateChangeEvent
@@ -539,28 +510,26 @@ components:
   schemas:
     CancelProductOrderEvent:
       allOf:
-        - $ref: '#/components/schemas/Event'
+        - $ref: "#/components/schemas/Event"
         - type: object
           properties:
             eventType:
-              $ref: '#/components/schemas/CancelProductOrderEventType'
+              $ref: "#/components/schemas/CancelProductOrderEventType"
             event:
-              $ref: '#/components/schemas/CancelProductOrderEventPayload'
+              $ref: "#/components/schemas/CancelProductOrderEventPayload"
           required:
             - event
             - eventType
     CancelProductOrderEventPayload:
       type: object
       description:
-        The identifier of the Cancel Product Order being subject of this event.
+        The identifier of the Cancel Product Order being subject of this
+        event.
       properties:
         sellerId:
           type: string
-          description: >-
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when requester entity
-            represents more than one Seller.
-
+          description: |-
+            The unique identifier of the organization that is acting as the Seller. MUST be specified in the request only when requester entity represents more than one Seller.
             Reference: MEF 79 (Sn 8.8)
         id:
           type: string
@@ -570,11 +539,8 @@ components:
           description: Hyperlink to access the Cancel Product Order
         buyerId:
           type: string
-          description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the responding
-            represents more than one Buyer.
-
+          description: |-
+            The unique identifier of the organization that is acting as the a Buyer. MUST be specified in the request only when the responding represents more than one Buyer.
             Reference: MEF 79 (Sn 8.8)
       required:
         - id
@@ -585,13 +551,13 @@ components:
         - cancelProductOrderStateChangeEvent
     ChargeEvent:
       allOf:
-        - $ref: '#/components/schemas/Event'
+        - $ref: "#/components/schemas/Event"
         - type: object
           properties:
             eventType:
-              $ref: '#/components/schemas/ChargeEventType'
+              $ref: "#/components/schemas/ChargeEventType"
             event:
-              $ref: '#/components/schemas/ChargeEventPayload'
+              $ref: "#/components/schemas/ChargeEventPayload"
           required:
             - event
             - eventType
@@ -601,11 +567,8 @@ components:
       properties:
         sellerId:
           type: string
-          description: >-
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when requester entity
-            represents more than one Seller.
-
+          description: |-
+            The unique identifier of the organization that is acting as the Seller. MUST be specified in the request only when requester entity represents more than one Seller.
             Reference: MEF 79 (Sn 8.8)
         id:
           type: string
@@ -615,11 +578,8 @@ components:
           description: Hyperlink to access the Charge
         buyerId:
           type: string
-          description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the responding
-            represents more than one Buyer.
-
+          description: |-
+            The unique identifier of the organization that is acting as the a Buyer. MUST be specified in the request only when the responding represents more than one Buyer.
             Reference: MEF 79 (Sn 8.8)
       required:
         - id
@@ -632,17 +592,11 @@ components:
         - chargeTimeoutEvent
     Error400Code:
       type: string
-      description: >-
+      description: |-
         One of the following error codes:
-
-        - missingQueryParameter: The URI is missing a required query-string
-        parameter
-
-        - missingQueryValue: The URI is missing a required query-string
-        parameter value
-
+        - missingQueryParameter: The URI is missing a required query-string parameter
+        - missingQueryValue: The URI is missing a required query-string parameter value
         - invalidQuery: The query section of the URI is invalid.
-
         - invalidBody: The request has an invalid body
       enum:
         - missingQueryParameter
@@ -651,23 +605,21 @@ components:
         - invalidBody
     Error:
       type: object
-      description: >
+      description: |
         Standard Class used to describe API response error
-
-        Not intended to be use directly. The `code` in the HTTP header is used
-        as a discriminator for the type of error returned in runtime.
+        Not intended to be use directly. The `code` in the HTTP header is used as a discriminator for the type of error returned in runtime.
       properties:
         reason:
           type: string
-          description: >-
-            Text that explains the reason for error. This can be shown to a
-            client user.
+          description:
+            Text that explains the reason for error. This can be shown
+            to a client user.
           maxLength: 255
         message:
           type: string
-          description: >-
-            Text that provide mode details and corrective actions related to
-            the error. This can be shown to a client user.
+          description:
+            Text that provide mode details and corrective actions related
+            to the error. This can be shown to a client user.
         referenceError:
           type: string
           format: uri
@@ -676,26 +628,24 @@ components:
         - reason
     Error400:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error400Code'
+              $ref: "#/components/schemas/Error400Code"
           required:
             - code
-      description:
-        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
+      description: Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)
     Error401:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error401Code'
+              $ref: "#/components/schemas/Error401Code"
           required:
             - code
-      description:
-        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
+      description: Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)
     Error401Code:
       type: string
       description: |-
@@ -707,15 +657,14 @@ components:
         - invalidCredentials
     Error403:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error403Code'
+              $ref: "#/components/schemas/Error403Code"
           required:
             - code
-      description:
-        'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
+      description: Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)
     Error403Code:
       type: string
       description: |-
@@ -731,46 +680,37 @@ components:
         - tooManyUsers
     Error408:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
               type: string
-              description: >-
+              description: |-
                 List of supported error codes:
-
-                - timeOut: Request Time-out - indicates that the server did not
-                receive a complete request message within the time that it was
-                prepared to wait.
+                - timeOut: Request Time-out - indicates that the server did not receive a complete request message within the time that it was prepared to wait.
               enum:
                 - timeOut
           required:
             - code
-      description:
-        'Request Time-out (https://tools.ietf.org/html/rfc7231#section-6.5.7)'
+      description: Request Time-out (https://tools.ietf.org/html/rfc7231#section-6.5.7)
     Error500:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
               type: string
-              description: >-
+              description: |-
                 One of the following error codes:
-
-                - internalError: Internal server error - the server encountered
-                an unexpected condition that prevented it from fulfilling the
-                request.
+                - internalError: Internal server error - the server encountered an unexpected condition that prevented it from fulfilling the request.
               enum:
                 - internalError
           required:
             - code
-      description: >-
-        Internal Server Error.
-        (https://tools.ietf.org/html/rfc7231#section-6.6.1)
+      description: Internal Server Error. (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     Event:
       type: object
-      description: >-
+      description:
         Event class is used to describe information structure used for
         notification.
       properties:
@@ -786,96 +726,84 @@ components:
         - eventTime
     ModifyProductOrderItemRequestedDeliveryDateEvent:
       allOf:
-        - $ref: '#/components/schemas/Event'
+        - $ref: "#/components/schemas/Event"
         - type: object
           properties:
             eventType:
-              $ref: >-
-                #/components/schemas/ModifyProductOrderItemRequestedDeliveryDateEventType
+              $ref: "#/components/schemas/ModifyProductOrderItemRequestedDeliveryDateEventType"
             event:
-              $ref: >-
-                #/components/schemas/ModifyProductOrderItemRequestedDeliveryDateEventPayload
+              $ref: "#/components/schemas/ModifyProductOrderItemRequestedDeliveryDateEventPayload"
           required:
             - event
             - eventType
     ModifyProductOrderItemRequestedDeliveryDateEventPayload:
       type: object
-      description: >-
-        The identifier of the Modify Product Order Item Requested Delivery Date
-        being subject of this event.
+      description:
+        The identifier of the Modify Product Order Item Requested Delivery
+        Date being subject of this event.
       properties:
         sellerId:
           type: string
-          description: >-
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when requester entity
-            represents more than one Seller.
-
+          description: |-
+            The unique identifier of the organization that is acting as the Seller. MUST be specified in the request only when requester entity represents more than one Seller.
             Reference: MEF 79 (Sn 8.8)
         id:
           type: string
-          description:
-            ID of the Modify Product Order Item Requested Delivery Date
+          description: ID of the Modify Product Order Item Requested Delivery Date
         href:
           type: string
-          description: >-
+          description:
             Hyperlink to access the Modify Product Order Item Requested
             Delivery Date
         buyerId:
           type: string
-          description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the responding
-            represents more than one Buyer.
-
+          description: |-
+            The unique identifier of the organization that is acting as the a Buyer. MUST be specified in the request only when the responding represents more than one Buyer.
             Reference: MEF 79 (Sn 8.8)
       required:
         - id
     ModifyProductOrderItemRequestedDeliveryDateEventType:
       type: string
-      description: >-
-        Indicates the type of Modify Product Order Item Requested Delivery Date
-        event.
+      description:
+        Indicates the type of Modify Product Order Item Requested Delivery
+        Date event.
       enum:
         - modifyProductOrderItemRequestedDeliveryDateStateChangeEvent
     ProductOrderEvent:
       allOf:
-        - $ref: '#/components/schemas/Event'
+        - $ref: "#/components/schemas/Event"
         - type: object
           properties:
             eventType:
-              $ref: '#/components/schemas/ProductOrderEventType'
+              $ref: "#/components/schemas/ProductOrderEventType"
             event:
-              $ref: '#/components/schemas/ProductOrderEventPayload'
+              $ref: "#/components/schemas/ProductOrderEventPayload"
           required:
             - event
             - eventType
     ProductOrderEventPayload:
       type: object
-      description: >-
-        The identifier of the Product Order and/or Order Item being subject of
-        this event.
+      description:
+        The identifier of the Product Order and/or Order Item being subject
+        of this event.
       properties:
         sellerId:
           type: string
-          description: >-
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when requester entity
-            represents more than one Seller.
-
+          description: |-
+            The unique identifier of the organization that is acting as the Seller. MUST be specified in the request only when requester entity represents more than one Seller.
             Reference: MEF 79 (Sn 8.8)
         milestoneName:
           type: string
-          description: >-
-            The name of the Milestone that was reached by give Product Order or
-            Product Order Item. Mandatory for Product Specific Milestone
+          description:
+            The name of the Milestone that was reached by give Product
+            Order or Product Order Item. Mandatory for Product Specific Milestone
             reached events.
         orderItemId:
           type: string
-          description: >-
-            ID of the Product Order Item (within the Product Order) which state
-            change triggered the event. Mandatory for Product Order Item
-            related events.
+          description:
+            ID of the Product Order Item (within the Product Order) which
+            state change triggered the event. Mandatory for Product Order Item related
+            events.
         id:
           type: string
           description: ID of the Product Order
@@ -884,11 +812,8 @@ components:
           description: Hyperlink to access the Product Order
         buyerId:
           type: string
-          description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the responding
-            represents more than one Buyer.
-
+          description: |-
+            The unique identifier of the organization that is acting as the a Buyer. MUST be specified in the request only when the responding represents more than one Buyer.
             Reference: MEF 79 (Sn 8.8)
       required:
         - id
@@ -905,23 +830,8 @@ components:
       description: Default m2m client code
       flows:
         clientCredentials:
-          refreshUrl: 'http://mef.net/example/refresh'
+          refreshUrl: http://mef.net/example/refresh
           scopes:
-            productOrderStateChangeEvent:
-              Scope for operation productOrderStateChangeEvent
-            productOrderItemStateChangeEvent:
-              Scope for operation productOrderItemStateChangeEvent
-            productOrderItemExpectedCompletionDateSet:
-              Scope for operation productOrderItemExpectedCompletionDateSet
-            productSpecificProductOrderItemMilestoneEvent:
-              Scope for operation productSpecificProductOrderItemMilestoneEvent
-            cancelProductOrderStateChangeEvent:
-              Scope for operation cancelProductOrderStateChangeEvent
-            chargeCreateEvent: Scope for operation chargeCreateEvent
-            chargeStateChangeEvent: Scope for operation chargeStateChangeEvent
-            chargeTimeoutEvent: Scope for operation chargeTimeoutEvent
-            modifyProductOrderItemRequestedDeliveryDateStateChangeEvent: >-
-              Scope for operation
-              modifyProductOrderItemRequestedDeliveryDateStateChangeEvent
-          tokenUrl: 'http://mef.net/example/token'
+            default: default scope
+          tokenUrl: http://mef.net/example/token
       type: oauth2

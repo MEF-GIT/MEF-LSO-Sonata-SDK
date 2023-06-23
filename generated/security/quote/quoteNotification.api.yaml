@@ -1,49 +1,38 @@
 openapi: 3.0.1
 info:
-  description: >
+  description: |
     **This file forms part of MEF 115**
-
 
     This API implements Business Requirements described in MEF 80
 
-
-    Quote API allows the Buyer to submit a request to find out how much the
-    installation
-
+    Quote API allows the Buyer to submit a request to find out how much the installation
     of an instance of a Product Offering, an update to an existing Product, or
-
     a disconnect of an existing Product will cost.
 
-
     List of supported Use Cases:
-
     - Send Quote Notification
-
 
     Copyright 2021 MEF Forum and its contributors.
 
-
     This file includes content based on the TM Forum Quote Management API
-
     (TMF648 v4.0.0) available at
-
-    https://github.com/tmforum-apis/TMF648_QuoteManagement, which is licensed
-    by
-
+    https://github.com/tmforum-apis/TMF648_QuoteManagement, which is licensed by
     the TM Forum under the Apache License version 2.0. Such content has been
-
     modified by the MEF Forum and its contributors.
   title: Quote Notification
   version: 8.0.1
   x-logo:
     url: /redoc/logo.png
-    backgroundColor: '#FFFFFF'
+    backgroundColor: "#FFFFFF"
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/quoteNotification/v8/'
+  - url: "https://{serverBase}/mefApi/sonata/quoteNotification/v8/"
     variables:
       serverBase:
         default: mef.net
         description: The base of Buyer's URL.
+security:
+  - oauth2MEFLSOAPI:
+      - default
 tags:
   - description: |
       The Buyer's endpoint to send particular event types notifications to.
@@ -59,35 +48,34 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/Event'
+              $ref: "#/components/schemas/Event"
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -99,43 +87,41 @@ paths:
   /listener/quoteItemStateChangeEvent:
     post:
       deprecated: false
-      description: >
-        This endpoint is used to receive notifications on Quote Item state
-        change
+      description: |
+        This endpoint is used to receive notifications on Quote Item state change
       operationId: listenToQuoteItemStateChangeEvent
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/Event'
+              $ref: "#/components/schemas/Event"
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -148,17 +134,11 @@ components:
   schemas:
     Error400Code:
       type: string
-      description: >-
+      description: |-
         One of the following error codes:
-
-        - missingQueryParameter: The URI is missing a required query-string
-        parameter
-
-        - missingQueryValue: The URI is missing a required query-string
-        parameter value
-
+        - missingQueryParameter: The URI is missing a required query-string parameter
+        - missingQueryValue: The URI is missing a required query-string parameter value
         - invalidQuery: The query section of the URI is invalid.
-
         - invalidBody: The request has an invalid body
       enum:
         - missingQueryParameter
@@ -167,23 +147,21 @@ components:
         - invalidBody
     Error:
       type: object
-      description: >
+      description: |
         Standard Class used to describe API response error
-
-        Not intended to be used directly. The `code` in the HTTP header is used
-        as a discriminator for the type of error returned in runtime.
+        Not intended to be used directly. The `code` in the HTTP header is used as a discriminator for the type of error returned in runtime.
       properties:
         reason:
           type: string
-          description: >-
-            Text that explains the reason for the error. This can be shown to a
-            client user.
+          description:
+            Text that explains the reason for the error. This can be shown
+            to a client user.
           maxLength: 255
         message:
           type: string
-          description: >-
-            Text that provides more details and corrective actions related to
-            the error. This can be shown to a client user.
+          description:
+            Text that provides more details and corrective actions related
+            to the error. This can be shown to a client user.
         referenceError:
           type: string
           format: uri
@@ -192,26 +170,24 @@ components:
         - reason
     Error400:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error400Code'
+              $ref: "#/components/schemas/Error400Code"
           required:
             - code
-      description:
-        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
+      description: Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)
     Error401:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error401Code'
+              $ref: "#/components/schemas/Error401Code"
           required:
             - code
-      description:
-        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
+      description: Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)
     Error401Code:
       type: string
       description: |-
@@ -223,15 +199,14 @@ components:
         - invalidCredentials
     Error403:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error403Code'
+              $ref: "#/components/schemas/Error403Code"
           required:
             - code
-      description:
-        'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
+      description: Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)
     Error403Code:
       type: string
       description: |-
@@ -247,27 +222,22 @@ components:
         - tooManyUsers
     Error500:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
               type: string
-              description: >-
+              description: |-
                 One of the following error codes:
-
-                - internalError: Internal server error - the server encountered
-                an unexpected condition that prevented it from fulfilling the
-                request.
+                - internalError: Internal server error - the server encountered an unexpected condition that prevented it from fulfilling the request.
               enum:
                 - internalError
           required:
             - code
-      description: >-
-        Internal Server Error.
-        (https://tools.ietf.org/html/rfc7231#section-6.6.1)
+      description: Internal Server Error. (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     Event:
       type: object
-      description: >-
+      description:
         Event class is used to describe information structure used for
         notification.
       properties:
@@ -279,9 +249,9 @@ components:
           format: date-time
           description: Datetime when the event occurred
         eventType:
-          $ref: '#/components/schemas/QuoteEventType'
+          $ref: "#/components/schemas/QuoteEventType"
         event:
-          $ref: '#/components/schemas/QuoteEvent'
+          $ref: "#/components/schemas/QuoteEvent"
       required:
         - event
         - eventId
@@ -289,17 +259,14 @@ components:
         - eventType
     QuoteEvent:
       type: object
-      description: >-
-        The identifier of the Quote and/or Quote Item being subject of this
-        event.
+      description:
+        The identifier of the Quote and/or Quote Item being subject of
+        this event.
       properties:
         sellerId:
           type: string
-          description: >-
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when the requester
-            entity represents more than one Seller.
-
+          description: |-
+            The unique identifier of the organization that is acting as the Seller. MUST be specified in the request only when the requester entity represents more than one Seller.
             Reference: MEF 79 (Sn 8.8)
         id:
           type: string
@@ -309,16 +276,13 @@ components:
           description: Hyperlink to access the quote
         quoteItemId:
           type: string
-          description: >-
+          description:
             ID of the Quote Item (within the Quote) which state change
             triggered the event
         buyerId:
           type: string
-          description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the responding
-            represents more than one Buyer.
-
+          description: |-
+            The unique identifier of the organization that is acting as the a Buyer. MUST be specified in the request only when the responding represents more than one Buyer.
             Reference: MEF 79 (Sn 8.8)
       required:
         - id
@@ -333,11 +297,8 @@ components:
       description: Default m2m client code
       flows:
         clientCredentials:
-          refreshUrl: 'http://mef.net/example/refresh'
+          refreshUrl: http://mef.net/example/refresh
           scopes:
-            listenToQuoteStateChangeEvent:
-              Scope for operation listenToQuoteStateChangeEvent
-            listenToQuoteItemStateChangeEvent:
-              Scope for operation listenToQuoteItemStateChangeEvent
-          tokenUrl: 'http://mef.net/example/token'
+            default: default scope
+          tokenUrl: http://mef.net/example/token
       type: oauth2

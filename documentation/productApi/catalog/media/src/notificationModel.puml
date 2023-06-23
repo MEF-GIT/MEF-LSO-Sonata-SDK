@@ -1,0 +1,82 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+
+class Event {
+
+    eventId*: string
+    eventTime*: date-time
+}
+
+class ProductCategoryEvent {
+
+    eventType*: ProductCategoryEventType
+}
+Event <|-- ProductCategoryEvent
+
+ProductCategoryEvent *-->"1" ProductCategoryEventPayload : event
+
+class ProductCategoryEventPayload {
+
+    sellerId: string
+    id*: string
+    href: string
+    buyerId: string
+}
+
+class ProductOfferingEvent {
+
+    eventType*: ProductOfferingEventType
+}
+Event <|-- ProductOfferingEvent
+
+ProductOfferingEvent *-->"1" ProductOfferingEventPayload : event
+
+class ProductOfferingEventPayload {
+
+    sellerId: string
+    id*: string
+    href: string
+    buyerId: string
+}
+
+class ProductSpecificationEvent {
+
+    eventType*: ProductSpecificationEventType
+}
+Event <|-- ProductSpecificationEvent
+
+ProductSpecificationEvent *-->"1" ProductSpecificationEventPayload : event
+
+class ProductSpecificationEventPayload {
+
+    sellerId: string
+    id*: string
+    href: string
+    buyerId: string
+}
+
+enum ProductCategoryEventType {
+
+    productCategoryCreateEvent
+    productCategoryAttributeValueChangeEvent
+    productCategoryStatusChangeEvent
+}
+
+enum ProductOfferingEventType {
+
+    productOfferingCreateEvent
+    productOfferingAttributeValueChangeEvent
+    productOfferingStatusChangeEvent
+}
+
+enum ProductSpecificationEventType {
+    
+    productSpecificationCreateEvent
+    productSpecificationAttributeValueChangeEvent
+    productSpecificationStatusChangeEvent
+}
+@enduml

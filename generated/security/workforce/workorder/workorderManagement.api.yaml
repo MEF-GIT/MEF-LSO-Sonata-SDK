@@ -1,111 +1,98 @@
 openapi: 3.0.1
 info:
-  description: |
-    **This file forms part of MEF 137**
-     
-     **This API implements Business Requirements described in MEF 113.**
-     
-     It allows the Buyer to create, retrieve, and update  WorkOrders as well
-     as receive notifications about Incidents and  WorkOrders updates.
-     This allows managing issues and situations that are not part of normal
-     operations of the Product provided by the Seller.
-
-     List of supported use cases:
-     - Retrieve WorkOrder by WorkOrder Identifier
-     - Register for Workorder Notifications
-
-     Copyright 2022 MEF Forum and its contributors
-
-     This file includes content based on the TM Forum Work Order API (TMF697
-     v4.0.0) available at https://github.com/tmforum-apis/TMF697_Work_Order,
-     which is licensed by the TM Forum under the Apache License version 2.0.
-     Such content has been modified by the MEF Forum and its contributors.
+  description:
+    "**This file forms part of MEF 137**\n \n **This API implements Business\
+    \ Requirements described in MEF 113.**\n \n It allows the Buyer to create, retrieve,\
+    \ and update  WorkOrders as well\n as receive notifications about Incidents and\
+    \  WorkOrders updates.\n This allows managing issues and situations that are not\
+    \ part of normal\n operations of the Product provided by the Seller.\n\n List\
+    \ of supported use cases:\n - Retrieve WorkOrder by WorkOrder Identifier\n - Register\
+    \ for Workorder Notifications\n\n Copyright 2022 MEF Forum and its contributors\n\
+    \n This file includes content based on the TM Forum Work Order API (TMF697\n v4.0.0)\
+    \ available at https://github.com/tmforum-apis/TMF697_Work_Order,\n which is licensed\
+    \ by the TM Forum under the Apache License version 2.0.\n Such content has been\
+    \ modified by the MEF Forum and its contributors.\n"
   title: WorkOrder Management
   version: 2.0.0
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/workOrderManagement/v2/'
+  - url: "https://{serverBase}/mefApi/sonata/workOrderManagement/v2/"
     variables:
       serverBase:
         default: mef.net
         description: The base of Seller's URL.
+security:
+  - oauth2MEFLSOAPI:
+      - default
 tags:
   - name: workorder
 paths:
-  '/workorder/{id}':
+  /workorder/{id}:
     get:
-      description: >-
-        The Buyer requests detailed information about a single WorkOrder based
-        on a WorkOrder Identifier.
+      description:
+        The Buyer requests detailed information about a single WorkOrder
+        based on a WorkOrder Identifier.
       operationId: retrieveWorkOrder
       parameters:
-        - description:
-            Unique (within the Seller domain) identifier for the WorkOrder.
-          explode: false
+        - description: Unique (within the Seller domain) identifier for the WorkOrder.
           in: path
           name: id
           required: true
           schema:
             type: string
-          style: simple
-        - description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the requester
-            represents more than one Buyer.
-          explode: true
+        - description:
+            The unique identifier of the organization that is acting as the
+            a Buyer. MUST be specified in the request only when the requester represents
+            more than one Buyer.
           in: query
           name: buyerId
           required: false
           schema:
             type: string
-          style: form
-        - description: >-
+        - description:
             The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when responding
-            entity represents more than one Seller.
-          explode: true
+            Seller. MUST be specified in the request only when responding entity represents
+            more than one Seller.
           in: query
           name: sellerId
           required: false
           schema:
             type: string
-          style: form
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/WorkOrder'
-          description:
-            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
-        '400':
+                $ref: "#/components/schemas/WorkOrder"
+          description: OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -115,46 +102,36 @@ paths:
         - workorder
   /workorder:
     get:
-      description: >-
-        The Buyer requests detailed information about a single WorkOrder based
-        on a WorkOrder Identifier.
+      description:
+        The Buyer requests detailed information about a single WorkOrder
+        based on a WorkOrder Identifier.
       operationId: listWorkOrder
       parameters:
         - description: A site identifier that is associated to the Appointment.
-          explode: true
           in: query
           name: geographicalSiteId
           required: false
           schema:
             type: string
-          style: form
-        - description:
-            A address identifier that is associated to the Appointment.
-          explode: true
+        - description: A address identifier that is associated to the Appointment.
           in: query
           name: geographicalAddressId
           required: false
           schema:
             type: string
-          style: form
         - description: The type of Related Entity (e.g. Trouble Ticket).
-          explode: true
           in: query
           name: relatedEntityType
           required: false
           schema:
             type: string
-          style: form
         - description: Identifier of the Related Entity.
-          explode: true
           in: query
           name: relatedEntityId
           required: false
           schema:
             type: string
-          style: form
         - description: The state of the WorkOrder.
-          explode: true
           in: query
           name: state
           required: false
@@ -167,95 +144,83 @@ paths:
               - open
               - planned
               - unableToComplete
-          style: form
-        - description: >-
+        - description:
             Indicates that the Buyer must schedule an Appointment to fulfill
             the WorkOder.
-          explode: true
           in: query
           name: appointmentRequired
           required: false
           schema:
             type: boolean
-          style: form
-        - description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the requester
-            represents more than one Buyer.
-          explode: true
+        - description:
+            The unique identifier of the organization that is acting as the
+            a Buyer. MUST be specified in the request only when the requester represents
+            more than one Buyer.
           in: query
           name: buyerId
           required: false
           schema:
             type: string
-          style: form
-        - description: >-
+        - description:
             The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when responding
-            entity represents more than one Seller.
-          explode: true
+            Seller. MUST be specified in the request only when responding entity represents
+            more than one Seller.
           in: query
           name: sellerId
           required: false
           schema:
             type: string
-          style: form
-        - description: >-
+        - description:
             Requested index for the start of resources to be provided in
             response
-          explode: true
           in: query
           name: offset
           required: false
           schema:
             type: integer
-          style: form
         - description: Requested number of resources to be provided in response
-          explode: true
           in: query
           name: limit
           required: false
           schema:
             type: integer
             format: int32
-          style: form
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/WorkOrder_Find'
-          description:
-            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
-        '400':
+                $ref: "#/components/schemas/WorkOrder_Find"
+          description: OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -268,145 +233,130 @@ paths:
       description: The Buyer requests to subscribe to WorkOrder Notifications.
       operationId: registerListener
       parameters:
-        - description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the requester
-            represents more than one Buyer.
-          explode: true
+        - description:
+            The unique identifier of the organization that is acting as the
+            a Buyer. MUST be specified in the request only when the requester represents
+            more than one Buyer.
           in: query
           name: buyerId
           required: false
           schema:
             type: string
-          style: form
-        - description: >-
+        - description:
             The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when responding
-            entity represents more than one Seller.
-          explode: true
+            Seller. MUST be specified in the request only when responding entity represents
+            more than one Seller.
           in: query
           name: sellerId
           required: false
           schema:
             type: string
-          style: form
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/EventSubscriptionInput'
-        description:
-          Data containing the callback endpoint to deliver the information
+              $ref: "#/components/schemas/EventSubscriptionInput"
+        description: Data containing the callback endpoint to deliver the information
         required: true
       responses:
-        '201':
+        "201":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/EventSubscription'
-          description:
-            'Subscribed  (https://tools.ietf.org/html/rfc7231#section-6.3.2)'
-        '400':
+                $ref: "#/components/schemas/EventSubscription"
+          description: Subscribed  (https://tools.ietf.org/html/rfc7231#section-6.3.2)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
             - registerListener
-      summary:
-        Allows the Buyer to register to WorkOrder state change notifications
+      summary: Allows the Buyer to register to WorkOrder state change notifications
       tags:
         - events subscription
       x-codegen-request-body-name: data
-  '/hub/{id}':
+  /hub/{id}:
     delete:
-      description:
-        The Buyer requests to unsubscribe from WorkOrder Notifications
+      description: The Buyer requests to unsubscribe from WorkOrder Notifications
       operationId: unregisterListener
       parameters:
         - description: The id of the EventSubscription
-          explode: false
           in: path
           name: id
           required: true
           schema:
             type: string
-          style: simple
-        - description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the requester
-            represents more than one Buyer.
-          explode: true
+        - description:
+            The unique identifier of the organization that is acting as the
+            a Buyer. MUST be specified in the request only when the requester represents
+            more than one Buyer.
           in: query
           name: buyerId
           required: false
           schema:
             type: string
-          style: form
-        - description: >-
+        - description:
             The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when responding
-            entity represents more than one Seller.
-          explode: true
+            Seller. MUST be specified in the request only when responding entity represents
+            more than one Seller.
           in: query
           name: sellerId
           required: false
           schema:
             type: string
-          style: form
       responses:
-        '204':
-          description:
-            'Deleted (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: Deleted (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -419,72 +369,65 @@ paths:
       operationId: retrieveHub
       parameters:
         - description: Identifier of the Hub
-          explode: false
           in: path
           name: id
           required: true
           schema:
             type: string
-          style: simple
-        - description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the requester
-            represents more than one Buyer. Reference: MEF 57.2 (Sn 9.18)
-          explode: true
+        - description:
+            "The unique identifier of the organization that is acting as\
+            \ the a Buyer. MUST be specified in the request only when the requester\
+            \ represents more than one Buyer. Reference: MEF 57.2 (Sn 9.18)"
           in: query
           name: buyerId
           required: false
           schema:
             type: string
-          style: form
-        - description: >-
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when responding
-            entity  represents more than one Seller. Reference: MEF 57.2 (Sn
-            9.18)
-          explode: true
+        - description:
+            "The unique identifier of the organization that is acting as\
+            \ the Seller. MUST be specified in the request only when responding entity\
+            \  represents more than one Seller. Reference: MEF 57.2 (Sn 9.18)"
           in: query
           name: sellerId
           required: false
           schema:
             type: string
-          style: form
       responses:
-        '200':
+        "200":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/EventSubscription'
+                $ref: "#/components/schemas/EventSubscription"
           description: Success
-        '400':
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error404'
+                $ref: "#/components/schemas/Error404"
           description: Not Found
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -496,16 +439,13 @@ components:
   schemas:
     AppointmentRef:
       type: object
-      description: >
-        A reference to an Appointment resource available through Appointment
-        API.
+      description: |
+        A reference to an Appointment resource available through Appointment API.
       properties:
         href:
           type: string
-          description: >
-            Hyperlink to the referenced Appointment. Hyperlink MAY be used by
-            the Seller in responses. Hyperlink MUST be ignored by the Seller in
-            case it is provided by the Buyer in a request
+          description: |
+            Hyperlink to the referenced Appointment. Hyperlink MAY be used by the Seller in responses. Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request
         id:
           type: string
           description: Identifier of the referenced Appointment.
@@ -513,23 +453,23 @@ components:
         - id
     EventSubscription:
       type: object
-      description: >-
-        Sets the communication endpoint address the service instance must use
-        to deliver notification information
+      description:
+        Sets the communication endpoint address the service instance must
+        use to deliver notification information
       properties:
         callback:
           type: string
-          description: >-
-            The value provided by the Buyer in `EventSubscriptionInput` during
-            notification registration
+          description:
+            The value provided by the Buyer in `EventSubscriptionInput`
+            during notification registration
         id:
           type: string
-          description: >-
-            An identifier of the event subscription assigned by the Seller when
-            a resource is created.
+          description:
+            An identifier of the event subscription assigned by the Seller
+            when a resource is created.
         query:
           type: string
-          description: >-
+          description:
             This attribute is used to define notification registration
             constraints.
       required:
@@ -541,44 +481,40 @@ components:
       properties:
         callback:
           type: string
-          description: >-
-            This callback value must be set to *host* property from Buyer
-            Notification API (WorkOrderNotification.api.yaml). This property is
-            appended with the base path and notification resource path
-            specified in that API to construct an URL to which notification is
-            sent. E.g. for "callback": "http://buyer.com/listenerEndpoint", the
-            state change event notification will be sent to:
-            `http://buyer.com/listenerEndpoint/mefApi/sonata/workOrderNotification/v2/listener/workOrderStateChangeEvent`
+          description:
+            "This callback value must be set to *host* property from Buyer\
+            \ Notification API (WorkOrderNotification.api.yaml). This property is\
+            \ appended with the base path and notification resource path specified\
+            \ in that API to construct an URL to which notification is sent. E.g.\
+            \ for \"callback\": \"http://buyer.com/listenerEndpoint\", the state change\
+            \ event notification will be sent to: `http://buyer.com/listenerEndpoint/mefApi/sonata/workOrderNotification/v2/listener/workOrderStateChangeEvent`"
         query:
           type: string
-          description: >-
-            This attribute is used to define to which type of events to
-            register to. Example: "query":"eventType =
-            WorkOrderStateChangeEvent". To subscribe for more than one event
-            type, put the values separated by comma:
-            `eventType=WorkOrderStateChangeEvent,WorkOrderResolvedEvent`. The
-            possible values are enumerated by the 'WorkOrderEventType' in
-            WorkOrderNotification.api.yaml. An empty query is treated as
-            specifying no filters - ending in  subscription for all event
-            types.
+          description:
+            "This attribute is used to define to which type of events to\
+            \ register to. Example: \"query\":\"eventType = WorkOrderStateChangeEvent\"\
+            . To subscribe for more than one event type, put the values separated\
+            \ by comma: `eventType=WorkOrderStateChangeEvent,WorkOrderResolvedEvent`.\
+            \ The possible values are enumerated by the 'WorkOrderEventType' in WorkOrderNotification.api.yaml.\
+            \ An empty query is treated as specifying no filters - ending in  subscription\
+            \ for all event types."
       required:
         - callback
     Error:
       type: object
-      description: >
-        Standard Class used to describe API response error Not intended to be
-        use directly only via specialization which defines a code
+      description: |
+        Standard Class used to describe API response error Not intended to be use directly only via specialization which defines a code
       properties:
         message:
           type: string
-          description: >-
-            Text that provides mode details and corrective actions related to
-            the error. This can be shown to a client user.
+          description:
+            Text that provides mode details and corrective actions related
+            to the error. This can be shown to a client user.
         reason:
           type: string
-          description: >-
-            Text that explains the reason for the error. This can be shown to a
-            client user.
+          description:
+            Text that explains the reason for the error. This can be shown
+            to a client user.
           maxLength: 255
         referenceError:
           type: string
@@ -588,28 +524,21 @@ components:
         - reason
     Error400:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error400Code'
+              $ref: "#/components/schemas/Error400Code"
           required:
             - code
-      description:
-        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
+      description: Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)
     Error400Code:
       type: string
-      description: >-
+      description: |-
         One of the following error codes:
-
-        - missingQueryParameter: The URI is missing a required query-string
-        parameter
-
-        - missingQueryValue: The URI is missing a required query-string
-        parameter value
-
+        - missingQueryParameter: The URI is missing a required query-string parameter
+        - missingQueryValue: The URI is missing a required query-string parameter value
         - invalidQuery: The query section of the URI is invalid.
-
         - invalidBody: The request has an invalid body
       enum:
         - missingQueryParameter
@@ -618,15 +547,14 @@ components:
         - invalidBody
     Error401:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error401Code'
+              $ref: "#/components/schemas/Error401Code"
           required:
             - code
-      description:
-        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
+      description: Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)
     Error401Code:
       type: string
       description: |-
@@ -638,17 +566,16 @@ components:
         - invalidCredentials
     Error403:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error403Code'
+              $ref: "#/components/schemas/Error403Code"
           required:
             - code
-      description: >-
+      description:
         Forbidden. This code indicates that the server understood the request
-        but refuses to authorize it.
-        (https://tools.ietf.org/html/rfc7231#section-6.5.3)
+        but refuses to authorize it. (https://tools.ietf.org/html/rfc7231#section-6.5.3)
     Error403Code:
       type: string
       description: |-
@@ -664,46 +591,37 @@ components:
         - tooManyUsers
     Error404:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
               type: string
-              description: >-
+              description: |-
                 The following error code:
-
-                - notFound: A current representation of the target resource not
-                found
+                - notFound: A current representation of the target resource not found
               enum:
                 - notFound
           required:
             - code
-      description: >-
-        Resource for the requested path not found.
-        (https://tools.ietf.org/html/rfc7231#section-6.5.4)
+      description: Resource for the requested path not found. (https://tools.ietf.org/html/rfc7231#section-6.5.4)
     Error500:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
               type: string
-              description: >-
+              description: |-
                 The following error code:
-
-                - internalError: Internal server error - the server encountered
-                an unexpected condition that prevented it from fulfilling the
-                request.
+                - internalError: Internal server error - the server encountered an unexpected condition that prevented it from fulfilling the request.
               enum:
                 - internalError
           required:
             - code
-      description: >-
-        Internal Server Error.
-        (https://tools.ietf.org/html/rfc7231#section-6.6.1)
+      description: Internal Server Error. (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     FieldedAddress:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - type: object
           properties:
             city:
@@ -713,20 +631,20 @@ components:
               type: string
               description: The country that the address is in
             geographicSubAddress:
-              $ref: '#/components/schemas/GeographicSubAddress'
+              $ref: "#/components/schemas/GeographicSubAddress"
             locality:
               type: string
               description: The locality that the address is in
             postcode:
               type: string
-              description: >-
-                The descriptor for a postal delivery area, used to speed and
-                simplify the delivery of mail (also known as zip code)
+              description:
+                "The descriptor for a postal delivery area, used to speed\
+                \ and simplify the delivery of mail (also known as zip code)"
             postcodeExtension:
               type: string
-              description: >-
-                An extension of a postal code. E.g. the part following the dash
-                in a US urban property address
+              description:
+                An extension of a postal code. E.g. the part following the
+                dash in a US urban property address
             stateOrProvince:
               type: string
               description: The State or Province that the address is in
@@ -735,16 +653,14 @@ components:
               description: Name of the street or other street type
             streetNr:
               type: string
-              description: >-
-                Number identifying a specific property on a public street. It
-                may be combined with streetNrLast for ranged addresses. MEF 79
-                defines it as required however as in certain countries it is
-                not used we make it optional in API.
+              description:
+                Number identifying a specific property on a public street.
+                It may be combined with streetNrLast for ranged addresses. MEF 79 defines
+                it as required however as in certain countries it is not used we make
+                it optional in API.
             streetNrLast:
               type: string
-              description:
-                Last number in a range of street numbers allocated to a
-                property
+              description: Last number in a range of street numbers allocated to a property
             streetNrLastSuffix:
               type: string
               description: Last street number suffix for a ranged address
@@ -756,22 +672,22 @@ components:
               description: A modifier denoting a relative direction
             streetType:
               type: string
-              description: >-
-                The type of street (e.g., alley, avenue, boulevard, brae,
-                crescent, drive, highway, lane, terrace, parade, place, tarn,
-                way, wharf)
+              description:
+                "The type of street (e.g., alley, avenue, boulevard, brae,\
+                \ crescent, drive, highway, lane, terrace, parade, place, tarn, way,\
+                \ wharf)"
           required:
             - city
             - country
             - streetName
-      description: >-
-        A type of Address that has a discrete field and value for each type of
-        boundary or identifier down to the lowest level of detail. For example
-        "street number" is one field, "street name" is another field, etc.
-        Reference: MEF 79 (Sn 8.9.2)
+      description:
+        "A type of Address that has a discrete field and value for each\
+        \ type of boundary or identifier down to the lowest level of detail. For example\
+        \ \"street number\" is one field, \"street name\" is another field, etc. Reference:\
+        \ MEF 79 (Sn 8.9.2)"
     FormattedAddress:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - type: object
           properties:
             addrLine1:
@@ -788,20 +704,20 @@ components:
               description: The country that the address is in
             locality:
               type: string
-              description: >-
-                An area of defined or undefined boundaries within a local
-                authority or another legislatively defined area, usually rural
-                or semi-rural in nature
+              description:
+                "An area of defined or undefined boundaries within a local\
+                \ authority or another legislatively defined area, usually rural or\
+                \ semi-rural in nature"
             postcode:
               type: string
-              description: >-
-                The descriptor for a postal delivery area, used to speed and
-                simplify the delivery of mail (also known as ZIP code)
+              description:
+                "The descriptor for a postal delivery area, used to speed\
+                \ and simplify the delivery of mail (also known as ZIP code)"
             postcodeExtension:
               type: string
-              description: >-
-                An extension of a postal code. E.g. the part following the dash
-                in an US urban property address
+              description:
+                An extension of a postal code. E.g. the part following the
+                dash in an US urban property address
             stateOrProvince:
               type: string
               description: The State or Province that the address is in
@@ -809,15 +725,14 @@ components:
             - addrLine1
             - city
             - country
-      description: >-
-        A type of Address that has discrete fields for each type of boundary or
-        an identifier with the exception of the street and more specific
-        location details, which are combined into a maximum of two strings
-        based on local postal addressing conventions. Reference: MEF 79 (Sn
-        8.9.3)
+      description:
+        "A type of Address that has discrete fields for each type of boundary\
+        \ or an identifier with the exception of the street and more specific location\
+        \ details, which are combined into a maximum of two strings based on local\
+        \ postal addressing conventions. Reference: MEF 79 (Sn 8.9.3)"
     GeographicAddressLabel:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - type: object
           properties:
             externalReferenceId:
@@ -825,98 +740,89 @@ components:
               description: A reference to an address by id
             externalReferenceType:
               type: string
-              description: >-
+              description:
                 Uniquely identifies the authority that specifies the addresses
-                reference and/or its type (if the authority specifies more than
-                one type of address). The value(s) to be used are to be agreed
-                during the onboarding. For North American providers this would
-                normally be CLLI (Common Language Location Identifier) code.
+                reference and/or its type (if the authority specifies more than one
+                type of address). The value(s) to be used are to be agreed during the
+                onboarding. For North American providers this would normally be CLLI
+                (Common Language Location Identifier) code.
           required:
             - externalReferenceId
             - externalReferenceType
-      description: >-
-        A unique identifier controlled by a generally accepted independent
-        administrative authority that specifies a fixed geographical location. 
-
-        Reference: MEF 79 (Sn 8.9.4)
+      description:
+        "A unique identifier controlled by a generally accepted independent\
+        \ administrative authority that specifies a fixed geographical location. \n\
+        Reference: MEF 79 (Sn 8.9.4)"
     GeographicAddressRef:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - type: object
           properties:
             href:
               type: string
-              description: >
-                Hyperlink to the referenced GeographicAddress. Hyperlink MAY be
-                used by the Seller in responses. Hyperlink MUST be ignored by
-                the Seller in case it is provided by the Buyer in a request
+              description: |
+                Hyperlink to the referenced GeographicAddress. Hyperlink MAY be used by the Seller in responses. Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request
             id:
               type: string
-              description: >-
-                Identifier of the referenced Geographic Address. This
-                identifier is assigned during a successful address validation
-                request (Geographic Address Validation API)
+              description:
+                Identifier of the referenced Geographic Address. This identifier
+                is assigned during a successful address validation request (Geographic
+                Address Validation API)
           required:
             - id
-      description: >
-        A reference to a Geographic Address resource available through Address
-        Validation API.
+      description: |
+        A reference to a Geographic Address resource available through Address Validation API.
     GeographicSiteRef:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - type: object
           properties:
             href:
               type: string
-              description: >
-                Hyperlink to the referenced GeographicSite. Hyperlink MAY be
-                used by the Seller in responses. Hyperlink MUST be ignored by
-                the Seller in case it is provided by the Buyer in a request
+              description: |
+                Hyperlink to the referenced GeographicSite. Hyperlink MAY be used by the Seller in responses. Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request
             id:
               type: string
               description: Identifier of the referenced Geographic Site.
           required:
             - id
-      description: >
-        A reference to a Geographic Site resource available through Service
-        Site API
+      description: |
+        A reference to a Geographic Site resource available through Service Site API
     GeographicSubAddress:
       type: object
-      description:
-        'Additional fields used to specify an address, as detailed as possible.'
+      description: "Additional fields used to specify an address, as detailed as possible."
       properties:
         buildingName:
           type: string
-          description: >
-            Allows for identification of places that require building name  as
-            part of addressing information
+          description: |
+            Allows for identification of places that require building name  as part of addressing information
         id:
           type: string
           description: Unique Identifier of the subAddress
         levelNumber:
           type: string
           description:
-            'Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT
-            2'
+            "Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT\
+            \ 2"
         levelType:
           type: string
           description: Describes level types within a building
         privateStreetName:
           type: string
-          description: >-
-            "Private streets internal to a property (e.g. a university) may
-            have internal names that are not recorded by the land title office
+          description:
+            '"Private streets internal to a property (e.g. a university)
+            may have internal names that are not recorded by the land title office'
         privateStreetNumber:
           type: string
           description: Private streets numbers internal to a private street
         subUnit:
           type: array
-          description: >-
-            Representation of a MEFSubUnit It is used for describing subunit
-            within a subaddress  e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
-            UNIT, WHARF.
+          description:
+            "Representation of a MEFSubUnit It is used for describing subunit\
+            \ within a subaddress  e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT,\
+            \ WHARF."
           items:
-            $ref: '#/components/schemas/MEFSubUnit'
+            $ref: "#/components/schemas/MEFSubUnit"
     MEFBuyerSellerType:
       type: string
       description: An enumeration of buyer and seller values.
@@ -925,57 +831,50 @@ components:
         - seller
     MEFGeographicPoint:
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         - type: object
           properties:
             spatialRef:
               type: string
-              description: >-
+              description:
                 The spatial reference system used to determine the coordinates
-                (e.g. "WGS84"). The system used and the value of this field are
-                to be agreed upon during the onboarding process.
+                (e.g. "WGS84"). The system used and the value of this field are to be
+                agreed upon during the onboarding process.
             x:
               type: string
-              description: >-
-                The latitude expressed in the format specified by the
-                `spacialRef`
-            'y':
+              description: The latitude expressed in the format specified by the `spacialRef`
+            "y":
               type: string
-              description: >-
-                The longitude expressed in the format specified by the
-                `spacialRef`
+              description: The longitude expressed in the format specified by the `spacialRef`
             z:
               type: string
-              description: >-
-                The elevation expressed in the format specified by the
-                `spacialRef`
+              description: The elevation expressed in the format specified by the `spacialRef`
           required:
             - spatialRef
             - x
-            - 'y'
-      description: >
-        A MEFGeographicPoint defines a geographic point through coordinates.
-        Reference: MEF 79 (Sn 8.9.5)
+            - "y"
+      description: |
+        A MEFGeographicPoint defines a geographic point through coordinates. Reference: MEF 79 (Sn 8.9.5)
     MEFSubUnit:
       type: object
       description: Allows for sub-unit identification
       properties:
         subUnitNumber:
           type: string
-          description: >-
-            The discriminator used for the subunit, often just a simple number
-            but may also be a range.
+          description:
+            "The discriminator used for the subunit, often just a simple\
+            \ number but may also be a range."
         subUnitType:
           type: string
-          description: >-
-            The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
-            UNIT, WHARF.
+          description:
+            "The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,\
+            \ UNIT, WHARF."
       required:
         - subUnitNumber
         - subUnitType
     Note:
       type: object
-      description: >-
+      description:
         Extra information about a given entity. Only useful in processes
         involving human interaction. Not applicable to an automated process.
       properties:
@@ -988,11 +887,11 @@ components:
           description: Date of the note
         id:
           type: string
-          description: >-
-            Identifier of the note within its containing entity (may or may not
-            be globally unique, depending on provider implementation)
+          description:
+            "Identifier of the note within its containing entity (may or\
+            \ may not be globally unique, depending on provider implementation)"
         source:
-          $ref: '#/components/schemas/MEFBuyerSellerType'
+          $ref: "#/components/schemas/MEFBuyerSellerType"
         text:
           type: string
           description: Text of the note
@@ -1004,10 +903,10 @@ components:
         - text
     RelatedContactInformation:
       type: object
-      description: >-
-        Contact data for a person or organization that is involved in a given
-        context. It is specified by the Seller (e.g. Seller Contact
-        Information) or by the Buyer.
+      description:
+        Contact data for a person or organization that is involved in a
+        given context. It is specified by the Seller (e.g. Seller Contact Information)
+        or by the Buyer.
       properties:
         emailAddress:
           type: string
@@ -1025,7 +924,7 @@ components:
           type: string
           description: The organization or company that the contact belongs to
         postalAddress:
-          $ref: '#/components/schemas/FieldedAddress'
+          $ref: "#/components/schemas/FieldedAddress"
         role:
           type: string
           description: A role the party plays in a given context.
@@ -1036,16 +935,14 @@ components:
         - role
     RelatedEntity:
       type: object
-      description: >-
-        A reference to an entity, where the type of the entity is not known in
-        advance.
+      description:
+        "A reference to an entity, where the type of the entity is not\
+        \ known in advance."
       properties:
-        '@referredType':
+        "@referredType":
           type: string
           default: Product
-          description: >-
-            The actual type of the target instance when needed for
-            disambiguation.
+          description: The actual type of the target instance when needed for disambiguation.
         href:
           type: string
           description: Reference of the related entity.
@@ -1056,37 +953,33 @@ components:
           type: string
           description: The role of an entity.
       required:
-        - '@referredType'
+        - "@referredType"
         - id
         - role
     RelatedPlaceRefOrValue:
       type: object
-      description:
-        Defines the Place (Address or Site) by reference or by value.
+      description: Defines the Place (Address or Site) by reference or by value.
       discriminator:
         mapping:
-          FieldedAddress: '#/components/schemas/FieldedAddress'
-          FormattedAddress: '#/components/schemas/FormattedAddress'
-          GeographicAddressLabel: '#/components/schemas/GeographicAddressLabel'
-          GeographicAddressRef: '#/components/schemas/GeographicAddressRef'
-          GeographicSiteRef: '#/components/schemas/GeographicSiteRef'
-          MEFGeographicPoint: '#/components/schemas/MEFGeographicPoint'
-        propertyName: '@type'
+          FieldedAddress: "#/components/schemas/FieldedAddress"
+          FormattedAddress: "#/components/schemas/FormattedAddress"
+          GeographicAddressLabel: "#/components/schemas/GeographicAddressLabel"
+          GeographicAddressRef: "#/components/schemas/GeographicAddressRef"
+          GeographicSiteRef: "#/components/schemas/GeographicSiteRef"
+          MEFGeographicPoint: "#/components/schemas/MEFGeographicPoint"
+        propertyName: "@type"
       properties:
-        '@schemaLocation':
+        "@schemaLocation":
           type: string
           format: uri
-          description: >-
-            A URI to a JSON-Schema file that defines additional attributes and
-            relationships. May be used to define additional related place
-            types. Usage of this attribute must be agreed upon between Buyer
-            and Seller.
-        '@type':
+          description:
+            A URI to a JSON-Schema file that defines additional attributes
+            and relationships. May be used to define additional related place types.
+            Usage of this attribute must be agreed upon between Buyer and Seller.
+        "@type":
           type: string
-          description: >
-            This field is used as a discriminator and is used between different
-            place representations. This type might discriminate for additional
-            related place as defined in '@schemaLocation'.
+          description: |
+            This field is used as a discriminator and is used between different place representations. This type might discriminate for additional related place as defined in '@schemaLocation'.
           enum:
             - FieldedAddress
             - FormattedAddress
@@ -1098,29 +991,29 @@ components:
           type: string
           description: Role of this place
       required:
-        - '@type'
+        - "@type"
         - role
     TimeDuration:
       type: object
-      description: >-
-        This class is used to describe durations expressed as a 2-tuple,
-        (value, units). The units from nanoseconds to years.
+      description:
+        "This class is used to describe durations expressed as a 2-tuple,\
+        \ (value, units). The units from nanoseconds to years."
       properties:
         timeDurationValue:
           type: integer
-          description: >-
-            The value of the duration. For example, if the duration is 20 ms,
-            this element is 20.
+          description:
+            "The value of the duration. For example, if the duration is\
+            \ 20 ms, this element is 20."
         timeDurationUnits:
-          $ref: '#/components/schemas/TimeDurationUnits'
+          $ref: "#/components/schemas/TimeDurationUnits"
       required:
         - timeDurationUnits
         - timeDurationValue
     TimeDurationUnits:
       type: string
-      description: >-
-        The unit of measure in the duration. For example, if an interval is
-        2ms, this element is MS.
+      description:
+        "The unit of measure in the duration. For example, if an interval\
+        \ is 2ms, this element is MS."
       enum:
         - NS
         - US
@@ -1134,88 +1027,82 @@ components:
         - YEAR
     WorkOrder:
       type: object
-      description: >
-        A set of tasks to be scheduled and performed under the responsibility
-        of a Seller Technician(s)
+      description: |
+        A set of tasks to be scheduled and performed under the responsibility of a Seller Technician(s)
       properties:
         id:
           type: string
-          description:
-            Unique (within the Seller domain) identifier for the WorkOrder.
+          description: Unique (within the Seller domain) identifier for the WorkOrder.
         href:
           type: string
-          description: 'Hyperlink, a reference to the WorkOrder entity'
+          description: "Hyperlink, a reference to the WorkOrder entity"
         appointmentRequired:
           type: boolean
-          description: >-
-            The Seller requires the Buyer to schedule an Appointment. If set to
-            true, the Seller is Requesting the Buyer to schedule an
-            Appointment.
+          description:
+            "The Seller requires the Buyer to schedule an Appointment.\
+            \ If set to true, the Seller is Requesting the Buyer to schedule an Appointment."
         appointment:
           type: array
-          description: >-
+          description:
             A reference to a set of Appointments for the WorkOrder. A WorkOrder
-            may contain only one open Appointment at a time (e.g. with the
-            state of 'scheduled').
+            may contain only one open Appointment at a time (e.g. with the state of
+            'scheduled').
           items:
-            $ref: '#/components/schemas/AppointmentRef'
+            $ref: "#/components/schemas/AppointmentRef"
         duration:
-          $ref: '#/components/schemas/TimeDuration'
+          $ref: "#/components/schemas/TimeDuration"
         note:
           type: array
-          description: >-
-            A set of unstructured comments or information associated to the
-            WorkOrder
+          description:
+            A set of unstructured comments or information associated to
+            the WorkOrder
           items:
-            $ref: '#/components/schemas/Note'
+            $ref: "#/components/schemas/Note"
         place:
           type: array
-          description: >-
-            The location where the WorkOrder Tasks are to be performed. If an
-            appointment is needed, this will also be the location where the
-            Appointment takes place and includes the site contact which the
-            Seller technician may need to get access to the Buyer's site during
-            the Appointment. This could be an end-user, security personnel or
-            any authorized person
+          description:
+            "The location where the WorkOrder Tasks are to be performed.\
+            \ If an appointment is needed, this will also be the location where the\
+            \ Appointment takes place and includes the site contact which the Seller\
+            \ technician may need to get access to the Buyer's site during the Appointment.\
+            \ This could be an end-user, security personnel or any authorized person"
           items:
-            $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+            $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         plannedExecutionDate:
           type: string
           format: date-time
-          description: >-
-            The date provided by the Seller to indicate when the Workorder is
-            expected to be started.
+          description:
+            The date provided by the Seller to indicate when the Workorder
+            is expected to be started.
         relatedContactInformation:
           type: array
-          description: >-
-            Party playing a role in this WorkOrder. The 'role' is to specify
-            the type of contact as specified in MEF 113: Technical Contact
-            ('role=technicalContact') - REQUIRED to be set by the Seller. The
-            Seller technical contact responsible for the WorkOrder. Technician
-            ('role=technician') - The Seller technician assigned to the
-            WorkOrder and responsible for performing a set of tasks. In certain
-            instances this could be a Buyer technician that works on behalf of
-            the Seller.
+          description:
+            "Party playing a role in this WorkOrder. The 'role' is to specify\
+            \ the type of contact as specified in MEF 113: Technical Contact ('role=technicalContact')\
+            \ - REQUIRED to be set by the Seller. The Seller technical contact responsible\
+            \ for the WorkOrder. Technician ('role=technician') - The Seller technician\
+            \ assigned to the WorkOrder and responsible for performing a set of tasks.\
+            \ In certain instances this could be a Buyer technician that works on\
+            \ behalf of the Seller."
           items:
-            $ref: '#/components/schemas/RelatedContactInformation'
+            $ref: "#/components/schemas/RelatedContactInformation"
           minItems: 1
         relatedEntity:
           type: array
-          description: >-
-            An entity that is related to the WorkOrder such as a service, a
-            product, etc. The entity which the WorkOrder is associated with.
+          description:
+            "An entity that is related to the WorkOrder such as a service,\
+            \ a product, etc. The entity which the WorkOrder is associated with."
           items:
-            $ref: '#/components/schemas/RelatedEntity'
+            $ref: "#/components/schemas/RelatedEntity"
           minItems: 1
         state:
-          $ref: '#/components/schemas/WorkOrderStateType'
+          $ref: "#/components/schemas/WorkOrderStateType"
         task:
           type: array
-          description: >-
-            A set of tasks to be performed under the responsibility of the
-            Technician to fulfil the WorkOrder. Each item is a description of a
-            specific task to be performed under the responsibility of the
-            Technician.
+          description:
+            A set of tasks to be performed under the responsibility of
+            the Technician to fulfil the WorkOrder. Each item is a description of
+            a specific task to be performed under the responsibility of the Technician.
           items:
             type: string
           minItems: 1
@@ -1230,51 +1117,17 @@ components:
         - task
     WorkOrderStateType:
       type: string
-      description: >
+      description: |
         Possible values for the state of the WorkOrder
 
-
-        | state              | MEF 113 name        |
-        Description                                                                                                                                                                                                                                                    
-        |
-
-        | ------------------ | ------------------- |
-        ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        |
-
-        | `completed`        | COMPLETED           | The Seller Technician
-        responsible for the WorkOrder has successfully completed all the
-        assigned
-        Tasks.                                                                                                                                                         
-        |
-
-        | `cancelled`        | CANCELLED           | The WorkOrder has been
-        cancelled by the Seller or due to the Buyer requesting to cancel the
-        WorkOrder.                                                                                                                                                            
-        |
-
-        | `inProgress`       | IN_PROGRESS         | The Seller Technician
-        responsible for the WorkOrder has been assigned and started one or more
-        of the assigned
-        Tasks.                                                                                                                                           
-        |
-
-        | `open`             | OPEN                | A WorkOrder was initiated
-        by the Seller to be assigned to a Technician responsible for resolving
-        the
-        WorkOrder.                                                                                                                                                   
-        |
-
-        | `planned`          | PLANNED             | The WorkOrder has been
-        given an execution date for resolving one or more
-        Tasks.                                                                                                                                                                                
-        |
-
-        | `unableToComplete` | UNABLE_TO_COMPLETE  | The Seller Technician
-        responsible for the WorkOrder was unable to complete one or more of the
-        assigned Tasks, because additional skills or information is required.
-        Additional tasks are required to resolve the WorkOrder and a new
-        WorkOrder needs to be opened. |
+        | state              | MEF 113 name        | Description                                                                                                                                                                                                                                                     |
+        | ------------------ | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | `completed`        | COMPLETED           | The Seller Technician responsible for the WorkOrder has successfully completed all the assigned Tasks.                                                                                                                                                          |
+        | `cancelled`        | CANCELLED           | The WorkOrder has been cancelled by the Seller or due to the Buyer requesting to cancel the WorkOrder.                                                                                                                                                             |
+        | `inProgress`       | IN_PROGRESS         | The Seller Technician responsible for the WorkOrder has been assigned and started one or more of the assigned Tasks.                                                                                                                                            |
+        | `open`             | OPEN                | A WorkOrder was initiated by the Seller to be assigned to a Technician responsible for resolving the WorkOrder.                                                                                                                                                    |
+        | `planned`          | PLANNED             | The WorkOrder has been given an execution date for resolving one or more Tasks.                                                                                                                                                                                 |
+        | `unableToComplete` | UNABLE_TO_COMPLETE  | The Seller Technician responsible for the WorkOrder was unable to complete one or more of the assigned Tasks, because additional skills or information is required. Additional tasks are required to resolve the WorkOrder and a new WorkOrder needs to be opened. |
       enum:
         - cancelled
         - completed
@@ -1284,41 +1137,37 @@ components:
         - unableToComplete
     WorkOrder_Find:
       type: object
-      description: >
-        A set of tasks to be scheduled and performed under the responsibility
-        of a Seller Technician(s)
+      description: |
+        A set of tasks to be scheduled and performed under the responsibility of a Seller Technician(s)
       properties:
         id:
           type: string
-          description:
-            Unique (within the Seller domain) identifier for the WorkOrder.
+          description: Unique (within the Seller domain) identifier for the WorkOrder.
         appointmentRequired:
           type: boolean
-          description: >-
-            The Seller requires the Buyer to schedule an Appointment. If set to
-            true, the Seller is Requesting the Buyer to schedule an
-            Appointment.
+          description:
+            "The Seller requires the Buyer to schedule an Appointment.\
+            \ If set to true, the Seller is Requesting the Buyer to schedule an Appointment."
         place:
           type: array
-          description: >-
-            The location where the WorkOrder Tasks are to be performed. If an
-            appointment is needed, this will also be the location where the
-            Appointment takes place and includes the site contact which the
-            Seller technician may need to get access to the Buyer's site during
-            the Appointment. This could be an end-user, security personnel or
-            any authorized person
+          description:
+            "The location where the WorkOrder Tasks are to be performed.\
+            \ If an appointment is needed, this will also be the location where the\
+            \ Appointment takes place and includes the site contact which the Seller\
+            \ technician may need to get access to the Buyer's site during the Appointment.\
+            \ This could be an end-user, security personnel or any authorized person"
           items:
-            $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+            $ref: "#/components/schemas/RelatedPlaceRefOrValue"
         relatedEntity:
           type: array
-          description: >-
-            An entity that is related to the WorkOrder such as a service, a
-            product, etc. The entity which the WorkOrder is associated with.
+          description:
+            "An entity that is related to the WorkOrder such as a service,\
+            \ a product, etc. The entity which the WorkOrder is associated with."
           items:
-            $ref: '#/components/schemas/RelatedEntity'
+            $ref: "#/components/schemas/RelatedEntity"
           minItems: 1
         state:
-          $ref: '#/components/schemas/WorkOrderStateType'
+          $ref: "#/components/schemas/WorkOrderStateType"
       required:
         - appointmentRequired
         - id
@@ -1330,12 +1179,8 @@ components:
       description: Default m2m client code
       flows:
         clientCredentials:
-          refreshUrl: 'http://mef.net/example/refresh'
+          refreshUrl: http://mef.net/example/refresh
           scopes:
-            retrieveWorkOrder: Scope for operation retrieveWorkOrder
-            listWorkOrder: Scope for operation listWorkOrder
-            registerListener: Scope for operation registerListener
-            retrieveHub: Scope for operation retrieveHub
-            unregisterListener: Scope for operation unregisterListener
-          tokenUrl: 'http://mef.net/example/token'
+            default: default scope
+          tokenUrl: http://mef.net/example/token
       type: oauth2

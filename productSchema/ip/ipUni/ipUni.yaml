@@ -1,47 +1,89 @@
 ---
-$id: urn:mef:lso:spec:cantata-sonata:ip-uni:v0.2.0:all
+$id: urn:mef:lso:spec:cantata-sonata:ip-uni:v0.3.0:all
 $schema: http://json-schema.org/draft-07/schema#
 title: MEF LSO IP UNI - Product Specification
 type: object
+# ---------------------
+# Disclaimer
+#
+# © MEF Forum 2023. All Rights Reserved.
+#
+# The information in this publication is freely available for reproduction
+# and use by any recipient and is believed to be accurate as of its
+# publication date. Such information is subject to change without notice
+# and MEF Forum (MEF) is not responsible for any errors. MEF does not
+# assume responsibility to update or correct any information in this
+# publication. No representation or warranty, expressed or implied, is
+# made by MEF concerning the completeness, accuracy, or applicability of
+# any information contained herein and no liability of any kind shall be
+# assumed by MEF as a result of reliance upon such information.
+#
+# The information contained herein is intended to be used without
+# modification by the recipient or user of this document. MEF is not
+# responsible or liable for any modifications to this document made by any
+# other party.
+#
+# The receipt or any use of this document or its contents
+# does not in any way create, by implication or otherwise:
+#
+# a) any express or implied license or right to or under any patent,
+# copyright, trademark or trade secret rights held or claimed by any MEF
+# member which are or may be associated with the ideas, techniques,
+# concepts or expressions contained herein; nor
+#
+# b) any warranty or representation that any MEF members will announce
+# any product(s) and/or service(s) related thereto, or if such
+# announcements are made, that such announced product(s) and/or service(s)
+# embody any or all of the ideas, technologies, or concepts contained
+# herein; nor
+#
+# c) any form of relationship between any MEF member and the recipient
+# or user of this document.
+#
+# Implementation or use of specific MEF standards, specifications, or
+# recommendations will be voluntary, and no Member shall be obliged to
+# implement them by virtue of participation in MEF Forum. MEF is a
+# non-profit international organization to enable the development and
+# worldwide adoption of agile, assured and orchestrated network services.
+# MEF does not, expressly or otherwise, endorse or promote any specific
+# products or services.
+# ---------------------
+#
 description: >-
-  The IP UNI is a MEF 69.1 defined version of MEF 61.1
-  UNI. Reference MEF 69.1 Section 8.3 Internet Access UNI Requirements.
-allOf: 
+  A User Network Interface (UNI) is the demarcation point between the
+  responsibility  of the SP and the responsibility of the Subscriber. Note that
+  a given UNI always  relates to a single SP and a single Subscriber. Reference -
+  MEF 61.1 Section 12
+allOf:
   - $ref: "../common/ipCommon.yaml#/definitions/IpUniCommon"
   - type: object
     properties:
       egressBandwidthProfileEnvelope:
-        $ref: "../common/ipCommon.yaml#/definitions/IpUniBwpEnvelope"
         description: >-
-          Attribute used for an egress UNI Bandwidth Profile. Reference MEF 61.1
-          Section 12.5 UNI Egress Bandwidth Profile Envelope Service Attribute.
-          Absence of this attribute corresponds to a value of "None". [D8]  At a
-          UNI with an IPVC EP for a Basic Internet Access Service, if the UNI
-          Egress Bandwidth Profile Envelope is not None, it SHOULD have
+          Attribute used for an egress UNI Bandwidth Profile. Reference - MEF
+          61.1 Section 12.5. Null value corresponds to the value of None. [D8]
+          At a UNI with an IPVC EP for a Basic Internet Access Service, if the
+          UNI Egress Bandwidth Profile Envelope is not null, it SHOULD have
           Bandwidth Profile Flows that contain all Egress IP Data Packets at the
           UNI that are mapped to any of a given set of IPVC EPs (as defined in
-          MEF 61.1 [8] Table 28). Reference MEF 69.1 Section 9.3 Internet Access
-          UNI Requirements.
+          MEF 61.1 [8] Table 28). Reference - MEF 69.1 Section 9.3
+        $ref: "../common/ipCommon.yaml#/definitions/IpUniBwpEnvelope"
         nullable: true
       ingressBandwidthProfileEnvelope:
-        $ref: "../common/ipCommon.yaml#/definitions/IpUniBwpEnvelope"
         description: >-
-          Attribute used for an ingress UNI Bandwidth Profile. Reference MEF
-          61.1 Section 12.4 UNI Ingress Bandwidth Profile Envelope Service
-          Attribute. Absence of this attribute corresponds to a value of "None".
-          [D7]  At a UNI with an IPVC EP for a Basic Internet Access Service, if
-          the UNI Ingress Bandwidth Profile Envelope is not None, it SHOULD have
+          Attribute used for an ingress UNI Bandwidth Profile. Reference - MEF
+          61.1 Section 12.4. Null value corresponds to the value of None. [D7]
+          At a UNI with an IPVC EP for a Basic Internet Access Service, if the
+          UNI Ingress Bandwidth Profile Envelope is not null, it SHOULD have
           Bandwidth Profile Flows that contain all Ingress IP Data Packets at
           the UNI that are mapped to any of a given set of IPVC EPs (as defined
-          in MEF 61.1 [8] Table 28). Reference MEF 69.1 Section 9.3 Internet
-          Access UNI Requirements.
+          in MEF 61.1 [8] Table 28). Reference - MEF 69.1 Section 9.3
+        $ref: "../common/ipCommon.yaml#/definitions/IpUniBwpEnvelope"
         nullable: true
       routingProtocols:
-        $ref: "../common/ipCommon.yaml#/definitions/RoutingProtocols"
         description: >-
-          List of Routing Protocols used across the UNI. Reference MEF 61.1
-          Section 12.7 UNI Routing Protocols Service Attribute. Absence of this
-          attribute corresponds to a value of "None". [R21] At a UNI with an
-          IPVC EP for a Basic Internet Access Service, the UNI Routing Protocols
-          list MUST be empty.
+          List of Routing Protocols used across the UNI. Reference - MEF 61.1
+          Section 12.7. [R21] "At a UNI with an IPVC EP for a Basic Internet
+          Access Service, the UNI Routing Protocols list MUST be empty."
+        $ref: "../common/ipCommon.yaml#/definitions/RoutingProtocols"
         nullable: true

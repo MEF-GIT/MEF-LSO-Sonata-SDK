@@ -15,16 +15,16 @@ note right of Disputed : Has Buyer disputed any Items?
 
 '''decisions'''
 state Agree <<choice>> 
-note left of Agree : Seller agrees Billing incorrect
+note left of Agree : Seller agrees Bill incorrect
 
 '''decisions'''
 state Buyer_Agree <<choice>>
-note left of Buyer_Agree : Buyer agrees Billing is correct 
+note left of Buyer_Agree : Buyer agrees Bill is correct 
 
 
 '''decisions'''
 state Withdraws <<choice>> 
-note right of Withdraws : Seller withdraws Billing.  
+note right of Withdraws : Seller withdraws Bill.  
 
 ''' diagram'''
 [*] -d-> generated
@@ -37,8 +37,8 @@ Agree -r->Withdraws: Yes
 Withdraws -d-> withdrawn: Yes
 Withdraws -d-> credit: No
 Agree -d--> Buyer_Agree: No
-Buyer_Agree -r--->paymentDue
-Buyer_Agree -r-> disputeBeingInvestigated
+Buyer_Agree -r--->paymentDue : Yes
+Buyer_Agree -r-> disputeBeingInvestigated : No
 withdrawn -r->[*]
 settled -d-> [*]
 paymentDue -r->settled

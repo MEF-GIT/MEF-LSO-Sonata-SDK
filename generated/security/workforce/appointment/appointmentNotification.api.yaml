@@ -1,49 +1,28 @@
 openapi: 3.0.1
 info:
-  description: >
-    **This file forms part of MEF 137**
-
-
-    **This API implements Business Requirements described in MEF 113.**
-
-
-    An Appointment is an arrangement to do something or meet someone at a 
-
-    particular time and place. It is previously made during an interaction 
-
-    or may be necessary to solve a customer problem or to deliver a product 
-
-    order item. The appointment API goal is to manage an appointment with 
-
-    all the necessary characteristics. 
-
-
-
-    List of supported use cases:
-
-    - Send Appointment Notification
-
-
-    Copyright 2022 MEF Forum and its contributors
-
-
-    This file includes content based on the TM Forum Appointment Management API
-    (TMF646
-
-    v4.0.0) available at
-    https://github.com/tmforum-apis/TMF646_AppointmentManagement,
-
-    which is licensed by the TM Forum under the Apache License version 2.0.
-
-    Such content has been modified by the MEF Forum and its contributors.
+  description:
+    "**This file forms part of MEF 137**\n\n**This API implements Business\
+    \ Requirements described in MEF 113.**\n\nAn Appointment is an arrangement to\
+    \ do something or meet someone at a \nparticular time and place. It is previously\
+    \ made during an interaction \nor may be necessary to solve a customer problem\
+    \ or to deliver a product \norder item. The appointment API goal is to manage\
+    \ an appointment with \nall the necessary characteristics. \n\n\nList of supported\
+    \ use cases:\n- Send Appointment Notification\n\nCopyright 2022 MEF Forum and\
+    \ its contributors\n\nThis file includes content based on the TM Forum Appointment\
+    \ Management API (TMF646\nv4.0.0) available at https://github.com/tmforum-apis/TMF646_AppointmentManagement,\n\
+    which is licensed by the TM Forum under the Apache License version 2.0.\nSuch\
+    \ content has been modified by the MEF Forum and its contributors.\n"
   title: Appointment Management Notification
   version: 2.0.0
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/appointmentNotification/v2/'
+  - url: "https://{serverBase}/mefApi/sonata/appointmentNotification/v2/"
     variables:
       serverBase:
         default: mef.net
         description: The base of Buyer's URL.
+security:
+  - oauth2MEFLSOAPI:
+      - default
 tags:
   - description: |
       The Buyer's endpoint to send particular event types notifications to.
@@ -51,7 +30,7 @@ tags:
 paths:
   /listener/appointmentAttributeValueChangeEvent:
     post:
-      description: >-
+      description:
         Client listener for receiving the appointmentAttributeValueChangeEvent
         notification
       operationId: listenToAppointmentAttributeValueChangeEvent
@@ -59,42 +38,41 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/AppointmentEvent'
+              $ref: "#/components/schemas/AppointmentEvent"
         description: The event data
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '408':
+        "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error408'
+                $ref: "#/components/schemas/Error408"
           description: Request Time-out
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -105,7 +83,7 @@ paths:
       x-codegen-request-body-name: data
   /listener/appointmentStatusChangeEvent:
     post:
-      description: >-
+      description:
         Client listener for receiving the appointmentStatusChangeEvent
         notification
       operationId: listenToAppointmentStatusChangeEvent
@@ -113,42 +91,41 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/AppointmentEvent'
+              $ref: "#/components/schemas/AppointmentEvent"
         description: The event data
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '408':
+        "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error408'
+                $ref: "#/components/schemas/Error408"
           description: Request Time-out
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -161,17 +138,11 @@ components:
   schemas:
     Error400Code:
       type: string
-      description: >-
+      description: |-
         One of the following error codes:
-
-        - missingQueryParameter: The URI is missing a required query-string
-        parameter
-
-        - missingQueryValue: The URI is missing a required query-string
-        parameter value
-
+        - missingQueryParameter: The URI is missing a required query-string parameter
+        - missingQueryValue: The URI is missing a required query-string parameter value
         - invalidQuery: The query section of the URI is invalid.
-
         - invalidBody: The request has an invalid body
       enum:
         - missingQueryParameter
@@ -180,22 +151,20 @@ components:
         - invalidBody
     Error:
       type: object
-      description: >
-        Standard Class used to describe API response error Not intended to be
-        use directly. The `code` in the HTTP header is used as a discriminator
-        for the type of error returned in runtime.
+      description: |
+        Standard Class used to describe API response error Not intended to be use directly. The `code` in the HTTP header is used as a discriminator for the type of error returned in runtime.
       properties:
         reason:
           type: string
-          description: >-
-            Text that explains the reason for the error. This can be shown to a
-            client user.
+          description:
+            Text that explains the reason for the error. This can be shown
+            to a client user.
           maxLength: 255
         message:
           type: string
-          description: >-
-            Text that provides mode details and corrective actions related to
-            the error. This can be shown to a client user.
+          description:
+            Text that provides mode details and corrective actions related
+            to the error. This can be shown to a client user.
         referenceError:
           type: string
           format: uri
@@ -204,26 +173,24 @@ components:
         - reason
     Error400:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error400Code'
+              $ref: "#/components/schemas/Error400Code"
           required:
             - code
-      description:
-        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
+      description: Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)
     Error401:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error401Code'
+              $ref: "#/components/schemas/Error401Code"
           required:
             - code
-      description:
-        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
+      description: Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)
     Error401Code:
       type: string
       description: |-
@@ -235,15 +202,14 @@ components:
         - invalidCredentials
     Error403:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error403Code'
+              $ref: "#/components/schemas/Error403Code"
           required:
             - code
-      description:
-        'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
+      description: Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)
     Error403Code:
       type: string
       description: |-
@@ -259,48 +225,39 @@ components:
         - tooManyUsers
     Error408:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
               type: string
-              description: >-
+              description: |-
                 List of supported error codes:
-
-                - timeOut: Request Time-out - indicates that the server did not
-                receive a complete request message within the time that it was
-                prepared to wait.
+                - timeOut: Request Time-out - indicates that the server did not receive a complete request message within the time that it was prepared to wait.
               enum:
                 - timeOut
           required:
             - code
-      description:
-        'Request Time-out (https://tools.ietf.org/html/rfc7231#section-6.5.7)'
+      description: Request Time-out (https://tools.ietf.org/html/rfc7231#section-6.5.7)
     Error500:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
               type: string
-              description: >-
+              description: |-
                 One of the following error codes:
-
-                - internalError: Internal server error - the server encountered
-                an unexpected condition that prevented it from fulfilling the
-                request.
+                - internalError: Internal server error - the server encountered an unexpected condition that prevented it from fulfilling the request.
               enum:
                 - internalError
           required:
             - code
-      description: >-
-        Internal Server Error.
-        (https://tools.ietf.org/html/rfc7231#section-6.6.1)
+      description: Internal Server Error. (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     Event:
       type: object
-      description: >-
-        Event class is used to describe the information structure used for
-        notification.
+      description:
+        Event class is used to describe the information structure used
+        for notification.
       properties:
         eventId:
           type: string
@@ -316,13 +273,13 @@ components:
         - eventType
     AppointmentEvent:
       allOf:
-        - $ref: '#/components/schemas/Event'
+        - $ref: "#/components/schemas/Event"
         - type: object
           properties:
             eventType:
-              $ref: '#/components/schemas/AppointmentEventType'
+              $ref: "#/components/schemas/AppointmentEventType"
             event:
-              $ref: '#/components/schemas/AppointmentEventPayload'
+              $ref: "#/components/schemas/AppointmentEventPayload"
           required:
             - event
             - eventType
@@ -332,10 +289,10 @@ components:
       properties:
         sellerId:
           type: string
-          description: >-
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when the requester
-            entity represents more than one Seller.
+          description:
+            The unique identifier of the organization that is acting as
+            the Seller. MUST be specified in the request only when the requester entity
+            represents more than one Seller.
         id:
           type: string
           description: ID of the Appointment attributed by quoting system
@@ -344,9 +301,9 @@ components:
           description: Hyperlink to access the Appointment
         buyerId:
           type: string
-          description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the responding
+          description:
+            The unique identifier of the organization that is acting as
+            the a Buyer. MUST be specified in the request only when the responding
             represents more than one Buyer.
       required:
         - id
@@ -361,11 +318,8 @@ components:
       description: Default m2m client code
       flows:
         clientCredentials:
-          refreshUrl: 'http://mef.net/example/refresh'
+          refreshUrl: http://mef.net/example/refresh
           scopes:
-            listenToAppointmentAttributeValueChangeEvent:
-              Scope for operation listenToAppointmentAttributeValueChangeEvent
-            listenToAppointmentStatusChangeEvent:
-              Scope for operation listenToAppointmentStatusChangeEvent
-          tokenUrl: 'http://mef.net/example/token'
+            default: default scope
+          tokenUrl: http://mef.net/example/token
       type: oauth2

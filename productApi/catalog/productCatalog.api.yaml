@@ -1,0 +1,2031 @@
+openapi: 3.0.1
+info:
+  description: |
+    **This file forms part of MEF W142**
+
+    This API implements Business Requirements described in MEF W127.
+
+    **This specification represents MEF work in progress and is subject to
+    change.**  
+    
+    This API implements Business Requirements that are defined in MEF Standard: MEF W127
+    Supported use cases:
+    - Retrieve List of Product Categories
+    - Retrieve Product Category by Product Category Identifier
+    - Retrieve List of Product Offerings
+    - Retrieve Product Offering by Product Offering Identifier
+    - Retrieve List of Product Specifications
+    - Retrieve Product Specification by Product Specification Identifier
+    - Register for Notifications 
+    - Unregister Notifications
+    - Retrieve Notification Hub Registry  by: hubId, sellerId, buyerId
+    
+  title: Product Catalog 
+  version: 1.0.0-RC
+servers:
+  - url: 'http://{serverBase}/mefApi/sonata/productCatalog/v1/'
+tags:
+  - name: category
+  - name: productOffering
+  - name: productSpecification
+paths:
+  /category:
+    get:
+      operationId: listCategory
+      summary: Lists or finds Category objects
+      description: This operation lists or finds Category entities
+      tags:
+        - category
+      parameters:
+        - description: Lifecycle Status of the Category
+          in: query
+          name: lifecycleStatus
+          schema:
+            enum:
+              - available
+              - obsolete
+            type: string
+        - description: >-
+            Name of the the Parent of this Product Category.
+          in: query
+          name: parentCategory.name
+          schema:
+            type: string
+        - description:
+            The date and time the Product Category was created or most recently
+            updated, greater than
+          in: query
+          name: lastUpdate.gt
+          schema:
+            format: date-time
+            type: string
+        - description:
+            The date and time the Product Category was created or most recently
+            updated, lesser than
+          in: query
+          name: lastUpdate.lt
+          schema:
+            format: date-time
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when the responding
+            entity represents more than one Seller.
+          in: query
+          name: sellerId
+          schema:
+            type: string
+        - description: >-
+            Requested index for start of item to be provided in response
+            requested by the client. Note that the index starts with "0".
+          in: query
+          name: offset
+          schema:
+            format: int32
+            type: integer
+        - description: >-
+            Requested number of items to be provided in response requested by
+            client
+          in: query
+          name: limit
+          schema:
+            format: int32
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ProductCategory'
+                type: array
+          description:
+            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
+          headers:
+            X-Pagination-Throttled:
+              description: >
+                Used to indicate that result page was throttled to maximum
+                possible size  and there are additional results that can be
+                fetched
+              schema:
+                type: boolean
+            X-Total-Count:
+              description: >
+                The total number of matching items. E.g. if there are 50
+                matching items in total, but the request has offset=10 and
+                limit=10, then the X-Total-Count is 50.
+              schema:
+                type: integer
+            X-Result-Count:
+              description: The number of items included in the response
+              schema:
+                type: integer
+        '400':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request
+        '401':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: Unauthorized
+        '403':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+          description: Forbidden
+        '500':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal Server Error
+  /category/{id}:
+    get:
+      operationId: retrieveCategory
+      summary: Retrieves a Category by ID
+      description: This operation retrieves a Category entity.
+      tags:
+        - category
+      parameters:
+        - description: Identifier of the Category
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity  represents more than one Seller.
+          in: query
+          name: sellerId
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ProductCategory'
+          description:
+            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
+        '400':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request
+        '401':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: Unauthorized
+        '403':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+          description: Forbidden
+        '404':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error404'
+          description: Not Found
+        '500':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal Server Error
+  /productOffering:
+    get:
+      operationId: listProductOffering
+      summary: List or find Product Offering objects
+      description: This operation list or find ProductOffering entities
+      tags:
+        - productOffering
+      parameters:
+        - description: >-
+            The commercial name of the Product Offering
+          in: query
+          name: name
+          schema:
+            type: string
+        - description:
+            The date and time the Product Offering was created or most recently
+            updated, greater than
+          in: query
+          name: lastUpdate.gt
+          schema:
+            format: date-time
+            type: string
+        - description:
+            The date and time the Product Offering was created or most recently
+            updated, lesser than
+          in: query
+          name: lastUpdate.lt
+          schema:
+            format: date-time
+            type: string
+        - description: Lifecycle Status of the Product Offering
+          in: query
+          name: lifecycleStatus
+          schema:
+            enum:
+              - active
+              - endOfSale
+              - endOfSupport
+              - obsolete
+              - onHold
+              - orderable
+              - pilotBeta
+              - rejected
+            type: string
+        - description: >-
+            The name of the Seller's offer arrangement (such as a framework agreement). 
+            **Note:** The list of allowable values for agreements should be negotiated between the Buyer and the Seller,
+                      during the integration phase. Ultimately it will be the enumerated set of values (it's problematic
+                      to define the enumerated values globally for any operator).
+          in: query
+          name: agreement
+          schema:
+            type: string
+        - description: >-
+            The names of the sales channel through which the Product Offering is made available to the Buyer to order.
+            **Note:** The list of allowable values for selling channels should be negotiated between the Buyer 
+                      and the Seller, during the integration phase. 
+                      Ultimately it will be the enumerated set of values (it's problematic to define 
+                      the enumerated values globally for any operator).
+          in: query
+          name: channel
+          schema:
+            type: string
+        - description: >-
+            The names of the market segments  targeted for the Product Offering.
+            **Note:** The list of allowable values for selling market segments should be negotiated between the Buyer 
+                      and the Seller, during the integration phase. 
+                      Ultimately it will be the enumerated set of values (it's problematic to define 
+                      the enumerated values globally for any operator).
+          in: query
+          name: marketSegment
+          schema:
+            type: string
+        - description: >-
+            Country where the products are offered by the Seller to potential Buyers.
+          in: query
+          name: region.country
+          schema:
+            type: string
+        - description: >-
+            Reference Identifier of the Category that Product Offering is the direct or transitive member of.
+              Direct member - there is a direct relation between Category and Product Offering. 
+              Transitive member - there is a relation between one of the sub-categories and Product Offering.
+          in: query
+          name: category.id
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when the responding
+            entity represents more than one Seller.
+          in: query
+          name: sellerId
+          schema:
+            type: string
+        - description: >-
+            Requested index for start of item to be provided in response
+            requested by the client. Note that the index starts with "0".
+          in: query
+          name: offset
+          schema:
+            format: int32
+            type: integer
+        - description: >-
+            Requested number of items to be provided in response requested by
+            client
+          in: query
+          name: limit
+          schema:
+            format: int32
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ProductOffering_Find'
+                type: array
+          description:
+            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
+          headers:
+            X-Pagination-Throttled:
+              description: >
+                Used to indicate that result page was throttled to maximum
+                possible size  and there are additional results that can be
+                fetched
+              schema:
+                type: boolean
+            X-Total-Count:
+              description: >
+                The total number of matching items. E.g. if there are 50
+                matching items in total, but the request has offset=10 and
+                limit=10, then the X-Total-Count is 50.
+              schema:
+                type: integer
+            X-Result-Count:
+              description: The number of items included in the response
+              schema:
+                type: integer
+        '400':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request
+        '401':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: Unauthorized
+        '403':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+          description: Forbidden
+        '500':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal Server Error
+  /productOffering/{id}:
+    get:
+      operationId: retrieveProductOffering
+      summary: Retrieves a ProductOffering by ID
+      description:
+        This operation retrieves a ProductOffering entity. Attribute selection
+        is enabled for all first level attributes.
+      tags:
+        - productOffering
+      parameters:
+        - description: Identifier of the ProductOffering
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity  represents more than one Seller.
+          in: query
+          name: sellerId
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ProductOffering'
+          description:
+            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
+        '400':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request
+        '401':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: Unauthorized
+        '403':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+          description: Forbidden
+        '404':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error404'
+          description: Not Found
+        '500':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal Server Error
+  /productSpecification:
+    get:
+      operationId: listProductSpecification
+      summary: List or find ProductSpecification objects
+      description: This operation list or find ProductSpecification entities
+      tags:
+        - productSpecification
+      parameters:
+        - description: The name of Product Specification (may not be unique)
+          in: query
+          name: name
+          schema:
+            type: string
+        - description: Lifecycle Status of the Product Specification
+          in: query
+          name: lifecycleStatus
+          schema:
+            enum:
+              - active
+              - endOfSale
+              - endOfSupport
+              - obsolete
+              - onHold
+              - orderable
+              - pilotBeta
+              - rejected
+            type: string
+        - description: >-
+            The manufacturer or trademark of the Product Specification if the Seller
+            requires a CPE on the Buyer's premise.
+          in: query
+          name: brand
+          schema:
+            type: string
+        - description:
+            The date and time the Product Specification was created or most recently
+            updated, greater than
+          in: query
+          name: lastUpdate.gt
+          schema:
+            format: date-time
+            type: string
+        - description:
+            The date and time the Product Specification was created or most recently
+            updated, lesser than
+          in: query
+          name: lastUpdate.lt
+          schema:
+            format: date-time
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when the responding
+            entity represents more than one Seller.
+          in: query
+          name: sellerId
+          schema:
+            type: string
+        - description: >-
+            Requested index for start of item to be provided in response
+            requested by the client. Note that the index starts with "0".
+          in: query
+          name: offset
+          schema:
+            format: int32
+            type: integer
+        - description: >-
+            Requested number of items to be provided in response requested by
+            client
+          in: query
+          name: limit
+          schema:
+            format: int32
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ProductSpecification_Find'
+                type: array
+          description:
+            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
+          headers:
+            X-Pagination-Throttled:
+              description: >
+                Used to indicate that result page was throttled to maximum
+                possible size  and there are additional results that can be
+                fetched
+              schema:
+                type: boolean
+            X-Total-Count:
+              description: >
+                The total number of matching items. E.g. if there are 50
+                matching items in total, but the request has offset=10 and
+                limit=10, then the X-Total-Count is 50.
+              schema:
+                type: integer
+            X-Result-Count:
+              description: The number of items included in the response
+              schema:
+                type: integer
+        '400':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request
+        '401':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: Unauthorized
+        '403':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+          description: Forbidden
+        '500':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal Server Error
+  /productSpecification/{id}:
+    get:
+      operationId: retrieveProductSpecification
+      summary: Retrieves a ProductSpecification by ID
+      description:
+        This operation retrieves a ProductSpecification entity. Attribute
+        selection is enabled for all first level attributes.
+      tags:
+        - productSpecification
+      parameters:
+        - description: Identifier of the ProductSpecification
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity  represents more than one Seller.
+          in: query
+          name: sellerId
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ProductSpecification'
+          description:
+            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
+        '400':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request
+        '401':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: Unauthorized
+        '403':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+          description: Forbidden
+        '404':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error404'
+          description: Not Found
+        '500':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal Server Error
+  /hub:
+    post:
+      description: >-
+        Sets the communication endpoint address the service instance must use
+        to deliver information about its health state, execution state,
+        failures and metrics.
+      operationId: registerListener
+      parameters:
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+
+            Reference: MEF 57.2 (Sn 9.18)
+          in: query
+          name: buyerId
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity  represents more than one Seller.
+
+            Reference: MEF 57.2 (Sn 9.18)
+          in: query
+          name: sellerId
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/EventSubscriptionInput'
+        description:
+          Data containing the callback endpoint to deliver the information
+        required: true
+      responses:
+        '201':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/EventSubscription'
+          description: Subscribed
+        '400':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request
+        '401':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: Unauthorized
+        '403':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+          description: Forbidden
+        '500':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal Server Error
+        '501':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error501'
+          description: Method not implemented.
+      summary: Register a listener
+      tags:
+        - events subscription
+      x-codegen-request-body-name: data
+  '/hub/{id}':
+    delete:
+      description: >-
+        Resets the communication endpoint address the service instance must use
+        to deliver information about its health state, execution state,
+        failures and metrics.
+      operationId: unregisterListener
+      parameters:
+        - description: The id of the registered listener
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+
+            Reference: MEF 57.2 (Sn 9.18)
+          in: query
+          name: buyerId
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity  represents more than one Seller.
+
+            Reference: MEF 57.2 (Sn 9.18)
+          in: query
+          name: sellerId
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Deleted
+        '400':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad request
+        '401':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: Unauthorized
+        '403':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+          description: Forbidden
+        '404':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error404'
+          description: Not Found
+        '500':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal Server Error
+        '501':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error501'
+          description: Method not implemented.
+      summary: Unregister a listener
+      tags:
+        - events subscription
+    get:
+      description: >-
+        This operation retrieves a hub entity.
+      operationId: retrieveHub
+      parameters:
+        - description: Identifier of the Hub
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+
+            Reference: MEF 57.2 (Sn 9.18)
+          in: query
+          name: buyerId
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity  represents more than one Seller.
+
+            Reference: MEF 57.2 (Sn 9.18)
+          in: query
+          name: sellerId
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/EventSubscription'
+          description: Success
+        '400':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+          description: Bad Request
+        '401':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: Unauthorized
+        '403':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+          description: Forbidden
+        '404':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error404'
+          description: Not Found
+        '500':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+          description: Internal Server Error
+        '501':
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error501'
+          description: Method not implemented.
+      summary: Retrieves a Hub by ID
+      tags:
+        - events subscription
+components:
+  schemas:
+    ProductCategory:
+      type: object
+      description:
+        The Product Category is a grouping of Product Offerings in logical
+        containers defined by the Seller. A Product Category may contain other
+        (sub)Product Categories and/or Product Offerings.
+      properties:
+        id:
+          type: string
+          description:
+            Unique identifier (within the Seller domain) for the Product
+            Category.
+        href:
+          type: string
+          format: uri
+          description: Reference of the Product Category
+        name:
+          type: string
+          description: The name (unique within the Seller domain) of the Product Category
+        description:
+          type: string
+          description: Description of the Product Category
+        lastUpdate:
+          type: string
+          format: date-time
+          description: >-
+            The date and time the Product Category was created or most recently updated.
+        lifecycleStatus:
+          $ref: '#/components/schemas/CategoryLifecycleStatusType'
+          description: The current status of the Product Category.
+        parentCategory:
+          $ref: '#/components/schemas/CategoryRef'
+          description: Identifier referencing the Parent of this Product Category.
+        subCategory:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryRef'
+          description:
+            A list of references to Product Category, to which this Product
+            Category is a parent of.
+        productOffering:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductOfferingRef'
+          description:
+            A list of references to Product Offering grouped within this Category
+      required:
+        - id
+        - name
+        - description
+        - lastUpdate
+        - lifecycleStatus
+    CategoryLifecycleStatusType:
+      description: |
+        | Name                       | MEF 127 Name     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+        | -------------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | active                     | AVAILABLE        | A Product Category is in the `active` state when it can be used by the Buyer to retrieve Product Offerings and Product Specifications.                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+        | obsolete                   | OBSOLETE         | A Product Category is `obsolete` when it can no longer be used by the Buyer to retrieve Product Offerings or Product Specifications. The Product Category may be removed from the Product Catalog. This is a final state.                                                                                                                                                                                                                                                                                                                                                           |
+      enum:
+        - active
+        - obsolete
+    CategoryRef:
+      description: Represents the reference to Category
+      properties:
+        id:
+          description: >-
+            Unique (within the Seller domain) identifier for the Category
+          type: string
+        href:
+          description: Hyperlink to access the Category
+          format: uri
+          type: string
+      required:
+        - id
+      type: object
+    ProductOfferingRef:
+      type: object
+      description:
+        ProductOffering reference. A product offering represents entities that
+        are orderable from the provider of the catalog.
+      properties:
+        id:
+          type: string
+          description: >-
+            Unique (within the Seller domain) identifier for the Product
+            Offering.
+        href:
+          type: string
+          format: uri
+          description: Hyperlink to access the Product Offering
+      required:
+        - id
+    ProductOffering_Common:
+      type: object
+      description: >-
+        The Product Offering represents the Products orderable from a Seller’s Product Catalog.
+      properties:
+        id:
+          type: string
+          description:
+            Unique identifier (within the Seller domain) for the Product
+            Offering. Note - The Seller must create a new Product Offering
+            Identifier for every new version of a Product Offering. The Seller
+            may choose to incorporate the version information as part of the
+            Offering Identifier.
+        href:
+          type: string
+          format: uri
+          description: Hyperlink reference to the Product Offering
+        name:
+          type: string
+          description: The commercial name of the Product Offering
+        description:
+          type: string
+          description: Description of the Product Offering
+        lastUpdate:
+          type: string
+          format: date-time
+          description:
+            The date and time the Product Offering was created or most recently
+            updated.
+        lifecycleStatus:
+          $ref: '#/components/schemas/ProductOfferingLifecycleStatusType'
+        agreement:
+          type: string
+          description: >-
+            The name of the Seller's offer arrangement (such as a framework
+            agreement). This may be a standard offer agreement or a customer
+            specific agreement (e.g., for a customer specific Product Catalog
+            or customer specific Product Offering). The name is unique within
+            the Seller domain.
+        channel:
+          type: array
+          items:
+            type: string
+          description: |
+            The names of the sales channel through which the Product Offering 
+            is made available to the Buyer to order. The set of channel names
+            should be specified in the Agreement or provided during the onboarding
+            process. For example: reseller, distribution, directSales.
+            Note: If channel is an empty list, it implies that the Product Offering
+            is available in all Seller supported channels.
+        marketSegment:
+          type: array
+          items:
+            type: string
+          description: |
+            The names of the market segments  targeted for the Product Offering.
+            The set of market segment names should be specified in the Agreement
+            or provided during the onboarding process. For example: wholesale,
+            federal, financial. Note: If marketSegment is an empty list,
+            it implies that the Product Offering is available in all Seller
+            supported market segments
+        region:
+          type: array
+          items:
+            $ref: '#/components/schemas/Region'
+          description: |
+            Areas where the products are offered by the Seller to potential Buyers.
+            Note: If region is an empty list, it implies that the Product Offering
+            is available in all Seller supported Regions.
+        category:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryRef'
+          description: >-
+            The list of Product Category References in which this Product
+            Offering is grouped together with other Product Offerings available
+            to the Buyer.
+    ProductOffering_Find:
+      allOf:
+        - $ref: '#/components/schemas/ProductOffering_Common'
+        - description: >-
+            Represents entities that are orderable from the provider of the
+            catalog, this resource includes pricing information.
+          required:
+            - id
+            - name
+            - lastUpdate
+            - lifecycleStatus
+            - agreement
+            - channel
+            - marketSegment
+            - region
+            - category
+    ProductOffering:
+      allOf:
+        - $ref: '#/components/schemas/ProductOffering_Common'
+        - description: >-
+            Represents entities that are orderable from the provider of the
+            catalog, this resource included all available information of Product Offering
+          properties:
+            statusTransitions:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProductOfferingLifecycleStatusTransition'
+              description:
+                The list of planned Product Offering Status transitions, including
+                the date they are expected to occur.
+            productOfferingStatusReason:
+              type: string
+              description: >-
+                Provides complementary information on the reason why the Product
+                Offering Lifecycle Status is set to a particular value.
+            attachment:
+              type: array
+              items:
+                $ref: '#/components/schemas/AttachmentValue'
+              description: >-
+                Complements the Product Offering description with presentation,
+                video, pictures, etc.
+            relatedContactInformation:
+              description: >-
+                Defines the contact info and role for the related contact of a
+                Product Offering.
+
+                The 'role' is to specify the type of contact as specified in MEF
+                113:
+
+                Reporter Contact ('role=reporterContact') - REQUIRED in the request
+
+                Buyer Technical Contacts ('role=buyerTechnicalContact') 
+
+                Seller Ticket Contact ('role=sellerTicketContact') 
+
+                Seller Technical Contact ('role=sellerTechnicalContact')
+              items:
+                $ref: '#/components/schemas/RelatedContactInformation'
+              minItems: 1
+              type: array
+            productOfferingTerm:
+              type: array
+              items:
+                $ref: '#/components/schemas/MEFItemTerm'
+              description: >-
+                Commitment durations under which a Product Offering is available to
+                Buyers. For instance, a Product Offering can be made available with
+                multiple commitment periods of 1, 2 or 3 year terms.
+            note:
+              description: >
+                A set of comments for additional information.
+              items:
+                $ref: '#/components/schemas/Note'
+              type: array
+            productSpecification:
+              $ref: '#/components/schemas/ProductSpecificationRef'
+              description: >-
+                A Product Specification Reference to the detailed
+                description of the specifications and attributes defining all of
+                the Product Offering characteristics.
+            productOfferingContextualInfo:
+              items:
+                $ref: '#/components/schemas/ProductOfferingContextualInfo'
+              type: array
+              description: >-
+                Defines additional constraints on the Product Offering Specification
+                for use with the payload for a Product Offering for each Business Function
+                and Product Action.
+            productOfferingSpecification:
+              $ref: '#/components/schemas/SchemaRefOrValue'
+              description: >-
+                Reference (or value of) to Product Offering specific schema that is constrained schema 
+                of related Product Specification. Each instance must be valid against the Product Offering specific schema
+                must be valid against the original Product Specification schema (it's the logical subset).
+          required:
+            - id
+            - name
+            - lastUpdate
+            - lifecycleStatus
+            - agreement
+            - channel
+            - marketSegment
+            - region
+            - category
+            - productSpecification
+            - productOfferingSpecification
+    ProductOfferingLifecycleStatusType:
+      description: |
+        | Name         | MEF 127 Name   | Description                                                                                                                                                                                                                                  |
+        | ------------ | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | active       | ACTIVE         | When a Product Offering or Product Specification has been defined and will be made available for ordering; however, it is not yet generally available.                                                                                       |
+        | endOfSale    | END_OF_SALE    | The Product Offering or Product Specification cannot be Installed by any new or existing Buyers, but Buyers may still have Products in use and may Change or Disconnect it, and receive support.                                             |
+        | endOfSupport | END_OF_SUPPORT | When a Product Offering or Product Specification in the `endOfSale` state is no longer supported, the status transitions to `endOfSupport`. Any existing products can no longer be modified, with the only Order action allowed is `delete`. |
+        | obsolete     | OBSOLETE       | After a Product Offering or Product Specification that is no longer available it transitions to `obsolete` and may be removed at the Seller's discretion from the Product Catalog. This is a final state.                                    |
+        | onHold       | ON_HOLD        | A Product Offering or Product Specification that has been `orderable`, but is currently not available for Buyers due to supply constraints, product recall or other issues preventing it to be offered.                                      |
+        | orderable    | ORDERABLE      | A new Product Offering or Product Specification is in the `orderable` state when it is available for ordering by Buyers.                                                                                                                     |
+        | inTest    | PILOT_BETA     | When a Product Offering or Product Specification starts Pilot/Beta testing, it starts in the `pilotBeta` state .                                                                                                                             |
+        | rejected     | REJECTED       | When PILOT_BETA testing fails the Product Offering or Product Specification transitions to the `rejected` state. This is a final state.                                                                                                      |
+      enum:
+        - active
+        - endOfSale
+        - endOfSupport
+        - obsolete
+        - onHold
+        - orderable
+        - inTest
+        - rejected
+    ProductSpecificationLifecycleStatusType:
+      description: |
+        | Name         | MEF 127 Name   | Description                                                                                                                                                                                                                                  |
+        | ------------ | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | active       | ACTIVE         | When a Product Specification has been defined and will be made available for ordering; however, it is not yet generally available.                                                                                       |
+        | endOfSale    | END_OF_SALE    | The endOfSale status means that Product Specification cannot be used for creation of a new Product Offerings.                                             |
+        | endOfSupport | END_OF_SUPPORT | When a Product Specification in the endOfSale status is no longer supported, the status transitions to endOfSupport. Any existing products can no longer be Changed, with the only Order action allowed is Disconnect. |
+        | obsolete     | OBSOLETE       | After a Product Specification that is no longer available it transitions to obsolete and may be removed at the Seller’s discretion from the Product Catalog. This is a final state.                                  |
+        | onHold       | ON_HOLD        | A Product Specification that has been orderable, but is currently not available for Buyers due to supply constraints, product recall or other issues preventing it to be offered.                                      |
+        | orderable    | ORDERABLE      | A Product Specification is in the `orderable` state when it is available for ordering by Buyers.                                                                                                                     |
+        | inTest    | PILOT_BETA     | When a Product Specification starts Pilot/Beta testing, it starts in the inTest state.                                                                                                                             |
+        | rejected     | REJECTED       | When Pilot/Beta testing fails the Product Specification to the rejected state. This is a final state.                                                                                                      |
+      enum:
+        - active
+        - endOfSale
+        - endOfSupport
+        - obsolete
+        - onHold
+        - orderable
+        - inTest
+        - rejected
+    ProductOfferingLifecycleStatusTransition:
+      type: object
+      description:
+        The planned Product Offering Status transition, including the date it
+        is expected to occur.
+      properties:
+        transitionDate:
+          type: string
+          format: date-time
+          description:
+            The Date and Time that the Next Product Offering Status transition
+            is planned to occur.
+        transitionLifecycleStatus:
+          $ref: '#/components/schemas/ProductOfferingLifecycleStatusType'
+          description:
+            The status of the Product Offering on the planned Transition Date.
+      required:
+        - plannedTransitionDate
+        - plannedLifecycleStatus
+    AttachmentValue:
+      description: >-
+        Complements the description of an element (for instance a product)
+        through video, pictures...
+      properties:
+        attachmentId:
+          description: >-
+            locally unique identifier to distinguish items from the Attachment
+            list.
+          type: string
+        author:
+          description:
+            The name of the person or organization who added the Attachment.
+          type: string
+        content:
+          description: >-
+            The actual contents of the attachment object, if embedded, encoded
+            as base64. Either url or (content and mimeType) attributes MUST be
+            provided during creation.
+          type: string
+        creationDate:
+          description: The date the Attachment was added.
+          format: date-time
+          type: string
+        description:
+          description:
+            A narrative text describing the content of the attachment
+          type: string
+        mimeType:
+          description: >-
+            Attachment mime type such as extension file for video, picture and
+            document
+          type: string
+        name:
+          description: The name of the attachment
+          type: string
+        size:
+          $ref: '#/components/schemas/MEFByteSize'
+          description: The size of the attachment.
+        source:
+          $ref: '#/components/schemas/MEFBuyerSellerType'
+          description:
+            Indicates if the attachment was added by the Buyer or the Seller.
+        url:
+          description:
+            URL where the attachment is located. Either url or (content and
+            mimeType) attributes MUST be provided during creation.
+          type: string
+      type: object
+      required:
+        - author
+        - creationDate
+        - name
+        - source
+    DataSizeUnit:
+      description: The unit of measure in the data size.
+      enum:
+        - BYTES
+        - KBYTES
+        - MBYTES
+        - GBYTES
+        - TBYTES
+        - PBYTES
+        - EBYTES
+        - ZBYTES
+        - YBYTES
+      type: string
+    MEFBuyerSellerType:
+      description: An enumeration with buyer and seller values.
+      enum:
+        - buyer
+        - seller
+      type: string
+    MEFByteSize:
+      description: A size represented by value and Byte units
+      properties:
+        amount:
+          default: 1
+          description: Numeric value in a given unit
+          format: float
+          type: number
+        units:
+          $ref: '#/components/schemas/DataSizeUnit'
+          description: Byte Unit
+      type: object
+      required:
+        - amount
+        - units
+    RelatedContactInformation:
+      description: >-
+        Contact data for a person or organization that is involved in a given
+        context. It is specified by the Seller (e.g. Seller Contact
+        Information) or by the Buyer.
+      properties:
+        emailAddress:
+          description: Email address
+          type: string
+        name:
+          description: Name of the contact
+          type: string
+        number:
+          description: Phone number
+          type: string
+        numberExtension:
+          description: Phone number extension
+          type: string
+        organization:
+          description: The organization or company that the contact belongs to
+          type: string
+        postalAddress:
+          $ref: '#/components/schemas/FieldedAddress'
+          description: >-
+            Identifies the postal address of the person or office to be
+            contacted.
+        role:
+          description: A role the party plays in a given context.
+          type: string
+      required:
+        - emailAddress
+        - name
+        - number
+        - role
+      type: object
+    FieldedAddress:
+      description: >-
+        A type of Address that has a discrete field and value for each type of
+        boundary or identifier down to the lowest level of detail. For example
+        "street number" is one field, "street name" is another field, etc.
+        Reference: MEF 79 (Sn 8.9.2)
+      properties:
+        country:
+          description: Country that the address is in
+          type: string
+        streetType:
+          description: >-
+            The type of street (e.g., alley, avenue, boulevard, brae, crescent,
+            drive, highway, lane, terrace, parade, place, tarn, way, wharf)
+          type: string
+        postcodeExtension:
+          description: >-
+            An extension of a postal code. E.g. the part following the dash in
+            a US urban property address
+          type: string
+        city:
+          description: The city that the address is in
+          type: string
+        streetNr:
+          description: >-
+            Number identifying a specific property on a public street. It may
+            be combined with streetNrLast for ranged addresses. MEF 79 defines
+            it as required however as in certain countries it is not used we
+            make it optional in API.
+          type: string
+        locality:
+          description: The locality that the address is in
+          type: string
+        postcode:
+          description: >-
+            Descriptor for a postal delivery area, used to speed and simplify
+            the delivery of mail (also known as zip code)
+          type: string
+        streetNrLast:
+          description:
+            Last number in a range of street numbers allocated to a property
+          type: string
+        streetNrSuffix:
+          description: The first street number suffix
+          type: string
+        streetName:
+          description: Name of the street or other street type
+          type: string
+        stateOrProvince:
+          description: The State or Province that the address is in
+          type: string
+        streetNrLastSuffix:
+          description: Last street number suffix for a ranged address
+          type: string
+        geographicSubAddress:
+          $ref: '#/components/schemas/GeographicSubAddress'
+        streetSuffix:
+          description: A modifier denoting a relative direction
+          type: string
+      required:
+        - city
+        - country
+        - streetName
+      type: object
+    GeographicSubAddress:
+      description:
+        Additional fields used to specify an address, as detailed as possible.
+      properties:
+        buildingName:
+          description: >
+            Allows for identification of places that require building name  as
+            part of addressing information
+          type: string
+        id:
+          description: Unique Identifier of the subAddress
+          type: string
+        levelNumber:
+          description:
+            Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT 2
+          type: string
+        levelType:
+          description: Describes level types within a building
+          type: string
+        privateStreetName:
+          description: >-
+            "Private streets internal to a property (e.g. a university) may
+            have internal names that are not recorded by the land title office
+          type: string
+        privateStreetNumber:
+          description: Private streets numbers internal to a private street
+          type: string
+        subUnit:
+          description: >-
+            Representation of a MEFSubUnit It is used for describing subunit
+            within a subaddress  e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
+            UNIT, WHARF.
+          items:
+            $ref: '#/components/schemas/MEFSubUnit'
+          type: array
+      type: object
+    MEFSubUnit:
+      description: Allows for sub unit identification
+      properties:
+        subUnitNumber:
+          description: >-
+            The discriminator used for the subunit, often just a simple number
+            but may also be a range.
+          type: string
+        subUnitType:
+          description: >-
+            The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
+            UNIT, WHARF.
+          type: string
+      required:
+        - subUnitNumber
+        - subUnitType
+      type: object
+    Region:
+      description: Specifies a region
+      properties:
+        locality:
+          description: >-
+            An area of defined or undefined present boundaries within a local
+            authority or other legislatively defined area, usually rural or
+            semi-rural in nature.
+          type: string
+        stateOrProvince:
+          description: The State or Province that the address is in
+          type: string
+        country:
+          description: The Country the region is located.
+          type: string
+      required:
+        - country
+      type: object
+    MEFItemTerm:
+      description: The term of the Item
+      properties:
+        description:
+          description: Description of the term
+          type: string
+        duration:
+          $ref: '#/components/schemas/Duration'
+          description: Duration of the term
+        endOfTermAction:
+          $ref: '#/components/schemas/MEFEndOfTermAction'
+          description: >-
+            The action that needs to be taken by the Seller once the term
+            expires
+        name:
+          description: Name of the term
+          type: string
+        rollInterval:
+          $ref: '#/components/schemas/Duration'
+          description: >-
+            The recurring period that the Buyer is willing to pay for the
+            Product after the original term has expired.
+      type: object
+      required:
+        - name
+        - duration
+        - endOfTermAction
+    Duration:
+      description: A Duration in a given unit of time e.g. 3 hours, or 5 days.
+      properties:
+        amount:
+          description: Duration (number of seconds, minutes, hours, etc.)
+          type: integer
+        units:
+          $ref: '#/components/schemas/TimeUnit'
+          description: Time unit type
+      required:
+        - amount
+        - units
+      type: object
+    MEFEndOfTermAction:
+      description: >-
+        The action the Seller will take once the term expires. 
+
+        Roll indicates that the Product's contract will continue on a rolling
+        basis for the duration of the Roll Interval at the end of the Term.  
+
+        Auto-disconnect indicates that the Product will be disconnected at the
+        end of the Term. 
+
+        Auto-renew indicates that the Product's contract will be automatically
+        renewed for the Term Duration at the end of the Term.
+      enum:
+        - roll
+        - autoDisconnect
+        - autoRenew
+      type: string
+    TimeUnit:
+      description: |
+        Represents a unit of time.
+        Reference: MEF 57.2 (Sn 9.22)
+      enum:
+        - calendarMonths
+        - calendarDays
+        - calendarHours
+        - calendarMinutes
+        - businessDays
+        - businessHours
+        - businessMinutes
+      type: string
+    Note:
+      description: >-
+        Extra information about a given entity. Only useful in processes
+        involving human interaction. Not applicable for the automated process.
+      properties:
+        author:
+          description: Author of the note
+          type: string
+        date:
+          description: Date the Note was created
+          format: date-time
+          type: string
+        id:
+          description: >-
+            Identifier of the note within its containing entity (may or may not
+            be globally unique, depending on provider implementation)
+          type: string
+        source:
+          $ref: '#/components/schemas/MEFBuyerSellerType'
+          description: Indicates if the note is from Buyer or Seller
+        text:
+          description: Text of the note
+          type: string
+      required:
+        - author
+        - date
+        - id
+        - source
+        - text
+      type: object
+    ProductSpecificationRef:
+      type: object
+      description: Product Specification reference.
+      properties:
+        id:
+          type: string
+          description: >-
+            Unique (within the Seller domain) identifier for the Product
+            Specification.
+        href:
+          type: string
+          format: uri
+          description: Hyperlink to access the Product Specification
+      required:
+        - id
+    ProductOfferingContextualInfo:
+      type: object
+      description: >-
+        Constrained Product Schema that should be used by the Buyer in the defined Context, where Context
+        is built as pair - a Business Function (e.g. Quote) and Product Action (e.g. install). Those product schemas are
+        created by applying the constraints to Product Schemas defined in the Product Specification.
+        Contextual info MUST be provided for every possible combination of Product Actions and Business Functions 
+        (if there are no differences per function of per action then use wildcard - 'all' -  and reuse the value of 
+        Product Offering Specification attribute).
+      properties:
+        contextSchema: 
+          $ref: "#/components/schemas/SchemaRefOrValue"
+          description: >-
+            Product Schema that is defined for the given Context. 
+            Scheme **MUST** be compliant with JSON scheme standard.
+        context:
+          $ref: '#/components/schemas/Context'
+      required:
+        - contextSchema
+        - context
+    SchemaRefOrValue:
+      type: object
+      description: >-
+        Reference to the JSON schema location or the exact value of the JSON schema.
+        **Note:** One of the properties must be provided i.e. schemaLocation or schema.
+      properties:
+        schema:
+          type: string
+          description: Raw JSON schema value.
+        schemaLocation:
+          type: string
+          format: uri
+          description:
+            This field provides a link to the schema describing the target
+            product
+    Context:
+      type: object
+      description: >-
+        Context that is defined as a two-dimensional vector of Business Function and Product Action.
+      properties:
+        productAction:
+          $ref: '#/components/schemas/MEFProductAction'
+          description: Defines Product Action to which the given context applies.
+        businessFunction:
+          $ref: '#/components/schemas/MEFBusinessFunction'
+          description: Defines Business Function to which the given context applies.
+    MEFProductAction:
+      description: >-
+        Action that could be applied to the Product (or future product) during the execution of the Business Function.
+        Value 'All' is the wildcard - stands for any action.
+      type: string
+      enum:
+        - add
+        - modify
+        - all
+    MEFBusinessFunction:
+      description: >-
+        Business Function that could be executed for the given Product accordingly to LSO Cantata/Sonata IRPs. 
+        Value 'All' is the wildcard - stands for any action.
+      type: string
+      enum:
+        - productOfferingQualification
+        - quote
+        - productOrder
+        - productInventory
+        - all
+    ProductSpecification_Common:
+      type: object
+      description: Is the basis for all Production Specification representations.
+      properties:
+        id:
+          type: string
+          description:
+            Unique identifier (within the Seller domain) for the Product
+            Specification.
+        href:
+          type: string
+          format: uri
+          description: Reference of the Product Specification
+        name:
+          type: string
+          description: Name of the Product Specification
+        lifecycleStatus:
+          $ref: '#/components/schemas/ProductSpecificationLifecycleStatusType'
+          description: The current status of the Product Offering.
+        lastUpdate:
+          type: string
+          format: date-time
+          description:
+            The date and time the Product Specification was created or most
+            recently updated.
+    ProductSpecification_Find:
+      allOf:
+        - $ref: '#/components/schemas/ProductSpecification_Common'
+        - description: Is a lightweight version of the Product Specification object used in Get List use case.
+          required:
+            - id
+            - name
+            - lastUpdate
+            - lifecycleStatus
+    ProductSpecification:
+      allOf:
+        - $ref: '#/components/schemas/ProductSpecification_Common'
+        - description:
+            Is a detailed description of a tangible or intangible object made
+            available externally in the form of a ProductOffering to customers or
+            other parties playing a party role.
+          properties:
+            brand:
+              type: string
+              description:
+                The manufacturer or trademark of the Product Specification if the
+                Seller requires a CPE on the Buyer's premise.
+            description:
+              type: string
+              description: Description of the Product Specification.
+            productNumber:
+              type: string
+              description:
+                An identifier assigned to the model or version of the CPE used in
+                conjunction with the Brand (for example hardware SKU or software
+                license key).
+            attachment:
+              type: array
+              items:
+                $ref: '#/components/schemas/AttachmentValue'
+              description: >-
+                Complements the Product Offering description with presentation,
+                video, pictures, etc. This would only be expected to be used to
+                provide additional information if there is a CPE re-quired, for
+                instance a link to the website of the CPE vendor.
+            note:
+              type: array
+              description: >
+                A set of comments for additional information.
+              items:
+                $ref: '#/components/schemas/Note'
+            sourceSchema:
+              $ref: '#/components/schemas/SchemaRefOrValue'
+              description: A reference to the schema that defines the Product.
+            productSpecificationRelationship:
+              type: array
+              description: >-
+                List of relations between defined Product Specifications.
+              items:
+                $ref: '#/components/schemas/ProductSpecificationRelationship'
+          required:
+            - id
+            - name
+            - description
+            - lastUpdate
+            - lifecycleStatus
+            - sourceSchema
+            - productSpecificationRelationship
+    ProductSpecificationRelationship:
+      type: object
+      description: >-
+        Uni-directional relationship between the Products (the owner of the relation is the Product that defines it).
+        Relation defines the type and the cardinalities.
+      properties:
+        id:
+          type: string
+          description: Identifier of the targeted Product Specification
+        relationshipType:
+          type: string
+          description: >-
+            Defines the type of the relation or the role of the relation owner in the context of this relation 
+            e.g. hosts, aggregates
+        minCardinality:
+          type: integer
+          minimum: 0
+          default: 0
+          description: >-
+            The minimal number of the related Products that must be satisfied. 
+            e.g. Access E-Line requires at least two End Points.
+        maxCardinality:
+          type: integer
+          maximum: -1
+          default: -1
+          description: >-
+            The maximal number of the related Products that must be satisfied. 
+            e.g. Endpoint must be related with only one Access E-Line.
+            `-1` stands for infinity i.e. any number of instances of the given type could be related to the considered instance.
+      required:
+        - id
+        - type
+    Error:
+      description: >
+        Standard Class used to describe API response error Not intended to be
+        used directly. The `code` in the HTTP header is used as a discriminator
+        for the type of error returned in runtime.
+      properties:
+        reason:
+          description: >-
+            Text that explains the reason for the error. This can be shown to a
+            client user.
+          maxLength: 255
+          type: string
+        message:
+          description: >-
+            Text that provides mode details and corrective actions related to
+            the error. This can be shown to a client user.
+          type: string
+        referenceError:
+          description: URL pointing to documentation describing the error
+          format: uri
+          type: string
+      required:
+        - reason
+      type: object
+    Error400:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              $ref: '#/components/schemas/Error400Code'
+              description: >-
+                One of the following error codes:
+
+                - missingQueryParameter: The URI is missing a required
+                query-string parameter
+
+                - missingQueryValue: The URI is missing a required query-string
+                parameter value
+
+                - invalidQuery: The query section of the URI is invalid.
+
+                - invalidBody: The request has an invalid body
+          required:
+            - code
+          type: object
+      description:
+        Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)
+    Error400Code:
+      description: >-
+        One of the following error codes:
+
+        - missingQueryParameter: The URI is missing a required query-string
+        parameter
+
+        - missingQueryValue: The URI is missing a required query-string
+        parameter value
+
+        - invalidQuery: The query section of the URI is invalid.
+
+        - invalidBody: The request has an invalid body
+      enum:
+        - missingQueryParameter
+        - missingQueryValue
+        - invalidQuery
+        - invalidBody
+      type: string
+    Error401:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              $ref: '#/components/schemas/Error401Code'
+              description: >-
+                One of the following error codes:
+
+                - missingCredentials: No credentials provided.
+
+                - invalidCredentials: Provided credentials are invalid or
+                expired
+          required:
+            - code
+          type: object
+      description:
+        Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)
+    Error401Code:
+      description: |-
+        One of the following error codes:
+        - missingCredentials: No credentials provided.
+        - invalidCredentials: Provided credentials are invalid or expired
+      enum:
+        - missingCredentials
+        - invalidCredentials
+      type: string
+    Error403:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              $ref: '#/components/schemas/Error403Code'
+              description: |-
+                This code indicates that the server understood
+                the request but refuses to authorize it because
+                of one of the following error codes:
+                - accessDenied: Access denied
+                - forbiddenRequester: Forbidden requester
+                - tooManyUsers: Too many users
+          required:
+            - code
+          type: object
+      description: >-
+        Forbidden. This code indicates that the server understood the request
+        but refuses to authorize it.
+        (https://tools.ietf.org/html/rfc7231#section-6.5.3)
+    Error403Code:
+      description: |-
+        This code indicates that the server understood
+        the request but refuses to authorize it because
+        of one of the following error codes:
+        - accessDenied: Access denied
+        - forbiddenRequester: Forbidden requester
+        - tooManyUsers: Too many users
+      enum:
+        - accessDenied
+        - forbiddenRequester
+        - tooManyUsers
+      type: string
+    Error404:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              description: >-
+                The following error code:
+
+                - notFound: A current representation for the target resource
+                not found
+              enum:
+                - notFound
+              type: string
+          required:
+            - code
+          type: object
+      description: >-
+        Resource for the requested path not found.
+        (https://tools.ietf.org/html/rfc7231#section-6.5.4)
+    Error500:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              description: >-
+                The following error code:
+
+                - internalError: Internal server error - the server encountered
+                an unexpected condition that prevented it from fulfilling the
+                request.
+              enum:
+                - internalError
+              type: string
+          required:
+            - code
+          type: object
+      description: >-
+        Internal Server Error.
+        (https://tools.ietf.org/html/rfc7231#section-6.6.1)
+    Error501:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              description: |-
+                The following error code:
+                - notImplemented: Method not supported by the server
+              enum:
+                - notImplemented
+              type: string
+          required:
+            - code
+          type: object
+      description: >-
+        Not Implemented. Used in case Seller is not supporting an optional
+        operation (https://tools.ietf.org/html/rfc7231#section-6.6.2)
+    EventSubscription:
+      description: |
+        This resource is used to respond to notification subscriptions.
+      properties:
+        callback:
+          description: >-
+            The value provided by the Buyer in `EventSubscriptionInput` during
+            notification registration
+          type: string
+        id:
+          description: >-
+            An identifier of this Event Subscription assigned by the Seller
+            when a resource is created.
+          type: string
+        query:
+          description: >-
+            The value provided by the Buyer in `EventSubscriptionInput` during
+            notification registration
+          type: string
+      required:
+        - callback
+        - id
+      type: object
+    EventSubscriptionInput:
+      description: This class is used to register for Notifications.
+      properties:
+        callback:
+          description: >-
+            This callback value must be set to *host* property from Buyer
+            Product Catalog Notification API
+            (productCatalogNotification.api.yaml). This property is appended
+            with the base path and notification resource path specified in that
+            API to construct an URL to which notification is sent. E.g. for
+            "callback": "https://buyer.com/listenerEndpoint", the Product Specification
+            state change event notification will be sent to:
+            `https://buyer.com/listenerEndpoint/mefApi/sonata/productCatalogSpecification/v9/listener/productCatalogStateChange`
+          type: string
+        query:
+          type: string
+          description: >-
+            This attribute is used to define to which type of events to register to.
+            See the `ProductCategoryEventType`, `ProductSpecificationEventType`, `ProductOfferingEventType`
+            in (productCatalogNotification.api.yaml to check what kind of events are supported.
+            To subscribe for more than one event type, put the values separated by comma:
+            `eventType=productOfferingCreateEvent,productOfferingAttributeValueChangeEvent`
+            or repeat the same attribute:
+            `eventType=productOfferingCreateEvent&eventType=productOfferingAttributeValueChangeEvent`
+            An empty query is treated as specifying no filters - ending in subscription for all event types. 
+      required:
+        - callback
+      type: object
+    Any: {}

@@ -1,0 +1,102 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+class IpBwpFlow {
+
+    flowIdentifier: integer
+    weight: integer
+    burstBehavior: BurstBehavior
+}
+
+IpBwpFlow *--> InformationRate : maxIr
+IpBwpFlow *--> InformationRate : cir
+
+IpUniBwpEnvelope *--> IpBwpFlow
+IpBwpEnvelope <-d-* IpBwpFlow
+
+class IpBwpEnvelope {
+
+    tE: integer
+}
+
+IpBwpEnvelope *--> InformationRate : maxIrE
+
+
+class IpUniBwpEnvelope {
+
+}
+IpBwpEnvelope <|-- IpUniBwpEnvelope
+
+IpUniBwpEnvelope *-->"*" IpBwpFlowPerIpvcEp : bwpFlowPerIpvcEp
+IpUniBwpEnvelope *-->"*" IpBwpFlowPerIpvcEpAccessLink : bwpFlowPerIpvcEpAccessLink
+IpUniBwpEnvelope *--> IpBwpFlowAll : bwpFlowAll
+IpUniBwpEnvelope *-->"*" IpBwpFlowPerAccessLink : bwpFlowPerAccessLink
+IpUniBwpEnvelope *-->"*" IpBwpFlowPerIpvcEpAndCosName : bwpFlowPerIpvcEpAndCosName
+IpUniBwpEnvelope *-->"*" IpBwpFlowPerAccessLinkIpvcEpAndCosName : bwpFlowPerAccessLinkIpvcEpAndCosName
+
+class IpBwpFlowPerAccessLinkIpvcEpAndCosName {
+
+}
+IpBwpFlow <|-d- IpBwpFlowPerAccessLinkIpvcEpAndCosName
+
+IpBwpFlowPerAccessLinkIpvcEpAndCosName *-->"*" IpvcEpAndCosName : ipvcEpAndCosName
+IpBwpFlowPerAccessLinkIpvcEpAndCosName *-->"*" IpUniAccessLinkIdentifier : uniAccessLinkIdentifier
+
+class InformationRate {
+
+    irValue: number
+    irUnits: IrUnits
+}
+
+
+class IpBwpFlowAll {
+
+}
+IpBwpFlow <|-- IpBwpFlowAll
+
+
+
+class IpBwpFlowPerIpvcEp {
+
+}
+IpBwpFlow <|-- IpBwpFlowPerIpvcEp
+
+IpBwpFlowPerIpvcEp *-->"*" IpvcEndPointIdentifier : ipvcEndPointIdentifier
+
+
+class IpBwpFlowPerIpvcEpAndCosName {
+
+}
+IpBwpFlow <|-- IpBwpFlowPerIpvcEpAndCosName
+
+IpBwpFlowPerIpvcEpAndCosName *-->"*" IpvcEpAndCosName : ipvcEpAndCosName
+
+
+
+class IpBwpFlowPerAccessLink {
+
+}
+IpBwpFlow <|-- IpBwpFlowPerAccessLink
+
+IpBwpFlowPerAccessLink *-->"*" IpUniAccessLinkIdentifier : uniAccessLinkIdentifier
+
+
+class IpBwpFlowPerIpvcEpAccessLink {
+
+}
+IpBwpFlow <|-- IpBwpFlowPerIpvcEpAccessLink
+
+IpBwpFlowPerIpvcEpAccessLink *-->"*" IpvcEndPointIdentifier : ipvcEndPointIdentifier
+IpBwpFlowPerIpvcEpAccessLink *-->"*" IpUniAccessLinkIdentifier : uniAccessLinkIdentifier
+
+class IpvcEpAndCosName {
+
+    cosName: string
+}
+
+IpvcEpAndCosName *--> IpvcEndPointIdentifier : ipvcEndPointIdentifier
+
+
+@enduml

@@ -1,0 +1,81 @@
+@startuml
+
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class IpUniAccessLinkCommon {
+    identifier: IdentifierString
+    connectionType: ConnectionType
+    prefixDelegation: EnabledDisabled
+    mtu: integer
+}
+
+IpUniAccessLinkCommon *-r-> L2Technology : l2Technology
+IpUniAccessLinkCommon *-l->"*" Vrid : reservedVrids
+
+class BasicIaIpUniAccessLink {
+
+}
+IpUniAccessLinkCommon <|-u- BasicIaIpUniAccessLink
+
+BasicIaIpUniAccessLink *-u-> BasicIaBwpEnvelope : egressBwpEnvelope
+BasicIaIpUniAccessLink *-u-> BasicIaBwpEnvelope : ingressBwpEnvelope
+BasicIaIpUniAccessLink *-u-> BasicIaUniIpv4ConnectionAddressing : ipv4ConnectionAddressing
+BasicIaIpUniAccessLink *-u-> BasicIaUniIpv6ConnectionAddressing : ipv6ConnectionAddressing
+
+
+class IpUniAccessLink {
+
+}
+IpUniAccessLinkCommon <|-d- IpUniAccessLink
+
+IpUniAccessLink *--> AccessLinkBfd : bfd
+IpUniAccessLink *--> DhcpRelay : dhcpRelay
+IpUniAccessLink *--> IpUniAccessLinkBwpEnvelope : egressBwpEnvelope
+IpUniAccessLink *--> IpUniAccessLinkBwpEnvelope : ingressBwpEnvelope
+IpUniAccessLink *--> UniIpv4ConnectionAddressing : ipv4ConnectionAddressing
+IpUniAccessLink *--> UniIpv6ConnectionAddressing : ipv6ConnectionAddressing
+
+
+class L2Technology  {
+  <<skipped>>
+}
+class UniIpv4ConnectionAddressing  {
+  <<skipped>>
+}
+class UniIpv6ConnectionAddressing  {
+  <<skipped>>
+}
+class BasicIaUniIpv4ConnectionAddressing  {
+  <<skipped>>
+}
+class BasicIaUniIpv6ConnectionAddressing  {
+  <<skipped>>
+}
+class BasicIaBwpEnvelope  {
+  <<skipped>>
+}
+class IpUniAccessLinkBwpEnvelope  {
+  <<skipped>>
+}
+class AccessLinkBfd {
+
+    activeEnd: BfdActiveEnd
+    authenticationType: BfdAuthenticationType
+    connectionAddressFamily: AddressFamilyIpv4Ipv6Both
+    detectMultiplier: integer
+    transmissionInterval: integer
+}
+
+
+
+class DhcpRelay {
+
+}
+
+DhcpRelay *-->"*" Ipv4OrIpv6Address : dhcpServerList
+DhcpRelay *--> IdentifierString : ipvcEndPointIdentifier
+
+@enduml

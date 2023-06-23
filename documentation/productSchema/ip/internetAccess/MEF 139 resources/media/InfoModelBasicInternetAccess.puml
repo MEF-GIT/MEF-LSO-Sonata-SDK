@@ -1,0 +1,50 @@
+@startuml
+
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+rectangle "Product: Basic Internet Access" { 
+
+  class BasicInternetAccess {
+
+  }
+  BasicInternetAccess *-->"1" BasicIaIpvc : ipvc
+  BasicInternetAccess *-->"1" BasicIaIpUni : ipUni
+  BasicInternetAccess *-->"1" BasicIaIpUniAccessLink : ipUniAccessLink
+  BasicInternetAccess *-->"1" EthernetUniAccessLinkTrunk : ipUniAccessLinkTrunk
+  
+
+
+  class BasicIaIpvc {
+
+  }
+
+  BasicIaIpvc *-->"1" BasicIaIpvcEndPoint : ipvcEndPoint
+
+
+  class BasicIaIpUni {
+
+  }
+
+
+
+  class BasicIaIpUniAccessLink {
+
+  }
+
+  class EthernetUniAccessLinkTrunk {
+
+  }
+
+}
+
+EthernetUniAccessLinkTrunk "0..*" o-d-> "1" RelatedPlaceRefOrValue : INSTALL_LOCATION
+
+' extra for alignment
+BasicIaIpUniAccessLink "0..*" o-[hidden]-> "1" RelatedPlaceRefOrValue : INSTALL_LOCATION
+
+BasicIaIpvcEndPoint "0..*" o-[hidden]-> "1" RelatedPlaceRefOrValue : INSTALL_LOCATION
+
+@enduml

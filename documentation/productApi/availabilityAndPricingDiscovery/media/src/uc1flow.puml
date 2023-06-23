@@ -1,0 +1,18 @@
+@startuml
+
+hide footbox
+
+participant Buyer
+participant Seller
+
+Buyer -> Seller : POST {{baseUrl}}/productOfferingAvailability\n(with ProductOfferingAvailability_Request)
+
+Seller -> Seller : validate Request
+Seller -> Seller : validate delivery context\nconformance with Product Specification
+
+alt success
+    Buyer <-- Seller : 200 ProductOfferingAvailability\n(with 0 or more ProductOfferingConfiguration)
+else validation or internal problem
+    Buyer <-- Seller: 4xx/5xx : error response
+end
+@enduml

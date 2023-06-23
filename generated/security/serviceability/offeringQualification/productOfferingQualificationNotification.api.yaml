@@ -1,34 +1,28 @@
 openapi: 3.0.1
 info:
-  description: |
-    **This file forms part of MEF 87**
-          
-    This API implements Business Requirements described in MEF 79
-
-    The Product Offering Qualification (POQ) Management API allows a Buyer to
-    check whether the Seller can deliver a product or set of products from
-    among their product offerings at the geographic address or a service site
-    specified by the Buyer; or modify a previously purchased product.
-
-    The following use cases are managed:
-    - Send POQ Notifications
-
-    Copyright 2021 MEF Forum and its contributors
-
-    This file includes content based on the TM Forum Product Offering
-    Qualification API (TMF679 v4.0.0) available at
-    https://github.com/tmforum-apis/TMF679_ProductOfferingQualification, which
-    is licensed by the TM Forum under the Apache License version 2.0. Such
-    content has been modified by the MEF Forum and its contributors.
+  description:
+    "**This file forms part of MEF 87**\n      \nThis API implements Business\
+    \ Requirements described in MEF 79\n\nThe Product Offering Qualification (POQ)\
+    \ Management API allows a Buyer to\ncheck whether the Seller can deliver a product\
+    \ or set of products from\namong their product offerings at the geographic address\
+    \ or a service site\nspecified by the Buyer; or modify a previously purchased\
+    \ product.\n\nThe following use cases are managed:\n- Send POQ Notifications\n\
+    \nCopyright 2021 MEF Forum and its contributors\n\nThis file includes content\
+    \ based on the TM Forum Product Offering\nQualification API (TMF679 v4.0.0) available\
+    \ at\nhttps://github.com/tmforum-apis/TMF679_ProductOfferingQualification, which\n\
+    is licensed by the TM Forum under the Apache License version 2.0. Such\ncontent\
+    \ has been modified by the MEF Forum and its contributors.\n"
   title: Product Offering Qualification Notification
   version: 7.0.1
 servers:
-  - url: >-
-      https://{serverBase}/mefApi/sonata/productOfferingQualificationNotification/v7/
+  - url: "https://{serverBase}/mefApi/sonata/productOfferingQualificationNotification/v7/"
     variables:
       serverBase:
         default: mef.net
         description: The base of Buyer's URL.
+security:
+  - oauth2MEFLSOAPI:
+      - default
 tags:
   - description: |
       The Buyer's endpoint to send particular event types notifications to.
@@ -37,43 +31,41 @@ paths:
   /listener/poqCreateEvent:
     post:
       deprecated: false
-      description:
-        This endpoint is used to receive notifications on POQ creation
+      description: This endpoint is used to receive notifications on POQ creation
       operationId: poqCreateEvent
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/Event'
+              $ref: "#/components/schemas/Event"
         description: The event body
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -85,43 +77,41 @@ paths:
   /listener/poqStateChangeEvent:
     post:
       deprecated: false
-      description:
-        This endpoint is used to receive notifications on POQ state change
+      description: This endpoint is used to receive notifications on POQ state change
       operationId: poqStateChangeEvent
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/Event'
+              $ref: "#/components/schemas/Event"
         description: The event body
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -140,35 +130,34 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/Event'
+              $ref: "#/components/schemas/Event"
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error400'
+                $ref: "#/components/schemas/Error400"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error401'
+                $ref: "#/components/schemas/Error401"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error403'
+                $ref: "#/components/schemas/Error403"
           description: Forbidden
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error500'
+                $ref: "#/components/schemas/Error500"
           description: Internal Server Error
       security:
         - oauth2MEFLSOAPI:
@@ -181,17 +170,11 @@ components:
   schemas:
     Error400Code:
       type: string
-      description: >-
+      description: |-
         One of the following error codes:
-
-        - missingQueryParameter: The URI is missing a required query-string
-        parameter
-
-        - missingQueryValue: The URI is missing a required query-string
-        parameter value
-
+        - missingQueryParameter: The URI is missing a required query-string parameter
+        - missingQueryValue: The URI is missing a required query-string parameter value
         - invalidQuery: The query section of the URI is invalid.
-
         - invalidBody: The request has an invalid body
       enum:
         - missingQueryParameter
@@ -200,22 +183,20 @@ components:
         - invalidBody
     Error:
       type: object
-      description: >
-        Standard Class used to describe API response error Not intended to be
-        used directly. The `code` in the HTTP header is used as a discriminator
-        for the type of error returned in runtime.
+      description: |
+        Standard Class used to describe API response error Not intended to be used directly. The `code` in the HTTP header is used as a discriminator for the type of error returned in runtime.
       properties:
         reason:
           type: string
-          description: >-
-            Text that explains the reason for the error. This can be shown to a
-            client user.
+          description:
+            Text that explains the reason for the error. This can be shown
+            to a client user.
           maxLength: 255
         message:
           type: string
-          description: >-
-            Text that provides more details and corrective actions related to
-            the error. This can be shown to a client user.
+          description:
+            Text that provides more details and corrective actions related
+            to the error. This can be shown to a client user.
         referenceError:
           type: string
           format: uri
@@ -224,26 +205,24 @@ components:
         - reason
     Error400:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error400Code'
+              $ref: "#/components/schemas/Error400Code"
           required:
             - code
-      description:
-        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
+      description: Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)
     Error401:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error401Code'
+              $ref: "#/components/schemas/Error401Code"
           required:
             - code
-      description:
-        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
+      description: Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)
     Error401Code:
       type: string
       description: |-
@@ -255,15 +234,14 @@ components:
         - invalidCredentials
     Error403:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
-              $ref: '#/components/schemas/Error403Code'
+              $ref: "#/components/schemas/Error403Code"
           required:
             - code
-      description:
-        'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
+      description: Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)
     Error403Code:
       type: string
       description: |-
@@ -279,29 +257,24 @@ components:
         - tooManyUsers
     Error500:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             code:
               type: string
-              description: >-
+              description: |-
                 One of the following error codes:
-
-                - internalError: Internal server error - the server encountered
-                an unexpected condition that prevented it from fulfilling the
-                request.
+                - internalError: Internal server error - the server encountered an unexpected condition that prevented it from fulfilling the request.
               enum:
                 - internalError
           required:
             - code
-      description: >-
-        Internal Server Error.
-        (https://tools.ietf.org/html/rfc7231#section-6.6.1)
+      description: Internal Server Error. (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     Event:
       type: object
-      description: >-
-        Event class is used to describe information structure used for
-        notification. Reference: MEF 79 (Sn 8.5)
+      description:
+        "Event class is used to describe information structure used for\
+        \ notification. Reference: MEF 79 (Sn 8.5)"
       properties:
         eventId:
           type: string
@@ -311,9 +284,9 @@ components:
           format: date-time
           description: Date-time when the event occurred
         eventType:
-          $ref: '#/components/schemas/PoqEventType'
+          $ref: "#/components/schemas/PoqEventType"
         event:
-          $ref: '#/components/schemas/PoqEvent'
+          $ref: "#/components/schemas/PoqEvent"
       required:
         - event
         - eventId
@@ -321,18 +294,15 @@ components:
         - eventType
     PoqEvent:
       type: object
-      description:
-        A reference to the POQ that is the source of the notification.
+      description: A reference to the POQ that is the source of the notification.
       properties:
         sellerId:
           type: string
-          description: >
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when the requester
-            entity  represents more than one Seller. Reference: MEF 79 (Sn 8.8)
+          description: |
+            The unique identifier of the organization that is acting as the Seller. MUST be specified in the request only when the requester entity  represents more than one Seller. Reference: MEF 79 (Sn 8.8)
         poqItemId:
           type: string
-          description: >-
+          description:
             ID of the Poq Item (within the Poq) which state change triggered
             the event
         id:
@@ -343,10 +313,8 @@ components:
           description: Link to the POQ
         buyerId:
           type: string
-          description: >
-            The unique identifier of the organization that is acting as the
-            Buyer. MUST be specified in the request only when the responding
-            represents more than one Buyer. Reference: MEF 79 (Sn 8.8)
+          description: |
+            The unique identifier of the organization that is acting as the Buyer. MUST be specified in the request only when the responding represents more than one Buyer. Reference: MEF 79 (Sn 8.8)
       required:
         - id
     PoqEventType:
@@ -361,11 +329,8 @@ components:
       description: Default m2m client code
       flows:
         clientCredentials:
-          refreshUrl: 'http://mef.net/example/refresh'
+          refreshUrl: http://mef.net/example/refresh
           scopes:
-            poqCreateEvent: Scope for operation poqCreateEvent
-            poqStateChangeEvent: Scope for operation poqStateChangeEvent
-            listenToPoqItemStateChangeEvent:
-              Scope for operation listenToPoqItemStateChangeEvent
-          tokenUrl: 'http://mef.net/example/token'
+            default: default scope
+          tokenUrl: http://mef.net/example/token
       type: oauth2

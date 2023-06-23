@@ -1,0 +1,110 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+
+class FieldedAddress {
+
+    country*: string
+    streetType: string
+    postcodeExtension: string
+    city*: string
+    streetNr: string
+    locality: string
+    postcode: string
+    streetNrLast: string
+    streetNrSuffix: string
+    streetName*: string
+    stateOrProvince: string
+    streetNrLastSuffix: string
+    streetSuffix: string
+}
+RelatedPlaceRefOrValue <|-- FieldedAddress
+
+FieldedAddress *--> GeographicSubAddress : geographicSubAddress
+
+
+class FormattedAddress {
+
+    country*: string
+    postcodeExtension: string
+    stateOrProvince: string
+    city*: string
+    addrLine2: string
+    addrLine1*: string
+    locality: string
+    postcode: string
+}
+RelatedPlaceRefOrValue <|-- FormattedAddress
+
+
+
+class GeographicAddressLabel {
+
+    externalReferenceId*: string
+    externalReferenceType*: string
+}
+RelatedPlaceRefOrValue <|-- GeographicAddressLabel
+
+
+
+class GeographicAddressRef {
+
+    href: string
+    id*: string
+}
+RelatedPlaceRefOrValue <|-- GeographicAddressRef
+
+
+
+class GeographicSiteRef {
+
+    href: string
+    id*: string
+}
+RelatedPlaceRefOrValue <|-- GeographicSiteRef
+
+
+
+class GeographicSubAddress {
+
+    buildingName: string
+    levelType: string
+    levelNumber: string
+    privateStreetNumber: string
+    privateStreetName: string
+}
+
+GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+
+
+class MEFGeographicPoint {
+
+    spatialRef*: string
+    x*: string
+    y*: string
+    z: string
+}
+RelatedPlaceRefOrValue <|-- MEFGeographicPoint
+
+
+
+class MEFSubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+
+
+
+class RelatedPlaceRefOrValue {
+
+    role*: string
+    @type*: string
+    @schemaLocation: uri
+}
+
+
+@enduml

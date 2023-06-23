@@ -1,17 +1,19 @@
-# MEF-LSO-Sonata-SDK - Ella Release
+# MEF-LSO-Sonata-SDK - Fergie Release
 
 ## Download Link
 
-Download the entire repository by clicking [here](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/releases/download/ella/MEF-LSO-Sonata-SDK-ella.zip)
+Download the entire repository by clicking [here](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/releases/download/fergie/MEF-LSO-Sonata-SDK-fergie.zip)
 
 ## Introduction
 
 This repository contains the MEF LSO Sonata SDK. It includes API definitions for the following functional areas:
 
+- Product Catalog
 - Serviceability
-  - Address
+  - Address Validation
   - Site Retrieval
   - Product Offering Qualification Management
+- Product Offering Availability and Pricing Discovery
 - Product Quote
 - Product Order
 - Product Inventory
@@ -27,22 +29,29 @@ It also provides Product Schemas for:
 
 ## High-level release notes
 
-- Documents published as MEF Standards:
-  - MEF 57.2 - Product Order Management Requirements and Use Cases
-  - MEF 113 - Trouble Ticketing Requirements and Use Cases
-  - MEF 128 - LSO API Security Profile
-- Following documents have their Letter Ballots open and will be likely shortly published as MEF standards:
-  - MEF W123 - LSO Cantata and LSO Sonata Product Order Management API - Developer Guide
-  - MEF W124 - LSO Cantata and LSO Sonata Trouble Ticket and Incident Management API - Developer Guide
-  - MEF W137 - LSO Cantata and LSO Sonata Appointment Management API - Developer Guide
-  - MEF W134 - Billing and Invoice Business Requirements and Use Cases
-  - MEF W106 - LSO Sonata Access E-Line Product Schemas and Developer Guide
-  - MEF W125 - LSO Cantata and LSO Sonata - Subscriber Ethernet Product Schemas and Developer Guide
-- New documents:
-  - MEF W141 - LSO Cantata and LSO Sonata Billing Management API - Developer Guide
-  - MEF W125.0.1 - Amendment to MEF 125 LSO Cantata and LSO Sonata - Subscriber Ethernet Product Schemas and Developer Guide
+There are 2 new APIs introduced, together with Business requirements and Use Cases:
 
-The [LSO Marketplace](http://lso.mef.net) has introduced the possibility to blend the desired APIs with chosen Products. Thus the APIs blended with all products that were available in `generated/staticBinding` are no longer provided.
+- Product Catalog
+- Product Offering Availability and Pricing Discovery
+
+There are following document maturity changes:
+
+- Documents published as MEF Standards:
+  - MEF 123 - LSO Cantata and LSO Sonata Product Order Management API - Developer Guide
+  - MEF 124 - LSO Cantata and LSO Sonata Trouble Ticket and Incident Management API - Developer Guide
+  - MEF 137 - LSO Cantata and LSO Sonata Appointment Management API - Developer Guide
+  - MEF 134 - Billing and Invoice Business Requirements and Use Cases
+  - MEF 106 - LSO Sonata Access E-Line Product Schemas and Developer Guide
+  - MEF 125 - LSO Cantata and LSO Sonata - Subscriber Ethernet Product Schemas and Developer Guide
+- Following documents have their Letter Ballots open and will be likely shortly published as MEF standards:
+  - MEF W141 - LSO Cantata and LSO Sonata Billing Management API - Developer Guide
+- New documents:
+  - MEF W127 - LSO Cantata and LSO Sonata Product Catalog - Business Requirements and Use Cases
+  - MEF W142 - LSO Cantata and LSO Sonata Product Catalog API & Developer Guide
+  - MEF W110 - Product Offering Availability and Pricing Discovery - Business Requirements and Use Cases
+  - MEF W160 - LSO Cantata and LSO Sonata Product Offering Availability and Pricing Discovery API - Developer Guide
+
+The [LSO Marketplace](http://lso.mef.net) offers the possibility to blend the desired APIs with chosen Products. Thus the APIs blended with all products that were available in `generated/staticBinding` are no longer provided.
 
 **NOTE:** Please note the Readme files in particular productApi directories to see detailed release notes per API.
 
@@ -54,6 +63,11 @@ The maturity per functionality presents as follows:
 
 (*) is used to mark item that changes their maturity comparing to previous release.
 
+- Product Catalog:
+  - Business Requirements:
+    - *MEF W127 - **Draft Standard R1**
+  - Developer Guide/API:
+    - *MEF W142 - **work in progress - ready for CfC#1**
 - Address Validation, Site Query:
   - Business Requirements:
     - MEF 79 - **Published Standard**
@@ -72,11 +86,16 @@ The maturity per functionality presents as follows:
     - MEF 80 - **Published Standard**
   - Developer Guide/API:
     - MEF 115: - **Published Standard**
+-  Product Offering Availability and Pricing Discovery:
+  - Business Requirements:
+    - MEF *W110 - **Draft Standard R1**
+  - Developer Guide/API:
+    - MEF *W160: - **work in progress - ready for CfC#1**
 - Order:
   - Business Requirements:
-    - *MEF 57.2 - **Published Standard**
+    - MEF 57.2 - **Published Standard**
   - Developer Guide/API:
-    - *MEF W123 - **Letter Ballot**
+    - MEF 123 - **Published Standard**
 - Inventory:
   - Business Requirements:
     - MEF 81, MEF 81.0.1 - **Published Standard**
@@ -84,23 +103,25 @@ The maturity per functionality presents as follows:
     - MEF 116 - **Published Standard**
 - Trouble Ticket:
   - Business Requirements:
-    - *MEF 113 - **Published Standard**
+    - MEF 113 - **Published Standard**
   - Developer Guide/API
-    - *MEF W124 - Trouble Ticket - **Letter Ballot**
-    - *MEF W137 - Appointment - **Letter Ballot**
+    - MEF 124 - Trouble Ticket - **Published Standard**
+    - MEF 137 - Appointment - **Published Standard**
 - Billing:
   - Business Requirements:
-    - *MEF W134 - **Letter Ballot**
+    - MEF 134 - **Published Standard**
   - Developer Guide/API
-    - *MEF W141 - **work in progress - ready for CfC#1**
+    - *MEF W141 - **Letter Ballot**
 - Product Specifications:
-  - *MEF W106 - Access E-Line - **Letter Ballot**
-  - *MEF W125 - Subscriber Ethernet (EPL, EPLAN, EPTREE, EVPL, EVPLAN, EVPTREE) - **Letter Ballot**
-  - *MEF W125.0.1 - Amendment to Subscriber Ethernet - **work in progress - ready for CfC#1**
-  - *MEF W139 - Basic and Advanced Internet Access - **work in progress - ready for CfC#2**
+  - MEF 106 - Access E-Line - **Published Standard**
+  - MEF 125 - Subscriber Ethernet (EPL, EPLAN, EPTREE, EVPL, EVPLAN, EVPTREE) - **Published Standard**
+  - *MEF W125.0.1 - Amendment to Subscriber Ethernet - **work in progress - ready for CfC#2**
+  - *MEF W139 - Basic and Advanced Internet Access - **work in progress - ready for CfC#3**
 - Security:
   - MEF 128 - **Published Standard**
+  - MEF W128.1 -  **work in progress - ready for CfC#1**
 
+For high level information about the release compatibility and roadmap please visit: [LSO Marketplace](https://lso.mef.net/lso-api-sdk-releases)
 
 For details on the maturity map and the roadmap for future releases please refer to [LSO Sonata SDK Home Page](https://wiki.mef.net/display/CESG/LSO+Sonata+SDK) on the MEF WIKI.
 

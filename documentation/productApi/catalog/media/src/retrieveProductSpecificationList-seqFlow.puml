@@ -1,0 +1,37 @@
+@startuml
+skinparam {
+participantBorderColor DarkRed
+participantBorderThickness 1
+participantBackgroundColor BUSINESS
+
+LifeLineBorderColor DarkRed
+LifeLineBackgroundColor DarkRed
+
+databaseBorderColor Grey
+databaseBorderThickness 1
+
+shadowing true
+RoundCorner 0
+LineColor DarkRed
+ArrowColor DarkRed
+ArrowThickness 1
+}
+
+hide footbox
+
+participant Buyer as b
+participant Seller as s
+
+activate b
+b -> s++: GET {{baseUrl}}/produdctSpecification?...
+alt Success (HTTP 200)
+b <-- s: HTTP 200 Ok (list with one element) 
+else Bussines Failure (HTTP 400/401/403)
+b <-- s: HTTP 4xx 
+else Server Failure (HTTP 500)
+b <-- s--: HTTP 500 internal error 
+end
+deactivate b
+
+...
+@enduml

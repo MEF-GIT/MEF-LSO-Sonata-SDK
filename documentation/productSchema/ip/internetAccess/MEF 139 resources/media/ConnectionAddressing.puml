@@ -1,0 +1,55 @@
+@startuml
+
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+
+class BasicIaUniIpv4ConnectionAddressing {
+
+}
+
+BasicIaUniIpv4ConnectionAddressing *--> Ipv4PrimarySubnet : ipv4PrimarySubnet
+
+
+
+class UniIpv4ConnectionAddressing {
+
+    ipv4AddressingType: Ipv4AddressingType
+}
+
+UniIpv4ConnectionAddressing *--> Ipv4PrimarySubnet : ipv4PrimarySubnet
+UniIpv4ConnectionAddressing *-->"*" Ipv4SecondarySubnet : ipv4SecondarySubnetList
+
+
+class BasicIaUniIpv6ConnectionAddressing {
+
+    ipv6AddressType: BasicIaUniIpv6AddressingType
+}
+
+BasicIaUniIpv6ConnectionAddressing *--> Ipv6Subnet : ipv6Subnet
+
+
+class UniIpv6ConnectionAddressing {
+
+    ipv6AddressingType: Ipv6AddressingType
+}
+
+UniIpv6ConnectionAddressing *--> Ipv6Address : subscriberIpv6Address
+UniIpv6ConnectionAddressing *-->"*" Ipv6Subnet : ipv6Subnet
+
+
+class Ipv4Subnet {
+  <<skipped>>
+}
+class Ipv4PrimarySubnet {
+  <<skipped>>
+}
+class Ipv6Subnet {
+  <<skipped>>
+}
+class Ipv6Address {
+  <<skipped>>
+}
+@enduml

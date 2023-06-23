@@ -1,0 +1,31 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+
+class Static {
+
+}
+
+Static *-->"*" StaticIpEntry : staticIpEntry
+
+
+class StaticIpEntry {
+
+    administrativeDistance: integer
+}
+
+StaticIpEntry *--> ForwardingInformation : forwardingInformation
+StaticIpEntry *--> Ipv4OrIpv6Prefix : staticPrefix
+
+class ForwardingInformation {
+  nextHopIpAddress: Ipv4OrIpv6Address
+  uniAccessLink: IdentifierString
+}
+
+class Ipv4OrIpv6Prefix {
+  <<skipped>>
+}
+@enduml

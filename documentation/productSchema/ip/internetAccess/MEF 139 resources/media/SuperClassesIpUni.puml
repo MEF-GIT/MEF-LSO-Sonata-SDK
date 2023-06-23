@@ -1,0 +1,27 @@
+@startuml
+
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+class IpUniCommon {
+
+    reversePathForwarding: EnabledDisabled
+    managementType: UniManagementType
+    listOfControlProtocols: ControlProtocol
+}
+
+class BasicIaIpUni {
+    egressBandwidthProfileEnvelope: BasicIaBwpEnvelope
+    ingressBandwidthProfileEnvelope: BasicIaBwpEnvelope
+}
+IpUniCommon <|-- BasicIaIpUni
+
+class IpUni {
+    egressBandwidthProfileEnvelope: IpUniBwpEnvelope
+    ingressBandwidthProfileEnvelope: IpUniBwpEnvelope
+    routingProtocols: RoutingProtocols
+}
+IpUniCommon <|-- IpUni
+
+@enduml

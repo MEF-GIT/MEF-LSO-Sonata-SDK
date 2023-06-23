@@ -1,5 +1,11 @@
 # Quote Management: Release notes
 
+## Release Fergie:
+
+**Readiness status**: MEF Published Standard
+
+No changes.
+
 ## Release Ella:
 
 **Readiness status**: MEF Published Standard

@@ -1,0 +1,105 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+class IpSls {
+
+    startTime: date-time
+}
+
+IpSls *--> TimeDuration : periodOfTime
+IpSls *-u->"*" Location : locationList
+IpSls *-->"*" OneWayPacketDelayPercentile : oneWayPacketDelayPercentile
+IpSls *-->"*" OneWayMeanPacketDelay : oneWayMeanPacketDelay
+IpSls *-->"*" OneWayInterPacketDelayVariation : oneWayInterPacketDelayVariation
+IpSls *-->"*" OneWayPacketDelayRange : oneWayPacketDelayRange
+IpSls *-->"*" OneWayPacketLossRatio : oneWayPacketLossRatio
+IpSls *-u->"*" ServiceUptime : serviceUptime
+IpSls *-->"*" MeanTimeToRepair : meanTimeToRepair
+
+class OneWayPacketDelayPercentile {
+
+    cosName: string
+    packetDelayPercentile: Percentage
+}
+
+OneWayPacketDelayPercentile *-->"*" SlsRpPair : slsRpPair
+OneWayPacketDelayPercentile *--> TimeDuration : packetDelayObjective
+
+
+class OneWayInterPacketDelayVariation {
+
+    cosName: string
+    interPacketDelayVariationPercentile: Percentage
+}
+
+OneWayInterPacketDelayVariation *-->"*" SlsRpPair : slsRpPair
+OneWayInterPacketDelayVariation *--> TimeDuration : packetArrivalTimeDifference
+OneWayInterPacketDelayVariation *--> TimeDuration : interPacketDelayVariationObjective
+
+
+class OneWayPacketDelayRange {
+
+    cosName: string
+    packetDelayRangePercentile: Percentage
+}
+
+OneWayPacketDelayRange *-->"*" SlsRpPair : slsRpPair
+OneWayPacketDelayRange *--> TimeDuration : packetDelayRangeObjective
+
+
+class OneWayPacketLossRatio {
+
+    cosName: string
+    packetLossRatioObjective: Percentage
+}
+
+OneWayPacketLossRatio *-->"*" SlsRpPair : slsRpPair
+
+
+class OneWayMeanPacketDelay {
+
+    cosName: string
+}
+
+OneWayMeanPacketDelay *-->"*" SlsRpPair : slsRpPair
+OneWayMeanPacketDelay *--> TimeDuration : meanPacketDelayObjective
+
+
+
+
+class MeanTimeToRepair {
+
+}
+
+MeanTimeToRepair *--> TimeDuration : mttrObjective
+
+
+class ServiceUptime {
+
+    serviceUptimeObjective: Percentage
+}
+
+
+class SlsRpPair {
+
+}
+
+SlsRpPair *--> SlsReferencePoint : fromSlsReferencePoint
+SlsRpPair *--> SlsReferencePoint : toSlsReferencePoint
+
+class Location {
+
+    name: string
+    description: string
+    cloudService: boolean
+}
+
+Location *-r->"*" IdentifierString : ipvcEndPointIdentifier
+
+
+class TimeDuration {
+  <<skipped>>
+}
+@enduml

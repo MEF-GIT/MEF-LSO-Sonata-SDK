@@ -22,20 +22,23 @@ info:
   title: WorkOrder Management Notification
   version: 2.0.0
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/workOrderNotification/v2/'
-    variables:
-      serverBase:
-        default: mef.net
-        description: The base of Buyer's URL.
+- url: "https://{serverBase}/mefApi/sonata/workOrderNotification/v2/"
+  variables:
+    serverBase:
+      default: mef.net
+      description: The base of Buyer's URL.
+security:
+- oauth2MEFLSOAPI:
+  - default
 tags:
-  - description: |
-      The Buyer's endpoint to send particular event types notifications to.
-    name: Notification listeners
+- description: |
+    The Buyer's endpoint to send particular event types notifications to.
+  name: Notification listeners
 paths:
   /listener/workOrderCreateEvent:
     post:
-      description:
-        Client listener for receiving the notification WorkOrder Create Event
+      description: Client listener for receiving the notification WorkOrder Create
+        Event
       operationId: listenToWorkOrderCreateEvent
       requestBody:
         content:
@@ -45,51 +48,48 @@ paths:
         description: The event data
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error400'
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error401'
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error403'
           description: Forbidden
-        '408':
+        "408":
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error408'
           description: Request Time-out
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - listenToWorkOrderCreateEvent
+      - oauth2MEFLSOAPI:
+        - listenToWorkOrderCreateEvent
       summary: Client listener for entity WorkOrder Create Event
       tags:
-        - Notification listeners
+      - Notification listeners
       x-codegen-request-body-name: data
   /listener/workOrderStateChangeEvent:
     post:
-      description:
-        Client listener for receiving the workOrderStateChangeEvent
-        notification
+      description: Client listener for receiving the workOrderStateChangeEvent notification
       operationId: listenToWorkOrderStateChangeEvent
       requestBody:
         content:
@@ -99,50 +99,48 @@ paths:
         description: The event data
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error400'
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error401'
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error403'
           description: Forbidden
-        '408':
+        "408":
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error408'
           description: Request Time-out
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - listenToWorkOrderStateChangeEvent
+      - oauth2MEFLSOAPI:
+        - listenToWorkOrderStateChangeEvent
       summary: Client listener for entity workOrderStateChangeEvent
       tags:
-        - Notification listeners
+      - Notification listeners
       x-codegen-request-body-name: data
   /listener/workOrderAppointmentRequiredEvent:
     post:
-      description: >-
-        Client listener for receiving the workOrderAppointmentRequiredEvent
+      description: Client listener for receiving the workOrderAppointmentRequiredEvent
         notification
       operationId: listenToWorkOrderAppointmentRequiredEvent
       requestBody:
@@ -153,113 +151,100 @@ paths:
         description: The event data
         required: true
       responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
+        "204":
+          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
+        "400":
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error400'
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error401'
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error403'
           description: Forbidden
-        '408':
+        "408":
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error408'
           description: Request Time-out
-        '500':
+        "500":
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - listenToWorkOrderAppointmentRequiredEvent
+      - oauth2MEFLSOAPI:
+        - listenToWorkOrderAppointmentRequiredEvent
       summary: Client listener for entity workOrderAppointmentRequiredEvent
       tags:
-        - Notification listeners
+      - Notification listeners
       x-codegen-request-body-name: data
 components:
   schemas:
     Error400Code:
       type: string
-      description: >-
+      description: |-
         One of the following error codes:
-
-        - missingQueryParameter: The URI is missing a required query-string
-        parameter
-
-        - missingQueryValue: The URI is missing a required query-string
-        parameter value
-
+        - missingQueryParameter: The URI is missing a required query-string parameter
+        - missingQueryValue: The URI is missing a required query-string parameter value
         - invalidQuery: The query section of the URI is invalid.
-
         - invalidBody: The request has an invalid body
       enum:
-        - missingQueryParameter
-        - missingQueryValue
-        - invalidQuery
-        - invalidBody
+      - missingQueryParameter
+      - missingQueryValue
+      - invalidQuery
+      - invalidBody
     Error:
       type: object
-      description: >
-        Standard Class used to describe API response error Not intended to be
-        use directly. The `code` in the HTTP header is used as a discriminator
-        for the type of error returned in runtime.
+      description: |
+        Standard Class used to describe API response error Not intended to be use directly. The `code` in the HTTP header is used as a discriminator for the type of error returned in runtime.
       properties:
         reason:
           type: string
-          description: >-
-            Text that explains the reason for the error. This can be shown to a
-            client user.
+          description: Text that explains the reason for the error. This can be shown
+            to a client user.
           maxLength: 255
         message:
           type: string
-          description: >-
-            Text that provides mode details and corrective actions related to
-            the error. This can be shown to a client user.
+          description: Text that provides mode details and corrective actions related
+            to the error. This can be shown to a client user.
         referenceError:
           type: string
           format: uri
           description: url pointing to documentation describing the error
       required:
-        - reason
+      - reason
     Error400:
       allOf:
-        - $ref: '#/components/schemas/Error'
-        - type: object
-          properties:
-            code:
-              $ref: '#/components/schemas/Error400Code'
-          required:
-            - code
-      description:
-        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
+      - $ref: '#/components/schemas/Error'
+      - type: object
+        properties:
+          code:
+            $ref: '#/components/schemas/Error400Code'
+        required:
+        - code
+      description: Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)
     Error401:
       allOf:
-        - $ref: '#/components/schemas/Error'
-        - type: object
-          properties:
-            code:
-              $ref: '#/components/schemas/Error401Code'
-          required:
-            - code
-      description:
-        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
+      - $ref: '#/components/schemas/Error'
+      - type: object
+        properties:
+          code:
+            $ref: '#/components/schemas/Error401Code'
+        required:
+        - code
+      description: Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)
     Error401Code:
       type: string
       description: |-
@@ -267,19 +252,18 @@ components:
         - missingCredentials: No credentials provided.
         - invalidCredentials: Provided credentials are invalid or expired
       enum:
-        - missingCredentials
-        - invalidCredentials
+      - missingCredentials
+      - invalidCredentials
     Error403:
       allOf:
-        - $ref: '#/components/schemas/Error'
-        - type: object
-          properties:
-            code:
-              $ref: '#/components/schemas/Error403Code'
-          required:
-            - code
-      description:
-        'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
+      - $ref: '#/components/schemas/Error'
+      - type: object
+        properties:
+          code:
+            $ref: '#/components/schemas/Error403Code'
+        required:
+        - code
+      description: Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)
     Error403Code:
       type: string
       description: |-
@@ -290,53 +274,43 @@ components:
         - forbiddenRequester: Forbidden requester
         - tooManyUsers: Too many users
       enum:
-        - accessDenied
-        - forbiddenRequester
-        - tooManyUsers
+      - accessDenied
+      - forbiddenRequester
+      - tooManyUsers
     Error408:
       allOf:
-        - $ref: '#/components/schemas/Error'
-        - type: object
-          properties:
-            code:
-              type: string
-              description: >-
-                List of supported error codes:
-
-                - timeOut: Request Time-out - indicates that the server did not
-                receive a complete request message within the time that it was
-                prepared to wait.
-              enum:
-                - timeOut
-          required:
-            - code
-      description:
-        'Request Time-out (https://tools.ietf.org/html/rfc7231#section-6.5.7)'
+      - $ref: '#/components/schemas/Error'
+      - type: object
+        properties:
+          code:
+            type: string
+            description: |-
+              List of supported error codes:
+              - timeOut: Request Time-out - indicates that the server did not receive a complete request message within the time that it was prepared to wait.
+            enum:
+            - timeOut
+        required:
+        - code
+      description: Request Time-out (https://tools.ietf.org/html/rfc7231#section-6.5.7)
     Error500:
       allOf:
-        - $ref: '#/components/schemas/Error'
-        - type: object
-          properties:
-            code:
-              type: string
-              description: >-
-                One of the following error codes:
-
-                - internalError: Internal server error - the server encountered
-                an unexpected condition that prevented it from fulfilling the
-                request.
-              enum:
-                - internalError
-          required:
-            - code
-      description: >-
-        Internal Server Error.
-        (https://tools.ietf.org/html/rfc7231#section-6.6.1)
+      - $ref: '#/components/schemas/Error'
+      - type: object
+        properties:
+          code:
+            type: string
+            description: |-
+              One of the following error codes:
+              - internalError: Internal server error - the server encountered an unexpected condition that prevented it from fulfilling the request.
+            enum:
+            - internalError
+        required:
+        - code
+      description: Internal Server Error. (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     Event:
       type: object
-      description: >-
-        Event class is used to describe the information structure used for
-        notification.
+      description: Event class is used to describe the information structure used
+        for notification.
       properties:
         eventId:
           type: string
@@ -346,32 +320,31 @@ components:
           format: date-time
           description: Date time when the event occurred
       required:
-        - event
-        - eventId
-        - eventTime
-        - eventType
+      - event
+      - eventId
+      - eventTime
+      - eventType
     WorkOrderEvent:
       allOf:
-        - $ref: '#/components/schemas/Event'
-        - type: object
-          properties:
-            eventType:
-              $ref: '#/components/schemas/WorkOrderEventType'
-            event:
-              $ref: '#/components/schemas/WorkOrderEventPayload'
-          required:
-            - event
-            - eventType
+      - $ref: '#/components/schemas/Event'
+      - type: object
+        properties:
+          eventType:
+            $ref: '#/components/schemas/WorkOrderEventType'
+          event:
+            $ref: '#/components/schemas/WorkOrderEventPayload'
+        required:
+        - event
+        - eventType
     WorkOrderEventPayload:
       type: object
       description: The identifier of the WorkOrder is subject of this event.
       properties:
         sellerId:
           type: string
-          description: >-
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when the requester
-            entity represents more than one Seller.
+          description: The unique identifier of the organization that is acting as
+            the Seller. MUST be specified in the request only when the requester entity
+            represents more than one Seller.
         id:
           type: string
           description: ID of the WorkOrder attributed by quoting system
@@ -380,31 +353,25 @@ components:
           description: Hyperlink to access the WorkOrder
         buyerId:
           type: string
-          description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the responding
+          description: The unique identifier of the organization that is acting as
+            the a Buyer. MUST be specified in the request only when the responding
             represents more than one Buyer.
       required:
-        - id
+      - id
     WorkOrderEventType:
       type: string
       description: Type of the WorkOrder Event
       enum:
-        - workOrderCreateEvent
-        - workOrderStateChangeEvent
-        - workOrderAppointmentRequiredEvent
+      - workOrderCreateEvent
+      - workOrderStateChangeEvent
+      - workOrderAppointmentRequiredEvent
   securitySchemes:
     oauth2MEFLSOAPI:
       description: Default m2m client code
       flows:
         clientCredentials:
-          refreshUrl: 'http://mef.net/example/refresh'
+          refreshUrl: http://mef.net/example/refresh
           scopes:
-            listenToWorkOrderCreateEvent:
-              Scope for operation listenToWorkOrderCreateEvent
-            listenToWorkOrderStateChangeEvent:
-              Scope for operation listenToWorkOrderStateChangeEvent
-            listenToWorkOrderAppointmentRequiredEvent:
-              Scope for operation listenToWorkOrderAppointmentRequiredEvent
-          tokenUrl: 'http://mef.net/example/token'
+            default: default scope
+          tokenUrl: http://mef.net/example/token
       type: oauth2
