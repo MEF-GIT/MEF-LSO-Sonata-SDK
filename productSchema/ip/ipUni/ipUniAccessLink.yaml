@@ -1,5 +1,5 @@
 ---
-$id: urn:mef:lso:spec:cantata-sonata:ip-uni-access-link:v0.3.0:all
+$id: urn:mef:lso:spec:cantata-sonata:ip-uni-access-link:v1.0.0:all
 $schema: http://json-schema.org/draft-07/schema#
 title: >-
   MEF LSO IP UNI Access Link - Product Specification
@@ -54,43 +54,55 @@ description: >-
   An individual connection between the Subscriber and the SP that forms part of
   a UNI. Reference - MEF 61.1 Section 7.3
 allOf:
-  - $ref: "../common/ipCommon.yaml#/definitions/IpUniAccessLinkCommon"
+  - $ref: '../common/ipCommon.yaml#/definitions/IpUniAccessLinkCommon'
   - type: object
     properties:
       bfd:
         description: >-
           Indication of whether BFD is used on the Uni Access Link. Reference -
-          MEF 61.1 Section 13.8
-        $ref: ../common/ipCommon.yaml#/definitions/AccessLinkBfd
-        nullable: true
+          MEF 61.1 Section 13.8. Empty list corresponds to the value of None
+        items:
+          $ref: '../common/ipCommon.yaml#/definitions/AccessLinkBfd'
+        type: array
+        maxItems: 1
       dhcpRelay:
         description: >-
-          Indicates whether DHCP Relay functionality is enabled. Reference - MEF
-          61.1 Section 13.6. Null value of this attribute corresponds to a value
-          of "Disabled".
-        $ref: ../common/ipCommon.yaml#/definitions/DhcpRelay
-        nullable: true
+          Indicates whether DHCP Relay functionality is enabled. Reference -
+          MEF 61.1 Section 13.6. Empty list corresponds to a value of
+          "Disabled".
+        items:
+          $ref: '../common/ipCommon.yaml#/definitions/DhcpRelay'
+        type: array
+        maxItems: 1
       egressBwpEnvelope:
         description: >-
           Egress Bandwidth Profile Envelope for the UNI Access Link. Reference
-          MEF 61.1 Section 13.11. Null value corresponds to the value of None
-        $ref: "../common/ipCommon.yaml#/definitions/IpUniAccessLinkBwpEnvelope"
-        nullable: true
+          MEF 61.1 Section 13.11. Empty list corresponds to the value of None
+        items:
+          $ref: '../common/ipCommon.yaml#/definitions/IpUniAccessLinkBwpEnvelope'
+        type: array
+        maxItems: 1
       ingressBwpEnvelope:
         description: >-
           Ingress Bandwidth Profile Envelope for the UNI Access Link. Reference
-          MEF 61.1 Section 13.10. Null value corresponds to the value of None
-        $ref: "../common/ipCommon.yaml#/definitions/IpUniAccessLinkBwpEnvelope"
-        nullable: true
+          MEF 61.1 Section 13.10. Empty list corresponds to the value of None
+        items:
+          $ref: '../common/ipCommon.yaml#/definitions/IpUniAccessLinkBwpEnvelope'
+        type: array
+        maxItems: 1
       ipv4ConnectionAddressing:
         description: >-
-          IPv4 Connection Addressing. Reference - MEF 61.1 Section 13.4. Null
-          value corresponds to the value of None
-        $ref: "../common/ipCommon.yaml#/definitions/UniIpv4ConnectionAddressing"
-        nullable: true
+          IPv4 Connection Addressing. Reference - MEF 61.1 Section 13.4. Empty
+          list corresponds to the value of None
+        items:
+          $ref: '../common/ipCommon.yaml#/definitions/UniIpv4ConnectionAddressing'
+        type: array
+        maxItems: 1
       ipv6ConnectionAddressing:
         description: >-
-          IPv6 Connection Addressing. Reference - MEF 61.1 Section 13.5. Null
-          value corresponds to the value of None
-        $ref: "../common/ipCommon.yaml#/definitions/UniIpv6ConnectionAddressing"
-        nullable: true
+          IPv6 Connection Addressing. Reference - MEF 61.1 Section 13.5. Empty
+          list corresponds to the value of None
+        items:
+          $ref: '../common/ipCommon.yaml#/definitions/UniIpv6ConnectionAddressing'
+        type: array
+        maxItems: 1

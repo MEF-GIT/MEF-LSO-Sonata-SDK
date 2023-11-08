@@ -1,5 +1,5 @@
 ---
-$id: urn:mef:lso:spec:cantata-sonata:ip-uni:v0.3.0:all
+$id: urn:mef:lso:spec:cantata-sonata:ip-uni:v1.0.0:all
 $schema: http://json-schema.org/draft-07/schema#
 title: MEF LSO IP UNI - Product Specification
 type: object
@@ -51,8 +51,8 @@ type: object
 #
 description: >-
   A User Network Interface (UNI) is the demarcation point between the
-  responsibility  of the SP and the responsibility of the Subscriber. Note that
-  a given UNI always  relates to a single SP and a single Subscriber. Reference -
+  responsibility of the SP and the responsibility of the Subscriber. Note that
+  a given UNI always relates to a single SP and a single Subscriber. Reference -
   MEF 61.1 Section 12
 allOf:
   - $ref: "../common/ipCommon.yaml#/definitions/IpUniCommon"
@@ -61,29 +61,35 @@ allOf:
       egressBandwidthProfileEnvelope:
         description: >-
           Attribute used for an egress UNI Bandwidth Profile. Reference - MEF
-          61.1 Section 12.5. Null value corresponds to the value of None. [D8]
+          61.1 Section 12.5. Empty list corresponds to the value of None. [D8]
           At a UNI with an IPVC EP for a Basic Internet Access Service, if the
-          UNI Egress Bandwidth Profile Envelope is not null, it SHOULD have
+          UNI Egress Bandwidth Profile Envelope is not None, it SHOULD have
           Bandwidth Profile Flows that contain all Egress IP Data Packets at the
           UNI that are mapped to any of a given set of IPVC EPs (as defined in
           MEF 61.1 [8] Table 28). Reference - MEF 69.1 Section 9.3
-        $ref: "../common/ipCommon.yaml#/definitions/IpUniBwpEnvelope"
-        nullable: true
+        items:
+          $ref: "../common/ipCommon.yaml#/definitions/IpUniBwpEnvelope"
+        type: array
+        maxItems: 1
       ingressBandwidthProfileEnvelope:
         description: >-
           Attribute used for an ingress UNI Bandwidth Profile. Reference - MEF
-          61.1 Section 12.4. Null value corresponds to the value of None. [D7]
+          61.1 Section 12.4. Empty list corresponds to the value of None. [D7]
           At a UNI with an IPVC EP for a Basic Internet Access Service, if the
-          UNI Ingress Bandwidth Profile Envelope is not null, it SHOULD have
+          UNI Ingress Bandwidth Profile Envelope is not None, it SHOULD have
           Bandwidth Profile Flows that contain all Ingress IP Data Packets at
           the UNI that are mapped to any of a given set of IPVC EPs (as defined
           in MEF 61.1 [8] Table 28). Reference - MEF 69.1 Section 9.3
-        $ref: "../common/ipCommon.yaml#/definitions/IpUniBwpEnvelope"
-        nullable: true
+        items:
+          $ref: "../common/ipCommon.yaml#/definitions/IpUniBwpEnvelope"
+        type: array
+        maxItems: 1
       routingProtocols:
         description: >-
           List of Routing Protocols used across the UNI. Reference - MEF 61.1
           Section 12.7. [R21] "At a UNI with an IPVC EP for a Basic Internet
           Access Service, the UNI Routing Protocols list MUST be empty."
-        $ref: "../common/ipCommon.yaml#/definitions/RoutingProtocols"
-        nullable: true
+        items:
+          $ref: "../common/ipCommon.yaml#/definitions/RoutingProtocols"
+        type: array
+        maxItems: 1

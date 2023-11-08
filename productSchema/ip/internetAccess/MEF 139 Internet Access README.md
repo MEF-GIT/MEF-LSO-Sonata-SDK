@@ -1,5 +1,93 @@
 # Internet Access Product: Release notes
 
+## Release Grace:
+
+**Readiness status**: Requested Letter Ballot. It will be most likely published
+as a standard without further changes.
+
+**Summary**:
+
+There was a change from using the `nullable` pattern to use of an `array` with `maxItems=1` to model themeaningful empty values.
+
+**ipCommon.yaml:**
+
+- `Bgp`:
+  - `authentication` - changed from `nullable` to `array` pattern
+  - `damping` - changed from `nullable` to `array` pattern
+- `BgpExtendedCommunity`:
+  - `regularValue` - set `maximum: 72057594037927935`
+  - `extendedValue` - set `maximum: 281474976710655`
+- `ClassOfServiceMapEntry` - removed
+- `CloudDns`:
+  - `dnsServerIpList` - removed `nullable=true`
+- `Demux` - removed
+- `FourOctetInteger`: fixed `maximum` to: `4294967295`
+- `Ipv4PrimarySubnet`:
+  - `subscriberIpv4Address` - changed from `nullable` to `array` pattern
+- `L2Technology`:
+  - `demux` - changed from `Demux` ref type to `array` pattern of `VlanId` ref type
+- `RoutingProtocols`:
+  - `bgp` - changed from `nullable` to `array` pattern
+  - `ospf` - changed from `nullable` to `array` pattern
+  - `static` - changed from `nullable` to `array` pattern
+
+**internetAccessCommon.yaml:**
+
+- `AdvancedIaIpvcEndPoint`:
+  - `egressBandwidthProfileEnvelope` - changed from `nullable` to `array` pattern
+  - `ingressBandwidthProfileEnvelope` - changed from `nullable` to `array` pattern
+- `BasicIaIpUni`:
+  - `egressBandwidthProfileEnvelope` - changed from `nullable` to `array` pattern
+  - `ingressBandwidthProfileEnvelope` - changed from `nullable` to `array` pattern
+- `BasicIaIpUniAccessLink`:
+  - `egressBwpEnvelope` - changed from `nullable` to `array` pattern
+  - `ingressBwpEnvelope` - changed from `nullable` to `array` pattern
+  - `ipv4ConnectionAddressing` - changed from `nullable` to `array` pattern
+  - `ipv6ConnectionAddressing` - changed from `nullable` to `array` pattern
+- `BasicIaIpvcEndPoint`:
+  - `egressBandwidthProfileEnvelope` - changed from `nullable` to `array` pattern
+  - `ingressBandwidthProfileEnvelope` - changed from `nullable` to `array` pattern
+- `IaIpvcCloud`:
+  - `dataLimit` - changed from `nullable` to `array` pattern
+  - `networkAddressTranslation` - changed from `nullable` to `array` pattern
+  - `subscriberPrefixList` - changed from `nullable` to `array` pattern
+- `IaIpvcCommon`:
+  - `maximumNumberOfIpv4Routes` - changed from `nullable` to `array` pattern
+  - `maximumNumberOfIpv6Routes` - changed from `nullable` to `array` pattern
+  - `serviceLevelSpecification` - changed from `nullable` to `array` pattern
+- `IaIpvcEndPointCommon`:
+  - `maximumNumberOfIpv4Routes` - changed from `nullable` to `array` pattern
+  - `maximumNumberOfIpv6Routes` - changed from `nullable` to `array` pattern
+  - `egressClassOfServiceMap` - changed from `nullable` to `array` pattern
+
+**ethernetUniAccessLinkTrunk.yaml:**
+
+- `EthernetUniAccessLinkTrunk`:
+  - `ethernetLinkAggregation` - changed from `nullable` to `array` pattern
+
+**ipSls.yaml:**
+
+- `SlsReferencePointType`:
+  - `IpvcEndPoint` - renamed to `IPVC_END_POINT`
+  - `Location` - renamed to `LOCATION`
+
+**ipUni.yaml:**
+
+- `IpUni`:
+  - `egressBandwidthProfileEnvelope` - changed from `nullable` to `array` pattern
+  - `ingressBandwidthProfileEnvelope` - changed from `nullable` to `array` pattern
+  - `routingProtocols` - changed from `nullable` to `array` pattern
+
+**ipUniAccessLink.yaml:**
+
+- `IpUniAccessLink`:
+  - `bfd` - changed from `nullable` to `array` pattern
+  - `dhcpRelay` - changed from `nullable` to `array` pattern
+  - `egressBwpEnvelope` - changed from `nullable` to `array` pattern
+  - `ingressBwpEnvelope` - changed from `nullable` to `array` pattern
+  - `ipv4ConnectionAddressing` - changed from `nullable` to `array` pattern
+  - `ipv6ConnectionAddressing` - changed from `nullable` to `array` pattern
+
 ## Release Fergie:
 
 **Readiness status**: Working Draft with implemented feedback from Call for

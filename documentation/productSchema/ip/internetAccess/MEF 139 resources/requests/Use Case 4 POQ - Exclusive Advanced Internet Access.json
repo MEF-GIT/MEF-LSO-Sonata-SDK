@@ -28,47 +28,51 @@
           "id": "ExclusiveAdvancedInternetAccessIpvcOffering-0001"
         },
         "productConfiguration": {
-          "@type": "urn:mef:lso:spec:cantata-sonata:exclusive-advanced-internet-access:v0.3.0:all",
+          "@type": "urn:mef:lso:spec:cantata-sonata:exclusive-advanced-internet-access:v1.0.0:all",
           "ipvc": {
-            "maximumNumberOfIpv4Routes": 1,
-            "maximumNumberOfIpv6Routes": 1,
+            "maximumNumberOfIpv4Routes": [1],
+            "maximumNumberOfIpv6Routes": [1],
             "dscpPreservation": "DISABLED",
             "classOfServiceName": "Best-effort",
             "mtu": 1500,
             "pathMtuDiscovery": "ENABLED",
-            "serviceLevelSpecification": {
-              "startTime": "2017-07-02T00:00:00.000Z",
-              "periodOfTime": {
-                "timeDurationValue": 1,
-                "timeDurationUnits": "MONTH"
-              },
-              "serviceUptime": [
-                {
-                  "serviceUptimeObjective": 99
-                }
-              ]
-            },
+            "serviceLevelSpecification": [
+              {
+                "startTime": "2023-06-28T22:00:00.000Z",
+                "periodOfTime": {
+                  "timeDurationValue": 1,
+                  "timeDurationUnits": "MONTH"
+                },
+                "serviceUptime": [
+                  {
+                    "serviceUptimeObjective": 99
+                  }
+                ]
+              }
+            ],
             "cloud": {
               "dns": {
                 "dnsType": "DHCP"
               },
-              "subscriberPrefixList": {
-                "prefixes": [
-                  {
-                    "ipv4Prefix": {
-                      "ipv4Address": "192.0.2.0",
-                      "prefixLength": 29
+              "subscriberPrefixList": [
+                {
+                  "prefixes": [
+                    {
+                      "ipv4Prefix": {
+                        "ipv4Address": "192.0.2.0",
+                        "prefixLength": 29
+                      }
+                    },
+                    {
+                      "ipv6Prefix": {
+                        "ipv6Address": "2001:0DB8:0066::",
+                        "prefixLength": 56
+                      }
                     }
-                  },
-                  {
-                    "ipv6Prefix": {
-                      "ipv6Address": "2001:0DB8:0066::",
-                      "prefixLength": 56
-                    }
-                  }
-                ],
-                "origin": "SP"
-              }
+                  ],
+                  "origin": "SP"
+                }
+              ]
             },
             "reservedPrefixes": [
               {
@@ -86,12 +90,12 @@
             ],
             "ipvcEndPoint": {
               "identifier": "IPVCEP.Budapest.66.1.1",
-              "maximumNumberOfIpv4Routes": 1,
-              "maximumNumberOfIpv6Routes": 1,
+              "maximumNumberOfIpv4Routes": [1],
+              "maximumNumberOfIpv6Routes": [1],
               "prefixMapping": [],
-              "egressClassOfServiceMap": null,
-              "egressBandwidthProfileEnvelope": null,
-              "ingressBandwidthProfileEnvelope": null
+              "egressClassOfServiceMap": [],
+              "egressBandwidthProfileEnvelope": [],
+              "ingressBandwidthProfileEnvelope": []
             }
           },
           "ipUni": {
@@ -114,94 +118,102 @@
                 "reference": ["RFC 8415"]
               }
             ],
-            "egressBandwidthProfileEnvelope": null,
-            "ingressBandwidthProfileEnvelope": {
-              "maxIrE": {
-                "irValue": 1,
-                "irUnits": "GBPS"
-              },
-              "tE": 10,
-              "bwpFlowPerIpvcEp": [
-                {
-                  "flowIdentifier": 1,
-                  "cir": {
-                    "irValue": 500,
-                    "irUnits": "MBPS"
-                  },
-                  "maxIr": {
-                    "irValue": 500,
-                    "irUnits": "MBPS"
-                  },
-                  "weight": 0,
-                  "burstBehavior": "OPTIMIZE_THROUGHPUT",
-                  "ipvcEndPointIdentifier": ["IPVCEP.Budapest.66.1.1"]
-                }
-              ]
-            },
-            "routingProtocols": {
-              "bgp": null,
-              "ospf": null,
-              "static": {
-                "staticIpEntry": [
+            "egressBandwidthProfileEnvelope": [],
+            "ingressBandwidthProfileEnvelope": [
+              {
+                "maxIrE": {
+                  "irValue": 1,
+                  "irUnits": "GBPS"
+                },
+                "tE": 10,
+                "bwpFlowPerIpvcEp": [
                   {
-                    "administrativeDistance": 10,
-                    "forwardingInformation": {
-                      "nextHopIpAddress": "203.0.113.1"
+                    "flowIdentifier": 1,
+                    "cir": {
+                      "irValue": 500,
+                      "irUnits": "MBPS"
                     },
-                    "staticPrefix": {
-                      "ipv4Prefix": {
-                        "ipv4Address": "192.0.2.0",
-                        "prefixLength": 29
-                      }
-                    }
-                  },
-                  {
-                    "administrativeDistance": 10,
-                    "forwardingInformation": {
-                      "nextHopIpAddress": "203.0.113.1"
+                    "maxIr": {
+                      "irValue": 500,
+                      "irUnits": "MBPS"
                     },
-                    "staticPrefix": {
-                      "ipv6Prefix": {
-                        "ipv6Address": "2001:0DB8:0066::",
-                        "prefixLength": 56
-                      }
-                    }
+                    "weight": 0,
+                    "burstBehavior": "OPTIMIZE_THROUGHPUT",
+                    "ipvcEndPointIdentifier": ["IPVCEP.Budapest.66.1.1"]
                   }
                 ]
               }
-            }
+            ],
+            "routingProtocols": [
+              {
+                "bgp": [],
+                "ospf": [],
+                "static": [
+                  {
+                    "staticIpEntry": [
+                      {
+                        "administrativeDistance": 10,
+                        "forwardingInformation": {
+                          "nextHopIpAddress": "203.0.113.1"
+                        },
+                        "staticPrefix": {
+                          "ipv4Prefix": {
+                            "ipv4Address": "192.0.2.0",
+                            "prefixLength": 29
+                          }
+                        }
+                      },
+                      {
+                        "administrativeDistance": 10,
+                        "forwardingInformation": {
+                          "nextHopIpAddress": "203.0.113.1"
+                        },
+                        "staticPrefix": {
+                          "ipv6Prefix": {
+                            "ipv6Address": "2001:0DB8:0066::",
+                            "prefixLength": 56
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           "ipUniAccessLink": {
             "identifier": "UNIAL.Budapest.66.1.1",
             "connectionType": "POINT_TO_POINT",
-            "dhcpRelay": null,
-            "bfd": null,
+            "dhcpRelay": [],
+            "bfd": [],
             "l2Technology": {
-              "demux": {
-                "vlanId": 66
-              }
+              "demux": [66]
             },
             "prefixDelegation": "DISABLED",
             "mtu": 1500,
             "reservedVrids": [],
-            "egressBwpEnvelope": null,
-            "ingressBwpEnvelope": null,
-            "ipv4ConnectionAddressing": {
-              "ipv4AddressingType": "STATIC",
-              "ipv4PrimarySubnet": {
-                "ipv4Prefix": {
-                  "prefixLength": 31
+            "egressBwpEnvelope": [],
+            "ingressBwpEnvelope": [],
+            "ipv4ConnectionAddressing": [
+              {
+                "ipv4AddressingType": "STATIC",
+                "ipv4PrimarySubnet": {
+                  "ipv4Prefix": {
+                    "prefixLength": 31
+                  }
                 }
               }
-            },
-            "ipv6ConnectionAddressing": {
-              "ipv6AddressType": "DHCP",
-              "ipv6Subnet": {
-                "ipv6Prefix": {
-                  "prefixLength": 64
+            ],
+            "ipv6ConnectionAddressing": [
+              {
+                "ipv6AddressType": "DHCP",
+                "ipv6Subnet": {
+                  "ipv6Prefix": {
+                    "prefixLength": 64
+                  }
                 }
               }
-            }
+            ]
           }
         }
       }
@@ -221,7 +233,7 @@
           }
         ],
         "productConfiguration": {
-          "@type": "urn:mef:lso:spec:cantata-sonata:ethernet-uni-access-link-trunk:v0.3.0:all",
+          "@type": "urn:mef:lso:spec:cantata-sonata:ethernet-uni-access-link-trunk:v1.0.0:all",
           "ethernetPhysicalLink": [
             {
               "identifier": "UNIALT.Budapest.66.1.1",
@@ -231,7 +243,7 @@
               "gender": "SOCKET"
             }
           ],
-          "ethernetLinkAggregation": null,
+          "ethernetLinkAggregation": [],
           "ethernetLinkOam": "DISABLED"
         }
       }

@@ -65,18 +65,22 @@ definitions:
               $ref: ../../common/ipCommon.yaml#/definitions/Ipv4OrIpv6Prefix
           egressBandwidthProfileEnvelope:
             description: >-
-              Egress Bandwidth Profile Envelope for the IPVC End Point. Null
-              value corresponds to the value of None. Reference - MEF 61.1
+              Egress Bandwidth Profile Envelope for the IPVC End Point. Empty 
+              list corresponds to the value of None. Reference - MEF 61.1
               Section 11.12
-            nullable: true
-            $ref: ../../common/ipCommon.yaml#/definitions/IpvcEpBwpEnvelope
+            type: array
+            maxItems: 1
+            items:
+              $ref: ../../common/ipCommon.yaml#/definitions/IpvcEpBwpEnvelope
           ingressBandwidthProfileEnvelope:
             description: >-
-              Ingress Bandwidth Profile Envelope for the IPVC End Point.  Null
-              value corresponds to the value of None. Reference - MEF 61.1
+              Ingress Bandwidth Profile Envelope for the IPVC End Point. Empty
+              list corresponds to the value of None. Reference - MEF 61.1
               Section 11.11
-            $ref: ../../common/ipCommon.yaml#/definitions/IpvcEpBwpEnvelope
-            nullable: true
+            maxItems: 1
+            type: array
+            items:
+              $ref: ../../common/ipCommon.yaml#/definitions/IpvcEpBwpEnvelope
         type: object
   BasicIaBwpEnvelope:
     description: >-
@@ -126,6 +130,7 @@ definitions:
       - description: >-
           The Basic Internet Access IPVC is a MEF 69.1 defined version of MEF
           61.1 IPVC. Reference - MEF 69.1 Section 9.1
+        type: object
         properties:
           ipvcEndPoint:
             description: >-
@@ -135,7 +140,6 @@ definitions:
             $ref: "#/definitions/BasicIaIpvcEndPoint"
         required:
           - ipvcEndPoint
-        type: object
   BasicIaIpvcEndPoint:
     allOf:
       - $ref: "#/definitions/IaIpvcEndPointCommon"
@@ -146,22 +150,26 @@ definitions:
         properties:
           egressBandwidthProfileEnvelope:
             description: >-
-              Egress Bandwidth Profile Envelope for the IPVC End Point. Null
-              value corresponds to the value of None. Reference - MEF 61.1
+              Egress Bandwidth Profile Envelope for the IPVC End Point. Empty
+              list corresponds to the value of None. Reference - MEF 61.1
               Section 11.12. Reference - MEF 69.1 Section 9.2. [D6] For a Basic
               Internet Access Service, the egressBandwidthProfileEnvelope SHOULD
               be None.
-            $ref: "#/definitions/BasicIaBwpEnvelope"
-            nullable: true
+            type: array
+            maxItems: 1
+            items:
+              $ref: "#/definitions/BasicIaBwpEnvelope"
           ingressBandwidthProfileEnvelope:
             description: >-
-              Ingress Bandwidth Profile Envelope for the IPVC End Point. Null
-              value corresponds to the value of None. Reference - MEF 61.1
+              Ingress Bandwidth Profile Envelope for the IPVC End Point.Empty
+              list  corresponds to the value of None. Reference - MEF 61.1
               Section 11.11. Reference - MEF 69.1 Section 9.2. [D5] For a Basic
               Internet Access Service, the ingressBandwidthProfileEnvelope
               SHOULD be None.
-            $ref: "#/definitions/BasicIaBwpEnvelope"
-            nullable: true
+            type: array
+            maxItems: 1
+            items:
+              $ref: "#/definitions/BasicIaBwpEnvelope"
   BasicIaIpUni:
     allOf:
       - $ref: "../../common/ipCommon.yaml#/definitions/IpUniCommon"
@@ -173,27 +181,31 @@ definitions:
           egressBandwidthProfileEnvelope:
             description: >-
               Attribute used for an egress UNI Bandwidth Profile. Reference - MEF
-              61.1 Section 12.5. Null value corresponds to the value of None.
+              61.1 Section 12.5. Empty list corresponds to the value of None.
               [D8] At a UNI with an IPVC EP for a Basic Internet Access Service,
-              if the UNI Egress Bandwidth Profile Envelope is not null, it
+              if the UNI Egress Bandwidth Profile Envelope is not empty, it
               SHOULD have Bandwidth Profile Flows that contain all Egress IP
               Data Packets at the UNI that are mapped to any of a given set of
               IPVC EPs (as defined in MEF 61.1 [8] Table 28). Reference - MEF
               69.1 Section 9.3
-            $ref: "#/definitions/BasicIaBwpEnvelope"
-            nullable: true
+            type: array
+            maxItems: 1
+            items:
+              $ref: "#/definitions/BasicIaBwpEnvelope"
           ingressBandwidthProfileEnvelope:
             description: >-
               Attribute used for an ingress UNI Bandwidth Profile. Reference -
-              MEF 61.1 Section 12.4. Null value corresponds to the value of
+              MEF 61.1 Section 12.4. Empty list corresponds to the value of
               None. [D7] At a UNI with an IPVC EP for a Basic Internet Access
               Service, if the UNI Ingress Bandwidth Profile Envelope is not
-              null, it SHOULD have Bandwidth Profile Flows that contain all
+              empty, it SHOULD have Bandwidth Profile Flows that contain all
               Ingress IP Data Packets at the UNI that are mapped to any of a
               given set of IPVC EPs (as defined in MEF 61.1 [8] Table 28).
               Reference - MEF 69.1 Section 9.3
-            $ref: "#/definitions/BasicIaBwpEnvelope"
-            nullable: true
+            type: array
+            maxItems: 1
+            items:
+              $ref: "#/definitions/BasicIaBwpEnvelope"
   BasicIaIpUniAccessLink:
     allOf:
       - $ref: "../../common/ipCommon.yaml#/definitions/IpUniAccessLinkCommon"
@@ -206,35 +218,44 @@ definitions:
           egressBwpEnvelope:
             description: >-
               Egress Bandwidth Profile Envelope for the UNI Access Link.
-              Reference - MEF 61.1 Section 13.11. Null value corresponds to the value of None
-            $ref: "#/definitions/BasicIaBwpEnvelope"
-            nullable: true
+              Reference - MEF 61.1 Section 13.11. Empty list corresponds to the value of None
+            type: array
+            maxItems: 1
+            items:
+              $ref: "#/definitions/BasicIaBwpEnvelope"
           ingressBwpEnvelope:
             description: >-
               Ingress Bandwidth Profile Envelope for the UNI Access Link.
-              Reference - MEF 61.1 Section 13.10. Null value corresponds to the value of None
-            $ref: "#/definitions/BasicIaBwpEnvelope"
-            nullable: true
+              Reference - MEF 61.1 Section 13.10. Empty list corresponds to the value of None
+            type: array
+            maxItems: 1
+            items:
+              $ref: "#/definitions/BasicIaBwpEnvelope"
           ipv4ConnectionAddressing:
             description: >-
-              IPv4 Connection Addressing. Reference - MEF 61.1 Section 13.4. Null value corresponds to the value of None
-            $ref: "#/definitions/BasicIaUniIpv4ConnectionAddressing"
-            nullable: true
+              IPv4 Connection Addressing. Reference - MEF 61.1 Section 13.4. Empty list corresponds to the value of None
+            type: array
+            maxItems: 1
+            items:
+              $ref: "#/definitions/BasicIaUniIpv4ConnectionAddressing"
           ipv6ConnectionAddressing:
             description: >-
-              IPv6 Connection Addressing. Reference - MEF 61.1 Section 13.5. Null value corresponds to the value of None
-            $ref: "#/definitions/BasicIaUniIpv6ConnectionAddressing"
-            nullable: true
+              IPv6 Connection Addressing. Reference - MEF 61.1 Section 13.5. Empty list corresponds to the value of None
+            type: array
+            maxItems: 1
+            items:
+              $ref: "#/definitions/BasicIaUniIpv6ConnectionAddressing"
   BasicIaUniIpv4ConnectionAddressing:
     description: >-
       Represents how IPv4 addresses are allocated to the devices on the UNI
       Access Link in case of Basic Internet Access. Reference - MEF 61 Section
       13.4 [R23] "At a UNI Access Link in a UNI with an IPVC EP for a Basic
       Internet Access Service, UNI Access Link IPv4 Connection Addressing MUST
-      be DHCP or null." [R25] "If IPv4 Connection Addressing is DHCP, the UNI
+      be DHCP or empty." [R25] "If IPv4 Connection Addressing is DHCP, the UNI
       Access Link IPv4 Connection Addressing Primary Subnet parameter MUST
       contain only a single Service Provider IPv4 Address." Reference - MEF
       69.1[1] Section 9.4
+    type: object
     properties:
       ipv4PrimarySubnet:
         description: >-
@@ -244,26 +265,23 @@ definitions:
           contain only a single Service Provider IPv4 Address." Reference - MEF
           69.1 Section 9.4
         $ref: ../../common/ipCommon.yaml#/definitions/Ipv4PrimarySubnet
-    type: object
   BasicIaUniIpv6ConnectionAddressing:
     description: >-
       Represents how IPv6 addresses are allocated to the devices on the UNI
       Access Link in case of Basic Internet Access. Reference - MEF 61 Section
       13.5 [R27] "At a UNI Access Link in a UNI with an IPVC EP for a Basic
       Internet Access Service, UNI Access Link IPv6 Connection Addressing MUST
-      be DHCP or SLAAC or null." Reference - MEF 69.1 Section 9.4. [R29] "At a
+      be DHCP or SLAAC or empty." Reference - MEF 69.1 Section 9.4. [R29] "At a
       UNI Access Link in a UNI with an IPVC EP for a Basic Internet Access
       Service, if the UNI Access Link IPv6 Connection Addressing is DHCP or
       SLAAC, the UNI Access Link IPv6 Connection Addressing Subnet List
       parameter MUST contain only a single Service Provider IPv6 Address."
+      Reference - MEF 69.1 Section 9.4. [R29]
+    type: object
     properties:
       ipv6AddressType:
         description: Basic Internet Access IPv6 Connection Address mechanism.
         $ref: "#/definitions/BasicIaUniIpv6AddressingType"
-        enum:
-          - DHCP
-          - SLAAC
-        type: string
       ipv6Subnet:
         description:
           IPv6 Subnet. [R29] "At a UNI Access Link in a UNI with an IPVC EP for
@@ -272,7 +290,6 @@ definitions:
           Connection Addressing Subnet List parameter MUST contain only a single
           Service Provider IPv6 Address."
         $ref: ../../common/ipCommon.yaml#/definitions/Ipv6Subnet
-    type: object
   BasicIaUniIpv6AddressingType:
     description: |
       Enumeration representing IPv6 Address Types specific for UNI Access Links.
@@ -295,19 +312,23 @@ definitions:
       maximumNumberOfIpv4Routes:
         description: >-
           Maximum number of IPv4 routes supported by the service as a whole.
-          Null value of this attribute corresponds to a value of "Unlimited".
+          Empty list corresponds to a value of "Unlimited".
           Reference - MEF 61.1 Section 10.5
-        type: integer
-        minimum: 0
-        nullable: true
+        type: array
+        maxItems: 1
+        items:
+          type: integer
+          minimum: 0
       maximumNumberOfIpv6Routes:
         description: >-
           Maximum number of IPv6 routes supported by the service as a whole.
-          Null value of this attribute corresponds to a value of "Unlimited".
+          Empty list corresponds to a value of "Unlimited".
           Reference - MEF 61.1 Section 10.6
-        type: integer
-        minimum: 0
-        nullable: true
+        type: array
+        maxItems: 1
+        items:
+          type: integer
+          minimum: 0
       dscpPreservation:
         $ref: ../../common/ipCommon.yaml#/definitions/EnabledDisabled
         description: >-
@@ -323,17 +344,19 @@ definitions:
           to single ref per Reference - MEF 69.1 Section 9.1 [R7]
         type: string
       serviceLevelSpecification:
-        $ref: "../../common/ipSls.yaml#/definitions/IpSls"
         description: >-
-          The set of performance objectives for CoS Name in the IPVC. Reference
-          MEF 61.1 Section 10.9
-        nullable: true
+          The set of performance objectives for CoS Name in the IPVC. Empty list
+          corresponds to the value of None. Reference MEF 61.1 Section 10.9.
+        type: array
+        maxItems: 1
+        items:
+          $ref: "../../common/ipSls.yaml#/definitions/IpSls"
       mtu:
         description: >-
           Indicates the maximum size (in octets) of an IP packet that can
           traverse the IPVC without fragmentation. Reference - MEF 61.1 Section
-        minimum: 576
         type: integer
+        minimum: 576
       pathMtuDiscovery:
         $ref: ../../common/ipCommon.yaml#/definitions/EnabledDisabled
         description: >-
@@ -345,55 +368,61 @@ definitions:
           Section 10.13.
         $ref: "#/definitions/IaIpvcCloud"
       reservedPrefixes:
-        type: array
-        items:
-          $ref: ../../common/ipCommon.yaml#/definitions/Ipv4OrIpv6Prefix
         description: >-
           Reference - MEF 61.1 Section 10.14. For an Internet Access Service,
           IPVC Reserved Prefixes MUST be either empty, or free from any public
           address prefixes. (Reference MEF 69.1 Section 9.1 [R14])
+        type: array
+        items:
+          $ref: ../../common/ipCommon.yaml#/definitions/Ipv4OrIpv6Prefix
   IaIpvcCloud:
     description: >-
       The IPVC Cloud Service Attribute is a set of parameters describing the
       access connectivity to the cloud service. Reference - MEF 61.1 Section
       10.13
+    type: object
     properties:
       dataLimit:
         description: >-
           Limit on the amount of Data traffic sent to/received from the cloud
-          service. Unlimited or a 4-tuple (scdl, Tcdl, ucdl, dcdl). A null value
+          service. Unlimited or a 4-tuple (scdl, Tcdl, ucdl, dcdl). Empty list
           corresponds to Unlimited. Reference - MEF 61.1 Section 10.13.3
-        $ref: ../../common/ipCommon.yaml#/definitions/CloudDataLimit
-        nullable: true
+        type: array
+        maxItems: 1
+        items:
+          $ref: ../../common/ipCommon.yaml#/definitions/CloudDataLimit
       networkAddressTranslation:
         description: >-
           Specifies whether Network Address Translation is used, and if so the
-          IPv4 Prefix. A null value corresponds to `Disabled`. Reference - MEF
+          IPv4 Prefix. Empty list corresponds to `Disabled`. Reference - MEF
           61.1 Section 10.13.4. Reference - MEF 61.1.1 Section 9: [R55] "If the
           value of the Cloud Type parameter is Internet Access, when and the
           value of the Cloud NAT parameter is not Disabled, an IPv4 Prefix, then
           it MUST be a publicly assigned IPv4 Prefix.
-        $ref: ../../common/ipCommon.yaml#/definitions/Ipv4Prefix
-        nullable: true
+        type: array
+        maxItems: 1
+        items:
+          $ref: ../../common/ipCommon.yaml#/definitions/Ipv4Prefix
       dns:
         description: >-
           Specifies whether and how DNS is provided for the service. Reference
           MEF 61.1 Section 10.13.5. [R12]	"For a Basic Internet Access Service,
-          Cloud DNS MUST NOT be null.
+          Cloud DNS MUST NOT be empty.
         $ref: ../../common/ipCommon.yaml#/definitions/CloudDns
       subscriberPrefixList:
         description: >-
-          List of public IP Prefixes used in the Subscriber Network and their
-          origin. 2-tuple containing the list of IP Prefixes and the origin of
+          2-tuple containing the list of IP Prefixes and the origin of
           the IP Prefixes. Reference - MEF 61.1 Section 10.13.6. Reference - MEF
           61.1.1 Section 9.
-        $ref: ../../common/ipCommon.yaml#/definitions/SubscriberPrefixList
-        nullable: true
-    type: object
+        type: array
+        maxItems: 1
+        items:
+          $ref: ../../common/ipCommon.yaml#/definitions/SubscriberPrefixList
   IaIpvcEndPointCommon:
     description: >-
       The Advanced Internet Access IPVC End Point is a MEF 69.1 defined version
       of MEF 61.1 IPVC End Point. Reference - MEF 69.1 Section 9.2
+    type: object
     properties:
       identifier:
         description: >-
@@ -402,22 +431,27 @@ definitions:
       maximumNumberOfIpv4Routes:
         description: >-
           Maximum number of IPv4 routes supported by this IPVC End Point.
-          Reference - MEF 61.1 Section 11.7. Null value of this attribute
+          Reference - MEF 61.1 Section 11.7. Empty List 
           corresponds to a value of "Unlimited".
-        type: integer
-        minimum: 0
-        nullable: true
+        type: array
+        maxItems: 1
+        items:
+          type: integer
+          minimum: 0
       maximumNumberOfIpv6Routes:
         description: >-
           Maximum number of IPv6 routes supported by this IPVC End Point.
-          Reference - MEF 61.1 Section 11.e. Null value of this attribute
+          Reference - MEF 61.1 Section 11.e. Empty List
           corresponds to a value of "Unlimited".
-        type: integer
-        minimum: 0
-        nullable: true
+        type: array
+        maxItems: 1
+        items:
+          type: integer
+          minimum: 0
       egressClassOfServiceMap:
-        $ref: ../../common/ipCommon.yaml#/definitions/DscpValue
         description: >-
           DSCP value
-        nullable: true
-    type: object
+        type: array
+        maxItems: 1
+        items:
+          $ref: ../../common/ipCommon.yaml#/definitions/DscpValue

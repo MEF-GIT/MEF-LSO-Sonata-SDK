@@ -1,5 +1,5 @@
 ---
-$id: urn:mef:lso:spec:cantata-sonata:ethernet-uni-access-link-trunk:v0.3.0:all
+$id: urn:mef:lso:spec:cantata-sonata:ethernet-uni-access-link-trunk:v1.0.0:all
 $schema: http://json-schema.org/draft-07/schema#
 type: object
 description: |
@@ -58,7 +58,8 @@ title:
   #
 allOf:
   - $ref: "./ipUniCommon.yaml#/definitions/IpUniAccessLinkTrunk"
-  - properties:
+  - type: object
+    properties:
       ethernetPhysicalLink:
         description:
           A list of the physical link types along with some additional
@@ -69,11 +70,14 @@ allOf:
         minItems: 1
       ethernetLinkAggregation:
         description:
-          Configuration of Link Aggregation for the UNI Access Link Trunk
-        $ref: "../common/ipCommon.yaml#/definitions/UniAccessLinkEthernetLinkAggregation"
-        nullable: true
+          Configuration of Link Aggregation for the UNI Access Link Trunk.
+          Empty list corresponds to the value of None.
+        items:
+          $ref: "../common/ipCommon.yaml#/definitions/UniAccessLinkEthernetLinkAggregation"
+        type: array
+        maxItems: 1
       ethernetLinkOam:
         description:
           Indicates whether Link OAM is used on the UNI Access Link Trunk
         $ref: "../common/ipCommon.yaml#/definitions/EnabledDisabled"
-    type: object
+

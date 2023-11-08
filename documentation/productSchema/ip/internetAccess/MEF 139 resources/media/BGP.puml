@@ -6,21 +6,21 @@ skinparam {
 
 class Bgp {
 
-    connectionAddressFamily: AddressFamilyIpv4Ipv6
-    authentication: string
+    authentication: string[]
     asOverride: EnabledDisabled
     administrativeDistance: integer
+    connectionAddressFamily: AddressFamilyIpv4Ipv6
     holdTime: TwoOctetInteger
     subscriberAsNumber: FourOctetInteger
     peerAsNumber: FourOctetInteger
 }
 
 
-Bgp *--> PeeringAddress : peeringAddresses
+
 Bgp *-->"*" BgpCommunity : bgpCommunityList
 Bgp *-->"*" BgpExtendedCommunity : bgpExtendedCommunityList
-Bgp *--> Damping : damping
-
+Bgp *-->"0..1" Damping : damping
+Bgp *--> PeeringAddress : peeringAddresses
 
 class BgpCommunity {
     autonomousSystemNumber: TwoOctetInteger 
@@ -32,10 +32,10 @@ class BgpCommunity {
 
 class BgpExtendedCommunity {
 
-    regularType*: integer
-    regularValue*: integer
+    regularType: integer
+    regularValue: integer
     extendedType: TwoOctetInteger
-    extendedValue*: integer
+    extendedValue: integer
     semantics: string
 }
 

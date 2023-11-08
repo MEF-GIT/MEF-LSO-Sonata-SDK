@@ -3,100 +3,87 @@ skinparam {
     ClassBackgroundColor White
     ClassBorderColor Black
 }
+IpBwpFlowPerIpvcEp *-d[hidden]-> IpBwpFlowPerIpvcEpAccessLink
+IpBwpFlowPerIpvcEpAccessLink *-d[hidden]-> IpBwpFlowAll
+IpBwpFlowAll *-d[hidden]-> IpBwpFlowPerAccessLink
+IpBwpFlowPerAccessLink *-d[hidden]-> IpBwpFlowPerIpvcEpAndCosName
+IpBwpFlowPerIpvcEpAndCosName *-d[hidden]-> IpBwpFlowPerAccessLinkIpvcEpAndCosName
+
 class IpBwpFlow {
-
-    flowIdentifier: integer
-    weight: integer
-    burstBehavior: BurstBehavior
 }
-
-IpBwpFlow *--> InformationRate : maxIr
-IpBwpFlow *--> InformationRate : cir
-
-IpUniBwpEnvelope *--> IpBwpFlow
-IpBwpEnvelope <-d-* IpBwpFlow
+' h
+IpUniBwpEnvelope *-r-> IpBwpFlow
 
 class IpBwpEnvelope {
-
-    tE: integer
 }
-
-IpBwpEnvelope *--> InformationRate : maxIrE
 
 
 class IpUniBwpEnvelope {
 
 }
-IpBwpEnvelope <|-- IpUniBwpEnvelope
+IpBwpEnvelope <|-d- IpUniBwpEnvelope
+' all h
 
-IpUniBwpEnvelope *-->"*" IpBwpFlowPerIpvcEp : bwpFlowPerIpvcEp
-IpUniBwpEnvelope *-->"*" IpBwpFlowPerIpvcEpAccessLink : bwpFlowPerIpvcEpAccessLink
-IpUniBwpEnvelope *--> IpBwpFlowAll : bwpFlowAll
-IpUniBwpEnvelope *-->"*" IpBwpFlowPerAccessLink : bwpFlowPerAccessLink
-IpUniBwpEnvelope *-->"*" IpBwpFlowPerIpvcEpAndCosName : bwpFlowPerIpvcEpAndCosName
-IpUniBwpEnvelope *-->"*" IpBwpFlowPerAccessLinkIpvcEpAndCosName : bwpFlowPerAccessLinkIpvcEpAndCosName
+IpUniBwpEnvelope *-r->"*" IpBwpFlowPerIpvcEp : bwpFlowPerIpvcEp
+IpUniBwpEnvelope *-r->"*" IpBwpFlowPerIpvcEpAccessLink : bwpFlowPerIpvcEpAccessLink
+IpUniBwpEnvelope *-r-> IpBwpFlowAll : bwpFlowAll
+IpUniBwpEnvelope *-r->"*" IpBwpFlowPerAccessLink : bwpFlowPerAccessLink
+IpUniBwpEnvelope *-r->"*" IpBwpFlowPerIpvcEpAndCosName : bwpFlowPerIpvcEpAndCosName
+IpUniBwpEnvelope *-r->"*" IpBwpFlowPerAccessLinkIpvcEpAndCosName : bwpFlowPerAccessLinkIpvcEpAndCosName
+
+
+
 
 class IpBwpFlowPerAccessLinkIpvcEpAndCosName {
-
+    uniAccessLinkIdentifier: IdentifierString[]
 }
-IpBwpFlow <|-d- IpBwpFlowPerAccessLinkIpvcEpAndCosName
+IpBwpFlow <|-l- IpBwpFlowPerAccessLinkIpvcEpAndCosName
 
-IpBwpFlowPerAccessLinkIpvcEpAndCosName *-->"*" IpvcEpAndCosName : ipvcEpAndCosName
-IpBwpFlowPerAccessLinkIpvcEpAndCosName *-->"*" IpUniAccessLinkIdentifier : uniAccessLinkIdentifier
-
-class InformationRate {
-
-    irValue: number
-    irUnits: IrUnits
-}
+IpBwpFlowPerAccessLinkIpvcEpAndCosName *-r->"*" IpvcEpAndCosName : ipvcEpAndCosName
 
 
 class IpBwpFlowAll {
 
 }
-IpBwpFlow <|-- IpBwpFlowAll
+IpBwpFlow <|-l- IpBwpFlowAll
 
 
 
 class IpBwpFlowPerIpvcEp {
-
+    ipvcEndPointIdentifier: IdentifierString[]
 }
-IpBwpFlow <|-- IpBwpFlowPerIpvcEp
-
-IpBwpFlowPerIpvcEp *-->"*" IpvcEndPointIdentifier : ipvcEndPointIdentifier
+IpBwpFlow <|-l- IpBwpFlowPerIpvcEp
 
 
 class IpBwpFlowPerIpvcEpAndCosName {
 
 }
-IpBwpFlow <|-- IpBwpFlowPerIpvcEpAndCosName
+IpBwpFlow <|-l- IpBwpFlowPerIpvcEpAndCosName
 
-IpBwpFlowPerIpvcEpAndCosName *-->"*" IpvcEpAndCosName : ipvcEpAndCosName
+IpBwpFlowPerIpvcEpAndCosName *-r->"*" IpvcEpAndCosName : ipvcEpAndCosName
 
 
 
 class IpBwpFlowPerAccessLink {
-
+    uniAccessLinkIdentifier: IdentifierString[]
 }
-IpBwpFlow <|-- IpBwpFlowPerAccessLink
-
-IpBwpFlowPerAccessLink *-->"*" IpUniAccessLinkIdentifier : uniAccessLinkIdentifier
+IpBwpFlow <|-l- IpBwpFlowPerAccessLink
 
 
 class IpBwpFlowPerIpvcEpAccessLink {
-
+    ipvcEndPointIdentifier: IdentifierString[]
+    uniAccessLinkIdentifier: IdentifierString[]
 }
-IpBwpFlow <|-- IpBwpFlowPerIpvcEpAccessLink
+IpBwpFlow <|-l- IpBwpFlowPerIpvcEpAccessLink
 
-IpBwpFlowPerIpvcEpAccessLink *-->"*" IpvcEndPointIdentifier : ipvcEndPointIdentifier
-IpBwpFlowPerIpvcEpAccessLink *-->"*" IpUniAccessLinkIdentifier : uniAccessLinkIdentifier
+IpvcEpAndCosName *-u[hidden]-> IpBwpFlow
 
 class IpvcEpAndCosName {
-
+    ipvcEndPointIdentifier: IdentifierString
     cosName: string
+    
 }
 
-IpvcEpAndCosName *--> IpvcEndPointIdentifier : ipvcEndPointIdentifier
 
 
 @enduml

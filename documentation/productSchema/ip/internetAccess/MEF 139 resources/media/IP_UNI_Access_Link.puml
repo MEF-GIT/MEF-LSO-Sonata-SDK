@@ -20,10 +20,10 @@ class BasicIaIpUniAccessLink {
 }
 IpUniAccessLinkCommon <|-u- BasicIaIpUniAccessLink
 
-BasicIaIpUniAccessLink *-u-> BasicIaBwpEnvelope : egressBwpEnvelope
-BasicIaIpUniAccessLink *-u-> BasicIaBwpEnvelope : ingressBwpEnvelope
-BasicIaIpUniAccessLink *-u-> BasicIaUniIpv4ConnectionAddressing : ipv4ConnectionAddressing
-BasicIaIpUniAccessLink *-u-> BasicIaUniIpv6ConnectionAddressing : ipv6ConnectionAddressing
+BasicIaIpUniAccessLink *-u->"0..1" BasicIaBwpEnvelope : egressBwpEnvelope
+BasicIaIpUniAccessLink *-u->"0..1" BasicIaBwpEnvelope : ingressBwpEnvelope
+BasicIaIpUniAccessLink *-u->"0..1" BasicIaUniIpv4ConnectionAddressing : ipv4ConnectionAddressing
+BasicIaIpUniAccessLink *-u->"0..1" BasicIaUniIpv6ConnectionAddressing : ipv6ConnectionAddressing
 
 
 class IpUniAccessLink {
@@ -31,12 +31,12 @@ class IpUniAccessLink {
 }
 IpUniAccessLinkCommon <|-d- IpUniAccessLink
 
-IpUniAccessLink *--> AccessLinkBfd : bfd
-IpUniAccessLink *--> DhcpRelay : dhcpRelay
-IpUniAccessLink *--> IpUniAccessLinkBwpEnvelope : egressBwpEnvelope
-IpUniAccessLink *--> IpUniAccessLinkBwpEnvelope : ingressBwpEnvelope
-IpUniAccessLink *--> UniIpv4ConnectionAddressing : ipv4ConnectionAddressing
-IpUniAccessLink *--> UniIpv6ConnectionAddressing : ipv6ConnectionAddressing
+IpUniAccessLink *-->"0..1" AccessLinkBfd : bfd
+IpUniAccessLink *-->"0..1" DhcpRelay : dhcpRelay
+IpUniAccessLink *-->"0..1" IpUniAccessLinkBwpEnvelope : egressBwpEnvelope
+IpUniAccessLink *-->"0..1" IpUniAccessLinkBwpEnvelope : ingressBwpEnvelope
+IpUniAccessLink *-->"0..1" UniIpv4ConnectionAddressing : ipv4ConnectionAddressing
+IpUniAccessLink *-->"0..1" UniIpv6ConnectionAddressing : ipv6ConnectionAddressing
 
 
 class L2Technology  {

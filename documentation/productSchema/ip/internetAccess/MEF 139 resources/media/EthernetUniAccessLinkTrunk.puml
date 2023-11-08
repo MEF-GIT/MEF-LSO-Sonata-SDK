@@ -12,7 +12,7 @@ class EthernetUniAccessLinkTrunk {
 IpUniAccessLinkTrunk <|-- EthernetUniAccessLinkTrunk
 
 EthernetUniAccessLinkTrunk *-->"*" EthernetPhysicalLink : ethernetPhysicalLink
-EthernetUniAccessLinkTrunk *--> UniAccessLinkEthernetLinkAggregation : ethernetLinkAggregation
+EthernetUniAccessLinkTrunk *-->"0..1" UniAccessLinkEthernetLinkAggregation : ethernetLinkAggregation
 
 class IpUniAccessLinkTrunk {
 
@@ -38,7 +38,7 @@ UniAccessLinkEthernetLinkAggregation *-->"*" ConversationIdToAggregationLinkMap 
 
 class ConversationIdToAggregationLinkMap {
 
-    aggLinkList: integer
+    aggLinkList: integer[]
 }
 
 ConversationIdToAggregationLinkMap *-->"*" ConversationIdRange : conversationIDs

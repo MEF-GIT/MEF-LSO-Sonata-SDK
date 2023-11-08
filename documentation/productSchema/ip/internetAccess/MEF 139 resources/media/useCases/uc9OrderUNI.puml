@@ -1,9 +1,9 @@
 @startjson
 
 
-#highlight "ingressBandwidthProfileEnvelope" / "bwpFlowPerIpvcEp" 
+#highlight "ingressBandwidthProfileEnvelope" /  "0" /"bwpFlowPerIpvcEp" 
 {
-  "@type": "urn:mef:lso:spec:cantata-sonata:ip-uni:v0.3.0:all",
+  "@type": "urn:mef:lso:spec:cantata-sonata:ip-uni:v1.0.0:all",
   "managementType": "SUBSCRIBER_MANAGED",
   "reversePathForwarding": "ENABLED",
   "listOfControlProtocols": [
@@ -23,47 +23,53 @@
       "reference": ["RFC 8415"]
     }
   ],
-  "egressBandwidthProfileEnvelope": null,
-  "ingressBandwidthProfileEnvelope": {
-    "maxIrE": {
-      "irValue": 1,
-      "irUnits": "GBPS"
-    },
-    "tE": 10,
-    "bwpFlowPerIpvcEp": []
-  },
-  "routingProtocols": {
-    "bgp": null,
-    "ospf": null,
-    "static": {
-      "staticIpEntry": [
+  "egressBandwidthProfileEnvelope": [],
+  "ingressBandwidthProfileEnvelope": [
+    {
+      "maxIrE": {
+        "irValue": 1,
+        "irUnits": "GBPS"
+      },
+      "tE": 10,
+      "bwpFlowPerIpvcEp": []
+    }
+  ],
+  "routingProtocols": [
+    {
+      "bgp": [],
+      "ospf": [],
+      "static": [
         {
-          "administrativeDistance": 10,
-          "forwardingInformation": {
-            "nextHopIpAddress": "203.0.113.1"
-          },
-          "staticPrefix": {
-            "ipv4Prefix": {
-              "ipv4Address": "192.0.2.0",
-              "prefixLength": 29
+          "staticIpEntry": [
+            {
+              "administrativeDistance": 10,
+              "forwardingInformation": {
+                "nextHopIpAddress": "203.0.113.1"
+              },
+              "staticPrefix": {
+                "ipv4Prefix": {
+                  "ipv4Address": "192.0.2.0",
+                  "prefixLength": 29
+                }
+              }
+            },
+            {
+              "administrativeDistance": 10,
+              "forwardingInformation": {
+                "nextHopIpAddress": "203.0.113.1"
+              },
+              "staticPrefix": {
+                "ipv6Prefix": {
+                  "ipv6Address": "2001:0DB8:0066::",
+                  "prefixLength": 56
+                }
+              }
             }
-          }
-        },
-        {
-          "administrativeDistance": 10,
-          "forwardingInformation": {
-            "nextHopIpAddress": "203.0.113.1"
-          },
-          "staticPrefix": {
-            "ipv6Prefix": {
-              "ipv6Address": "2001:0DB8:0066::",
-              "prefixLength": 56
-            }
-          }
+          ]
         }
       ]
     }
-  }
+  ]
 }
 
 

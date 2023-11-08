@@ -19,8 +19,8 @@ class BasicIaIpvcEndPoint {
 }
 IaIpvcEndPointCommon <|-- BasicIaIpvcEndPoint
 
-BasicIaIpvcEndPoint *--> BasicIaBwpEnvelope : egressBandwidthProfileEnvelope
-BasicIaIpvcEndPoint *--> BasicIaBwpEnvelope : ingressBandwidthProfileEnvelope
+BasicIaIpvcEndPoint *-->"0..1"  BasicIaBwpEnvelope : egressBandwidthProfileEnvelope
+BasicIaIpvcEndPoint *-->"0..1" BasicIaBwpEnvelope : ingressBandwidthProfileEnvelope
 
 class AdvancedIaIpvcEndPoint {
 
@@ -28,8 +28,8 @@ class AdvancedIaIpvcEndPoint {
 IaIpvcEndPointCommon <|-- AdvancedIaIpvcEndPoint
 BasicIaIpvcEndPoint <|-d[hidden]- AdvancedIaIpvcEndPoint
 AdvancedIaIpvcEndPoint *-->"*" Ipv4OrIpv6Prefix : prefixMapping
-AdvancedIaIpvcEndPoint *--> IpvcEpBwpEnvelope : egressBandwidthProfileEnvelope
-AdvancedIaIpvcEndPoint *--> IpvcEpBwpEnvelope : ingressBandwidthProfileEnvelope
+AdvancedIaIpvcEndPoint *-->"0..1"  IpvcEpBwpEnvelope : egressBandwidthProfileEnvelope
+AdvancedIaIpvcEndPoint *-->"0..1" IpvcEpBwpEnvelope : ingressBandwidthProfileEnvelope
 
 class AdvancedInternetAccessIpvc {
 
@@ -40,16 +40,16 @@ AdvancedInternetAccessIpvc *-->"1" AdvancedIaIpvcEndPoint : ipvcEndPoint
 
 class IaIpvcCommon {
 
-    maximumNumberOfIpv4Routes: integer
-    pathMtuDiscovery: EnabledDisabled
+    maximumNumberOfIpv4Routes: integer[]
+    maximumNumberOfIpv6Routes: integer[]
     dscpPreservation: EnabledDisabled
     classOfServiceName: string
-    maximumNumberOfIpv6Routes: integer
     mtu: integer
+    pathMtuDiscovery: EnabledDisabled
 }
 
 IaIpvcCommon *--> IaIpvcCloud : cloud
-IaIpvcCommon *--> IpSls : serviceLevelSpecification
+IaIpvcCommon *-->"0..1" IpSls : serviceLevelSpecification
 IaIpvcCommon *-->"*" Ipv4OrIpv6Prefix : reservedPrefixes
 
 class IaIpvcCloud {
@@ -59,8 +59,8 @@ class IaIpvcCloud {
 class IaIpvcEndPointCommon {
     identifier: IdentifierString
     egressClassOfServiceMap: DscpValue
-    maximumNumberOfIpv4Routes: integer
-    maximumNumberOfIpv6Routes: integer
+    maximumNumberOfIpv4Routes: integer[]
+    maximumNumberOfIpv6Routes: integer[]
 }
 
 

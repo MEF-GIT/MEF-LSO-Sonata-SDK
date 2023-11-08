@@ -1,6 +1,6 @@
-$schema: http://json-schema.org/draft-07/schema#
-title: MEF LSO Legato - IP Service Level Specification
-description:
+$schema: 'http://json-schema.org/draft-07/schema#'
+title: MEF LSO IP Service Level Specification
+description: >-
   This schema gathers definitions related IP Service Level Specification. The
   root type is IpSls which in context of MEF 139 is specified to
   InternetAccessSls due to specific requirements and put into
@@ -56,80 +56,77 @@ definitions:
   IpSls:
     description: >
       The IPVC Service Level Specification (SLS) describes the performance
-      objectives for the performance of conformant IP Data Packets that flow over the IPVC. 
-      The IPVC Service Level Specification Service Attribute is either null, or
-      a set o three attributes (`startTime`, `periodOfTime`, `locationList`) followed
-      by attributes per every applicable performance metric, proiding metric's specific
-      attributes. Reference - MEF 61.1 Section 10.9
+      objectives for the performance of conformant IP Data Packets that flow
+      over the IPVC.  The IPVC Service Level Specification Service Attribute is
+      either empty, or a set o three attributes (`startTime`, `periodOfTime`,
+      `locationList`) followed by attributes per every applicable performance
+      metric, proiding metric's specific attributes. Reference - MEF 61.1
+      Section 10.9
+    type: object
     properties:
       startTime:
-        description: >-
-          Start time of IP SLS.
-        format: date-time
+        description: Start time of IP SLS.
         type: string
+        format: date-time
       periodOfTime:
-        description: >-
-          Period of time over which IP SLS is measured.
-        $ref: "./ipCommon.yaml#/definitions/TimeDuration"
+        description: Period of time over which IP SLS is measured.
+        $ref: '#/components/schemas/TimeDuration'
       locationList:
-        description:
+        description: >-
           A Location is associated with one or more IPVC EPs or with a cloud
-          service.  A Location can refer to a specific address (such as the SP's
-          premises where the PE is located), a city, a region, or even a
+          service.  A Location can refer to a specific address (such as the
+          SP's premises where the PE is located), a city, a region, or even a
           country.
         type: array
         items:
-          $ref: "#/definitions/Location"
+          $ref: '#/components/schemas/Location'
       oneWayPacketDelayPercentile:
-        description: >-
+        description:
           List of SLS Entries for the One-way Packet Delay Percentile metric.
-        items:
-          $ref: "#/definitions/OneWayPacketDelayPercentile"
         type: array
+        items:
+          $ref: '#/components/schemas/OneWayPacketDelayPercentile'
       oneWayMeanPacketDelay:
-        description: >-
+        description:
           List of SLS Entries for the One-way Mean Packet Delay metric.
-        items:
-          $ref: "#/definitions/OneWayMeanPacketDelay"
         type: array
+        items:
+          $ref: '#/components/schemas/OneWayMeanPacketDelay'
       oneWayInterPacketDelayVariation:
         description: >-
           List of SLS Entries for the One-way Inter-Packet Delay Variation
           metric.
-        items:
-          $ref: "#/definitions/OneWayInterPacketDelayVariation"
         type: array
+        items:
+          $ref: '#/components/schemas/OneWayInterPacketDelayVariation'
       oneWayPacketDelayRange:
-        description: >-
+        description:
           List of SLS Entries for the One-way Packet Delay Range metric.
-        items:
-          $ref: "#/definitions/OneWayPacketDelayRange"
         type: array
+        items:
+          $ref: '#/components/schemas/OneWayPacketDelayRange'
       oneWayPacketLossRatio:
-        description: >-
+        description:
           List of SLS Entries for the One-way Packet Loss Ratio metric.
-        items:
-          $ref: "#/definitions/OneWayPacketLossRatio"
         type: array
+        items:
+          $ref: '#/components/schemas/OneWayPacketLossRatio'
       serviceUptime:
-        description: >-
-          List of SLS Entries for the Service Uptime metric
-        items:
-          $ref: "#/definitions/ServiceUptime"
+        description: List of SLS Entries for the Service Uptime metric
         type: array
+        items:
+          $ref: '#/components/schemas/ServiceUptime'
       meanTimeToRepair:
         description: List of SLS entries for the Mean Time to Repair metric.
         type: array
         items:
-          $ref: "#/definitions/MeanTimeToRepair"
-    type: object
+          $ref: '#/components/schemas/MeanTimeToRepair'
   Location:
-    type: object
-    description:
+    description: >-
       A Location is associated with one or more IPVC EPs or with a cloud
       service. A Location can refer to a specific address (such as the SP's
-      premises where the PE is located), a city, a region, or even a
-      country.
+      premises where the PE is located), a city, a region, or even a country.
+    type: object
     properties:
       name:
         description: Location name
@@ -138,11 +135,11 @@ definitions:
         description: Location description
         type: string
       ipvcEndPointIdentifier:
-        description: >-
+        description:
           IPVC End Point identifier as described in MEF 61.1 Section 11.1.
-        items:
-          $ref: "./ipCommon.yaml#/definitions/IdentifierString"
         type: array
+        items:
+          $ref: '#/components/schemas/IdentifierString'
       cloudService:
         description: Attribute to indicate if associated with a cloud service.
         type: boolean
@@ -155,14 +152,19 @@ definitions:
     properties:
       mttrObjective:
         description: Mean Time To Repair Objective
-        $ref: "./ipCommon.yaml#/definitions/TimeDuration"
+        $ref: './ipCommon.yaml#/definitions/TimeDuration'
   OneWayMeanPacketDelay:
     type: object
-    description: |
+    description: >
       The One-way Mean Packet Delay Performance Metric is the maximum, over all
+
       the ordered pairs of SLS-RPs in a given set S, of the arithmetic mean of
+
       one-way packet delay for Qualified Packets for a given ordered pair of
-      SLS-RPs, a given CoS Name, and a  given time period Tk. Reference - MEF 61.1
+
+      SLS-RPs, a given CoS Name, and a  given time period Tk. Reference - MEF
+      61.1
+
       Section 10.9.5
     properties:
       cosName:
@@ -176,11 +178,12 @@ definitions:
         type: array
         minItems: 1
         items:
-          $ref: "#/definitions/SlsRpPair"
+          $ref: '#/definitions/SlsRpPair'
       meanPacketDelayObjective:
-        description: |
-          Mean Packet Delay Objective. Reference - MEF 61.1 Section 10.9.5, Table-5.
-        $ref: "./ipCommon.yaml#/definitions/TimeDuration"
+        description: >
+          Mean Packet Delay Objective. Reference - MEF 61.1 Section 10.9.5,
+          Table-5.
+        $ref: './ipCommon.yaml#/definitions/TimeDuration'
   OneWayInterPacketDelayVariation:
     type: object
     description: |
@@ -202,30 +205,30 @@ definitions:
         type: array
         minItems: 1
         items:
-          $ref: "#/definitions/SlsRpPair"
+          $ref: '#/definitions/SlsRpPair'
       packetArrivalTimeDifference:
         description: |
           Difference in the time of arrival of packets. Reference - MEF 61.1
           Section 10.9.6
-        $ref: "./ipCommon.yaml#/definitions/TimeDuration"
+        $ref: './ipCommon.yaml#/definitions/TimeDuration'
       interPacketDelayVariationPercentile:
         description: |
           Inter-Packet Delay Variation Percentile. Reference - MEF 61.1 Section
           10.9.6
-        $ref: "#/definitions/Percentage"
+        $ref: '#/definitions/Percentage'
       interPacketDelayVariationObjective:
         description: |
           Inter-Packet Delay Variation Objective. Reference - MEF 61.1 Section
           10.9.6
-        $ref: "./ipCommon.yaml#/definitions/TimeDuration"
+        $ref: './ipCommon.yaml#/definitions/TimeDuration'
   OneWayPacketDelayPercentile:
     type: object
-    description:
+    description: >-
       The One-way Packet Delay Percentile Performance Metric is the maximum,
       over all the order pairs of SLS-RPs in a given set S, of the pth
-      percentile of one-way packet delay for Qualified Packets for a given order
-      pair of SLS-RPs, a given CoS Name and a given time period Tk. Reference
-      MEF 61.1 Section 10.9.4
+      percentile of one-way packet delay for Qualified Packets for a given
+      order pair of SLS-RPs, a given CoS Name and a given time period Tk.
+      Reference MEF 61.1 Section 10.9.4
     properties:
       cosName:
         description: |
@@ -238,15 +241,15 @@ definitions:
         type: array
         minItems: 1
         items:
-          $ref: "#/definitions/SlsRpPair"
+          $ref: '#/definitions/SlsRpPair'
       packetDelayPercentile:
         description: |
-          Packet Delay Range Percentile. Reference - MEF 61.1 Section 10.9.4
-        $ref: "#/definitions/Percentage"
+          Packet Delay Percentile. Reference - MEF 61.1 Section 10.9.4
+        $ref: '#/definitions/Percentage'
       packetDelayObjective:
         description: |
           Packet Delay Objective. Reference - MEF 61.1 Section 10.9.4
-        $ref: "./ipCommon.yaml#/definitions/TimeDuration"
+        $ref: './ipCommon.yaml#/definitions/TimeDuration'
   OneWayPacketDelayRange:
     type: object
     description: |
@@ -267,15 +270,15 @@ definitions:
         type: array
         minItems: 1
         items:
-          $ref: "#/definitions/SlsRpPair"
+          $ref: '#/definitions/SlsRpPair'
       packetDelayRangePercentile:
         description: |
           Packet Delay Range Percentile. Reference - MEF 61.1 Section 10.9.7
-        $ref: "#/definitions/Percentage"
+        $ref: '#/definitions/Percentage'
       packetDelayRangeObjective:
         description: |
           Packet Delay Range Objective. Reference - MEF 61.1 Section 10.9.7
-        $ref: "./ipCommon.yaml#/definitions/TimeDuration"
+        $ref: './ipCommon.yaml#/definitions/TimeDuration'
   OneWayPacketLossRatio:
     type: object
     description: |
@@ -295,18 +298,16 @@ definitions:
         type: array
         minItems: 1
         items:
-          $ref: "#/definitions/SlsRpPair"
+          $ref: '#/definitions/SlsRpPair'
       packetLossRatioObjective:
         description: |
           Packet Loss Ratio Objective. Reference - MEF 61.1 Section 10.9.8
-        $ref: "#/definitions/Percentage"
+        $ref: '#/definitions/Percentage'
   Percentage:
-      description:  >-
-          This is a number of percent - a floating point number between
-          0 and 100
-      type: number
-      minimum: 0
-      maximum: 100
+    description: This is a number of percent - a number between 0 and 100.
+    type: number
+    minimum: 0
+    maximum: 100
   ServiceUptime:
     type: object
     description: |
@@ -317,31 +318,40 @@ definitions:
       for  example maintenance intervals. Reference - MEF 61.1[1] Section 10.9
     properties:
       serviceUptimeObjective:
-        $ref: "#/definitions/Percentage"
+        $ref: '#/definitions/Percentage'
         description: |
           Service Uptime Objective. Reference - MEF 61.1 Section 10.9.9
   SlsReferencePoint:
     type: object
-    description: |
-      A reference SlsReferencePoint which is either a Location.name or IpvcEndPoint.identifier.
+    description: >
+      A reference SlsReferencePoint which is either a Location.name or
+      IpvcEndPoint.identifier.
+
       Reference - MEF 61.1 Section 10.9.1.
     properties:
       referencedType:
-        description: The type of referenced SlsReferencePoint. Either a Location or IpvcEndPoint.
-        $ref: "#/definitions/SlsReferencePointType"
+        description: >-
+          The type of referenced SlsReferencePoint. Either a Location or
+          IpvcEndPoint.
+        $ref: '#/definitions/SlsReferencePointType'
       identifier:
-        description: The value of target Location.name or IpvcEndPoint.identifier.
+        description:
+          The value of target Location.name or IpvcEndPoint.identifier.
         type: string
   SlsReferencePointType:
     description: |
-      Enumeration representing the possible SlsReferencePoint types.
+      Enumeration representing the possible SlsReferencePoint
+      types.
+      
+      - IPVC_END_POINT - The SlsReferencePoint.identifier points to IpvcEndPoint
+      - LOCATION - The SlsReferencePoint.identifier points to Location
     enum:
-      - IpvcEndPoint
-      - Location
+      - IPVC_END_POINT
+      - LOCATION
     type: string
   SlsRpPair:
     type: object
-    description:
+    description: >-
       Service Level Specification Reference Point Pair. In a multipoint or
       rooted multipoint IPVC, performance objectives are ideally specified as
       applying between pairs of IPVC EPs - in other words, they apply to the
@@ -351,7 +361,7 @@ definitions:
     properties:
       fromSlsReferencePoint:
         description: Pointer to the "from" SLS Reference Point.
-        $ref: "#/definitions/SlsReferencePoint"
+        $ref: '#/definitions/SlsReferencePoint'
       toSlsReferencePoint:
         description: Pointer to the "to" SLS Reference Point.
-        $ref: "#/definitions/SlsReferencePoint"
+        $ref: '#/definitions/SlsReferencePoint'
