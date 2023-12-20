@@ -10,20 +10,17 @@ img
 
 ![MEF_LOGO](media/mefLogo.png)
 
-<div style="font-weight:bold; font-size:33pt; font-family: sensation;  text-align:center">
-Working Draft
+<div style="font-weight:bold; font-size:33pt; font-family: Sansation;  text-align:center">
+MEF Standard
 </br>
-MEF W141 v0.2
 </br>
+MEF 141
+</br></br>
 LSO Cantata and LSO Sonata Billing Management API - Developer Guide
 </br>
 </br>
-
+October 2023
 </br>
-</br>
-May 2023
-</br>
-<p style="color:red;font-weight:bold; font-size:18pt">EXPORT CONTROL: This document contains technical data. The download, export, re-export or disclosure of the technical data contained in this document may be restricted by applicable U.S. or foreign export laws, regulations and rules and/or applicable U.S. or foreign sanctions ("Export Control Laws or Sanctions"). You agree that you are solely responsible for determining whether any Export Control Laws or Sanctions may apply to your download, export, reexport or disclosure of this document, and for obtaining (if available) any required U.S. or foreign export or reexport licenses and/or other required authorizations.</p>
 </div>
 
 <div class="page"/>
@@ -3110,34 +3107,30 @@ Inherits from:
 
 # 8. References
 
-- [OAS-v3] [Open API 3.0](http://spec.openapis.org/oas/v3.0.3.html), February
+- [OAS-v3](http://spec.openapis.org/oas/v3.0.3.html), February
   2020
-- [MEF55.1]
-  [MEF 55.1](https://www.mef.net/wp-content/uploads/2021/02/MEF-55.1.pdf),
+- [MEF55.1](https://www.mef.net/wp-content/uploads/2021/02/MEF-55.1.pdf),
   Lifecycle Service Orchestration (LSO): Reference Architecture and Framework,
   February 2021
-- [MEF79] [MEF 79](https://www.mef.net/wp-content/uploads/2019/11/MEF-79.pdf)),
+- [MEF79](https://www.mef.net/wp-content/uploads/2019/11/MEF-79.pdf)),
   Address, Service Site, and Product Offering Qualification Management,
   Requirements and Use Cases, November 2019
-- [MEF80] [MEF 80](https://www.mef.net/wp-content/uploads/MEF-80.pdf), Quote
+- [MEF80](https://www.mef.net/wp-content/uploads/MEF-80.pdf), Quote
   Management Requirements and Use Cases, July 2021
-- [MEF134] [MEF 134](https://www.mef.net/wp-content/uploads/MEF-134.pdf),
+- [MEF134](https://www.mef.net/wp-content/uploads/MEF-134.pdf),
   Billing and Invoice Business Requirements and Use Cases, February 2023
-- [REST]
-  [Chapter 5: Representational State Transfer (REST)](http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
+- [REST](http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
   Fielding, Roy Thomas, Architectural Styles and the Design of Network-based
   Software Architectures (Ph.D.).
-- [RFC2119] [RFC 2119](https://tools.ietf.org/html/rfc2119), Key words for use
+- [RFC2119](https://tools.ietf.org/html/rfc2119), Key words for use
   in RFCs to Indicate Requirement Levels, March 1997
-- [RFC3986] [RFC 3986](https://tools.ietf.org/html/rfc3986#section-3), Uniform
+- [RFC3986](https://tools.ietf.org/html/rfc3986#section-3), Uniform
   Resource Identifier (URI): Generic Syntax, January 2005
-- [RFC8174] [RFC 8174](https://tools.ietf.org/html/rfc8174), Ambiguity of
+- [RFC8174](https://tools.ietf.org/html/rfc8174), Ambiguity of
   Uppercase vs Lowercase in RFC 2119 Key Words, May 2017
-- [TMF630]
-  [TMF 630](https://www.tmforum.org/resources/specification/tmf630-rest-api-design-guidelines-4-2-0/),
+- [TMF630](https://www.tmforum.org/resources/specification/tmf630-rest-api-design-guidelines-4-2-0/),
   TMF630 API Design Guidelines 4.2.0
-- [TMF678]
-  [TMF 678](https://www.tmforum.org/resources/specification/tmf678-customer-bill-management-api-user-guide-v4-0-0/),
+- [TMF678](https://www.tmforum.org/resources/specification/tmf678-customer-bill-management-api-user-guide-v4-0-0/),
   TMF678 Customer Bill Management API User Guide v4.0.1
 
 # Appendix A Acknowledgments
@@ -3145,14 +3138,14 @@ Inherits from:
 The following contributors participated in the development of this document and
 have requested to be included in this list.
 
-Mike **Bencheck**
+Mike **BENCHECK**
 
-Michał **Łączyński**
+Michał **ŁĄCZYŃSKI**
 
-Marcin **Naturalny**
+Marcin **NATURALNY**
 
-Jack **Pugaczewski**
+Jack **PUGACZEWSKI**
 
-Patrick **Roosen**
+Patrick **ROOSEN**
 
-Rick **Zwiep**
+Rick **ZWIEP**

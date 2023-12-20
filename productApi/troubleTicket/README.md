@@ -1,5 +1,11 @@
 # Trouble Ticket Management: Release notes
 
+## Release Grace:
+
+**Readiness status**: MEF Published Standard
+
+No changes.
+
 ## Release Fergie:
 
 **Readiness status**: MEF Published Standard
@@ -10,7 +16,7 @@ No changes.
 
 **Readiness status**: Requested Letter Ballot. It will be most likely published as a standard without further changes.
 
-**Summary** 
+**Summary:** 
 
 - added `observedImpact` to Trouble Ticket search criteria
 - introduced `impact` attribute to Incident, aligned with Trouble Ticket's `observedImpact`

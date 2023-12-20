@@ -1,5 +1,11 @@
 # Billing Management: Release notes
 
+## Release Grace:
+
+**Readiness status**: MEF Published Standard
+
+No changes.
+
 ## Release Fergie:
 
 **Readiness status**: Requested Letter Ballot. It will be most likely published
@@ -24,7 +30,7 @@ as a standard without further changes.
 - `Error501` - added
 - `GeographicSubAddress`:
   - `id` - removed
-  
+
 **billingNotification.api.yaml**
 
 - `CustomerBillEventType`:

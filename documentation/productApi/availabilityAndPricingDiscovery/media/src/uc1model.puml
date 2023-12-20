@@ -4,30 +4,39 @@ skinparam {
     ClassBorderColor Black
 }
 
-class ProductOfferingAvailability_Common {
+class Duration {
 
-    action*: ProductActionAddModifyType
+    amount*: integer
+    units*: TimeUnit
 }
 
-ProductOfferingAvailability_Common *--> ProductRef : productRef
-ProductOfferingAvailability_Common *--> ProductSpecificationRef : productSpecification
-ProductOfferingAvailability_Common *-->"*" ProductRelationship : productRelationship
-ProductOfferingAvailability_Common *-->"*" RelatedPlaceRefOrValue : place
 
 
-class ProductOfferingAvailability_Request {
 
+class GeographicAddressRef {
+
+    href: string
+    id*: string
 }
-ProductOfferingAvailability_Common <|-- ProductOfferingAvailability_Request
+RelatedPlaceRef <|-- GeographicAddressRef
 
 
 
-class ProductOfferingAvailability {
+class GeographicSiteRef {
 
+    href: string
+    id*: string
 }
-ProductOfferingAvailability_Common <|-- ProductOfferingAvailability
+RelatedPlaceRef <|-- GeographicSiteRef
 
-ProductOfferingAvailability *-->"1..*" ProductOfferingConfiguration : availableProductOfferingConfigurations
+
+
+
+class MEFProductConfiguration {
+
+    @type*: string
+}
+
 
 
 enum ProductActionAddModifyType {
@@ -35,10 +44,47 @@ enum ProductActionAddModifyType {
     add
     modify
 }
-class ProductSpecificationRef {
+class ProductOfferingAvailability {
+
+}
+ProductOfferingAvailability_Request <|-- ProductOfferingAvailability
+
+ProductOfferingAvailability *-->"1..*" ProductOfferingConfiguration : availableProductOfferingConfigurations
+
+
+class ProductOfferingAvailability_Request {
+
+    action*: ProductActionAddModifyType
+}
+
+ProductOfferingAvailability_Request *--> ProductSpecificationRef : productSpecification
+ProductOfferingAvailability_Request *--> ProductRef : productRef
+ProductOfferingAvailability_Request *-->"*" ProductRelationship : productRelationship
+ProductOfferingAvailability_Request *-->"*" RelatedPlaceRef : place
+
+
+class ProductOfferingConfiguration {
+
+    productConfigurationIdentifier*: string
+}
+
+ProductOfferingConfiguration *-->"1" ProductOfferingRef : productOffering
+ProductOfferingConfiguration *-->"1" MEFProductConfiguration : productConfiguration
+ProductOfferingConfiguration *-->"1" Duration : installationInterval
+
+
+class ProductOfferingRef {
 
     href: string
     id*: string
+}
+
+
+
+class ProductRef {
+
+    id*: string
+    href: string
 }
 
 
@@ -52,158 +98,31 @@ class ProductRelationship {
 
 
 
-class Duration {
+class ProductSpecificationRef {
 
-    amount*: integer
-    units*: TimeUnit
+    href: string
+    id*: string
+}
+
+
+
+class RelatedPlaceRef {
+
+    role*: string
+    @type*: string
 }
 
 
 
 enum TimeUnit {
 
-    calendarMonths
-    calendarDays
-    calendarHours
-    calendarMinutes
-    businessDays
+    seconds
+    minutes
     businessHours
-    businessMinutes
+    calendarHours
+    businessDays
+    calendarDays
+    calendarMonths
+    calendarYears
 }
-class RelatedPlaceRefOrValue {
-
-    role*: string
-    @type*: string
-    @schemaLocation: uri
-}
-
-
-
-class FieldedAddress {
-
-    country*: string
-    streetType: string
-    postcodeExtension: string
-    city*: string
-    streetNr: string
-    locality: string
-    postcode: string
-    streetNrLast: string
-    streetNrSuffix: string
-    streetName*: string
-    stateOrProvince: string
-    streetNrLastSuffix: string
-    streetSuffix: string
-}
-RelatedPlaceRefOrValue <|-- FieldedAddress
-
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
-
-
-class FormattedAddress {
-
-    country*: string
-    postcodeExtension: string
-    stateOrProvince: string
-    city*: string
-    addrLine2: string
-    addrLine1*: string
-    locality: string
-    postcode: string
-}
-RelatedPlaceRefOrValue <|-- FormattedAddress
-
-
-
-class GeographicAddressLabel {
-
-    externalReferenceId*: string
-    externalReferenceType*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicAddressLabel
-
-
-
-class GeographicAddressRef {
-
-    href: string
-    id*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicAddressRef
-
-
-
-class GeographicSiteRef {
-
-    href: string
-    id*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicSiteRef
-
-
-
-class GeographicSubAddress {
-
-    buildingName: string
-    levelType: string
-    levelNumber: string
-    privateStreetNumber: string
-    privateStreetName: string
-}
-
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
-
-
-class MEFGeographicPoint {
-
-    spatialRef*: string
-    x*: string
-    y*: string
-    z: string
-}
-RelatedPlaceRefOrValue <|-- MEFGeographicPoint
-
-
-
-class MEFSubUnit {
-
-    subUnitNumber*: string
-    subUnitType*: string
-}
-
-
-
-class MEFProductConfiguration {
-
-    @type*: string
-}
-
-
-
-class ProductOfferingRef {
-
-    href: string
-    id*: string
-}
-
-
-
-class ProductOfferingConfiguration {
-
-    productConfigurationIdentifier*: string
-}
-
-ProductOfferingConfiguration *-->"1" ProductOfferingRef : productOffering
-ProductOfferingConfiguration *-->"1" MEFProductConfiguration : productConfiguration
-ProductOfferingConfiguration *-->"1" Duration : installationInterval
-
-
-class ProductRef {
-
-    id*: string
-    href: string
-}
-
-
-
 @enduml

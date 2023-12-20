@@ -10,29 +10,23 @@ skinparam {
 }
 
 class ProductSpecification_Common {
-    id*: string
-    href: string
-    name*: string
-    description: string
-    lastUpdate*: date-time
-    lifecycleStatus*: ProductSpecificationLifecycleStatus
+
+    id: string
+    href: uri
+    name: string
+    lifecycleStatus: ProductSpecificationLifecycleStatusType
+    lastUpdate: date-time
 }
 
-class  ProductSpecification_Find {
+class ProductSpecification_Find {
 
 }
-
 ProductSpecification_Common <|-- ProductSpecification_Find
 
-enum ProductSpecificationLifecycleStatus {
-    pilotBeta
-    rejected
-    active
-    endOfSale
-    endOfSupport
+enum ProductSpecificationLifecycleStatusType {
+
     obsolete
-    onHold
-    orderable
+    published
 }
 
 @enduml

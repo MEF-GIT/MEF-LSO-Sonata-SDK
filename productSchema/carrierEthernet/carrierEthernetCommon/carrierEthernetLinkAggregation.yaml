@@ -1,112 +1,98 @@
 ---
-"$schema": http://json-schema.org/draft-07/schema#
-title: 
-    MEF LSO Sonata - Carrier Ethernet Link Aggregation
-    # MEF Forum - Date: 20221013  Edit-level: 396
-    # File: carrierEthernet/carrierEthernetCommon/carrierEthernetLinkAggregation.yaml
-    #
-    # ---------------------
-    # Disclaimer
-    # 
-    # © MEF Forum 2022. All Rights Reserved.
-    # 
-    # The information in this publication is freely available for reproduction
-    # and use by any recipient and is believed to be accurate as of its
-    # publication date. Such information is subject to change without notice
-    # and MEF Forum (MEF) is not responsible for any errors. MEF does not
-    # assume responsibility to update or correct any information in this
-    # publication. No representation or warranty, expressed or implied, is
-    # made by MEF concerning the completeness, accuracy, or applicability of
-    # any information contained herein and no liability of any kind shall be
-    # assumed by MEF as a result of reliance upon such information.
-    # 
-    # The information contained herein is intended to be used without
-    # modification by the recipient or user of this document. MEF is not
-    # responsible or liable for any modifications to this document made by any
-    # other party.
-    # 
-    # The receipt or any use of this document or its contents
-    # does not in any way create, by implication or otherwise:
-    # 
-    # a) any express or implied license or right to or under any patent,
-    # copyright, trademark or trade secret rights held or claimed by any MEF
-    # member which are or may be associated with the ideas, techniques,
-    # concepts or expressions contained herein; nor
-    # 
-    # b) any warranty or representation that any MEF members will announce
-    # any product(s) and/or service(s) related thereto, or if such
-    # announcements are made, that such announced product(s) and/or service(s)
-    # embody any or all of the ideas, technologies, or concepts contained
-    # herein; nor
-    # 
-    # c) any form of relationship between any MEF member and the recipient
-    # or user of this document.
-    # 
-    # Implementation or use of specific MEF standards, specifications, or
-    # recommendations will be voluntary, and no Member shall be obliged to
-    # implement them by virtue of participation in MEF Forum. MEF is a
-    # non-profit international organization to enable the development and
-    # worldwide adoption of agile, assured and orchestrated network services.
-    # MEF does not, expressly or otherwise, endorse or promote any specific
-    # products or services.
-    # ---------------------
-    #
+'$schema': http://json-schema.org/draft-07/schema#
+title:
+  MEF LSO Sonata - Carrier Ethernet Link Aggregation
+  # MEF Forum - Date: 20221013  Edit-level: 396
+  # File: carrierEthernet/carrierEthernetCommon/carrierEthernetLinkAggregation.yaml
+  #
+  # ---------------------
+  # Disclaimer
+  #
+  # © MEF Forum 2022. All Rights Reserved.
+  #
+  # The information in this publication is freely available for reproduction
+  # and use by any recipient and is believed to be accurate as of its
+  # publication date. Such information is subject to change without notice
+  # and MEF Forum (MEF) is not responsible for any errors. MEF does not
+  # assume responsibility to update or correct any information in this
+  # publication. No representation or warranty, expressed or implied, is
+  # made by MEF concerning the completeness, accuracy, or applicability of
+  # any information contained herein and no liability of any kind shall be
+  # assumed by MEF as a result of reliance upon such information.
+  #
+  # The information contained herein is intended to be used without
+  # modification by the recipient or user of this document. MEF is not
+  # responsible or liable for any modifications to this document made by any
+  # other party.
+  #
+  # The receipt or any use of this document or its contents
+  # does not in any way create, by implication or otherwise:
+  #
+  # a) any express or implied license or right to or under any patent,
+  # copyright, trademark or trade secret rights held or claimed by any MEF
+  # member which are or may be associated with the ideas, techniques,
+  # concepts or expressions contained herein; nor
+  #
+  # b) any warranty or representation that any MEF members will announce
+  # any product(s) and/or service(s) related thereto, or if such
+  # announcements are made, that such announced product(s) and/or service(s)
+  # embody any or all of the ideas, technologies, or concepts contained
+  # herein; nor
+  #
+  # c) any form of relationship between any MEF member and the recipient
+  # or user of this document.
+  #
+  # Implementation or use of specific MEF standards, specifications, or
+  # recommendations will be voluntary, and no Member shall be obliged to
+  # implement them by virtue of participation in MEF Forum. MEF is a
+  # non-profit international organization to enable the development and
+  # worldwide adoption of agile, assured and orchestrated network services.
+  # MEF does not, expressly or otherwise, endorse or promote any specific
+  # products or services.
+  # ---------------------
+  #
 definitions:
-    ConversationIdToAggregationLinkMap:
-        type: object
-        description:  >-
-            This is a 2-tuple ⟨x,y⟩ where x is a list of Port Conversation
-            IDs or ranges of Port Conversation IDs (a Port Conversation ID
-            is a VLAN ID or 0 for untagged frames) and y is a list of Link
-            Numbers. This is used in the Port Conversation to Aggregation Link
-            Map for the UNI and ENNI.
-        properties:
-            conversationIDs:
-                description:  >-
-                    802.1AX-2014 sec. 6.6.2.1 - A Port Conversation ID is a VLAN
-                    ID (1 to 4094) or 0 to represent untagged and priority-tagged frames.
-                type: array 
-                minItems: 1
-                uniqueItems: TRUE
-                items:
-                    $ref: "#/definitions/ConversationIdRange"
-            aggLinkList:
-                description:  >-
-                    802.1AX-2014 sec. 6.6.2.1 - An ordered list of Aggregation
-                    Link Numbers *** Validation Notes: The values in the list must
-                    be in the range 1...n where n is the number of physical links -i.e.
-                    the cardinality of the list of physical links (For Operator Ethernet
-                    Services: OperatorUNI.listofPhysicalLinks or EnniCommon.listOfPhysicalLinks
-                    and for Subscriber Ethernet Services: SubscriberUNI.listofPhysicalLinks)
-                type: array 
-                minItems: 1
-                uniqueItems: TRUE
-                items:
-                    type: integer
-                    minimum: 1
-    ConversationIdRange:
-        type: object
-        description:  >-
-            A range of ConversationID (either a VLAN Id or 0 for untagged
-            frames)  allowing three forms: start, start → start, and start
-            → end
-        properties:
-            start:
-                description:  >-
-                    The starting Conversation ID of the range or the only Conversation
-                    ID if there is no end value *** Validation Notes: The start value
-                    must be less than or equal to the end value if that is specified.
-                # start must be less than or equal to end
-                type: integer
-                minimum: 0
-                maximum: 4094
-            end:
-                description:  >-
-                    The final Conversation ID in the range *** Validation Notes:
-                    The end value, if specified, must be greater than or equal to the
-                    start value.
-                # end, if specified, must be greater than or equal to start
-                type: integer
-                minimum: 0
-                maximum: 4094
-
+  ConversationIdToAggregationLinkMap:
+    description: >-
+      This is a 2-tuple <x,y> where x is a list of Port Conversation IDs or
+      ranges of Port Conversation IDs (a Port Conversation ID is a VLAN ID or 0
+      for untagged frames) and y is a list of Link Numbers. This is used in the
+      Port Conversation to Aggregation Link Map for the UNI and ENNI.
+    type: object
+    properties:
+      conversationIDs:
+        description: >-
+          802.1AX-2014 sec. 6.6.2.1 - A Port Conversation ID is a VLAN ID (1 to
+          4094) or 0 to represent untagged and priority-tagged frames.
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items:
+          $ref: '#/definitions/ConversationIdRange'
+      aggLinkList:
+        description: >-
+          802.1AX-2014 sec. 6.6.2.1 - An ordered list of Aggregation Link
+          Numbers
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items:
+          type: integer
+          minimum: 1
+  ConversationIdRange:
+    description:
+      A range of ConversationID (either a VLAN Id or 0 for untagged frames)
+    type: object
+    properties:
+      start:
+        description: >-
+          The starting Conversation ID of the range or the only Conversation ID
+          if there is no end value
+        type: integer
+        minimum: 0
+        maximum: 4094
+      end:
+        description: The final Conversation ID in the range
+        type: integer
+        minimum: 0
+        maximum: 4094

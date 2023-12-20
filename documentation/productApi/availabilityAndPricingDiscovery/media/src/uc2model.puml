@@ -4,23 +4,6 @@ skinparam {
     ClassBorderColor Black
 }
 
-
-enum ProductActionAddModifyType {
-
-    add
-    modify
-}
-
-
-class ProductRelationship {
-
-    href: string
-    id*: string
-    relationshipType*: string
-}
-
-
-
 class Duration {
 
     amount*: integer
@@ -29,76 +12,13 @@ class Duration {
 
 
 
-enum TimeUnit {
-
-    calendarMonths
-    calendarDays
-    calendarHours
-    calendarMinutes
-    businessDays
-    businessHours
-    businessMinutes
-}
-class RelatedPlaceRefOrValue {
-
-    role*: string
-    @type*: string
-    @schemaLocation: uri
-}
-
-
-
-class FieldedAddress {
-
-    country*: string
-    streetType: string
-    postcodeExtension: string
-    city*: string
-    streetNr: string
-    locality: string
-    postcode: string
-    streetNrLast: string
-    streetNrSuffix: string
-    streetName*: string
-    stateOrProvince: string
-    streetNrLastSuffix: string
-    streetSuffix: string
-}
-RelatedPlaceRefOrValue <|-- FieldedAddress
-
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
-
-
-class FormattedAddress {
-
-    country*: string
-    postcodeExtension: string
-    stateOrProvince: string
-    city*: string
-    addrLine2: string
-    addrLine1*: string
-    locality: string
-    postcode: string
-}
-RelatedPlaceRefOrValue <|-- FormattedAddress
-
-
-
-class GeographicAddressLabel {
-
-    externalReferenceId*: string
-    externalReferenceType*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicAddressLabel
-
-
 
 class GeographicAddressRef {
 
     href: string
     id*: string
 }
-RelatedPlaceRefOrValue <|-- GeographicAddressRef
+RelatedPlaceRef <|-- GeographicAddressRef
 
 
 
@@ -107,39 +27,94 @@ class GeographicSiteRef {
     href: string
     id*: string
 }
-RelatedPlaceRefOrValue <|-- GeographicSiteRef
+RelatedPlaceRef <|-- GeographicSiteRef
 
 
 
-class GeographicSubAddress {
+enum MEFChargePeriod {
 
-    buildingName: string
-    levelType: string
-    levelNumber: string
-    privateStreetNumber: string
-    privateStreetName: string
+    hour
+    day
+    week
+    month
+    year
+}
+enum MEFEndOfTermAction {
+
+    roll
+    autoDisconnect
+    autoRenew
+}
+class MEFItemTerm {
+
+    endOfTermAction*: MEFEndOfTermAction
+    name*: string
+    description: string
 }
 
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+MEFItemTerm *-->"1" Duration : duration
+MEFItemTerm *--> Duration : rollInterval
 
 
-class MEFGeographicPoint {
+enum MEFPriceType {
 
-    spatialRef*: string
-    x*: string
-    y*: string
-    z: string
+    recurring
+    nonRecurring
+    usageBased
 }
-RelatedPlaceRefOrValue <|-- MEFGeographicPoint
+class Money {
 
-
-
-class MEFSubUnit {
-
-    subUnitNumber*: string
-    subUnitType*: string
+    unit*: string
+    value*: float
 }
 
+
+
+class Price {
+
+    taxRate: float
+}
+
+Price *--> Money : taxIncludedAmount
+Price *-->"1" Money : dutyFreeAmount
+
+
+class PricingAndTerm {
+
+    identifier*: string
+    subjectToAdditionalNonrecurringCharges*: boolean
+}
+
+PricingAndTerm *-->"1" Duration : installationInterval
+PricingAndTerm *-->"1" MEFItemTerm : term
+PricingAndTerm *-->"1..*" QuotePrice : price
+PricingAndTerm *-->"1" ProductOfferingRef : productOffering
+
+
+class PricingDiscovery {
+
+}
+PricingDiscovery_Request <|-- PricingDiscovery
+
+PricingDiscovery *-->"1..*" PricingAndTerm : pricingAndTerms
+
+
+class PricingDiscovery_Request {
+
+    action*: ProductActionAddModifyType
+    productConfigurationIdentifier*: string
+}
+
+PricingDiscovery_Request *--> ProductRef : productRef
+PricingDiscovery_Request *-->"*" ProductRelationship : productRelationship
+PricingDiscovery_Request *-->"*" RelatedPlaceRef : place
+
+
+enum ProductActionAddModifyType {
+
+    add
+    modify
+}
 
 class ProductOfferingRef {
 
@@ -157,111 +132,43 @@ class ProductRef {
 
 
 
-class PricingDiscovery_Common {
+class ProductRelationship {
 
-    action*: ProductActionAddModifyType
-    productConfigurationIdentifier*: string
+    href: string
+    id*: string
+    relationshipType*: string
 }
-
-PricingDiscovery_Common *--> ProductRef : productRef
-PricingDiscovery_Common *-->"*" ProductRelationship : productRelationship
-PricingDiscovery_Common *-->"*" RelatedPlaceRefOrValue : place
-
-
-class PricingDiscovery_Request {
-
-}
-PricingDiscovery_Common <|-- PricingDiscovery_Request
-
-
-
-class PricingDiscovery {
-
-}
-PricingDiscovery_Common <|-- PricingDiscovery
-
-PricingDiscovery *-->"*" PricingAndTerm : pricingAndTerms
-
-
-class PricingAndTerm {
-    identifier*: string
-    subjectToAdditionalNonrecurringCharges*: boolean
-    firm*: boolean
-}
-
-PricingAndTerm *-->"1" MEFItemTerm : term
-PricingAndTerm *-->"1" TimePeriod : validFor
-PricingAndTerm *-->"1..*" QuotePrice : price
-PricingAndTerm *--> Duration : installationInterval
-PricingAndTerm *-->"1" ProductOfferingRef : productOffering
-
-
-class MEFItemTerm {
-
-    endOfTermAction*: MEFEndOfTermAction
-    name*: string
-    description: string
-}
-
-MEFItemTerm *-->"1" Duration : duration
-MEFItemTerm *--> Duration : rollInterval
-
-
-enum MEFEndOfTermAction {
-
-    roll
-    autoDisconnect
-    autoRenew
-}
-class TimePeriod {
-
-    startDateTime: date-time
-    endDateTime: date-time
-}
-
 
 
 class QuotePrice {
 
-    unitOfMeasure: string
     name*: string
-    priceType*: MEFPriceType
     description: string
+    priceType*: MEFPriceType
+    unitOfMeasure: string
     recurringChargePeriod: MEFChargePeriod
 }
 
 QuotePrice *-->"1" Price : price
 
 
-enum MEFPriceType {
+class RelatedPlaceRef {
 
-    recurring
-    nonRecurring
-    usageBased
-}
-enum MEFChargePeriod {
-
-    hour
-    day
-    week
-    month
-    year
-}
-class Price {
-
-    taxRate: float
-}
-
-Price *--> Money : taxIncludedAmount
-Price *-->"1" Money : dutyFreeAmount
-
-
-class Money {
-
-    unit: string
-    value: float
+    role*: string
+    @type*: string
 }
 
 
 
+enum TimeUnit {
+
+    seconds
+    minutes
+    businessHours
+    calendarHours
+    businessDays
+    calendarDays
+    calendarMonths
+    calendarYears
+}
 @enduml

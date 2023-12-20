@@ -13,37 +13,29 @@ skinparam {
 class ProductCategory {
 
     id*: string
-    href: string
+    href: uri
     name*: string
     description*: string
     lastUpdate*: date-time
-    lifecycleStatus* CategoryLifecycleStatus
 }
 
+ProductCategory *--> ProductCategoryRef : parentCategory
+ProductCategory *-->"*" ProductCategoryRef : subCategory
+ProductCategory *-->"*" ProductOfferingRef : productOffering
 
 
-class CategoryRef {
+class ProductCategoryRef {
 
     id*: string
-    href: string
-    name: string
+    href: uri
 }
 
 class ProductOfferingRef {
 
     id*: string
-    href: string
-    name: string
+    href: uri
 }
 
-ProductCategory *-->"0..1" CategoryRef : parentCategory
-ProductCategory *-->"0..*" CategoryRef : subCategory
-ProductCategory *-->"0..*" ProductOfferingRef : productOffering
 
-enum CategoryLifecycleStatusType {
-
-    active
-    obsolete
-}
 
 @enduml

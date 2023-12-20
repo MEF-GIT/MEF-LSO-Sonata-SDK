@@ -12,16 +12,16 @@ state c <<choice>>
 
 ''' diagram'''
 [*] -d-> c
-c -d-> active: No
+c -d-> announced: No
 state Testing #line.dotted{
 c -r-> inTest: Yes
 inTest -d-> rejected: Testing Failed
 }
-inTest -r-> active: Testing Approved
+inTest -r-> announced: Testing Approved
 rejected -d-> [*]
-active -d-> orderable: General Availability
-active -r-> onHold
-onHold -l-> active
+announced -d-> orderable: General Availability
+announced -r-> onHold
+onHold -l-> announced
 onHold -d-> endOfSale
 orderable -d-> endOfSale
 endOfSale -d-> endOfSupport

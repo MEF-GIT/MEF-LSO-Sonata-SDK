@@ -9,67 +9,84 @@ skinparam {
     ArrowThickness 1
 }
 
+
 class ProductOffering_Common {
-    id*: string
-    href: string
-    name*: string
+
+    id: string
+    href: uri
+    name: string
     description: string
-    lastUpdate*: date-time
-    lifecycleStatus*: ProductOfferingLifecycleStatus
-    channel: List<string>
-    agreement: List<string>
-    marketSegment: List<string>
+    lastUpdate: date-time
+    lifecycleStatus: ProductOfferingLifecycleStatusType
+    agreement: string
+    channel: string[]
+    marketSegment: string[]
 }
+
+ProductOffering_Common *-->"*" Region : region
+ProductOffering_Common *-->"*" ProductCategoryRef : category
+ProductOffering_Common *--> ProductSpecificationRef : productSpecification
+
+
 
 class ProductOffering {
-    productOfferingStatusReason: string
+
+    statusReason: string
 }
-
-class  ProductOffering_Find {
-
-}
-
-ProductOffering_Common <|-- ProductOffering_Find
 ProductOffering_Common <|-- ProductOffering
 
-class CategoryRef {
+ProductOffering *-->"*" ProductOfferingLifecycleStatusTransition : statusTransition
+ProductOffering *-->"*" AttachmentValue : attachment
+ProductOffering *--> RelatedContactInformation : relatedContactInformation
+ProductOffering *-->"*" MEFItemTerm : productOfferingTerm
+ProductOffering *-->"*" ProductMilestoneDefinition : milestone
+ProductOffering *-->"*" Note : note
+ProductOffering *--> SchemaRefOrValue : productOfferingSpecification
+ProductOffering *-->"*" ProductOfferingContextualInfo : productOfferingContextualInfo
+ProductOffering *-->"*" ProductRelationshipConstraint : productRelationship
+ProductOffering *-->"*" PlaceRelationshipConstraint : placeRelationship
+
+
+class ProductCategoryRef {
     id*: string
     href: string
 }
 
 class Region {
-    country*: string
+
     locality: string
-    city: string
-    postcode: string
-    postcodeExtension: string
     stateOrProvince: string
+    country*: string
 }
 
 class AttachmentValue {
-    attachmentId*: string
+
+    attachmentId: string
     author*: string
     content: string
-    creationDate*: string
+    creationDate*: date-time
     description: string
     mimeType: string
     name*: string
-    source: MEFBuyerSellerType
+    source*: MEFBuyerSellerType
     url: string
 }
+AttachmentValue *--> MEFByteSize : size
 
 class MEFByteSize {
-   ammount*: float
-   units*: DataSizeUnit
+
+    amount*: float
+    units*: DataSizeUnit
 }
 
 class ProductOfferingLifecycleStatusTransition {
 
     transitionDate*: date-time
-    transitionLifecycleStatus*: ProductOfferingLifecycleStatus
+    transitionLifecycleStatus*: ProductOfferingLifecycleStatusType
 }
 
-class RelatedContactInformation{
+class RelatedContactInformation {
+
     emailAddress*: string
     name*: string
     number*: string
@@ -77,7 +94,6 @@ class RelatedContactInformation{
     organization: string
     role*: string
 }
-
 class FieldedAddress {
 
     country*: string
@@ -95,6 +111,8 @@ class FieldedAddress {
     streetSuffix: string
 }
 
+RelatedContactInformation *--> FieldedAddress : postalAddress
+
 class GeographicSubAddress {
 
     buildingName: string
@@ -104,18 +122,25 @@ class GeographicSubAddress {
     privateStreetName: string
     privateStreetNumber: string
 }
+FieldedAddress *--> GeographicSubAddress : geographicSubAddress
+
+
 
 class MEFSubUnit {
 
     subUnitNumber*: string
     subUnitType*: string
 }
-
+GeographicSubAddress *-->"*" MEFSubUnit : subUnit
 class MEFItemTerm {
-    description: string
-    endOfTermAction: MEFEndOfTermAction
+
     name*: string
+    description: string
+    endOfTermAction*: MEFEndOfTermAction
 }
+
+MEFItemTerm *-->"1" Duration : duration
+MEFItemTerm *--> Duration : rollInterval
 
 class Duration {
     amount*: number
@@ -136,53 +161,43 @@ class ProductSpecificationRef {
     href: string
 }
 
-class ProductOfferingContextualInfo{
+class ProductOfferingContextualInfo {
+
 }
 
+ProductOfferingContextualInfo *-->"1" SchemaRefOrValue : contextSchema
+ProductOfferingContextualInfo *-->"1" Context : context
+
+
 class Context {
-    productAction*: MEFProductAction
-    businessFunction*: MEFBusinessFunction
+
+    productAction: ProductActionMask
+    businessFunction: BusinessFunctionMask
 }
 
 class SchemaRefOrValue {
+
     schema: string
-    schemaLocation: string
+    schemaLocation: uri
 }
 
-ProductOfferingContextualInfo  *-->"1..1" SchemaRefOrValue : contextSchema
-ProductOffering_Common *-->"0..*" Region : region
-AttachmentValue *-->"0..1" MEFByteSize : size
-ProductOffering_Common *-->"0..*" CategoryRef : category
-ProductOffering *-->"0..*" AttachmentValue : attachment
-ProductOffering *-->"0..*" ProductOfferingLifecycleStatusTransition : upcomingStatusTransitions
-ProductOffering *-->"1..*" RelatedContactInformation : relatedContactInformation
-RelatedContactInformation *-->"0..*" FieldedAddress: postalAddress
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
-ProductOffering *-->"0..*" MEFItemTerm: productOfferingTerm
-MEFItemTerm *-->"1..1" Duration: duration
-MEFItemTerm *-->"1..1" Duration: rollInterval
-ProductOffering *-->"0..*" Note: note
-ProductOffering *-->"1..1" ProductSpecificationRef: productSpecification
-ProductOfferingContextualInfo *-->"1..1" Context: context
-ProductOffering *-->"0..14" ProductOfferingContextualInfo: productOfferingContextualInfo
-ProductOffering *-->"1..1" SchemaRefOrValue: productOfferingSpecification
+enum ProductActionMask {
 
-enum MEFProductAction{
-    install
+    add
     modify
     all
 }
+enum BusinessFunctionMask {
 
-enum MEFBusinessFunction{
-    productOfferingQualification
+    poq
     quote
     productOrder
     productInventory
     all
 }
 
-enum TimeUnit{
+enum TimeUnit {
+
     calendarMonths
     calendarDays
     calendarHours
@@ -192,13 +207,15 @@ enum TimeUnit{
     businessMinutes
 }
 
-enum MEFEndOfTermAction{
+enum MEFEndOfTermAction {
+
     roll
     autoDisconnect
     autoRenew
 }
 
-enum MEFBuyerSellerType{
+enum MEFBuyerSellerType {
+
     buyer
     seller
 }
@@ -216,16 +233,15 @@ enum DataSizeUnit{
 }
 
 enum ProductOfferingLifecycleStatusType {
-    pilotBeta
-    rejected
-    active
+
+    announced
     endOfSale
     endOfSupport
+    inTest
     obsolete
     onHold
     orderable
+    rejected
 }
-
-
 
 @enduml

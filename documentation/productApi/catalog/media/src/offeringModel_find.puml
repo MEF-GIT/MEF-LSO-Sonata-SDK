@@ -9,51 +9,61 @@ skinparam {
     ArrowThickness 1
 }
 
+
+
 class ProductOffering_Common {
-    id*: string
-    href: string
-    name*: string
+
+    id: string
+    href: uri
+    name: string
     description: string
-    lastUpdate*: date-time
-    lifecycleStatus*: ProductOfferingLifecycleStatus
-    channel: List<string>
-    agreement: List<string>
-    marketSegment: List<string>
+    lastUpdate: date-time
+    lifecycleStatus: ProductOfferingLifecycleStatusType
+    agreement: string
+    channel: string[]
+    marketSegment: string[]
 }
 
-class  ProductOffering_Find {
+ProductOffering_Common *-->"*" Region : region
+ProductOffering_Common *-->"*" ProductCategoryRef : category
+ProductOffering_Common *--> ProductSpecificationRef : productSpecification
+
+
+class ProductOffering_Find {
 
 }
-
 ProductOffering_Common <|-- ProductOffering_Find
 
-class CategoryRef {
+class ProductCategoryRef {
+
     id*: string
-    href: string
-    name: string
+    href: uri
 }
 
 class Region {
-    country*: string
+
     locality: string
-    city: string
-    postcode: string
-    postcodeExtension: string
     stateOrProvince: string
+    country*: string
 }
 
-ProductOffering_Common *-->"0..*" Region : region
-ProductOffering_Common *-->"0..*" CategoryRef : category
-
-
 enum ProductOfferingLifecycleStatusType {
-    pilotBeta
-    rejected
-    active
+
+    announced
     endOfSale
     endOfSupport
+    inTest
     obsolete
     onHold
     orderable
+    rejected
 }
+
+class ProductSpecificationRef {
+
+    id*: string
+    href: uri
+}
+
+
 @enduml

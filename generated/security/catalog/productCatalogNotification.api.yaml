@@ -1,7 +1,6 @@
 openapi: 3.0.1
 info:
-  description:
-    "**This file forms part of MEF W142**\n\nThis API implements Business\
+  description: "**This file forms part of MEF W142**\n\nThis API implements Business\
     \ Requirements described in MEF W127 \nrelated to the notifications that are sent\
     \ by the Seller to the Buyer.\n\n**This specification represents MEF work in progress\
     \ and is subject to\nchange.** \n\nList of supported use cases:\n- Send Event\
@@ -15,19 +14,19 @@ info:
     which is licensed by the TM Forum under the Apache License version 2.0. Such\n\
     content has been modified by the MEF Forum and its contributors.\n"
   title: Product Catalog Notification
-  version: 1.0.0-RC
+  version: 2.0.0-RC
 servers:
-  - url: "https://{serverBase}/mefApi/sonata/productCatalogNotifications/v1/"
-    variables:
-      serverBase:
-        default: mef.net
-        description: The base of Buyer's URL.
+- url: "https://{serverBase}/mefApi/sonata/productCatalogNotifications/v2/"
+  variables:
+    serverBase:
+      default: mef.net
+      description: The base of Buyer's URL.
 security:
-  - oauth2MEFLSOAPI:
-      - default
+- oauth2MEFLSOAPI:
+  - default
 tags:
-  - description: The Buyer's endpoint to send particular event types notifications to.
-    name: Notification listeners
+- description: The Buyer's endpoint to send particular event types notifications to.
+  name: Notification listeners
 paths:
   /listener/categoryCreateEvent:
     post:
@@ -37,7 +36,7 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: "#/components/schemas/ProductCategoryEvent"
+              $ref: '#/components/schemas/ProductCategoryEvent'
         description: The event data
         required: true
       responses:
@@ -47,39 +46,38 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
         "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
         "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
         "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error408"
+                $ref: '#/components/schemas/Error408'
           description: Request Time-out
         "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - listenToCategoryCreateEvent
+      - oauth2MEFLSOAPI:
+        - listenToCategoryCreateEvent
       summary: Client listener for entity CategoryCreateEvent
       tags:
-        - Notification listeners
-      x-codegen-request-body-name: data
+      - Notification listeners
   /listener/categoryAttributeValueChangeEvent:
     post:
       description: Client listener for receiving the notification CategoryAttributeValueChangeEvent
@@ -88,7 +86,7 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: "#/components/schemas/ProductCategoryEvent"
+              $ref: '#/components/schemas/ProductCategoryEvent'
         description: The event data
         required: true
       responses:
@@ -98,39 +96,38 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
         "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
         "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
         "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error408"
+                $ref: '#/components/schemas/Error408'
           description: Request Time-out
         "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - listenToCategoryAttributeValueChangeEvent
+      - oauth2MEFLSOAPI:
+        - listenToCategoryAttributeValueChangeEvent
       summary: Client listener for entity CategoryAttributeValueChangeEvent
       tags:
-        - Notification listeners
-      x-codegen-request-body-name: data
+      - Notification listeners
   /listener/categoryStatusChangeEvent:
     post:
       description: Client listener for receiving the notification CategoryStatusChangeEvent
@@ -139,7 +136,7 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: "#/components/schemas/ProductCategoryEvent"
+              $ref: '#/components/schemas/ProductCategoryEvent'
         description: The event data
         required: true
       responses:
@@ -149,39 +146,38 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
         "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
         "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
         "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error408"
+                $ref: '#/components/schemas/Error408'
           description: Request Time-out
         "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - listenToCategoryStatusChangeEvent
+      - oauth2MEFLSOAPI:
+        - listenToCategoryStatusChangeEvent
       summary: Client listener for entity CategoryStatusChangeEvent
       tags:
-        - Notification listeners
-      x-codegen-request-body-name: data
+      - Notification listeners
   /listener/productOfferingCreateEvent:
     post:
       description: Client listener for receiving the notification ProductOfferingCreateEvent
@@ -190,7 +186,7 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: "#/components/schemas/ProductOfferingEvent"
+              $ref: '#/components/schemas/ProductOfferingEvent'
         description: The event data
         required: true
       responses:
@@ -200,39 +196,38 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
         "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
         "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
         "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error408"
+                $ref: '#/components/schemas/Error408'
           description: Request Time-out
         "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - listenToProductOfferingCreateEvent
+      - oauth2MEFLSOAPI:
+        - listenToProductOfferingCreateEvent
       summary: Client listener for entity ProductOfferingCreateEvent
       tags:
-        - Notification listeners
-      x-codegen-request-body-name: data
+      - Notification listeners
   /listener/productOfferingAttributeValueChangeEvent:
     post:
       description: Client listener for receiving the notification ProductOfferingAttributeValueChangeEvent
@@ -241,7 +236,7 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: "#/components/schemas/ProductOfferingEvent"
+              $ref: '#/components/schemas/ProductOfferingEvent'
         description: The event data
         required: true
       responses:
@@ -251,39 +246,38 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
         "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
         "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
         "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error408"
+                $ref: '#/components/schemas/Error408'
           description: Request Time-out
         "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - listenToProductOfferingAttributeValueChangeEvent
+      - oauth2MEFLSOAPI:
+        - listenToProductOfferingAttributeValueChangeEvent
       summary: Client listener for entity ProductOfferingAttributeValueChangeEvent
       tags:
-        - Notification listeners
-      x-codegen-request-body-name: data
+      - Notification listeners
   /listener/productOfferingStatusChangeEvent:
     post:
       description: Client listener for receiving the notification ProductOfferingStatusChangeEvent
@@ -292,7 +286,7 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: "#/components/schemas/ProductOfferingEvent"
+              $ref: '#/components/schemas/ProductOfferingEvent'
         description: The event data
         required: true
       responses:
@@ -302,39 +296,38 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
         "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
         "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
         "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error408"
+                $ref: '#/components/schemas/Error408'
           description: Request Time-out
         "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - listenToProductOfferingStatusChangeEvent
+      - oauth2MEFLSOAPI:
+        - listenToProductOfferingStatusChangeEvent
       summary: Client listener for entity ProductOfferingStatusChangeEvent
       tags:
-        - Notification listeners
-      x-codegen-request-body-name: data
+      - Notification listeners
   /listener/productSpecificationCreateEvent:
     post:
       description: Client listener for receiving the notification ProductSpecificationCreateEvent
@@ -343,7 +336,7 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: "#/components/schemas/ProductSpecificationEvent"
+              $ref: '#/components/schemas/ProductSpecificationEvent'
         description: The event data
         required: true
       responses:
@@ -353,39 +346,38 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
         "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
         "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
         "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error408"
+                $ref: '#/components/schemas/Error408'
           description: Request Time-out
         "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - listenToProductSpecificationCreateEvent
+      - oauth2MEFLSOAPI:
+        - listenToProductSpecificationCreateEvent
       summary: Client listener for entity ProductSpecificationCreateEvent
       tags:
-        - Notification listeners
-      x-codegen-request-body-name: data
+      - Notification listeners
   /listener/productSpecificationAttributeValueChangeEvent:
     post:
       description: Client listener for receiving the notification ProductSpecificationAttributeValueChangeEvent
@@ -394,7 +386,7 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: "#/components/schemas/ProductSpecificationEvent"
+              $ref: '#/components/schemas/ProductSpecificationEvent'
         description: The event data
         required: true
       responses:
@@ -404,39 +396,38 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
         "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
         "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
         "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error408"
+                $ref: '#/components/schemas/Error408'
           description: Request Time-out
         "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - listenToProductSpecificationAttributeValueChangeEvent
+      - oauth2MEFLSOAPI:
+        - listenToProductSpecificationAttributeValueChangeEvent
       summary: Client listener for entity ProductSpecificationAttributeValueChangeEvent
       tags:
-        - Notification listeners
-      x-codegen-request-body-name: data
+      - Notification listeners
   /listener/productSpecificationStatusChangeEvent:
     post:
       description: Client listener for receiving the notification ProductSpecificationStatusChangeEvent
@@ -445,7 +436,7 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: "#/components/schemas/ProductSpecificationEvent"
+              $ref: '#/components/schemas/ProductSpecificationEvent'
         description: The event data
         required: true
       responses:
@@ -455,43 +446,72 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
         "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
         "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
         "408":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error408"
+                $ref: '#/components/schemas/Error408'
           description: Request Time-out
         "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - listenToProductSpecificationStatusChangeEvent
+      - oauth2MEFLSOAPI:
+        - listenToProductSpecificationStatusChangeEvent
       summary: Client listener for entity ProductSpecificationStatusChangeEvent
       tags:
-        - Notification listeners
-      x-codegen-request-body-name: data
+      - Notification listeners
 components:
   schemas:
+    Error:
+      description: |
+        Standard Class used to describe API response error
+        Not intended to be used directly. The `code` in the HTTP header is used as a discriminator for the type of error returned in runtime.
+      properties:
+        reason:
+          description: Text that explains the reason for the error. This can be shown
+            to a client user.
+          maxLength: 255
+          type: string
+        message:
+          description: Text that provides mode details and corrective actions related
+            to the error. This can be shown to a client user.
+          type: string
+        referenceError:
+          description: url pointing to documentation describing the error
+          format: uri
+          type: string
+      required:
+      - reason
+      type: object
+    Error400:
+      allOf:
+      - $ref: '#/components/schemas/Error'
+      - properties:
+          code:
+            $ref: '#/components/schemas/Error400Code'
+        required:
+        - code
+        type: object
+      description: Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)
     Error400Code:
-      type: string
       description: |-
         One of the following error codes:
         - missingQueryParameter: The URI is missing a required query-string parameter
@@ -499,74 +519,41 @@ components:
         - invalidQuery: The query section of the URI is invalid.
         - invalidBody: The request has an invalid body
       enum:
-        - missingQueryParameter
-        - missingQueryValue
-        - invalidQuery
-        - invalidBody
-    Error:
-      type: object
-      description: |
-        Standard Class used to describe API response error
-        Not intended to be use directly. The `code` in the HTTP header is used as a discriminator for the type of error returned in runtime.
-      properties:
-        reason:
-          type: string
-          description:
-            Text that explains the reason for error. This can be shown
-            to a client user.
-          maxLength: 255
-        message:
-          type: string
-          description:
-            Text that provide mode details and corrective actions related
-            to the error. This can be shown to a client user.
-        referenceError:
-          type: string
-          format: uri
-          description: url pointing to documentation describing the error
-      required:
-        - reason
-    Error400:
-      allOf:
-        - $ref: "#/components/schemas/Error"
-        - type: object
-          properties:
-            code:
-              $ref: "#/components/schemas/Error400Code"
-          required:
-            - code
-      description: Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)
+      - missingQueryParameter
+      - missingQueryValue
+      - invalidQuery
+      - invalidBody
+      type: string
     Error401:
       allOf:
-        - $ref: "#/components/schemas/Error"
-        - type: object
-          properties:
-            code:
-              $ref: "#/components/schemas/Error401Code"
-          required:
-            - code
+      - $ref: '#/components/schemas/Error'
+      - properties:
+          code:
+            $ref: '#/components/schemas/Error401Code'
+        required:
+        - code
+        type: object
       description: Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)
     Error401Code:
-      type: string
       description: |-
         One of the following error codes:
         - missingCredentials: No credentials provided.
         - invalidCredentials: Provided credentials are invalid or expired
       enum:
-        - missingCredentials
-        - invalidCredentials
+      - missingCredentials
+      - invalidCredentials
+      type: string
     Error403:
       allOf:
-        - $ref: "#/components/schemas/Error"
-        - type: object
-          properties:
-            code:
-              $ref: "#/components/schemas/Error403Code"
-          required:
-            - code
+      - $ref: '#/components/schemas/Error'
+      - properties:
+          code:
+            $ref: '#/components/schemas/Error403Code'
+        required:
+        - code
+        type: object
       description: Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)
     Error403Code:
-      type: string
       description: |-
         This code indicates that the server understood
         the request but refuses to authorize it because
@@ -575,96 +562,93 @@ components:
         - forbiddenRequester: Forbidden requester
         - tooManyUsers: Too many users
       enum:
-        - accessDenied
-        - forbiddenRequester
-        - tooManyUsers
+      - accessDenied
+      - forbiddenRequester
+      - tooManyUsers
+      type: string
     Error408:
       allOf:
-        - $ref: "#/components/schemas/Error"
-        - type: object
-          properties:
-            code:
-              type: string
-              description: |-
-                List of supported error codes:
-                - timeOut: Request Time-out - indicates that the server did not receive a complete request message within the time that it was prepared to wait.
-              enum:
-                - timeOut
-          required:
-            - code
+      - $ref: '#/components/schemas/Error'
+      - properties:
+          code:
+            description: |-
+              List of supported error codes:
+              - timeOut: Request Time-out - indicates that the server did not receive a complete request message within the time that it was prepared to wait.
+            enum:
+            - timeOut
+            type: string
+        required:
+        - code
+        type: object
       description: Request Time-out (https://tools.ietf.org/html/rfc7231#section-6.5.7)
     Error500:
       allOf:
-        - $ref: "#/components/schemas/Error"
-        - type: object
-          properties:
-            code:
-              type: string
-              description: |-
-                One of the following error codes:
-                - internalError: Internal server error - the server encountered an unexpected condition that prevented it from fulfilling the request.
-              enum:
-                - internalError
-          required:
-            - code
+      - $ref: '#/components/schemas/Error'
+      - properties:
+          code:
+            description: |-
+              One of the following error codes:
+              - internalError: Internal server error - the server encountered an unexpected condition that prevented it from fulfilling the request.
+            enum:
+            - internalError
+            type: string
+        required:
+        - code
+        type: object
       description: Internal Server Error. (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     Event:
-      type: object
-      description:
-        Event class is used to describe information structure used for
-        notification.
+      description: Event class is used to describe the information structure used
+        for notification.
       properties:
         eventId:
-          type: string
           description: Id of the event
-        eventTime:
           type: string
-          format: date-time
+        eventTime:
           description: Datetime when the event occurred
+          format: date-time
+          type: string
       required:
-        - event
-        - eventId
-        - eventTime
-        - eventType
+      - event
+      - eventId
+      - eventTime
+      - eventType
+      type: object
     ProductCategoryEvent:
       allOf:
-        - $ref: "#/components/schemas/Event"
-        - type: object
-          properties:
-            eventType:
-              $ref: "#/components/schemas/ProductCategoryEventType"
-            event:
-              $ref: "#/components/schemas/ProductCategoryEventPayload"
-          required:
-            - event
-            - eventType
+      - $ref: '#/components/schemas/Event'
+      - properties:
+          eventType:
+            $ref: '#/components/schemas/ProductCategoryEventType'
+          event:
+            $ref: '#/components/schemas/ProductCategoryEventPayload'
+        required:
+        - event
+        - eventType
+        type: object
     ProductCategoryEventPayload:
-      type: object
       description: The identifier of the Product Category being subject of this event.
       properties:
         sellerId:
-          type: string
-          description:
-            The unique identifier of the organization that is acting as
-            the Seller. MUST be specified in the request only when requester entity
+          description: The unique identifier of the organization that is acting as
+            the Seller. MUST be specified in the request only when the requester entity
             represents more than one Seller.
+          type: string
         id:
-          type: string
           description: ID of the Product Category attributed by the Seller
+          type: string
         href:
-          type: string
-          format: uri
           description: Hyperlink to access the Product Category
-        buyerId:
+          format: uri
           type: string
-          description:
-            The unique identifier of the organization that is acting as
-            the a Buyer. MUST be specified in the request only when the responding
-            represents more than one Buyer.
+        buyerId:
+          description: The unique identifier of the organization that is acting as
+            a Buyer. MUST be specified in the request only when the responding represents
+            more than one Buyer.
+          type: string
       required:
-        - id
+      - id
+      type: object
     ProductCategoryEventType:
-      type: string
       description: |
         Type of the Product Category event.
 
@@ -674,48 +658,46 @@ components:
         | `categoryAttributeValueChangeEvent` | PRODUCT_CATEGORY_UPDATE       | The Seller settable attributes for a Product Category were updated by the Seller. |
         | `categoryStateChangeEvent`          | PRODUCT_CATEGORY_STATE_CHANGE | A Product Category `status` was changed by the Seller.                            |
       enum:
-        - categoryCreateEvent
-        - categoryAttributeValueChangeEvent
-        - categoryStateChangeEvent
+      - categoryCreateEvent
+      - categoryAttributeValueChangeEvent
+      - categoryStateChangeEvent
+      type: string
     ProductOfferingEvent:
       allOf:
-        - $ref: "#/components/schemas/Event"
-        - type: object
-          properties:
-            eventType:
-              $ref: "#/components/schemas/ProductOfferingEventType"
-            event:
-              $ref: "#/components/schemas/ProductOfferingEventPayload"
-          required:
-            - event
-            - eventType
+      - $ref: '#/components/schemas/Event'
+      - properties:
+          eventType:
+            $ref: '#/components/schemas/ProductOfferingEventType'
+          event:
+            $ref: '#/components/schemas/ProductOfferingEventPayload'
+        required:
+        - event
+        - eventType
+        type: object
     ProductOfferingEventPayload:
-      type: object
       description: The identifier of the Product Offering being subject of this event.
       properties:
         sellerId:
-          type: string
-          description:
-            The unique identifier of the organization that is acting as
-            the Seller. MUST be specified in the request only when requester entity
+          description: The unique identifier of the organization that is acting as
+            the Seller. MUST be specified in the request only when the requester entity
             represents more than one Seller.
+          type: string
         id:
-          type: string
           description: ID of the Product Offering attributed by the Seller
+          type: string
         href:
-          type: string
-          format: uri
           description: Hyperlink to access the Product Offering
-        buyerId:
+          format: uri
           type: string
-          description:
-            The unique identifier of the organization that is acting as
-            the a Buyer. MUST be specified in the request only when the responding
-            represents more than one Buyer.
+        buyerId:
+          description: The unique identifier of the organization that is acting as
+            a Buyer. MUST be specified in the request only when the responding represents
+            more than one Buyer.
+          type: string
       required:
-        - id
+      - id
+      type: object
     ProductOfferingEventType:
-      type: string
       description: |
         Type of the Product Offering event.
 
@@ -725,62 +707,60 @@ components:
         | `productOfferingAttributeValueChangeEvent`| PRODUCT_OFFERING_UPDATE       | The Seller settable attributes for a Product Offering were updated by the Seller. |
         | `productOfferingStateChangeEvent`         | PRODUCT_OFFERING_STATE_CHANGE | A Product Offering `status` was changed by the Seller.                            |
       enum:
-        - productOfferingCreateEvent
-        - productOfferingAttributeValueChangeEvent
-        - productOfferingStateChangeEvent
+      - productOfferingCreateEvent
+      - productOfferingAttributeValueChangeEvent
+      - productOfferingStateChangeEvent
+      type: string
     ProductSpecificationEvent:
       allOf:
-        - $ref: "#/components/schemas/Event"
-        - type: object
-          properties:
-            eventType:
-              $ref: "#/components/schemas/ProductSpecificationEventType"
-            event:
-              $ref: "#/components/schemas/ProductSpecificationEventPayload"
-          required:
-            - event
-            - eventType
+      - $ref: '#/components/schemas/Event'
+      - properties:
+          eventType:
+            $ref: '#/components/schemas/ProductSpecificationEventType'
+          event:
+            $ref: '#/components/schemas/ProductSpecificationEventPayload'
+        required:
+        - event
+        - eventType
+        type: object
     ProductSpecificationEventPayload:
-      type: object
-      description:
-        The identifier of the Product Specification being subject of this
+      description: The identifier of the Product Specification being subject of this
         event.
       properties:
         id:
-          type: string
           description: ID of the Product Specification attributed by the Seller
+          type: string
         href:
-          type: string
-          format: uri
           description: Hyperlink to access the Product Specification
+          format: uri
+          type: string
         buyerId:
+          description: The unique identifier of the organization that is acting as
+            a Buyer. MUST be specified in the request only when the responding represents
+            more than one Buyer.
           type: string
-          description:
-            The unique identifier of the organization that is acting as
-            the a Buyer. MUST be specified in the request only when the responding
-            represents more than one Buyer.
         sellerId:
-          type: string
-          description:
-            The unique identifier of the organization that is acting as
-            the Seller. MUST be specified in the request only when requester entity
+          description: The unique identifier of the organization that is acting as
+            the Seller. MUST be specified in the request only when the requester entity
             represents more than one Seller.
+          type: string
       required:
-        - id
+      - id
+      type: object
     ProductSpecificationEventType:
-      type: string
       description: |
         Type of the Product Specification event.
 
         | API name                                         | MEF 127 name                        | Description                                                                            |
         | ------------------------------------------------ | ----------------------------------- | ---------------------------------------------------------------------------------------|
-        | `productSpecificationCreateEvent`                | PRODUCT_SPECIFICATION_CREATE        | The Seller has published new Product Specification to the Buyers.                      |
+        | `productSpecificationCreateEvent`                | PRODUCT_SPECIFICATION_CREATE        | The Seller has published a new Product Specification to the Buyers.                      |
         | `productSpecificationAttributeValueChangeEvent`  | PRODUCT_SPECIFICATION_UPDATE        | The Seller settable attributes for a Product Specification were updated by the Seller. |
         | `productSpecificationStateChangeEvent`           | PRODUCT_SPECIFICATION_STATE_CHANGE  | A Product Specification `status` was changed by the Seller.                            |
       enum:
-        - productSpecificationCreateEvent
-        - productSpecificationAttributeValueChangeEvent
-        - productSpecificationStateChangeEvent
+      - productSpecificationCreateEvent
+      - productSpecificationAttributeValueChangeEvent
+      - productSpecificationStateChangeEvent
+      type: string
   securitySchemes:
     oauth2MEFLSOAPI:
       description: Default m2m client code

@@ -20,11 +20,11 @@ info:
     The following use cases are managed: 
 
     - Retrieve Product Offering Availability
-    - Retrieve Pricing for a Product Offering Configuration
-  version: 1.0.0-RC
+    - Retrieve Pricing and Terms
+  version: 2.0.0-RC
 servers:
   - url: >-
-      https://{serverBase}/mefApi/sonata/productOfferingAvailabilityAndPricingDiscovery/v1/
+      https://{serverBase}/mefApi/sonata/productOfferingAvailabilityAndPricingDiscovery/v2/
     variables:
       serverBase:
         description: The base of Seller's URL.
@@ -37,15 +37,22 @@ paths:
     post:
       tags:
         - Product Offering Availability
-      summary: This operation sends a Product Offering Availability Request
+      summary: >-
+        The Buyer requests a list of available Product Offering Configurations
+        from the Seller for a specific Product Specification within the
+        specified Delivery Context. The Seller responds to the Buyer with a list
+        of Product Configurations meeting the Buyer's criteria and the
+        Installation Interval for each of these. Each Product Configuration has
+        a unique identifier that is passed to the Buyer by the Seller. This
+        identifier is used to Retrieve Pricing and Terms.
       operationId: productOfferingAvailabilityRequest
       parameters:
         - name: buyerId
           in: query
           description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the requester
-            represents more than one Buyer.
+            The unique identifier of the organization that is acting as a Buyer.
+            MUST be specified in the request only when the requester represents
+            more than one Buyer.
           required: false
           schema:
             type: string
@@ -53,8 +60,8 @@ paths:
           in: query
           description: >-
             The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when responding
-            entity  represents more than one Seller.
+            Seller. MUST be specified in the request only when responding entity
+            represents more than one Seller.
           required: false
           schema:
             type: string
@@ -66,8 +73,7 @@ paths:
         required: true
       responses:
         '200':
-          description:
-            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
+          description: 'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
           content:
             application/json;charset=utf-8:
               schema:
@@ -91,8 +97,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error403'
         '422':
-          description:
-            Unprocessable entity due to the business validation problems
+          description: Unprocessable entity due to business validation problems
           content:
             application/json;charset=utf-8:
               schema:
@@ -109,15 +114,19 @@ paths:
     post:
       tags:
         - Pricing Discovery
-      summary: This operation sends a Pricing Discovery Request
+      summary: >-
+        The Buyer requests a list of Pricing and Terms from the Seller for a
+        specific Product Configuration Identifier within a specific Delivery
+        Context. The Seller responds to the Buyer with a list of Pricing and
+        Terms.
       operationId: pricingDiscoveryRequest
       parameters:
         - name: buyerId
           in: query
           description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the requester
-            represents more than one Buyer.
+            The unique identifier of the organization that is acting as a Buyer.
+            MUST be specified in the request only when the requester represents
+            more than one Buyer.
           required: false
           schema:
             type: string
@@ -125,8 +134,8 @@ paths:
           in: query
           description: >-
             The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when responding
-            entity  represents more than one Seller.
+            Seller. MUST be specified in the request only when responding entity
+            represents more than one Seller.
           required: false
           schema:
             type: string
@@ -138,8 +147,7 @@ paths:
         required: true
       responses:
         '200':
-          description:
-            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
+          description: 'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
           content:
             application/json;charset=utf-8:
               schema:
@@ -163,8 +171,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error403'
         '422':
-          description:
-            Unprocessable entity due to the business validation problems
+          description: Unprocessable entity due to business validation problems
           content:
             application/json;charset=utf-8:
               schema:
@@ -180,8 +187,7 @@ paths:
 components:
   schemas:
     Duration:
-      description:
-        'A Duration in a given unit of time e.g. 3 hours, or 5 days.'
+      description: 'A Duration in a given unit of time e.g. 3 hours, or 5 days.'
       type: object
       properties:
         amount:
@@ -389,176 +395,34 @@ components:
                 - internalError
           required:
             - code
-    FieldedAddress:
-      description: >-
-        A type of Address that has a discrete field and value for each type of
-        boundary or identifier down to the lowest level of detail. For example
-        "street number" is one field, "street name" is another field, etc.
-      allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
-        - type: object
-          properties:
-            country:
-              description: Country that the address is in
-              type: string
-            streetType:
-              description: >-
-                The type of street (e.g., alley, avenue, boulevard, brae,
-                crescent, drive, highway, lane, terrace, parade, place, tarn,
-                way, wharf)
-              type: string
-            postcodeExtension:
-              description: >-
-                An extension of a postal code. E.g. the part following the dash
-                in a US urban property address
-              type: string
-            city:
-              description: The city that the address is in
-              type: string
-            streetNr:
-              description: >-
-                Number identifying a specific property on a public street. It
-                may be combined with streetNrLast for ranged addresses. MEF 79
-                defines it as required for the Seller response, however in
-                certain countries it is not used, so it's optional in API.
-              type: string
-            locality:
-              description: The locality that the address is in
-              type: string
-            postcode:
-              description: >-
-                A descriptor for a postal delivery area, used to speed and
-                simplify the delivery of mail (also known as zip code) MEF 79
-                defines it as required however as in certain countries it is
-                not used we make it optional in API.
-              type: string
-            streetNrLast:
-              description:
-                Last number in a range of street numbers allocated to a
-                property
-              type: string
-            streetNrSuffix:
-              description: The first street number suffix
-              type: string
-            streetName:
-              description: Name of the street or other street type
-              type: string
-            stateOrProvince:
-              description: The State or Province that the address is in
-              type: string
-            streetNrLastSuffix:
-              description: Last street number suffix for a ranged address
-              type: string
-            geographicSubAddress:
-              description: >-
-                Additional fields used to specify an address, as detailed as
-                possible.
-              $ref: '#/components/schemas/GeographicSubAddress'
-            streetSuffix:
-              description: A modifier denoting a relative direction
-              type: string
-          required:
-            - city
-            - country
-            - streetName
-    FormattedAddress:
-      description: >-
-        A type of Address that has discrete fields for each type of boundary or
-        identifier with the exception of the street and more specific location
-        details, which are combined into a maximum of two strings based on
-        local postal addressing conventions.
-      allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
-        - type: object
-          properties:
-            country:
-              description: Country that the address is in
-              type: string
-            postcodeExtension:
-              description: >-
-                An extension of a postal code. E.g. the part following the dash
-                in a US urban property address
-              type: string
-            stateOrProvince:
-              description: The State or Province that the address is in
-              type: string
-            city:
-              description: The city that the address is in
-              type: string
-            addrLine2:
-              description: The second address line in a formatted address
-              type: string
-            addrLine1:
-              description: The first address line in a formatted address
-              type: string
-            locality:
-              description: >-
-                An area of defined or undefined boundaries within a local
-                authority or other legislatively defined area, usually rural or
-                semi-rural in nature
-              type: string
-            postcode:
-              description: >-
-                A descriptor for a postal delivery area used to speed and
-                simplify the delivery of mail (also known as ZIP code)
-              type: string
-          required:
-            - addrLine1
-            - city
-            - country
-    GeographicAddressLabel:
-      description: >-
-        A unique identifier controlled by a generally accepted independent
-        administrative authority that specifies a fixed geographical location.
-      allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
-        - type: object
-          properties:
-            externalReferenceId:
-              description: >-
-                The unique reference to an Address as provided by the
-                Administrative Authority.
-              type: string
-            externalReferenceType:
-              description: >-
-                The organization or standard from the organization that
-                administers this Geographic Address Label ensuring it is unique
-                within the Administrative Authority. The value(s) to be used
-                are to be agreed upon during the onboarding. For North American
-                providers this would normally be CLLI (Common Language Location
-                Identifier) code.
-              type: string
-          required:
-            - externalReferenceId
-            - externalReferenceType
     GeographicAddressRef:
       description: >
         A reference to a Geographic Address resource available through Address
         Validation API.
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: '#/components/schemas/RelatedPlaceRef'
         - type: object
           properties:
             href:
               description: >
                 Hyperlink to the referenced Address. Hyperlink MAY be used by
-                the Seller in responses. Hyperlink MUST be ignored by the
-                Seller in case it is provided by the Buyer in a request.
+                the Seller in responses. Hyperlink MUST be ignored by the Seller
+                in case it is provided by the Buyer in a request.
               type: string
             id:
               description: >-
-                Identifier of the referenced Geographic Address. This
-                identifier is assigned during a successful address validation
-                request (Geographic Address Management API)
+                Identifier of the referenced Geographic Address. This identifier
+                is assigned during a successful address validation request
+                (Geographic Address Management API)
               type: string
           required:
             - id
     GeographicSiteRef:
       description: >
-        A reference to a Geographic Site resource available through Service
+        A reference to a Geographic Site resource available through the Service
         Site API
       allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        - $ref: '#/components/schemas/RelatedPlaceRef'
         - type: object
           properties:
             href:
@@ -572,40 +436,6 @@ components:
               type: string
           required:
             - id
-    GeographicSubAddress:
-      description:
-        'Additional fields used to specify an address, as detailed as possible.'
-      type: object
-      properties:
-        buildingName:
-          description: >
-            Allows for identification of places that require building name  as
-            part of addressing information
-          type: string
-        subUnit:
-          description: >-
-            Representation of a MEFSubUnit It is used for describing subunit
-            within a subAddress e.g. BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
-            UNIT, WHARF.
-          type: array
-          items:
-            $ref: '#/components/schemas/MEFSubUnit'
-        levelType:
-          description: Describes level types within a building
-          type: string
-        levelNumber:
-          description:
-            'Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT
-            2'
-          type: string
-        privateStreetNumber:
-          description: Private streets numbers internal to a private street
-          type: string
-        privateStreetName:
-          description: >-
-            Private streets internal to a property (e.g. a university) may have
-            internal names that are not recorded by the land title office
-          type: string
     MEFChargePeriod:
       description: Used for a recurring charge to indicate period.
       type: string
@@ -621,46 +451,14 @@ components:
 
         | Value          | Description                                                                                                            |
         | -------------- | ---------------------------------------------------------------------------------------------------------------------- |
-        | roll           | The Product's contract will continue on a rolling basis once the contract's initial term ex-pires,                     |
-        | autoDisconnect | The Product will automatically be disconnected (and contract terminated) by the Seller once the contract term expires, |
+        | roll           | The Product's contract will continue on a rolling basis once the contract's current term expires                       |
+        | autoDisconnect | The Product will automatically be disconnected (and contract terminated) by the Seller once the contract term expires  |
         | autoRenew      | The Product's contract will be renewed for another term equivalent to the original contract term.                      |
       type: string
       enum:
         - roll
         - autoDisconnect
         - autoRenew
-    MEFGeographicPoint:
-      description: |
-        A MEFGeographicPoint defines a geographic point through coordinates.
-      allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRefOrValue'
-        - type: object
-          properties:
-            spatialRef:
-              description: >-
-                The spatial reference system used to determine the coordinates
-                (e.g. "WGS84"). The system used and the value of this field are
-                to be agreed during the onboarding process.
-              type: string
-            x:
-              description: >-
-                The latitude expressed in the format specified by the
-                `spacialRef`
-              type: string
-            'y':
-              description: >-
-                The longitude expressed in the format specified by the
-                `spacialRef`
-              type: string
-            z:
-              description: >-
-                The elevation expressed in the format specified by the
-                `spacialRef`
-              type: string
-          required:
-            - spatialRef
-            - x
-            - 'y'
     MEFItemTerm:
       description: Describes a term (also known as commitment)
       type: object
@@ -679,9 +477,9 @@ components:
           type: string
         rollInterval:
           description: >-
-            The recurring period that the Buyer is required to pay at the end
-            of the term to extend the term after the original term has expired.
-            If `endOfTermAction` is equal to `roll` then `rollInterval` MUST be
+            The period that the Buyer is required to commit to pay in a
+            recurring fashion at the end of the term to extend the term. If
+            `endOfTermAction` is equal to `roll` then `rollInterval` MUST be
             specified. If `endOfTermAction` is equal to `autoRenew` or
             `autoDisconnect`, then `rollInterval` MUST NOT be specified.
           $ref: '#/components/schemas/Duration'
@@ -707,30 +505,13 @@ components:
         '@type':
           description: >-
             The name of the type that uniquely identifies the type of the
-            product that is the subject of the POQ Request. In case of MEF
+            product that is the subject of the POQ Request. In the case of MEF
             product this is the URN provided in the Product Specification.
           type: string
       required:
         - '@type'
       discriminator:
         propertyName: '@type'
-    MEFSubUnit:
-      description: Allows for sub unit identification
-      type: object
-      properties:
-        subUnitNumber:
-          description: >-
-            The discriminator used for the subunit, often just a simple number
-            but may also be a range.
-          type: string
-        subUnitType:
-          description: >-
-            The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
-            UNIT, WHARF.
-          type: string
-      required:
-        - subUnitNumber
-        - subUnitType
     Money:
       description: A base/value business entity used to represent money
       type: object
@@ -768,31 +549,26 @@ components:
       required:
         - dutyFreeAmount
     PricingAndTerm:
-      description:
-        Pricing and term specification for an available Product Configuration
+      description: >-
+        An option for price and term available to a Buyer for a Product
+        Configuration with a specific Delivery Context
       properties:
         identifier:
           description: The identifier of the Pricing and Term.
           type: string
         installationInterval:
           description: >
-            The indicative duration >0 for the delivery of the configuration in
+            The indicative duration >=0 for the delivery of the configuration in
             the specified Delivery Context when manual work is required. The
-            shortest interval is specified by the Seller. It is not considered
-            a commitment by the Seller.
+            shortest interval is specified by the Seller. It is not considered a
+            commitment by the Seller.
           $ref: '#/components/schemas/Duration'
         term:
           description: >-
-            The minimum term for this PricingAndTerm for the given
-            productConfigurationIdentifier within the requested Delivery
+            The minimum length of the commitment for this PricingAndTerm for the
+            given productConfigurationIdentifier within the requested Delivery
             Context.
           $ref: '#/components/schemas/MEFItemTerm'
-        validFor:
-          description: >-
-            The date that the PricingAndTerm is valid until. For use in the
-            context of this attribute, only the endDateTime attribute must be
-            used.
-          $ref: '#/components/schemas/TimePeriod'
         price:
           description: >-
             The prices that apply to this PricingAndTerm for the given Product
@@ -806,44 +582,39 @@ components:
             An indicator to inform the Buyer that additional non-recurring
             charges may be added during fulfillment.
           type: boolean
-        firm:
-          description: >-
-            An indicator specifying whether or not this charge may change
-            during fulfillment.
-          type: boolean
         productOffering:
           description: >
-            A reference for the Product Offering that this configuration must
-            be ordered as.
+            A reference for the Product Offering that this configuration must be
+            ordered as.
           $ref: '#/components/schemas/ProductOfferingRef'
       required:
-        - firm
         - identifier
         - installationInterval
         - price
         - productOffering
         - subjectToAdditionalNonrecurringCharges
         - term
-        - validFor
     PricingDiscovery:
       allOf:
-        - $ref: '#/components/schemas/PricingDiscovery_Common'
+        - $ref: '#/components/schemas/PricingDiscovery_Request'
         - description: >-
             PricingDiscovery allows the Seller to provide the list of Pricing
-            and Terms matching action, delivery context and Product
+            and Terms matching action, delivery context, and Product
             Configuration Identifier provided by the Buyer
           type: object
           properties:
             pricingAndTerms:
-              description: Pricing and terms matching Buyer's criteria
+              description: >-
+                A set of contract terms and corresponding prices available for a
+                given Product Configuration considering the Delivery Context.
               type: array
               items:
                 $ref: '#/components/schemas/PricingAndTerm'
           required:
             - pricingAndTerms
-    PricingDiscovery_Common:
+    PricingDiscovery_Request:
       description: >-
-        A set of attribute common to PricingDiscovery_Request and
+        A set of attributes common to PricingDiscovery_Request and
         PricingDiscovery
       type: object
       properties:
@@ -854,38 +625,34 @@ components:
           $ref: '#/components/schemas/ProductActionAddModifyType'
         productConfigurationIdentifier:
           description: >
-            The identifier for the Product Configuration Pricing Discovery is
-            being requested for.
+            The identifier for the Product Configuration that the Pricing
+            Discovery is being requested for.
           type: string
         productRef:
           description: |
-            A reference to a Product in the Product Inventory
+            A reference to a Product in the Product Inventory. It MUST be
+            provided when the `action` = `modify`. It MUST NOT be provided when
+            the `action` = `add`
           $ref: '#/components/schemas/ProductRef'
         productRelationship:
           description: >-
             A list of Product Relationships as defined by the Product
-            Specification.
+            Specification. It MUST be provided when the `action` = `add`. It
+            MUST NOT be provided when the `action` = `modify`
           type: array
           items:
             $ref: '#/components/schemas/ProductRelationship'
         place:
           description: >-
-            A list of Addresses or Sites and their roles with relation to the
-            Product.
+            A list of Geographic Addresses or Sites and their roles with
+            relation to the Product. It MUST be provided when the `action` =
+            `add`. It MUST NOT be provided when the `action` = `modify`
           type: array
           items:
-            $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+            $ref: '#/components/schemas/RelatedPlaceRef'
       required:
         - action
         - productConfigurationIdentifier
-    PricingDiscovery_Request:
-      allOf:
-        - $ref: '#/components/schemas/PricingDiscovery_Common'
-        - description: >-
-            Pricing Discovery Request allows the Buyer to provide the action,
-            delivery context and Product Configuration Identifier to ask the
-            Seller to provide a list of available Pricing and Terms
-          type: object
     ProductActionAddModifyType:
       description: |
         Action to be performed on the Product.
@@ -903,11 +670,11 @@ components:
         - modify
     ProductOfferingAvailability:
       description: >-
-        Product Offering Availability allows the Seller to provide the list of
+        Product Offering Availability allows the Seller to provide a list of
         Product Offering Configurations matching action, delivery context and
         Product Specification provided by the Buyer
       allOf:
-        - $ref: '#/components/schemas/ProductOfferingAvailability_Common'
+        - $ref: '#/components/schemas/ProductOfferingAvailability_Request'
         - type: object
           properties:
             availableProductOfferingConfigurations:
@@ -917,82 +684,76 @@ components:
                 $ref: '#/components/schemas/ProductOfferingConfiguration'
           required:
             - availableProductOfferingConfigurations
-    ProductOfferingAvailability_Common:
+    ProductOfferingAvailability_Request:
       description: >
-        Common attributes for ProductOfferingAvailability_Request and
-        ProductOfferingAvailability
+        Product Offering Availability Request allows the Buyer to provide the
+        action, delivery context, and Product Specification to ask the Seller to
+        provide a list of available Product Offering Configurations.
       type: object
       properties:
         action:
           description: >-
-            The action to be performed by the Seller to fulfil any Order that
+            The action to be performed by the Seller to fulfill any Order that
             results from this interaction.
           $ref: '#/components/schemas/ProductActionAddModifyType'
+        productSpecification:
+          description: >-
+            A reference to a Product Specification used to describe the Product.
+            This MUST be provided when the `action` is `add`. It MUST NOT be
+            provided when the `action` = `modify`
+          $ref: '#/components/schemas/ProductSpecificationRef'
         productRef:
           description: >
             A reference to a Product in the Product Inventory. It MUST be
             provided when the `action` = `modify`. It MUST NOT be provided when
             the `action` = `add`
           $ref: '#/components/schemas/ProductRef'
-        productSpecification:
-          description: >-
-            A reference to a Product Specification used to describe the
-            Product. This MUST be provided when the `action` is `add`. It MUST
-            NOT be provided when the `action` = `modify`
-          $ref: '#/components/schemas/ProductSpecificationRef'
         productRelationship:
           description: >-
             A list of Product Relationships as defined by the Product
-            Specification.
+            Specification. It MUST be provided when the `action` = `add`. It
+            MUST NOT be provided when the `action` = `modify`
           type: array
           items:
             $ref: '#/components/schemas/ProductRelationship'
         place:
           description: >-
-            A list of Addresses or Sites and their roles with relation to the
-            Product.
+            A list of Geographic Addresses or Sites and their roles in relation
+            to the Product. It MUST be provided when the `action` = `add`. It
+            MUST NOT be provided when the `action` = `modify`
           type: array
           items:
-            $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+            $ref: '#/components/schemas/RelatedPlaceRef'
       required:
         - action
-        - product
-    ProductOfferingAvailability_Request:
-      description: >-
-        Product Offering Availability Request allows the Buyer to provide the
-        action, delivery context and Product Specification to ask the Seller to
-        provide a list of available Product Offering Configurations.
-      allOf:
-        - $ref: '#/components/schemas/ProductOfferingAvailability_Common'
-        - type: object
     ProductOfferingConfiguration:
       description: >-
-        Allows the Seller to provide a detailed information of Product
+        Allows the Seller to provide detailed information of the Product
         Configuration matching Buyer's Product Offering Availability Request.
       type: object
       properties:
         productOffering:
           description: >
-            A reference for the Product Offering that this configuration must
-            be ordered as.
+            The identifier of the Product Offering for which this Product
+            Configurationn is valid.
           $ref: '#/components/schemas/ProductOfferingRef'
+        productConfiguration:
+          description: >-
+            The set of technical attributes for the Product Offering that make
+            this configuration unique. This essentially specifies the values for
+            attributes defined in the Product Offering.
+          $ref: '#/components/schemas/MEFProductConfiguration'
         productConfigurationIdentifier:
           description: >
             An identifier of the returned `productConfiguration` that can be
-            used in next step for Pricing Discovery
+            used in the next step for Pricing Discovery
           type: string
-        productConfiguration:
-          description: >-
-            MEFProductConfiguration is used to specify the product specific
-            attributes. The @type is used as a discriminator. It holds the
-            detailed configuration of the product attributes.
-          $ref: '#/components/schemas/MEFProductConfiguration'
         installationInterval:
           description: >
-            The indicative duration >0 for the delivery of the configuration in
-            the specified Delivery Context when manual work is required. The
-            shortest interval is specified by the Seller. It is not considered
-            a commitment by the Seller.
+            The indicative duration (>=0) for the delivery of the configuration
+            in the specified Delivery Context. The shortest possible interval is
+            specified by the Seller. It is not considered a commitment by the
+            Seller.
           $ref: '#/components/schemas/Duration'
       required:
         - installationInterval
@@ -1006,11 +767,12 @@ components:
       properties:
         href:
           description: >
-            Hyperlink to a Product Offering in Sellers catalog. In case Seller
-            is not providing a catalog API this field is not used. The catalog
-            is provided by the Seller to the Buyer during onboarding. Hyperlink
-            MAY be used by the Seller in responses   Hyperlink MUST be ignored
-            by the Seller in case it is provided by the Buyer in a request.
+            Hyperlink to a Product Offering in the Seller catalog. In case the
+            Seller is not providing a catalog API this field is not used. The
+            catalog is provided by the Seller to the Buyer during onboarding.
+            Hyperlink MAY be used by the Seller in responses   Hyperlink MUST be
+            ignored by the Seller in case it is provided by the Buyer in a
+            request.
           type: string
         id:
           description: >-
@@ -1055,9 +817,9 @@ components:
         relationshipType:
           description: >
             Specifies the type (nature) of the relationship to the related
-            Product. The nature of required relationships varies for Products
-            of different types. For example, a UNI or ENNI Product may not have
-            any relationships, but an Access E-Line may have two mandatory
+            Product. The nature of required relationships varies for Products of
+            different types. For example, a UNI or ENNI Product may not have any
+            relationships, but an Access E-Line may have two mandatory
             relationships (related to the UNI on one end and the ENNI on the
             other). More complex Products such as multipoint IP or Firewall
             Products may have more complex relationships. As a result, the
@@ -1076,12 +838,12 @@ components:
       properties:
         href:
           description: >
-            Hyperlink to a Product Specification in Sellers catalog. In case
-            Seller is not providing a catalog API this field is not used. The
-            catalog is provided by the Seller to the Buyer during onboarding.
-            Hyperlink MAY be used by the Seller in responses. Hyperlink MUST be
-            ignored by the Seller in case it is provided by the Buyer in a
-            request.
+            Hyperlink to a Product Specification in the seller's catalog. In
+            case Seller is not providing a catalog API this field is not used.
+            The catalog is provided by the Seller to the Buyer during
+            onboarding. Hyperlink MAY be used by the Seller in responses.
+            Hyperlink MUST be ignored by the Seller in case it is provided by
+            the Buyer in a request.
           type: string
         id:
           description: Unique identifier of the Product Specification
@@ -1106,7 +868,7 @@ components:
         unitOfMeasure:
           description: >-
             Unit of Measure if price depending on it (Gb, SMS volume, etc..)
-            MSU be specified when `priceType` is `usageBased`
+            MUST be specified when `priceType` is `usageBased`
           type: string
         price:
           description: The associated price
@@ -1120,71 +882,40 @@ components:
         - name
         - price
         - priceType
-    RelatedPlaceRefOrValue:
+    RelatedPlaceRef:
       description: >-
-        Place defines the places (locations) where the products being subject
-        of this qualification are to be provided.
+        Place defines the places (locations) where the products being subject of
+        this qualification are to be provided.
       type: object
       properties:
         role:
           description: >-
-            Role of this place. The values that can be specified here are
-            described by Product Specification (e.g. "INSTALL_LOCATION").
+            The role of the place as specified in the Product Specification
+            (e.g. "INSTALL_LOCATION").
           type: string
         '@type':
           description: >
-            This field is used as discriminator. The value is the name of one
-            of the types that inherit from it using 'allOf', i.e. one of
-            FieldedAddress, FormattedAddress, GeographicAddressLabel,
-            MEFGeographicPoint, GeographicAddressRef, GeographicSiteRef.
-            Moreover, it might discriminate for an additional related place as
-            defined in '@schemaLocation'.
+            This field is used as a discriminator. One of GeographicAddressRef,
+            GeographicSiteRef.
           type: string
-        '@schemaLocation':
-          description: >-
-            A URL to a JSON-Schema file that defines additional attributes and
-            relationships. May be used to define additional related place
-            types. Usage of this attribute must be agreed between Buyer and
-            Seller.
-          type: string
-          format: uri
       required:
         - '@type'
         - role
       discriminator:
         propertyName: '@type'
         mapping:
-          FieldedAddress: '#/components/schemas/FieldedAddress'
-          FormattedAddress: '#/components/schemas/FormattedAddress'
-          GeographicAddressLabel: '#/components/schemas/GeographicAddressLabel'
-          MEFGeographicPoint: '#/components/schemas/MEFGeographicPoint'
           GeographicAddressRef: '#/components/schemas/GeographicAddressRef'
           GeographicSiteRef: '#/components/schemas/GeographicSiteRef'
-    TimePeriod:
-      description: >-
-        A period of time, either as a deadline (endDateTime only) a
-        startDateTime only, or both.
-      type: object
-      properties:
-        startDateTime:
-          description: >-
-            Start of the time period, using IETC-RFC-3339 format. If you define
-            a start, you must also define an end
-          type: string
-          format: date-time
-        endDateTime:
-          description: 'End of the time period, using IETC-RFC-3339 format'
-          type: string
-          format: date-time
     TimeUnit:
       description: |
         Represents a unit of time.
       type: string
       enum:
-        - calendarMonths
-        - calendarDays
-        - calendarHours
-        - calendarMinutes
-        - businessDays
+        - seconds
+        - minutes
         - businessHours
-        - businessMinutes
+        - calendarHours
+        - businessDays
+        - calendarDays
+        - calendarMonths
+        - calendarYears

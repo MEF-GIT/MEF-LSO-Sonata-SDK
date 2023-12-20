@@ -1,5 +1,11 @@
 # Site Retrieval: Release notes
 
+## Release Grace:
+
+**Readiness status**: MEF Published Standard
+
+No changes.
+
 ## Release Fergie:
 
 **Readiness status**: MEF Published Standard
