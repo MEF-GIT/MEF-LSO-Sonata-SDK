@@ -1,5 +1,12 @@
 # Product Catalog: Release notes
 
+## Release Haley:
+
+**Readiness status**: Work in progress and is subject to change. Completed and
+resolved Call for Comments #1
+
+No changes.
+
 ## Release Grace:
 
 **Readiness status**: Work in progress and is subject to change. Completed and

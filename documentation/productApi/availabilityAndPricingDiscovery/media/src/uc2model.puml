@@ -12,7 +12,6 @@ class Duration {
 
 
 
-
 class GeographicAddressRef {
 
     href: string
@@ -88,21 +87,19 @@ class PricingAndTerm {
 PricingAndTerm *-->"1" Duration : installationInterval
 PricingAndTerm *-->"1" MEFItemTerm : term
 PricingAndTerm *-->"1..*" QuotePrice : price
-PricingAndTerm *-->"1" ProductOfferingRef : productOffering
-
 
 class PricingDiscovery {
 
 }
 PricingDiscovery_Request <|-- PricingDiscovery
 
-PricingDiscovery *-->"1..*" PricingAndTerm : pricingAndTerms
+PricingDiscovery *-->"1..*" PricingAndTerm : pricingAndTerm
 
 
 class PricingDiscovery_Request {
 
     action*: ProductActionAddModifyType
-    productConfigurationIdentifier*: string
+    productOfferingConfigurationIdentifier*: string
 }
 
 PricingDiscovery_Request *--> ProductRef : productRef
@@ -115,13 +112,6 @@ enum ProductActionAddModifyType {
     add
     modify
 }
-
-class ProductOfferingRef {
-
-    href: string
-    id*: string
-}
-
 
 
 class ProductRef {
@@ -168,7 +158,7 @@ enum TimeUnit {
     calendarHours
     businessDays
     calendarDays
-    calendarMonths
-    calendarYears
+    months
+    years
 }
 @enduml

@@ -1,5 +1,11 @@
 # Internet Access Product: Release notes
 
+## Release Haley:
+
+**Readiness status**: MEF Published Standard
+
+No changes.
+
 ## Release Grace:
 
 **Readiness status**: Requested Letter Ballot. It will be most likely published

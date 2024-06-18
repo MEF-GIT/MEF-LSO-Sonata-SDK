@@ -8,12 +8,12 @@ participant Seller
 Buyer -> Seller : POST {{baseUrl}}/pricingDiscovery\n(with PricingDiscovery_Request)
 
 Seller -> Seller : validate Request
-Seller -> Seller : validate productConfigurationIdentifier
+Seller -> Seller : validate productOfferingConfigurationIdentifier
 Seller -> Seller : validate delivery context\nconformance with Product Specification
-Seller -> Seller : generate applicable\nPricingAndTerms
+Seller -> Seller : generate applicable\nPricingAndTerm
 
 alt success
-    Buyer <-- Seller : 200 PricingDiscovery\n(with 0 or more PricingAndTerms)
+    Buyer <-- Seller : 200 PricingDiscovery\n(with 0 or more PricingAndTerm)
 else validation or internal problem
     Buyer <-- Seller: 4xx/5xx : error response
 end

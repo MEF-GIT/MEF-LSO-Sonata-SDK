@@ -21,10 +21,10 @@ info:
 
     - Retrieve Product Offering Availability
     - Retrieve Pricing and Terms
-  version: 2.0.0-RC
+  version: 3.0.0-RC
 servers:
   - url: >-
-      https://{serverBase}/mefApi/sonata/productOfferingAvailabilityAndPricingDiscovery/v2/
+      https://{serverBase}/mefApi/sonata/productOfferingAvailabilityAndPricingDiscovery/v3/
     variables:
       serverBase:
         description: The base of Seller's URL.
@@ -460,21 +460,21 @@ components:
         - autoDisconnect
         - autoRenew
     MEFItemTerm:
-      description: Describes a term (also known as commitment)
+      description: Describes a term
       type: object
       properties:
-        duration:
-          description: Duration of the term
-          $ref: '#/components/schemas/Duration'
-        endOfTermAction:
-          description: The action the Seller will take once the term expires.
-          $ref: '#/components/schemas/MEFEndOfTermAction'
         name:
           description: Name of the term
           type: string
         description:
           description: Description of the term
           type: string
+        duration:
+          description: Duration of the term
+          $ref: '#/components/schemas/Duration'
+        endOfTermAction:
+          description: The action the Seller will take once the term expires.
+          $ref: '#/components/schemas/MEFEndOfTermAction'
         rollInterval:
           description: >-
             The period that the Buyer is required to commit to pay in a
@@ -561,18 +561,19 @@ components:
             The indicative duration >=0 for the delivery of the configuration in
             the specified Delivery Context when manual work is required. The
             shortest interval is specified by the Seller. It is not considered a
-            commitment by the Seller.
+            commitment by the Seller. A value of 0 indicates immediate
+            installation.
           $ref: '#/components/schemas/Duration'
         term:
           description: >-
             The minimum length of the commitment for this PricingAndTerm for the
-            given productConfigurationIdentifier within the requested Delivery
-            Context.
+            given `productOfferingConfigurationIdentifier` within the requested
+            Delivery Context.
           $ref: '#/components/schemas/MEFItemTerm'
         price:
           description: >-
             The prices that apply to this PricingAndTerm for the given Product
-            Configuration within the requested Delivery Context.
+            Offering Configuration within the requested Delivery Context.
           type: array
           minItems: 1
           items:
@@ -582,16 +583,10 @@ components:
             An indicator to inform the Buyer that additional non-recurring
             charges may be added during fulfillment.
           type: boolean
-        productOffering:
-          description: >
-            A reference for the Product Offering that this configuration must be
-            ordered as.
-          $ref: '#/components/schemas/ProductOfferingRef'
       required:
         - identifier
         - installationInterval
         - price
-        - productOffering
         - subjectToAdditionalNonrecurringCharges
         - term
     PricingDiscovery:
@@ -603,7 +598,7 @@ components:
             Configuration Identifier provided by the Buyer
           type: object
           properties:
-            pricingAndTerms:
+            pricingAndTerm:
               description: >-
                 A set of contract terms and corresponding prices available for a
                 given Product Configuration considering the Delivery Context.
@@ -611,7 +606,7 @@ components:
               items:
                 $ref: '#/components/schemas/PricingAndTerm'
           required:
-            - pricingAndTerms
+            - pricingAndTerm
     PricingDiscovery_Request:
       description: >-
         A set of attributes common to PricingDiscovery_Request and
@@ -623,16 +618,16 @@ components:
             The action to be performed by the Seller to fulfill any Order that
             results from this interaction.
           $ref: '#/components/schemas/ProductActionAddModifyType'
-        productConfigurationIdentifier:
+        productOfferingConfigurationIdentifier:
           description: >
-            The identifier for the Product Configuration that the Pricing
-            Discovery is being requested for.
+            The identifier for the Product Offering Configuration that the
+            Pricing Discovery is being requested for.
           type: string
         productRef:
-          description: |
-            A reference to a Product in the Product Inventory. It MUST be
-            provided when the `action` = `modify`. It MUST NOT be provided when
-            the `action` = `add`
+          description: >-
+            A reference to a Product in the Product Inventory. It MUST NOT be
+            provided when the `action` = `add`. It MUST be provided when the
+            `action` = `modify`.
           $ref: '#/components/schemas/ProductRef'
         productRelationship:
           description: >-
@@ -652,7 +647,7 @@ components:
             $ref: '#/components/schemas/RelatedPlaceRef'
       required:
         - action
-        - productConfigurationIdentifier
+        - productOfferingConfigurationIdentifier
     ProductActionAddModifyType:
       description: |
         Action to be performed on the Product.
@@ -677,13 +672,15 @@ components:
         - $ref: '#/components/schemas/ProductOfferingAvailability_Request'
         - type: object
           properties:
-            availableProductOfferingConfigurations:
+            availableProductOfferingConfiguration:
+              description: 
+                The list of available Product Offering Configurations
               type: array
               minItems: 0
               items:
                 $ref: '#/components/schemas/ProductOfferingConfiguration'
           required:
-            - availableProductOfferingConfigurations
+            - availableProductOfferingConfiguration
     ProductOfferingAvailability_Request:
       description: >
         Product Offering Availability Request allows the Buyer to provide the
@@ -693,8 +690,8 @@ components:
       properties:
         action:
           description: >-
-            The action to be performed by the Seller to fulfill any Order that
-            results from this interaction.
+            The action to be performed by the Seller to fulfill any Product
+            Order that results from this interaction.
           $ref: '#/components/schemas/ProductActionAddModifyType'
         productSpecification:
           description: >-
@@ -704,9 +701,9 @@ components:
           $ref: '#/components/schemas/ProductSpecificationRef'
         productRef:
           description: >
-            A reference to a Product in the Product Inventory. It MUST be
-            provided when the `action` = `modify`. It MUST NOT be provided when
-            the `action` = `add`
+            A reference to a Product in the Product Inventory. It MUST NOT be
+            provided when the `action` = `add`. It MUST be provided when the
+            `action` = `modify`.
           $ref: '#/components/schemas/ProductRef'
         productRelationship:
           description: >-
@@ -743,7 +740,7 @@ components:
             this configuration unique. This essentially specifies the values for
             attributes defined in the Product Offering.
           $ref: '#/components/schemas/MEFProductConfiguration'
-        productConfigurationIdentifier:
+        productOfferingConfigurationIdentifier:
           description: >
             An identifier of the returned `productConfiguration` that can be
             used in the next step for Pricing Discovery
@@ -758,8 +755,8 @@ components:
       required:
         - installationInterval
         - productConfiguration
-        - productConfigurationIdentifier
         - productOffering
+        - productOfferingConfigurationIdentifier
     ProductOfferingRef:
       description:
         A reference to a Product Offering offered by the Seller to the Buyer.
@@ -895,8 +892,8 @@ components:
           type: string
         '@type':
           description: >
-            This field is used as a discriminator. One of GeographicAddressRef,
-            GeographicSiteRef.
+            This field is used as a discriminator. One of
+            GeographicAddressRef, GeographicSiteRef.
           type: string
       required:
         - '@type'
@@ -917,5 +914,5 @@ components:
         - calendarHours
         - businessDays
         - calendarDays
-        - calendarMonths
-        - calendarYears
+        - months
+        - years
