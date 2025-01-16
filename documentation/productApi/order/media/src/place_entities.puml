@@ -1,86 +1,41 @@
 @startuml
 
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
+class RelatedPlaceRefOrQueryWithSubUnit {
 
-class RelatedPlaceRefOrValue {
-
-    @schemaLocation: uri
-    @type*: string <<discriminator>>
     role*: string
 }
 
-class FieldedAddress {
-
-    city*: string
-    country*: string
-    locality: string
-    postcode: string
-    postcodeExtension: string
-    stateOrProvince: string
-    streetName*: string
-    streetNr: string
-    streetNrLast: string
-    streetNrLastSuffix: string
-    streetNrSuffix: string
-    streetSuffix: string
-    streetType: string
-}
-RelatedPlaceRefOrValue <|-- FieldedAddress
-
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
+RelatedPlaceRefOrQueryWithSubUnit *-->"1" PlaceRefOrQuery : place
+RelatedPlaceRefOrQueryWithSubUnit *-->"*" SubUnit : subUnit
+RelatedPlaceRefOrQueryWithSubUnit *-->"*" ContactInformation : contact
 
 
-class FormattedAddress {
-
-    addrLine1*: string
-    addrLine2: string
-    city*: string
-    country*: string
-    locality: string
-    postcode: string
-    postcodeExtension: string
-    stateOrProvince: string
-}
-RelatedPlaceRefOrValue <|-- FormattedAddress
-
-
-
-class GeographicSubAddress {
-
-    buildingName: string
-    levelNumber: string
-    levelType: string
-    privateStreetName: string
-    privateStreetNumber: string
+class PlaceRefOrQuery {
+    --
+    discriminator:
+    GeographicAddressRef
+    GeographicSiteRef
+    GeographicAddress_Query
 }
 
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+PlaceRefOrQuery ..> GeographicAddressRef : """"
+PlaceRefOrQuery ..> GeographicSiteRef : """"
+PlaceRefOrQuery ..> GeographicAddress_Query : """"
 
+class ContactInformation {
 
-class GeographicAddressLabel {
-
-    externalReferenceId*: string
-    externalReferenceType*: string
+    number*: string
+    emailAddress*: string
+    organization: string
+    name*: string
+    numberExtension: string
 }
-RelatedPlaceRefOrValue <|-- GeographicAddressLabel
+
+ContactInformation *--> FieldedAddressRepresentation : postalAddress
 
 
 
-
-class MEFGeographicPoint {
-
-    spatialRef*: string 
-    x*: string 
-    y*: string 
-    z: string 
-}
-RelatedPlaceRefOrValue <|-- MEFGeographicPoint
-
-
-class MEFSubUnit {
+class SubUnit {
 
     subUnitNumber*: string
     subUnitType*: string
@@ -88,19 +43,83 @@ class MEFSubUnit {
 
 
 
-class GeographicAddressRef  {
+class GeographicAddressRef {
 
-    href: string 
-    id*: string 
+    href: string
+    id*: string
+    @type*: string
 }
-RelatedPlaceRefOrValue <|-- GeographicAddressRef 
 
-class GeographicSiteRef  {
+class FieldedAddressRepresentation {
 
-    href: string 
-    id*: string 
+    streetNr: string
+    streetNrSuffix: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetPreDirection: string
+    streetName: string
+    streetType: string
+    streetPostDirection: string
+    poBox: string
+    locality: string
+    city: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+    countryCode: string
+    buildingName: string
+    privateStreetNumber: string
+    privateStreetName: string
+    language: string
 }
-RelatedPlaceRefOrValue <|-- GeographicSiteRef 
+
+FieldedAddressRepresentation *-r->"*" SubUnit : subUnit
+
+
+class FormattedAddressRepresentation {
+
+    formattedAddress*: string
+    language: string
+}
+
+
+
+class GeographicAddress_Query {
+    @type*: string
+}
+
+GeographicAddress_Query *-->"*" FieldedAddressRepresentation : fieldedAddressRepresentation
+GeographicAddress_Query *-->"*" FormattedAddressRepresentation : formattedAddressRepresentation
+GeographicAddress_Query *-->"*" GeographicPointRepresentation : geographicPointRepresentation
+GeographicAddress_Query *-->"*" LabelRepresentation : labelRepresentation
+
+
+
+class GeographicPointRepresentation {
+
+    spatialRef*: string
+    latitude*: string
+    longitude*: string
+    elevation: string
+}
+
+
+
+class LabelRepresentation {
+
+    label*: string
+    administrativeAuthority*: string
+    language: string
+}
+
+
+
+class GeographicSiteRef {
+
+    href: string
+    id*: string
+    @type*: string
+}
 
 
 @enduml

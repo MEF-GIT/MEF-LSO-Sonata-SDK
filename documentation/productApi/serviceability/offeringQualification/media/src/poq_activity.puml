@@ -1,0 +1,31 @@
+@startuml
+hide empty description
+
+state immediate <<choice>>
+[*] --> immediate
+immediate --> done: Yes
+done --> [*]
+note right of immediate : Immediate response provided?
+
+immediate --> acknowledged: No
+state validation <<choice>>
+acknowledged --> validation
+note right of validation : Business validation passed?
+validation --> rejected: No
+rejected --> [*]
+validation --> inProgress: Yes
+
+state itemsReady <<choice>>
+note left of itemsReady : All poq items ready?
+inProgress --> itemsReady
+itemsReady --> done : Yes
+
+state time <<choice>>
+note right of time : Seller able to meet required time?
+itemsReady -r-> time : No
+
+time --> inProgress : Yes
+time --> terminatedWithError : No
+terminatedWithError --> [*]
+
+@enduml

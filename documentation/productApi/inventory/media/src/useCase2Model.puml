@@ -1,8 +1,17 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
+
+
+class ContactInformation {
+
+    number*: string
+    emailAddress*: string
+    organization: string
+    name*: string
+    numberExtension: string
+    postalAddress: FieldedAddressRepresentation
+
 }
+
 
 class Duration {
 
@@ -12,85 +21,60 @@ class Duration {
 
 
 
-class FieldedAddress {
-
-    city*: string
-    country*: string
-    locality: string
-    postcode: string
-    postcodeExtension: string
-    stateOrProvince: string
-    streetName*: string
-    streetNr: string
-    streetNrLast: string
-    streetNrLastSuffix: string
-    streetNrSuffix: string
-    streetSuffix: string
-    streetType: string
-}
-
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
-
-
-class GeographicSubAddress {
-
-    buildingName: string
-    levelNumber: string
-    levelType: string
-    privateStreetName: string
-    privateStreetNumber: string
-}
-
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
-
-
 class MEFBillingAccountRef {
 
     id*: string
-
 }
 
 
+
+enum MEFEndOfTermAction {
+
+    roll
+    autoDisconnect
+    autoRenew
+}
 class MEFItemTerm {
 
+    endOfTermAction*: MEFEndOfTermAction
+    name*: string
     description: string
-    endOfTermAction: MEFEndOfTermAction
-    name: string
 }
 
-MEFItemTerm *--> Duration : duration
+MEFItemTerm *-->"1" Duration : duration
 MEFItemTerm *--> Duration : rollInterval
 
 
+enum MEFPriceType {
+
+    recurring
+    nonRecurring
+    usageBased
+}
 class MEFProduct {
 
     id*: string
     href: string
-    externalId: string
-    lastUpdateDate: date-time
     startDate*: date-time
-    terminationDate: date-time
+    externalId: string
     status*: MEFProductStatusType
+    lastUpdateDate: date-time
+    agreementName: string
+    terminationDate: date-time
     @type: string
 }
 
-MEFProduct *--> MEFProductConfiguration : productConfiguration
-MEFProduct *--> MEFBillingAccountRef : billingAccount
-MEFProduct *--> ProductOfferingRef : productOffering
-MEFProduct *-->"*" MEFProductOrderItemRef : productOrderItem
-MEFProduct *-->"*" ProductPrice : productPrice
-MEFProduct *-->"*" ProductRelationship : productRelationship
+MEFProduct *-->"*" MEFProductStatusChange : statusChange
 MEFProduct *--> ProductSpecificationRef : productSpecification
-MEFProduct *-->"*" MEFItemTerm : productTerm
+MEFProduct *-->"*" RelatedPlaceRefOrQuery : place
+MEFProduct *--> ProductOfferingRef : productOffering
 MEFProduct *-->"*" RelatedContactInformation : relatedContactInformation
-MEFProduct *-->"*" MEFProductStatusChange : stateChange
-MEFProduct *-->"*" RelatedGeographicSite : relatedSite
-
-
-ProductOfferingRef -[hidden]-> MEFProductOrderItemRef
-MEFProductConfiguration -[hidden]-> ProductRelationship
-ProductSpecificationRef -[hidden]-> RelatedGeographicSite
-RelatedGeographicSite -[hidden]-> MEFProductStatusChange
+MEFProduct *--> MEFBillingAccountRef : billingAccount
+MEFProduct *-->"*" MEFProductOrderItemRef : productOrderItem
+MEFProduct *-->"*" MEFItemTerm : productTerm
+MEFProduct *--> MEFProductConfiguration : productConfiguration
+MEFProduct *-->"*" ProductRelationship : productRelationship
+MEFProduct *-->"*" ProductPrice : productPrice
 
 
 class MEFProductConfiguration {
@@ -102,11 +86,33 @@ class MEFProductConfiguration {
 
 class MEFProductOrderItemRef {
 
-    productOrderItemId*: string
     productOrderHref: string
+    productOrderItemId*: string
     productOrderId*: string
 }
 
+
+
+class MEFProductStatusChange {
+
+    changeReason: string
+    changeDate*: date-time
+    status*: MEFProductStatusType
+}
+
+
+
+enum MEFProductStatusType {
+
+    active
+    active.pendingChange
+    cancelled
+    pendingActive
+    pendingTerminate
+    suspended
+    suspendedPendingTerminate
+    terminated
+}
 
 class Money {
 
@@ -116,78 +122,19 @@ class Money {
 
 
 
+class PlaceRefOrQuery {
+
+}
+
+
+
 class Price {
 
     taxRate: float
 }
 
-Price *--> Money : dutyFreeAmount*
 Price *--> Money : taxIncludedAmount
-
-
-class ProductSpecificationRef {
-
-    href: string
-    id*: string
-}
-
-
-
-class RelatedGeographicSite {
-
-    id*: string
-    href: string
-    role*: string
-}
-
-
-
-' enum MEFProductStatusType {
-
-'     active
-'     active.pendingChange
-'     cancelled
-'     pendingActive
-'     pendingTerminate
-'     suspended
-'     suspendedPendingTerminate
-'     terminated
-' }
-' enum MEFChargePeriod {
-
-'     hour
-'     day
-'     week
-'     month
-'     year
-' }
-' enum MEFPriceType {
-
-'     recurring
-'     nonRecurring
-'     usageBased
-' }
-' enum MEFEndOfTermAction {
-
-'     roll
-'     autoDisconnect
-'     autoRenew
-' }
-class MEFProductStatusChange {
-
-    changeDate*: date-time
-    changeReason: string
-    state*: MEFProductStatusType
-}
-
-
-
-class MEFSubUnit {
-
-    subUnitNumber*: string
-    subUnitType*: string
-}
-
+Price *-->"1" Money : dutyFreeAmount
 
 
 class ProductOfferingRef {
@@ -200,47 +147,63 @@ class ProductOfferingRef {
 
 class ProductPrice {
 
-    description: string
-    name: string
     unitOfMeasure: string
+    name: string
     priceType*: MEFPriceType
-    recurringChargePeriod: MEFChargePeriod
+    description: string
 }
 
 ProductPrice *-->"1" Price : price
+ProductPrice *--> Duration : recurringChargePeriod
 
 
 class ProductRelationship {
 
+    relationshipType*: string
     id*: string
     href: string
-    relationshipType*: string
+}
+
+
+
+class ProductSpecificationRef {
+
+    href: string
+    id*: string
 }
 
 
 
 class RelatedContactInformation {
 
-    emailAddress*: string
-    name*: string
+    role*: string
     number*: string
-    numberExtension: string
+    emailAddress*: string
     organization: string
+    name*: string
+    numberExtension: string
+    postalAddress: FieldedAddressRepresentation
+}
+
+
+class RelatedPlaceRefOrQuery {
+
     role*: string
 }
 
-RelatedContactInformation *--> FieldedAddress : postalAddress
+RelatedPlaceRefOrQuery *-->"1" PlaceRefOrQuery : place
+RelatedPlaceRefOrQuery *-->"*" ContactInformation : contact
 
 
+enum TimeUnit {
 
-' enum TimeUnit {
-
-'     calendarMonths
-'     calendarDays
-'     calendarHours
-'     calendarMinutes
-'     businessDays
-'     businessHours
-'     businessMinutes
-' }
+    seconds
+    minutes
+    businessHours
+    calendarHours
+    businessDays
+    calendarDays
+    months
+    years
+}
 @enduml

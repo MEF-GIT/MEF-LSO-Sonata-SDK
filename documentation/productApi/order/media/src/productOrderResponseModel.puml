@@ -1,9 +1,4 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
-
 
 class Duration {
 
@@ -13,82 +8,6 @@ class Duration {
 
 
 
-
-class FieldedAddress {
-
-    city*: string
-    country*: string
-    locality: string
-    postcode: string
-    postcodeExtension: string
-    stateOrProvince: string
-    streetName*: string
-    streetNr: string
-    streetNrLast: string
-    streetNrLastSuffix: string
-    streetNrSuffix: string
-    streetSuffix: string
-    streetType: string
-}
-RelatedPlaceRefOrValue <|-- FieldedAddress
-
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
-
-
-class FormattedAddress {
-
-    addrLine1*: string
-    addrLine2: string
-    city*: string
-    country*: string
-    locality: string
-    postcode: string
-    postcodeExtension: string
-    stateOrProvince: string
-}
-RelatedPlaceRefOrValue <|-- FormattedAddress
-
-
-
-class GeographicAddressLabel {
-
-    externalReferenceId*: string
-    externalReferenceType*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicAddressLabel
-
-
-
-class GeographicAddressRef {
-
-    href: string
-    id*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicAddressRef
-
-
-
-class GeographicSiteRef {
-
-    href: string
-    id*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicSiteRef
-
-
-
-class GeographicSubAddress {
-
-    buildingName: string
-    levelNumber: string
-    levelType: string
-    privateStreetName: string
-    privateStreetNumber: string
-}
-
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
-
-
 class MEFProductOrderItemStateChange {
 
     changeDate: date-time
@@ -96,11 +15,6 @@ class MEFProductOrderItemStateChange {
     state: MEFProductOrderItemStateType
 }
 
-
-class MEFBillingAccountRef {
-
-    id*: string
-}
 
 
 class MEFItemTerm {
@@ -137,15 +51,6 @@ class MEFProductOrderStateChange {
 
 
 
-class MEFQuoteItemRef {
-
-    id*: string
-    quoteHref: string
-    quoteId*: string
-}
-
-
-
 class Note {
 
     author*: string
@@ -157,22 +62,10 @@ class Note {
 
 
 
-class OrderItemRelationship {
-
-    id*: string
-    relationshipType*: string
-}
-
-class ProductOfferingRef {
-
-    href: string
-    id*: string
-}
-
-
 
 class ProductOrder {
 
+    cancellationCharge: MEFProductOrderChargeRef
     cancellationDate: date-time
     cancellationReason: string
     completionDate: date-time
@@ -183,7 +76,6 @@ class ProductOrder {
 }
 ProductOrder_Common <|-- ProductOrder
 
-ProductOrder *-->"*" MEFProductOrderChargeRef : cancellationCharge
 ProductOrder *-->"1..*" ProductOrderItem : productOrderItem
 ProductOrder *-->"*" MEFProductOrderStateChange : stateChange
 
@@ -196,24 +88,15 @@ class TerminationError {
 }
 
 
-class MEFGeographicPoint {
-
-    spatialRef*: string
-    x*: string
-    y*: string
-    z: string
-}
-RelatedPlaceRefOrValue <|-- MEFGeographicPoint
-
 class ProductOrderItem {
 
+    charge: MEFProductOrderChargeRef
     completionDate: date-time
     expectedCompletionDate: date-time
     expediteAcceptedIndicator: boolean
-    state: MEFProductOrderItemStateType
+    state*: MEFProductOrderItemStateType
 }
 MEFProductOrderItem_Common <|-- ProductOrderItem
-ProductOrderItem *-->"*" MEFProductOrderChargeRef : charge
 ProductOrderItem *-->"*" MEFItemTerm : itemTerm
 ProductOrderItem *-->"*" MEFMilestone : milestone
 ProductOrderItem *-->"*" MEFProductOrderItemStateChange : stateChange
@@ -231,44 +114,35 @@ class MEFProductOrderItem_Common {
 
     action*: MEFProductActionType
     agreementName: string
+    billingAccount: MEFBillingAccountRef
     endCustomerName: string
     expediteIndicator: boolean
     id*: string
+    productOfferingQualificationItem: ProductOfferingQualificationItemRef
+    productOrderItemRelationship: OrderItemRelationship
+    quoteItem: MEFQuoteItemRef
     relatedBuyerPON: string
     requestedCompletionDate: date-time
     tspRestorationPriority: string
 }
 
-MEFProductOrderItem_Common *--> MEFBillingAccountRef : billingAccount
 MEFProductOrderItem_Common *-->"*" MEFOrderItemCoordinatedAction : coordinatedAction
 MEFProductOrderItem_Common *-->"*" Note : note
-MEFProductOrderItem_Common *--> MEFProductRefOrValueOrder : product
-MEFProductOrderItem_Common *--> ProductOfferingQualificationItemRef : productOfferingQualificationItem
-MEFProductOrderItem_Common *-->"*" OrderItemRelationship : productOrderItemRelationship
-MEFProductOrderItem_Common *--> MEFQuoteItemRef : quoteItem
+
 MEFProductOrderItem_Common *-->"*" RelatedContactInformation : relatedContactInformation
 MEFProductOrderItem_Common *--> MEFItemTerm : requestedItemTerm
-
-
+MEFProductOrderItem_Common *--> MEFProductRefOrValueOrder : product
 
 class MEFProductRefOrValueOrder {
 
     href: string
     id: string
+    productOffering: ProductOfferingRef
+    productRelationship: ProductRelationship
 }
 
-MEFProductRefOrValueOrder *-->"*" RelatedPlaceRefOrValue : place
+MEFProductRefOrValueOrder *-->"*" RelatedPlaceRefOrQueryWithSubUnit : place
 MEFProductRefOrValueOrder *--> MEFProductConfiguration : productConfiguration
-MEFProductRefOrValueOrder *--> ProductOfferingRef : productOffering
-MEFProductRefOrValueOrder *-->"*" ProductRelationship : productRelationship
-
-
-class MEFSubUnit {
-
-    subUnitNumber*: string
-    subUnitType*: string
-}
-
 
 
 class ProductOrder_Common {
@@ -280,31 +154,14 @@ class ProductOrder_Common {
 ProductOrder_Common *-->"*" Note : note
 ProductOrder_Common *-->"1..*" RelatedContactInformation : relatedContactInformation
 
-class ProductOrder_Update {
+ProductOrder_Common *-r[hidden]-> MEFProductOrderItem_Common
 
-    externalId: string
-    projectId: string
-}
+class RelatedPlaceRefOrQueryWithSubUnit {
 
-ProductOrder_Update *-->"*" Note : note
-ProductOrder_Update *-->"*" MEFProductOrderItem_Update : productOrderItem
-ProductOrder_Update *-->"*" RelatedContactInformation : relatedContactInformation
-
-
-class ProductRelationship {
-
-    id*: string
-    href: string
-    relationshipType*: string
-}
-
-
-
-class RelatedPlaceRefOrValue {
-
-    @schemaLocation: uri
-    @type*: string
     role*: string
+    place: PlaceRefOrQuery
+    subUnit: SubUnit
+    contact: ContactInformation
 }
 
 
@@ -317,8 +174,9 @@ class RelatedContactInformation {
     numberExtension: string
     organization: string
     role*: string
+    postalAddress: FieldedAddressRepresentation
 }
 
-RelatedContactInformation *--> FieldedAddress : postalAddress
+
 
 @enduml

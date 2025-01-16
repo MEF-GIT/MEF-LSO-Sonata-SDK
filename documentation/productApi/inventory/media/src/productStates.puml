@@ -1,11 +1,11 @@
 @startuml
 
 hide empty description
-
+state "active.pendingChange" as pendingChange
 
 [*] --[hidden]> pendingActive
 
-pendingActive --[hidden]> active.pendingChange
+pendingActive --[hidden]> pendingChange
 pendingActive --[hidden]> active
 pendingActive --[hidden]> pendingTerminate
 cancelled --[hidden]> pendingTerminate
@@ -25,11 +25,11 @@ pendingActive -[norank]> cancelled : Product Order\nCancelled
 
 cancelled -[norank]> [*]
 
-active -[norank]> active.pendingChange : Change in progress
+active -[norank]> pendingChange : Change in progress
 active -[norank]> suspended : Suspension
 active -[norank]> pendingTerminate : Waiting for Termination
 
-active.pendingChange -[norank]> active : Change order in final state
+pendingChange -[norank]> active : Change order in final state
 
 suspended -[norank]> active : Reactivation
 suspended -[norank]> suspendedPendingTerminate : Waiting for Termination

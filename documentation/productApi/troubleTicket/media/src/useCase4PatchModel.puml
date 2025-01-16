@@ -1,61 +1,44 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
 
 class AttachmentValue {
 
-    attachmentId: string
     author*: string
-    content: string
     creationDate*: date-time
     description: string
     mimeType: string
     name*: string
     source*: MEFBuyerSellerType
-    url: string
+    url*: string
 }
 
 AttachmentValue *--> MEFByteSize : size
 
 
 
+class FieldedAddressRepresentation {
 
-
-class FieldedAddress {
-
-    city*: string
-    country*: string
+    streetNr: string
+    streetNrSuffix: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetPreDirection: string
+    streetName: string
+    streetType: string
+    streetPostDirection: string
+    poBox: string
     locality: string
+    city: string
     postcode: string
     postcodeExtension: string
     stateOrProvince: string
-    streetName*: string
-    streetNr: string
-    streetNrLast: string
-    streetNrLastSuffix: string
-    streetNrSuffix: string
-    streetSuffix: string
-    streetType: string
-}
-
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
-
-
-class GeographicSubAddress {
-
+    countryCode: string
     buildingName: string
-    id: string
-    levelNumber: string
-    levelType: string
-    privateStreetName: string
     privateStreetNumber: string
+    privateStreetName: string
+    language: string
 }
 
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
-
-
+FieldedAddressRepresentation *-->"*" SubUnit : subUnit
 
 
 
@@ -80,22 +63,22 @@ class Note {
 
 
 
-class MEFSubUnit {
+class SubUnit {
 
     subUnitNumber*: string
     subUnitType*: string
 }
 class RelatedContactInformation {
 
-    emailAddress*: string
-    name*: string
-    number*: string
-    numberExtension: string
-    organization: string
     role*: string
+    number*: string
+    emailAddress*: string
+    organization: string
+    name*: string
+    numberExtension: string
 }
 
-RelatedContactInformation *--> FieldedAddress : postalAddress
+RelatedContactInformation *--> FieldedAddressRepresentation : postalAddress
 
 class IssueRelationship {
 

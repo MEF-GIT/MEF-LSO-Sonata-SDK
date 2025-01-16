@@ -1,8 +1,5 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
+
 scale 4096 width
 class AppliedPayment {
 
@@ -124,44 +121,6 @@ CustomerBill_Find *--> BillingAccountRef : billingAccount
 CustomerBill_Find *--> TimePeriod : billingPeriod
 
 
-class Error400 {
-
-    code*: Error400Code
-}
-Error <|-- Error400
-
-
-
-class Error401 {
-
-    code*: Error401Code
-}
-Error <|-- Error401
-
-
-
-class Error403 {
-
-    code*: Error403Code
-}
-Error <|-- Error403
-
-
-
-class Error500 {
-
-    code*: string
-}
-Error <|-- Error500
-
-
-class Error501 {
-
-    code*: string
-}
-Error <|-- Error501
-
-
 
 enum CustomerBillRunType {
 
@@ -177,24 +136,30 @@ class EventSubscription {
 
 
 
-class FieldedAddress {
+class FieldedAddressRepresentation {
 
-    city*: string
-    country*: string
+    streetNr: string
+    streetNrSuffix: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetPreDirection: string
+    streetName: string
+    streetType: string
+    streetPostDirection: string
+    poBox: string
     locality: string
+    city: string
     postcode: string
     postcodeExtension: string
     stateOrProvince: string
-    streetName*: string
-    streetNr: string
-    streetNrLast: string
-    streetNrLastSuffix: string
-    streetNrSuffix: string
-    streetSuffix: string
-    streetType: string
+    countryCode: string
+    buildingName: string
+    privateStreetNumber: string
+    privateStreetName: string
+    language: string
 }
 
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
+FieldedAddressRepresentation *-->"*" SubUnit : subUnit
 
 
 class FinancialAccountRef {
@@ -243,35 +208,7 @@ class RelatedContactInformation {
     role*: string
 }
 
-RelatedContactInformation *--> FieldedAddress : postalAddress
-
-
-enum Error401Code {
-
-    missingCredentials
-    invalidCredentials
-}
-enum Error400Code {
-
-    missingQueryParameter
-    missingQueryValue
-    invalidQuery
-    invalidBody
-}
-class Error404 {
-
-    code*: string
-}
-Error <|-- Error404
-
-
-
-class Error {
-
-    reason*: string
-    message: string
-    referenceError: uri
-}
+RelatedContactInformation *--> FieldedAddressRepresentation : postalAddress
 
 
 
@@ -281,18 +218,6 @@ class EventSubscriptionInput {
     query: string
 }
 
-
-
-class GeographicSubAddress {
-
-    buildingName: string
-    levelNumber: string
-    levelType: string
-    privateStreetName: string
-    privateStreetNumber: string
-}
-
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
 
 
 class TaxItem {
@@ -309,12 +234,6 @@ enum CustomerBillItemFeeCategory {
     recurring
     nonRecurring
     other
-}
-enum Error403Code {
-
-    accessDenied
-    forbiddenRequester
-    tooManyUsers
 }
 enum CustomerBillItemTaxCategory {
 
@@ -354,7 +273,7 @@ class MEFProductOrderItemRef {
 
 
 
-class MEFSubUnit {
+class SubUnit {
 
     subUnitNumber*: string
     subUnitType*: string

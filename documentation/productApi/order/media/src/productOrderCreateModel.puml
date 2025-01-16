@@ -1,97 +1,10 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
 
 
 class Duration {
 
     amount*: integer
     units*: TimeUnit
-}
-
-
-
-
-class FieldedAddress {
-
-    city*: string
-    country*: string
-    locality: string
-    postcode: string
-    postcodeExtension: string
-    stateOrProvince: string
-    streetName*: string
-    streetNr: string
-    streetNrLast: string
-    streetNrLastSuffix: string
-    streetNrSuffix: string
-    streetSuffix: string
-    streetType: string
-}
-RelatedPlaceRefOrValue <|-- FieldedAddress
-
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
-
-
-class FormattedAddress {
-
-    addrLine1*: string
-    addrLine2: string
-    city*: string
-    country*: string
-    locality: string
-    postcode: string
-    postcodeExtension: string
-    stateOrProvince: string
-}
-RelatedPlaceRefOrValue <|-- FormattedAddress
-
-
-
-class GeographicAddressLabel {
-
-    externalReferenceId*: string
-    externalReferenceType*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicAddressLabel
-
-
-
-class GeographicAddressRef {
-
-    href: string
-    id*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicAddressRef
-
-
-
-class GeographicSiteRef {
-
-    href: string
-    id*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicSiteRef
-
-
-
-class GeographicSubAddress {
-
-    buildingName: string
-    levelNumber: string
-    levelType: string
-    privateStreetName: string
-    privateStreetNumber: string
-}
-
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
-
-
-class MEFBillingAccountRef {
-
-    id*: string
 }
 
 
@@ -121,15 +34,6 @@ class MEFProductConfiguration {
 }
 
 
-class MEFQuoteItemRef {
-
-    id*: string
-    quoteHref: string
-    quoteId*: string
-}
-
-
-
 class Note {
 
     author*: string
@@ -138,31 +42,6 @@ class Note {
     source*: MEFBuyerSellerType
     text*: string
 }
-
-
-class OrderItemRelationship {
-
-    id*: string
-    relationshipType*: string
-}
-
-class ProductOfferingRef {
-
-    href: string
-    id*: string
-}
-
-
-class MEFGeographicPoint {
-
-    spatialRef*: string
-    x*: string
-    y*: string
-    z: string
-}
-RelatedPlaceRefOrValue <|-- MEFGeographicPoint
-
-
 
 class MEFProductOrderItem_Create {
 
@@ -174,43 +53,35 @@ class MEFProductOrderItem_Common {
 
     action*: MEFProductActionType
     agreementName: string
+    billingAccount: MEFBillingAccountRef
     endCustomerName: string
     expediteIndicator: boolean
     id*: string
+    productOfferingQualificationItem: ProductOfferingQualificationItemRef
+    productOrderItemRelationship: OrderItemRelationship
+    quoteItem: MEFQuoteItemRef
     relatedBuyerPON: string
     requestedCompletionDate: date-time
     tspRestorationPriority: string
 }
 
-MEFProductOrderItem_Common *--> MEFBillingAccountRef : billingAccount
 MEFProductOrderItem_Common *-->"*" MEFOrderItemCoordinatedAction : coordinatedAction
 MEFProductOrderItem_Common *-->"*" Note : note
-MEFProductOrderItem_Common *--> MEFProductRefOrValueOrder : product
-MEFProductOrderItem_Common *--> ProductOfferingQualificationItemRef : productOfferingQualificationItem
-MEFProductOrderItem_Common *-->"*" OrderItemRelationship : productOrderItemRelationship
-MEFProductOrderItem_Common *--> MEFQuoteItemRef : quoteItem
+
 MEFProductOrderItem_Common *-->"*" RelatedContactInformation : relatedContactInformation
 MEFProductOrderItem_Common *--> MEFItemTerm : requestedItemTerm
-
+MEFProductOrderItem_Common *--> MEFProductRefOrValueOrder : product
 
 class MEFProductRefOrValueOrder {
 
     href: string
     id: string
+    productOffering: ProductOfferingRef
+    productRelationship: ProductRelationship
 }
 
-MEFProductRefOrValueOrder *-->"*" RelatedPlaceRefOrValue : place
+MEFProductRefOrValueOrder *-->"*" RelatedPlaceRefOrQueryWithSubUnit : place
 MEFProductRefOrValueOrder *--> MEFProductConfiguration : productConfiguration
-MEFProductRefOrValueOrder *--> ProductOfferingRef : productOffering
-MEFProductRefOrValueOrder *-->"*" ProductRelationship : productRelationship
-
-
-class MEFSubUnit {
-
-    subUnitNumber*: string
-    subUnitType*: string
-}
-
 
 
 class ProductOrder_Common {
@@ -222,24 +93,15 @@ class ProductOrder_Common {
 ProductOrder_Common *-->"*" Note : note
 ProductOrder_Common *-->"1..*" RelatedContactInformation : relatedContactInformation
 
+ProductOrder_Common *-r[hidden]-> MEFProductOrderItem_Common
 
-class ProductRelationship {
+class RelatedPlaceRefOrQueryWithSubUnit {
 
-    href: string
-    id*: string
-    relationshipType*: string
-}
-
-
-
-class RelatedPlaceRefOrValue {
-
-    @schemaLocation: uri
-    @type*: string
     role*: string
+    place: PlaceRefOrQuery
+    subUnit: SubUnit
+    contact: ContactInformation
 }
-
-
 
 
 
@@ -251,17 +113,17 @@ ProductOrder_Common <|-- ProductOrder_Create
 ProductOrder_Create *-->"1..*" MEFProductOrderItem_Create : productOrderItem
 
 
+
 class RelatedContactInformation {
 
-    emailAddress*: string
-    name*: string
-    number*: string
-    numberExtension: string
-    organization: string
     role*: string
+    number*: string
+    emailAddress*: string
+    organization: string
+    name*: string
+    numberExtension: string
+    postalAddress: FieldedAddressRepresentation
 }
 
-
-RelatedContactInformation *--> FieldedAddress : postalAddress
 
 @enduml

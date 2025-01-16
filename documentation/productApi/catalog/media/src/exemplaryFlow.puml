@@ -1,21 +1,21 @@
 @startuml
-skinparam {
-participantBorderColor DarkRed
-participantBorderThickness 1
-participantBackgroundColor BUSINESS
+' skinparam {
+' participantBorderColor DarkRed
+' participantBorderThickness 1
+' participantBackgroundColor BUSINESS
 
-LifeLineBorderColor DarkRed
-LifeLineBackgroundColor DarkRed
+' LifeLineBorderColor DarkRed
+' LifeLineBackgroundColor DarkRed
 
-databaseBorderColor Grey
-databaseBorderThickness 1
+' databaseBorderColor Grey
+' databaseBorderThickness 1
 
-shadowing true
-RoundCorner 0
-LineColor DarkRed
-ArrowColor DarkRed
-ArrowThickness 1
-}
+' shadowing true
+' RoundCorner 0
+' LineColor DarkRed
+' ArrowColor DarkRed
+' ArrowThickness 1
+' }
 
 hide footbox
 
@@ -28,7 +28,7 @@ opt
 note over b
 Buyer registers subscription to the events related to the Product Offerings:
 - productOfferingCreateEvent
-- productOfferingStatusChangeEvent
+- productOfferingStateChangeEvent
 - productOfferingAttributeValueChangeEvent
 end note
 b -> s++: POST {{baseUrl}}/hub
@@ -39,9 +39,9 @@ end opt
 
 note over s
 Product Offering created, 
-announced but not published for marketing/ordering
+active but not published for marketing/ordering
 end note
-s -> s: ProductOffering.lifecycleStatus=announced
+s -> s: ProductOffering.lifecycleStatus=active
 opt
     activate s
     b <- s++: POST {baseUrl}/listener/productOfferingCreateEvent
@@ -52,10 +52,10 @@ end opt
 note over s
 Product Offering published for marketing/ordering
 end note
-s -> s: ProductOffering.lifecycleStatus=orderable
+s -> s: ProductOffering.lifecycleStatus=launched
 opt 
     activate s
-    b <- s++: POST {baseUrl}/listener/productOfferingStatusChangeEvent
+    b <- s++: POST {baseUrl}/listener/productOfferingStateChangeEvent
     b -->s--: HTTP 204 No Content (confirmation with event {{id}})
     deactivate s
 end opt
@@ -63,7 +63,7 @@ end opt
 note over b
 Buyer wants to retrieve Product Offerings available for ordering
 end note
-b -> s++: GET {{baseUrl}}/productOffering?lifecycleStatus=orderable
+b -> s++: GET {{baseUrl}}/productOffering?lifecycleStatus=launched
 activate b
 b <-- s--: HTTP 200 Ok (list with one element)
 
@@ -82,7 +82,7 @@ end note
 s -> s: ProductOffering.lifecycleStatus=endOfSale
 opt
     activate s
-    b <- s++: POST {baseUrl}/listener/productOfferingStatusChangeEvent
+    b <- s++: POST {baseUrl}/listener/productOfferingStateChangeEvent
     b -->s--: HTTP 204 No Content (confirmation with event {{id}})
     deactivate s
 end opt
@@ -90,7 +90,7 @@ note over b
 Buyer wants to retrieve Product Offerings available for ordering
 end note
 
-b -> s++: GET {{baseUrl}}/productOffering?lifecycleStatus=orderable
+b -> s++: GET {{baseUrl}}/productOffering?lifecycleStatus=launched
 activate b
 b <-- s--: HTTP 200 ok (an empty list)
 deactivate b

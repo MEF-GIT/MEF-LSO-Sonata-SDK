@@ -1,38 +1,58 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
-
 
 
 class Event {
 
     eventId*: string
     eventTime*: date-time
+    eventType*: string
+    event*: object
 }
 
 
-class AppointmentEventPayload {
 
-    sellerId: string
+class AppointmentAttributeValueChangeEvent {
+
+    eventType*: string
+}
+Event <|-- AppointmentAttributeValueChangeEvent
+
+AppointmentAttributeValueChangeEvent *-->"1" AppointmentAttributeValueChangeEventPayload : event
+
+
+class AppointmentAttributeValueChangeEventPayload {
+
     id*: string
     href: string
-    buyerId: string
 }
 
-class AppointmentEvent {
 
-    eventType*: AppointmentEventType
+
+class AppointmentStatusChangeEvent {
+
+    eventType*: string
 }
-Event <|-- AppointmentEvent
+Event <|-- AppointmentStatusChangeEvent
 
-AppointmentEvent *-->"1" AppointmentEventPayload : event
+AppointmentStatusChangeEvent *-->"1" AppointmentStatusChangeEventPayload : event
 
 
-enum AppointmentEventType {
+class AppointmentStatusChangeEventPayload {
 
-    AppointmentAttributeValueChangeEvent
-    AppointmentStatusChangeEvent
+    id*: string
+    href: uri
+    status*: AppointmentStatusType
+}
+
+
+
+enum AppointmentStatusType {
+
+    confirmed
+    inProgress
+    cancelled
+    missed
+    failed
+    completed
 }
 @enduml

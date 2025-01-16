@@ -1,0 +1,147 @@
+@startuml
+
+
+class ProductOfferingQualification {
+
+    id*: string
+    href: string
+    state*: MEFPOQTaskStateType
+    stateChange*: MEFPOQStateChange[]
+    creationDate*: date-time
+    expectedPOQCompletionDate: date-time
+}
+ProductOfferingQualification_Common <|-u- ProductOfferingQualification
+
+ProductOfferingQualification *-r->"1..*" ProductOfferingQualificationItem : productOfferingQualificationItem
+
+
+class ProductOfferingQualificationItem {
+
+    state*: MEFPOQItemTaskStateType
+    stateChange*: MEFPOQItemStateChange[]
+    serviceabilityConfidence: MEFServiceabilityColor
+    serviceabilityConfidenceReason: string
+    guaranteedUntilDate: date-time
+    deliveryType: DeliveryType
+    installationInterval: Duration
+    3rdPartyProvider: string
+    3rdPartyProviderProductOffering: string
+    terminationError: TerminationError
+}
+ProductOfferingQualificationItem_Common <|-u- ProductOfferingQualificationItem
+
+ProductOfferingQualificationItem *-->"*" AlternateProductOfferingProposal : alternateProductOfferingProposal
+
+
+
+class AlternateProductOfferingProposal {
+
+    id*: string
+    serviceabilityConfidence*: AlternateServiceabilityColor
+    serviceabilityConfidenceReason: string
+    deliveryType*: DeliveryType
+    installationInterval*: Duration
+    3rdPartyProvider: string
+    3rdPartyProviderProductOffering: string
+}
+
+AlternateProductOfferingProposal *-->"1" MEFAlternateProduct : alternateProduct
+
+
+class MEFAlternateProduct {
+
+}
+
+MEFAlternateProduct *-->"1" ProductOfferingRef : productOffering
+MEFAlternateProduct *-->"1" MEFProductConfiguration : productConfiguration
+
+
+class MEFProductConfiguration {
+
+    @type*: string
+}
+
+
+
+class MEFProductRefOrValue {
+
+    id: string
+    href: string
+}
+
+MEFProductRefOrValue *--> ProductSpecificationRef : productSpecification
+MEFProductRefOrValue *--> ProductOfferingRef : productOffering
+MEFProductRefOrValue *--> MEFProductConfiguration : productConfiguration
+MEFProductRefOrValue *-->"*" ProductRelationship : productRelationship
+MEFProductRefOrValue *-->"*" RelatedPlaceRefOrQueryWithSubUnit : place
+
+
+
+class ProductOfferingQualificationItem_Common {
+
+    id*: string
+    action*: PoqProductActionType
+    endCustomerName: string
+}
+
+ProductOfferingQualificationItem_Common *-->"1" MEFProductRefOrValue : product
+ProductOfferingQualificationItem_Common *-->"*" QualificationItemRelationship : qualificationItemRelationship
+
+
+
+class ProductOfferingQualification_Common {
+
+    projectId: string
+    externalId: string
+    instantSyncQualification*: boolean
+    provideAlternative*: boolean
+    relatedContactInformation*: RelatedContactInformation
+    requestedPOQCompletionDate: date-time
+}
+
+
+
+class ProductOfferingRef {
+
+    href: string
+    id*: string
+}
+
+
+
+class ProductRelationship {
+
+    href: string
+    id*: string
+    relationshipType*: string
+}
+
+
+
+class ProductSpecificationRef {
+
+    href: string
+    id*: string
+}
+
+
+
+class QualificationItemRelationship {
+
+    relationshipType*: string
+    id*: string
+}
+
+
+
+
+class RelatedPlaceRefOrQueryWithSubUnit {
+    contact: ContactInformation
+    place*: PlaceRefOrQuery
+    role*: string
+    subUnit: SubUnit
+}
+
+
+
+@enduml

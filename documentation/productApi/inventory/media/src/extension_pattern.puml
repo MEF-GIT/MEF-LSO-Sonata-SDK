@@ -1,7 +1,6 @@
 @startuml
 skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
+
     ClassBorderColor<<ProductSpecification>> FireBrick
 }
 set namespaceSeparator none
@@ -13,25 +12,30 @@ class MEFProduct{
 }
 
 
+
+set namespaceSeparator none
+
 class MEFProductConfiguration {
     @type*: string <<discriminator>>
 }
 
 
-MEFProduct *-->"0..1" MEFProductConfiguration : productConfiguration
+MEFProduct *--> MEFProductConfiguration : productConfiguration
 
-class urn:mef:lso:spec:sonata:OperatorUNI:1.0.0:poq <<ProductSpecification>> {
 
+
+class AccessElineOvc <<ProductSpecification>> {
+    @type  urn:mef:lso:spec:sonata:access-eline-ovc:v5.0.0:all
     <<... attributes are skipped ...>>
 }
-MEFProductConfiguration <|-- "urn:mef:lso:spec:sonata:OperatorUNI:1.0.0:poq"
+MEFProductConfiguration <|-- AccessElineOvc
 
-
-
-class urn:mef:lso:spec:sonata:AccessElineOvc:1.0.0:poq <<ProductSpecification>> {
-
+class CarrierEthernetOperatorUni <<ProductSpecification>> {
+    @type = urn:mef:lso:spec:sonata:carrier-ethernet-operator-uni:v5.0.0:all
     <<... attributes are skipped ...>>
 }
-MEFProductConfiguration <|-- "urn:mef:lso:spec:sonata:AccessElineOvc:1.0.0:poq"
+MEFProductConfiguration <|-- CarrierEthernetOperatorUni
+
+
 
 @enduml

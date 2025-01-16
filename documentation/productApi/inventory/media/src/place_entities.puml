@@ -1,0 +1,125 @@
+@startuml
+
+class RelatedPlaceRefOrQuery {
+
+    role*: string
+}
+
+RelatedPlaceRefOrQuery *-->"1" PlaceRefOrQuery : place
+RelatedPlaceRefOrQuery *-->"*" ContactInformation : contact
+
+
+class GeographicAddressRef {
+
+    href: string
+    id*: string
+    @type*: string
+}
+
+
+class PlaceRefOrQuery {
+    --
+    discriminator:
+    GeographicAddressRef
+    GeographicSiteRef
+    GeographicAddress_Query
+}
+
+PlaceRefOrQuery ..> GeographicAddressRef : """"
+PlaceRefOrQuery ..> GeographicSiteRef : """"
+PlaceRefOrQuery ..> GeographicAddress_Query : """"
+
+class ContactInformation {
+
+    number*: string
+    emailAddress*: string
+    organization: string
+    name*: string
+    numberExtension: string
+}
+
+ContactInformation *--> FieldedAddressRepresentation : postalAddress
+
+
+
+class SubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+
+
+
+class FieldedAddressRepresentation {
+
+    streetNr: string
+    streetNrSuffix: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetPreDirection: string
+    streetName: string
+    streetType: string
+    streetPostDirection: string
+    poBox: string
+    locality: string
+    city: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+    countryCode: string
+    buildingName: string
+    privateStreetNumber: string
+    privateStreetName: string
+    language: string
+}
+
+FieldedAddressRepresentation *-r->"*" SubUnit : subUnit
+
+
+class FormattedAddressRepresentation {
+
+    formattedAddress*: string
+    language: string
+}
+
+
+
+class GeographicAddress_Query {
+    @type*: string
+}
+
+GeographicAddress_Query *-->"*" FieldedAddressRepresentation : fieldedAddressRepresentation
+GeographicAddress_Query *-->"*" FormattedAddressRepresentation : formattedAddressRepresentation
+GeographicAddress_Query *-->"*" GeographicPointRepresentation : geographicPointRepresentation
+GeographicAddress_Query *-->"*" LabelRepresentation : labelRepresentation
+
+
+
+class GeographicPointRepresentation {
+
+    spatialRef*: string
+    latitude*: string
+    longitude*: string
+    elevation: string
+}
+
+
+
+class LabelRepresentation {
+
+    label*: string
+    administrativeAuthority*: string
+    language: string
+}
+
+
+
+class GeographicSiteRef {
+
+    href: string
+    id*: string
+    @type*: string
+}
+
+
+@enduml

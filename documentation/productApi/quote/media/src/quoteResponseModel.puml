@@ -1,51 +1,52 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
-
 
 class Quote_Common {
 
-    description: string 
-    externalId: string 
-    instantSyncQuote*: boolean 
-    projectId: string 
-    requestedQuoteCompletionDate: date-time 
-    buyerRequestedQuoteLevel*: MEFBuyerQuoteLevel 
+    requestedQuoteCompletionDate: date-time
+    description: string
+    externalId: string
+    buyerRequestedQuoteLevel*: MEFBuyerQuoteLevel
+    projectId: string
+    instantSyncQuote*: boolean
+    note: Note
 }
 
-
 Quote_Common *-->"*" RelatedContactInformation : relatedContactInformation
+
+
 
 
 class MEFProductConfiguration {
 
     @type*: string 
 }
-
 class MEFProductRefOrValueQuote {
 
-    href: string 
-    id: string 
+    id: string
+    href: string
 }
 
-MEFProductRefOrValueQuote *-->"*" RelatedPlaceRefOrValue : place
+MEFProductRefOrValueQuote *-->"*" RelatedPlaceRefOrQueryWithSubUnit : place
 MEFProductRefOrValueQuote *--> MEFProductConfiguration : productConfiguration
 MEFProductRefOrValueQuote *--> ProductOfferingRef : productOffering
-MEFProductRefOrValueQuote *-->"*" ProductRelationshipWithGrouping : productRelationship
+MEFProductRefOrValueQuote *-->"*" ProductRelationship : productRelationship
+
 
 class MEFQuoteItem_Common {
 
-    id*: string 
-    dealReference: string 
-    action*: MEFProductActionType 
-    agreementName: string 
+    id*: string
+    action*: MEFProductActionType
+    agreementName: string
+    dealReference: string
+    note: Note
+    productOfferingQualificationItem: ProductOfferingQualificationItemRef
+    requestedQuoteItemInstallationInterval: Duration
+    requestedQuoteItemTerm: MEFItemTerm
 }
 
-MEFQuoteItem_Common *--> MEFProductRefOrValueQuote : product
-MEFQuoteItem_Common *-->"*" QuoteItemRelationship : quoteItemRelationship
+MEFQuoteItem_Common *-->"1" MEFProductRefOrValueQuote : product
 MEFQuoteItem_Common *-->"*" RelatedContactInformation : relatedContactInformation
+MEFQuoteItem_Common *-->"*" QuoteItemRelationship : quoteItemRelationship
 
 
 class ProductOfferingRef {
@@ -55,15 +56,12 @@ class ProductOfferingRef {
 }
 
 
+class ProductRelationship {
 
-class ProductRelationshipWithGrouping {
-
-    id*: string 
-    groupingKey: string 
-    href: string 
-    relationshipType*: string 
+    href: string
+    id*: string
+    relationshipType*: string
 }
-
 
 
 class Quote {
@@ -74,7 +72,9 @@ class Quote {
     expectedQuoteCompletionDate: date-time 
     quoteDate*: date-time 
     quoteLevel: MEFSellerQuoteLevel 
-    state: MEFQuoteStateType 
+    state: MEFQuoteStateType
+    stateChange*: MEFQuoteStateChange[]
+    validFor: TimePeriod
 }
 Quote_Common <|-- Quote
 
@@ -83,7 +83,11 @@ Quote *-->"1..*" QuoteItem : quoteItem
 class QuoteItem {
 
     subjectToFeasibilityCheck: boolean 
-    state: MEFQuoteItemStateType 
+    state*: MEFQuoteItemStateType 
+    stateChange*: MEFQuoteItemStateChange[]
+    terminationError: TerminationError
+    quoteItemInstallationInterval: Duration 
+    quoteItemTerm: MEFItemTerm
 }
 MEFQuoteItem_Common <|-- QuoteItem
 
@@ -95,53 +99,53 @@ class QuoteItemRelationship {
     relationshipType*: string 
 }
 
-
-
 class QuotePrice {
 
-    description: string 
-    name: string 
-    unitOfMeasure: string 
-    priceType: MEFPriceType 
-    recurringChargePeriod: MEFChargePeriod 
+    unitOfMeasure: string
+    name*: string
+    priceType*: MEFPriceType
+    description: string
+    recurringChargePeriod: Duration
 }
 
-QuotePrice *--> Price : price
+QuotePrice *-->"1" Price : price
 
 class RelatedContactInformation {
 
-    emailAddress*: string 
-    name*: string 
-    number*: string 
-    numberExtension: string 
-    organization: string 
-    role*: string 
+    role*: string
+    number*: string
+    emailAddress*: string
+    organization: string
+    name*: string
+    numberExtension: string
+    postalAddress: FieldedAddressRepresentation
+}
+
+class RelatedPlaceRefOrQueryWithSubUnit {
+
+    role*: string
+    place: PlaceRefOrQuery
+    subUnit: SubUnit
+    contact: ContactInformation
 }
 
 
-class RelatedPlaceRefOrValue {
-
-    @schemaLocation: uri 
-    @type*: string 
-    role*: string 
-}
 
 
 class Money {
 
-    unit: string 
-    value: float 
+    unit*: string 
+    value*: float 
 }
-
 
 
 class Price {
 
-    taxRate: float 
+    taxRate: float
 }
 
-Price *--> Money : dutyFreeAmount*
 Price *--> Money : taxIncludedAmount
+Price *-->"1" Money : dutyFreeAmount
 
 
 

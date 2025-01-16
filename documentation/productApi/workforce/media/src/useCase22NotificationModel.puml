@@ -1,8 +1,4 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
 
 
 
@@ -10,24 +6,63 @@ class Event {
 
     eventId*: string
     eventTime*: date-time
+    eventType*: string
+    event*: object
 }
+
+
+
+class WorkOrderAppointmentRequiredEvent {
+
+    eventType*: string
+}
+Event <|-- WorkOrderAppointmentRequiredEvent
+
+WorkOrderAppointmentRequiredEvent *-->"1" WorkOrderEventPayload : event
+
+
+class WorkOrderCreateEvent {
+
+    eventType*: string
+}
+Event <|-- WorkOrderCreateEvent
+
+WorkOrderCreateEvent *-->"1" WorkOrderEventPayload : event
+
+
+class WorkOrderStateChangeEvent {
+
+    eventType*: string
+}
+Event <|-- WorkOrderStateChangeEvent
+
+WorkOrderStateChangeEvent *-->"1" WorkOrderStateChangeEventPayload : event
+
+
+class WorkOrderStateChangeEventPayload {
+
+    id*: string
+    href: uri
+    state: WorkOrderStateType
+}
+
+
 
 class WorkOrderEventPayload {
 
-    sellerId: string
     id*: string
     href: string
-    buyerId: string
 }
 
-Event <|-- WorkOrderEvent
-WorkOrderEvent *-->"1" WorkOrderEventPayload : event
 
 
-enum WorkOrderEventType {
+enum WorkOrderStateType {
 
-    WorkOrderAttributeValueChangeEvent
-    WorkOrderStateChangeEvent
-    WorkOrderAppointmentRequiredEvent
+    cancelled
+    completed
+    inProgress
+    open
+    planned
+    unableToComplete
 }
 @enduml

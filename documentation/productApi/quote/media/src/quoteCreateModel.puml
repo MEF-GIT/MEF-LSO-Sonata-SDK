@@ -1,18 +1,15 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
 
 
 class Quote_Common {
 
-    description: string 
-    externalId: string 
-    instantSyncQuote*: boolean 
-    projectId: string 
-    requestedQuoteCompletionDate: date-time 
-    buyerRequestedQuoteLevel*: MEFBuyerQuoteLevel 
+    requestedQuoteCompletionDate: date-time
+    description: string
+    externalId: string
+    buyerRequestedQuoteLevel*: MEFBuyerQuoteLevel
+    projectId: string
+    instantSyncQuote*: boolean
+    note: Note
 }
 
 Quote_Common *-->"*" RelatedContactInformation : relatedContactInformation
@@ -28,14 +25,14 @@ class MEFProductConfiguration {
 
 class MEFProductRefOrValueQuote {
 
-    href: string 
-    id: string 
+    id: string
+    href: string
 }
 
-MEFProductRefOrValueQuote *-->"*" RelatedPlaceRefOrValue : place
+MEFProductRefOrValueQuote *-->"*" RelatedPlaceRefOrQueryWithSubUnit : place
 MEFProductRefOrValueQuote *--> MEFProductConfiguration : productConfiguration
 MEFProductRefOrValueQuote *--> ProductOfferingRef : productOffering
-MEFProductRefOrValueQuote *-->"*" ProductRelationshipWithGrouping : productRelationship
+MEFProductRefOrValueQuote *-->"*" ProductRelationship : productRelationship
 
 
 class MEFQuoteItem_Create {
@@ -47,15 +44,20 @@ MEFQuoteItem_Common <|-- MEFQuoteItem_Create
 
 class MEFQuoteItem_Common {
 
-    id*: string 
-    dealReference: string 
-    action*: MEFProductActionType 
-    agreementName: string 
+    id*: string
+    action*: MEFProductActionType
+    agreementName: string
+    dealReference: string
+    note: Note
+    productOfferingQualificationItem: ProductOfferingQualificationItemRef
+    requestedQuoteItemInstallationInterval: Duration
+    requestedQuoteItemTerm: MEFItemTerm
 }
 
-MEFQuoteItem_Common *--> MEFProductRefOrValueQuote : product
-MEFQuoteItem_Common *-->"*" QuoteItemRelationship : quoteItemRelationship
+MEFQuoteItem_Common *-->"1" MEFProductRefOrValueQuote : product
 MEFQuoteItem_Common *-->"*" RelatedContactInformation : relatedContactInformation
+MEFQuoteItem_Common *-->"*" QuoteItemRelationship : quoteItemRelationship
+
 
 class ProductOfferingRef {
 
@@ -63,39 +65,12 @@ class ProductOfferingRef {
     href: string 
 }
 
+class ProductRelationship {
 
-
-class ProductRelationshipWithGrouping {
-
-    id*: string 
-    groupingKey: string 
-    href: string 
-    relationshipType*: string 
+    href: string
+    id*: string
+    relationshipType*: string
 }
-
-
-
-' class Quote {
-
-'     id*: string 
-'     href: string 
-'     effectiveQuoteCompletionDate: date-time 
-'     expectedQuoteCompletionDate: date-time 
-'     quoteDate: date-time 
-'     quoteLevel: MEFSellerQuoteLevel 
-'     state: MEFQuoteStateType 
-' }
-' Quote_Common <|-- Quote
-
-' Quote *-->"1..*" QuoteItem : quoteItem
-
-
-' class QuoteItem {
-
-'     subjectToFeasibilityCheck: boolean 
-'     state: MEFQuoteItemStateType 
-' }
-' MEFQuoteItem_Common <|-- QuoteItem
 
 
 class QuoteItemRelationship {
@@ -115,21 +90,24 @@ Quote_Create *-->"1..*" MEFQuoteItem_Create : quoteItem
 
 class RelatedContactInformation {
 
-    emailAddress*: string 
-    name*: string 
-    number*: string 
-    numberExtension: string 
-    organization: string 
-    role*: string 
+    role*: string
+    number*: string
+    emailAddress*: string
+    organization: string
+    name*: string
+    numberExtension: string
+    postalAddress: FieldedAddressRepresentation
 }
 
 
-class RelatedPlaceRefOrValue {
+class RelatedPlaceRefOrQueryWithSubUnit {
 
-    @schemaLocation: uri 
-    @type*: string 
-    role*: string 
+    role*: string
+    place: PlaceRefOrQuery
+    subUnit: SubUnit
+    contact: ContactInformation
 }
+
 
 
 @enduml

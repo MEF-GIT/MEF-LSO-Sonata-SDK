@@ -1,5 +1,79 @@
 # Product Inventory: Release notes
 
+## Release Irene:
+
+**Readiness status**: A MEF 116.1 revision work in progress, subject to change. CfC#1 ready.
+
+**Summary**
+
+- New Address Model introduced by MEF 150 implemented.
+- Product can refer not only to a Site but also to an Address.
+- Mandated throwing `Error422` in case of too many matching items are found
+
+### List of changes in the API:
+
+**productInventoryManagement.api.yaml:**
+
+- `GET /product`
+  - `fields` - removed query parameter
+  - `geographicAddressId` - added
+  - `geographicalSiteId` - renamed to `geographicSiteId`
+- `ContactInformation` - added
+- `Duration`:
+  - `amount` - added `minimum:0`
+- `FieldedAddress` - replaced with `FieldedAddressRepresentation`
+  - `allOf` with `GeographicAddress` - removed
+  - `buildingName` - added
+  - `country` - removed
+  - `countryCode` - added
+  - `geographicSubAddress` - removed
+  - `language` - added
+  - `poBox` - added
+  - `privateStreetName` - added
+  - `privateStreetNumber` - added
+  - `streetPreDirection` - added
+  - `streetPostDirection` - added
+  - `streetSuffix` - removed
+  - no attribute is required anymore
+- `FormattedAddressRepresentation` - added
+- `GeographicAddressRef` - added
+- `GeographicAddress_Query` - added
+- `GeographicPointRepresentation` - added
+- `GeographicSiteRef` - added
+- `GeographicSubAddress` - removed
+- `LabelRepresentation` - added
+- `MEFChargePeriod` - removed
+- `MEFGeographicPoint` - added
+- `MEFItemTerm`:
+  - `name` - marked as required
+  - `duration` - marked as required
+  - `endOfTermAction` - marked as required
+- `MEFProduct`:
+  - `@type` - removed
+  - `agreementName` - added
+  - `relatedSite` - replaced with `place`
+  - `statusChange` - made required
+- `MEFProduct_Find`:
+  - `relatedSite` - replaced with `place`
+- `MEFSubUnit` - renamed to `SubUnit`
+- `PlaceRefOrQuery` - added
+- `ProductPrice`:
+  - `recurringChargePeriod` - changed `ref` type to `Duration`
+- `RelatedGeographicSite` - removed
+- `RelatedContactInformation`:
+  - `postalAddress` - changed ref type to `FieldedAddressRepresentation`
+- `RelatedPlaceRefOrQuery` - added
+- `TimeUnit`:
+  - added:
+    - `seconds`
+    - `minutes`
+    - `months`
+    - `years`
+  - removed:
+    - `calendarMinutes`
+    - `businessMinutes`
+    - `calendarMonths`
+
 ## Release Haley:
 
 **Readiness status**: MEF Published Standard
@@ -30,15 +104,14 @@ No changes.
 
 ### List of changes in the API:
 
-`Price`:
-
-- `dutyFreeAmount` - made required
-
-`MEFBillingAccount` replaced with `MEFBillingAccountRef`
+- `Price`:
+  - `dutyFreeAmount` - made required
+- `MEFBillingAccount` replaced with `MEFBillingAccountRef`
 
 ## Release Celine:
 
-**Readiness status**: Requested Letter Ballot. It will be most likely published as a standard in this form.
+**Readiness status**: Requested Letter Ballot. It will be most likely published
+as a standard in this form.
 
 ### List of changes in the API:
 
@@ -94,12 +167,12 @@ None
   - `href` - renamed to `productOrderHref`
   - `orderItemId` - renamed to `productOrderItemId`
 - `MEFProductConfiguration`
-	- `@schemaLocation` - removed
+  - `@schemaLocation` - removed
 - `Error`
-	- `status` - removed
+  - `status` - removed
 - `BillingAccountRef`
-	- replaced with `MEFBillingAccount`
-	- changed from array to single ref
+  - replaced with `MEFBillingAccount`
+  - changed from array to single ref
 
 ## Release Aretha:
 

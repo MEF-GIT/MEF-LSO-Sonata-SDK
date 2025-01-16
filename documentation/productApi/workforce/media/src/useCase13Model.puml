@@ -1,64 +1,4 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
-
-
-class FormattedAddress {
-
-    addrLine1*: string
-    addrLine2: string
-    city*: string
-    country*: string
-    locality: string
-    postcode: string
-    postcodeExtension: string
-    stateOrProvince: string
-}
-RelatedPlaceRefOrValue <|-- FormattedAddress
-
-
-
-class GeographicAddressLabel {
-
-    externalReferenceId*: string
-    externalReferenceType*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicAddressLabel
-
-
-
-class GeographicAddressRef {
-
-    href: string
-    id*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicAddressRef
-
-
-
-class GeographicSiteRef {
-
-    href: string
-    id*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicSiteRef
-
-
-
-class GeographicSubAddress {
-
-    buildingName: string
-    id: string
-    levelNumber: string
-    levelType: string
-    privateStreetName: string
-    privateStreetNumber: string
-}
-
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
-
 
 class Workorder_Find {
 
@@ -67,47 +7,8 @@ class Workorder_Find {
     state*: WorkorderStateType
 }
 
-Workorder_Find *-->"*" RelatedPlaceRefOrValue : place
+Workorder_Find *-->"*" RelatedPlaceRefOrQuery : place
 Workorder_Find *-->"1..*" RelatedEntity : relatedEntity
-
-
-
-class MEFGeographicPoint {
-
-    spatialRef*: string
-    x*: string
-    y*: string
-    z: string
-}
-RelatedPlaceRefOrValue <|-- MEFGeographicPoint
-
-
-
-class FieldedAddress {
-
-    city*: string
-    country*: string
-    locality: string
-    postcode: string
-    postcodeExtension: string
-    stateOrProvince: string
-    streetName*: string
-    streetNr: string
-    streetNrLast: string
-    streetNrLastSuffix: string
-    streetNrSuffix: string
-    streetSuffix: string
-    streetType: string
-}
-RelatedPlaceRefOrValue <|-- FieldedAddress
-
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
-
-class MEFSubUnit {
-
-    subUnitNumber*: string
-    subUnitType*: string
-}
 
 
 
@@ -121,11 +22,12 @@ class RelatedEntity {
 
 
 
-class RelatedPlaceRefOrValue {
 
-    @schemaLocation: uri
-    @type*: string
+class RelatedPlaceRefOrQuery {
+    contact: ContactInformation
+    place*: PlaceRefOrQuery
     role*: string
+    subUnit: SubUnit
 }
 
 

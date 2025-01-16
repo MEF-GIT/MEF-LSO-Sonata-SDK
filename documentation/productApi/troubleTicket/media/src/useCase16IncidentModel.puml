@@ -1,9 +1,4 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
-
 
 class Incident {
 
@@ -26,7 +21,7 @@ Incident *-->"*" Note : note
 Incident *-->"1..*" RelatedContactInformation : relatedContactInformation
 Incident *-->"1..*" RelatedEntity : relatedEntity
 Incident *-->"*" IssueRelationship : relatedIssue
-Incident *-->"*" IncidentStatusChange : statusChange
+Incident *-->"1..*" IncidentStatusChange : statusChange
 
 
 class IssueRelationship {
@@ -73,18 +68,18 @@ class IssueRelationship {
 
 
 
+
 class AttachmentValue {
 
-    attachmentId: string
     author*: string
-    content: string
     creationDate*: date-time
     description: string
     mimeType: string
     name*: string
     source*: MEFBuyerSellerType
-    url: string
+    url*: string
 }
+
 
 AttachmentValue *--> MEFByteSize : size
 
@@ -150,53 +145,49 @@ enum IncidentStatusType {
     created
     inProgress
 }
+
 class RelatedContactInformation {
 
-    emailAddress*: string
-    name*: string
-    number*: string
-    numberExtension: string
-    organization: string
     role*: string
+    number*: string
+    emailAddress*: string
+    organization: string
+    name*: string
+    numberExtension: string
 }
 
-RelatedContactInformation *--> FieldedAddress : postalAddress
+RelatedContactInformation *--> FieldedAddressRepresentation : postalAddress
 
 
-class FieldedAddress {
 
-    city*: string
-    country*: string
+class FieldedAddressRepresentation {
+
+    streetNr: string
+    streetNrSuffix: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetPreDirection: string
+    streetName: string
+    streetType: string
+    streetPostDirection: string
+    poBox: string
     locality: string
+    city: string
     postcode: string
     postcodeExtension: string
     stateOrProvince: string
-    streetName*: string
-    streetNr: string
-    streetNrLast: string
-    streetNrLastSuffix: string
-    streetNrSuffix: string
-    streetSuffix: string
-    streetType: string
-}
-
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
-
-class GeographicSubAddress {
-
+    countryCode: string
     buildingName: string
-    id: string
-    levelNumber: string
-    levelType: string
-    privateStreetName: string
     privateStreetNumber: string
+    privateStreetName: string
+    language: string
 }
 
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+FieldedAddressRepresentation *-->"*" SubUnit : subUnit
 
 
 
-class MEFSubUnit {
+class SubUnit {
 
     subUnitNumber*: string
     subUnitType*: string

@@ -1,5 +1,86 @@
 # Trouble Ticket Management: Release notes
 
+## Release Irene:
+
+**Readiness status**: Work in progress and is subject to change. Ready for CfC#1.
+
+**Summary:**
+
+- Implementing new Address model introduced by MEF 150
+- Attachment allowed only with use of URL
+- Revised, fully specialized Event model.
+- State change events now carry the value of the new `status`
+- `buyerId` and `sellerId` in notification now carried via query params
+  (consistent with seller side API)
+
+### List of changes in the API:
+
+**troubleTicketManagement.yaml:**
+
+- `GET /incident`:
+  - `422` - response code added
+- `GET /troubleTicket`:
+  - `422` - response code added
+- `POST /hub`:
+  - `422` - response code added
+
+- `AttachmentValue`:
+  - `attachmentId` - removed
+  - `content` - removed
+  - `url` - made required
+- `FieldedAddress` - replaced with `FieldedAddressRepresentation`
+  - `allOf` with `GeographicAddress` - removed
+  - `buildingName` - added
+  - `country` - removed
+  - `countryCode` - added
+  - `geographicSubAddress` - removed
+  - `language` - added
+  - `poBox` - added
+  - `privateStreetName` - added
+  - `privateStreetNumber` - added
+  - `streetPreDirection` - added
+  - `streetPostDirection` - added
+  - `streetSuffix` - removed
+  - no attribute is required anymore
+- `GeographicSubAddress` - removed
+- `Incident`:
+  - `statusChange` - clarified to be required
+- `MEFSubUnit` - renamed to `SubUnit`
+- `RelatedContactInformation`:
+  - `postalAddress` - changed ref type to `FieldedAddressRepresentation`
+- `TroubleTicket`:
+  - `statusChange` - clarified to be required
+
+**troubleTicketNotification.yaml:**
+
+- `buyerId` and `sellerId` added to parameters to all endpoints
+  ProductOrderEventPayload
+- `buyerId` and `sellerId` removed from all payloads
+- all listener endpoint changed the `requestBody` content schema to their
+  respective events.
+
+- `408` - response code removed
+- `Error408` - removed
+
+- `Event` - made a generic Event
+  - `eventType` - added
+  - `event` - added
+
+- `IncidentAttributeValueChangeEvent` - added
+- `IncidentCreateEvent` - added
+- `IncidentEvent` - removed
+- `IncidentEventType` - removed
+- `IncidentStatusChangeEvent` - added
+- `IncidentStatusChangeEventPayload` - added
+- `IncidentStatusType` - added
+- `TroubleTicketAttributeValueChangeEvent` - added
+- `TroubleTicketEventType` - removed
+- `TroubleTicketEvent` - removed
+- `TroubleTicketInformationRequiredEvent` - added
+- `TroubleTicketResolvedEvent` - added
+- `TroubleTicketStatusChangeEventPayload` - added
+- `TroubleTicketStatusType` - added
+
 ## Release Haley:
 
 **Readiness status**: MEF Published Standard
@@ -20,12 +101,14 @@ No changes.
 
 ## Release Ella:
 
-**Readiness status**: Requested Letter Ballot. It will be most likely published as a standard without further changes.
+**Readiness status**: Requested Letter Ballot. It will be most likely published
+as a standard without further changes.
 
-**Summary:** 
+**Summary:**
 
 - added `observedImpact` to Trouble Ticket search criteria
-- introduced `impact` attribute to Incident, aligned with Trouble Ticket's `observedImpact`
+- introduced `impact` attribute to Incident, aligned with Trouble Ticket's
+  `observedImpact`
 - added `/hub/{id}/get` operation
 
 ### List of changes in the API:
@@ -65,7 +148,8 @@ resolved Call for Comments #2
 
 **troubleTicketManagement.api.yaml:**
 
-The "Get Workorder" use case moved to Appointment API - `workOrderManagement.yaml` (MEF W137)
+The "Get Workorder" use case moved to Appointment API -
+`workOrderManagement.yaml` (MEF W137)
 
 - moved endpoint `/workOrder/{id}`
 - moved entities:
@@ -93,9 +177,11 @@ The "Get Workorder" use case moved to Appointment API - `workOrderManagement.yam
 
 **troubleTicketNotification.api.yaml:**
 
-- server URL: `mefApi/sonata/troubleTicket/` changed to `mefApi/sonata/troubleTicketNotification/`
-- removed endpoint:  `/listener/incidentClosedEvent`
-- renamed endpoint: ` /listener/incidentCreatedEvent:` to ` /listener/incidentCreateEvent:`
+- server URL: `mefApi/sonata/troubleTicket/` changed to
+  `mefApi/sonata/troubleTicketNotification/`
+- removed endpoint: `/listener/incidentClosedEvent`
+- renamed endpoint: ` /listener/incidentCreatedEvent:` to
+  ` /listener/incidentCreateEvent:`
 - `IncidentEventType`:
   - removed `incidentClosedEvent`
   - renamed `incidentCreatedEvent` to `incidentCreateEvent`

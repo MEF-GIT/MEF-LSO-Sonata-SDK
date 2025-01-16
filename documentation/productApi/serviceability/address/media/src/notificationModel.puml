@@ -1,0 +1,43 @@
+@startuml
+
+
+class Event {
+
+    eventId*: string
+    eventTime*: date-time
+    eventType*: string
+    event*: object
+}
+
+
+
+class GeographicAddressValidationEvent {
+
+    eventType*: GeographicAddressValidationEventType
+}
+Event <|-- GeographicAddressValidationEvent
+
+GeographicAddressValidationEvent *-->"1" GeographicAddressValidationEventPayload : event
+
+
+class GeographicAddressValidationEventPayload {
+
+    id*: string
+    href: string
+    state*: GeographicAddressValidationStateType
+}
+
+
+
+enum GeographicAddressValidationEventType {
+
+    geographicAddressValidationStateChangeEvent
+}
+enum GeographicAddressValidationStateType {
+
+    acknowledged
+    inProgress
+    ready
+    rejected
+}
+@enduml

@@ -1,160 +1,101 @@
 openapi: 3.0.1
 info:
+  title: Geographic Site Management
   description: |
-    **This file forms part of MEF 122**
+    **This file forms part of MEF 122.1**
 
-    This API implements Business Requirements described in MEF 79
+    This API implements Business Requirements described in MEF 150
 
     It allows to retrieve a list of Geographic Sites and to get all
     information for one geographic site.
 
     List of supported Use Cases:
-    
-    - Retrieve Service Site by Identifier
-    - Retrieve Service Site List
 
-    Copyright 2021 MEF Forum and its contributors
+    - Retrieve Service Site List
+    - Retrieve Service Site by Identifier
+
+    Copyright 2024 MEF Forum and its contributors
 
     This file includes content based on the TM Forum Geographic Site API (TMF674
     v4.0.0) available at https://github.com/tmforum-apis/TMF674_GeographicSite,
     which is licensed by the TM Forum under the Apache License version 2.0. Such
     content has been modified by the MEF Forum and its contributors.
-  title: Geographic Site Management
-  version: 7.0.1
+  version: 8.0.0-RC
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/geographicSiteManagement/v7/'
+  - url: 'https://{serverBase}/mefApi/sonata/geographicSiteManagement/v8/'
     variables:
       serverBase:
-        default: mef.net
         description: The base of Seller's URL.
+        default: mef.net
 tags:
   - name: geographicSite
-  - name: events subscription
 paths:
   /geographicSite:
-    get:
-      description: This operation list or find GeographicSite entities
+    post:
+      tags:
+        - geographicSite
+      summary: List or find GeographicSite objects
+      description: >-
+        This operation queries for a list of Sites within a GeographicAddress,
+        which can be referenced with an `id` or be found by list of
+        representations (GeographicAddress_Query).
       operationId: listGeographicSite
       parameters:
-        - description: >-
-            The name of the company that is the administrative authority (e.g.
-            controls access) for this Geographic Site. (For example, the
-            building owner)
+        - name: buyerId
           in: query
-          name: companyName
-          schema:
-            type: string
-        - description: >-
-            The name of the company that is the administrative authority for
-            the space within this Geographic Site. (For example, the company
-            leasing space in a multi-tenant building).
-          in: query
-          name: customerName
-          schema:
-            type: string
-        - description: A textual description of the Geographic Site.
-          in: query
-          name: description
-          schema:
-            type: string
-        - description:
-            This defines whether a Geographic Site is public or private.
-          in: query
-          name: siteType
-          schema:
-            enum:
-              - public
-              - private
-            type: string
-        - description:
-            A name commonly used by people to refer to this Geographic Site.
-          in: query
-          name: name
-          schema:
-            type: string
-        - description: >-
-            Identifies the name of the person or organization at the specific
-            site location that is the local contact. This contact will
-            primarily be used for gaining access to the site. Filtering is done
-            on the name of the relatedContactInformation which has the role
-            "serviceSiteContactName" in the Site record.
-          in: query
-          name: serviceSiteContactName
-          schema:
-            type: string
-        - description: >-
-            Identifier of a geographic address (from the seller). It could be
-            any type of address reference (Fielded, Formatted,
-            GeographicAddressLabel, MEFGeographicPoint)
-          in: query
-          name: geographicAddress.id
-          schema:
-            type: string
-        - description: Street Nr of the geographic site address
-          in: query
-          name: streetNr
-          schema:
-            type: string
-        - description: Street Name of the geographic site address
-          in: query
-          name: streetName
-          schema:
-            type: string
-        - description: Street Type of the geographic site address
-          in: query
-          name: streetType
-          schema:
-            type: string
-        - description: City of the geographic site address
-          in: query
-          name: city
-          schema:
-            type: string
-        - description: Postcode of the geographic site address
-          in: query
-          name: postcode
-          schema:
-            type: string
-        - description: Country of the geographic site address
-          in: query
-          name: country
-          schema:
-            type: string
-        - description: >-
+          description: >-
             The unique identifier of the organization that is acting as the a
             Buyer. MUST be specified in the request only when the requester
             represents more than one Buyer.
 
-            Reference: MEF 79 (Sn 8.8)
-          in: query
-          name: buyerId
+            Reference: MEF 150 (Sn 8.8)
+          required: false
           schema:
             type: string
-        - description: >-
+        - name: sellerId
+          in: query
+          description: >-
             The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when responding
-            entity represents more than one Seller.
+            Seller. MUST be specified in the request only when responding entity
+            represents more than one Seller.
 
-            Reference: MEF 79 (Sn 8.8)
-          in: query
-          name: sellerId
+            Reference: MEF 150 (Sn 8.8)
+          required: false
           schema:
             type: string
+        - name: offset
+          in: query
+          description: >-
+            Requested index for the start of item to be provided in response
+            requested by the client. Note that the index starts with "0".
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: limit
+          in: query
+          description: >-
+            Requested number of items to be provided in response requested by
+            client
+          required: false
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        description: The query parameters for searching for Geographic Sites
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/GeographicSite_Query'
+        required: true
       responses:
         '200':
-          content:
-            application/json;charset=utf-8:
-              schema:
-                items:
-                  $ref: '#/components/schemas/GeographicSite'
-                type: array
-          description:
-            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
+          description: 'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
           headers:
             X-Pagination-Throttled:
               description: >
                 Used to indicate that result page was throttled to maximum
-                possible size  and there are additional results that can be
+                possible size and there are additional results that can be
                 fetched
               schema:
                 type: boolean
@@ -169,115 +110,162 @@ paths:
               description: The number of records included in the response
               schema:
                 type: integer
+          content:
+            application/json;charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GeographicSite'
         '400':
+          description: Bad Request
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error400'
-          description: Bad Request
         '401':
+          description: Unauthorized
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error401'
-          description: Unauthorized
         '403':
+          description: Forbidden
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error403'
-          description: Forbidden
         '422':
+          description: Unprocessable entity due to business validation problems
           content:
             application/json;charset=utf-8:
               schema:
+                type: array
                 items:
                   $ref: '#/components/schemas/Error422'
-                type: array
-          description: Unprocessable entity due to business validation problems
         '500':
+          description: Internal Server Error
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error500'
-          description: Internal Server Error
-      summary: List or find GeographicSite objects
-      tags:
-        - geographicSite
   '/geographicSite/{id}':
     get:
+      tags:
+        - geographicSite
+      summary: Retrieves a GeographicSite by ID
       description: This operation retrieves a GeographicSite entity.
       operationId: retrieveGeographicSite
       parameters:
-        - description: Identifier of the GeographicSite
+        - name: id
           in: path
-          name: id
+          description: Identifier of the GeographicSite
           required: true
           schema:
             type: string
-        - description: >-
+        - name: buyerId
+          in: query
+          description: >-
             The unique identifier of the organization that is acting as the a
             Buyer. MUST be specified in the request only when the requester
             represents more than one Buyer.
 
-            Reference: MEF 79 (Sn 8.8)
-          in: query
-          name: buyerId
+            Reference: MEF 150 (Sn 8.8)
+          required: false
           schema:
             type: string
-        - description: >-
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when responding
-            entity represents more than one Seller.
-
-            Reference: MEF 79 (Sn 8.8)
+        - name: sellerId
           in: query
-          name: sellerId
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding entity
+            represents more than one Seller.
+
+            Reference: MEF 150 (Sn 8.8)
+          required: false
           schema:
             type: string
       responses:
         '200':
+          description: 'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/GeographicSite'
-          description:
-            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1)'
         '400':
+          description: Bad Request
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error400'
-          description: Bad Request
         '401':
+          description: Unauthorized
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error401'
-          description: Unauthorized
         '403':
+          description: Forbidden
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error403'
-          description: Forbidden
         '404':
+          description: Not Found
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error404'
-          description: Not Found
         '500':
+          description: Internal Server Error
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error500'
-          description: Internal Server Error
-      summary: Retrieves a GeographicSite by ID
-      tags:
-        - geographicSite
+        '501':
+          description: >-
+            Method not implemented. Used in case Seller is not supporting this
+            operation.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error501'
 components:
   schemas:
+    Error:
+      description: >
+        Standard Class used to describe API response error Not intended to be
+        used directly. The `code` in the HTTP header is used as a discriminator
+        for the type of error returned in runtime.
+      type: object
+      properties:
+        reason:
+          description: >-
+            Text that explains the reason for the error. This can be shown to a
+            client user.
+          type: string
+          maxLength: 255
+        message:
+          description: >-
+            Text that provides mode details and corrective actions related to
+            the error. This can be shown to a client user.
+          type: string
+        referenceError:
+          description: url pointing to documentation describing the error
+          type: string
+          format: uri
+      required:
+        - reason
+    Error400:
+      description:
+        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - type: object
+          properties:
+            code:
+              $ref: '#/components/schemas/Error400Code'
+          required:
+            - code
     Error400Code:
       description: >-
         One of the following error codes:
@@ -291,78 +279,43 @@ components:
         - invalidQuery: The query section of the URI is invalid.
 
         - invalidBody: The request has an invalid body
+      type: string
       enum:
         - missingQueryParameter
         - missingQueryValue
         - invalidQuery
         - invalidBody
-      type: string
-    Error:
-      description: >
-        Standard Class used to describe API response error Not intended to be
-        used directly. The `code` in the HTTP header is used as a discriminator
-        for the type of error returned in runtime.
-      properties:
-        reason:
-          description: >-
-            Text that explains the reason for the error. This can be shown to a
-            client user.
-          maxLength: 255
-          type: string
-        message:
-          description: >-
-            Text that provides mode details and corrective actions related to
-            the error. This can be shown to a client user.
-          type: string
-        referenceError:
-          description: url pointing to documentation describing the error
-          format: uri
-          type: string
-      required:
-        - reason
-      type: object
-    Error400:
-      allOf:
-        - $ref: '#/components/schemas/Error'
-        - properties:
-            code:
-              $ref: '#/components/schemas/Error400Code'
-          required:
-            - code
-          type: object
-      description:
-        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
     Error401:
+      description:
+        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
               $ref: '#/components/schemas/Error401Code'
           required:
             - code
-          type: object
-      description:
-        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
     Error401Code:
       description: |-
         One of the following error codes:
         - missingCredentials: No credentials provided.
         - invalidCredentials: Provided credentials are invalid or expired
+      type: string
       enum:
         - missingCredentials
         - invalidCredentials
-      type: string
     Error403:
+      description:
+        'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
               $ref: '#/components/schemas/Error403Code'
           required:
             - code
-          type: object
-      description:
-        'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
     Error403Code:
       description: |-
         This code indicates that the server understood
@@ -371,34 +324,38 @@ components:
         - accessDenied: Access denied
         - forbiddenRequester: Forbidden requester
         - tooManyUsers: Too many users
+      type: string
       enum:
         - accessDenied
         - forbiddenRequester
         - tooManyUsers
-      type: string
     Error404:
+      description: >-
+        Resource for the requested path not found.
+        (https://tools.ietf.org/html/rfc7231#section-6.5.4)
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
               description: >-
                 The following error code:
 
-                - notFound: A current representation for the target resource
-                not found
+                - notFound: A current representation for the target resource not
+                found
+              type: string
               enum:
                 - notFound
-              type: string
           required:
             - code
-          type: object
-      description: >-
-        Resource for the requested path not found.
-        (https://tools.ietf.org/html/rfc7231#section-6.5.4)
     Error422:
+      description: >-
+        Unprocessable entity due to a business validation problem.
+        (https://tools.ietf.org/html/rfc4918#section-11.2)
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
               $ref: '#/components/schemas/Error422Code'
             propertyPath:
@@ -412,10 +369,6 @@ components:
               type: string
           required:
             - code
-          type: object
-      description: >-
-        Unprocessable entity due to a business validation problem.
-        (https://tools.ietf.org/html/rfc4918#section-11.2)
     Error422Code:
       description: |
         One of the following error codes:
@@ -426,6 +379,7 @@ components:
           - unexpectedProperty: Additional property, not expected by the Seller has been provided
           - tooManyRecords: the number of records to be provided in the response exceeds the Seller's threshold.
           - otherIssue: Other problem was identified (detailed information provided in a reason)
+      type: string
       enum:
         - missingProperty
         - invalidValue
@@ -434,11 +388,14 @@ components:
         - unexpectedProperty
         - tooManyRecords
         - otherIssue
-      type: string
     Error500:
+      description: >-
+        Internal Server Error.
+        (https://tools.ietf.org/html/rfc7231#section-6.6.1)
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
               description: >-
                 The following error code:
@@ -446,252 +403,257 @@ components:
                 - internalError: Internal server error - the server encountered
                 an unexpected condition that prevented it from fulfilling the
                 request.
+              type: string
               enum:
                 - internalError
-              type: string
           required:
             - code
-          type: object
-      description: >-
-        Internal Server Error.
-        (https://tools.ietf.org/html/rfc7231#section-6.6.1)
-    FieldedAddress:
+    Error501:
+      description:
+        'Not Implemented. (https://tools.ietf.org/html/rfc7231#section-6.6.2)'
       allOf:
-        - $ref: '#/components/schemas/GeographicAddressRefOrValue'
-        - properties:
-            country:
-              description: The country that the address is in
+        - $ref: '#/components/schemas/Error'
+        - type: object
+          properties:
+            code:
+              description: |-
+                The following error code::
+                - notImplemented: Method not supported by the server
               type: string
-            streetType:
-              description: >-
-                The type of street (e.g., alley, avenue, boulevard, brae,
-                crescent, drive, highway, lane, terrace, parade, place, tarn,
-                way, wharf)
-              type: string
-            postcodeExtension:
-              description: >-
-                An extension of a postal code. E.g. the part following the dash
-                in a US urban property address
-              type: string
-            city:
-              description: The city that the address is in
-              type: string
-            streetNr:
-              description: >-
-                Number identifying a specific property on a public street. It
-                may be combined with streetNrLast for ranged addresses. MEF 79
-                defines it as required however as in certain countries it is
-                not used we make it optional in API.
-              type: string
-            locality:
-              description: >-
-                An area of defined or undefined Present boundaries within a
-                local authority or other legislatively defined area, usually
-                rural or semirural in nature.
-              type: string
-            postcode:
-              description: >-
-                A descriptor for a postal delivery area used to speed and
-                simplify the delivery of mail (also known as zip code) MEF 79
-                defines it as required however as in certain countries it is
-                not used we make it optional in API.
-              type: string
-            streetNrLast:
-              description:
-                Last number in a range of street numbers allocated to a
-                property
-              type: string
-            streetNrSuffix:
-              description: The first street number suffix
-              type: string
-            streetName:
-              description: Name of the street or other street type
-              type: string
-            stateOrProvince:
-              description: The State or Province that the address is in
-              type: string
-            streetNrLastSuffix:
-              description: Last street number suffix for a ranged address
-              type: string
-            geographicSubAddress:
-              $ref: '#/components/schemas/GeographicSubAddress'
-              description:
-                Additional fields used to specify an address, as detailed as
-                possible.
-            streetSuffix:
-              description: A modifier denoting a relative direction
-              type: string
+              enum:
+                - notImplemented
           required:
-            - city
-            - country
-            - streetName
-          type: object
+            - code
+    FieldedAddressRepresentation:
       description: >-
         A type of Address that has a discrete field and value for each type of
         boundary or identifier down to the lowest level of detail. For example
         "street number" is one field, "street name" is another field, etc.
-        Reference: MEF 79 (Sn 8.9.2)
-    FormattedAddress:
-      allOf:
-        - $ref: '#/components/schemas/GeographicAddressRefOrValue'
-        - properties:
-            country:
-              description: The country that the address is in
-              type: string
-            postcodeExtension:
-              description: >-
-                An extension of a postal code. E.g. the part following the dash
-                in a US urban property address
-              type: string
-            stateOrProvince:
-              description: The State or Province that the address is in
-              type: string
-            city:
-              description: The city that the address is in
-              type: string
-            addrLine2:
-              description: The second address line in a formatted address
-              type: string
-            addrLine1:
-              description: The first address line in a formatted address
-              type: string
-            locality:
-              description: >-
-                An area of defined or undefined boundaries within a local
-                authority or other legislatively defined area, usually rural or
-                semi-rural in nature
-              type: string
-            postcode:
-              description: >-
-                A descriptor for a postal delivery area used to speed and
-                simplify the delivery of mail (also known as ZIP code)
-              type: string
-          required:
-            - addrLine1
-            - city
-            - country
-          type: object
-      description: >-
-        A type of Address that has discrete fields for each type of boundary or
-        identifier with the exception of the street and more specific location
-        details, which are combined into a maximum of two strings based on
-        local postal addressing conventions.  Reference: MEF 79 (Sn 8.9.3)
-    GeographicAddressLabel:
-      allOf:
-        - $ref: '#/components/schemas/GeographicAddressRefOrValue'
-        - properties:
-            externalReferenceId:
-              description: >-
-                The unique reference to an Address as provided by the
-                Administrative Authority.
-              type: string
-            externalReferenceType:
-              description: >-
-                The organization or standard from the organization that
-                administers this Geographic Address Label ensuring it is unique
-                within the Administrative Authority. The value(s) to be used
-                are to be agreed during the onboarding. For North American
-                providers this would normally be CLLI (Common Language Location
-                Identifier) code.
-              type: string
-          required:
-            - externalReferenceId
-            - externalReferenceType
-          type: object
-      description: >-
-        A unique identifier controlled by a generally accepted independent
-        administrative authority that specifies a fixed geographical location. 
-
-        Reference: MEF 79 (Sn 8.9.4), MEF 79.0.2 (Sn 8.9.4)
-    GeographicAddressRef:
-      allOf:
-        - $ref: '#/components/schemas/GeographicAddressRefOrValue'
-        - properties:
-            href:
-              description: >
-                Hyperlink to the referenced place Hyperlink MAY be used by the
-                Seller in responses Hyperlink MUST be ignored by the Seller in
-                case it is provided by the Buyer in a request
-              type: string
-            id:
-              description: >-
-                Identifier of the referenced Geographic Address. This
-                identifier is assigned during a successful address validation
-                request (Geographic Address Management API)
-              type: string
-          required:
-            - id
-          type: object
-      description: >
-        A reference to a GeographicAddress resource available through
-        Addressing Validation API
-    GeographicAddressRefOrValue:
-      description: >
-        Defines a GeographicAddress link by reference or by value. The
-        polymorphic attributes @type and @schemaLocation are related to the
-        GeographicAddress entity and not the GeographicAddressRefOrValue class
-        itself
-      discriminator:
-        mapping:
-          FieldedAddress: '#/components/schemas/FieldedAddress'
-          FormattedAddress: '#/components/schemas/FormattedAddress'
-          GeographicAddressRef: '#/components/schemas/GeographicAddressRef'
-          GeographicAddressLabel: '#/components/schemas/GeographicAddressLabel'
-          MEFGeographicPoint: '#/components/schemas/MEFGeographicPoint'
-        propertyName: '@type'
-      properties:
-        '@type':
-          description: >
-            This field is used as a discriminator and is used between different
-            geographicAddress representations. This type might discriminate for
-            additional related GeographicAddress as defined in
-            '@schemaLocation'.
-          type: string
-        '@schemaLocation':
-          description: >-
-            A URI to a JSON-Schema file that defines additional attributes and
-            relationships. May be used to define additional related place
-            types. Usage of this attribute must be agreed upon between the
-            Buyer and the Seller.
-          format: uri
-          type: string
-      required:
-        - '@type'
       type: object
-    GeographicSite:
-      description: >-
-        A fixed physical location at which a Product can be installed. Its
-        location can be described either with geographic point (Lat/Long
-        information) or by association with an Address or Geographic Address
-        Label. This association may include a Sub-address describing where
-        within that Address or Geographic Address Label this particular
-        Geographic Site is located.
       properties:
-        relatedContactInformation:
+        streetNr:
           description: >-
-            An entity or organization that is involved to the geographical
-            site, such as the Site Contact or Site Alternate Contact.
-          items:
-            $ref: '#/components/schemas/RelatedContactInformation'
+            Number identifying a specific property on a public street. It may be
+            combined with streetNrLast for ranged addresses.
+          type: string
+        streetNrSuffix:
+          description: >-
+            The first street number suffix (in a street number range) or the
+            suffix for the street number if there is no range
+          type: string
+        streetNrLast:
+          description:
+            Last number in a range of street numbers allocated to an Address
+          type: string
+        streetNrLastSuffix:
+          description: Last street number suffix for a ranged Address
+          type: string
+        streetPreDirection:
+          description:
+            The direction of the street that appears before the Street Name
+          type: string
+        streetName:
+          description: Name of the street or other street type
+          type: string
+        streetType:
+          description: >-
+            The type of street (e.g., alley, avenue, boulevard, brae, crescent,
+            drive, highway, lane, terrace, parade, place, tarn, way, wharf)
+          type: string
+        streetPostDirection:
+          description: >-
+            A modifier denoting a relative direction that appears after the
+            Street Name.
+          type: string
+        poBox:
+          description: Number identifying a specific location in a post office.
+          type: string
+        locality:
+          description: >-
+            An area of defined or undefined boundaries within a local authority
+            or other legislatively defined area.
+          type: string
+        city:
+          description: City in which the Address is located.
+          type: string
+        postcode:
+          description: >-
+            A descriptor for a postal delivery area used to speed and simplify
+            the delivery of mail (also known as zip code)
+          type: string
+        postcodeExtension:
+          description: >-
+            The extension used on a postal code. Note: there are different use
+            codes for this attribute depending upon the country.
+          type: string
+        stateOrProvince:
+          description: The State or Province in which the Address is located.
+          type: string
+        countryCode:
+          description: >-
+            Country in which the Address is located, defined using two
+            characters as defined in ISO 3166
+          type: string
+          minLength: 2
+          maxLength: 2
+        subUnit:
+          description: >-
+            The Service Site Sub Unit represented as a list. This is a list to
+            allow complex sub-unit information such as SUITE 42 ROOM A
           type: array
+          items:
+            $ref: '#/components/schemas/SubUnit'
+        buildingName:
+          description: >
+            The well-known name of a building that is located at this Address
+            (e.g., where there is one Address for a campus).
+          type: string
+        privateStreetNumber:
+          description: Street number on a private street within the Address.
+          type: string
+        privateStreetName:
+          description: >-
+            Private streets internal to a property (e.g., a university) may have
+            internal names that are not recorded by the land title office.
+          type: string
+        language:
+          description: >-
+            The language in which the address is expressed. Based on ISO
+            639:2023
+          type: string
+          minLength: 2
+          maxLength: 2
+    FormattedAddressRepresentation:
+      description:
+        'A freeform text representation agreed to by the Buyer and Seller.  '
+      type: object
+      properties:
+        formattedAddress:
+          description: >-
+            A formatted Address Representation that contains a non-fielded
+            address.
+          type: string
+        language:
+          description: >-
+            The language in which the address is expressed. Based on ISO
+            639:2023
+          type: string
+          minLength: 2
+          maxLength: 2
+      required:
+        - formattedAddress
+    GeographicAddressRef:
+      description: >
+        A reference to a Geographic Address resource available through Address
+        Validation API.
+      type: object
+      properties:
+        href:
+          description: >
+            Hyperlink to the referenced Address. Hyperlink MAY be used by the
+            Seller in responses. Hyperlink MUST be ignored by the Seller in case
+            it is provided by the Buyer in a request.
+          type: string
+        id:
+          description: >-
+            Identifier of the referenced Geographic Address. This identifier is
+            assigned during a successful address validation request (Geographic
+            Address Management API)
+          type: string
         '@type':
           description:
-            'When sub-classing, this defines the sub-class entity name'
+            Used to unambiguously designate the class type when using `oneOf`
           type: string
-        companyName:
+          enum:
+            - GeographicAddressRef
+      required:
+        - '@type'
+        - id
+    GeographicAddressRefOrQuery:
+      description: >-
+        Allows pointing to a `GeographicAddress` either by reference or by
+        value.
+      type: object
+      discriminator:
+        propertyName: '@type'
+        mapping:
+          GeographicAddressRef: '#/components/schemas/GeographicAddressRef'
+          GeographicAddress_Query: '#/components/schemas/GeographicAddress_Query'
+      oneOf:
+        - $ref: '#/components/schemas/GeographicAddressRef'
+        - $ref: '#/components/schemas/GeographicAddress_Query'
+    GeographicAddress_Query:
+      description: >-
+        A list of representations being a subset of Geographic Address entity.
+        This is to be used when providing a list of representations to validate
+        or search for a Geographic Address
+      type: object
+      properties:
+        fieldedAddressRepresentation:
+          description: A Fielded Address representation
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldedAddressRepresentation'
+        formattedAddressRepresentation:
+          description: A Formatted Address representation
+          type: array
+          items:
+            $ref: '#/components/schemas/FormattedAddressRepresentation'
+        geographicPointRepresentation:
+          description: A Fielded Address representation
+          type: array
+          items:
+            $ref: '#/components/schemas/GeographicPointRepresentation'
+        labelRepresentation:
+          description: A Fielded Address representation
+          type: array
+          items:
+            $ref: '#/components/schemas/LabelRepresentation'
+        '@type':
+          description:
+            Used to unambiguously designate the class type when using `oneOf`
+          type: string
+          enum:
+            - GeographicAddress_Query
+      minProperties: 2
+      required:
+        - '@type'
+    GeographicPointRepresentation:
+      description: >
+        A GeographicPointRepresentation defines a geographic point through
+        coordinates.
+      type: object
+      properties:
+        spatialRef:
           description: >-
-            The name of the company that is the administrative authority (e.g.
-            controls access) for this Geographic Site. (For example, the
-            building owner.)
+            The spatial reference system used to determine the coordinates. The
+            system used and the value of this field are to be agreed during the
+            onboarding process.
           type: string
-        name:
-          description: >-
-            A user-friendly name for the place, such as [Paris Store], [London
-            Store], [Main Home]
+        latitude:
+          description:
+            The latitude expressed in the format specified by the `spacialRef`
           type: string
-        description:
-          description: A textual description of the Geographic Site.
+        longitude:
+          description:
+            The longitude expressed in the format specified by the `spacialRef`
           type: string
+        elevation:
+          description:
+            The elevation expressed in the format specified by the `spacialRef`
+          type: string
+      required:
+        - latitude
+        - longitude
+        - spatialRef
+    GeographicSite:
+      description: >-
+        A fixed or mobile place at which a Product can be installed. A Site is
+        always associated with a Geographic Address. This association may
+        include Sub-Units describing where precisely within that Geographic
+        Address this particular Geographic Site is located.
+      type: object
+      properties:
         id:
           description:
             Identifier of the Geographic Site unique within the Seller.
@@ -702,25 +664,27 @@ components:
           type: string
         place:
           description: >
-            A set of location descriptions, each of which describes where this
-            GeographicSite is located. It is important to note that this is a
-            set because a particular Geographic Site might be described with
-            multiple locations. For example, one Geographic Site might have two
-            Fielded Addresses (for a building on the corner of two streets),
-            two Formatted Addresses, and a Geographic Point.
-          items:
-            $ref: '#/components/schemas/GeographicAddressRefOrValue'
-          type: array
+            A Geographic Address described by identifier or by a set of
+            Geographic Address Representations.
+          $ref: '#/components/schemas/GeographicAddressRefOrQuery'
+        name:
+          description: The name for the Service Site.
+          type: string
+        administrativeAuthority:
+          description: >-
+            The name of the company that is the administrative authority (e.g.,
+            controls access) for this Service Site. (For example, the building
+            owner)
+          type: string
         customerName:
           description: >-
-            The name of the company that is the administrative authority for
-            the space within this Geographic Site (For example, the company
-            leasing space in a multi-tenant building).
+            The name of the company that is the administrative authority for the
+            space within this Service Site. (For example, the company leasing
+            space in a multi-tenant building).
           type: string
-        siteType:
-          $ref: '#/components/schemas/MEFSiteType'
-          description: |
-            This defines whether a Geographic Site is public or private.
+        siteRestrictionType:
+          description: >
+            This defines whether a Geographic Site is public or private. 
 
             public - means that the existence of this Geographic Site is public
             information. A meet-me-room in a hosted data center facility (where
@@ -730,104 +694,169 @@ components:
             parties take place is another example of a public Geographic Site.
 
             private - means that the existence of this Geographic Site is on a
-            need-to-know basis. A wiring closet set up inside a customer facility
-            just to connect two parties is an example of a private Geographic
-            Site. For private sites, the Seller does not return any information
-            regarding the existence of this Geographic Site unless it has been
-            established that this Buyer is authorized to obtain this information.
-      required:
-        - id
-      type: object
-    GeographicSubAddress:
-      description:
-        'Additional fields used to specify an address, as detailed as possible.'
-      properties:
-        buildingName:
-          description: >
-            The well-known name of a building that is located at this
-            Geographic Address (e.g. where there is one Address for a campus).
-          type: string
+            need-to-know basis. A wiring closet set up inside a customer
+            facility just to connect two parties is an example of a private
+            Geographic Site. For private sites, the Seller does not return any
+            information regarding the existence of this Geographic Site unless
+            it has been established that this Buyer is authorized to obtain this
+            information.
+          $ref: '#/components/schemas/SiteRestrictionType'
+        networkType:
+          description: >-
+            Indicates whether the Seller is owner of the network to which the
+            Service Site is connected or whether that network is owned by a 3rd
+            party.
+          $ref: '#/components/schemas/SiteNetworkType'
         subUnit:
           description: >-
-            Representation of a MEFSubUnit It is used for describing subunit
-            within a subAddress  e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
-            UNIT, WHARF.
-          items:
-            $ref: '#/components/schemas/MEFSubUnit'
+            A list of Sub Units which describes the Service Site detailed
+            position within the Geographic Address. This is a list to allow
+            complex sub-unit information such as SUITE 42 ROOM A
           type: array
-        levelType:
-          description: Describes level types within a building
-          type: string
-        levelNumber:
+          items:
+            $ref: '#/components/schemas/SubUnit'
+        '@type':
           description:
-            'Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT
-            2'
+            Used to unambiguously designate the class type when using `oneOf`
           type: string
-        privateStreetNumber:
-          description: Private streets numbers internal to a private street
-          type: string
-        privateStreetName:
-          description: >-
-            Private streets internal to a property (e.g. a university) may have
-            internal names that are not recorded by the land title office
-          type: string
-      type: object
-    MEFGeographicPoint:
-      allOf:
-        - $ref: '#/components/schemas/GeographicAddressRefOrValue'
-        - properties:
-            spatialRef:
-              description: >-
-                The spatial reference system used to determine the coordinates
-                (e.g. "WGS84"). The system used and the value of this field are
-                to be agreed during the onboarding process.
-              type: string
-            x:
-              description: >-
-                The latitude expressed in the format specified by the
-                `spacialRef`
-              type: string
-            'y':
-              description: >-
-                The longitude expressed in the format specified by the
-                `spacialRef`
-              type: string
-            z:
-              description: >-
-                The elevation expressed in the format specified by the
-                `spacialRef`
-              type: string
-          required:
-            - spatialRef
-            - x
-            - 'y'
-          type: object
-      description: >
-        A MEFGeographicPoint defines a geographic point through coordinates.
-        Reference: MEF 79 (Sn 8.9.5), MEF 79.0.2 (Sn 8.9.5)
-    MEFSiteType:
+          enum:
+            - GeographicSite
+      required:
+        - '@type'
+        - administrativeAuthority
+        - customerName
+        - id
+        - name
+        - networkType
+        - place
+        - siteRestrictionType
+        - subUnit
+    GeographicSite_Query:
       description: >-
-        This defines whether a Geographic Site is public or private. public
-        means that the existence of this Geographic Site is public information.
-        A meet-me-room in a hosted data center facility (where all
-        interconnects between parties take place) is an example of a public
-        Geographic Site. A shared facility in the basement of a multi-tenant
-        business building where all interconnects between parties take place is
-        another example of a public Geographic Site. private means that the
-        existence of this Geographic Site is on a need-to-know basis. A wiring
-        closet set up inside a customer facility just to connect two parties is
-        an example of a private Geographic Site. For private sites, the Seller
-        does not return any information regarding the existence of this
-        Geographic Site unless it has been established that this Buyer is
-        authorized to obtain this information.
+        A flavor of the `GeographicSite` type to be used in the context of the
+        `listGeographicSite` operation. It does not contain the `id`, `href`,
+        and `@type` attributes and all the remaining, despite `place`, are
+        optional.
+      type: object
+      properties:
+        place:
+          description: >
+            A set of location descriptions, each of which describes where this
+            GeographicSite is located. It is important to note that this is a
+            set because a particular Geographic Site might be described with
+            multiple locations. For example, one Geographic Site might have two
+            Fielded Addresses (for a building on the corner of two streets), two
+            Formatted Addresses, and a Geographic Point.
+          $ref: '#/components/schemas/GeographicAddressRefOrQuery'
+        name:
+          description: The name for the Service Site.
+          type: string
+        administrativeAuthority:
+          description: >-
+            The name of the company that is the administrative authority (e.g.,
+            controls access) for this Service Site. (For example, the building
+            owner)
+          type: string
+        customerName:
+          description: >-
+            The name of the company that is the administrative authority for the
+            space within this Service Site. (For example, the company leasing
+            space in a multi-tenant building).
+          type: string
+        siteRestrictionType:
+          description: >
+            This defines whether a Geographic Site is public or private. 
+
+            public - means that the existence of this Geographic Site is public
+            information. A meet-me-room in a hosted data center facility (where
+            all interconnects between parties take place) is an example of a
+            public Geographic Site. A shared facility in the basement of a
+            multi-tenant business building where all interconnects between
+            parties take place is another example of a public Geographic Site.
+
+            private - means that the existence of this Geographic Site is on a
+            need-to-know basis. A wiring closet set up inside a customer
+            facility just to connect two parties is an example of a private
+            Geographic Site. For private sites, the Seller does not return any
+            information regarding the existence of this Geographic Site unless
+            it has been established that this Buyer is authorized to obtain this
+            information.
+          $ref: '#/components/schemas/SiteRestrictionType'
+        networkType:
+          description: >-
+            Indicates whether the Seller is owner of the network to which the
+            Service Site is connected or whether that network is owned by a 3rd
+            party.
+          $ref: '#/components/schemas/SiteNetworkType'
+        subUnit:
+          description: >-
+            A list of Sub Units which describes the Service Site detailed
+            position within the Geographic Address. This is a list to allow
+            complex sub-unit information such as SUITE 42 ROOM A
+          type: array
+          items:
+            $ref: '#/components/schemas/SubUnit'
+      required:
+        - place
+    LabelRepresentation:
+      description: >-
+        A unique identifier controlled by a generally accepted independent
+        administrative authority that specifies a fixed geographical location.
+      type: object
+      properties:
+        label:
+          description: >-
+            The unique reference to an Geographic Address assigned by the
+            Administrative Authority.
+          type: string
+        administrativeAuthority:
+          description: >-
+            The organization or standard from the organization that administers
+            this Geographic Address Label ensuring it is unique within the
+            Administrative Authority.
+          type: string
+        language:
+          description:
+            'The language in which the label is expressed. Based on ISO 639:2023'
+          type: string
+          minLength: 2
+          maxLength: 2
+      required:
+        - administrativeAuthority
+        - label
+    SiteNetworkType:
+      description: >-
+        Indicates whether the Seller is owner of the network to which the
+        Service Site is connected or whether that network is owned by a 3rd
+        party.
+      type: string
+      enum:
+        - offNet
+        - onNet
+    SiteRestrictionType:
+      description: |
+        This defines whether a Geographic Site is public or private.
+
+        public - means that the existence of this Geographic Site is public
+        information. A meet-me-room in a hosted data center facility (where
+        all interconnects between parties take place) is an example of a
+        public Geographic Site. A shared facility in the basement of a
+        multi-tenant business building where all interconnects between
+        parties take place is another example of a public Geographic Site.
+
+        private - means that the existence of this Geographic Site is on a
+        need-to-know basis. A wiring closet set up inside a customer facility
+        just to connect two parties is an example of a private Geographic
+        Site. For private sites, the Seller does not return any information
+        regarding the existence of this Geographic Site unless it has been
+        established that this Buyer is authorized to obtain this information.
+      type: string
       enum:
         - public
         - private
-      type: string
-    MEFSubUnit:
-      description: |
-        Allows for sub unit identification
-        Reference: MEF 79 (Sn 8.9.2)
+    SubUnit:
+      description: Allows for sub unit identification
+      type: object
       properties:
         subUnitNumber:
           description: >-
@@ -836,48 +865,9 @@ components:
           type: string
         subUnitType:
           description: >-
-            The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
+            The type of subunit e.g. BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
             UNIT, WHARF.
           type: string
       required:
         - subUnitNumber
         - subUnitType
-      type: object
-    RelatedContactInformation:
-      description: >-
-        Contact data for a person or organization that is involved in the
-        product offering qualification. In a given context it is always
-        specified by the Seller (e.g. Seller Contact Information) or by the
-        Buyer. 
-
-        Reference: MEF 79 (Sn 8.11)
-      properties:
-        number:
-          description: Phone number
-          type: string
-        emailAddress:
-          description: Email address
-          type: string
-        role:
-          description: The role of the particular contact in a given context.
-          type: string
-        postalAddress:
-          $ref: '#/components/schemas/FieldedAddress'
-          description:
-            Identifies the postal address of the person or office to be
-            contacted.
-        organization:
-          description: The organization or company that the contact belongs to
-          type: string
-        name:
-          description: Name of the contact
-          type: string
-        numberExtension:
-          description: Phone number extension
-          type: string
-      required:
-        - emailAddress
-        - name
-        - number
-        - role
-      type: object

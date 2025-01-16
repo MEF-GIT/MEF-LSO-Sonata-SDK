@@ -1,9 +1,11 @@
 openapi: 3.0.1
 info:
   description: |
-    **This file forms part of MEF 115**
+    **This file forms part of MEF 115.1**
+    **This draft represents MEF work in progress and is subject to change.**
 
-    This API implements Business Requirements described in MEF 80
+    This API implements Business Requirements described in MEF 80 and MEF 80.0.1
+
 
     Quote API allows the Buyer to submit a request to find out how much the installation
     of an instance of a Product Offering, an update to an existing Product, or
@@ -12,7 +14,7 @@ info:
     List of supported Use Cases:
     - Send Quote Notification
 
-    Copyright 2021 MEF Forum and its contributors.
+    Copyright 2024 MEF Forum and its contributors.
 
     This file includes content based on the TM Forum Quote Management API
     (TMF648 v4.0.0) available at
@@ -20,23 +22,23 @@ info:
     the TM Forum under the Apache License version 2.0. Such content has been
     modified by the MEF Forum and its contributors.
   title: Quote Notification
-  version: 8.0.1
+  version: 9.0.0-RC
   x-logo:
     url: /redoc/logo.png
-    backgroundColor: "#FFFFFF"
+    backgroundColor: '#FFFFFF'
 servers:
-  - url: "https://{serverBase}/mefApi/sonata/quoteNotification/v8/"
-    variables:
-      serverBase:
-        default: mef.net
-        description: The base of Buyer's URL.
+- url: "https://{serverBase}/mefApi/sonata/quoteNotification/v9/"
+  variables:
+    serverBase:
+      default: mef.net
+      description: The base of Buyer's URL.
 security:
-  - oauth2MEFLSOAPI:
-      - default
+- oauth2MEFLSOAPI:
+  - default
 tags:
-  - description: |
-      The Buyer's endpoint to send particular event types notifications to.
-    name: Notification listeners
+- description: |
+    The Buyer's endpoint to send particular event types notifications to.
+  name: Notification listeners
 paths:
   /listener/quoteStateChangeEvent:
     post:
@@ -44,11 +46,28 @@ paths:
       description: |
         This endpoint is used to receive notifications on Quote state change
       operationId: listenToQuoteStateChangeEvent
+      parameters:
+      - description: The unique identifier of the organization that is acting as the
+          Buyer. MUST be specified in the request when the requester represents more
+          than one Buyer.
+        in: query
+        name: buyerId
+        required: false
+        schema:
+          type: string
+      - description: The unique identifier of the organization that is acting as the
+          Seller. MUST be specified in the request when the responding entity represents
+          more than one Seller.
+        in: query
+        name: sellerId
+        required: false
+        schema:
+          type: string
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: "#/components/schemas/Event"
+              $ref: '#/components/schemas/QuoteStateChangeEvent'
         required: true
       responses:
         "204":
@@ -57,44 +76,60 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
         "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
         "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
         "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - listenToQuoteStateChangeEvent
+      - oauth2MEFLSOAPI:
+        - listenToQuoteStateChangeEvent
       summary: Quote State Change Notification endpoint
       tags:
-        - Notification listeners
-      x-codegen-request-body-name: data
+      - Notification listeners
   /listener/quoteItemStateChangeEvent:
     post:
       deprecated: false
       description: |
         This endpoint is used to receive notifications on Quote Item state change
       operationId: listenToQuoteItemStateChangeEvent
+      parameters:
+      - description: The unique identifier of the organization that is acting as the
+          Buyer. MUST be specified in the request when the requester represents more
+          than one Buyer.
+        in: query
+        name: buyerId
+        required: false
+        schema:
+          type: string
+      - description: The unique identifier of the organization that is acting as the
+          Seller. MUST be specified in the request when the responding entity represents
+          more than one Seller.
+        in: query
+        name: sellerId
+        required: false
+        schema:
+          type: string
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: "#/components/schemas/Event"
+              $ref: '#/components/schemas/QuoteItemStateChangeEvent'
         required: true
       responses:
         "204":
@@ -103,37 +138,35 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
         "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
         "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
         "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - listenToQuoteItemStateChangeEvent
+      - oauth2MEFLSOAPI:
+        - listenToQuoteItemStateChangeEvent
       summary: Quote Item State Change Notification endpoint
       tags:
-        - Notification listeners
-      x-codegen-request-body-name: data
+      - Notification listeners
 components:
   schemas:
     Error400Code:
-      type: string
       description: |-
         One of the following error codes:
         - missingQueryParameter: The URI is missing a required query-string parameter
@@ -141,74 +174,72 @@ components:
         - invalidQuery: The query section of the URI is invalid.
         - invalidBody: The request has an invalid body
       enum:
-        - missingQueryParameter
-        - missingQueryValue
-        - invalidQuery
-        - invalidBody
+      - missingQueryParameter
+      - missingQueryValue
+      - invalidQuery
+      - invalidBody
+      type: string
     Error:
-      type: object
       description: |
         Standard Class used to describe API response error
         Not intended to be used directly. The `code` in the HTTP header is used as a discriminator for the type of error returned in runtime.
       properties:
         reason:
-          type: string
-          description:
-            Text that explains the reason for the error. This can be shown
+          description: Text that explains the reason for the error. This can be shown
             to a client user.
           maxLength: 255
+          type: string
         message:
-          type: string
-          description:
-            Text that provides more details and corrective actions related
+          description: Text that provides more details and corrective actions related
             to the error. This can be shown to a client user.
-        referenceError:
           type: string
-          format: uri
+        referenceError:
           description: URL pointing to documentation describing the error
+          format: uri
+          type: string
       required:
-        - reason
+      - reason
+      type: object
     Error400:
       allOf:
-        - $ref: "#/components/schemas/Error"
-        - type: object
-          properties:
-            code:
-              $ref: "#/components/schemas/Error400Code"
-          required:
-            - code
+      - $ref: '#/components/schemas/Error'
+      - properties:
+          code:
+            $ref: '#/components/schemas/Error400Code'
+        required:
+        - code
+        type: object
       description: Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)
     Error401:
       allOf:
-        - $ref: "#/components/schemas/Error"
-        - type: object
-          properties:
-            code:
-              $ref: "#/components/schemas/Error401Code"
-          required:
-            - code
+      - $ref: '#/components/schemas/Error'
+      - properties:
+          code:
+            $ref: '#/components/schemas/Error401Code'
+        required:
+        - code
+        type: object
       description: Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)
     Error401Code:
-      type: string
       description: |-
         One of the following error codes:
         - missingCredentials: No credentials provided.
         - invalidCredentials: Provided credentials are invalid or expired
       enum:
-        - missingCredentials
-        - invalidCredentials
+      - missingCredentials
+      - invalidCredentials
+      type: string
     Error403:
       allOf:
-        - $ref: "#/components/schemas/Error"
-        - type: object
-          properties:
-            code:
-              $ref: "#/components/schemas/Error403Code"
-          required:
-            - code
+      - $ref: '#/components/schemas/Error'
+      - properties:
+          code:
+            $ref: '#/components/schemas/Error403Code'
+        required:
+        - code
+        type: object
       description: Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)
     Error403Code:
-      type: string
       description: |-
         This code indicates that the server understood
         the request but refuses to authorize it because
@@ -217,81 +248,177 @@ components:
         - forbiddenRequester: Forbidden requester
         - tooManyUsers: Too many users
       enum:
-        - accessDenied
-        - forbiddenRequester
-        - tooManyUsers
+      - accessDenied
+      - forbiddenRequester
+      - tooManyUsers
+      type: string
     Error500:
       allOf:
-        - $ref: "#/components/schemas/Error"
-        - type: object
-          properties:
-            code:
-              type: string
-              description: |-
-                One of the following error codes:
-                - internalError: Internal server error - the server encountered an unexpected condition that prevented it from fulfilling the request.
-              enum:
-                - internalError
-          required:
-            - code
+      - $ref: '#/components/schemas/Error'
+      - properties:
+          code:
+            description: |-
+              One of the following error codes:
+              - internalError: Internal server error - the server encountered an unexpected condition that prevented it from fulfilling the request.
+            enum:
+            - internalError
+            type: string
+        required:
+        - code
+        type: object
       description: Internal Server Error. (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     Event:
-      type: object
-      description:
-        Event class is used to describe information structure used for
+      description: Event class is used to describe information structure used for
         notification.
       properties:
         eventId:
-          type: string
           description: Id of the event
+          type: string
         eventTime:
-          type: string
+          description: Date-time when the event occurred
           format: date-time
-          description: Datetime when the event occurred
+          type: string
         eventType:
-          $ref: "#/components/schemas/QuoteEventType"
+          description: The type of the notification.
+          type: string
         event:
-          $ref: "#/components/schemas/QuoteEvent"
+          description: The event linked to the involved resource object
+          type: object
       required:
-        - event
-        - eventId
-        - eventTime
-        - eventType
-    QuoteEvent:
+      - event
+      - eventId
+      - eventTime
+      - eventType
       type: object
-      description:
-        The identifier of the Quote and/or Quote Item being subject of
-        this event.
-      properties:
-        sellerId:
-          type: string
-          description: |-
-            The unique identifier of the organization that is acting as the Seller. MUST be specified in the request only when the requester entity represents more than one Seller.
-            Reference: MEF 79 (Sn 8.8)
-        id:
-          type: string
-          description: ID of the Quote attributed by quoting system
-        href:
-          type: string
-          description: Hyperlink to access the quote
-        quoteItemId:
-          type: string
-          description:
-            ID of the Quote Item (within the Quote) which state change
-            triggered the event
-        buyerId:
-          type: string
-          description: |-
-            The unique identifier of the organization that is acting as the a Buyer. MUST be specified in the request only when the responding represents more than one Buyer.
-            Reference: MEF 79 (Sn 8.8)
-      required:
-        - id
-    QuoteEventType:
-      type: string
-      description: Type of the Event
+    MEFQuoteItemStateType:
+      description: |
+        Possible values for the status of a QuoteItem.
+
+        Following mapping has been used between `MEFQuoteItemStateType` and MEF
+        80:
+
+        | MEFQuoteItemStateType       | MEF 80                            |
+        | ----------------------------| --------------------------------- |
+        | answered                    | ANSWERED                          |
+        | acknowledged                | ACKNOWLEDGED                      |
+        | approved.orderable          | ORDERABLE                         |
+        | approved.orderableAlternate | ORDERABLE_ALTERNATE               |
+        | inProgress                  | IN_PROGRESS                       |
+        | inProgress.draft            | IN_PROGRESS_DRAFT                 |
+        | abandoned                   | ABANDONED                         |
+        | rejected                    | REJECTED                          |
+        | unableToProvide             | UNABLE_TO_PROVIDE                 |
       enum:
-        - quoteStateChangeEvent
-        - quoteItemStateChangeEvent
+      - answered
+      - acknowledged
+      - approved.orderable
+      - approved.orderableAlternate
+      - inProgress
+      - inProgress.draft
+      - rejected
+      - abandoned
+      - unableToProvide
+      type: string
+    MEFQuoteStateType:
+      description: |
+        Possible values for the status of a Quote.
+        Following mapping has been used between `MEFQuoteStateType` and MEF 80:
+
+         | QuoteStateType                            | MEF 80                            |
+         | ----------------------------------------- | --------------------------------- |
+         | accepted                                  | ACCEPTED                          |
+         | acknowledged                              | ACKNOWLEDGED                      |
+         | answered                                  | ANSWERED                          |
+         | approved.orderable                        | ORDERABLE                         |
+         | approved.orderableAlternate               | ORDERABLE_ALTERNATE               |
+         | declined                                  | DECLINED                          |
+         | expired                                   | EXPIRED                           |
+         | cancelled                                 | CANCELLED                         |
+         | unableToProvide                           | UNABLE_TO_PROVIDE                 |
+         | inProgress                                | IN_PROGRESS                       |
+         | inProgress.draft                          | IN_PROGRESS_DRAFT                 |
+         | rejected                                  | REJECTED                          |
+      enum:
+      - accepted
+      - acknowledged
+      - answered
+      - approved.orderable
+      - approved.orderableAlternate
+      - cancelled
+      - unableToProvide
+      - declined
+      - expired
+      - inProgress
+      - inProgress.draft
+      - rejected
+      type: string
+    QuoteItemStateChangeEvent:
+      allOf:
+      - $ref: '#/components/schemas/Event'
+      - description: QuoteItemStateChangeEvent structure
+        properties:
+          eventType:
+            description: Indicates the type of product offering qualification event.
+            enum:
+            - quoteItemStateChangeEvent
+            type: string
+          event:
+            $ref: '#/components/schemas/QuoteItemStateChangeEventPayload'
+        required:
+        - event
+        - eventType
+        type: object
+    QuoteItemStateChangeEventPayload:
+      description: A reference to the Quote that is the source of the notification.
+      properties:
+        id:
+          description: The Quote unique identifier.
+          type: string
+        href:
+          description: Link to the Quote
+          type: string
+        quoteItemId:
+          description: ID of the Quote Item (within the Quote) which state change
+            triggered the event
+          type: string
+        state:
+          $ref: '#/components/schemas/MEFQuoteItemStateType'
+      required:
+      - id
+      - quoteItemId
+      - state
+      type: object
+    QuoteStateChangeEvent:
+      allOf:
+      - $ref: '#/components/schemas/Event'
+      - description: QuoteStateChangeEvent structure
+        properties:
+          eventType:
+            description: Indicates the type of product offering qualification event.
+            enum:
+            - quoteStateChangeEvent
+            type: string
+          event:
+            $ref: '#/components/schemas/QuoteStateChangeEventPayload'
+        required:
+        - event
+        - eventType
+        type: object
+    QuoteStateChangeEventPayload:
+      description: A reference to the Quote that is the source of the notification.
+      properties:
+        id:
+          description: The Quote unique identifier.
+          type: string
+        href:
+          description: Link to the Quote
+          type: string
+        state:
+          $ref: '#/components/schemas/MEFQuoteStateType'
+      required:
+      - id
+      - state
+      type: object
   securitySchemes:
     oauth2MEFLSOAPI:
       description: Default m2m client code

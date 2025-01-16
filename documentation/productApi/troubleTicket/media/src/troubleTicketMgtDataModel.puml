@@ -1,224 +1,37 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
+
 class AttachmentValue {
 
-    attachmentId: string
     author*: string
-    content: string
     creationDate*: date-time
     description: string
     mimeType: string
     name*: string
     source*: MEFBuyerSellerType
-    url: string
+    url*: string
 }
 
 AttachmentValue *--> MEFByteSize : size
 
 
-class Error400 {
+enum DataSizeUnit {
 
-    code*: Error400Code
+    BYTES
+    KBYTES
+    MBYTES
+    GBYTES
+    TBYTES
+    PBYTES
+    EBYTES
+    ZBYTES
+    YBYTES
 }
-Error <|-- Error400
-
-
-
-class Error401 {
-
-    code*: Error401Code
-}
-Error <|-- Error401
-
-
-
-class Error403 {
-
-    code*: Error403Code
-}
-Error <|-- Error403
-
-
 
 class EventSubscription {
 
     callback*: string
     id*: string
     query: string
-}
-
-
-
-class FieldedAddress {
-
-    country*: string
-    streetType: string
-    postcodeExtension: string
-    city*: string
-    streetNr: string
-    locality: string
-    postcode: string
-    streetNrLast: string
-    streetNrSuffix: string
-    streetName*: string
-    stateOrProvince: string
-    streetNrLastSuffix: string
-    streetSuffix: string
-}
-
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
-
-
-class Incident_Find {
-
-    closedDate: date-time
-    creationDate*: date-time
-    description*: string
-    expectedClosedDate: date-time
-    href: string
-    id*: string
-    impact*: MEFObservedImpactType
-    incidentType*: IncidentType
-    situationStartDate: date-time
-    priority*: TroubleTicketPriorityType
-    severity*: TroubleTicketSeverityType
-    status*: IncidentStatusType
-}
-
-Incident_Find *-->"1..*" RelatedEntity : relatedEntity
-
-
-class Reason {
-
-    reason*: string
-}
-
-
-
-enum Error400Code {
-
-    missingQueryParameter
-    missingQueryValue
-    invalidQuery
-    invalidBody
-}
-class Error409 {
-
-    code*: string
-}
-Error <|-- Error409
-
-
-
-class Error422 {
-
-    code*: Error422Code
-    propertyPath: string
-}
-Error <|-- Error422
-
-
-
-class Error500 {
-
-    code*: string
-}
-Error <|-- Error500
-
-
-
-class Error501 {
-
-    code*: string
-}
-Error <|-- Error501
-
-
-
-class IncidentStatusChange {
-
-    changeDate: date-time
-    changeReason: string
-    status: IncidentStatusType
-}
-
-
-
-class IssueRelationship {
-
-    @referredType*: string
-    creationDate*: date-time
-    description*: string
-    href: string
-    id*: string
-    relationshipType*: string
-    source*: MEFBuyerSellerType
-}
-
-
-
-enum Error422Code {
-
-    missingProperty
-    invalidValue
-    invalidFormat
-    referenceNotFound
-    unexpectedProperty
-    tooManyRecords
-    otherIssue
-}
-enum TroubleTicketSeverityType {
-
-    minor
-    moderate
-    significant
-    extensive
-}
-class TroubleTicketStatusChange {
-
-    changeDate: date-time
-    changeReason: string
-    status: TroubleTicketStatusType
-}
-
-
-
-class TroubleTicket_Update {
-
-    externalId: string
-    issueStartDate: date-time
-    observedImpact*: MEFObservedImpactType
-    priority: TroubleTicketPriorityType
-    severity: TroubleTicketSeverityType
-}
-
-TroubleTicket_Update *-->"*" AttachmentValue : attachment
-TroubleTicket_Update *-->"*" Note : note
-TroubleTicket_Update *-->"*" RelatedContactInformation : relatedContactInformation
-TroubleTicket_Update *-->"*" IssueRelationship : relatedIssue
-
-
-enum Error401Code {
-
-    missingCredentials
-    invalidCredentials
-}
-class Error404 {
-
-    code*: string
-}
-Error <|-- Error404
-
-
-
-class Error {
-
-    message: string
-    reason*: string
-    referenceError: uri
 }
 
 
@@ -231,17 +44,30 @@ class EventSubscriptionInput {
 
 
 
-class GeographicSubAddress {
+class FieldedAddressRepresentation {
 
+    streetNr: string
+    streetNrSuffix: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetPreDirection: string
+    streetName: string
+    streetType: string
+    streetPostDirection: string
+    poBox: string
+    locality: string
+    city: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+    countryCode: string
     buildingName: string
-    id: string
-    levelNumber: string
-    levelType: string
-    privateStreetName: string
     privateStreetNumber: string
+    privateStreetName: string
+    language: string
 }
 
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+FieldedAddressRepresentation *-->"*" SubUnit : subUnit
 
 
 class Incident {
@@ -265,7 +91,16 @@ Incident *-->"*" Note : note
 Incident *-->"1..*" RelatedContactInformation : relatedContactInformation
 Incident *-->"1..*" RelatedEntity : relatedEntity
 Incident *-->"*" IssueRelationship : relatedIssue
-Incident *-->"*" IncidentStatusChange : statusChange
+Incident *-->"1..*" IncidentStatusChange : statusChange
+
+
+class IncidentStatusChange {
+
+    changeDate: date-time
+    changeReason: string
+    status: IncidentStatusType
+}
+
 
 
 enum IncidentStatusType {
@@ -273,6 +108,36 @@ enum IncidentStatusType {
     closed
     created
     inProgress
+}
+enum IncidentType {
+
+    maintenance
+    repair
+    installation
+}
+class Incident_Find {
+
+    closedDate: date-time
+    creationDate*: date-time
+    description*: string
+    expectedClosedDate: date-time
+    href: string
+    id*: string
+    impact*: MEFObservedImpactType
+    incidentType*: IncidentType
+    situationStartDate: date-time
+    priority*: TroubleTicketPriorityType
+    severity*: TroubleTicketSeverityType
+    status*: IncidentStatusType
+}
+
+Incident_Find *-->"1..*" RelatedEntity : relatedEntity
+
+
+enum MEFBuyerSellerType {
+
+    buyer
+    seller
 }
 class MEFByteSize {
 
@@ -282,37 +147,13 @@ class MEFByteSize {
 
 
 
-enum IncidentType {
-
-    installation
-    maintenance
-    repair
-}
-enum Error403Code {
-
-    accessDenied
-    forbiddenRequester
-    tooManyUsers
-}
 enum MEFObservedImpactType {
 
     degraded
     intermittent
     down
 }
-enum DataSizeUnit {
-
-    BYTES
-    KBYTES
-    MBYTES
-    GBYTES
-    TBYTES
-    PBYTES
-    EBYTES
-    ZBYTES
-    YBYTES
-}
-class MEFSubUnit {
+class SubUnit {
 
     subUnitNumber*: string
     subUnitType*: string
@@ -331,17 +172,24 @@ class Note {
 
 
 
-class RelatedContactInformation {
+class Reason {
 
-    emailAddress*: string
-    name*: string
-    number*: string
-    numberExtension: string
-    organization: string
-    role*: string
+    reason*: string
 }
 
-RelatedContactInformation *--> FieldedAddress : postalAddress
+
+
+class RelatedContactInformation {
+
+    role*: string
+    number*: string
+    emailAddress*: string
+    organization: string
+    name*: string
+    numberExtension: string
+}
+
+RelatedContactInformation *--> FieldedAddressRepresentation : postalAddress
 
 
 class RelatedEntity {
@@ -350,6 +198,19 @@ class RelatedEntity {
     href: string
     id*: string
     role*: string
+}
+
+
+
+class IssueRelationship {
+
+    @referredType*: string
+    creationDate*: date-time
+    description*: string
+    href: string
+    id*: string
+    relationshipType*: string
+    source*: MEFBuyerSellerType
 }
 
 
@@ -367,21 +228,29 @@ class TroubleTicket {
 }
 TroubleTicket_Common <|-- TroubleTicket
 
-TroubleTicket *-->"*" TroubleTicketStatusChange : statusChange
+TroubleTicket *-->"1..*" TroubleTicketStatusChange : statusChange
 TroubleTicket *-->"*" WorkOrderRef : workOrder
 
 
-enum TroubleTicketType {
+enum TroubleTicketPriorityType {
 
-    assistance
-    information
-    installation
-    maintenance
+    low
+    medium
+    high
+    critical
 }
-class WorkOrderRef {
+enum TroubleTicketSeverityType {
 
-    href: string
-    id*: string
+    minor
+    moderate
+    significant
+    extensive
+}
+class TroubleTicketStatusChange {
+
+    changeDate: date-time
+    changeReason: string
+    status: TroubleTicketStatusType
 }
 
 
@@ -397,24 +266,12 @@ enum TroubleTicketStatusType {
     resolved
     reopened
 }
-enum TroubleTicketPriorityType {
+enum TroubleTicketType {
 
-    low
-    medium
-    high
-    critical
-}
-class TroubleTicket_Create {
-
-}
-TroubleTicket_Common <|-- TroubleTicket_Create
-
-
-
-enum MEFBuyerSellerType {
-
-    buyer
-    seller
+    assistance
+    information
+    installation
+    maintenance
 }
 class TroubleTicket_Common {
 
@@ -430,8 +287,15 @@ class TroubleTicket_Common {
 TroubleTicket_Common *-->"*" AttachmentValue : attachment
 TroubleTicket_Common *-->"*" Note : note
 TroubleTicket_Common *-->"1..*" RelatedContactInformation : relatedContactInformation
-TroubleTicket_Common *-->"1..*" RelatedEntity : relatedEntity
+TroubleTicket_Common *-->"1..1" RelatedEntity : relatedEntity
 TroubleTicket_Common *-->"*" IssueRelationship : relatedIssue
+
+
+class TroubleTicket_Create {
+
+}
+TroubleTicket_Common <|-- TroubleTicket_Create
+
 
 
 class TroubleTicket_Find {
@@ -452,6 +316,29 @@ class TroubleTicket_Find {
 }
 
 TroubleTicket_Find *-->"1..*" RelatedEntity : relatedEntity
+
+
+class TroubleTicket_Update {
+
+    externalId: string
+    issueStartDate: date-time
+    observedImpact: MEFObservedImpactType
+    priority: TroubleTicketPriorityType
+    severity: TroubleTicketSeverityType
+}
+
+TroubleTicket_Update *-->"*" AttachmentValue : attachment
+TroubleTicket_Update *-->"*" Note : note
+TroubleTicket_Update *-->"*" RelatedContactInformation : relatedContactInformation
+TroubleTicket_Update *-->"*" IssueRelationship : relatedIssue
+
+
+class WorkOrderRef {
+
+    href: string
+    id*: string
+}
+
 
 
 @enduml

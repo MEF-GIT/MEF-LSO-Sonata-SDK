@@ -1,8 +1,4 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
 
 
 class MEFBillingAccountRef {
@@ -22,34 +18,25 @@ class MEFProductOrderItemRef {
 
 class MEFProduct_Find {
 
+    externalId: string
     id*: string
     href: string
-    externalId: string
     lastUpdateDate: date-time
     startDate: date-time
     status*: MEFProductStatusType
 }
 
-MEFProduct_Find *--> MEFBillingAccountRef : billingAccount
-MEFProduct_Find *--> ProductOfferingRef : productOffering
-MEFProduct_Find *-->"*" MEFProductOrderItemRef : productOrderItem
-MEFProduct_Find *-->"*" ProductRelationship : productRelationship
 MEFProduct_Find *--> ProductSpecificationRef : productSpecification
-MEFProduct_Find *-->"*" RelatedGeographicSite : relatedSite
+MEFProduct_Find *-->"*" RelatedPlaceRefOrQuery : place
+MEFProduct_Find *--> ProductOfferingRef : productOffering
+MEFProduct_Find *-->"*" ProductRelationship : productRelationship
+MEFProduct_Find *--> MEFBillingAccountRef : billingAccount
+MEFProduct_Find *-->"*" MEFProductOrderItemRef : productOrderItem
 
 class ProductSpecificationRef {
 
     href: string
     id*: string
-}
-
-
-
-class RelatedGeographicSite {
-
-    id*: string
-    href: string
-    role*: string
 }
 
 
@@ -80,6 +67,10 @@ class ProductRelationship {
     id*: string
     href: string
     relationshipType*: string
+}
+class RelatedPlaceRefOrQuery {
+
+    <<skipped>>
 }
 
 

@@ -1,8 +1,4 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
 
 class Duration {
 
@@ -11,33 +7,6 @@ class Duration {
 }
 
 
-
-class GeographicAddressRef {
-
-    href: string
-    id*: string
-}
-RelatedPlaceRef <|-- GeographicAddressRef
-
-
-
-class GeographicSiteRef {
-
-    href: string
-    id*: string
-}
-RelatedPlaceRef <|-- GeographicSiteRef
-
-
-
-enum MEFChargePeriod {
-
-    hour
-    day
-    week
-    month
-    year
-}
 enum MEFEndOfTermAction {
 
     roll
@@ -104,7 +73,7 @@ class PricingDiscovery_Request {
 
 PricingDiscovery_Request *--> ProductRef : productRef
 PricingDiscovery_Request *-->"*" ProductRelationship : productRelationship
-PricingDiscovery_Request *-->"*" RelatedPlaceRef : place
+PricingDiscovery_Request *-->"*" RelatedPlaceRefWithSubUnit : place
 
 
 enum ProductActionAddModifyType {
@@ -136,17 +105,11 @@ class QuotePrice {
     description: string
     priceType*: MEFPriceType
     unitOfMeasure: string
-    recurringChargePeriod: MEFChargePeriod
 }
+
+QuotePrice *--> Duration : recurringChargePeriod
 
 QuotePrice *-->"1" Price : price
-
-
-class RelatedPlaceRef {
-
-    role*: string
-    @type*: string
-}
 
 
 
@@ -161,4 +124,49 @@ enum TimeUnit {
     months
     years
 }
+
+
+class GeographicAddressRef {
+
+    href: string
+    id*: string
+    @type*: string
+}
+
+
+
+
+class GeographicSiteRef {
+
+    href: string
+    id*: string
+    @type*: string
+}
+
+
+
+class RelatedPlaceRefWithSubUnit {
+
+    role*: string
+}
+
+RelatedPlaceRefWithSubUnit *-->"1" PlaceRef : place
+RelatedPlaceRefWithSubUnit *-->"*" SubUnit : subUnit
+
+
+class SubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+
+
+class PlaceRef {
+    --
+    discriminator:
+    GeographicAddressRef
+    GeographicSiteRef
+}
+PlaceRef ..> GeographicAddressRef : """"
+PlaceRef ..> GeographicSiteRef : """"
 @enduml

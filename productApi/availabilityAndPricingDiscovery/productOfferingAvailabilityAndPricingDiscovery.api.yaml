@@ -21,10 +21,10 @@ info:
 
     - Retrieve Product Offering Availability
     - Retrieve Pricing and Terms
-  version: 3.0.0-RC
+  version: 4.0.0-RC
 servers:
   - url: >-
-      https://{serverBase}/mefApi/sonata/productOfferingAvailabilityAndPricingDiscovery/v3/
+      https://{serverBase}/mefApi/sonata/productOfferingAvailabilityAndPricingDiscovery/v4/
     variables:
       serverBase:
         description: The base of Seller's URL.
@@ -399,52 +399,53 @@ components:
       description: >
         A reference to a Geographic Address resource available through Address
         Validation API.
-      allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRef'
-        - type: object
-          properties:
-            href:
-              description: >
-                Hyperlink to the referenced Address. Hyperlink MAY be used by
-                the Seller in responses. Hyperlink MUST be ignored by the Seller
-                in case it is provided by the Buyer in a request.
-              type: string
-            id:
-              description: >-
-                Identifier of the referenced Geographic Address. This identifier
-                is assigned during a successful address validation request
-                (Geographic Address Management API)
-              type: string
-          required:
-            - id
+      type: object
+      properties:
+        href:
+          description: >
+            Hyperlink to the referenced Address. Hyperlink MAY be used by the
+            Seller in responses. Hyperlink MUST be ignored by the Seller in case
+            it is provided by the Buyer in a request.
+          type: string
+        id:
+          description: >-
+            Identifier of the referenced Geographic Address. This identifier is
+            assigned during a successful address validation request (Geographic
+            Address Management API)
+          type: string
+        '@type':
+          description:
+            Used to unambiguously designate the class type when using `oneOf`
+          type: string
+          enum:
+            - GeographicAddressRef
+      required:
+        - '@type'
+        - id
     GeographicSiteRef:
       description: >
-        A reference to a Geographic Site resource available through the Service
-        Site API
-      allOf:
-        - $ref: '#/components/schemas/RelatedPlaceRef'
-        - type: object
-          properties:
-            href:
-              description: >
-                Hyperlink to the referenced Site. Hyperlink MAY be used by the
-                Seller in responses. Hyperlink MUST be ignored by the Seller in
-                case it is provided by the Buyer in a request.
-              type: string
-            id:
-              description: Identifier of the referenced Geographic Site.
-              type: string
-          required:
-            - id
-    MEFChargePeriod:
-      description: Used for a recurring charge to indicate period.
-      type: string
-      enum:
-        - hour
-        - day
-        - week
-        - month
-        - year
+        A reference to a Geographic Site resource available through Service Site
+        API
+      type: object
+      properties:
+        href:
+          description: >
+            Hyperlink to the referenced Site. Hyperlink MAY be used by the
+            Seller in responses. Hyperlink MUST be ignored by the Seller in case
+            it is provided by the Buyer in a request.
+          type: string
+        id:
+          description: Identifier of the referenced Geographic Site.
+          type: string
+        '@type':
+          description:
+            Used to unambiguously designate the class type when using `oneOf`
+          type: string
+          enum:
+            - GeographicSiteRef
+      required:
+        - '@type'
+        - id
     MEFEndOfTermAction:
       description: |
         The action that needs to be taken by the Seller once the term expires.
@@ -527,6 +528,18 @@ components:
       required:
         - unit
         - value
+    PlaceRef:
+      description: >-
+        A place described by reference to Geographic Address or Geographic Site.
+      type: object
+      discriminator:
+        propertyName: '@type'
+        mapping:
+          GeographicAddressRef: '#/components/schemas/GeographicAddressRef'
+          GeographicSiteRef: '#/components/schemas/GeographicSiteRef'
+      oneOf:
+        - $ref: '#/components/schemas/GeographicAddressRef'
+        - $ref: '#/components/schemas/GeographicSiteRef'
     Price:
       description: >-
         Provides all amounts (tax included, duty-free, tax rate), used currency
@@ -644,7 +657,7 @@ components:
             `add`. It MUST NOT be provided when the `action` = `modify`
           type: array
           items:
-            $ref: '#/components/schemas/RelatedPlaceRef'
+            $ref: '#/components/schemas/RelatedPlaceRefWithSubUnit'
       required:
         - action
         - productOfferingConfigurationIdentifier
@@ -673,8 +686,7 @@ components:
         - type: object
           properties:
             availableProductOfferingConfiguration:
-              description: 
-                The list of available Product Offering Configurations
+              description: The list of available Product Offering Configurations
               type: array
               minItems: 0
               items:
@@ -720,7 +732,7 @@ components:
             MUST NOT be provided when the `action` = `modify`
           type: array
           items:
-            $ref: '#/components/schemas/RelatedPlaceRef'
+            $ref: '#/components/schemas/RelatedPlaceRefWithSubUnit'
       required:
         - action
     ProductOfferingConfiguration:
@@ -851,58 +863,74 @@ components:
       description: Description of price and discount awarded
       type: object
       properties:
-        name:
-          description: Name of the price
+        unitOfMeasure:
+          description: >-
+            Unit of Measure if price depending on it (Gb, SMS volume, etc..)
+            MEF: if Quote Item Price Type equals usageBased
           type: string
-        description:
-          description: Description of the price
+        price:
+          description: The associated price
+          $ref: '#/components/schemas/Price'
+        name:
+          description: Name of the quote/quote item price
           type: string
         priceType:
           description: >-
             Indicates if the price is for recurring, non-recurring, or usage
             based charges
           $ref: '#/components/schemas/MEFPriceType'
-        unitOfMeasure:
-          description: >-
-            Unit of Measure if price depending on it (Gb, SMS volume, etc..)
-            MUST be specified when `priceType` is `usageBased`
+        description:
+          description: Description of the quote/quote item price
           type: string
-        price:
-          description: The associated price
-          $ref: '#/components/schemas/Price'
         recurringChargePeriod:
-          description: >-
-            The recurring duration for which this charge will be applied. MUST
-            be provided if `priceType is `recurring`
-          $ref: '#/components/schemas/MEFChargePeriod'
+          description: Used for a recurring charge to indicate a period
+          $ref: '#/components/schemas/Duration'
       required:
         - name
         - price
         - priceType
-    RelatedPlaceRef:
+    RelatedPlaceRefWithSubUnit:
       description: >-
-        Place defines the places (locations) where the products being subject of
-        this qualification are to be provided.
+        Allows pointing to a place by referring to a GeographicAddress,
+        GeographicSite.
       type: object
       properties:
+        place:
+          $ref: '#/components/schemas/PlaceRef'
         role:
           description: >-
-            The role of the place as specified in the Product Specification
-            (e.g. "INSTALL_LOCATION").
+            Role of this place. The values that can be specified here are
+            described by Product Specification (e.g. "INSTALL_LOCATION").
           type: string
-        '@type':
-          description: >
-            This field is used as a discriminator. One of
-            GeographicAddressRef, GeographicSiteRef.
+        subUnit:
+          description: >-
+            A list of zero or more sub units included within the boundary of the
+            `place` for this POQ Item. This is a list to allow complex sub-unit
+            information such as SUITE 42 ROOM A. It MUST only be used together
+            with GeographicAddressRef
+          type: array
+          items:
+            $ref: '#/components/schemas/SubUnit'
+      required:
+        - place
+        - role
+    SubUnit:
+      description: Allows for sub unit identification
+      type: object
+      properties:
+        subUnitNumber:
+          description: >-
+            The discriminator used for the subunit, often just a simple number
+            but may also be a range.
+          type: string
+        subUnitType:
+          description: >-
+            The type of subunit e.g. BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
+            UNIT, WHARF.
           type: string
       required:
-        - '@type'
-        - role
-      discriminator:
-        propertyName: '@type'
-        mapping:
-          GeographicAddressRef: '#/components/schemas/GeographicAddressRef'
-          GeographicSiteRef: '#/components/schemas/GeographicSiteRef'
+        - subUnitNumber
+        - subUnitType
     TimeUnit:
       description: |
         Represents a unit of time.

@@ -4,268 +4,101 @@ skinparam {
     ClassBorderColor Black
 }
 
+class ContactInformation {
+
+    number*: string
+    emailAddress*: string
+    organization: string
+    name*: string
+    numberExtension: string
+}
+
+ContactInformation *--> FieldedAddressRepresentation : postalAddress
+
+
 class Duration {
 
-    amount*: integer 
-    units*: TimeUnit 
+    amount*: integer
+    units*: TimeUnit
 }
 
 
+class FieldedAddressRepresentation {
 
-
-class FieldedAddress {
-
-    city*: string 
-    country*: string 
-    locality: string 
-    postcode: string 
-    postcodeExtension: string 
-    stateOrProvince: string 
-    streetName*: string 
-    streetNr: string 
-    streetNrLast: string 
-    streetNrLastSuffix: string 
-    streetNrSuffix: string 
-    streetSuffix: string 
-    streetType: string 
+    streetNr: string
+    streetNrSuffix: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetPreDirection: string
+    streetName: string
+    streetType: string
+    streetPostDirection: string
+    poBox: string
+    locality: string
+    city: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+    countryCode: string
+    buildingName: string
+    privateStreetNumber: string
+    privateStreetName: string
+    language: string
 }
-RelatedPlaceRefOrValue <|-- FieldedAddress
-
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
+FieldedAddressRepresentation *-->"*" SubUnit : subUnit
 
 
-class FormattedAddress {
+class FormattedAddressRepresentation {
 
-    addrLine1*: string 
-    addrLine2: string 
-    city*: string 
-    country*: string 
-    locality: string 
-    postcode: string 
-    postcodeExtension: string 
-    stateOrProvince: string 
+    formattedAddress*: string
+    language: string
 }
-RelatedPlaceRefOrValue <|-- FormattedAddress
-
-
-
-class GeographicAddressIdentifier {
-
-    externalReferenceId*: string 
-    externalReferenceType*: string 
-}
-RelatedPlaceRefOrValue <|-- GeographicAddressIdentifier
 
 
 
 class GeographicAddressRef {
 
-    href: string 
-    id*: string 
+    href: string
+    id*: string
+    @type*: string
 }
-RelatedPlaceRefOrValue <|-- GeographicAddressRef
+
+
+
+class GeographicAddress_Query {
+    @type*: string
+}
+
+GeographicAddress_Query *-->"*" FieldedAddressRepresentation : fieldedAddressRepresentation
+GeographicAddress_Query *-->"*" FormattedAddressRepresentation : formattedAddressRepresentation
+GeographicAddress_Query *-->"*" GeographicPointRepresentation : geographicPointRepresentation
+GeographicAddress_Query *-->"*" LabelRepresentation : labelRepresentation
+
+
+class GeographicPointRepresentation {
+
+    spatialRef*: string
+    latitude*: string
+    longitude*: string
+    elevation: string
+}
 
 
 
 class GeographicSiteRef {
 
-    href: string 
-    id*: string 
-}
-RelatedPlaceRefOrValue <|-- GeographicSiteRef
-
-
-
-class GeographicSubAddress {
-
-    buildingName: string 
-    levelNumber: string 
-    levelType: string 
-    privateStreetName: string 
-    privateStreetNumber: string 
-}
-
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
-
-
-enum MEFEndOfTermAction {
-
-    roll
-    autoDisconnect
-    autoRenew
-}
-class MEFGeographicPoint {
-
-    spatialRef*: string 
-    x*: string 
-    y*: string 
-    z: string 
-}
-RelatedPlaceRefOrValue <|-- MEFGeographicPoint
-
-
-
-class MEFItemTerm {
-
-    name*: string
-    description*: string
-    endOfTermAction*: MEFEndOfTermAction
-}
-
-MEFItemTerm *--> Duration : duration
-MEFItemTerm *--> Duration : rollInterval
-
-
-class MEFProductConfiguration {
-
-    @type*: string 
+    href: string
+    id*: string
+    @type*: string
 }
 
 
 
-class MEFProductRefOrValueQuote {
+class LabelRepresentation {
 
-    href: string 
-    id: string 
-}
-
-MEFProductRefOrValueQuote *-->"*" RelatedPlaceRefOrValue : place
-MEFProductRefOrValueQuote *--> MEFProductConfiguration : productConfiguration
-MEFProductRefOrValueQuote *--> ProductOfferingRef : productOffering
-MEFProductRefOrValueQuote *-->"*" ProductRelationshipWithGrouping : productRelationship
-
-
-class MEFQuoteItem_Create {
-
-}
-MEFQuoteItem_Common <|-- MEFQuoteItem_Create
-
-
-
-class MEFQuoteItem_Common {
-
-    id*: string 
-    dealReference: string 
-    action*: MEFProductActionType 
-    agreementName: string 
-}
-
-MEFQuoteItem_Common *-->"*" Note : note
-MEFQuoteItem_Common *--> MEFProductRefOrValueQuote : product
-MEFQuoteItem_Common *--> ProductOfferingQualificationItemRef : productOfferingQualificationItem
-MEFQuoteItem_Common *-->"*" QuoteItemRelationship : quoteItemRelationship
-MEFQuoteItem_Common *-->"*" RelatedContactInformation : relatedContactInformation
-MEFQuoteItem_Common *--> Duration : requestedQuoteItemInstallationInterval
-MEFQuoteItem_Common *--> MEFItemTerm : requestedQuoteItemTerm
-
-
-class MEFQuoteStateChange {
-
-    changeDate*: date-time 
-    changeReason: string 
-    state*: MEFQuoteStateType 
-}
-
-
-
-class MEFSubUnit {
-
-    subUnitNumber*: string 
-    subUnitType*: string 
-}
-
-
-
-class Money {
-
-    unit: string 
-    value: float 
-}
-
-
-
-class Note {
-
-    id*: string 
-    author*: string 
-    date*: date-time 
-    source*: MEFBuyerSellerType 
-    text*: string 
-}
-
-
-
-class Price {
-
-    taxRate: float 
-}
-
-Price *--> Money : dutyFreeAmount*
-Price *--> Money : taxIncludedAmount
-
-
-class ProductOfferingQualificationItemRef {
-
-    id*: string 
-    alternateProductProposalId: string 
-    productOfferingQualificationHref: string 
-    productOfferingQualificationId*: string 
-}
-
-
-
-class ProductOfferingRef {
-
-    id*: string 
-    href: string 
-}
-
-
-
-class ProductRelationshipWithGrouping {
-
-    id*: string 
-    groupingKey: string 
-    href: string 
-    relationshipType*: string 
-}
-
-
-
-class Quote {
-
-    id*: string 
-    href: string 
-    effectiveQuoteCompletionDate: date-time 
-    expectedQuoteCompletionDate: date-time 
-    quoteDate*: date-time 
-    quoteLevel: MEFSellerQuoteLevel 
-    state: MEFQuoteStateType 
-}
-Quote_Common <|-- Quote
-
-Quote *-->"1..*" QuoteItem : quoteItem
-Quote *-->"*" MEFQuoteStateChange : stateChange
-Quote *--> TimePeriod : validFor
-
-
-class QuoteItem {
-
-    subjectToFeasibilityCheck: boolean 
-    state: MEFQuoteItemStateType 
-}
-MEFQuoteItem_Common <|-- QuoteItem
-
-QuoteItem *--> Duration : quoteItemInstallationInterval
-QuoteItem *-->"*" QuotePrice : quoteItemPrice
-QuoteItem *-->"0..1" MEFItemTerm : quoteItemTerm
-QuoteItem *-->"*" TerminationError : terminationError
-
-
-class QuoteItemRelationship {
-
-    id*: string 
-    relationshipType*: string 
+    label*: string
+    administrativeAuthority*: string
+    language: string
 }
 
 
@@ -275,14 +108,23 @@ enum MEFBuyerQuoteLevel {
     budgetary
     firm
 }
-enum MEFChargePeriod {
+enum MEFEndOfTermAction {
 
-    hour
-    day
-    week
-    month
-    year
+    roll
+    autoDisconnect
+    autoRenew
 }
+class MEFItemTerm {
+
+    endOfTermAction*: MEFEndOfTermAction
+    name*: string
+    description: string
+}
+
+MEFItemTerm *-->"1" Duration : duration
+MEFItemTerm *--> Duration : rollInterval
+
+
 enum MEFPriceType {
 
     recurring
@@ -295,10 +137,17 @@ enum MEFProductActionType {
     modify
     delete
 }
+class MEFProductConfiguration {
+
+    @type*: string
+}
+
+
+
 enum MEFQuoteItemStateType {
 
-    acknowledged
     answered
+    acknowledged
     approved.orderable
     approved.orderableAlternate
     inProgress
@@ -307,6 +156,48 @@ enum MEFQuoteItemStateType {
     abandoned
     unableToProvide
 }
+class MEFQuoteItem_Common {
+
+    agreementName: string
+    action*: MEFProductActionType
+    dealReference: string
+    id*: string
+}
+
+MEFQuoteItem_Common *--> MEFItemTerm : requestedQuoteItemTerm
+MEFQuoteItem_Common *-->"*" Note : note
+MEFQuoteItem_Common *-->"1" MEFProductRefOrValueQuote : product
+MEFQuoteItem_Common *--> ProductOfferingQualificationItemRef : productOfferingQualificationItem
+MEFQuoteItem_Common *-->"*" RelatedContactInformation : relatedContactInformation
+MEFQuoteItem_Common *--> Duration : requestedQuoteItemInstallationInterval
+MEFQuoteItem_Common *-->"*" QuoteItemRelationship : quoteItemRelationship
+
+
+class MEFQuoteItem_Create {
+
+}
+MEFQuoteItem_Common <|-- MEFQuoteItem_Create
+
+
+
+class MEFQuoteItemStateChange {
+
+    changeReason: string
+    changeDate*: date-time
+    state*: MEFQuoteItemStateType
+}
+
+
+
+class MEFQuoteStateChange {
+
+    changeReason: string
+    changeDate*: date-time
+    state*: MEFQuoteStateType
+}
+
+
+
 enum MEFQuoteStateType {
 
     accepted
@@ -317,10 +208,10 @@ enum MEFQuoteStateType {
     cancelled
     unableToProvide
     declined
+    expired
     inProgress
     inProgress.draft
     rejected
-    expired
 }
 enum MEFSellerQuoteLevel {
 
@@ -328,29 +219,155 @@ enum MEFSellerQuoteLevel {
     firmSubjectToFeasibilityCheck
     firm
 }
+class MEFProductRefOrValueQuote {
+
+    id: string
+    href: string
+}
+
+MEFProductRefOrValueQuote *-->"*" RelatedPlaceRefOrQueryWithSubUnit : place
+MEFProductRefOrValueQuote *--> MEFProductConfiguration : productConfiguration
+MEFProductRefOrValueQuote *--> ProductOfferingRef : productOffering
+MEFProductRefOrValueQuote *-->"*" ProductRelationship : productRelationship
+
+
+class Money {
+
+    unit*: string
+    value*: float
+}
+
+
+
+class Note {
+
+    date*: date-time
+    author*: string
+    id*: string
+    source*: MEFBuyerSellerType
+    text*: string
+}
+
+
+
 enum MEFBuyerSellerType {
 
     buyer
     seller
 }
+class PlaceRefOrQuery {
+
+}
+
+
+
+class Price {
+
+    taxRate: float
+}
+
+Price *--> Money : taxIncludedAmount
+Price *-->"1" Money : dutyFreeAmount
+
+
+class ProductOfferingQualificationItemRef {
+
+    productOfferingQualificationId*: string
+    alternateProductProposalId: string
+    productOfferingQualificationHref: string
+    id*: string
+}
+
+
+
+class ProductOfferingRef {
+
+    id*: string
+    href: string
+}
+
+
+
+class ProductRelationship {
+
+    href: string
+    id*: string
+    relationshipType*: string
+}
+
+
+
+class Quote {
+
+    effectiveQuoteCompletionDate: date-time
+    expectedQuoteCompletionDate: date-time
+    quoteLevel: MEFSellerQuoteLevel
+    id*: string
+    href: string
+    state*: MEFQuoteStateType
+    quoteDate*: date-time
+}
+Quote_Common <|-- Quote
+
+Quote *--> TimePeriod : validFor
+Quote *-->"1..*" QuoteItem : quoteItem
+Quote *-->"1..*" MEFQuoteStateChange : stateChange
+
+
+class QuoteItem {
+
+    subjectToFeasibilityCheck: boolean
+    state*: MEFQuoteItemStateType
+}
+MEFQuoteItem_Common <|-- QuoteItem
+
+QuoteItem *-->"*" TerminationError : terminationError
+QuoteItem *--> Duration : quoteItemInstallationInterval
+QuoteItem *-->"0..1" MEFItemTerm : quoteItemTerm
+QuoteItem *-->"1..*" MEFQuoteItemStateChange : stateChange
+QuoteItem *-->"*" QuotePrice : quoteItemPrice
+
+
+class QuoteItemRelationship {
+
+    relationshipType*: string
+    id*: string
+}
+
+
+
 class QuoteOperationData {
 
-    quoteId*: string 
-    reason: string 
+    reason: string
+    quoteId*: string
 }
 
 
 
 class QuotePrice {
 
-    description: string 
-    name: string 
-    unitOfMeasure: string 
-    priceType: MEFPriceType 
-    recurringChargePeriod: MEFChargePeriod 
+    unitOfMeasure: string
+    name*: string
+    priceType*: MEFPriceType
+    description: string
 }
 
-QuotePrice *--> Price : price
+QuotePrice *-->"1" Price : price
+QuotePrice *--> Duration : recurringChargePeriod
+
+
+class Quote_Common {
+
+    requestedQuoteCompletionDate: date-time
+    description: string
+    externalId: string
+    buyerRequestedQuoteLevel*: MEFBuyerQuoteLevel
+    projectId: string
+    instantSyncQuote*: boolean
+}
+
+Quote_Common *-->"*" Note : note
+Quote_Common *-->"*" RelatedContactInformation : relatedContactInformation
 
 
 class Quote_Create {
@@ -361,80 +378,78 @@ Quote_Common <|-- Quote_Create
 Quote_Create *-->"1..*" MEFQuoteItem_Create : quoteItem
 
 
-class Quote_Common {
-
-    description: string 
-    externalId: string 
-    instantSyncQuote*: boolean 
-    projectId: string 
-    requestedQuoteCompletionDate: date-time 
-    buyerRequestedQuoteLevel*: MEFBuyerQuoteLevel 
-}
-
-Quote_Common *-->"*" Note : note
-Quote_Common *-->"*" RelatedContactInformation : relatedContactInformation
-
-
 class Quote_Find {
 
-    id: string 
-    effectiveQuoteCompletionDate: date-time 
-    expectedQuoteCompletionDate: date-time 
-    externalId: string 
-    projectId: string 
-    quoteDate*: date-time 
-    requestedQuoteCompletionDate: date-time 
-    quoteLevel: MEFSellerQuoteLevel 
-    state*: MEFQuoteStateType 
+    effectiveQuoteCompletionDate: date-time
+    expectedQuoteCompletionDate: date-time
+    requestedQuoteCompletionDate: date-time
+    quoteLevel: MEFSellerQuoteLevel
+    externalId: string
+    id: string
+    state*: MEFQuoteStateType
+    projectId: string
+    quoteDate: date-time
 }
+
 
 
 class RelatedContactInformation {
 
-    emailAddress*: string 
-    name*: string 
-    number*: string 
-    numberExtension: string 
-    organization: string 
-    role*: string 
+    role*: string
+    number*: string
+    emailAddress*: string
+    organization: string
+    name*: string
+    numberExtension: string
 }
 
-RelatedContactInformation *--> FieldedAddress : postalAddress
+RelatedContactInformation *--> FieldedAddressRepresentation : postalAddress
 
 
-class RelatedPlaceRefOrValue {
+class RelatedPlaceRefOrQueryWithSubUnit {
 
-    @schemaLocation: uri 
-    @type*: string 
-    role*: string 
+    role*: string
+}
+
+RelatedPlaceRefOrQueryWithSubUnit *-->"1" PlaceRefOrQuery : place
+RelatedPlaceRefOrQueryWithSubUnit *-->"*" SubUnit : subUnit
+RelatedPlaceRefOrQueryWithSubUnit *-->"*" ContactInformation : contact
+
+
+class SubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
 }
 
 
 
 class TerminationError {
-    code: string
+
+    code: Error422Code
     propertyPath: string
-    value: string 
+    value: string
 }
 
 
 
 class TimePeriod {
 
-    endDateTime: date-time 
-    startDateTime: date-time 
+    startDateTime: date-time
+    endDateTime: date-time
 }
 
 
 
 enum TimeUnit {
 
-    calendarMonths
-    calendarDays
-    calendarHours
-    calendarMinutes
-    businessDays
+    seconds
+    minutes
     businessHours
-    businessMinutes
+    calendarHours
+    businessDays
+    calendarDays
+    months
+    years
 }
 @enduml

@@ -13,26 +13,23 @@ img
 <div style="font-weight:bold; font-size:33pt; font-family:Sansation;  text-align:center;">
 Working Draft
 </br>
-MEF W160 v0.3
+MEF W160 v0.4
 </br>
 </br>
 LSO Cantata and LSO Sonata Product Offering Availability and Pricing Discovery API - Developer Guide
 </br>
 </br>
-</br>
-</br>
-</br>
 <p style="color:red;font-weight:bold; font-size:18pt">This draft represents MEF work in progress and is subject to change.</p>
-June 2024
 </br>
-<p style="color:red;font-weight:bold; font-size:18pt">EXPORT CONTROL: This document contains technical data. The download, export, re-export or disclosure of the technical data contained in this document may be restricted by applicable U.S. or foreign export laws, regulations and rules and/or applicable U.S. or foreign sanctions ("Export Control Laws or Sanctions"). You agree that you are solely responsible for determining whether any Export Control Laws or Sanctions may apply to your download, export, reexport or disclosure of this document, and for obtaining (if available) any required U.S. or foreign export or reexport licenses and/or other required authorizations.</p>
+January 2025
+</br>
+<p style="color:red;font-weight:bold; font-size:18pt">EXPORT CONTROL: This document contains technical data. The download, export, re-export or disclosure of the technical data contained in this document may be restricted by applicable U.S. or foreign export laws, regulations and rules and/or applicable U.S. or foreign sanctions ("Export Control Laws or Sanctions"). You agree that you are solely responsible for determining whether any Export Control Laws or Sanctions may apply to your download, export, reexport or disclosure of this document, and for obtaining (if available) any required U.S. or foreign export or reexport licenses and/or other required authorizations.
 </div>
-
 <div class="page"/>
 
 **Disclaimer**
 
-© MEF Forum 2024. All Rights Reserved.
+© MEF Forum 2025. All Rights Reserved.
 
 The information in this publication is freely available for reproduction and use
 by any recipient and is believed to be accurate as of its publication date. Such
@@ -72,7 +69,7 @@ or promote any specific products or services.
 
 **Copyright**
 
-© MEF Forum 2024. Any reproduction of this document, or any portion thereof,
+© MEF Forum 2025. Any reproduction of this document, or any portion thereof,
 shall contain the following statement: "Reproduced with permission of MEF
 Forum." No user of this document is authorized to modify any of the information
 contained herein.
@@ -132,21 +129,23 @@ contained herein.
       - [7.2.2.2. Type PricingDiscovery](#7222-type-pricingdiscovery)
       - [7.2.2.3. Type PricingAndTerm](#7223-type-pricingandterm)
       - [7.2.2.4. Type QuotePrice](#7224-type-quoteprice)
-      - [7.2.2.5. `enum` MEFChargePeriod](#7225-enum-mefchargeperiod)
       - [7.2.2.6. Type MEFItemTerm](#7226-type-mefitemterm)
       - [7.2.2.7. `enum` MEFEndOfTermAction](#7227-enum-mefendoftermaction)
       - [7.2.2.8. `enum` MEFPriceType](#7228-enum-mefpricetype)
       - [7.2.2.9. Type Money](#7229-type-money)
       - [7.2.2.10. Type Price](#72210-type-price)
-    - [7.2.3. Common Types](#723-common-types)
-      - [7.2.3.1. Type Duration](#7231-type-duration)
-      - [7.2.3.2. Type GeographicAddressRef](#7232-type-geographicaddressref)
-      - [7.2.3.3. Type GeographicSiteRef](#7233-type-geographicsiteref)
-      - [7.2.3.4. `enum` ProductActionAddModifyType](#7234-enum-productactionaddmodifytype)
-      - [7.2.3.5. Type ProductRef](#7235-type-productref)
-      - [7.2.3.6. Type ProductRelationship](#7236-type-productrelationship)
-      - [7.2.3.7. Type RelatedPlaceRef](#7237-type-relatedplaceref)
-      - [7.2.3.8. `enum` TimeUnit](#7238-enum-timeunit)
+    - [7.2.3. Place representation](#723-place-representation)
+      - [7.2.3.1. Type RelatedPlaceRefWithSubUnit](#7231-type-relatedplacerefwithsubunit)
+      - [7.2.3.2. Type PlaceRef](#7232-type-placeref)
+      - [7.2.3.3. Type GeographicAddressRef](#7233-type-geographicaddressref)
+      - [7.2.3.4. Type GeographicSiteRef](#7234-type-geographicsiteref)
+      - [7.2.3.5. Type SubUnit](#7235-type-subunit)
+    - [7.2.4. Common Types](#724-common-types)
+      - [7.2.4.1. Type Duration](#7241-type-duration)
+      - [7.2.4.2. `enum` ProductActionAddModifyType](#7242-enum-productactionaddmodifytype)
+      - [7.2.4.3. Type ProductRef](#7243-type-productref)
+      - [7.2.4.4. Type ProductRelationship](#7244-type-productrelationship)
+      - [7.2.4.5. `enum` TimeUnit](#7245-enum-timeunit)
 - [8. References](#8-references)
 
 <div class="page"/>
@@ -172,19 +171,19 @@ This standard is intended to assist implementation of the Product Offering
 Availability and Pricing Discovery functionality defined for the LSO Cantata and
 LSO Sonata Interface Reference Points (IRPs), for which requirements and use
 cases are defined in MEF 110 _Product Offering Availability and Pricing
-Discovery - Business Requirements and Use Cases_ [[MEF110](#8-references)]. This
-standard consists of this document and complementary API definitions.
+Discovery - Business Requirements and Use Cases_ [[MEF 110](#8-references)].
+This standard consists of this document and complementary API definitions.
 
 This standard normatively incorporates the following files by reference as if
 they were part of this document, from the GitHub repository:
 
 <https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK>
 
-- [`productApi/availabilityAndPricingDiscovery/productOfferingAvailabilityAndPricingDiscovery.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/blob/working-draft/productApi/availabilityAndPricingDiscovery/productOfferingAvailabilityAndPricingDiscovery.api.yaml)
+- [`productApi/availabilityAndPricingDiscovery/productOfferingAvailabilityAndPricingDiscovery.api.yaml`](https://raw.githubusercontent.com/MEF-GIT/MEF-LSO-Sonata-SDK/refs/tags/irene/productApi/availabilityAndPricingDiscovery/productOfferingAvailabilityAndPricingDiscovery.api.yaml)
 
 <https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK>
 
-- [`productApi/availabilityAndPricingDiscovery/productOfferingAvailabilityAndPricingDiscovery.api.yaml`](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/blob/working-draft/productApi/availabilityAndPricingDiscovery/productOfferingAvailabilityAndPricingDiscovery.api.yaml)
+- [`productApi/availabilityAndPricingDiscovery/productOfferingAvailabilityAndPricingDiscovery.api.yaml`](https://raw.githubusercontent.com/MEF-GIT/MEF-LSO-Cantata-SDK/refs/tags/irene/productApi/availabilityAndPricingDiscovery/productOfferingAvailabilityAndPricingDiscovery.api.yaml)
 
 <div class="page"/>
 
@@ -194,12 +193,11 @@ This document does not define any new terms or definitions. All of them are
 defined in the standards referenced below and are included in this document by
 reference:
 
-- MEF 110 - Product Offering Availability and Pricing Discovery - Business
-  Requirements and Use Cases [[MEF110](#8-references)]
-- MEF 55.1 - Lifecycle Service Orchestration (LSO): Reference Architecture and
-  Framework [[MEF55.1](#8-references)]
-- MEF 80 - Quote Management Requirements and Use Cases, July 2021
-  [[MEF80](#8-references)]
+- [[MEF 110](#8-references)]
+- [[MEF 55.1](#8-references)]
+- [[MEF 55.1.1](#8-references)]
+- [[MEF 80](#8-references)]
+- [[MEF 150](#8-references)]
 
 <div class="page"/>
 
@@ -208,15 +206,24 @@ reference:
 The key words **"MUST"**, **"MUST NOT"**, **"REQUIRED"**, **"SHALL"**, **"SHALL
 NOT"**, **"SHOULD"**, **"SHOULD NOT"**, **"RECOMMENDED"**, **"NOT
 RECOMMENDED"**, **"MAY"**, and **"OPTIONAL"** in this document are to be
-interpreted as described in BCP 14 (RFC 2119 [[rfc2119](#8-references)], RFC
-8174 [[rfc8174](#8-references)]) when, and only when, they appear in all
-capitals, as shown here. All keywords must be in bold text.
+interpreted as described in BCP 14 ([[RFC2119](#8-references)],
+[[RFC8174](#8-references)]) when, and only when, they appear in all capitals, as
+shown here. All key words must be in bold text.
 
 Items that are **REQUIRED** (contain the words **MUST** or **MUST NOT**) are
 labeled as **[Rx]** for required. Items that are **RECOMMENDED** (contain the
 words **SHOULD** or **SHOULD NOT**) are labeled as **[Dx]** for desirable. Items
 that are **OPTIONAL** (contain the words MAY or OPTIONAL) are labeled as
 **[Ox]** for optional.
+
+A paragraph preceded by **[CRa]<** specifies a conditional mandatory requirement
+that **MUST** be followed if the condition(s) following the "<" have been met.
+For example, **"[CR1]<[D38]"** indicates that Conditional Mandatory Requirement
+1 must be followed if Desirable Requirement 38 has been met. A paragraph
+preceded by **[CDb]<** specifies a Conditional Desirable Requirement that
+**SHOULD** be followed if the condition(s) following the "<" have been met. A
+paragraph preceded by **[COc]<**specifies a Conditional Optional Requirement
+that **MAY** be followed if the condition(s) following the "<" have been met.
 
 <div class="page"/>
 
@@ -416,10 +423,12 @@ mapping. Use cases are described extensively in
 ## 5.2. API Endpoint and Operation Description
 
 **Base URL for Cantata**:
-`https://{{serverBase}}:{{port}}{{?/seller_prefix}}/mefApi/cantata/productOfferingAvailabilityAndPricingDiscovery/v3/`
+
+`https://{{serverBase}}:{{port}}{{?/seller_prefix}}/mefApi/cantata/productOfferingAvailabilityAndPricingDiscovery/v4/`
 
 **Base URL for Sonata**:
-`https://{{serverBase}}:{{port}}{{?/seller_prefix}}/mefApi/sonata/productOfferingAvailabilityAndPricingDiscovery/v3/`
+
+`https://{{serverBase}}:{{port}}{{?/seller_prefix}}/mefApi/sonata/productOfferingAvailabilityAndPricingDiscovery/v4/`
 
 **_Note:_** All examples will include only the Sonata version of the Base Path.
 
@@ -433,50 +442,64 @@ Table 2 lists the API endpoints with mapping to business use cases:
 **Table 2. Seller side endpoints.**
 
 **[R1]** The Buyer implementation **MUST** be able to use all REST methods that
-are listed in Table 2. [MEF110 R1], [MEF110 R2], [MEF110 R23], [MEF110 R24]
+are listed in Table 2. [MEF110 R1], [MEF110 R2], [MEF110 R24], [MEF110 R25]
 
 ## 5.3. Specifying the Buyer ID and the Seller ID
 
-A business entity willing to represent multiple Buyers or multiple Sellers must
-follow requirements of MEF 79 [[MEF79](#8-references)] chapter 8.8, which
-states:
+A business Entity willing to represent multiple Buyers or multiple Sellers must
+follow requirements of [[MEF 150](#8-references)] chapter 8.8, which states:
 
-<!-- TODO update to 150 when ready-->
-
-> For requests of all types, there is a business entity that is initiating an
-> Operation (called a Requesting Entity) and a business entity that is
+> For requests of all types, there is a business Entity that initiates an
+> Operation (called a Requesting Entity) and a business Entity that is
 > responding to this request (called the Responding Entity). In the simplest
 > case, the Requesting Entity is the Buyer and the Responding Entity is the
 > Seller. However, in some cases, the Requesting Entity may represent more than
-> one Buyer, and similarly, the Responding Entity may represent more than one
+> one Buyer and similarly, the Responding Entity may represent more than one
 > Seller.
->
+
+![Figure 5. Buyer ID and Seller ID Examples](media/buyerIdSellerId.png)
+
+**Figure 5. Buyer ID and Seller ID Examples**
+
+> As shown in Figure 5, if a Requesting Entity representing a single Buyer is
+> doing business with a Responding Entity representing a single Seller, Buyer
+> and Seller IDs are not required to be passed between the two Entities. If a
+> Requesting Entity representing more than one Buyer is doing business with a
+> Responding Entity representing a single Seller, the Buyer ID is required to be
+> passed between the two Entities. If a Requesting Entity representing a single
+> Buyer is doing business with a Responding Entity representing multiple
+> Sellers, the Seller ID is required to be passed between the two Entities. If a
+> Requesting Entity representing multiple Buyers is doing business with a
+> Responding Entity representing multiple Sellers, both the Buyer ID and the
+> Seller ID are required to be passed between the Entities.
+
 > While it is outside the scope of this specification, it is assumed that the
 > Requesting Entity and the Responding Entity are aware of each other and can
 > authenticate requests initiated by the other party. It is further assumed that
-> both the Buying Entity and the Requesting Entity know:
+> the Buying Entity knows:
 >
-> a) the list of Buyers the Requesting Entity represents when interacting with
-> this Responding Entity; and  
-> b) the list of Sellers that this Responding Entity represents to this
-> Requesting Entity.
+> - the list of Buyers the Requesting Entity represents when interacting with
+>   this Responding Entity; and
+> - the list of Sellers that this Responding Entity represents to this
+>   Requesting Entity.
+>
+> It is also assumed that the Responding Entity knows:
+>
+> - the list of Sellers that this Responding Entity represents to this
+>   Requesting Entity and
+> - the list of Buyers the Requesting Entity represents when interacting with
+>   this Respond-ing Entity.
 
-In the API the `buyerId` and `sellerId` are represented as an optional query
-parameters in each defined operation.
+In the API the `buyerId` and `sellerId` are represented as optional query
+parameters in each operation defined.
 
 **[R2]** If the Requesting Entity has the authority to represent more than one
-Buyer the request **MUST** include the `buyerId` query parameter that identifies
-the Buyer being represented [MEF79 R80]
+Buyer the request **MUST** include `buyerId` that identifies the Buyer being
+represented [MEF150 R62]
 
-**[R3]** If the Requesting Entity represents precisely one Buyer with the
-Responding Entity, the request **MUST NOT** specify the `buyerId` [MEF79 R81]
-
-**[R4]** If the Responding Entity represents more than one Seller to this Buyer
-the request **MUST** include the `sellerId` query parameter that identifies the
-The seller with whom this request is associated [MEF79 R82]
-
-**[R5]** If the Responding Entity represents precisely one Seller to this Buyer,
-the request **MUST NOT** specify the `sellerId` [MEF79 R83]
+**[R3]** If the Responding Entity represents more than one Seller to this Buyer
+the request **MUST** include `sellerId` that identifies the Seller with whom
+this request is associated [MEF150 R63]
 
 ## 5.4. Integration of Product Specifications into the API
 
@@ -491,11 +514,11 @@ is provided as root schema `$id` and in product specification documentation. Use
 of non-MEF standard product definitions is allowed. In such a case the schema
 identifier must be agreed upon between the Buyer and the Seller.
 
-![Figure 5](media/extension_pattern.png)
+![Figure 6](media/extension_pattern.png)
 
-**Figure 5. The Extension Pattern**
+**Figure 6. The Extension Pattern**
 
-Figure 5 presents two MEF `<<ProductSpecifications>>` that represent Access
+Figure 6 presents two MEF `<<ProductSpecifications>>` that represent Access
 E-Line OVC and Carrier Ethernet Operator UNI products. When these products are
 used as a Product Offering Availability or Pricing Discovery payload the `@type`
 of `MEFProductConfiguration` takes
@@ -607,67 +630,64 @@ Regardless of the chosen implementation pattern, the HTTP payload is exactly the
 same. Both implementation approaches must conform to the requirements specified
 below.
 
-**[R6]** `MEFProductConfiguration` type is an extension point that **MUST** be
+**[R4]** `MEFProductConfiguration` type is an extension point that **MUST** be
 used to integrate product specifications' properties into a request/response
 payload.
 
-**[R7]** The `@type` property of `MEFProductConfiguration` **MUST** be used to
+**[R5]** The `@type` property of `MEFProductConfiguration` **MUST** be used to
 specify the type of the extending entity.
 
-**[R8]** Product attributes specified in the payload must conform to the product
+**[R6]** Product attributes specified in the payload must conform to the product
 specification specified in the `@type` property.
 
 ## 5.5. Sample Product Specification
 
-The SDK contains product specification definitions, from which UNI and Access
-E-Line (OVC) are used in the payload samples in this section. They are located
-in the SDK package at:
+The Sonata SDK contains product specification definitions, from which Access
+E-Line [[MEF 106](#8-references)] is used in the payload samples in this
+section. They are located in the SDK at:
 
 `\productSchema\carrierEthernet\operatorEthernet\accessEline\accessElineOvc.yaml`
 `\productSchema\carrierEthernet\operatorEthernet\carrierEthernetOperatorUni\carrierEthernetOperatorUni.yaml`
 
 The product specification data model definitions are available as JsonSchema
-(version `draft 7`) documents. Figures 6 and 7 present an instance diagram of
+(version `draft 7`) documents. Figures 7 and 8 present an instance diagram of
 OVC and UNI products with simplified configuration. This document aims to
 explain the pattern of exchanging product-specific attributes, not to explain
 the particular product itself.
 
-![Figure 6](media/productAEL.png)
+![Figure 7](media/productAEL.png)
 
-**Figure 6. Access E-Line OVC Product Shortened Configuration Example**
+**Figure 7. Access E-Line OVC Product Shortened Configuration Example**
 
-![Figure 7](media/productUNI.png)
+![Figure 8](media/productUNI.png)
 
-**Figure 7. Operator Carrier Ethernet UNI Product Shortened Configuration
+**Figure 8. Operator Carrier Ethernet UNI Product Shortened Configuration
 Example**
 
 Product specifications define several product-related and envelope-related
 requirements. For example:
 
-- for an Access E-Line OVC product two mandatory relationship roles must be
-  specified, one with the Operator ENNI (`ENNI_REFERENCE`) and a second with the
-  operator UNI (`UNI_REFERENCE`). First must be realized as a product
-  relationship (relation to product existing in Seller's Inventory), second
-  might be realized as an order item (being part of the same order) or as a
-  product relationship
+- for an Access E-Line OVS product two mandatory relationship roles must be
+  specified, one with the operator ENNI (`CONNECTS_TO_ENNI`) and a second with
+  the operator UNI (`CONNECTS_TO_UNI`).
 - in the case of a `modify` action, product relationships must have the same
   value as in the `add` action. They must not be changed
-- for an Operator UNI product a place relationship (`INSTALL_LOCATION`) must be
+- for an operator UNI product a place relationship (`INSTALL_LOCATION`) must be
   specified
 - in the case of a `modify` action, place relationships must have the same value
   as in the `add` action. They must not be changed
 
-Figure 8 presents the Access E-Line product required relations. The Access
+Figure 9 presents the Access E-Line product required relations. The Access
 E-Line OVC has two product relationships:
 
-- towards ENNI - `ENNI_REFERENCE`
-- towards UNI - `UNI_REFERENCE`
+- towards ENNI - `CONNECTS_TO_ENNI`
+- towards UNI - `CONNECTS_TO_UNI`
 
 The UNI product has one place relationship pointing to `INSTALL_LOCATION`.
 
-![Figure 8](media/productAELRelationships.png)
+![Figure 9](media/productAELRelationships.png)
 
-**Figure 8. Operator Carrier Ethernet UNI Product Shortened Configuration
+**Figure 9. Operator Carrier Ethernet UNI Product Shortened Configuration
 Example**
 
 In case, some of these requirements are violated the Seller returns an error
@@ -677,11 +697,28 @@ response.
 
 ## 5.6. Model Structural Validation
 
-The structure of the HTTP payloads exchanged via Address Validation API
-endpoints is defined using OpenAPI version 3.0.
+The structure of the HTTP payloadsis defined using:
 
-**[R9]** Implementations **MUST** use payloads that conform to these
+- OpenAPI version 3.0 for product-agnostic part of the payload
+- JsonSchema (draft 7) for product-specific part of the payload
+
+**[R7]** Implementations **MUST** use payloads that conform to these
 definitions.
+
+**[R8]** The Buyer and the Seller **MUST NOT** use any operation, entity or
+attribute that is not explicitly defined or allowed by this standard.
+
+**[R9]** A product specification may define additional consistency rules and
+requirements that **MUST** be respected by implementations.
+
+These are defined for:
+
+- required relation type, multiplicity to other items in the same quote request
+- required relation type, multiplicity to entities in the Seller's product
+  inventory
+- related contact information roles that are to be defined at the item level
+- relations to places (locations) and their roles that are to be defined at the
+  item level
 
 ## 5.7. Security Considerations
 
@@ -689,8 +726,8 @@ There must be an authentication mechanism whereby a Seller can be assured who a
 Buyer is and vice-versa. There must also be authorization mechanisms in place to
 control what a particular Buyer or Seller is allowed to do and what information
 may be obtained. However, the definition of the exact security mechanism and
-configuration is outside the scope of this document. It is specified by a
-separate MEF Standard [[MEF128.1](#8-references)].
+configuration is outside the scope of this document. Security considerations are
+standardized by _LSO API Security Profile_ [[MEF 128.1](#8-references)].
 
 <div class="page"/>
 
@@ -717,14 +754,14 @@ To send a Retrieve Product Offering Availability request the Buyer uses the
 `POST` operation to allow passing complex data structure of the Delivery Context
 as a request payload.
 
-The flow is a simple request-response pattern, as presented in Figure 9:
+The flow is a simple request-response pattern, as presented in Figure 10:
 
-![Figure 9](media/uc1flow.png)
+![Figure 10](media/uc1flow.png)
 
-**Figure 9. Use Case 1 Flow**
+**Figure 10. Use Case 1 Flow**
 
 This use case is similar to one defined in Product Offering Qualification
-[[MEF87](#8-references)] but is optimized for more effective discovery of
+[[MEF 87](#8-references)] but is optimized for more effective discovery of
 available product configurations. The Buyer provides only the Product
 Specification and the Delivery Context and receives a list of available product
 configurations in the response. In MEF 87 the Buyer provides one product
@@ -733,15 +770,15 @@ of attributes (if matched with available configurations). This led to many
 failed requests until the Buyer got to know the possible configuration available
 in the given delivery context.
 
-For more details please refer to [[MEF110](#8-references)], section 9.1.
+For more details please refer to [[MEF 110](#8-references)], section 9.1.
 
-Figure 10 presents the model of Use Case 1. The request uses
+Figure 11 presents the model of Use Case 1. The request uses
 `ProductOfferingAvailability_Request` as the root object and the response is
 provided with the use of `ProductOfferingAvailability`.
 
-![Figure 10](media/uc1model.png)
+![Figure 11](media/uc1model.png)
 
-**Figure 10. Use Case 1 Product Offering Availability Model**
+**Figure 11. Use Case 1 Product Offering Availability Model**
 
 ### 6.1.1. Request
 
@@ -791,7 +828,7 @@ The request is very simple and has only three parameters:
   interest. For the sake of example, the `id` in the example is the `urn` as
   defined by MEF standard describing the Access E-Line. In practice, this is an
   identifier as presented by the Seller in the Product Catalog.
-- `productRelationship` - to provide the delivery context. As shown in Figure 8
+- `productRelationship` - to provide the delivery context. As shown in Figure 9
   Access E-Line requires 2 product relationships. Other products may require
   providing place relationship (e.g. UNI)
 
@@ -808,8 +845,10 @@ a place (e.g. Operaton UNI) is presented in the following snippet:
   },
   "place": [
     {
-      "@type": "GeographicAddressRef",
-      "id": "GeographicAddressId-0005",
+      "place": {
+        "@type": "GeographicAddressRef",
+        "id": "GeographicAddressId-0005"
+      },
       "role": "INSTALL_LOCATION"
     }
   ]
@@ -822,13 +861,23 @@ a place (e.g. Operaton UNI) is presented in the following snippet:
 **[R11]** If `action=add`, the request **MUST NOT** provide `productRef`.
 [MEF110 R7]
 
-**[R12]** If `action=add` and the Product Specification defines mandatory place relations, the
-request **MUST** provide them (and only them) accordingly in the `place`
-attribute. [MEF110 R5], [MEF110 R46]
+**[R12]** If `action=add` and the Product Specification defines mandatory place
+relations, the request **MUST** provide them (and only them) accordingly in the
+`place` attribute. [MEF110 R5], [MEF110 R9]
 
-**[R13]** If `action=add` and the Product Specification defines mandatory product relations,
-the request **MUST** provide them (and only them) accordingly in the
-`productRelationship` attribute. [MEF110 R25], [MEF110 R28]
+**[R13]** When specifying the `place`, the Buyer **MUST** provide following
+attributes: [MEF110 R48]
+
+- `place`
+- `role`
+
+**[R14]** When specifying the `place`, with `GeographicSiteRef` the Buyer **MUST
+NOT** additionally provide `subUnit` to describe exactly where the Buyer wants
+the Product to be installed.
+
+**[R15]** If `action=add` and the Product Specification defines mandatory
+product relations, the request **MUST** provide them (and only them) accordingly
+in the `productRelationship` attribute. [MEF110 R6], [MEF110 R8]
 
 There may be cases, as explicitly allowed or defined in the Product
 Specification where a Buyer cannot precisely state which installed Product a
@@ -871,11 +920,11 @@ is used to fulfil the request.
 }
 ```
 
-**[R14]** If `action=modify`, the request **MUST** provide `productRef`.
-[MEF110 R4]
+**[R16]** If `action=modify`, the request **MUST** provide `productRef`. [MEF110
+R4]
 
-**[R15]** If `action=modify`, the request **MUST NOT** provide following
-attributes: [MEF110 R9]
+**[R17]** If `action=modify`, the request **MUST NOT** provide following
+attributes: [MEF110 R10]
 
 - `place`
 - `productRelationship`
@@ -1042,14 +1091,14 @@ following snippet.
 }
 ```
 
-Figure 11 presents the general structure of the response. It echoes back the
+Figure 12 presents the general structure of the response. It echoes back the
 Buyer's request and provides a list of `availableProductOfferingConfiguration`.
 For better readability the details of `productConfigurations` are
 `"<<skipped>>"` and will be presented on further figures.
 
-![Figure 11](media/uc1responseStructure.png)
+![Figure 12](media/uc1responseStructure.png)
 
-**Figure 11. Use Case 1 Response structure**
+**Figure 12. Use Case 1 Response structure**
 
 In this example, for given Delivery Context and Product Specification there are
 3 `availableProductOfferingConfiguration`: 1 for
@@ -1065,19 +1114,19 @@ attribute. It does not identify the action or the delivery context. This allows
 to ask for Pricing Discovery of the same `productConfiguration` in different
 delivery contexts.
 
-![Figure 12](media/uc1responsePC1.png)
+![Figure 13](media/uc1responsePC1.png)
 
-**Figure 12. UC1 Response Product Configuration 1**
+**Figure 13. UC1 Response Product Configuration 1**
 
-![Figure 13](media/uc1responsePC2.png)
+![Figure 14](media/uc1responsePC2.png)
 
-**Figure 13. UC1 Response Product Configuration 2**
+**Figure 14. UC1 Response Product Configuration 2**
 
-![Figure 14](media/uc1responsePC3.png)
+![Figure 15](media/uc1responsePC3.png)
 
-**Figure 14. UC1 Response Product Configuration 3**
+**Figure 15. UC1 Response Product Configuration 3**
 
-Figures 12, 13, and 14 present details of product configurations and highlight
+Figures 13, 14, and 15 present details of product configurations and highlight
 differences between them. The first one has a `low` class of service and has
 `eir` and `eirMax` attributes set to `70 MBPS`. This means it offers a
 best-effort bandwidth of a maximum 70 MBPS. The latter have a `high` class of
@@ -1085,43 +1134,44 @@ service. The second one has the `cir` and `cirMax` set to `200 MBPS` thus
 offering a guaranteed bandwidth of `200 MBPS`, while the third one offers
 `1GBPS` of guaranteed bandwidth.
 
-**[R16]** The Seller **MUST** echo back the attributes of the Buyer's Product
-Offering Availability request. [MEF110 R11]
+**[R18]** The Seller **MUST** echo back the attributes of the Buyer's Product
+Offering Availability request. [MEF110 R12]
 
-**[R17]** The Seller **MUST NOT** return a response that contains
+**[R19]** The Seller **MUST NOT** return a response that contains
 `productOfferingConfigurations` that differ only by `installationInterval` (in
-which all other attributes are the same). [MEF110 R12]
+which all other attributes are the same). [MEF110 R13]
 
 In other words - the Seller is expected to provide only the shortest possible
 `installationInterval` per given `productConfiguration`.
 
-**[R18]** If the request is successful, the response given by the Seller
+**[R20]** If the request is successful, the response given by the Seller
 **MUST** include a list of zero or more `availableProductOfferingConfiguration`.
-[MEF110 R16]
+[MEF110 R14]
 
-**[R19]** If the request is unsuccessful or fails validation, the Seller
+**[R21]** If the request is unsuccessful or fails validation, the Seller
 **MUST** return an `Error` response with the appropriate Error Code. [MEF110
-R17], [MEF110 R18]
+R15], [MEF110 R16]
 
-**[R20]** For each returned `ProductOfferingConfiguration` the Seller **MUST**
-include following attributes: [MEF110 R16], [MEF110 R17], [MEF110 R18],
-[MEF110 R20]
+**[R22]** For each returned `ProductOfferingConfiguration` the Seller **MUST**
+include following attributes: [MEF110 R17], [MEF110 R18], [MEF110 R21], [MEF110
+R20]
 
 - `installationInterval`
 - `productOffering`
 - `productConfiguration`
 - `productOfferingConfigurationIdentifier`
 
-**[R21]** Every returned `productOfferingConfigurationIdentifier` **MUST**
-uniquely identify a `productConfiguration` within the Seller. [MEF110 R16]
+**[R23]** Every returned `productOfferingConfigurationIdentifier` **MUST**
+uniquely identify a `ProductOfferingConfiguration` within the Seller. [MEF110
+R17]
 
-**[R22]** Every returned `productOfferingConfigurationIdentifier` **MUST** be
-valid for Pricing Discovery request for a period of at least 15 minutes.
-[MEF110 R22]
+**[R24]** Every returned `productOfferingConfigurationIdentifier` **MUST** be
+valid for Pricing Discovery request for a period of at least 15 minutes. [MEF110
+R23]
 
-**[R23]** Every returned `productConfiguration` **MUST** contain only attributes
+**[R25]** Every returned `productConfiguration` **MUST** contain only attributes
 specified by Product Specification and agreed to by the Buyer and Seller during
-the onboarding. [MEF110 R18], [MEF110 R19]
+the onboarding. [MEF110 R19], [MEF110 R20]
 
 ## 6.2. Use case 2: Retrieve Pricing for a Product Offering Configuration
 
@@ -1134,13 +1184,13 @@ This can be done with the use of the `POST /pricingDiscovery` operation. The
 retrieve operation is performed with a `POST` operation to allow passing the
 complex data structure of the Delivery Context as a request payload.
 
-The flow is a simple request-response pattern, as presented in Figure 15:
+The flow is a simple request-response pattern, as presented in Figure 16:
 
-![Figure 15](media/uc2flow.png)
+![Figure 16](media/uc2flow.png)
 
-**Figure 15. Retrieve Address by Identifier Flow**
+**Figure 16. Pricing Discovery Flow**
 
-This use case is similar to one defined in Quote API [[MEF115](#8-references)]
+This use case is similar to one defined in Quote API [[MEF 115](#8-references)]
 but is optimized for more effective discovery of available pricing and terms.
 The Buyer provides only the `productOfferingConfigurationIdentifier` and the
 Delivery Context and receives a list of available pricings and terms in the
@@ -1150,13 +1200,13 @@ combination (if matched with available configurations). This requires a request
 per each term, assuming the Buyer knows exactly what are the available terms, or
 a set of tries until the Buyer discovers all available terms.
 
-Figure 16 presents the model of Use Case 1. The request uses
+Figure 17 presents the model of Use Case 1. The request uses
 `PricingDiscovery_Request` as the root object and the response is provided with
 use of `PricingDiscovery`.
 
-![Figure 16](media/uc2model.png)
+![Figure 17](media/uc2model.png)
 
-**Figure 16. Use Case 2 Pricing Discovery Model**
+**Figure 17. Use Case 2 Pricing Discovery Model**
 
 ### 6.2.1. Request
 
@@ -1193,35 +1243,35 @@ The request is very simple and has only three parameters:
 - `action` - to state if the Buyer wishes to `add` or `modify` a product.
 - `productOfferingConfigurationIdentifier`- to refer to Product Offering
   Configuration that the Buyer is willing to price
-- `productRelationship` - to provide the delivery context. As shown on Figure 8
+- `productRelationship` - to provide the delivery context. As shown on Figure 9
   Access E-Line requires 2 product relationships. Other products may require
   providing place relationship (e.g. UNI)
 
-**[R24]** The request **MUST** provide: [MEF110 R25]
+**[R26]** The request **MUST** provide: [MEF110 R26], [MEF110 R28]
 
 - `productOfferingConfigurationIdentifier`
 - `action`
 
-**[R25]** If `action=add` and the Product Specification (derived from
+**[R27]** If `action=add` and the Product Specification (derived from
 `productOfferingConfigurationIdentifier`) defines mandatory place relations, the
 request **MUST** provide them (and only them) accordingly in the `place`
-attribute. [MEF110 R25], [MEF110 R46]
+attribute. [MEF110 R26], [MEF110 R30]
 
-**[R26]** If `action=add` and the Product Specification (derived from
+**[R28]** If `action=add` and the Product Specification (derived from
 `productOfferingConfigurationIdentifier`) defines mandatory product relations,
 the request **MUST** provide them (and only them) accordingly in the
-`productRelationship` attribute. [MEF110 R25], [MEF110 R28]
+`productRelationship` attribute. [MEF110 R26], [MEF110 R31]
 
-**[R27]** If `action=add`, the request **MUST NOT** provide `productRef`.
-[MEF110 R26]
+**[R29]** If `action=add`, the request **MUST NOT** provide `productRef`.
+[MEF110 R27]
 
-**[R28]** If `action=modify`, the request **MUST** additionaly provide
-`productRef`. [MEF110 R27]
+**[R30]** If `action=modify`, the request **MUST** additionaly provide
+`productRef`. [MEF110 R28]
 
-**[R29]** If `action=modify`, the request **MUST NOT** provide: [MEF110 R29]
+**[R31]** If `action=modify`, the request **MUST NOT** provide: [MEF110 R29]
 
 - `place`
-- `productrelationship`
+- `productRelationship`
 
 ### 6.2.2. Response
 
@@ -1280,7 +1330,10 @@ following snippet:
           },
           "name": "Monthly price for a 1-year subscription",
           "priceType": "recurring",
-          "recurringChargePeriod": "month"
+          "recurringChargePeriod": {
+            "amount": 1,
+            "units": "calendarMonths"
+          }
         }
       ],
       "firm": true,
@@ -1322,7 +1375,10 @@ following snippet:
           },
           "name": "Monthly price for a 3-year subscription",
           "priceType": "recurring",
-          "recurringChargePeriod": "month"
+          "recurringChargePeriod": {
+            "amount": 1,
+            "units": "calendarMonths"
+          }
         }
       ],
       "firm": true,
@@ -1335,49 +1391,54 @@ following snippet:
 }
 ```
 
-Figure 17 presents the Seller's response. It echoes back the Buyer's request and
+Figure 18 presents the Seller's response. It echoes back the Buyer's request and
 provides a list of `pricingAndTerm`. In this example in the given Delivery
 Context and `productOfferingConfigurationIdentifier` the Seller has two possible
 `PricingAndTerm`. Differences between them are highlighted. The first one is for
 a 1-year contract with a 110 EUR monthly rate, the other is for a 3-year
 contract with a 88 EUR monthly rate. Each has its own distinct `identifier`.
 
-![Figure 17](media/uc2response.png)
+![Figure 18](media/uc2response.png)
 
-**Figure 17. Use Case 2 Response**
+**Figure 18. Use Case 2 Response**
 
-**[R30]** If the request is unsuccessful or fails validation, the Seller
+**[R32]** If the request is unsuccessful or fails validation, the Seller
 **MUST** return an `Error` response with the appropriate Error Code. [MEF110
-R33]
+R35]
 
-**[R31]** If the `productOfferingConfigurationIdentifier` has expired, the
-Seller **MUST** return an error. [MEF110 R31]
+**[R33]** If the `productOfferingConfigurationIdentifier` has expired, the
+Seller **MUST** return an error. [MEF110 R33]
 
-**[R32]** The Seller **MUST** echo back the attributes of the Buyer's Pricing
-Discovery request. [MEF110 R32]
+**[R34]** The Seller **MUST** echo back the attributes of the Buyer's Pricing
+Discovery request. [MEF110 R34]
 
-**[R33]** If the request is successful, the response given by the Seller
-**MUST** include a list of zero or more `pricingAndTerm` items. [MEF110 R34]
+**[R35]** If the request is successful, the response given by the Seller
+**MUST** include a list of zero or more `pricingAndTerm` items. [MEF110 R36]
 
-**[R34]** For each returned `PricingAndTerm` the Seller **MUST** include
-following attributes: [MEF110 R37]
+**[R36]** For each returned `PricingAndTerm` the Seller **MUST** include
+following attributes: [MEF110 R39]
 
 - `identifier`
 - `term`
-- `term.endOfTermAction`
-- `term.duration`
 - `price`
 - `subjectToAdditionalNonrecurringCharges`
+- `installationInterval`
 
-**[R35]** Once assigned `PricingAndTerm.identifier` **MUST** be be unique within
-the Seller's system. [MEF110 R43]
+**[R37]** When providing `MEFItemTerm`, following attributes **MUST** be
+included: [MEF110 R39]
 
-**[R36]** `PricingAndTerm` provided by the Seller **MUST** be valid for at least
-15 minutes. [MEF110 R40]
+- `duration`
+- `endOfTermAction`
 
-**[R37]** If the `installationInterval` is 0 (immediate) the
+**[R38]** Once assigned `PricingAndTerm.identifier` **MUST** be be unique within
+the Seller's system. [MEF110 R45]
+
+**[R39]** `PricingAndTerm` provided by the Seller **MUST** be valid for at least
+15 minutes. [MEF110 R42]
+
+**[R409]** If the `installationInterval` is 0 (immediate) the
 `subjectToAdditionalNonrecurringCharges` **MUST** be set to `false`. [MEF110
-R41]
+R43]
 
 The `subjectToAdditionalNonrecurringCharges` attribute is used to indicate
 additional construction costs or other one-time costs that are not known may be
@@ -1386,28 +1447,28 @@ Product Order Process.
 
 If the `subjectToAdditionalNonrecurringCharges` attribute value is `false`, then
 this is equivalent to the Firm value in MEF 115, which means that all specified
-monthly recurring charges and non-recurring Charges are committed. If the
+monthly recurring Charges and non-recurring Charges are committed. If the
 `subjectToAdditionalNonrecurringCharges` attribute value of the flag is `true`,
 then this is equivalent to the Subject to Feasibility Check value in MEF 115 and
 states that provided monthly recurring charges are final but non-recurring
 charges are subject to change during fulfillment.
 
-**[R38]** If the `term.endOfTermAction` is set to `roll` the Seller **MUST**
-provide the `term.rollInterval` attribute. [MEF110 R38]
+**[R41]** If the `term.endOfTermAction` is set to `roll` the Seller **MUST**
+provide the `term.rollInterval` attribute. [MEF110 R40]
 
-**[R39]** If the `term.endOfTermAction` is set to `autoDisconnect` or
+**[R42]** If the `term.endOfTermAction` is set to `autoDisconnect` or
 `autoRenew` the Seller **MUST NOT** provide the `term.rollInterval` attribute.
-[MEF110 R39]
+[MEF110 R41]
 
-**[R40]** If a Seller has returned multiple
+**[R43]** If a Seller has returned multiple
 `productOfferingConfigurationIdentifiers` to the Buyer in different Product
 Offering Availability responses that refer to the same `productConfiguration`
 values, then the Seller **MUST** return the same response to a Pricing Discovery
 request for a given delivery context that contains any of those
 `productOfferingConfigurationIdentifiers` that are within their validity period.
-[MEF110 R36]
+[MEF110 R38]
 
-[R40] means that a Retrieve Pricing and Terms request for a given Delivery
+[R43] means that a Retrieve Pricing and Terms request for a given Delivery
 Context and a given `productConfiguration` values always returns the same result
 regardless of which `productOfferingConfigurationIdentifier` is used to refer to
 that `ProductOfferingConfiguration`. In particular, this is the case even if the
@@ -1417,20 +1478,20 @@ an Availability Discovery response for a different Delivery Context.
 The following requirements apply to every item returned in the `price` list of
 the response.
 
-**[R41]** The Seller **MUST** provide at least one `price` item of
+**[R44]** The Seller **MUST** provide at least one `price` item of
 `priceType=recurring` if a recurring charge applies. [MEF80 R55]
 
-**[R42]** For each provided `price` item (`QuotePrice`) the Seller **MUST**
+**[R45]** For each provided `price` item (`QuotePrice`) the Seller **MUST**
 include the following attributes: [MEF80 R55]
 
 - `name`
 - `priceType`
 - `price`
 
-**[R43]** The `recurringChargePeriod` **MUST** only be provided if the
+**[R46]** The `recurringChargePeriod` **MUST** only be provided if the
 `priceType` is `recurring`. [MEF80 R56]
 
-**[R44]** The `unitOfMeasure` **MUST** only be provided if the `priceType` is
+**[R47]** The `unitOfMeasure` **MUST** only be provided if the `priceType` is
 `usageBased`. [MEF80 R57]
 
 Table 4 shows the combination of attributes that must be provided for each
@@ -1463,7 +1524,7 @@ case, the error message body structure might be aligned with the `Error`.
 
 ![Error response data model](media/errorModel.png)
 
-**Figure 18. Data model types to represent an erroneous response**
+**Figure 19. Data model types to represent an erroneous response**
 
 #### 7.1.1.1. Type Error
 
@@ -1701,8 +1762,9 @@ Inherits from:
 
 #### 7.2.1.1. Type ProductOfferingAvailability_Request
 
-**Description:** Product Offering Availability Request allows the Buyer to provide the action, delivery context, and Product Specification to ask the Seller to provide a list of available Product Offering Configurations.
-
+**Description:** Product Offering Availability Request allows the Buyer to
+provide the action, delivery context, and Product Specification to ask the
+Seller to provide a list of available Product Offering Configurations.
 
 <table id="T_ProductOfferingAvailability_Request" style="width:100%">
     <thead style="font-weight:bold">
@@ -1742,7 +1804,7 @@ Inherits from:
             <td>Product Relationships</td>
         </tr><tr>
         <td>place</td>
-            <td><a href="#T_RelatedPlaceRef">RelatedPlaceRef</a>[]</td>
+            <td><a href="#T_RelatedPlaceRefWithSubUnit">RelatedPlaceRefWithSubUnit</a>[]</td>
             <td>O</td>
             <td>A list of Geographic Addresses or Sites and their roles in relation to the Product. It MUST be provided when the &#x60;action&#x60; &#x3D; &#x60;add&#x60;. It MUST NOT be provided when the &#x60;action&#x60; &#x3D; &#x60;modify&#x60;</td>
             <td>Place Relationships</td>
@@ -1752,11 +1814,13 @@ Inherits from:
 
 #### 7.2.1.2. Type ProductOfferingAvailability
 
-**Description:** Product Offering Availability allows the Seller to provide a list of Product Offering Configurations matching action, delivery context and Product Specification provided by the Buyer
+**Description:** Product Offering Availability allows the Seller to provide a
+list of Product Offering Configurations matching action, delivery context and
+Product Specification provided by the Buyer
 
 Inherits from:
-- <a href="#T_ProductOfferingAvailability_Request">ProductOfferingAvailability_Request</a>
 
+- <a href="#T_ProductOfferingAvailability_Request">ProductOfferingAvailability_Request</a>
 
 <table id="T_ProductOfferingAvailability" style="width:100%">
     <thead style="font-weight:bold">
@@ -1781,7 +1845,8 @@ Inherits from:
 
 #### 7.2.1.3. Type ProductOfferingConfiguration
 
-**Description:** Allows the Seller to provide detailed information of the Product Configuration matching Buyer's Product Offering Availability Request.
+**Description:** Allows the Seller to provide detailed information of the
+Product Configuration matching Buyer's Product Offering Availability Request.
 
 <table id="T_ProductOfferingConfiguration" style="width:100%">
     <thead style="font-weight:bold">
@@ -1827,7 +1892,8 @@ Inherits from:
 
 #### 7.2.1.4. Type ProductOfferingRef
 
-**Description:** A reference to a Product Offering offered by the Seller to the Buyer.
+**Description:** A reference to a Product Offering offered by the Seller to the
+Buyer.
 
 <table id="T_ProductOfferingRef" style="width:100%">
     <thead style="font-weight:bold">
@@ -1859,7 +1925,9 @@ Inherits from:
 
 #### 7.2.1.5. Type MEFProductConfiguration
 
-**Description:** MEFProductConfiguration is used as an extension point for MEF specific product/service payload. The `@type` attribute is used as a discriminator
+**Description:** MEFProductConfiguration is used as an extension point for MEF
+specific product/service payload. The `@type` attribute is used as a
+discriminator
 
 <table id="T_MEFProductConfiguration" style="width:100%">
     <thead style="font-weight:bold">
@@ -1884,7 +1952,9 @@ Inherits from:
 
 #### 7.2.1.6. Type ProductSpecificationRef
 
-**Description:** A reference to a structured set of well-defined technical attributes and/or behaviors that are used to construct a Product Offering for sale to a market.
+**Description:** A reference to a structured set of well-defined technical
+attributes and/or behaviors that are used to construct a Product Offering for
+sale to a market.
 
 <table id="T_ProductSpecificationRef" style="width:100%">
     <thead style="font-weight:bold">
@@ -1918,7 +1988,8 @@ Inherits from:
 
 #### 7.2.2.1. Type PricingDiscovery_Request
 
-**Description:** A set of attributes common to PricingDiscovery_Request and PricingDiscovery
+**Description:** A set of attributes common to PricingDiscovery_Request and
+PricingDiscovery
 
 <table id="T_PricingDiscovery_Request" style="width:100%">
     <thead style="font-weight:bold">
@@ -1958,7 +2029,7 @@ Inherits from:
             <td>Product Relationships</td>
         </tr><tr>
         <td>place</td>
-            <td><a href="#T_RelatedPlaceRef">RelatedPlaceRef</a>[]</td>
+            <td><a href="#T_RelatedPlaceRefWithSubUnit">RelatedPlaceRefWithSubUnit</a>[]</td>
             <td>O</td>
             <td>A list of Geographic Addresses or Sites and their roles with relation to the Product. It MUST be provided when the &#x60;action&#x60; &#x3D; &#x60;add&#x60;. It MUST NOT be provided when the &#x60;action&#x60; &#x3D; &#x60;modify&#x60;</td>
             <td>Place Relationships</td>
@@ -1968,11 +2039,13 @@ Inherits from:
 
 #### 7.2.2.2. Type PricingDiscovery
 
-**Description:** PricingDiscovery allows the Seller to provide the list of Pricing and Terms matching action, delivery context, and Product Configuration Identifier provided by the Buyer
+**Description:** PricingDiscovery allows the Seller to provide the list of
+Pricing and Terms matching action, delivery context, and Product Configuration
+Identifier provided by the Buyer
 
 Inherits from:
-- <a href="#T_PricingDiscovery_Request">PricingDiscovery_Request</a>
 
+- <a href="#T_PricingDiscovery_Request">PricingDiscovery_Request</a>
 
 <table id="T_PricingDiscovery" style="width:100%">
     <thead style="font-weight:bold">
@@ -1997,7 +2070,8 @@ Inherits from:
 
 #### 7.2.2.3. Type PricingAndTerm
 
-**Description:** An option for price and term available to a Buyer for a Product Configuration with a specific Delivery Context
+**Description:** An option for price and term available to a Buyer for a Product
+Configuration with a specific Delivery Context
 
 <table id="T_PricingAndTerm" style="width:100%">
     <thead style="font-weight:bold">
@@ -2056,33 +2130,15 @@ Inherits from:
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 80</td>
+            <td>MEF 110</td>
         </tr>
     </thead>
     <tbody>
         <tr>
-        <td>name</td>
-            <td>string</td>
-            <td>M</td>
-            <td>Name of the price</td>
-            <td>Quote Item Price Name</td>
-        </tr><tr>
-        <td>description</td>
-            <td>string</td>
-            <td>O</td>
-            <td>Description of the price</td>
-            <td>Quote Item Price Description</td>
-        </tr><tr>
-        <td>priceType</td>
-            <td><a href="#T_MEFPriceType">MEFPriceType</a></td>
-            <td>M</td>
-            <td>Indicates if the price is for recurring, non-recurring, or usage based charges</td>
-            <td>Quote Item Price Type</td>
-        </tr><tr>
         <td>unitOfMeasure</td>
             <td>string</td>
             <td>O</td>
-            <td>Unit of Measure if price depending on it (Gb, SMS volume, etc..) MUST be specified when &#x60;priceType&#x60; is &#x60;usageBased&#x60;</td>
+            <td>Unit of Measure if price depending on it (Gb, SMS volume, etc..) MEF: if Quote Item Price Type equals usageBased</td>
             <td>Quote Item Price Unit of Measure</td>
         </tr><tr>
         <td>price</td>
@@ -2091,43 +2147,29 @@ Inherits from:
             <td>The associated price</td>
             <td>Quote Item Price Amount</td>
         </tr><tr>
-        <td>recurringChargePeriod</td>
-            <td><a href="#T_MEFChargePeriod">MEFChargePeriod</a></td>
+        <td>name</td>
+            <td>string</td>
+            <td>M</td>
+            <td>Name of the quote/quote item price</td>
+            <td>Quote Item Price Name</td>
+        </tr><tr>
+        <td>priceType</td>
+            <td><a href="#T_MEFPriceType">MEFPriceType</a></td>
+            <td>M</td>
+            <td>Indicates if the price is for recurring, non-recurring, or usage based charges</td>
+            <td>Quote Item Price Type</td>
+        </tr><tr>
+        <td>description</td>
+            <td>string</td>
             <td>O</td>
-            <td>The recurring duration for which this charge will be applied. MUST be provided if &#x60;priceType is &#x60;recurring&#x60;</td>
+            <td>Description of the quote/quote item price</td>
+            <td>Quote Item Price Description</td>
+        </tr><tr>
+        <td>recurringChargePeriod</td>
+            <td><a href="#T_Duration">Duration</a></td>
+            <td>O</td>
+            <td>Used for a recurring charge to indicate a period</td>
             <td>Quote Item Price Recurring Charge Period</td>
-        </tr>
-    </tbody>
-</table>
-
-#### 7.2.2.5. `enum` MEFChargePeriod
-
-**Description:** Used for a recurring charge to indicate period.
-
-
-<table id="T_MEFChargePeriod">
-    <thead style="font-weight:bold;">
-        <tr>
-            <td>Value</td>
-            <td>MEF 80</td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>hour</td>
-            <td>HOUR</td>
-        </tr><tr>
-            <td>day</td>
-            <td>DAY</td>
-        </tr><tr>
-            <td>week</td>
-            <td>WEEK</td>
-        </tr><tr>
-            <td>month</td>
-            <td>MONTH</td>
-        </tr><tr>
-            <td>year</td>
-            <td>YEAR</td>
         </tr>
     </tbody>
 </table>
@@ -2183,15 +2225,14 @@ Inherits from:
 
 #### 7.2.2.7. `enum` MEFEndOfTermAction
 
-**Description:** The action that needs to be taken by the Seller once the term expires.
+**Description:** The action that needs to be taken by the Seller once the term
+expires.
 
-| Value          | Description                                                                                                            |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| roll           | The Product's contract will continue on a rolling basis once the contract's current term expires                       |
-| autoDisconnect | The Product will automatically be disconnected (and contract terminated) by the Seller once the contract term expires  |
-| autoRenew      | The Product's contract will be renewed for another term equivalent to the original contract term.                      |
-
-
+| Value          | Description                                                                                                           |
+| -------------- | --------------------------------------------------------------------------------------------------------------------- |
+| roll           | The Product's contract will continue on a rolling basis once the contract's current term expires                      |
+| autoDisconnect | The Product will automatically be disconnected (and contract terminated) by the Seller once the contract term expires |
+| autoRenew      | The Product's contract will be renewed for another term equivalent to the original contract term.                     |
 
 <table id="T_MEFEndOfTermAction">
     <thead style="font-weight:bold;">
@@ -2216,8 +2257,8 @@ Inherits from:
 
 #### 7.2.2.8. `enum` MEFPriceType
 
-**Description:** Indicates if the price is for recurring or non-recurring charges.
-
+**Description:** Indicates if the price is for recurring or non-recurring
+charges.
 
 <table id="T_MEFPriceType">
     <thead style="font-weight:bold;">
@@ -2251,7 +2292,7 @@ Inherits from:
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 80</td>
+            <td>MEF 110</td>
         </tr>
     </thead>
     <tbody>
@@ -2273,7 +2314,8 @@ Inherits from:
 
 #### 7.2.2.10. Type Price
 
-**Description:** Provides all amounts (tax included, duty-free, tax rate), used currency and percentage to apply for Price Alteration.
+**Description:** Provides all amounts (tax included, duty-free, tax rate), used
+currency and percentage to apply for Price Alteration.
 
 <table id="T_Price" style="width:100%">
     <thead style="font-weight:bold">
@@ -2282,7 +2324,7 @@ Inherits from:
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 80</td>
+            <td>MEF 110</td>
         </tr>
     </thead>
     <tbody>
@@ -2308,9 +2350,163 @@ Inherits from:
     </tbody>
 </table>
 
-### 7.2.3. Common Types
+### 7.2.3. Place representation
 
-#### 7.2.3.1. Type Duration
+#### 7.2.3.1. Type RelatedPlaceRefWithSubUnit
+
+**Description:** Allows pointing to a place by referring to a GeographicAddress,
+GeographicSite.
+
+<table id="T_RelatedPlaceRefWithSubUnit" style="width:100%">
+    <thead style="font-weight:bold">
+        <tr>
+            <td>Name</td>
+            <td style="width:15%">Type</td>
+            <td>M/O</td>
+            <td>Description</td>
+            <td>MEF 110</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>place</td>
+            <td><a href="#T_PlaceRef">PlaceRef</a></td>
+            <td>M</td>
+            <td></td>
+            <td></td>
+        </tr><tr>
+        <td>role</td>
+            <td>string</td>
+            <td>M</td>
+            <td>Role of this place. The values that can be specified here are described by Product Specification (e.g. &quot;INSTALL_LOCATION&quot;).</td>
+            <td></td>
+        </tr><tr>
+        <td>subUnit</td>
+            <td><a href="#T_SubUnit">SubUnit</a>[]</td>
+            <td>O</td>
+            <td>A list of zero or more sub units included within the boundary of the &#x60;place&#x60; for this POQ Item. This is a list to allow complex sub-unit information such as SUITE 42 ROOM A. It MUST only be used together with GeographicAddressRef</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+#### 7.2.3.2. Type PlaceRef
+
+**Description:** A place described by reference to Geographic Address or
+Geographic Site.
+
+#### 7.2.3.3. Type GeographicAddressRef
+
+**Description:** A reference to a Geographic Address resource available through
+Address Validation API.
+
+<table id="T_GeographicAddressRef" style="width:100%">
+    <thead style="font-weight:bold">
+        <tr>
+            <td>Name</td>
+            <td style="width:15%">Type</td>
+            <td>M/O</td>
+            <td>Description</td>
+            <td>MEF 110</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>href</td>
+            <td>string</td>
+            <td>O</td>
+            <td>Hyperlink to the referenced Address. Hyperlink MAY be used by the Seller in responses. Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request.
+</td>
+            <td></td>
+        </tr><tr>
+        <td>id</td>
+            <td>string</td>
+            <td>M</td>
+            <td>Identifier of the referenced Geographic Address. This identifier is assigned during a successful address validation request (Geographic Address Management API)</td>
+            <td></td>
+        </tr><tr>
+        <td>@type</td>
+            <td>string</td>
+            <td>M</td>
+            <td>Used to unambiguously designate the class type when using &#x60;oneOf&#x60;</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+#### 7.2.3.4. Type GeographicSiteRef
+
+**Description:** A reference to a Geographic Site resource available through
+Service Site API
+
+<table id="T_GeographicSiteRef" style="width:100%">
+    <thead style="font-weight:bold">
+        <tr>
+            <td>Name</td>
+            <td style="width:15%">Type</td>
+            <td>M/O</td>
+            <td>Description</td>
+            <td>MEF 110</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>href</td>
+            <td>string</td>
+            <td>O</td>
+            <td>Hyperlink to the referenced Site. Hyperlink MAY be used by the Seller in responses. Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request.
+</td>
+            <td>Not represented in MEF 110</td>
+        </tr><tr>
+        <td>id</td>
+            <td>string</td>
+            <td>M</td>
+            <td>Identifier of the referenced Geographic Site.</td>
+            <td>Place Identifier</td>
+        </tr><tr>
+        <td>@type</td>
+            <td>string</td>
+            <td>M</td>
+            <td>Used to unambiguously designate the class type when using &#x60;oneOf&#x60;</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+#### 7.2.3.5. Type SubUnit
+
+**Description:** Allows for sub unit identification
+
+<table id="T_SubUnit" style="width:100%">
+    <thead style="font-weight:bold">
+        <tr>
+            <td>Name</td>
+            <td style="width:15%">Type</td>
+            <td>M/O</td>
+            <td>Description</td>
+            <td>MEF 110</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>subUnitNumber</td>
+            <td>string</td>
+            <td>M</td>
+            <td>The discriminator used for the subunit, often just a simple number but may also be a range.</td>
+            <td></td>
+        </tr><tr>
+        <td>subUnitType</td>
+            <td>string</td>
+            <td>M</td>
+            <td>The type of subunit e.g. BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF.</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+### 7.2.4. Common Types
+
+#### 7.2.4.1. Type Duration
 
 **Description:** A Duration in a given unit of time e.g. 3 hours, or 5 days.
 
@@ -2341,95 +2537,36 @@ Inherits from:
     </tbody>
 </table>
 
-#### 7.2.3.2. Type GeographicAddressRef
-
-**Description:** A reference to a Geographic Address resource available through Address Validation API.
-
-
-Inherits from:
-- <a href="#T_RelatedPlaceRef">RelatedPlaceRef</a>
-
-
-<table id="T_GeographicAddressRef" style="width:100%">
-    <thead style="font-weight:bold">
-        <tr>
-            <td>Name</td>
-            <td style="width:15%">Type</td>
-            <td>M/O</td>
-            <td>Description</td>
-            <td>MEF 110</td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-        <td>href</td>
-            <td>string</td>
-            <td>O</td>
-            <td>Hyperlink to the referenced Address. Hyperlink MAY be used by the Seller in responses. Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request.
-</td>
-            <td>Not represented in MEF 110</td>
-        </tr><tr>
-        <td>id</td>
-            <td>string</td>
-            <td>M</td>
-            <td>Identifier of the referenced Geographic Address. This identifier is assigned during a successful address validation request (Geographic Address Management API)</td>
-            <td>Place</td>
-        </tr>
-    </tbody>
-</table>
-
-#### 7.2.3.3. Type GeographicSiteRef
-
-**Description:** A reference to a Geographic Site resource available through the Service Site API
-
-
-Inherits from:
-- <a href="#T_RelatedPlaceRef">RelatedPlaceRef</a>
-
-
-<table id="T_GeographicSiteRef" style="width:100%">
-    <thead style="font-weight:bold">
-        <tr>
-            <td>Name</td>
-            <td style="width:15%">Type</td>
-            <td>M/O</td>
-            <td>Description</td>
-            <td>MEF 110</td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-        <td>href</td>
-            <td>string</td>
-            <td>O</td>
-            <td>Hyperlink to the referenced Site. Hyperlink MAY be used by the Seller in responses. Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request.
-</td>
-            <td>Not represented in MEF 110</td>
-        </tr><tr>
-        <td>id</td>
-            <td>string</td>
-            <td>M</td>
-            <td>Identifier of the referenced Geographic Site.</td>
-            <td>Place Identifier</td>
-        </tr>
-    </tbody>
-</table>
-
-#### 7.2.3.4. `enum` ProductActionAddModifyType
+#### 7.2.4.2. `enum` ProductActionAddModifyType
 
 **Description:** Action to be performed on the Product.
 
-The following mapping has been used between `ProductActionType` and MEF
-110:
+The following mapping has been used between `ProductActionType` and MEF 110:
 
-| ProductActionType | MEF 110    |
-|------------------ | ---------- |
-| add               | INSTALL    |
-| modify            | CHANGE     |
+| ProductActionType | MEF 110 |
+| ----------------- | ------- |
+| add               | INSTALL |
+| modify            | CHANGE  |
 
+<table id="T_ProductActionAddModifyType">
+    <thead style="font-weight:bold;">
+        <tr>
+            <td>Value</td>
+            <td>MEF 110</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>add</td>
+            <td>ADD</td>
+        </tr><tr>
+            <td>modify</td>
+            <td>MODIFY</td>
+        </tr>
+    </tbody>
+</table>
 
-
-#### 7.2.3.5. Type ProductRef
+#### 7.2.4.3. Type ProductRef
 
 **Description:** A reference to a Product in the Product Inventory
 
@@ -2460,9 +2597,10 @@ The following mapping has been used between `ProductActionType` and MEF
     </tbody>
 </table>
 
-#### 7.2.3.6. Type ProductRelationship
+#### 7.2.4.4. Type ProductRelationship
 
-**Description:** A relationship to an existing Product. The requirements for usage for given Product are described in the Product Specification.
+**Description:** A relationship to an existing Product. The requirements for
+usage for given Product are described in the Product Specification.
 
 <table id="T_ProductRelationship" style="width:100%">
     <thead style="font-weight:bold">
@@ -2498,43 +2636,9 @@ The following mapping has been used between `ProductActionType` and MEF
     </tbody>
 </table>
 
-#### 7.2.3.7. Type RelatedPlaceRef
-
-**Description:** Place defines the places (locations) where the products being subject of this qualification are to be provided.
-
-<table id="T_RelatedPlaceRef" style="width:100%">
-    <thead style="font-weight:bold">
-        <tr>
-            <td>Name</td>
-            <td style="width:15%">Type</td>
-            <td>M/O</td>
-            <td>Description</td>
-            <td>MEF 110</td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-        <td>role</td>
-            <td>string</td>
-            <td>M</td>
-            <td>The role of the place as specified in the Product Specification (e.g. &quot;INSTALL_LOCATION&quot;).</td>
-            <td>Role</td>
-        </tr><tr>
-        <td>@type</td>
-            <td>string</td>
-            <td>M</td>
-            <td>This field is used as a discriminator. One of GeographicAddressRef, GeographicSiteRef.
-</td>
-            <td>Place Type</td>
-        </tr>
-    </tbody>
-</table>
-
-#### 7.2.3.8. `enum` TimeUnit
+#### 7.2.4.5. `enum` TimeUnit
 
 **Description:** Represents a unit of time.
-
-
 
 <table id="T_TimeUnit">
     <thead style="font-weight:bold;">
@@ -2576,30 +2680,33 @@ The following mapping has been used between `ProductActionType` and MEF
 
 # 8. References
 
-- [MEF55.1](https://www.mef.net/wp-content/uploads/2021/02/MEF-55.1.pdf),
+- [MEF 55.1](https://www.mef.net/wp-content/uploads/2021/02/MEF-55.1.pdf)
   Lifecycle Service Orchestration (LSO): Reference Architecture and Framework,
   February 2021
-- [MEF79](https://www.mef.net/wp-content/uploads/2019/11/MEF-79.pdf), Address,
-  Service Site, and Product Offering Qualification Management, Requirements and
-  Use Cases, November 2019
-- [MEF79.0.2](https://www.mef.net/wp-content/uploads/MEF-79.0.2.pdf), Amendment
-  to MEF 79: Address Validation, July 2021
-- [MEF80](https://www.mef.net/wp-content/uploads/MEF-80.pdf), Quote Management
+- [MEF 55.1.1](https://www.mef.net/wp-content/uploads/MEF-55.1.1.pdf), Amendment
+  to MEF 55.1: Reference Architecture and Framework - Terminology, June 2023
+- [MEF 80](https://www.mef.net/wp-content/uploads/MEF-80.pdf), Quote Management
   Requirements and Use Cases, July 2021
-- [MEF87](https://www.mef.net/wp-content/uploads/MEF-87.pdf), LSO Cantata and
+- [MEF 87](https://www.mef.net/wp-content/uploads/MEF-87.pdf), LSO Cantata and
   LSO Sonata Product Offering Qualification API - Developer Guide, May 2022
-- [MEF110](https://www.mef.net/wp-content/uploads/MEF-110-Draft-R4.pdf) Product
+- [MEF 106](https://www.mef.net/wp-content/uploads/MEF-106.pdf), LSO Sonata
+  Access E-Line Product Schemas and Developer Guide, February 2023
+- [MEF 110](https://www.mef.net/wp-content/uploads/MEF-110-Draft-R4.pdf) Product
   Offering Availability and Pricing Discovery - Business Requirements and Use
   Cases, Draft Standard 4, June 2024
-- [MEF115](https://www.mef.net/wp-content/uploads/MEF-115.pdf) LSO Cantata and
+- [MEF 115](https://www.mef.net/wp-content/uploads/MEF-115.pdf) LSO Cantata and
   LSO Sonata Quote Management API - Developer Guide, May 2022
-- [MEF128.1](https://www.mef.net/wp-content/uploads/MEF-128.1.pdf), LSO API
+- [MEF 128.1](https://www.mef.net/wp-content/uploads/MEF-128.1.pdf), LSO API
   Security Profile, April 2024
-- [MEF139] Internet Access Product Schemas and Developer Guide, July 2023
-- [RFC2119](https://tools.ietf.org/html/rfc2119), Key words for use in RFCs to
+- [MEF 150](https://www.mef.net/wp-content/uploads/MEF-150-Draft-R1.pdf),
+  Installation Place and Service Site Management Business Requirements and Use
+  Cases, November 2024, Draft Standard (R1)
+- [RFC 2119](https://tools.ietf.org/html/rfc2119), Key words for use in RFCs to
   Indicate Requirement Levels, March 1997
-- [RFC7231](https://tools.ietf.org/html/rfc7231), Hypertext Transfer Protocol
+- [RFC 3986](https://tools.ietf.org/html/rfc3986#section-3) Uniform Resource
+  Identifier (URI): Generic Syntax, January 2005
+- [RFC 7231](https://tools.ietf.org/html/rfc7231), Hypertext Transfer Protocol
   (HTTP/1.1): Semantics and Content, June 2014
   https://tools.ietf.org/html/rfc7231
-- [RFC8174](https://tools.ietf.org/html/rfc8174), Ambiguity of Uppercase vs
+- [RFC 8174](https://tools.ietf.org/html/rfc8174), Ambiguity of Uppercase vs
   Lowercase in RFC 2119 Key Words, May 2017

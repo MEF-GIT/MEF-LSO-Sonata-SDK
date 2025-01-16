@@ -1,62 +1,10 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
 
 class AppointmentRef {
 
     href: string
     id*: string
 }
-
-
-
-class Error400 {
-
-    code*: Error400Code
-}
-Error <|-- Error400
-
-
-
-class Error401 {
-
-    code*: Error401Code
-}
-Error <|-- Error401
-
-
-
-class Error403 {
-
-    code*: Error403Code
-}
-Error <|-- Error403
-
-
-
-enum Error403Code {
-
-    accessDenied
-    forbiddenRequester
-    tooManyUsers
-}
-class Error500 {
-
-    code*: string
-}
-Error <|-- Error500
-
-
-
-class Error {
-
-    message: string
-    reason*: string
-    referenceError: uri
-}
-
 
 
 class EventSubscription {
@@ -76,100 +24,12 @@ class EventSubscriptionInput {
 
 
 
-class FieldedAddress {
 
-    city*: string
-    country*: string
-    locality: string
-    postcode: string
-    postcodeExtension: string
-    stateOrProvince: string
-    streetName*: string
-    streetNr: string
-    streetNrLast: string
-    streetNrLastSuffix: string
-    streetNrSuffix: string
-    streetSuffix: string
-    streetType: string
+enum MEFBuyerSellerType {
+
+    buyer
+    seller
 }
-RelatedPlaceRefOrValue <|-- FieldedAddress
-
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
-
-
-class FormattedAddress {
-
-    addrLine1*: string
-    addrLine2: string
-    city*: string
-    country*: string
-    locality: string
-    postcode: string
-    postcodeExtension: string
-    stateOrProvince: string
-}
-RelatedPlaceRefOrValue <|-- FormattedAddress
-
-
-
-class GeographicAddressLabel {
-
-    externalReferenceId*: string
-    externalReferenceType*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicAddressLabel
-
-
-
-class GeographicAddressRef {
-
-    href: string
-    id*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicAddressRef
-
-
-
-class GeographicSiteRef {
-
-    href: string
-    id*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicSiteRef
-
-
-
-class GeographicSubAddress {
-
-    buildingName: string
-    id: string
-    levelNumber: string
-    levelType: string
-    privateStreetName: string
-    privateStreetNumber: string
-}
-
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
-
-
-class MEFGeographicPoint {
-
-    spatialRef*: string
-    x*: string
-    y*: string
-    z: string
-}
-RelatedPlaceRefOrValue <|-- MEFGeographicPoint
-
-
-
-class MEFSubUnit {
-
-    subUnitNumber*: string
-    subUnitType*: string
-}
-
-
 
 class Note {
 
@@ -182,19 +42,6 @@ class Note {
 
 
 
-class RelatedContactInformation {
-
-    emailAddress*: string
-    name*: string
-    number*: string
-    numberExtension: string
-    organization: string
-    role*: string
-}
-
-RelatedContactInformation *--> FieldedAddress : postalAddress
-
-
 class RelatedEntity {
 
     @referredType*: string
@@ -205,23 +52,27 @@ class RelatedEntity {
 
 
 
-class RelatedPlaceRefOrValue {
-
-    @schemaLocation: uri
-    @type*: string
-    role*: string
-}
-
-
-
 class TimeDuration {
 
-    timeDurationValue: integer
-    timeDurationUnits: TimeDurationUnits
+    timeDurationValue*: integer
+    timeDurationUnits*: TimeDurationUnits
 }
 
 
 
+enum TimeDurationUnits {
+
+    NS
+    US
+    MS
+    SEC
+    MIN
+    HOUR
+    DAY
+    WEEK
+    MONTH
+    YEAR
+}
 class WorkOrder {
 
     id*: string
@@ -229,13 +80,13 @@ class WorkOrder {
     appointmentRequired*: boolean
     plannedExecutionDate: date-time
     state*: WorkOrderStateType
-    task*: string
+    task*: string[]
 }
 
 WorkOrder *-->"*" AppointmentRef : appointment
 WorkOrder *-->"1" TimeDuration : duration
 WorkOrder *-->"*" Note : note
-WorkOrder *-->"1..*" RelatedPlaceRefOrValue : place
+WorkOrder *-->"1..*" RelatedPlaceRefOrQuery : place
 WorkOrder *-->"1..*" RelatedContactInformation : relatedContactInformation
 WorkOrder *-->"1..*" RelatedEntity : relatedEntity
 
@@ -256,46 +107,27 @@ class WorkOrder_Find {
     state*: WorkOrderStateType
 }
 
-WorkOrder_Find *-->"1..*" RelatedPlaceRefOrValue : place
+WorkOrder_Find *-->"1..*" RelatedPlaceRefOrQuery : place
 WorkOrder_Find *-->"1..*" RelatedEntity : relatedEntity
 
 
-enum Error401Code {
-
-    missingCredentials
-    invalidCredentials
+class RelatedPlaceRefOrQuery {
+    contact: ContactInformation
+    place*: PlaceRefOrQuery
+    role*: string
+    subUnit: SubUnit
 }
-enum Error400Code {
 
-    missingQueryParameter
-    missingQueryValue
-    invalidQuery
-    invalidBody
+class RelatedContactInformation {
+
+    role*: string
+    number*: string
+    emailAddress*: string
+    organization: string
+    name*: string
+    numberExtension: string
+    postalAddress: FieldedAddressRepresentation
 }
-class Error404 {
-
-    code*: string
-}
-Error <|-- Error404
 
 
-
-enum MEFBuyerSellerType {
-
-    buyer
-    seller
-}
-enum TimeDurationUnits {
-
-    NS
-    US
-    MS
-    SEC
-    MIN
-    HOUR
-    DAY
-    WEEK
-    MONTH
-    YEAR
-}
 @enduml

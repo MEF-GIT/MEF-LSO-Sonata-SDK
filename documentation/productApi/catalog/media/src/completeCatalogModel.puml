@@ -1,14 +1,177 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-    shadowing true
-    RoundCorner 0
-    LineColor DarkRed
-    ArrowColor DarkRed
-    ArrowThickness 1
+scale 4096 width
+class AttachmentValue {
+
+    attachmentId: string
+    author*: string
+    content: string
+    creationDate*: date-time
+    description: string
+    mimeType: string
+    name*: string
+    source*: MEFBuyerSellerType
+    url: string
 }
 
+AttachmentValue *--> MEFByteSize : size
+
+
+enum BusinessFunctionMask {
+
+    poq
+    quote
+    productOrder
+    productInventory
+    all
+}
+class Context {
+
+    productAction: ProductActionMask
+    businessFunction*: BusinessFunctionMask
+}
+
+
+
+enum DataSizeUnit {
+
+    BYTES
+    KBYTES
+    MBYTES
+    GBYTES
+    TBYTES
+    PBYTES
+    EBYTES
+    ZBYTES
+    YBYTES
+}
+class Duration {
+
+    amount*: integer
+    units*: TimeUnit
+}
+
+
+class FieldedAddressRepresentation {
+
+    streetNr: string
+    streetNrSuffix: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetPreDirection: string
+    streetName: string
+    streetType: string
+    streetPostDirection: string
+    poBox: string
+    locality: string
+    city: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+    countryCode: string
+    buildingName: string
+    privateStreetNumber: string
+    privateStreetName: string
+    language: string
+}
+
+
+FieldedAddressRepresentation *-->"*" SubUnit : subUnit
+
+
+enum MEFBuyerSellerType {
+
+    buyer
+    seller
+}
+class MEFByteSize {
+
+    amount*: float
+    units*: DataSizeUnit
+}
+
+
+
+enum MEFEndOfTermAction {
+
+    roll
+    autoDisconnect
+    autoRenew
+}
+class MEFItemTerm {
+
+    name*: string
+    description: string
+    endOfTermAction*: MEFEndOfTermAction
+}
+
+MEFItemTerm *-->"1" Duration : duration
+MEFItemTerm *--> Duration : rollInterval
+
+
+enum MEFPriceType {
+
+    recurring
+    nonRecurring
+    usageBased
+}
+class Money {
+
+    unit*: string
+    value*: float
+}
+
+
+
+class Note {
+
+    author*: string
+    date*: date-time
+    id*: string
+    source*: MEFBuyerSellerType
+    text*: string
+}
+
+
+
+class PlaceRelationshipConstraint {
+
+    relationshipRole*: string
+    isModifiable*: boolean
+    minCardinality*: integer
+    maxCardinality*: integer
+}
+
+
+
+class Price {
+
+    taxRate: float
+}
+
+Price *--> Money : taxIncludedAmount
+Price *-->"1" Money : dutyFreeAmount
+
+
+class PriceModifier {
+
+    description*: string
+    lastUpdate*: date-time
+    minimumQuantity*: integer
+    reductionPercentage: number
+    dealReference: string
+}
+
+PriceModifier *-->"1" TimePeriod : validFor
+PriceModifier *-->"*" Region : region
+PriceModifier *--> Price : discountedPrice
+
+
+enum ProductActionMask {
+
+    add
+    modify
+    all
+}
 class ProductCategory {
 
     id*: string
@@ -31,6 +194,95 @@ class ProductCategoryRef {
 
 
 
+class ProductMilestoneDefinition {
+
+    name*: string
+    description*: string
+}
+
+
+
+class ProductOffering {
+
+    statusReason: string
+}
+ProductOffering_Common <|-- ProductOffering
+
+ProductOffering *-->"*" ProductOfferingLifecycleStatusTransition : statusTransition
+ProductOffering *-->"*" AttachmentValue : attachment
+ProductOffering *--> RelatedContactInformation : relatedContactInformation
+ProductOffering *-->"*" ProductOfferingTerm : productOfferingTerm
+ProductOffering *-->"*" ProductMilestoneDefinition : milestone
+ProductOffering *-->"*" ProductOfferingBundleRelationship : bundledProductOffering
+ProductOffering *-->"*" Note : note
+ProductOffering *--> SchemaRefOrValue : productOfferingSpecificationSchema
+ProductOffering *-->"*" ProductOfferingContextualInfo : productOfferingContextualInfo
+ProductOffering *-->"*" ProductRelationshipConstraint : productRelationshipConstraint
+ProductOffering *-->"*" PlaceRelationshipConstraint : placeRelationshipConstraint
+
+
+class ProductOfferingBundleRelationship {
+
+    minCardinality*: integer
+    maxCardinality*: integer
+}
+
+ProductOfferingBundleRelationship *-->"1" ProductOfferingRef : productOffering
+
+
+class ProductOfferingContextualInfo {
+
+}
+
+ProductOfferingContextualInfo *-->"1" SchemaRefOrValue : contextSchema
+ProductOfferingContextualInfo *-->"1" Context : context
+
+
+class ProductOfferingLifecycleStatusTransition {
+
+    transitionDate*: date-time
+    lifecycleStatus*: ProductOfferingLifecycleStatusType
+    statusReason: string
+}
+
+
+
+enum ProductOfferingLifecycleStatusType {
+
+    active
+    endOfSale
+    endOfSupport
+    inTest
+    obsolete
+    onHold
+    launched
+    rejected
+}
+class ProductOfferingPrice {
+
+    description*: string
+    lastUpdate*: date-time
+    priceType*: MEFPriceType
+    unitOfMeasure: string
+}
+
+ProductOfferingPrice *-->"1" TimePeriod : validFor
+ProductOfferingPrice *--> ProductOfferingRef : bundledProductOffering
+ProductOfferingPrice *-->"*" Region : region
+ProductOfferingPrice *-->"*" Note : note
+ProductOfferingPrice *--> Duration : recurringChargePeriod
+ProductOfferingPrice *-->"1" Price : price
+ProductOfferingPrice *-->"*" PriceModifier : priceModifier
+
+
+class ProductOfferingTerm {
+
+}
+MEFItemTerm <|-- ProductOfferingTerm
+
+ProductOfferingTerm *-->"*" ProductOfferingPrice : productOfferingPrice
+
+
 class ProductOfferingRef {
 
     id*: string
@@ -48,6 +300,8 @@ class ProductOffering_Common {
     lastUpdate: date-time
     lifecycleStatus: ProductOfferingLifecycleStatusType
     agreement: string
+    isBundle: boolean
+    isSellable: boolean
     channel: string[]
     marketSegment: string[]
 }
@@ -64,52 +318,29 @@ ProductOffering_Common <|-- ProductOffering_Find
 
 
 
-class ProductOffering {
-
-    statusReason: string
-}
-ProductOffering_Common <|-- ProductOffering
-
-ProductOffering *-->"*" ProductOfferingLifecycleStatusTransition : statusTransition
-ProductOffering *-->"*" AttachmentValue : attachment
-ProductOffering *--> RelatedContactInformation : relatedContactInformation
-ProductOffering *-->"*" MEFItemTerm : productOfferingTerm
-ProductOffering *-->"*" ProductMilestoneDefinition : milestone
-ProductOffering *-->"*" Note : note
-ProductOffering *--> SchemaRefOrValue : productOfferingSpecification
-ProductOffering *-->"*" ProductOfferingContextualInfo : productOfferingContextualInfo
-ProductOffering *-->"*" ProductRelationshipConstraint : productRelationship
-ProductOffering *-->"*" PlaceRelationshipConstraint : placeRelationship
-
-
-enum ProductOfferingLifecycleStatusType {
-
-    announced
-    endOfSale
-    endOfSupport
-    inTest
-    obsolete
-    onHold
-    orderable
-    rejected
-}
-class PlaceRelationshipConstraint {
-
-    relationshipRole*: string
-    minCardinality*: integer
-    maxCardinality*: integer
-}
-
-
-
 class ProductRelationshipConstraint {
 
-    id*: string
+    productSpecification*: string
     relationshipType*: string
+    isModifiable*: boolean
     minCardinality*: integer
     maxCardinality*: integer
 }
 
+
+
+class ProductSpecification {
+
+    description*: string
+}
+ProductSpecification_Common <|-- ProductSpecification
+
+ProductSpecification *-->"*" AttachmentValue : attachment
+ProductSpecification *-->"*" ProductRelationshipConstraint : productRelationship
+ProductSpecification *-->"*" PlaceRelationshipConstraint : placeRelationship
+ProductSpecification *-->"*" ProductMilestoneDefinition : milestone
+ProductSpecification *-->"*" Note : note
+ProductSpecification *-->"1" SchemaRefOrValue : sourceSchema
 
 
 enum ProductSpecificationLifecycleStatusType {
@@ -117,172 +348,6 @@ enum ProductSpecificationLifecycleStatusType {
     obsolete
     published
 }
-class ProductOfferingLifecycleStatusTransition {
-
-    transitionDate*: date-time
-    transitionLifecycleStatus*: ProductOfferingLifecycleStatusType
-}
-
-
-
-class AttachmentValue {
-
-    attachmentId: string
-    author*: string
-    content: string
-    creationDate*: date-time
-    description: string
-    mimeType: string
-    name*: string
-    source*: MEFBuyerSellerType
-    url: string
-}
-
-AttachmentValue *--> MEFByteSize : size
-
-
-enum DataSizeUnit {
-
-    BYTES
-    KBYTES
-    MBYTES
-    GBYTES
-    TBYTES
-    PBYTES
-    EBYTES
-    ZBYTES
-    YBYTES
-}
-enum MEFBuyerSellerType {
-
-    buyer
-    seller
-}
-class MEFByteSize {
-
-    amount*: float
-    units*: DataSizeUnit
-}
-
-
-
-class RelatedContactInformation {
-
-    emailAddress*: string
-    name*: string
-    number*: string
-    numberExtension: string
-    organization: string
-    role*: string
-}
-
-RelatedContactInformation *--> FieldedAddress : postalAddress
-
-
-class FieldedAddress {
-
-    country*: string
-    streetType: string
-    postcodeExtension: string
-    city*: string
-    streetNr: string
-    locality: string
-    postcode: string
-    streetNrLast: string
-    streetNrSuffix: string
-    streetName*: string
-    stateOrProvince: string
-    streetNrLastSuffix: string
-    streetSuffix: string
-}
-
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
-
-
-class GeographicSubAddress {
-
-    buildingName: string
-    id: string
-    levelNumber: string
-    levelType: string
-    privateStreetName: string
-    privateStreetNumber: string
-}
-
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
-
-
-class MEFSubUnit {
-
-    subUnitNumber*: string
-    subUnitType*: string
-}
-
-
-
-class Region {
-
-    locality: string
-    stateOrProvince: string
-    country*: string
-}
-
-
-
-class MEFItemTerm {
-
-    name*: string
-    description: string
-    endOfTermAction*: MEFEndOfTermAction
-}
-
-MEFItemTerm *-->"1" Duration : duration
-MEFItemTerm *--> Duration : rollInterval
-
-
-class Duration {
-
-    amount*: integer
-    units*: TimeUnit
-}
-
-
-
-enum MEFEndOfTermAction {
-
-    roll
-    autoDisconnect
-    autoRenew
-}
-class ProductMilestoneDefinition {
-
-    name*: string
-    description*: string
-}
-
-
-
-enum TimeUnit {
-
-    calendarMonths
-    calendarDays
-    calendarHours
-    calendarMinutes
-    businessDays
-    businessHours
-    businessMinutes
-}
-class Note {
-
-    author*: string
-    date*: date-time
-    id*: string
-    source*: MEFBuyerSellerType
-    text*: string
-}
-
-
-
 class ProductSpecificationRef {
 
     id*: string
@@ -291,44 +356,6 @@ class ProductSpecificationRef {
 
 
 
-class ProductOfferingContextualInfo {
-
-}
-
-ProductOfferingContextualInfo *-->"1" SchemaRefOrValue : contextSchema
-ProductOfferingContextualInfo *-->"1" Context : context
-
-
-class SchemaRefOrValue {
-
-    schema: string
-    schemaLocation: uri
-}
-
-
-
-class Context {
-
-    productAction: ProductActionMask
-    businessFunction: BusinessFunctionMask
-}
-
-
-
-enum ProductActionMask {
-
-    add
-    modify
-    all
-}
-enum BusinessFunctionMask {
-
-    poq
-    quote
-    productOrder
-    productInventory
-    all
-}
 class ProductSpecification_Common {
 
     id: string
@@ -347,18 +374,62 @@ ProductSpecification_Common <|-- ProductSpecification_Find
 
 
 
-class ProductSpecification {
+class Region {
 
-    description*: string
+    city: string
+    locality: string
+    stateOrProvince: string
+    countryCode*: string
 }
-ProductSpecification_Common <|-- ProductSpecification
-
-ProductSpecification *-->"*" AttachmentValue : attachment
-ProductSpecification *-->"*" ProductRelationshipConstraint : productRelationship
-ProductSpecification *-->"*" PlaceRelationshipConstraint : placeRelationship
-ProductSpecification *-->"*" ProductMilestoneDefinition : milestone
-ProductSpecification *-->"*" Note : note
-ProductSpecification *-->"1" SchemaRefOrValue : sourceSchema
 
 
+
+class RelatedContactInformation {
+
+    emailAddress*: string
+    name*: string
+    number*: string
+    numberExtension: string
+    organization: string
+    role*: string
+}
+
+RelatedContactInformation *--> FieldedAddressRepresentation : postalAddress
+
+
+class SchemaRefOrValue {
+
+    schema: string
+    schemaLocation: uri
+}
+
+
+
+class SubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+
+
+
+class TimePeriod {
+
+    startDateTime: date-time
+    endDateTime: date-time
+}
+
+
+
+enum TimeUnit {
+
+    seconds
+    minutes
+    businessHours
+    calendarHours
+    businessDays
+    calendarDays
+    months
+    years
+}
 @enduml

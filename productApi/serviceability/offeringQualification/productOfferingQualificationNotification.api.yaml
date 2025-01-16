@@ -1,9 +1,14 @@
 openapi: 3.0.1
 info:
+  title: Product Offering Qualification Notification
   description: |
-    **This file forms part of MEF 87**
+    **This file forms part of MEF 87.1**
           
-    This API implements Business Requirements described in MEF 79
+          
+    **This draft represents MEF work in progress and is subject to change.**
+
+    
+    This API implements Business Requirements described in MEF 79.1
 
     The Product Offering Qualification (POQ) Management API allows a Buyer to
     check whether the Seller can deliver a product or set of products from
@@ -13,194 +18,166 @@ info:
     The following use cases are managed:
     - Send POQ Notifications
 
-    Copyright 2021 MEF Forum and its contributors
+    Copyright 2025 MEF Forum and its contributors
 
     This file includes content based on the TM Forum Product Offering
     Qualification API (TMF679 v4.0.0) available at
     https://github.com/tmforum-apis/TMF679_ProductOfferingQualification, which
     is licensed by the TM Forum under the Apache License version 2.0. Such
     content has been modified by the MEF Forum and its contributors.
-  title: Product Offering Qualification Notification
-  version: 7.0.1
+  version: 8.0.0-RC
 servers:
-  - url: 
-      https://{serverBase}/mefApi/sonata/productOfferingQualificationNotification/v7/
+  - url: >-
+      https://{serverBase}/mefApi/sonata/productOfferingQualificationNotification/v8/
     variables:
       serverBase:
-        default: mef.net
         description: The base of Buyer's URL.
+        default: mef.net
 tags:
-  - description: |
+  - name: Notification listeners
+    description: |
       The Buyer's endpoint to send particular event types notifications to.
-    name: Notification listeners
 paths:
-  /listener/poqCreateEvent:
-    post:
-      deprecated: false
-      description:
-        This endpoint is used to receive notifications on POQ creation
-      operationId: poqCreateEvent
-      requestBody:
-        content:
-          application/json;charset=utf-8:
-            schema:
-              $ref: '#/components/schemas/Event'
-        description: The event body
-        required: true
-      responses:
-        '204':
-          description:
-            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
-        '400':
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/Error400'
-          description: Bad Request
-        '401':
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/Error401'
-          description: Unauthorized
-        '403':
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/Error403'
-          description: Forbidden
-        '500':
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/Error500'
-          description: Internal Server Error
-      summary: Product Offering Qualification Creation Notification endpoint
-      tags:
-        - Notification listeners
-      x-codegen-request-body-name: poqCreateEvent
   /listener/poqStateChangeEvent:
     post:
-      deprecated: false
+      tags:
+        - Notification listeners
+      summary: Product Offering Qualification Change Notification endpoint
       description:
         This endpoint is used to receive notifications on POQ state change
       operationId: poqStateChangeEvent
+      parameters:
+        - name: buyerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Buyer. MUST be specified in the request when the requester
+            represents more than one Buyer.
+          required: false
+          schema:
+            type: string
+        - name: sellerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request when the responding entity
+            represents more than one Seller.
+          required: false
+          schema:
+            type: string
       requestBody:
+        description: The event body
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/Event'
-        description: The event body
+              $ref: '#/components/schemas/PoqStateChangeEvent'
         required: true
       responses:
         '204':
           description:
             'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
         '400':
+          description: Bad Request
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error400'
-          description: Bad Request
         '401':
+          description: Unauthorized
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error401'
-          description: Unauthorized
         '403':
+          description: Forbidden
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error403'
-          description: Forbidden
         '500':
+          description: Internal Server Error
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error500'
-          description: Internal Server Error
-      summary: Product Offering Qualification Change Notification endpoint
-      tags:
-        - Notification listeners
-      x-codegen-request-body-name: poqStateChangeEvent
+      deprecated: false
   /listener/poqItemStateChangeEvent:
     post:
-      deprecated: false
+      tags:
+        - Notification listeners
+      summary: Poq Item State Change Notification endpoint
       description: |
         This endpoint is used to receive notifications on Poq Item state change
       operationId: listenToPoqItemStateChangeEvent
+      parameters:
+        - name: buyerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Buyer. MUST be specified in the request when the requester
+            represents more than one Buyer.
+          required: false
+          schema:
+            type: string
+        - name: sellerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request when the responding entity
+            represents more than one Seller.
+          required: false
+          schema:
+            type: string
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/Event'
+              $ref: '#/components/schemas/PoqItemStateChangeEvent'
         required: true
       responses:
         '204':
           description:
             'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
         '400':
+          description: Bad Request
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error400'
-          description: Bad Request
         '401':
+          description: Unauthorized
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error401'
-          description: Unauthorized
         '403':
+          description: Forbidden
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error403'
-          description: Forbidden
         '500':
+          description: Internal Server Error
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error500'
-          description: Internal Server Error
-      summary: Poq Item State Change Notification endpoint
-      tags:
-        - Notification listeners
-      x-codegen-request-body-name: data
+      deprecated: false
 components:
   schemas:
-    Error400Code:
-      description: >-
-        One of the following error codes:
-
-        - missingQueryParameter: The URI is missing a required query-string
-        parameter
-
-        - missingQueryValue: The URI is missing a required query-string
-        parameter value
-
-        - invalidQuery: The query section of the URI is invalid.
-
-        - invalidBody: The request has an invalid body
-      enum:
-        - missingQueryParameter
-        - missingQueryValue
-        - invalidQuery
-        - invalidBody
-      type: string
     Error:
       description: >
         Standard Class used to describe API response error Not intended to be
         used directly. The `code` in the HTTP header is used as a discriminator
         for the type of error returned in runtime.
+      type: object
       properties:
         reason:
           description: >-
             Text that explains the reason for the error. This can be shown to a
             client user.
-          maxLength: 255
           type: string
+          maxLength: 255
         message:
           description: >-
             Text that provides more details and corrective actions related to
@@ -208,15 +185,17 @@ components:
           type: string
         referenceError:
           description: url pointing to documentation describing the error
-          format: uri
           type: string
+          format: uri
       required:
         - reason
-      type: object
     Error400:
+      description:
+        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
               description: >-
                 One of the following error codes:
@@ -233,13 +212,32 @@ components:
               $ref: '#/components/schemas/Error400Code'
           required:
             - code
-          type: object
-      description:
-        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
+    Error400Code:
+      description: >-
+        One of the following error codes:
+
+        - missingQueryParameter: The URI is missing a required query-string
+        parameter
+
+        - missingQueryValue: The URI is missing a required query-string
+        parameter value
+
+        - invalidQuery: The query section of the URI is invalid.
+
+        - invalidBody: The request has an invalid body
+      type: string
+      enum:
+        - missingQueryParameter
+        - missingQueryValue
+        - invalidQuery
+        - invalidBody
     Error401:
+      description:
+        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
               description: >-
                 One of the following error codes:
@@ -251,22 +249,22 @@ components:
               $ref: '#/components/schemas/Error401Code'
           required:
             - code
-          type: object
-      description:
-        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
     Error401Code:
       description: |-
         One of the following error codes:
         - missingCredentials: No credentials provided.
         - invalidCredentials: Provided credentials are invalid or expired
+      type: string
       enum:
         - missingCredentials
         - invalidCredentials
-      type: string
     Error403:
+      description:
+        'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
               description: |-
                 This code indicates that the server understood
@@ -278,9 +276,6 @@ components:
               $ref: '#/components/schemas/Error403Code'
           required:
             - code
-          type: object
-      description:
-        'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
     Error403Code:
       description: |-
         This code indicates that the server understood
@@ -289,15 +284,19 @@ components:
         - accessDenied: Access denied
         - forbiddenRequester: Forbidden requester
         - tooManyUsers: Too many users
+      type: string
       enum:
         - accessDenied
         - forbiddenRequester
         - tooManyUsers
-      type: string
     Error500:
+      description: >-
+        Internal Server Error.
+        (https://tools.ietf.org/html/rfc7231#section-6.6.1)
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
               description: >-
                 One of the following error codes:
@@ -305,75 +304,153 @@ components:
                 - internalError: Internal server error - the server encountered
                 an unexpected condition that prevented it from fulfilling the
                 request.
+              type: string
               enum:
                 - internalError
-              type: string
           required:
             - code
-          type: object
-      description: >-
-        Internal Server Error.
-        (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     Event:
       description: >-
         Event class is used to describe information structure used for
-        notification. Reference: MEF 79 (Sn 8.5)
+        notification.
+      type: object
       properties:
         eventId:
           description: Id of the event
           type: string
         eventTime:
           description: Date-time when the event occurred
-          format: date-time
           type: string
+          format: date-time
         eventType:
-          description: |
-            Indicates the type of the POQ event.
-          $ref: '#/components/schemas/PoqEventType'
+          description: The type of the notification.
+          type: string
         event:
-          description: |
-            A reference to the POQ that is source of the notification.
-          $ref: '#/components/schemas/PoqEvent'
+          description: The event linked to the involved resource object
+          type: object
       required:
         - event
         - eventId
         - eventTime
         - eventType
-      type: object
-    PoqEvent:
+    MEFPOQItemTaskStateType:
+      description: |
+        POQ item states - The specific states are managed by the Seller based on
+        its processing and/or based on the Buyer's action.
+
+        | MEFPOQItemTaskStateType | MEF 79.1            | Description                                                                                                                                                                                                                                                                                       |
+        | ----------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | acknowledged            | ACKNOWLEDGED        | A request has been received by the Seller and has passed basic validation. For an Immediate response, the POQ moves directly to `done` state and does not pass through `acknowledged`.                                                                                                            |
+        | inProgress              | IN_PROGRESS         | The Seller is working on a POQ item response and the answer is not ready yet                                                                                                                                                                                                                      |
+        | done.abandoned          | ABANDONED           | Applied to a POQ Item in case the final state is not reached and POQ is moved to the final state other than `done`                                                                                                                                                                                |
+        | done                    | READY               | The POQ Item has been internally approved by the Seller. This state does not imply that Seller is able to deliver requested item. It only means that the response for this POQ Item is complete.                                                                                                  |
+        | rejected                | REJECTED            | A POQ Item has failed the business validation checks the Seller performs after it reached the `acknowledged` state.                                                                                                                                                                               |
+        | terminatedWithError     | UNABLE_TO_MEET_TIME | The Seller is unable to provide a POQ Item response in the timeframe required by the Buyer (e.g., if an immediate response or a response date is set but cannot be met by the Seller). When a POQ Item goes to `terminatedWithError`, all POQ Items that are not `done` move to `done.abandoned`. |
+      type: string
+      enum:
+        - acknowledged
+        - inProgress
+        - done.abandoned
+        - done
+        - rejected
+        - terminatedWithError
+    MEFPOQTaskStateType:
+      description: |
+        These values represent the valid states through which the product
+        offering qualification can transition.
+
+        The following mapping has been used between `MEFPOQTaskStateType` and
+        MEF 79.1:
+
+        | MEFPOQTaskStateType | MEF 79.1            | Description                                                                                                                                                                                                             |
+        | ------------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | acknowledged        | ACKNOWLEDGED        | A request has been received by the Seller, has passed basic validation and the id was assigned. For an Immediate response, the POQ moves directly to the `done` state and does not pass through `acknowledged`.   |
+        | inProgress          | IN_PROGRESS         | The POQ is currently being worked by the Seller.                                                                                                                                                                        |
+        | done                | READY               | The POQ has been internally approved by the Seller. Reached when all items are in `done` state. It does not imply that the Seller can deliver all POQ Items in this POQ. It only means that the POQ has been completed. |
+        | rejected            | REJECTED            | A POQ was submitted, and it has failed at least one of the business validation checks the Seller performs after it reached the `acknowledged` state.                                                                    |
+        | terminatedWithError | UNABLE_TO_MEET_TIME | The Seller is unable to provide a response in the timeframe required by the Buyer (e.g., if an immediate response or a response date is set but cannot be met by the Seller).                                           |
+      type: string
+      enum:
+        - acknowledged
+        - inProgress
+        - done
+        - rejected
+        - terminatedWithError
+    PoqItemStateChangeEvent:
+      allOf:
+        - $ref: '#/components/schemas/Event'
+        - description: PoqItemStateChangeEvent structure
+          type: object
+          properties:
+            eventType:
+              description:
+                Indicates the type of product offering qualification event.
+              type: string
+              enum:
+                - poqItemStateChangeEvent
+            event:
+              description: |
+                A reference to the POQ that is source of the notification.
+              $ref: '#/components/schemas/PoqItemStateChangeEventPayload'
+          required:
+            - event
+            - eventType
+    PoqItemStateChangeEventPayload:
       description:
         A reference to the POQ that is the source of the notification.
+      type: object
       properties:
-        sellerId:
-          description: >
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when the requester
-            entity  represents more than one Seller. Reference: MEF 79 (Sn 8.8)
-          type: string
-        poqItemId:
-          description: >-
-            ID of the Poq Item (within the Poq) which state change triggered
-            the event
-          type: string
         id:
           description: The POQ unique identifier.
           type: string
         href:
           description: Link to the POQ
           type: string
-        buyerId:
-          description: >
-            The unique identifier of the organization that is acting as the
-            Buyer. MUST be specified in the request only when the responding
-            represents more than one Buyer. Reference: MEF 79 (Sn 8.8)
+        poqItemId:
+          description: >-
+            ID of the Poq Item (within the Poq) which state change triggered the
+            event
           type: string
+        state:
+          description: The state reached at change date
+          $ref: '#/components/schemas/MEFPOQItemTaskStateType'
       required:
         - id
+        - poqItemId
+        - state
+    PoqStateChangeEvent:
+      allOf:
+        - $ref: '#/components/schemas/Event'
+        - description: PoqStateChangeEvent structure
+          type: object
+          properties:
+            eventType:
+              description:
+                Indicates the type of product offering qualification event.
+              type: string
+              enum:
+                - poqStateChangeEvent
+            event:
+              description: |
+                A reference to the POQ that is source of the notification.
+              $ref: '#/components/schemas/PoqStateChangeEventPayload'
+          required:
+            - event
+            - eventType
+    PoqStateChangeEventPayload:
+      description:
+        A reference to the POQ that is the source of the notification.
       type: object
-    PoqEventType:
-      description: Indicates the type of product offering qualification event.
-      enum:
-        - poqCreateEvent
-        - poqStateChangeEvent
-        - poqItemStateChangeEvent
-      type: string
+      properties:
+        id:
+          description: The POQ unique identifier.
+          type: string
+        href:
+          description: Link to the POQ
+          type: string
+        state:
+          description: The state reached at change date
+          $ref: '#/components/schemas/MEFPOQTaskStateType'
+      required:
+        - id
+        - state

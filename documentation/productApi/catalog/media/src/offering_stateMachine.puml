@@ -1,10 +1,5 @@
 @startuml
-skinparam state {
-    BackgroundColor White
-    BorderColor Black
-    ArrowColor DarkRed
-    shadowing true
-}
+
 hide empty description
 
 state c <<choice>>
@@ -12,18 +7,18 @@ state c <<choice>>
 
 ''' diagram'''
 [*] -d-> c
-c -d-> announced: No
+c -d-> active: No
 state Testing #line.dotted{
 c -r-> inTest: Yes
 inTest -d-> rejected: Testing Failed
 }
-inTest -r-> announced: Testing Approved
+inTest -r-> active: Testing Approved
 rejected -d-> [*]
-announced -d-> orderable: General Availability
-announced -r-> onHold
-onHold -l-> announced
+active -d-> launched: General Availability
+active -r-> onHold
+onHold -l-> active
 onHold -d-> endOfSale
-orderable -d-> endOfSale
+launched -d-> endOfSale
 endOfSale -d-> endOfSupport
 endOfSale -d-> obsolete
 endOfSupport -d-> obsolete

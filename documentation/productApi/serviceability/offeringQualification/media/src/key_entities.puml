@@ -1,0 +1,328 @@
+@startuml
+
+class AlternateProductOfferingProposal {
+
+    id*: string
+    serviceabilityConfidence*: AlternateServiceabilityColor
+    serviceabilityConfidenceReason: string
+    guaranteedUntilDate: date-time
+    deliveryType*: DeliveryType
+    3rdPartyProvider: string
+    3rdPartyProviderProductOffering: string
+}
+
+AlternateProductOfferingProposal *-->"1" Duration : installationInterval
+AlternateProductOfferingProposal *-->"1" MEFAlternateProduct : alternateProduct
+
+class ContactInformation {
+
+    number*: string
+    emailAddress*: string
+    organization: string
+    name*: string
+    numberExtension: string
+}
+
+ContactInformation *--> FieldedAddressRepresentation : postalAddress
+
+class Duration {
+
+    amount*: integer
+    units*: TimeUnit
+}
+
+
+class FieldedAddressRepresentation {
+
+    streetNr: string
+    streetNrSuffix: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetPreDirection: string
+    streetName: string
+    streetType: string
+    streetPostDirection: string
+    poBox: string
+    locality: string
+    city: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+    countryCode: string
+    buildingName: string
+    privateStreetNumber: string
+    privateStreetName: string
+    language: string
+}
+
+FieldedAddressRepresentation *-->"*" SubUnit : subUnit
+
+
+class FormattedAddressRepresentation {
+
+    formattedAddress*: string
+    language: string
+}
+
+
+
+class GeographicAddressRef {
+
+    href: string
+    id*: string
+    @type*: string
+}
+
+
+
+class GeographicAddress_Query {
+    @type*: string
+}
+
+GeographicAddress_Query *-->"*" FieldedAddressRepresentation : fieldedAddressRepresentation
+GeographicAddress_Query *-->"*" FormattedAddressRepresentation : formattedAddressRepresentation
+GeographicAddress_Query *-->"*" GeographicPointRepresentation : geographicPointRepresentation
+GeographicAddress_Query *-->"*" LabelRepresentation : labelRepresentation
+
+
+class GeographicPointRepresentation {
+
+    spatialRef*: string
+    latitude*: string
+    longitude*: string
+    elevation: string
+}
+
+
+
+class GeographicSiteRef {
+
+    href: string
+    id*: string
+    @type*: string
+}
+
+
+
+class LabelRepresentation {
+
+    label*: string
+    administrativeAuthority*: string
+    language: string
+}
+
+
+
+class MEFAlternateProduct {
+
+}
+
+MEFAlternateProduct *-->"1" ProductOfferingRef : productOffering
+MEFAlternateProduct *-->"1" MEFProductConfiguration : productConfiguration
+
+
+class MEFPOQItemStateChange {
+
+    changeReason: string
+    changeDate*: date-time
+    state*: MEFPOQItemTaskStateType
+}
+
+
+
+class MEFPOQStateChange {
+
+    changeReason: string
+    changeDate*: date-time
+    state*: MEFPOQTaskStateType
+}
+
+
+class MEFProductConfiguration {
+
+    @type*: string
+}
+
+
+
+class MEFProductRefOrValue {
+
+    id: string
+    href: string
+}
+
+MEFProductRefOrValue *--> ProductSpecificationRef : productSpecification
+MEFProductRefOrValue *--> ProductOfferingRef : productOffering
+MEFProductRefOrValue *--> MEFProductConfiguration : productConfiguration
+MEFProductRefOrValue *-->"*" ProductRelationship : productRelationship
+MEFProductRefOrValue *-->"*" RelatedPlaceRefOrQueryWithSubUnit : place
+
+
+class PlaceRefOrQuery {
+    --
+    discriminator:
+    GeographicAddressRef
+    GeographicSiteRef
+    GeographicAddress_Query
+}
+
+PlaceRefOrQuery ..> GeographicAddressRef : """"
+PlaceRefOrQuery ..> GeographicSiteRef : """"
+PlaceRefOrQuery ..> GeographicAddress_Query : """"
+
+class ProductOfferingQualification {
+
+    id*: string
+    href: string
+    state*: MEFPOQTaskStateType
+    creationDate*: date-time
+    expectedPOQCompletionDate: date-time
+}
+ProductOfferingQualification_Common <|-- ProductOfferingQualification
+
+ProductOfferingQualification *-->"1..*" ProductOfferingQualificationItem : productOfferingQualificationItem
+ProductOfferingQualification *-->"1..*" MEFPOQStateChange : stateChange
+
+
+class ProductOfferingQualificationItem {
+
+    state*: MEFPOQItemTaskStateType
+    serviceabilityConfidence: MEFServiceabilityColor
+    serviceabilityConfidenceReason: string
+    guaranteedUntilDate: date-time
+    deliveryType: DeliveryType
+    3rdPartyProvider: string
+    3rdPartyProviderProductOffering: string
+}
+ProductOfferingQualificationItem_Common <|-- ProductOfferingQualificationItem
+
+ProductOfferingQualificationItem *-->"1..*" MEFPOQItemStateChange : stateChange
+ProductOfferingQualificationItem *--> Duration : installationInterval
+ProductOfferingQualificationItem *-->"*" AlternateProductOfferingProposal : alternateProductOfferingProposal
+ProductOfferingQualificationItem *-->"*" TerminationError : terminationError
+
+
+class ProductOfferingQualificationItem_Common {
+
+    id*: string
+    action*: PoqProductActionType
+    endCustomerName: string
+}
+
+ProductOfferingQualificationItem_Common *-->"1" MEFProductRefOrValue : product
+ProductOfferingQualificationItem_Common *-->"*" QualificationItemRelationship : qualificationItemRelationship
+
+
+class ProductOfferingQualificationItem_Create {
+
+}
+ProductOfferingQualificationItem_Common <|-- ProductOfferingQualificationItem_Create
+
+
+
+class ProductOfferingQualification_Common {
+
+    projectId: string
+    externalId: string
+    instantSyncQualification*: boolean
+    provideAlternative*: boolean
+    requestedPOQCompletionDate: date-time
+}
+
+ProductOfferingQualification_Common *-->"1..*" RelatedContactInformation : relatedContactInformation
+
+
+class ProductOfferingQualification_Create {
+
+}
+ProductOfferingQualification_Common <|-- ProductOfferingQualification_Create
+
+ProductOfferingQualification_Create *-->"1..*" ProductOfferingQualificationItem_Create : productOfferingQualificationItem
+
+
+class ProductOfferingQualification_Find {
+
+    id*: string
+    state*: MEFPOQTaskStateType
+    creationDate*: date-time
+    requestedPOQCompletionDate: date-time
+    externalId: string
+    projectId: string
+}
+
+
+
+class ProductOfferingRef {
+
+    href: string
+    id*: string
+}
+
+
+
+class ProductRelationship {
+
+    href: string
+    id*: string
+    relationshipType*: string
+}
+
+
+
+class ProductSpecificationRef {
+
+    href: string
+    id*: string
+}
+
+
+
+class QualificationItemRelationship {
+
+    id*: string
+    relationshipType*: string
+}
+
+
+
+class RelatedContactInformation {
+
+    role*: string
+    number*: string
+    emailAddress*: string
+    organization: string
+    name*: string
+    numberExtension: string
+}
+
+RelatedContactInformation *--> FieldedAddressRepresentation : postalAddress
+
+
+class RelatedPlaceRefOrQueryWithSubUnit {
+
+    role*: string
+}
+
+RelatedPlaceRefOrQueryWithSubUnit *-->"1" PlaceRefOrQuery : place
+RelatedPlaceRefOrQueryWithSubUnit *-->"*" SubUnit : subUnit
+RelatedPlaceRefOrQueryWithSubUnit *-->"*" ContactInformation : contact
+
+
+class SubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+
+
+
+class TerminationError {
+
+    code: Error422Code
+    propertyPath: string
+    value: string
+}
+
+
+
+@enduml

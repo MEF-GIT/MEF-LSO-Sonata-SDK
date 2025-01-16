@@ -1,117 +1,166 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
+
+class CancelProductOrderStateChangeEvent {
+
+    eventType*: string
 }
+Event <|-- CancelProductOrderStateChangeEvent
 
-class CancelProductOrderEvent {
-
-    eventType*: CancelProductOrderEventType
-}
-Event <|-- CancelProductOrderEvent
-
-CancelProductOrderEvent *-->"1" CancelProductOrderEventPayload : event
+CancelProductOrderStateChangeEvent *-->"1" CancelProductOrderStateChangeEventPayload : event
 
 
-class CancelProductOrderEventPayload {
+class CancelProductOrderStateChangeEventPayload {
 
     id*: string
     href: string
-    buyerId: string
-    sellerId: string
+    state*: MEFChargeableTaskStateType
 }
 
 
 
-enum CancelProductOrderEventType {
+class ChargeCreateEvent {
 
-    cancelProductOrderStateChangeEvent
+    eventType*: string
 }
-class ChargeEvent {
+Event <|-- ChargeCreateEvent
 
-    eventType*: ChargeEventType
-}
-Event <|-- ChargeEvent
-
-ChargeEvent *-->"1" ChargeEventPayload : event
+ChargeCreateEvent *-->"1" ChargeEventPayload : event
 
 
 class ChargeEventPayload {
 
     id*: string
     href: string
-    buyerId: string
-    sellerId: string
 }
 
 
 
-enum ChargeEventType {
+class ChargeStateChangeEvent {
 
-    chargeCreateEvent
-    chargeStateChangeEvent
-    chargeTimeoutEvent
+    eventType*: string
+}
+Event <|-- ChargeStateChangeEvent
+
+ChargeStateChangeEvent *-->"1" ChargeStateChangeEventPayload : event
+
+
+class ChargeStateChangeEventPayload {
+
+    id*: string
+    href: string
+    state*: MEFProductOrderChargeStateType
 }
 
-class ModifyProductOrderItemCompletionDateEvent {
 
-    eventType*: ModifyProductOrderItemCompletionDateEventType
+
+class ChargeTimeoutEvent {
+
+    eventType*: string
 }
-Event <|-- ModifyProductOrderItemCompletionDateEvent
+Event <|-- ChargeTimeoutEvent
 
-ModifyProductOrderItemCompletionDateEvent *-->"1" ModifyProductOrderItemCompletionDateEventPayload : event
-
-
-class ProductOrderEvent {
-
-    eventType*: ProductOrderEventType
-}
-Event <|-- ProductOrderEvent
-
-ProductOrderEvent *-->"1" ProductOrderEventPayload : event
+ChargeTimeoutEvent *-->"1" ChargeEventPayload : event
 
 
 class Event {
 
     eventId*: string
     eventTime*: date-time
+    eventType*: string
+    event*: object
 }
 
 
+class ModifyProductOrderItemRequestedDeliveryDateStateChangeEvent {
 
-class ModifyProductOrderItemCompletionDateEventPayload {
+    eventType*: string
+}
+Event <|-- ModifyProductOrderItemRequestedDeliveryDateStateChangeEvent
+
+ModifyProductOrderItemRequestedDeliveryDateStateChangeEvent *-->"1" ModifyProductOrderItemRequestedDeliveryDateStateChangeEventPayload : event
+
+
+class ModifyProductOrderItemRequestedDeliveryDateStateChangeEventPayload {
 
     id*: string
     href: string
-    buyerId: string
-    sellerId: string
+    state*: MEFChargeableTaskStateType
 }
 
 
 
-class ProductOrderEventPayload {
+class ProductOrderItemExpectedCompletionDateSetEvent {
+
+    eventType*: string
+}
+Event <|-- ProductOrderItemExpectedCompletionDateSetEvent
+
+ProductOrderItemExpectedCompletionDateSetEvent *-->"1" ProductOrderItemExpectedCompletionDateSetEventPayload : event
+
+
+class ProductOrderItemExpectedCompletionDateSetEventPayload {
 
     id*: string
     href: string
-    orderItemId: string
-    milestoneName: string
-    buyerId: string
-    sellerId: string
+    orderItemId*: string
 }
 
 
 
-enum ModifyProductOrderItemCompletionDateEventType {
+class ProductOrderItemStateChangeEvent {
 
-    modifyProductOrderItemCompletionDateStateChangeEvent
+    eventType*: string
 }
-enum ProductOrderEventType {
+Event <|-- ProductOrderItemStateChangeEvent
 
-    productOrderStateChangeEvent
-    productOrderItemStateChangeEvent
-    productOrderExpectedCompletionDateSet
-    productOrderItemExpectedCompletionDateSet
-    productSpecificProductOrderMilestoneEvent
-    productSpecificProductOrderItemMilestoneEvent
+ProductOrderItemStateChangeEvent *-->"1" ProductOrderItemStateChangeEventPayload : event
+
+
+class ProductOrderItemStateChangeEventPayload {
+
+    id*: string
+    href: string
+    orderItemId*: string
+    state*: MEFProductOrderItemStateType
 }
+
+
+
+class ProductOrderStateChangeEvent {
+
+    eventType*: string
+}
+Event <|-- ProductOrderStateChangeEvent
+
+ProductOrderStateChangeEvent *-->"1" ProductOrderStateChangeEventPayload : event
+
+
+class ProductOrderStateChangeEventPayload {
+
+    id*: string
+    href: string
+    state*: MEFProductOrderStateType
+}
+
+
+
+class ProductSpecificProductOrderItemMilestoneEvent {
+
+    eventType*: string
+}
+Event <|-- ProductSpecificProductOrderItemMilestoneEvent
+
+ProductSpecificProductOrderItemMilestoneEvent *-->"1" ProductSpecificProductOrderItemMilestoneEventPayload : event
+
+
+class ProductSpecificProductOrderItemMilestoneEventPayload {
+
+    id*: string
+    href: string
+    orderItemId*: string
+    milestoneName*: string
+}
+
+
+
 @enduml

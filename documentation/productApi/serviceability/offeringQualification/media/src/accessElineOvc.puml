@@ -1,0 +1,90 @@
+@startuml
+
+class AccessElineOvc {
+    carrierEthernetSls: CarrierEthernetSls
+    frameDisposition: FrameDisposition
+    maximumFrameSize: integer
+    ceVlanIdPreservation: CeVlanIdPreservation
+    cTagPcpPreservation: EnabledDisabled
+    cTagDeiPreservation: EnabledDisabled
+    listOfClassOfServiceNames: string[]
+    availableMegLevel: AvailableMegLevel
+    ovcL2cpAddressSet: L2cpAddressSet
+}
+MEFProductConfiguration <|-- AccessElineOvc
+
+AccessElineOvc *-->"1" AccessElineOvcEndPoint : uniEp
+AccessElineOvc *-->"1" AccessElineOvcEndPoint : enniEp
+
+
+class AccessElineOvcEndPoint {
+
+    identifier: string
+    maintenanceIntermediatePoint: MegLevel
+    colorMap: ColorFrom
+    ovcEgressMap: OvcEgressMap
+    egressEquivalenceClassIdentifier: CosNameFrom
+    ingressClassOfServiceMap: CosNameFrom
+    egressBandwidthProfilePerEndPoint: BwpFlow
+    ovcEndPointMap: EndPointMapForm
+    aggregationLinkDepth: AggLinkDepth
+    sourceMacAddressLimit: SourceMacAddressLimit
+    maintenanceEndPointList: MepLevelAndDirection
+    ovcEndPointEnvelopes: Envelope
+    ovcEndPointPortConversationToAggregationLinkMap: ConversationIdToAggregationLinkMap
+}
+
+AccessElineOvcEndPoint *-->"*" BandwidthProfilePerClassOfServiceName : ingressBandwidthProfilePerClassOfServiceName
+AccessElineOvcEndPoint *-->"*" BandwidthProfilePerClassOfServiceName : egressBwpPerEgressEquivalenceClassName
+
+
+
+class BandwidthProfilePerClassOfServiceName {
+
+    classOfServiceName: string
+}
+
+BandwidthProfilePerClassOfServiceName *--> BwpFlow : bwpFlow
+
+
+class BwpFlow {
+
+    couplingFlag: boolean
+    colorMode: ColorMode
+    envelopeId: string
+    envelopeRank: integer
+    tokenRequestOffset: integer
+}
+
+BwpFlow *--> InformationRate : cir
+BwpFlow *--> InformationRate : cirMax
+BwpFlow *--> DataSize : cbs
+BwpFlow *--> InformationRate : eir
+BwpFlow *--> InformationRate : eirMax
+BwpFlow *--> DataSize : ebs
+
+
+
+
+class DataSize {
+
+    dataSizeValue: integer
+    dataSizeUnits: DataSizeUnits
+}
+
+
+
+class InformationRate {
+
+    irValue: number
+    irUnits: InformationRateUnits
+}
+
+
+class MEFProductConfiguration {
+
+    @type*: string
+}
+
+
+@enduml

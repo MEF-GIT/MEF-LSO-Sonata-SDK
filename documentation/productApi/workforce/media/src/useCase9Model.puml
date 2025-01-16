@@ -1,137 +1,39 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
-
 
 class Appointment_Find {
 
     id*: string
-    href*: string
-    status*: AppointmentStateType
+    href: string
+    status*: AppointmentStatusType
 }
 
-Appointment_Find *-->"1" RelatedPlaceRefOrValue : relatedPlace
-Appointment_Find *-->"1..*" RelatedContactInformation : validFor
+Appointment_Find *-->"1" RelatedPlaceRefOrQuery : relatedPlace
+Appointment_Find *-->"1" TimePeriod : validFor
 Appointment_Find *-->"1" WorkOrderRef : workOrder
 
 
-class FormattedAddress {
 
-    addrLine1*: string
-    addrLine2: string
-    city*: string
-    country*: string
-    locality: string
-    postcode: string
-    postcodeExtension: string
-    stateOrProvince: string
-}
-RelatedPlaceRefOrValue <|-- FormattedAddress
-
-
-
-class GeographicAddressRef {
-
-    href: string
-    id*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicAddressRef
-
-
-
-class GeographicSiteRef {
-
-    href: string
-    id*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicSiteRef
-
-
-
-class GeographicSubAddress {
-
-    buildingName: string
-    id: string
-    levelNumber: string
-    levelType: string
-    privateStreetName: string
-    privateStreetNumber: string
-}
-
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
-
-
-
-class MEFSubUnit {
-
-    subUnitNumber*: string
-    subUnitType*: string
-}
-
-class RelatedContactInformation {
-
-    emailAddress*: string
-    name*: string
-    number*: string
-    numberExtension: string
-    organization: string
-    role*: string
-}
-
-RelatedContactInformation *--> FieldedAddress : postalAddress
-
-class FieldedAddress {
-
-    city*: string
-    country*: string
-    locality: string
-    postcode: string
-    postcodeExtension: string
-    stateOrProvince: string
-    streetName*: string
-    streetNr: string
-    streetNrLast: string
-    streetNrLastSuffix: string
-    streetNrSuffix: string
-    streetSuffix: string
-    streetType: string
-}
-RelatedPlaceRefOrValue <|-- FieldedAddress
-
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
-
-
-class GeographicAddressLabel {
-
-    externalReferenceId*: string
-    externalReferenceType*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicAddressLabel
-
-
-
-class RelatedPlaceRefOrValue {
-
-    @schemaLocation: uri
-    @type*: string
-    role*: string
-}
-
-class MEFGeographicPoint {
-
-    spatialRef*: string
-    x*: string
-    y*: string
-    z: string
-}
-RelatedPlaceRefOrValue <|-- MEFGeographicPoint
 
 class WorkOrderRef {
 
     href: string
     id*: string
+}
+
+class TimePeriod {
+
+    endDateTime*: date-time
+    startDateTime*: date-time
+}
+
+
+
+
+class RelatedPlaceRefOrQuery {
+    contact: ContactInformation
+    place*: PlaceRefOrQuery
+    role*: string
+    subUnit: SubUnit
 }
 
 

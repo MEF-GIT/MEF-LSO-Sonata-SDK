@@ -1,0 +1,31 @@
+@startuml
+hide empty description
+state "done.abandoned" as abandoned
+
+state immediate <<choice>>
+[*] --> immediate
+immediate --> done: Yes
+done --> [*]
+note right of immediate : Immediate response provided?
+
+immediate --> acknowledged: No
+state validation <<choice>>
+acknowledged --> validation
+note left of validation : Business validation passed??
+validation --> rejected: No
+rejected --> [*]
+state itemsReady <<choice>>
+note left of itemsReady : All other poq items passed validation??
+validation --> itemsReady: Yes
+itemsReady -d-> inProgress: Yes
+
+itemsReady --> abandoned : No
+abandoned --> done
+
+inProgress -l-> terminatedWithError
+terminatedWithError --> done
+inProgress --> done
+inProgress -r-> abandoned
+
+
+@enduml

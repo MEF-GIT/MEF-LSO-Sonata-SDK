@@ -1,44 +1,60 @@
 openapi: 3.0.1
 info:
-  description:
-    "**This file forms part of MEF 123** \n\nThis API implements Business\
-    \ Requirements described in MEF 57.2\n\nProduct Order Management allows the Buyer\
-    \ to request the Seller to initiate and complete the\nfulfillment process of an\
-    \ installation of a Product Offering, an update to\nan existing Product, or a\
-    \ disconnect of an existing Product at the address\ndefined by the Buyer.\n\n\
-    List of supported Use Cases:\n- Send Notifications This API must be\n\nCopyright\
-    \ 2022 MEF Forum and its contributors.\n\nThis file includes content based on\
-    \ the TM Forum Product Order API (TMF622\nv4.0.0) available at https://github.com/tmforum-apis/TMF622_ProductOrder,\n\
-    which is licensed by the TM Forum under the Apache License version 2.0. Such\n\
-    content has been modified by the MEF Forum and its contributors.\n"
+  description: "**This file forms part of MEF 123.1** \n\n**This draft represents\
+    \ MEF work in progress and is subject to change.**\n\nThis API implements Business\
+    \ Requirements described in MEF 57.2 and MEF 57.2.1\n\nProduct Order Management\
+    \ allows the Buyer to request the Seller to initiate and complete the\nfulfillment\
+    \ process of an installation of a Product Offering, an update to\nan existing\
+    \ Product, or a disconnect of an existing Product at the address\ndefined by the\
+    \ Buyer.\n\nList of supported Use Cases:\n\n- Send Notifications\n\n- Initiate\
+    \ Charge\n\nCopyright 2024 MEF Forum and its contributors.\n\nThis file includes\
+    \ content based on the TM Forum Product Order API (TMF622\nv4.0.0) available at\
+    \ https://github.com/tmforum-apis/TMF622_ProductOrder,\nwhich is licensed by the\
+    \ TM Forum under the Apache License version 2.0. Such\ncontent has been modified\
+    \ by the MEF Forum and its contributors.\n"
   title: Product Ordering Notification
-  version: 10.0.0
+  version: 11.0.0-RC
 servers:
-  - url: "https://{serverBase}/mefApi/sonata/productOrderingNotification/v10/"
-    variables:
-      serverBase:
-        default: mef.net
-        description: The base of Buyer's URL.
+- url: "https://{serverBase}/mefApi/sonata/productOrderingNotification/v11/"
+  variables:
+    serverBase:
+      default: mef.net
+      description: The base of Buyer's URL.
 security:
-  - oauth2MEFLSOAPI:
-      - default
+- oauth2MEFLSOAPI:
+  - default
 tags:
-  - description: |
-      The Seller's endpoint to send particular event types notifications to.
-    name: Notification listeners
+- description: |
+    The Seller's endpoint to send particular event types notifications to.
+  name: Notification listeners
 paths:
   /listener/productOrderStateChangeEvent:
     post:
-      deprecated: false
-      description:
-        This endpoint is used to receive notifications on Product Order
+      description: This endpoint is used to receive notifications on Product Order
         state change
       operationId: productOrderStateChangeEvent
+      parameters:
+      - description: The unique identifier of the organization that is acting as the
+          Buyer. MUST be specified in the request when the requester represents more
+          than one Buyer.
+        in: query
+        name: buyerId
+        required: false
+        schema:
+          type: string
+      - description: The unique identifier of the organization that is acting as the
+          Seller. MUST be specified in the request when the responding entity represents
+          more than one Seller.
+        in: query
+        name: sellerId
+        required: false
+        schema:
+          type: string
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: "#/components/schemas/ProductOrderEvent"
+              $ref: '#/components/schemas/ProductOrderStateChangeEvent'
         required: true
       responses:
         "204":
@@ -47,51 +63,59 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
         "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
         "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
-        "408":
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: "#/components/schemas/Error408"
-          description: Request Time-out
         "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - productOrderStateChangeEvent
+      - oauth2MEFLSOAPI:
+        - productOrderStateChangeEvent
       summary: Product Order State Change Notification endpoint
       tags:
-        - Notification listeners
-      x-codegen-request-body-name: productOrderStateChangeEvent
+      - Notification listeners
   /listener/productOrderItemStateChangeEvent:
     post:
-      deprecated: false
-      description:
-        This endpoint is used to receive notifications on Product Order
+      description: This endpoint is used to receive notifications on Product Order
         Item state change
       operationId: productOrderItemStateChangeEvent
+      parameters:
+      - description: The unique identifier of the organization that is acting as the
+          Buyer. MUST be specified in the request when the requester represents more
+          than one Buyer.
+        in: query
+        name: buyerId
+        required: false
+        schema:
+          type: string
+      - description: The unique identifier of the organization that is acting as the
+          Seller. MUST be specified in the request when the responding entity represents
+          more than one Seller.
+        in: query
+        name: sellerId
+        required: false
+        schema:
+          type: string
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: "#/components/schemas/ProductOrderEvent"
+              $ref: '#/components/schemas/ProductOrderItemStateChangeEvent'
         required: true
       responses:
         "204":
@@ -100,51 +124,59 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
         "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
         "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
-        "408":
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: "#/components/schemas/Error408"
-          description: Request Time-out
         "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - productOrderItemStateChangeEvent
+      - oauth2MEFLSOAPI:
+        - productOrderItemStateChangeEvent
       summary: Product Order Item State Change Notification endpoint
       tags:
-        - Notification listeners
-      x-codegen-request-body-name: productOrderItemStateChangeEvent
-  /listener/productOrderItemExpectedCompletionDateSet:
+      - Notification listeners
+  /listener/productOrderItemExpectedCompletionDateSetEvent:
     post:
-      deprecated: false
-      description:
-        This endpoint is used to receive notifications on Product Order
+      description: This endpoint is used to receive notifications on Product Order
         Item Expected Completion Date Set
-      operationId: productOrderItemExpectedCompletionDateSet
+      operationId: productOrderItemExpectedCompletionDateSetEvent
+      parameters:
+      - description: The unique identifier of the organization that is acting as the
+          Buyer. MUST be specified in the request when the requester represents more
+          than one Buyer.
+        in: query
+        name: buyerId
+        required: false
+        schema:
+          type: string
+      - description: The unique identifier of the organization that is acting as the
+          Seller. MUST be specified in the request when the responding entity represents
+          more than one Seller.
+        in: query
+        name: sellerId
+        required: false
+        schema:
+          type: string
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: "#/components/schemas/ProductOrderEvent"
+              $ref: '#/components/schemas/ProductOrderItemExpectedCompletionDateSetEvent'
         required: true
       responses:
         "204":
@@ -153,51 +185,59 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
         "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
         "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
-        "408":
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: "#/components/schemas/Error408"
-          description: Request Time-out
         "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - productOrderItemExpectedCompletionDateSet
+      - oauth2MEFLSOAPI:
+        - productOrderItemExpectedCompletionDateSetEvent
       summary: Product Order Item Expected Completion Date Set Notification endpoint
       tags:
-        - Notification listeners
-      x-codegen-request-body-name: productOrderItemExpectedCompletionDateSet
+      - Notification listeners
   /listener/productSpecificProductOrderItemMilestoneEvent:
     post:
-      deprecated: false
-      description:
-        This endpoint is used to receive notifications on Product Specific
+      description: This endpoint is used to receive notifications on Product Specific
         Product Order Item Milestone reached
       operationId: productSpecificProductOrderItemMilestoneEvent
+      parameters:
+      - description: The unique identifier of the organization that is acting as the
+          Buyer. MUST be specified in the request when the requester represents more
+          than one Buyer.
+        in: query
+        name: buyerId
+        required: false
+        schema:
+          type: string
+      - description: The unique identifier of the organization that is acting as the
+          Seller. MUST be specified in the request when the responding entity represents
+          more than one Seller.
+        in: query
+        name: sellerId
+        required: false
+        schema:
+          type: string
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: "#/components/schemas/ProductOrderEvent"
+              $ref: '#/components/schemas/ProductSpecificProductOrderItemMilestoneEvent'
         required: true
       responses:
         "204":
@@ -206,50 +246,59 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
         "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
         "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
-        "408":
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: "#/components/schemas/Error408"
-          description: Request Time-out
         "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - productSpecificProductOrderItemMilestoneEvent
+      - oauth2MEFLSOAPI:
+        - productSpecificProductOrderItemMilestoneEvent
       summary: Product Specific Product Order Item Milestone Notification endpoint
       tags:
-        - Notification listeners
-      x-codegen-request-body-name: productSpecificProductOrderItemMilestoneEvent
+      - Notification listeners
   /listener/cancelProductOrderStateChangeEvent:
     post:
-      description:
-        This endpoint is used to receive notifications on Cancel Product
+      description: This endpoint is used to receive notifications on Cancel Product
         Order State Change Event
       operationId: cancelProductOrderStateChangeEvent
+      parameters:
+      - description: The unique identifier of the organization that is acting as the
+          Buyer. MUST be specified in the request when the requester represents more
+          than one Buyer.
+        in: query
+        name: buyerId
+        required: false
+        schema:
+          type: string
+      - description: The unique identifier of the organization that is acting as the
+          Seller. MUST be specified in the request when the responding entity represents
+          more than one Seller.
+        in: query
+        name: sellerId
+        required: false
+        schema:
+          type: string
       requestBody:
         content:
-          "*/*":
+          application/json;charset=utf-8:
             schema:
-              $ref: "#/components/schemas/CancelProductOrderEvent"
+              $ref: '#/components/schemas/CancelProductOrderStateChangeEvent'
         description: The event data
         required: true
       responses:
@@ -259,50 +308,59 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
         "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
         "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
-        "408":
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: "#/components/schemas/Error408"
-          description: Request Time-out
         "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - cancelProductOrderStateChangeEvent
+      - oauth2MEFLSOAPI:
+        - cancelProductOrderStateChangeEvent
       summary: Cancel Product Order State Change Notification endpoint
       tags:
-        - Notification listeners
-      x-codegen-request-body-name: cancelProductOrderStateChangeEvent
+      - Notification listeners
   /listener/chargeCreateEvent:
     post:
-      description:
-        This endpoint is used to receive notifications on Charge Create
+      description: This endpoint is used to receive notifications on Charge Create
         Event
       operationId: chargeCreateEvent
+      parameters:
+      - description: The unique identifier of the organization that is acting as the
+          Buyer. MUST be specified in the request when the requester represents more
+          than one Buyer.
+        in: query
+        name: buyerId
+        required: false
+        schema:
+          type: string
+      - description: The unique identifier of the organization that is acting as the
+          Seller. MUST be specified in the request when the responding entity represents
+          more than one Seller.
+        in: query
+        name: sellerId
+        required: false
+        schema:
+          type: string
       requestBody:
         content:
-          "*/*":
+          application/json;charset=utf-8:
             schema:
-              $ref: "#/components/schemas/ChargeEvent"
+              $ref: '#/components/schemas/ChargeCreateEvent'
         description: The event data
         required: true
       responses:
@@ -312,50 +370,59 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
         "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
         "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
-        "408":
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: "#/components/schemas/Error408"
-          description: Request Time-out
         "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - chargeCreateEvent
+      - oauth2MEFLSOAPI:
+        - chargeCreateEvent
       summary: Charge Create Notification endpoint
       tags:
-        - Notification listeners
-      x-codegen-request-body-name: chargeCreateEvent
+      - Notification listeners
   /listener/chargeStateChangeEvent:
     post:
-      description:
-        This endpoint is used to receive notifications on Charge state
+      description: This endpoint is used to receive notifications on Charge state
         change event
       operationId: chargeStateChangeEvent
+      parameters:
+      - description: The unique identifier of the organization that is acting as the
+          Buyer. MUST be specified in the request when the requester represents more
+          than one Buyer.
+        in: query
+        name: buyerId
+        required: false
+        schema:
+          type: string
+      - description: The unique identifier of the organization that is acting as the
+          Seller. MUST be specified in the request when the responding entity represents
+          more than one Seller.
+        in: query
+        name: sellerId
+        required: false
+        schema:
+          type: string
       requestBody:
         content:
-          "*/*":
+          application/json;charset=utf-8:
             schema:
-              $ref: "#/components/schemas/ChargeEvent"
+              $ref: '#/components/schemas/ChargeStateChangeEvent'
         description: The event data
         required: true
       responses:
@@ -365,50 +432,59 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
         "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
         "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
-        "408":
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: "#/components/schemas/Error408"
-          description: Request Time-out
         "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - chargeStateChangeEvent
+      - oauth2MEFLSOAPI:
+        - chargeStateChangeEvent
       summary: Charge State Change Notification endpoint
       tags:
-        - Notification listeners
-      x-codegen-request-body-name: chargeStateChangeEvent
+      - Notification listeners
   /listener/chargeTimeoutEvent:
     post:
-      description:
-        This endpoint is used to receive notifications on Charge timeout
+      description: This endpoint is used to receive notifications on Charge timeout
         event
       operationId: chargeTimeoutEvent
+      parameters:
+      - description: The unique identifier of the organization that is acting as the
+          Buyer. MUST be specified in the request when the requester represents more
+          than one Buyer.
+        in: query
+        name: buyerId
+        required: false
+        schema:
+          type: string
+      - description: The unique identifier of the organization that is acting as the
+          Seller. MUST be specified in the request when the responding entity represents
+          more than one Seller.
+        in: query
+        name: sellerId
+        required: false
+        schema:
+          type: string
       requestBody:
         content:
-          "*/*":
+          application/json;charset=utf-8:
             schema:
-              $ref: "#/components/schemas/ChargeEvent"
+              $ref: '#/components/schemas/ChargeTimeoutEvent'
         description: The event data
         required: true
       responses:
@@ -418,50 +494,59 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
         "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
         "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
-        "408":
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: "#/components/schemas/Error408"
-          description: Request Time-out
         "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - chargeTimeoutEvent
+      - oauth2MEFLSOAPI:
+        - chargeTimeoutEvent
       summary: Charge State Change Notification endpoint
       tags:
-        - Notification listeners
-      x-codegen-request-body-name: chargeTimeoutEvent
+      - Notification listeners
   /listener/modifyProductOrderItemRequestedDeliveryDateStateChangeEvent:
     post:
-      description:
-        This endpoint is used to receive notifications on Modify Product
+      description: This endpoint is used to receive notifications on Modify Product
         Order Item Requested Delivery Date State Change Event
       operationId: modifyProductOrderItemRequestedDeliveryDateStateChangeEvent
+      parameters:
+      - description: The unique identifier of the organization that is acting as the
+          Buyer. MUST be specified in the request when the requester represents more
+          than one Buyer.
+        in: query
+        name: buyerId
+        required: false
+        schema:
+          type: string
+      - description: The unique identifier of the organization that is acting as the
+          Seller. MUST be specified in the request when the responding entity represents
+          more than one Seller.
+        in: query
+        name: sellerId
+        required: false
+        schema:
+          type: string
       requestBody:
         content:
-          "*/*":
+          application/json;charset=utf-8:
             schema:
-              $ref: "#/components/schemas/ModifyProductOrderItemRequestedDeliveryDateEvent"
+              $ref: '#/components/schemas/ModifyProductOrderItemRequestedDeliveryDateStateChangeEvent'
         description: The event data
         required: true
       responses:
@@ -471,127 +556,174 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error400"
+                $ref: '#/components/schemas/Error400'
           description: Bad Request
         "401":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error401"
+                $ref: '#/components/schemas/Error401'
           description: Unauthorized
         "403":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error403"
+                $ref: '#/components/schemas/Error403'
           description: Forbidden
-        "408":
-          content:
-            application/json;charset=utf-8:
-              schema:
-                $ref: "#/components/schemas/Error408"
-          description: Request Time-out
         "500":
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: "#/components/schemas/Error500"
+                $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-        - oauth2MEFLSOAPI:
-            - modifyProductOrderItemRequestedDeliveryDateStateChangeEvent
-      summary:
-        Modify Product Order Item Requested Delivery Date State Change Notification
+      - oauth2MEFLSOAPI:
+        - modifyProductOrderItemRequestedDeliveryDateStateChangeEvent
+      summary: Modify Product Order Item Requested Delivery Date State Change Notification
         endpoint
       tags:
-        - Notification listeners
-      x-codegen-request-body-name: ModifyProductOrderItemRequestedDeliveryDateStateChangeEvent
+      - Notification listeners
 components:
   schemas:
-    CancelProductOrderEvent:
+    CancelProductOrderStateChangeEvent:
       allOf:
-        - $ref: "#/components/schemas/Event"
-        - type: object
-          properties:
-            eventType:
-              $ref: "#/components/schemas/CancelProductOrderEventType"
-            event:
-              $ref: "#/components/schemas/CancelProductOrderEventPayload"
-          required:
-            - event
-            - eventType
-    CancelProductOrderEventPayload:
-      type: object
-      description:
-        The identifier of the Cancel Product Order being subject of this
+      - $ref: '#/components/schemas/Event'
+      - properties:
+          eventType:
+            description: |
+              Indicates the type of the event.
+            enum:
+            - cancelProductOrderStateChangeEvent
+            type: string
+          event:
+            $ref: '#/components/schemas/CancelProductOrderStateChangeEventPayload'
+        required:
+        - event
+        - eventType
+        type: object
+    CancelProductOrderStateChangeEventPayload:
+      description: The identifier of the Cancel Product Order being subject of this
         event.
       properties:
-        sellerId:
-          type: string
-          description: |-
-            The unique identifier of the organization that is acting as the Seller. MUST be specified in the request only when requester entity represents more than one Seller.
-            Reference: MEF 79 (Sn 8.8)
         id:
-          type: string
           description: ID of the Cancel Product Order
+          type: string
         href:
-          type: string
           description: Hyperlink to access the Cancel Product Order
-        buyerId:
           type: string
-          description: |-
-            The unique identifier of the organization that is acting as the a Buyer. MUST be specified in the request only when the responding represents more than one Buyer.
-            Reference: MEF 79 (Sn 8.8)
+        state:
+          $ref: '#/components/schemas/MEFChargeableTaskStateType'
       required:
-        - id
-    CancelProductOrderEventType:
-      type: string
-      description: Indicates the type of Cancel Product Order event.
-      enum:
-        - cancelProductOrderStateChangeEvent
-    ChargeEvent:
-      allOf:
-        - $ref: "#/components/schemas/Event"
-        - type: object
-          properties:
-            eventType:
-              $ref: "#/components/schemas/ChargeEventType"
-            event:
-              $ref: "#/components/schemas/ChargeEventPayload"
-          required:
-            - event
-            - eventType
-    ChargeEventPayload:
+      - id
+      - state
       type: object
+    ChargeCreateEvent:
+      allOf:
+      - $ref: '#/components/schemas/Event'
+      - properties:
+          eventType:
+            description: |
+              Indicates the type of the event.
+            enum:
+            - chargeCreateEvent
+            type: string
+          event:
+            $ref: '#/components/schemas/ChargeEventPayload'
+        required:
+        - event
+        - eventType
+        type: object
+    ChargeEventPayload:
       description: The identifier of the Charge being subject of this event.
       properties:
-        sellerId:
-          type: string
-          description: |-
-            The unique identifier of the organization that is acting as the Seller. MUST be specified in the request only when requester entity represents more than one Seller.
-            Reference: MEF 79 (Sn 8.8)
         id:
-          type: string
           description: ID of the Charge
+          type: string
         href:
-          type: string
           description: Hyperlink to access the Charge
-        buyerId:
           type: string
-          description: |-
-            The unique identifier of the organization that is acting as the a Buyer. MUST be specified in the request only when the responding represents more than one Buyer.
-            Reference: MEF 79 (Sn 8.8)
       required:
-        - id
-    ChargeEventType:
-      type: string
-      description: Indicates the type of Charge event.
-      enum:
-        - chargeCreateEvent
-        - chargeStateChangeEvent
-        - chargeTimeoutEvent
+      - id
+      type: object
+    ChargeStateChangeEvent:
+      allOf:
+      - $ref: '#/components/schemas/Event'
+      - properties:
+          eventType:
+            description: |
+              Indicates the type of the event.
+            enum:
+            - chargeStateChangeEvent
+            type: string
+          event:
+            $ref: '#/components/schemas/ChargeStateChangeEventPayload'
+        required:
+        - event
+        - eventType
+        type: object
+    ChargeStateChangeEventPayload:
+      description: The identifier of the Charge being subject of this event.
+      properties:
+        id:
+          description: ID of the Charge
+          type: string
+        href:
+          description: Hyperlink to access the Charge
+          type: string
+        state:
+          $ref: '#/components/schemas/MEFProductOrderChargeStateType'
+      required:
+      - id
+      - state
+      type: object
+    ChargeTimeoutEvent:
+      allOf:
+      - $ref: '#/components/schemas/Event'
+      - properties:
+          eventType:
+            description: |
+              Indicates the type of the event.
+            enum:
+            - chargeTimeoutEvent
+            type: string
+          event:
+            $ref: '#/components/schemas/ChargeEventPayload'
+        required:
+        - event
+        - eventType
+        type: object
+    Error:
+      description: |
+        Standard Class used to describe API response error
+        Not intended to be use directly. The `code` in the HTTP header is used as a discriminator for the type of error returned in runtime.
+      properties:
+        reason:
+          description: Text that explains the reason for error. This can be shown
+            to a client user.
+          maxLength: 255
+          type: string
+        message:
+          description: Text that provide mode details and corrective actions related
+            to the error. This can be shown to a client user.
+          type: string
+        referenceError:
+          description: url pointing to documentation describing the error
+          format: uri
+          type: string
+      required:
+      - reason
+      type: object
+    Error400:
+      allOf:
+      - $ref: '#/components/schemas/Error'
+      - properties:
+          code:
+            $ref: '#/components/schemas/Error400Code'
+        required:
+        - code
+        type: object
+      description: Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)
     Error400Code:
-      type: string
       description: |-
         One of the following error codes:
         - missingQueryParameter: The URI is missing a required query-string parameter
@@ -599,74 +731,41 @@ components:
         - invalidQuery: The query section of the URI is invalid.
         - invalidBody: The request has an invalid body
       enum:
-        - missingQueryParameter
-        - missingQueryValue
-        - invalidQuery
-        - invalidBody
-    Error:
-      type: object
-      description: |
-        Standard Class used to describe API response error
-        Not intended to be use directly. The `code` in the HTTP header is used as a discriminator for the type of error returned in runtime.
-      properties:
-        reason:
-          type: string
-          description:
-            Text that explains the reason for error. This can be shown
-            to a client user.
-          maxLength: 255
-        message:
-          type: string
-          description:
-            Text that provide mode details and corrective actions related
-            to the error. This can be shown to a client user.
-        referenceError:
-          type: string
-          format: uri
-          description: url pointing to documentation describing the error
-      required:
-        - reason
-    Error400:
-      allOf:
-        - $ref: "#/components/schemas/Error"
-        - type: object
-          properties:
-            code:
-              $ref: "#/components/schemas/Error400Code"
-          required:
-            - code
-      description: Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)
+      - missingQueryParameter
+      - missingQueryValue
+      - invalidQuery
+      - invalidBody
+      type: string
     Error401:
       allOf:
-        - $ref: "#/components/schemas/Error"
-        - type: object
-          properties:
-            code:
-              $ref: "#/components/schemas/Error401Code"
-          required:
-            - code
+      - $ref: '#/components/schemas/Error'
+      - properties:
+          code:
+            $ref: '#/components/schemas/Error401Code'
+        required:
+        - code
+        type: object
       description: Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)
     Error401Code:
-      type: string
       description: |-
         One of the following error codes:
         - missingCredentials: No credentials provided.
         - invalidCredentials: Provided credentials are invalid or expired
       enum:
-        - missingCredentials
-        - invalidCredentials
+      - missingCredentials
+      - invalidCredentials
+      type: string
     Error403:
       allOf:
-        - $ref: "#/components/schemas/Error"
-        - type: object
-          properties:
-            code:
-              $ref: "#/components/schemas/Error403Code"
-          required:
-            - code
+      - $ref: '#/components/schemas/Error'
+      - properties:
+          code:
+            $ref: '#/components/schemas/Error403Code'
+        required:
+        - code
+        type: object
       description: Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)
     Error403Code:
-      type: string
       description: |-
         This code indicates that the server understood
         the request but refuses to authorize it because
@@ -675,156 +774,318 @@ components:
         - forbiddenRequester: Forbidden requester
         - tooManyUsers: Too many users
       enum:
-        - accessDenied
-        - forbiddenRequester
-        - tooManyUsers
-    Error408:
-      allOf:
-        - $ref: "#/components/schemas/Error"
-        - type: object
-          properties:
-            code:
-              type: string
-              description: |-
-                List of supported error codes:
-                - timeOut: Request Time-out - indicates that the server did not receive a complete request message within the time that it was prepared to wait.
-              enum:
-                - timeOut
-          required:
-            - code
-      description: Request Time-out (https://tools.ietf.org/html/rfc7231#section-6.5.7)
+      - accessDenied
+      - forbiddenRequester
+      - tooManyUsers
+      type: string
     Error500:
       allOf:
-        - $ref: "#/components/schemas/Error"
-        - type: object
-          properties:
-            code:
-              type: string
-              description: |-
-                One of the following error codes:
-                - internalError: Internal server error - the server encountered an unexpected condition that prevented it from fulfilling the request.
-              enum:
-                - internalError
-          required:
-            - code
+      - $ref: '#/components/schemas/Error'
+      - properties:
+          code:
+            description: |-
+              One of the following error codes:
+              - internalError: Internal server error - the server encountered an unexpected condition that prevented it from fulfilling the request.
+            enum:
+            - internalError
+            type: string
+        required:
+        - code
+        type: object
       description: Internal Server Error. (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     Event:
-      type: object
-      description:
-        Event class is used to describe information structure used for
+      description: Event class is used to describe information structure used for
         notification.
       properties:
         eventId:
-          type: string
           description: Id of the event
-        eventTime:
           type: string
-          format: date-time
+        eventTime:
           description: Date-time when the event occurred
+          format: date-time
+          type: string
+        eventType:
+          description: The type of the notification.
+          type: string
+        event:
+          description: The event linked to the involved resource object
+          type: object
       required:
-        - eventId
-        - eventTime
-    ModifyProductOrderItemRequestedDeliveryDateEvent:
-      allOf:
-        - $ref: "#/components/schemas/Event"
-        - type: object
-          properties:
-            eventType:
-              $ref: "#/components/schemas/ModifyProductOrderItemRequestedDeliveryDateEventType"
-            event:
-              $ref: "#/components/schemas/ModifyProductOrderItemRequestedDeliveryDateEventPayload"
-          required:
-            - event
-            - eventType
-    ModifyProductOrderItemRequestedDeliveryDateEventPayload:
+      - event
+      - eventId
+      - eventTime
+      - eventType
       type: object
-      description:
-        The identifier of the Modify Product Order Item Requested Delivery
+    MEFChargeableTaskStateType:
+      description: |
+        The states as defined by TMF622 and extended to meet MEF requirements.
+
+        | Name                       | MEF 57.2 Name    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+        | -------------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | inProgress.assessingCharge | ACCESSING_CHARGE | The Modify Product Order Item Requested Delivery Date request results in a Charge being initiated by the Seller. The Modify Product Order Item Requested Delivery Date remains in this state until the Charge is completed or withdrawn by the Seller. All charges within a Charge that was initiated due to a Modify Product Order Item Requested Delivery Date are considered Blocking charges. If any charge is not accepted by the Buyer, the Modify Product Order Item Requested Delivery Date moves from the `inProgress.assessingCharge` state to the `done.declined` state. |
+        | acknowledged               | ACKNOWLEDGED     | A Modify Product Order Item Requested Delivery Date request has been received and has passed basic validation. The Modify Product Order Item Requested Delivery Date Identifier is assigned in the `acknowledged` state. Validation of Modify Product Order Item Requested Delivery Date attributes as applicable is completed in the `acknowledged` state.                                                                                                                                                                                                                         |
+        | done                       | ACCEPTED         | A Modify Product Order Item Requested Delivery Date request has been received, passed all validations, if a Charge is associated all Charge Items have been accepted by the Buyer, and the Product Order Item Completion Date has been updated as requested.                                                                                                                                                                                                                                                                                                                        |
+        | done.declined              | DECLINED         | Blocking charges associated with a Modify Product Order Item Requested Delivery Date have been declined by the Buyer. No updates are made to the Product Order Item.                                                                                                                                                                                                                                                                                                                                                                                                                |
+        | rejected                   | REJECTED         | A Modify Product Order Item Requested Delivery Date request was submitted by the Buyer, and it has failed any validation checks the Seller performs during the `acknowledged` state. No updates are made to the referenced Product Order Item.
+      enum:
+      - acknowledged
+      - done
+      - done.declined
+      - inProgress.assessingCharge
+      - rejected
+      type: string
+    MEFProductOrderChargeStateType:
+      description: |
+        Possible values for the state of the Charge
+
+        | State               | Description                                                                                                                               |
+        | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+        | `completed`         | All Charge Items included in the Charge for a given Product Order Item have moved to either the `accepted` state or the `declined` state. |
+        | `awaitingResponse`  | A Charge has been initiated by the Buyer. The charge includes one or more charges.                                                        |
+        | `timeout`           | A response has not been received from the Buyer within the `responseDueDate`. This is treated as if the Buyer declined the Charge Items.  |
+        | `withdrawnBySeller` | The Seller determines that the Charge is incorrect. They withdraw the Charge and initiate a new Charge with the required correction(s).   |
+      enum:
+      - awaitingResponse
+      - completed
+      - timeout
+      - withdrawnBySeller
+      type: string
+    MEFProductOrderItemStateType:
+      description: |
+        Possible values for the state of the Product Order Item The following
+        mapping has been used between `MEFProductOrderItemStateType` and MEF
+        57.2:
+
+        | state                 | MEF 57.2 name | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+        | --------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+        | `acknowledged`        | ACKNOWLEDGED  | A Product Order Item has been received and has passed basic business validations. From the `acknowledged` state the Product Order Item is further validated and depending on the results of the validation and if other Product Order Items in the Product Order are also validated the Product Order Item moves to `inProgress`, `rejected.validated`, or `rejected.unassessed`.                                                                                                                                                                                                                                                                                                                                                                                                                |
+        | `cancelled`           | CANCELLED     | The Product Order has moved to the `pendingCancellation` state. All Product Order Items move to `cancelled`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+        | `completed`           | COMPLETED     | The Product Order Item has completed provisioning. This is an end state                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+        | `failed`              | FAILED        | The fulfillment of a Product Order Item has failed. A Product Order Item may fail because the Buyer declined a Blocking charge identified via the Charge, the Buyer failed to respond to a Charge Item included in a Charge, or the Seller is unable to fulfill the Product Order Item. A Product Order Item moving to `failed` state results in the Product Order State being `failed` or `partial`. This is a terminal state.                                                                                                                                                                                                                                                                                                                                                                  |
+        | `held`                | HELD          | The Product Order Item cannot be progressed due to Charge the Seller awaiting a response from the Buyer on a Charge. The Seller stops work on the Product Order Item until the Charge has completed. Upon acceptance by the Buyer of all Blocking charges, the Product Order Item returns to `inProgress` state If the Buyer rejects a Blocking charge, the Product Order Item moves to the `failed` state.                                                                                                                                                                                                                                                                                                                                                                                      |
+        | `inProgress`          | IN_PROGRESS   | The Product Order Item has been successfully validated and fulfillment has started. If the Seller's system links validation between Product Order Items in a Product Order, a Product Order Item in this state also indicates that the other Product Order Items passed validation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+        | `pending`             | PENDING       | The Product Order Item cannot be progressed due to the Seller assessing a Cancel Product Order or Modify Product Order Item Requested Delivery Date request. The Seller stops work on the Product Order Item until either the Cancel Product Order has been accepted and the Product Order state moves to `pendingCancellation` and the Product Order Item state moves to `cancelled`, the Cancel Product Order has been rejected and the Product Order Item State moves to `inProgress`, the Modify Product Order Item Requested Delivery Date has been accepted and the Product Order Item State moves to `inProgress`, or the Modify Product Order Item Requested Delivery Date moves to `done.declined` and the Product Order Item state moves to `inProgress` with original delivery dates. |
+        | `rejected`            | REJECTED      | A Product Order Item was submitted, and it has failed at least one validation checks the Seller performs during the `acknowledged` state. Other Product Order Items may continue to be processed.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+        | `rejected.unassessed` | UNASSESSED    | A Product Order was submitted and all validation checks the Seller performs during the `acknowledged` state have not been completed, but another Product Order Item in the Product Order has moved to the `rejected` state.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+        | `rejected.validated`  | VALIDATED     | A Product Order was submitted, and it has passed all validation checks the Seller performs during the `acknowledged` state, but another Product Order Item in the Product Order has moved to the `rejected` state                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+      enum:
+      - acknowledged
+      - cancelled
+      - completed
+      - failed
+      - held
+      - inProgress
+      - pending
+      - rejected
+      - rejected.validated
+      - rejected.unassessed
+      type: string
+    MEFProductOrderStateType:
+      description: |
+        Possible values for the state of the Product Order The following
+        mapping has been used between `MEFProductOrderStateType` and MEF 57.2:
+
+        | state                           | MEF 57.2 name          | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+        | ------------------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | `acknowledged`                  | ACKNOWLEDGED           | A Product Order has been received by the Seller and has passed basic validation. A `productOrder.id` is assigned in the `acknowledged` state and a response is returned to the Buyer. The Product Order remains in the `acknowledged` state while validations of Product Order and Product Order Item(s) attributes as applicable is completed. If the Product Order and Product Order Item attributes are validated the Product Order moves to the `inProgress` state. If not validated, the Product Order moves to the `rejected` state.                                                                                                                                                                                                                                               |
+        | `assessingCancellation`         | ASSESSING_CANCELLATION | A Cancel Product Order request has been received by the Seller. The Product Order is being assessed to determine if the Product Order can be cancelled. If there are charges associated with cancelling the Product Order, these are communicated to the Buyer using the Charge process. The Product Order remains in the `assessingCancellation` state until any relevant Charge is completed or withdrawn by the Seller. Once the Buyer's request has been validated and any associated Charges completed, the Product Order moves to the `pendingCancellation` state. If the request is not validated or if any associated Charges are not completed, the Product Order moves to the `inProgress` state and the Product Order is not cancelled.                                       |
+        | `held.assessingCharge`          | ASSESSING_CHARGE       | A Charge has been initiated by the Seller that is not the result of a Modify Product Order Item Requested Delivery Date or Cancel Product Order request and the Seller is awaiting a Buyer response to the Charge. If a blocking or non-blocking charge is accepted by the Buyer, the Product Order moves to `inProgress`. If a non-blocking charge is declined by the Buyer, the Product Order moves to `inProgress`. If a blocking charge is declined by the Buyer and there are no unrelated Product Order Items in the Product Order, the Product Order moves to the `inProgress` and then to the `failed` state. If a blocking charge is declined by the Buyer and there are unrelated Product Order Items in the Product Order, the Product Order moves to the `inProgress` state. |
+        | `pending.assessingModification` | ASSESSING_MODIFICATION | A request has been made by the Buyer to modify either the `expediteIndicator` or the `requestedCompletionDate` of a Product Order Item. The Product Order Item is currently being assessed to determine whether the Modify Product Order Item Requested Delivery Date is valid. If there is a charge associated with the Modify Product Order Item Requested Delivery Date, the Product Order remains in the `pending.assessingModification` state until the Charge is completed or withdrawn by the Seller. Once the Buyer's request has been validated and any associated Charges completed, the Product Order returns to the `inProgress` state.                                                                                                                                      |
+        | `cancelled`                     | CANCELLED              | The Product Order has been successfully cancelled. This is a terminal state.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+        | `pendingCancellation`           | CANCELLING             | The Buyer's Cancel Request has been assessed and it has been determined that it is feasible to proceed with the cancellation. This state can also result from a Seller cancelling the Product Order within their systems without a request from the Buyer.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+        | `completed`                     | COMPLETED              | The Product Order has completed fulfillment and the Product is now active. This is a terminal state                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+        | `failed`                        | FAILED                 | All Product Order Items have failed which results in the entire Product Order failing. This is a terminal state.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+        | `inProgress`                    | IN_PROGRESS            | The Product Order has been successfully validated, and fulfillment has started.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+        | `partial`                       | PARTIAL                | At least one Product Order Item is `failed` or `rejected`, and fulfillment of at least one Product Order Item has been successful. This is a terminal state                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+        | `rejected`                      | REJECTED               | A Product Order was submitted, and it has failed at least one of the validation checks the Seller performs after it reached the `acknowledged` state                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+      enum:
+      - acknowledged
+      - assessingCancellation
+      - cancelled
+      - completed
+      - failed
+      - held.assessingCharge
+      - inProgress
+      - partial
+      - pending.assessingModification
+      - pendingCancellation
+      - rejected
+      type: string
+    ModifyProductOrderItemRequestedDeliveryDateStateChangeEvent:
+      allOf:
+      - $ref: '#/components/schemas/Event'
+      - properties:
+          eventType:
+            description: |
+              Indicates the type of the event.
+            enum:
+            - modifyProductOrderItemRequestedDeliveryDateStateChangeEvent
+            type: string
+          event:
+            $ref: '#/components/schemas/ModifyProductOrderItemRequestedDeliveryDateStateChangeEventPayload'
+        required:
+        - event
+        - eventType
+        type: object
+    ModifyProductOrderItemRequestedDeliveryDateStateChangeEventPayload:
+      description: The identifier of the Modify Product Order Item Requested Delivery
         Date being subject of this event.
       properties:
-        sellerId:
-          type: string
-          description: |-
-            The unique identifier of the organization that is acting as the Seller. MUST be specified in the request only when requester entity represents more than one Seller.
-            Reference: MEF 79 (Sn 8.8)
         id:
-          type: string
           description: ID of the Modify Product Order Item Requested Delivery Date
+          type: string
         href:
-          type: string
-          description:
-            Hyperlink to access the Modify Product Order Item Requested
+          description: Hyperlink to access the Modify Product Order Item Requested
             Delivery Date
-        buyerId:
           type: string
-          description: |-
-            The unique identifier of the organization that is acting as the a Buyer. MUST be specified in the request only when the responding represents more than one Buyer.
-            Reference: MEF 79 (Sn 8.8)
+        state:
+          $ref: '#/components/schemas/MEFChargeableTaskStateType'
       required:
-        - id
-    ModifyProductOrderItemRequestedDeliveryDateEventType:
-      type: string
-      description:
-        Indicates the type of Modify Product Order Item Requested Delivery
-        Date event.
-      enum:
-        - modifyProductOrderItemRequestedDeliveryDateStateChangeEvent
-    ProductOrderEvent:
-      allOf:
-        - $ref: "#/components/schemas/Event"
-        - type: object
-          properties:
-            eventType:
-              $ref: "#/components/schemas/ProductOrderEventType"
-            event:
-              $ref: "#/components/schemas/ProductOrderEventPayload"
-          required:
-            - event
-            - eventType
-    ProductOrderEventPayload:
+      - id
+      - state
       type: object
-      description:
-        The identifier of the Product Order and/or Order Item being subject
-        of this event.
+    ProductOrderItemExpectedCompletionDateSetEvent:
+      allOf:
+      - $ref: '#/components/schemas/Event'
+      - description: productOrderItemExpectedCompletionDateSetEvent structure
+        properties:
+          eventType:
+            description: Indicates the type of the event.
+            enum:
+            - productOrderItemExpectedCompletionDateSetEvent
+            type: string
+          event:
+            $ref: '#/components/schemas/ProductOrderItemExpectedCompletionDateSetEventPayload'
+        required:
+        - event
+        - eventType
+        type: object
+    ProductOrderItemExpectedCompletionDateSetEventPayload:
+      description: A reference to the Product Order Item that is the source of the
+        notification.
       properties:
-        sellerId:
+        id:
+          description: The Product Order unique identifier.
           type: string
-          description: |-
-            The unique identifier of the organization that is acting as the Seller. MUST be specified in the request only when requester entity represents more than one Seller.
-            Reference: MEF 79 (Sn 8.8)
+        href:
+          description: Link to the ProductOrder
+          type: string
+        orderItemId:
+          description: ID of the Product Order Item (within the Product Order) which
+            state change triggered the event
+          type: string
+      required:
+      - id
+      - orderItemId
+      type: object
+    ProductOrderItemStateChangeEvent:
+      allOf:
+      - $ref: '#/components/schemas/Event'
+      - description: ProductOrderItemStateChangeEvent structure
+        properties:
+          eventType:
+            description: Indicates the type of the event.
+            enum:
+            - productOrderItemStateChangeEvent
+            type: string
+          event:
+            $ref: '#/components/schemas/ProductOrderItemStateChangeEventPayload'
+        required:
+        - event
+        - eventType
+        type: object
+    ProductOrderItemStateChangeEventPayload:
+      description: A reference to the Product Order Item that is the source of the
+        notification.
+      properties:
+        id:
+          description: The Product Order unique identifier.
+          type: string
+        href:
+          description: Link to the ProductOrder
+          type: string
+        orderItemId:
+          description: ID of the Product Order Item (within the Product Order) which
+            state change triggered the event
+          type: string
+        state:
+          $ref: '#/components/schemas/MEFProductOrderItemStateType'
+      required:
+      - id
+      - orderItemId
+      - state
+      type: object
+    ProductOrderStateChangeEvent:
+      allOf:
+      - $ref: '#/components/schemas/Event'
+      - description: ProductOrderStateChangeEvent structure
+        properties:
+          eventType:
+            description: Indicates the type of product order event.
+            enum:
+            - productOrderStateChangeEvent
+            type: string
+          event:
+            $ref: '#/components/schemas/ProductOrderStateChangeEventPayload'
+        required:
+        - event
+        - eventType
+        type: object
+    ProductOrderStateChangeEventPayload:
+      description: A reference to the Product Order that is the source of the notification.
+      properties:
+        id:
+          description: The Product Order unique identifier.
+          type: string
+        href:
+          description: Link to the Product Order
+          type: string
+        state:
+          $ref: '#/components/schemas/MEFProductOrderStateType'
+      required:
+      - id
+      - state
+      type: object
+    ProductSpecificProductOrderItemMilestoneEvent:
+      allOf:
+      - $ref: '#/components/schemas/Event'
+      - description: ProductSpecificProductOrderItemMilestoneEvent structure
+        properties:
+          eventType:
+            description: Indicates the type of the event.
+            enum:
+            - productSpecificProductOrderItemMilestoneEvent
+            type: string
+          event:
+            $ref: '#/components/schemas/ProductSpecificProductOrderItemMilestoneEventPayload'
+        required:
+        - event
+        - eventType
+        type: object
+    ProductSpecificProductOrderItemMilestoneEventPayload:
+      description: A reference to the Product Order Item that is the source of the
+        notification.
+      properties:
+        id:
+          description: The Product Order unique identifier.
+          type: string
+        href:
+          description: Link to the ProductOrder
+          type: string
+        orderItemId:
+          description: ID of the Product Order Item (within the Product Order) which
+            state change triggered the event
+          type: string
         milestoneName:
-          type: string
-          description:
-            The name of the Milestone that was reached by give Product
+          description: The name of the Milestone that was reached by give Product
             Order or Product Order Item. Mandatory for Product Specific Milestone
             reached events.
-        orderItemId:
           type: string
-          description:
-            ID of the Product Order Item (within the Product Order) which
-            state change triggered the event. Mandatory for Product Order Item related
-            events.
-        id:
-          type: string
-          description: ID of the Product Order
-        href:
-          type: string
-          description: Hyperlink to access the Product Order
-        buyerId:
-          type: string
-          description: |-
-            The unique identifier of the organization that is acting as the a Buyer. MUST be specified in the request only when the responding represents more than one Buyer.
-            Reference: MEF 79 (Sn 8.8)
       required:
-        - id
-    ProductOrderEventType:
-      type: string
-      description: Indicates the type of Product Order event.
-      enum:
-        - productOrderStateChangeEvent
-        - productOrderItemStateChangeEvent
-        - productOrderItemExpectedCompletionDateSet
-        - productSpecificProductOrderItemMilestoneEvent
+      - id
+      - milestoneName
+      - orderItemId
+      type: object
   securitySchemes:
     oauth2MEFLSOAPI:
       description: Default m2m client code

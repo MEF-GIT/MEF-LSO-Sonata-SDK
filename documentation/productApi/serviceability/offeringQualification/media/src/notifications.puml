@@ -1,0 +1,68 @@
+@startuml
+
+
+class Event {
+
+    eventId*: string
+    eventTime*: date-time
+    eventType*: string
+    event*: object
+}
+
+
+
+enum MEFPOQTaskStateType {
+
+    acknowledged
+    inProgress
+    done
+    rejected
+    terminatedWithError
+}
+enum MEFPOQItemTaskStateType {
+
+    acknowledged
+    inProgress
+    done.abandoned
+    done
+    rejected
+    terminatedWithError
+}
+class PoqItemStateChangeEvent {
+
+    eventType*: string
+}
+Event <|-- PoqItemStateChangeEvent
+
+PoqItemStateChangeEvent *-->"1" PoqItemStateChangeEventPayload : event
+
+
+class PoqItemStateChangeEventPayload {
+
+    id*: string
+    href: string
+    poqItemId*: string
+    state*: MEFPOQItemTaskStateType
+}
+
+
+
+class PoqStateChangeEvent {
+
+    eventType*: string
+}
+Event <|-- PoqStateChangeEvent
+
+PoqStateChangeEvent *-->"1" PoqStateChangeEventPayload : event
+
+
+class PoqStateChangeEventPayload {
+
+    id*: string
+    href: string
+    state*: MEFPOQTaskStateType
+}
+
+
+
+@enduml

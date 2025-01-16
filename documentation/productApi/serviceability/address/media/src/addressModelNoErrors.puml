@@ -1,121 +1,121 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
+
+
+class FieldedAddressRepresentation {
+
+    streetNr: string
+    streetNrSuffix: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetPreDirection: string
+    streetName: string
+    streetType: string
+    streetPostDirection: string
+    poBox: string
+    locality: string
+    city: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+    countryCode: string
+    buildingName: string
+    privateStreetNumber: string
+    privateStreetName: string
+    language: string
 }
 
-class FieldedAddress {
+FieldedAddressRepresentation *-->"*" SubUnit : subUnit
 
-    city*: string 
-    country*: string 
-    locality: string 
-    postcode: string 
-    postcodeExtension: string 
-    stateOrProvince: string 
-    streetName*: string 
-    streetNr: string 
-    streetNrLast: string 
-    streetNrLastSuffix: string 
-    streetNrSuffix: string 
-    streetSuffix: string 
-    streetType: string 
+
+class FormattedAddressRepresentation {
+
+    formattedAddress*: string
+    language: string
 }
-GeographicAddress <|-- FieldedAddress
-
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
-
-
-class FormattedAddress {
-
-    addrLine1*: string 
-    addrLine2: string 
-    city*: string 
-    country*: string 
-    locality: string 
-    postcode: string 
-    postcodeExtension: string 
-    stateOrProvince: string 
-}
-GeographicAddress <|-- FormattedAddress
-
-
-
-class GeographicAddressLabel {
-
-    externalReferenceId*: string 
-    externalReferenceType*: string 
-}
-GeographicAddress <|-- GeographicAddressLabel
 
 
 
 class GeographicAddress {
 
-    id: string {readOnly} 
-    href: string {readOnly} 
-    allowsNewSite: boolean {readOnly}  
-    hasPublicSite: boolean {readOnly} 
-    @schemaLocation: uri 
-    @type*: string 
+    id*: string
+    href: string
+    hasPublicSite*: TrueFalseUnknown
+    allowsNewSite*: TrueFalseUnknown
 }
 
-GeographicAddress *--> FieldedAddress : associatedGeographicAddress {readOnly} 
+GeographicAddress *-->"*" FieldedAddressRepresentation : fieldedAddressRepresentation
+GeographicAddress *-->"*" FormattedAddressRepresentation : formattedAddressRepresentation
+GeographicAddress *-->"*" GeographicPointRepresentation : geographicPointRepresentation
+GeographicAddress *-->"*" LabelRepresentation : labelRepresentation
 
 
 class GeographicAddressValidation {
 
-    provideAlternative*: boolean 
-    validationResult: MEFValidationResultType 
+    id: string
+    state*: GeographicAddressValidationStateType
 }
+GeographicAddressValidation_Create <|-- GeographicAddressValidation
 
-GeographicAddressValidation *-->"*" GeographicAddress : alternateGeographicAddress
-GeographicAddressValidation *--> GeographicAddress : bestMatchGeographicAddress
-GeographicAddressValidation *-->"1" GeographicAddress : submittedGeographicAddress
+GeographicAddressValidation *-->"1..*" GeographicAddress : alternateGeographicAddress
+GeographicAddressValidation *-->"1" GeographicAddress : bestMatchGeographicAddress
 
 
+enum GeographicAddressValidationStateType {
+
+    acknowledged
+    inProgress
+    ready
+    rejected
+}
 class GeographicAddressValidation_Create {
 
-    provideAlternative*: boolean 
+    instantSyncValidation*: boolean
 }
 
-GeographicAddressValidation_Create *-->"1" GeographicAddress : submittedGeographicAddress
+GeographicAddressValidation_Create *-->"1" GeographicAddress_Query : submittedGeographicAddress
 
 
-class GeographicSubAddress {
-
-    buildingName: string 
-    levelNumber: string 
-    levelType: string 
-    privateStreetName: string 
-    privateStreetNumber: string 
+class GeographicAddress_Query {
+    @type*: string 
 }
 
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+GeographicAddress_Query *-->"*" FieldedAddressRepresentation : fieldedAddressRepresentation
+GeographicAddress_Query *-->"*" FormattedAddressRepresentation : formattedAddressRepresentation
+GeographicAddress_Query *-->"*" GeographicPointRepresentation : geographicPointRepresentation
+GeographicAddress_Query *-->"*" LabelRepresentation : labelRepresentation
 
 
-class MEFGeographicPoint {
+class GeographicPointRepresentation {
 
-    spatialRef*: string 
-    x*: string 
-    y*: string 
-    z: string 
-}
-GeographicAddress <|-- MEFGeographicPoint
-
-
-
-class MEFSubUnit {
-
-    subUnitNumber*: string 
-    subUnitType*: string 
+    spatialRef*: string
+    latitude*: string
+    longitude*: string
+    elevation: string
 }
 
 
 
-enum MEFValidationResultType {
+class LabelRepresentation {
 
-    success
-    partial
-    fail
+    label*: string
+    administrativeAuthority*: string
+    language: string
+}
+
+
+
+class SubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+
+
+
+enum TrueFalseUnknown {
+
+    true
+    false
+    unknown
 }
 @enduml

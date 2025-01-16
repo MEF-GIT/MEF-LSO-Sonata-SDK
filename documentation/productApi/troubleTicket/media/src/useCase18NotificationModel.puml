@@ -1,17 +1,4 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
-
-
-class IncidentEvent {
-
-    eventType*: IncidentEventType
-}
-Event <|-- IncidentEvent
-
-IncidentEvent *-->"1" IncidentEventPayload : event
 
 
 
@@ -19,50 +6,124 @@ class Event {
 
     eventId*: string
     eventTime*: date-time
+    eventType*: string
+    event*: object
 }
 
+
+
+class IncidentAttributeValueChangeEvent {
+
+    eventType*: string
+}
+Event <|-- IncidentAttributeValueChangeEvent
+
+IncidentAttributeValueChangeEvent *-->"1" IncidentEventPayload : event
+
+
+class IncidentCreateEvent {
+
+    eventType*: string
+}
+Event <|-- IncidentCreateEvent
+
+IncidentCreateEvent *-->"1" IncidentEventPayload : event
 
 
 class IncidentEventPayload {
 
-    sellerId: string
     id*: string
     href: string
-    buyerId: string
 }
 
+
+
+class IncidentStatusChangeEvent {
+
+    eventType*: string
+}
+Event <|-- IncidentStatusChangeEvent
+
+IncidentStatusChangeEvent *-->"1" IncidentStatusChangeEventPayload : event
+
+
+class IncidentStatusChangeEventPayload {
+
+    id*: string
+    href: string
+    status*: IncidentStatusType
+}
+
+
+
+enum IncidentStatusType {
+
+    closed
+    created
+    inProgress
+}
+class TroubleTicketAttributeValueChangeEvent {
+
+    eventType*: string
+}
+Event <|-- TroubleTicketAttributeValueChangeEvent
+
+TroubleTicketAttributeValueChangeEvent *-->"1" TroubleTicketEventPayload : event
 
 
 class TroubleTicketEventPayload {
 
-    sellerId: string
     id*: string
     href: string
-    buyerId: string
 }
 
 
 
-enum IncidentEventType {
+class TroubleTicketInformationRequiredEvent {
 
-    incidentCreateEvent
-    incidentAttributeValueChangeEvent
-    incidentStatusChangeEvent
+    eventType*: string
 }
-class TroubleTicketEvent {
+Event <|-- TroubleTicketInformationRequiredEvent
 
-    eventType*: TroubleTicketEventType
+TroubleTicketInformationRequiredEvent *-->"1" TroubleTicketEventPayload : event
+
+
+class TroubleTicketResolvedEvent {
+
+    eventType*: string
 }
-Event <|-- TroubleTicketEvent
+Event <|-- TroubleTicketResolvedEvent
 
-TroubleTicketEvent *-->"1" TroubleTicketEventPayload : event
+TroubleTicketResolvedEvent *-->"1" TroubleTicketEventPayload : event
 
 
-enum TroubleTicketEventType {
+class TroubleTicketStatusChangeEvent {
 
-    troubleTicketAttributeValueChangeEvent
-    troubleTicketInformationRequiredEvent
-    troubleTicketResolvedEvent
-    troubleTicketStatusChangeEvent
+    eventType*: string
+}
+Event <|-- TroubleTicketStatusChangeEvent
+
+TroubleTicketStatusChangeEvent *-->"1" TroubleTicketStatusChangeEventPayload : event
+
+
+class TroubleTicketStatusChangeEventPayload {
+
+    id*: string
+    href: string
+    status*: TroubleTicketStatusType
+}
+
+
+
+enum TroubleTicketStatusType {
+
+    acknowledged
+    assessingCancellation
+    cancelled
+    closed
+    inProgress
+    pending
+    resolved
+    reopened
 }
 @enduml

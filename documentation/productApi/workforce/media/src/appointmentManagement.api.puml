@@ -1,8 +1,4 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
 
 class Appointment {
 
@@ -13,33 +9,12 @@ class Appointment {
 
 Appointment *-->"*" AttachmentValue : attachment
 Appointment *-->"*" Note : note
-Appointment *-->"1" RelatedPlaceRefOrValue : relatedPlace
+Appointment *-->"1" RelatedPlaceRefOrQuery : relatedPlace
 Appointment *-->"1" TimePeriod : validFor
 Appointment *-->"1..*" RelatedContactInformation : relatedContactInformation
 Appointment *-->"1" WorkOrderRef : workOrder
 
 
-class Appointment_Find {
-
-    id*: string
-    href: string
-    status*: AppointmentStatusType
-}
-
-Appointment_Find *-->"1" RelatedPlaceRefOrValue : relatedPlace
-Appointment_Find *-->"1" TimePeriod : validFor
-Appointment_Find *-->"1" WorkOrderRef : workOrder
-
-
-enum AppointmentStatusType {
-
-    confirmed
-    inProgress
-    cancelled
-    missed
-    failed
-    completed
-}
 class Appointment_Create {
 
 }
@@ -51,111 +26,63 @@ Appointment_Create *-->"1" TimePeriod : validFor
 Appointment_Create *-->"1" WorkOrderRef : workOrder
 
 
+class Appointment_Find {
+
+    id*: string
+    href: string
+    status*: AppointmentStatusType
+}
+
+Appointment_Find *-->"1" RelatedPlaceRefOrQuery : relatedPlace
+Appointment_Find *-->"1" TimePeriod : validFor
+Appointment_Find *-->"1" WorkOrderRef : workOrder
+
+
 class Appointment_Update {
 
 }
 
 Appointment_Update *-->"*" AttachmentValue : attachment
 Appointment_Update *-->"*" Note : note
-Appointment_Update *--> RelatedPlaceRefOrValue : relatedPlace
+Appointment_Update *--> RelatedPlaceRefOrQuery : relatedPlace
 Appointment_Update *-->"*" RelatedContactInformation : relatedContactInformation
 Appointment_Update *--> TimePeriod : validFor
 
 
 class AttachmentValue {
 
-    attachmentId: string
     author*: string
-    content: string
-    creationDate: date-time
+    creationDate*: date-time
     description: string
     mimeType: string
     name*: string
     source*: MEFBuyerSellerType
-    url: string
+    url*: string
 }
 
 AttachmentValue *--> MEFByteSize : size
 
 
-class Error400 {
 
-    code*: Error400Code
-}
-Error <|-- Error400
-
-
-
-class Error401 {
-
-    code*: Error401Code
-}
-Error <|-- Error401
-
-
-
-class Error403 {
-
-    code*: Error403Code
-}
-Error <|-- Error403
-
-
-
-class Error422 {
-
-    code*: Error422Code
-    propertyPath: string
-}
-Error <|-- Error422
-
-
-
-class EventSubscription {
-
-    callback*: string
-    id*: string
-    query: string
-}
-
-
-
-class FieldedAddress {
-
-    city*: string
-    country*: string
-    locality: string
-    postcode: string
-    postcodeExtension: string
-    stateOrProvince: string
-    streetName*: string
-    streetNr: string
-    streetNrLast: string
-    streetNrLastSuffix: string
-    streetNrSuffix: string
-    streetSuffix: string
-    streetType: string
-}
-RelatedPlaceRefOrValue <|-- FieldedAddress
-
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
-
-
-class GeographicAddressLabel {
-
-    externalReferenceId*: string
-    externalReferenceType*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicAddressLabel
-
-
-
-class RelatedPlaceRefOrValue {
-
-    @schemaLocation: uri
-    @type*: string
+class RelatedPlaceRefOrQuery {
+    contact: ContactInformation
+    place*: PlaceRefOrQuery
     role*: string
+    subUnit: SubUnit
 }
+
+class RelatedContactInformation {
+
+    role*: string
+    number*: string
+    emailAddress*: string
+    organization: string
+    name*: string
+    numberExtension: string
+    postalAddress: FieldedAddressRepresentation
+}
+
+
 
 
 
@@ -167,32 +94,6 @@ SearchTimeSlot_Create *-->"1..*" TimeSlot : requestedTimeSlot
 SearchTimeSlot_Create *-->"1" WorkOrderRef : workOrder
 
 
-enum Error422Code {
-
-    missingProperty
-    invalidValue
-    invalidFormat
-    referenceNotFound
-    unexpectedProperty
-    tooManyRecords
-    otherIssue
-}
-enum MEFBuyerSellerType {
-
-    buyer
-    seller
-}
-class MEFGeographicPoint {
-
-    spatialRef*: string
-    x*: string
-    y*: string
-    z: string
-}
-RelatedPlaceRefOrValue <|-- MEFGeographicPoint
-
-
-
 class TimeSlot {
 
 }
@@ -200,135 +101,10 @@ class TimeSlot {
 TimeSlot *-->"1" TimePeriod : validFor
 
 
-enum Error400Code {
-
-    missingQueryParameter
-    missingQueryValue
-    invalidQuery
-    invalidBody
-}
-class Error409 {
-
-    code*: string
-}
-Error <|-- Error409
-
-
-
-enum Error401Code {
-
-    missingCredentials
-    invalidCredentials
-}
-class Error404 {
-
-    code*: string
-}
-Error <|-- Error404
-
-
-
-class EventSubscriptionInput {
-
-    callback*: string
-    query: string
-}
-
-
-
-enum Error403Code {
-
-    accessDenied
-    forbiddenRequester
-    tooManyUsers
-}
-enum DataSizeUnit {
-
-    BYTES
-    KBYTES
-    MBYTES
-    GBYTES
-    TBYTES
-    PBYTES
-    EBYTES
-    ZBYTES
-    YBYTES
-}
-class Error500 {
-
-    code*: string
-}
-Error <|-- Error500
-
-
-
-class Error {
-
-    message: string
-    reason*: string
-    referenceError: uri
-}
-
-
-
-class FormattedAddress {
-
-    addrLine1*: string
-    addrLine2: string
-    city*: string
-    country*: string
-    locality: string
-    postcode: string
-    postcodeExtension: string
-    stateOrProvince: string
-}
-RelatedPlaceRefOrValue <|-- FormattedAddress
-
-
-
-class GeographicAddressRef {
-
-    href: string
-    id*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicAddressRef
-
-
-
-class GeographicSiteRef {
-
-    href: string
-    id*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicSiteRef
-
-
-
-class GeographicSubAddress {
-
-    buildingName: string
-    id: string
-    levelNumber: string
-    levelType: string
-    privateStreetName: string
-    privateStreetNumber: string
-}
-
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
-
-
 class MEFByteSize {
 
     amount: float
     units: DataSizeUnit
-}
-
-
-
-class MEFSubUnit {
-
-    subUnitNumber*: string
-    subUnitType*: string
 }
 
 
@@ -342,19 +118,6 @@ class Note {
     text*: string
 }
 
-
-
-class RelatedContactInformation {
-
-    emailAddress*: string
-    name*: string
-    number*: string
-    numberExtension: string
-    organization: string
-    role*: string
-}
-
-RelatedContactInformation *--> FieldedAddress : postalAddress
 
 
 class SearchTimeSlot {

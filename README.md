@@ -1,9 +1,9 @@
-# MEF-LSO-Sonata-SDK - Haley Release
+# MEF-LSO-Sonata-SDK - Irene Release
 
 ## Download Link
 
 Download the entire repository by clicking
-[here](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/releases/download/haley/MEF-LSO-Sonata-SDK-haley.zip)
+[here](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/releases/download/irene/MEF-LSO-Sonata-SDK-irene.zip)
 
 ## Introduction
 
@@ -33,22 +33,63 @@ It also provides Product Schemas for:
 
 No new APIs were introduced.
 
+There is a major change in Geographic Address model, introduced by MEF 150. It
+is implemented consistently across all the APIs.
+
+There are also changes and fixes to some patterns:
+
+- Revised, fully specialized Event model.
+- State change events now carry the value of the new `state`
+- `buyerId` and `sellerId` in notification now carried via query params
+  (consistent with seller side API)
+
 There are the following document maturity changes:
 
-- Documents published as MEF Standards:
-  - MEF 125.0.1 - Subscriber Ethernet Schemas and Product Schema Guide -
-    Amendment (examples)
-  - MEF 139 - Internet Access Product Schemas and Developer Guide
-  - MEF 127 - LSO Cantata and LSO Sonata Product Catalog - Business
-    Requirements and Use Cases
-  - MEF 128.1 - LSO API Security Profile
-- The following documents have their Letter Ballots open and will be likely shortly
-  published as MEF standards:
-  - MEF W110 - Product Offering Availability and Pricing Discovery - Business
-    Requirements and Use Cases
 - Updated documents:
+
+  - MEF 110 Product Offering Availability and Pricing Discovery - Business
+    Requirements and Use Cases
+  - MEF W142 - LSO Cantata and LSO Sonata Product Catalog API & Developer Guide
   - MEF W160 - LSO Cantata and LSO Sonata Product Offering Availability and
     Pricing Discovery API - Developer Guide
+
+- New Documents:
+  - MEF 57.2.1 Draft Release 1 Amendment to MEF 57.2: Product Order Management
+    Business Requirements and Use Cases
+  - MEF 79.1 Draft Release 1 Product Offering Qualification Management Business
+    Requirements and Use Cases
+  - MEF 80.0.1 Draft Release 1 Amendment to MEF 80: Quote Management
+    Requirements and Use Cases
+  - MEF 110 Draft Release 4 Product Offering Availability and Pricing
+    Discovery - Business Requirements and Use Cases
+  - MEF 127.1 - LSO Cantata and LSO Sonata Product Catalog - Business
+    Requirements and Use Cases
+  - MEF 150 Draft Release 1 Installation Place and Service Site Management
+    Business Requirements and Use Cases
+  - MEF W87.1 - LSO Cantata and LSO Sonata Product Offering Qualification API -
+    Developer Guide
+  - MEF W115.1 - LSO Cantata and LSO Sonata Quote Management API - Developer
+    Guide
+  - MEF W116.1- LSO Cantata and LSO Sonata Product Inventory API - Developer
+    Guide
+  - MEF W121.1 - LSO Cantata and LSO Sonata Address Management API - Developer
+    Guide
+  - MEF W122.1 - LSO Cantata and LSO Sonata Site Management API - Developer
+    Guide
+  - MEF W123.1 - LSO Cantata and LSO Sonata Product Ordering Management API -
+    Developer Guide
+  - MEF W124.1 - LSO Cantata and LSO Sonata Trouble Ticket and Incident
+    Management API - Developer Guide
+  - MEF W137.1 - LSO Cantata and LSO Sonata Appointment and Work Order
+    Management API - Developer Guide
+  - MEF W141.1 - LSO Cantata and LSO Sonata Billing Management API - Developer
+    Guide
+
+- Superseded Documents:
+  - MEF 79 - Address, Service Site, and Product Offering Qualification Management Requirements and Use Cases
+  - MEF 79.0.1 - Amendment to MEF 79: Address, Service Site, and Product Offering Qualification Management Requirements and Use Cases
+  - MEF 79.0.2 - Amendment to MEF 79: Address Validation
+  - MEF 127 - LSO Cantata and LSO Sonata Product Catalog - Business Requirements and Use Cases
 
 The [LSO Marketplace](http://lso.mef.net) offers the possibility to blend the
 desired APIs with chosen Products. Thus the APIs blended with all products that
@@ -72,53 +113,53 @@ release.
 
 - Product Catalog:
   - Business Requirements:
-    - \*MEF 127 - **Published Standard**
+    - \*MEF 127.1 - **Draft Release 1**
   - Developer Guide/API:
-    - MEF W142 - **work in progress - CfC#2 resolved**
+    - \*MEF W142 - **work in progress - ready for CfC#3**
 - Address Validation, Site Query:
   - Business Requirements:
-    - MEF 79 - **Published Standard**
-    - MEF 79.0.2 - **Published Standard**
+    - \*MEF 150 - **Draft Release 1**
   - Developer Guide/API:
-    - MEF 121 - Address Management - **Published Standard**
-    - MEF 122 - Site Management - **Published Standard**
+    - \*MEF W121.1 - Address Management - **work in progress - CfC#1 Resolved. Ready for LB**
+    - \*MEF W122.1 - Site Management - **work in progress - CfC#1 Resolved. Ready for LB**
 - Product Offering Qualification:
   - Business Requirements:
-    - MEF 79 - **Published Standard**
-    - MEF 79.0.1 - **Published Standard**
+    - \*MEF 79.1 - **Draft Release 1**
   - Developer Guide/API:
-    - MEF 87 - **Published Standard**
+    - \*MEF W87.1 - **work in progress - CfC#1 Resolved. Ready for LB**
 - Quote:
   - Business Requirements:
     - MEF 80 - **Published Standard**
+    - \*MEF 80.0.1 - **Draft Release 1**
   - Developer Guide/API:
-    - MEF 115: - **Published Standard**
+    - \*MEF W115.1 - **work in progress - ready for CfC#1**
 - Product Offering Availability and Pricing Discovery:
   - Business Requirements:
-    - MEF \*W110 - **Draft Standard R4**
+    - \*MEF 110 - **Draft Standard R4**
   - Developer Guide/API:
-    - MEF \*W160: - **work in progress - ready for CfC#3**
+    - \*MEF W160: - **work in progress - ready for CfC#4**
 - Order:
   - Business Requirements:
     - MEF 57.2 - **Published Standard**
+    - \*MEF 57.2.1 - **Draft Release 1**
   - Developer Guide/API:
-    - MEF 123 - **Published Standard**
+    - \*MEF W123.1 - **work in progress - ready for CfC#1**
 - Inventory:
   - Business Requirements:
     - MEF 81, MEF 81.0.1 - **Published Standard**
   - Developer Guide/API
-    - MEF 116 - **Published Standard**
+    - \*MEF W116.1 - **work in progress - ready for CfC#1**
 - Trouble Ticket:
   - Business Requirements:
     - MEF 113 - **Published Standard**
   - Developer Guide/API
-    - MEF 124 - Trouble Ticket - **Published Standard**
-    - MEF 137 - Appointment - **Published Standard**
+    - \*MEF W124.1 - Trouble Ticket - **work in progress - ready for CfC#1**
+    - \*MEF W137.1 - Appointment - **work in progress - ready for CfC#1**
 - Billing:
   - Business Requirements:
     - MEF 134 - **Published Standard**
   - Developer Guide/API
-    - MEF 141 - **Published Standard**
+    - \*MEF W141 - **work in progress - ready for CfC#1**
 - Product Specifications:
   - MEF 106 - Access E-Line - **Published Standard**
   - MEF 125 - Subscriber Ethernet (EPL, EPLAN, EPTREE, EVPL, EVPLAN, EVPTREE) -
@@ -169,7 +210,7 @@ The MEF LSO Sonata SDK is released under the Apache 2.0 license.
 
 ## Copyright
 
-© MEF Forum 2024. All Rights Reserved.
+© MEF Forum 2025. All Rights Reserved.
 
 ## Disclaimer
 

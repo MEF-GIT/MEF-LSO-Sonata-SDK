@@ -4,7 +4,6 @@ skinparam {
     ClassBorderColor Black
 }
 
-scale 4096 width
 class CancelProductOrder {
 
     cancellationDeniedReason: string
@@ -15,7 +14,7 @@ class CancelProductOrder {
     state*: MEFChargeableTaskStateType
 }
 
-CancelProductOrder *-->"0..*" MEFProductOrderChargeRef : charge
+CancelProductOrder *--> MEFProductOrderChargeRef : charge
 CancelProductOrder *-->"1" MEFProductOrderRef : productOrder
 CancelProductOrder *-->"1..*" RelatedContactInformation : relatedContactInformation
 
@@ -30,59 +29,31 @@ CancelProductOrder_Create *-->"1" MEFProductOrderRef : productOrder
 CancelProductOrder_Create *-->"1..*" RelatedContactInformation : relatedContactInformation
 
 
+class CancelProductOrder_Find {
+
+    cancellationReasonType*: CancellationReasonType
+    id*: string
+    state*: MEFChargeableTaskStateType
+}
+
+CancelProductOrder_Find *-->"1" MEFProductOrderRef : productOrder
+
+class ContactInformation {
+
+    number*: string
+    emailAddress*: string
+    organization: string
+    name*: string
+    numberExtension: string
+}
+
+ContactInformation *--> FieldedAddressRepresentation : postalAddress
+
+
 class Duration {
 
     amount*: integer
     units*: TimeUnit
-}
-
-
-
-class Error400 {
-
-    code*: Error400Code
-}
-Error <|-- Error400
-
-
-
-class Error401 {
-
-    code*: Error401Code
-}
-Error <|-- Error401
-
-
-
-class Error403 {
-
-    code*: Error403Code
-}
-Error <|-- Error403
-
-
-
-class Error404 {
-
-    code*: string
-}
-Error <|-- Error404
-
-
-
-class Error409 {
-
-    code*: string
-}
-Error <|-- Error409
-
-
-
-class Error {
-
-    message: string
-    reason*: string
-    referenceError: uri
 }
 
 
@@ -103,40 +74,37 @@ class EventSubscriptionInput {
 }
 
 
+class FieldedAddressRepresentation {
 
-class FieldedAddress {
-
-    city*: string
-    country*: string
-    locality: string
-    postcode: string
-    postcodeExtension: string
-    stateOrProvince: string
-    streetName*: string
     streetNr: string
+    streetNrSuffix: string
     streetNrLast: string
     streetNrLastSuffix: string
-    streetNrSuffix: string
-    streetSuffix: string
+    streetPreDirection: string
+    streetName: string
     streetType: string
-}
-RelatedPlaceRefOrValue <|-- FieldedAddress
-
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
-
-
-class FormattedAddress {
-
-    addrLine1*: string
-    addrLine2: string
-    city*: string
-    country*: string
+    streetPostDirection: string
+    poBox: string
     locality: string
+    city: string
     postcode: string
     postcodeExtension: string
     stateOrProvince: string
+    countryCode: string
+    buildingName: string
+    privateStreetNumber: string
+    privateStreetName: string
+    language: string
 }
-RelatedPlaceRefOrValue <|-- FormattedAddress
+
+FieldedAddressRepresentation *-->"*" SubUnit : subUnit
+
+
+class FormattedAddressRepresentation {
+
+    formattedAddress*: string
+    language: string
+}
 
 
 
@@ -144,8 +112,28 @@ class GeographicAddressRef {
 
     href: string
     id*: string
+    @type*: string
 }
-RelatedPlaceRefOrValue <|-- GeographicAddressRef
+
+
+
+class GeographicAddress_Query {
+
+}
+
+GeographicAddress_Query *-->"*" FieldedAddressRepresentation : fieldedAddressRepresentation
+GeographicAddress_Query *-->"*" FormattedAddressRepresentation : formattedAddressRepresentation
+GeographicAddress_Query *-->"*" GeographicPointRepresentation : geographicPointRepresentation
+GeographicAddress_Query *-->"*" LabelRepresentation : labelRepresentation
+
+
+class GeographicPointRepresentation {
+
+    spatialRef*: string
+    latitude*: string
+    longitude*: string
+    elevation: string
+}
 
 
 
@@ -153,21 +141,17 @@ class GeographicSiteRef {
 
     href: string
     id*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicSiteRef
-
-
-
-class GeographicSubAddress {
-
-    buildingName: string
-    levelNumber: string
-    levelType: string
-    privateStreetName: string
-    privateStreetNumber: string
+    @type*: string
 }
 
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+
+
+class LabelRepresentation {
+
+    label*: string
+    administrativeAuthority*: string
+    language: string
+}
 
 
 class MEFBillingAccountRef {
@@ -176,14 +160,11 @@ class MEFBillingAccountRef {
 }
 
 
-
 class MEFCancelProductOrderRef {
 
     href: string
     id*: string
 }
-
-
 
 class MEFItemTerm {
 
@@ -192,8 +173,17 @@ class MEFItemTerm {
     name*: string
 }
 
-MEFItemTerm *--> Duration : duration*
+MEFItemTerm *-->"1" Duration : duration
 MEFItemTerm *--> Duration : rollInterval
+
+
+class MEFMilestone {
+
+    date*: date-time
+    name*: string
+    note: string
+}
+
 
 
 class MEFModifyProductOrderItemRequestedDeliveryDate {
@@ -217,156 +207,6 @@ class MEFModifyProductOrderItemRequestedDeliveryDateRef {
 
 
 
-class MEFOrderItemCoordinatedAction {
-
-    coordinationDependency*: MEFOrderItemCoordinationDependencyType
-    itemId*: string
-}
-
-MEFOrderItemCoordinatedAction *-->"1" Duration : coordinatedActionDelay
-
-
-class MEFProductOrderItemStateChange {
-
-    changeDate: date-time
-    changeReason: string
-    state: MEFProductOrderItemStateType
-}
-
-
-
-class MEFProductOrderItem_Create {
-
-}
-MEFProductOrderItem_Common <|-- MEFProductOrderItem_Create
-
-
-
-class MEFQuoteItemRef {
-
-    id*: string
-    quoteHref: string
-    quoteId*: string
-}
-
-
-
-class Money {
-
-    unit: string
-    value: float
-}
-
-
-
-class ProductOrder {
-
-    cancellationDate: date-time
-    cancellationReason: string
-    completionDate: date-time
-    href: string
-    id*: string
-    orderDate*: date-time
-    state*: MEFProductOrderStateType
-}
-ProductOrder_Common <|-- ProductOrder
-
-ProductOrder *-->"*" MEFProductOrderChargeRef : cancellationCharge
-ProductOrder *-->"1..*" ProductOrderItem : productOrderItem
-ProductOrder *-->"*" MEFProductOrderStateChange : stateChange
-
-
-class ProductOrder_Common {
-
-    externalId: string
-    projectId: string
-}
-
-ProductOrder_Common *-->"*" Note : note
-ProductOrder_Common *-->"1..*" RelatedContactInformation : relatedContactInformation
-
-
-class ProductOrder_Update {
-
-    externalId: string
-    projectId: string
-}
-
-ProductOrder_Update *-->"*" Note : note
-ProductOrder_Update *-->"*" MEFProductOrderItem_Update : productOrderItem
-ProductOrder_Update *-->"*" RelatedContactInformation : relatedContactInformation
-
-
-class TerminationError {
-
-    code: Error422Code
-    propertyPath: string
-    value: string
-}
-
-
-
-enum Error403Code {
-
-    accessDenied
-    forbiddenRequester
-    tooManyUsers
-}
-class Error422 {
-
-    code*: Error422Code
-    propertyPath: string
-}
-Error <|-- Error422
-
-
-
-enum Error422Code {
-
-    missingProperty
-    invalidValue
-    invalidFormat
-    referenceNotFound
-    unexpectedProperty
-    tooManyRecords
-    otherIssue
-}
-class Error500 {
-
-    code*: string
-}
-Error <|-- Error500
-
-
-
-class Error501 {
-
-    code*: string
-}
-Error <|-- Error501
-
-
-
-class GeographicAddressLabel {
-
-    externalReferenceId*: string
-    externalReferenceType*: string
-}
-RelatedPlaceRefOrValue <|-- GeographicAddressLabel
-
-
-
-class MEFGeographicPoint {
-
-    spatialRef*: string
-    x*: string
-    y*: string
-    z: string
-}
-RelatedPlaceRefOrValue <|-- MEFGeographicPoint
-
-
-
 class MEFModifyProductOrderItemRequestedDeliveryDate_Create {
 
     expediteIndicator: boolean
@@ -374,6 +214,15 @@ class MEFModifyProductOrderItemRequestedDeliveryDate_Create {
 }
 
 MEFModifyProductOrderItemRequestedDeliveryDate_Create *-->"1" MEFProductOrderItemRef : productOrderItem
+
+
+class MEFOrderItemCoordinatedAction {
+
+    coordinationDependency*: MEFOrderItemCoordinationDependencyType
+    itemId*: string
+}
+
+MEFOrderItemCoordinatedAction *-->"1" Duration : coordinatedActionDelay
 
 
 class MEFProductConfiguration {
@@ -399,32 +248,34 @@ MEFProductOrderCharge *--> MEFProductOrderRef : productOrder
 MEFProductOrderCharge *--> MEFProductOrderItemRef : productOrderItem
 
 
-enum MEFProductOrderChargeActivityType {
+class MEFProductOrderCharge_Find {
 
-    new
-    change
+    creationDate*: date-time
+    id*: string
+    responseDueDate*: date-time
+    state*: MEFProductOrderChargeStateType
 }
-enum MEFEndOfTermAction {
 
-    roll
-    autoDisconnect
-    autoRenew
-}
+MEFProductOrderCharge_Find *--> MEFProductOrderRef : productOrder
+MEFProductOrderCharge_Find *--> MEFProductOrderItemRef : productOrderItem
+
+
 class MEFProductOrderChargeItem {
 
     acceptanceIndicator: MEFAcceptedRejectedType
     activityType*: MEFProductOrderChargeActivityType
     blocking*: boolean
-    priceType*: MEFPriceType
-    priceCategory*: MEFPriceCategory
     id*: string
-    recurringChargePeriod: MEFChargePeriod
+    priceCategory*: MEFPriceCategory
+    priceType*: MEFPriceType
     state*: MEFProductOrderChargeItemStateType
     unitOfMeasure: string
 }
 
-MEFProductOrderChargeItem *-->"1" Price : price
 MEFProductOrderChargeItem *-->"*" Note : note
+MEFProductOrderChargeItem *-->"1" Price : price
+MEFProductOrderChargeItem *--> Duration : recurringChargePeriod
+
 
 class MEFProductOrderChargeItem_Update {
 
@@ -434,12 +285,12 @@ class MEFProductOrderChargeItem_Update {
 
 MEFProductOrderChargeItem_Update *-->"*" Note : note
 
+
 class MEFProductOrderChargeRef {
 
     href: string
     id*: string
 }
-
 
 
 class MEFProductOrderCharge_Update {
@@ -458,6 +309,55 @@ class MEFProductOrderItemRef {
 
 
 
+class MEFProductOrderItemStateChange {
+
+    changeDate: date-time
+    changeReason: string
+    state: MEFProductOrderItemStateType
+}
+
+
+class MEFProductOrderItem_Common {
+
+    action*: MEFProductActionType
+    agreementName: string
+    endCustomerName: string
+    expediteIndicator: boolean
+    id*: string
+    relatedBuyerPON: string
+    requestedCompletionDate: date-time
+    tspRestorationPriority: string
+}
+
+MEFProductOrderItem_Common *--> MEFBillingAccountRef : billingAccount
+MEFProductOrderItem_Common *-->"*" MEFOrderItemCoordinatedAction : coordinatedAction
+MEFProductOrderItem_Common *-->"*" Note : note
+MEFProductOrderItem_Common *-->"1" MEFProductRefOrValueOrder : product
+MEFProductOrderItem_Common *--> ProductOfferingQualificationItemRef : productOfferingQualificationItem
+MEFProductOrderItem_Common *-->"*" OrderItemRelationship : productOrderItemRelationship
+MEFProductOrderItem_Common *--> MEFQuoteItemRef : quoteItem
+MEFProductOrderItem_Common *-->"*" RelatedContactInformation : relatedContactInformation
+MEFProductOrderItem_Common *--> MEFItemTerm : requestedItemTerm
+
+
+class MEFProductOrderItem_Create {
+
+}
+MEFProductOrderItem_Common <|-- MEFProductOrderItem_Create
+
+
+
+class MEFProductOrderItem_Update {
+
+    endCustomerName: string
+    id*: string
+    relatedBuyerPON: string
+}
+
+MEFProductOrderItem_Update *-->"*" Note : note
+MEFProductOrderItem_Update *-->"*" RelatedContactInformation : relatedContactInformation
+
+
 class MEFProductOrderRef {
 
     productOrderHref: string
@@ -474,11 +374,39 @@ class MEFProductOrderStateChange {
 }
 
 
+class MEFProductRefOrValueOrder {
 
-class MEFSubUnit {
+    href: string
+    id: string
+}
+
+MEFProductRefOrValueOrder *-->"*" RelatedPlaceRefOrQueryWithSubUnit : place
+MEFProductRefOrValueOrder *--> MEFProductConfiguration : productConfiguration
+MEFProductRefOrValueOrder *--> ProductOfferingRef : productOffering
+MEFProductRefOrValueOrder *-->"*" ProductRelationship : productRelationship
+
+
+class MEFQuoteItemRef {
+
+    id*: string
+    quoteHref: string
+    quoteId*: string
+}
+
+
+
+class SubUnit {
 
     subUnitNumber*: string
     subUnitType*: string
+}
+
+
+
+class Money {
+
+    unit*: string
+    value*: float
 }
 
 
@@ -502,111 +430,27 @@ class OrderItemRelationship {
 
 
 
+
+class PlaceRefOrQuery {
+    --
+    discriminator:
+    GeographicAddressRef
+    GeographicSiteRef
+    GeographicAddress_Query
+}
+
+PlaceRefOrQuery ..> GeographicAddressRef : """"
+PlaceRefOrQuery ..> GeographicSiteRef : """"
+PlaceRefOrQuery ..> GeographicAddress_Query : """"
+
+
 class Price {
 
     taxRate: float
 }
 
-Price *--> Money : dutyFreeAmount
+Price *-->"1" Money : dutyFreeAmount
 Price *--> Money : taxIncludedAmount
-
-
-class ProductOfferingRef {
-
-    href: string
-    id*: string
-}
-
-
-
-class ProductOrderItem {
-
-    completionDate: date-time
-    expectedCompletionDate: date-time
-    expediteAcceptedIndicator: boolean
-    state: MEFProductOrderItemStateType
-}
-MEFProductOrderItem_Common <|-- ProductOrderItem
-
-ProductOrderItem *-->"*" MEFProductOrderChargeRef : charge
-ProductOrderItem *-->"*" MEFItemTerm : itemTerm
-ProductOrderItem *-->"*" MEFMilestone : milestone
-ProductOrderItem *-->"*" MEFProductOrderItemStateChange : stateChange
-ProductOrderItem *-->"*" TerminationError : terminationError
-
-class MEFMilestone {
-
-    date*: date-time
-    name*: string
-    note: string
-}
-
-
-enum MEFProductOrderChargeStateType {
-
-    awaitingResponse
-    completed
-    timeout
-    withdrawnBySeller
-}
-enum MEFBuyerSellerType {
-
-    buyer
-    seller
-}
-enum MEFPriceCategory {
-
-    cancellation
-    construction
-    connection
-    disconnect
-    expedite
-    other
-}
-class MEFProductOrderItem_Common {
-
-    action*: MEFProductActionType
-    agreementName: string
-    endCustomerName: string
-    expediteIndicator: boolean
-    id*: string
-    relatedBuyerPON: string
-    requestedCompletionDate: date-time
-    tspRestorationPriority: string
-}
-
-MEFProductOrderItem_Common *--> MEFBillingAccountRef : billingAccount
-MEFProductOrderItem_Common *-->"*" MEFOrderItemCoordinatedAction : coordinatedAction
-MEFProductOrderItem_Common *-->"*" Note : note
-MEFProductOrderItem_Common *--> MEFProductRefOrValueOrder : product
-MEFProductOrderItem_Common *--> ProductOfferingQualificationItemRef : productOfferingQualificationItem
-MEFProductOrderItem_Common *-->"*" OrderItemRelationship : productOrderItemRelationship
-MEFProductOrderItem_Common *--> MEFQuoteItemRef : quoteItem
-MEFProductOrderItem_Common *-->"*" RelatedContactInformation : relatedContactInformation
-MEFProductOrderItem_Common *--> MEFItemTerm : requestedItemTerm
-
-
-class MEFProductOrderItem_Update {
-
-    endCustomerName: string
-    id*: string
-    relatedBuyerPON: string
-}
-
-MEFProductOrderItem_Update *-->"*" Note : note
-MEFProductOrderItem_Update *-->"*" RelatedContactInformation : relatedContactInformation
-
-
-class MEFProductRefOrValueOrder {
-
-    href: string
-    id: string
-}
-
-MEFProductRefOrValueOrder *-->"*" RelatedPlaceRefOrValue : place
-MEFProductRefOrValueOrder *--> MEFProductConfiguration : productConfiguration
-MEFProductRefOrValueOrder *--> ProductOfferingRef : productOffering
-MEFProductRefOrValueOrder *-->"*" ProductRelationship : productRelationship
 
 
 class ProductOfferingQualificationItemRef {
@@ -619,128 +463,57 @@ class ProductOfferingQualificationItemRef {
 
 
 
-class ProductRelationship {
+class ProductOfferingRef {
 
     href: string
     id*: string
-    relationshipType*: string
 }
 
 
 
-enum MEFProductOrderStateType {
+class ProductOrder {
 
-    acknowledged
-    assessingCancellation
-    cancelled
-    completed
-    failed
-    held.assessingCharge
-    inProgress
-    partial
-    pending.assessingModification
-    pendingCancellation
-    rejected
+    cancellationDate: date-time
+    cancellationReason: string
+    completionDate: date-time
+    href: string
+    id*: string
+    orderDate*: date-time
+    state*: MEFProductOrderStateType
 }
-enum MEFOrderItemCoordinationDependencyType {
+ProductOrder_Common <|-- ProductOrder
 
-    startToStart
-    startToFinish
-    finishToStart
-    finishToFinish
+ProductOrder *-->"*" MEFProductOrderChargeRef : cancellationCharge
+ProductOrder *-->"1..*" ProductOrderItem : productOrderItem
+ProductOrder *-->"1..*" MEFProductOrderStateChange : stateChange
+
+
+class ProductOrderItem {
+
+    completionDate: date-time
+    expectedCompletionDate: date-time
+    expediteAcceptedIndicator: boolean
+    state*: MEFProductOrderItemStateType
 }
-enum MEFProductOrderChargeItemStateType {
+MEFProductOrderItem_Common <|-- ProductOrderItem
 
-    awaitingResponse
-    acceptedByBuyer
-    declinedByBuyer
-    withdrawnBySeller
-}
-enum MEFChargePeriod {
+ProductOrderItem *-->"*" MEFProductOrderChargeRef : charge
+ProductOrderItem *-->"0..1" MEFItemTerm : itemTerm
+ProductOrderItem *-->"*" MEFMilestone : milestone
+ProductOrderItem *-->"1..*" MEFProductOrderItemStateChange : stateChange
+ProductOrderItem *-->"*" TerminationError : terminationError
 
-    hour
-    day
-    week
-    month
-    year
-}
-enum MEFProductActionType {
 
-    add
-    modify
-    delete
-}
-enum MEFPriceType {
+class ProductOrder_Common {
 
-    recurring
-    nonRecurring
-    usageBased
-}
-enum MEFAcceptedRejectedType {
-
-    accepted
-    rejected
-}
-enum MEFProductOrderItemStateType {
-
-    acknowledged
-    cancelled
-    completed
-    failed
-    held
-    inProgress
-    pending
-    rejected
-    rejected.validated
-    rejected.unassessed
-}
-class RelatedContactInformation {
-
-    emailAddress*: string
-    name*: string
-    number*: string
-    numberExtension: string
-    organization: string
-    role*: string
+    externalId: string
+    projectId: string
 }
 
-RelatedContactInformation *--> FieldedAddress : postalAddress
+ProductOrder_Common *-->"*" Note : note
+ProductOrder_Common *-->"1..*" RelatedContactInformation : relatedContactInformation
 
 
-class RelatedPlaceRefOrValue {
-
-    @schemaLocation: uri
-    @type*: string
-    role*: string
-}
-
-
-
-enum Error401Code {
-
-    missingCredentials
-    invalidCredentials
-}
-enum Error400Code {
-
-    missingQueryParameter
-    missingQueryValue
-    invalidQuery
-    invalidBody
-}
-enum MEFChargeableTaskStateType {
-
-    acknowledged
-    done
-    done.declined
-    inProgress.assessingCharge
-    rejected
-}
-enum CancellationReasonType {
-
-    technical
-    commercial
-}
 class ProductOrder_Create {
 
 }
@@ -761,36 +534,56 @@ class ProductOrder_Find {
 }
 
 
-class MEFProductOrderCharge_Find {
 
-    creationDate*: date-time
+class ProductOrder_Update {
+
+    externalId: string
+    projectId: string
+}
+
+ProductOrder_Update *-->"*" Note : note
+ProductOrder_Update *-->"*" MEFProductOrderItem_Update : productOrderItem
+ProductOrder_Update *-->"*" RelatedContactInformation : relatedContactInformation
+
+
+class ProductRelationship {
+
+    href: string
     id*: string
-    responseDueDate*: date-time
-    state*: MEFProductOrderChargeStateType
+    relationshipType*: string
 }
 
-MEFProductOrderCharge_Find *--> MEFProductOrderRef : productOrder
-MEFProductOrderCharge_Find *--> MEFProductOrderItemRef : productOrderItem
 
-class CancelProductOrder_Find {
 
-    cancellationReasonType*: CancellationReasonType
-    id*: string
-    state*: MEFChargeableTaskStateType
+class RelatedContactInformation {
+
+    emailAddress*: string
+    name*: string
+    number*: string
+    numberExtension: string
+    organization: string
+    role*: string
 }
 
-CancelProductOrder_Find *-->"1" MEFProductOrderRef : productOrder
+RelatedContactInformation *--> FieldedAddressRepresentation : postalAddress
 
 
+class RelatedPlaceRefOrQueryWithSubUnit {
 
-enum TimeUnit {
-
-    calendarMonths
-    calendarDays
-    calendarHours
-    calendarMinutes
-    businessDays
-    businessHours
-    businessMinutes
+    role*: string
 }
+
+RelatedPlaceRefOrQueryWithSubUnit *-->"1" PlaceRefOrQuery : place
+RelatedPlaceRefOrQueryWithSubUnit *-->"*" SubUnit : subUnit
+RelatedPlaceRefOrQueryWithSubUnit *-->"*" ContactInformation : contact
+
+
+class TerminationError {
+
+    code: Error422Code
+    propertyPath: string
+    value: string
+}
+
+
 @enduml

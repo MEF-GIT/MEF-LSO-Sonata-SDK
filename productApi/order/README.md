@@ -1,5 +1,161 @@
 # Product Order Management: Release notes
 
+## Release Irene:
+
+**Readiness status**: Call for Comments Ballot #1. Work in progress and is
+subject to change.
+
+**Summary:**
+
+- Implementing new Address model introduced by MEF 150
+- Revised, fully specialized Event model.
+- State change events now carry the value of the new `state`
+- `buyerId` and `sellerId` in notification now carried via query params
+  (consistent with seller side API)
+- Clarification of the requirements for `action=delete` (section 6.1.8. and R14)
+- Allowed change of ProductOffering in modification request
+
+### List of changes in the API:
+
+**productOrderManagement.api.yaml:**
+
+- `GET /productOrder`:
+  - `422` - response code added
+- `GET /productOrder/{id}`:
+  - `422` - response code added
+- `GET /cancelProductOrder`:
+  - `422` - response code added
+- `GET /charge`:
+  - `422` - response code added
+- `PATCH /charge/{id}`:
+  - `422` - response code added
+- `POST /hub`:
+  - `422` - response code added
+- `DELETE /hub/{id}`:
+  - `422` - response code added
+
+- `ContactInformation` - added
+- `Duration`:
+  - `amount` - added `minimum:0`
+- `FieldedAddress` - replaced with `FieldedAddressRepresentation`
+  - `allOf` with `GeographicAddress` - removed
+  - `buildingName` - added
+  - `country` - removed
+  - `countryCode` - added
+  - `geographicSubAddress` - removed
+  - `language` - added
+  - `poBox` - added
+  - `privateStreetName` - added
+  - `privateStreetNumber` - added
+  - `streetPreDirection` - added
+  - `streetPostDirection` - added
+  - `streetSuffix` - removed
+  - no attribute is required anymore
+- `FormattedAddress` - replaced with `FormattedAddressRepresentation`
+  - `addrLine1` - renamed to `formattedAddress`
+  - `allOf` with `GeographicAddress` - removed
+  - `addrLine2` - removed
+  - `city` - removed
+  - `country` - removed
+  - `language` - added
+  - `locality` - removed
+  - `postcode` - removed
+  - `postcodeExtension` - removed
+  - `stateOrProvince` - removed
+- `GeographicAddress_Query` - added
+- `GeographicAddressLabel` - replaced with `LabelRepresentation`
+  - `allOf` with `GeographicAddress` - removed
+  - `externalReferenceId` - renamed to `label`
+  - `externalReferenceType` - renamed to `administrativeAuthority`
+  - `language` - added
+- `GeographicAddressRef`
+  - does not extend the `GeographicAddressRefOrValue`
+  - `@type` - added with constant `GeographicAddressRef` value
+- `GeographicSiteRef`
+  - does not extend the `GeographicAddressRefOrValue`
+  - `@type` - added with constant `GeographicSiteRef` value-
+    `GeographicSubAddress` - removed
+- `MEFChargePeriod` - removed
+- `MEFGeographicPoint` - replaced with `GeographicPointRepresentation`
+  - `allOf` with `GeographicAddress` - removed
+  - `x` - renamed to `longitude`
+  - `y` - renamed to `latitude`
+  - `z` - renamed to `elevation`
+- `MEFProductRefOrValueOrder`:
+  - `place` - ref type changed to `RelatedPlaceRefOrQueryWithSubUnit`
+- `MEFProductOrderChargeItem`:
+  - `recurringChargePeriod` - changed `ref` type to `Duration`
+- `MEFProductOrderItem_Common`:
+  - `product` - clarified to be required
+- `MEFSubUnit` - renamed to `SubUnit`
+- `PlaceRefOrQuery` - added, now using `oneOf` instead of `allOf` for
+  refOrValue pattern
+- `ProductOrder`:
+  - `stateChange` - clarified to be required, `minItems=1`
+- `ProductOrderItem`:
+  - `state` - clarified to be required
+  - `stateChange` - clarified to be required, `minItems=1`
+- `RelatedContactInformation`:
+  - `postalAddress` - changed ref type to `FieldedAddressRepresentation`
+- `RelatedPlaceRefOrQueryWithSubUnit` - added
+- `RelatedPlaceRefOrValue` - replaced with `RelatedPlaceRefOrQueryWithSubUnit`
+- `TimeUnit`:
+  - added:
+    - `seconds`
+    - `minutes`
+    - `months`
+    - `years`
+  - removed:
+    - `calendarMinutes`
+    - `businessMinutes`
+    - `calendarMonths`
+
+**productOrderNotification.api.yaml:**
+
+- `buyerId` and `sellerId` added to parameters to all endpoints
+ProductOrderEventPayload
+- `buyerId` and `sellerId` removed from all payloads
+- all listener endpoint changed the `requestBody` content schema to their respective events.
+
+- `/listener/productOrderItemExpectedCompletionDateSet` - path renamed to `/listener/productOrderItemExpectedCompletionDateSetEvent`
+
+- `408` - response code removed
+- `Error408` - removed
+
+- `Event` - made a generic Event
+  - `event` - added
+  - `eventType` - added
+- `CancelProductOrderEvent` - removed
+- `CancelProductOrderEventPayload` - removed
+- `CancelProductOrderEventType` - removed
+- `CancelProductOrderStateChangeEvent` - added
+- `CancelProductOrderStateChangeEventPayload` - added
+- `ChargeEvent` - removed
+- `ChargeEventType` - removed
+- `ChargeCreateEvent` - added
+- `ChargeStateChangeEvent` - added
+- `ChargeStateChangeEventPayload` - added
+- `ChargeTimeoutEvent` - added
+- `MEFChargeableTaskStateType` - added
+- `MEFProductOrderChargeStateType` - added
+- `MEFProductOrderItemStateType` - added
+- `MEFProductOrderStateType` - added
+- `ModifyProductOrderItemRequestedDeliveryDateEvent` - removed
+- `ModifyProductOrderItemRequestedDeliveryDateEventPayload` - removed
+- `ModifyProductOrderItemRequestedDeliveryDateEventType` - removed
+- `ModifyProductOrderItemRequestedDeliveryDateStateChangeEvent` - added
+- `ModifyProductOrderItemRequestedDeliveryDateStateChangeEventPayload` - added
+- `ProductOrderEventPayload` - removed
+- `ProductOrderEventType` - removed
+- `ProductOrderItemExpectedCompletionDateSetEvent` - added
+- `ProductOrderItemExpectedCompletionDateSetEventPayload` - added
+- `ProductOrderItemStateChangeEvent` - added
+- `ProductOrderItemStateChangeEventPayload` - added
+- `ProductOrderStateChangeEvent` - added
+- `ProductOrderStateChangeEventPayload` - added- `` - added
+- `ProductSpecificProductOrderItemMilestoneEvent` - added
+- `ProductSpecificProductOrderItemMilestoneEventPayload` - added
+
 ## Release Haley:
 
 **Readiness status**: MEF Published Standard

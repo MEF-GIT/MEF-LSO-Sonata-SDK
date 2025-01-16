@@ -1,5 +1,147 @@
 # Product Catalog: Release notes
 
+## Release Irene:
+
+**Readiness status**: Work in progress and is subject to change. Completed and
+resolved Call for Comments #2
+
+**Summary:**
+
+- Introducing new use cases defined by MEF W127.1:
+  - Bundling
+  - Pricing
+- Updating Fielded Address according to new definition in MEF 150
+- Revised, fully specialized Event model.
+- State change events now carry the value of the new `state`
+- `buyerId` and `sellerId` in notification now carried via query params
+  (consistent with seller side API)
+
+### List of changes in the API:
+
+**productCatalog.api.yaml:**
+
+- `GET /category/`:
+  - `422` - response code added
+- `GET /productOffering/`:
+  - `isBundle` - query param added
+  - `isSellable` - query param added
+  - `region.country` - query param renamed to `region.countryCode`
+  - `422` - response code added
+- `GET /productSpecification/`:
+  - `422` - response code added
+- `POST /hub/`:
+
+  - `422` - response code added
+
+- `Context`:
+  - `businessFunction` - marked as required
+- `Duration`:
+  - `amount` - added `minimum:0`
+- `Error422` - added
+- `Error422Code` - added
+- `FieldedAddress` - replaced with `FieldedAddressRepresentation`
+  - `allOf` with `GeographicAddress` - removed
+  - `buildingName` - added
+  - `country` - removed
+  - `countryCode` - added
+  - `geographicSubAddress` - removed
+  - `language` - added
+  - `poBox` - added
+  - `privateStreetName` - added
+  - `privateStreetNumber` - added
+  - `streetPreDirection` - added
+  - `streetPostDirection` - added
+  - `streetSuffix` - removed
+  - no attribute is required anymore
+- `GeographicSubAddress` - removed
+- `MEFPriceType` - added
+- `MEFSubUnit` - renamed to `SubUnit`
+- `Money` - added
+- `PlaceRelationshipConstraint`:
+  - `isModifiable` - added
+- `Price` - added
+- `PriceModifier` - added
+- `ProductOffering`:
+  - `agreement` - marked as not required
+  - `bundledProductOffering` - added
+  - `category` - marked as not required
+  - `channel` - marked as not required
+  - `description` - marked as required
+  - `isBundle` - marked as required
+  - `isSellable` - marked as required
+  - `marketSegment` - marked as not required
+  - `productOfferingSpecification` - renamed to
+    `productOfferingSpecificationSchema`
+  - `productOfferingTerm` - ref type changed to `ProductOfferingTerm`
+  - `productRelationship` - renamed to `productRelationshipConstraint`
+  - `placeRelationship` - renamed to `placeRelationshipConstraint`
+  - `region` - marked as not required
+- `ProductOffering_Common`:
+  - `isBundle` - added
+  - `isSellable` - added
+- `ProductOfferingBundleRelationship` - added
+- `ProductOfferingLifecycleStatusTransition`:
+  - `transitionLifecycleStatus` - renamed to `lifecycleStatus`
+  - `statusReason` - added
+- `ProductOfferingLifecycleStatusType`:
+  - `announced` - renamed to `active`
+  - `launched` - renamed to `launched`
+- `ProductOfferingPrice` - added
+- `ProductOfferingTerm` - added
+- `ProductRelationshipConstraint`:
+  - `id` - renamed to `productSpecification`
+  - `isModifiable` - added
+- `Region`:
+  - `city` - added
+  - `country` - renamed to `countryCode`
+- `RelatedContactInformation`:
+  - `postalAddress` - changed ref type to `FieldedAddressRepresentation`
+- `TimePeriod` - added
+- `TimeUnit`:
+  - added:
+    - `seconds`
+    - `minutes`
+    - `months`
+    - `years`
+  - removed:
+    - `calendarMinutes`
+    - `businessMinutes`
+    - `calendarMonths`
+
+**productCatalogNotification.api.yaml:**
+
+- `buyerId` and `sellerId` added to parameters to all endpoints
+  ProductOrderEventPayload
+- `buyerId` and `sellerId` removed from all payloads
+- all listener endpoint changed the `requestBody` content schema to their
+  respective events.
+
+- `/listener/categoryStatusChangeEvent` - removed
+- `/listener/productOfferingStatusChangeEvent` - renamed to
+  `/listener/productOfferingStateChangeEvent`
+
+- `408` - response code removed
+- `Error408` - removed
+- `Event` - made a generic Event
+  - `eventType` - changed to `string`
+  - `event` - changed to `object`
+- `ProductCategoryAttributeValueChangeEvent` - added
+- `ProductCategoryEvent` - removed
+- `ProductCategoryEventType` - removed
+- `ProductCategoryCreateEvent` - added
+- `ProductOfferingAttributeValueChangeEvent` - added
+- `ProductOfferingCreateEvent` - added
+- `ProductOfferingEvent` - removed
+- `ProductOfferingEventType` - removed
+- `ProductOfferingStateChangeEvent` - added
+- `ProductOfferingStateChangeEventPayload` - added
+- `ProductSpecificationAttributeValueChangeEvent` - added
+- `ProductSpecificationCreateEvent` - added
+- `ProductSpecificationEvent` - removed
+- `ProductSpecificationEventType` - removed
+- `ProductSpecificationStateChangeEvent` - added
+- `ProductSpecificationStateChangeEventPayload` - added
+
 ## Release Haley:
 
 **Readiness status**: Work in progress and is subject to change. Completed and
@@ -30,12 +172,12 @@ resolved Call for Comments #1
 - `GET /productOffering`:
   - `productSpecification.id` - added to parameters
 - `GET /productSpecification`:
-  - `lifecycleStatus` - query paremeter:
+  - `lifecycleStatus` - query parameter:
     - `active` - removed
     - `endOfSale` - removed
     - `endOfSupport` - removed
     - `onHold` - removed
-    - `orderable` - removed
+    - `launched` - removed
     - `inTest` - removed
     - `rejected` - removed
     - `published` - added
@@ -55,7 +197,7 @@ resolved Call for Comments #1
   - `productRelationship` - added
   - `productOfferingStatusReason` - renamed to `statusReason`
   - `relatedContactInformation` - changed from array to a single attribute
-  - `statusTransitions` - renamed to `statusTransition`
+  - `statusTransitions` - renamed to `statusTransition` and made required
   - `productSpecification` - moved to `ProductOffering_Find`
 - `ProductOffering_Find`:
   - `productSpecification` - added, moved from `ProductOffering`
@@ -75,7 +217,7 @@ resolved Call for Comments #1
   - `endOfSale` - removed
   - `endOfSupport` - removed
   - `onHold` - removed
-  - `orderable` - removed
+  - `launched` - removed
   - `inTest` - removed
   - `rejected` - removed
   - `published` - added

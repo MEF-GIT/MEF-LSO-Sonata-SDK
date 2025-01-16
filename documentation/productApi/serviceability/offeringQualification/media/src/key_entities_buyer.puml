@@ -1,0 +1,106 @@
+@startuml
+
+class ProductOfferingQualification_Create {
+
+}
+ProductOfferingQualification_Common <|-u- ProductOfferingQualification_Create
+
+
+class ProductOfferingQualificationItem_Create {
+
+}
+ProductOfferingQualificationItem_Common <|-u- ProductOfferingQualificationItem_Create
+
+
+
+class MEFProductConfiguration {
+
+    @type*: string
+}
+
+
+
+class MEFProductRefOrValue {
+
+    id: string
+    href: string
+}
+
+MEFProductRefOrValue *--> ProductSpecificationRef : productSpecification
+MEFProductRefOrValue *--> ProductOfferingRef : productOffering
+MEFProductRefOrValue *--> MEFProductConfiguration : productConfiguration
+MEFProductRefOrValue *-->"*" ProductRelationship : productRelationship
+MEFProductRefOrValue *-->"*" RelatedPlaceRefOrQueryWithSubUnit : place
+
+
+class ProductOfferingQualificationItem_Common {
+
+    id*: string
+    action*: PoqProductActionType
+    endCustomerName: string
+}
+
+ProductOfferingQualificationItem_Common *-->"1" MEFProductRefOrValue : product
+ProductOfferingQualificationItem_Common *-->"*" QualificationItemRelationship : qualificationItemRelationship
+
+
+
+class ProductOfferingQualification_Common {
+
+    projectId: string
+    externalId: string
+    instantSyncQualification*: boolean
+    provideAlternative*: boolean
+    relatedContactInformation*: RelatedContactInformation
+    requestedPOQCompletionDate: date-time
+}
+
+
+
+ProductOfferingQualification_Create *-r->"1..*" ProductOfferingQualificationItem_Create : productOfferingQualificationItem
+
+
+class ProductOfferingRef {
+
+    href: string
+    id*: string
+}
+
+
+
+class ProductRelationship {
+
+    href: string
+    id*: string
+    relationshipType*: string
+}
+
+
+
+class ProductSpecificationRef {
+
+    href: string
+    id*: string
+}
+
+
+
+class QualificationItemRelationship {
+
+    relationshipType*: string
+    id*: string
+}
+
+
+
+
+class RelatedPlaceRefOrQueryWithSubUnit {
+    contact: ContactInformation
+    place*: PlaceRefOrQuery
+    role*: string
+    subUnit: SubUnit
+}
+
+
+
+@enduml

@@ -1,107 +1,66 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
-
-class Error400 {
-
-    code*: Error400Code
-}
-Error <|-- Error400
-
-
-
-class Error401 {
-
-    code*: Error401Code
-}
-Error <|-- Error401
-
-
-
-class Error403 {
-
-    code*: Error403Code
-}
-Error <|-- Error403
-
-
-
-class Error408 {
-
-    code*: string
-}
-Error <|-- Error408
-
-
-
-class Error500 {
-
-    code*: string
-}
-Error <|-- Error500
-
-
-
-class Error {
-
-    reason*: string
-    message: string
-    referenceError: uri
-}
-
-
-
-class WorkOrderEvent {
-
-    eventType*: WorkOrderEventType
-}
-Event <|-- WorkOrderEvent
-
-WorkOrderEvent *-->"1" WorkOrderEventPayload : event
-
 
 class Event {
 
     eventId*: string
     eventTime*: date-time
+    eventType*: string
+    event*: object
+}
+
+
+
+class WorkOrderAppointmentRequiredEvent {
+
+    eventType*: string
+}
+Event <|-- WorkOrderAppointmentRequiredEvent
+
+WorkOrderAppointmentRequiredEvent *-->"1" WorkOrderEventPayload : event
+
+
+class WorkOrderCreateEvent {
+
+    eventType*: string
+}
+Event <|-- WorkOrderCreateEvent
+
+WorkOrderCreateEvent *-->"1" WorkOrderEventPayload : event
+
+
+class WorkOrderStateChangeEvent {
+
+    eventType*: string
+}
+Event <|-- WorkOrderStateChangeEvent
+
+WorkOrderStateChangeEvent *-->"1" WorkOrderStateChangeEventPayload : event
+
+
+class WorkOrderStateChangeEventPayload {
+
+    id*: string
+    href: uri
+    state: WorkOrderStateType
 }
 
 
 
 class WorkOrderEventPayload {
 
-    sellerId: string
     id*: string
     href: string
-    buyerId: string
 }
 
 
 
-enum WorkOrderEventType {
+enum WorkOrderStateType {
 
-    workOrderCreateEvent
-    workOrderStateChangeEvent
-    workOrderAppointmentRequiredEvent
-}
-enum Error401Code {
-
-    missingCredentials
-    invalidCredentials
-}
-enum Error403Code {
-
-    accessDenied
-    forbiddenRequester
-    tooManyUsers
-}
-enum Error400Code {
-
-    missingQueryParameter
-    missingQueryValue
-    invalidQuery
-    invalidBody
+    cancelled
+    completed
+    inProgress
+    open
+    planned
+    unableToComplete
 }
 @enduml

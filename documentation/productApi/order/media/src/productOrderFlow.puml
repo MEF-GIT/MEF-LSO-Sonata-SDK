@@ -2,20 +2,20 @@
 
 ' skinparam Linetype polyline
 ' skinparam Linetype ortho
-skinparam state {
-    BackgroundColor White
-    BorderColor Black
-}
+
 hide empty description
 
 state issues_detected <<choice>> 
 note right of issues_detected : issues detected?
 
 '''state rank'''
-inProgress -d[hidden]-> held.assessingCharge
-held.assessingCharge -d[hidden]-> completed
-held.assessingCharge -d[hidden]-> failed
-held.assessingCharge -d[hidden]-> partial
+state "held.assessingCharge" as assessingCharge
+state "pending.assessingModification" as assessingModification
+
+inProgress -d[hidden]-> assessingCharge
+assessingCharge -d[hidden]-> completed
+assessingCharge -d[hidden]-> failed
+assessingCharge -d[hidden]-> partial
 
 ''' diagram'''
 [*] --> acknowledged 
@@ -25,17 +25,17 @@ acknowledged --> issues_detected
 issues_detected -d-> inProgress : no
 issues_detected -l-> rejected : yes
 
-inProgress -l-> pending.assessingModification
+inProgress -l-> assessingModification
 inProgress -d-> completed
 inProgress -d-> failed
 inProgress -d-> partial
-inProgress --> held.assessingCharge
+inProgress --> assessingCharge
 inProgress -r-> assessingCancellation
 inProgress -r-> pendingCancellation
 
-pending.assessingModification -r-> inProgress
+assessingModification -r-> inProgress
 
-held.assessingCharge -l-> inProgress 
+assessingCharge -l-> inProgress 
 
 assessingCancellation -l-> inProgress
 assessingCancellation -r-> pendingCancellation

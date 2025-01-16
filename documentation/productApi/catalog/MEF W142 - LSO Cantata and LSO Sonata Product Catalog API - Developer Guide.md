@@ -13,7 +13,7 @@ img
 <div style="font-weight:bold; font-size:33pt; font-family: Sansation;  text-align:center">
 Working Draft
 </br>
-MEF W142 v0.2
+MEF W142 v0.3
 </br>
 </br>
 LSO Cantata and LSO Sonata Product Catalog API - Developer Guide
@@ -22,7 +22,7 @@ LSO Cantata and LSO Sonata Product Catalog API - Developer Guide
 <p style="color:red;font-weight:bold; font-size:18pt">This draft represents MEF work in progress and is subject to change.</p>
 </br>
 </br>
-December 2023
+December 2024
 <p style="color:red;font-weight:bold; font-size:18pt">EXPORT CONTROL: This document contains technical data. The download, export, re-export or disclosure of the technical data contained in this document may be restricted by applicable U.S. or foreign export laws, regulations and rules and/or applicable U.S. or foreign sanctions ("Export Control Laws or Sanctions"). You agree that you are solely responsible for determining whether any Export Control Laws or Sanctions may apply to your download, export, reexport or disclosure of this document, and for obtaining (if available) any required U.S. or foreign export or reexport licenses and/or other required authorizations.
 </p>
 </div>
@@ -31,11 +31,11 @@ December 2023
 
 **Disclaimer**
 
-© MEF Forum 2023. All Rights Reserved.
+© MEF Forum 2024. All Rights Reserved.
 
-The information in this publication is freely available for reproduction and
-use by any recipient and is believed to be accurate as of its publication date.
-Such information is subject to change without notice and MEF Forum (MEF) is not
+The information in this publication is freely available for reproduction and use
+by any recipient and is believed to be accurate as of its publication date. Such
+information is subject to change without notice and MEF Forum (MEF) is not
 responsible for any errors. MEF does not assume responsibility to update or
 correct any information in this publication. No representation or warranty,
 expressed or implied, is made by MEF concerning the completeness, accuracy, or
@@ -43,21 +43,21 @@ applicability of any information contained herein and no liability of any kind
 shall be assumed by MEF as a result of reliance upon such information.
 
 The information contained herein is intended to be used without modification by
-the recipient or user of this document. MEF is not responsible or liable for
-any modifications to this document made by any other party.
+the recipient or user of this document. MEF is not responsible or liable for any
+modifications to this document made by any other party.
 
 The receipt or any use of this document or its contents does not in any way
 create, by implication or otherwise:
 
-- (a) any express or implied license or right to or under any patent,
-  copyright, trademark or trade secret rights held or claimed by any MEF member
-  which are or may be associated with the ideas, techniques, concepts or
-  expressions contained herein; nor
+- (a) any express or implied license or right to or under any patent, copyright,
+  trademark or trade secret rights held or claimed by any MEF member which are
+  or may be associated with the ideas, techniques, concepts or expressions
+  contained herein; nor
 
 - (b) any warranty or representation that any MEF member will announce any
   product(s) and/or service(s) related thereto, or if such announcements are
-  made, that such announced product(s) and/or service(s) embody any or all of
-  the ideas, technologies, or concepts contained herein; nor
+  made, that such active product(s) and/or service(s) embody any or all of the
+  ideas, technologies, or concepts contained herein; nor
 
 - (c) any form of relationship between any MEF member and the recipient or user
   of this document.
@@ -66,12 +66,12 @@ Implementation or use of specific MEF standards, specifications or
 recommendations will be voluntary, and no Member shall be obliged to implement
 them by virtue of participation in MEF Forum. MEF is a non-profit international
 organization to enable the development and worldwide adoption of agile, assured
-and orchestrated network services. MEF does not, expressly or otherwise,
-endorse or promote any specific products or services.
+and orchestrated network services. MEF does not, expressly or otherwise, endorse
+or promote any specific products or services.
 
 **Copyright**
 
-© MEF Forum 2023. Any reproduction of this document, or any portion thereof,
+© MEF Forum 2024. Any reproduction of this document, or any portion thereof,
 shall contain the following statement: "Reproduced with permission of MEF
 Forum." No user of this document is authorized to modify any of the information
 contained herein.
@@ -92,8 +92,9 @@ contained herein.
   - [4.3. Approach](#43-approach)
   - [4.4. General concept](#44-general-concept)
     - [4.4.1. General concept introduction](#441-general-concept-introduction)
-    - [4.4.2 JSON Subschema](#442-json-subschema)
-    - [4.4.3 Product Specification and Product Offering Schemas](#443-product-specification-and-product-offering-schemas)
+    - [4.4.2. JSON Subschema](#442-json-subschema)
+    - [4.4.3. Product Specification and Product Offering Schemas](#443-product-specification-and-product-offering-schemas)
+    - [4.4.4. Bundles](#444-bundles)
   - [4.5. High-Level Flow](#45-high-level-flow)
 - [5. API Description](#5-api-description)
   - [5.1. High-level use cases](#51-high-level-use-cases)
@@ -105,38 +106,42 @@ contained herein.
   - [5.5. Security Considerations](#55-security-considerations)
 - [6. API Interactions and Flows](#6-api-interactions-and-flows)
   - [6.1. Product Category Use Cases](#61-product-category-use-cases)
-  - [6.1.1 Product Category - Model](#611-product-category---model)
-    - [6.1.3 Use case 1: Retrieve Product Category List](#613-use-case-1-retrieve-product-category-list)
-      - [6.1.3.1 Interaction flow](#6131-interaction-flow)
-      - [6.1.3.2. Retrieve Product Category List - Request](#6132-retrieve-product-category-list---request)
-      - [6.1.3.3. Retrieve Product Category List - Response](#6133-retrieve-product-category-list---response)
-    - [6.1.4 Use case 2: Retrieve Product Category by Identifier](#614-use-case-2-retrieve-product-category-by-identifier)
-      - [6.1.4.1 Interaction flow](#6141-interaction-flow)
-      - [6.1.4.2. Retrieve Product Category by Identifier - Request](#6142-retrieve-product-category-by-identifier---request)
-      - [6.1.4.3. Retrieve Product Category by Identifier - Response](#6143-retrieve-product-category-by-identifier---response)
+    - [6.1.1. Product Category - Model](#611-product-category---model)
+    - [6.1.2. Use case 1: Retrieve Product Category List](#612-use-case-1-retrieve-product-category-list)
+      - [6.1.2.1. Interaction flow](#6121-interaction-flow)
+      - [6.1.2.2. Retrieve Product Category List - Request](#6122-retrieve-product-category-list---request)
+      - [6.1.2.3. Retrieve Product Category List - Response](#6123-retrieve-product-category-list---response)
+    - [6.1.3. Use case 2: Retrieve Product Category by Identifier](#613-use-case-2-retrieve-product-category-by-identifier)
+      - [6.1.3.1. Interaction flow](#6131-interaction-flow)
+      - [6.1.3.2. Retrieve Product Category by Identifier - Request](#6132-retrieve-product-category-by-identifier---request)
+      - [6.1.3.3. Retrieve Product Category by Identifier - Response](#6133-retrieve-product-category-by-identifier---response)
   - [6.2. Product Offering Use Cases](#62-product-offering-use-cases)
-    - [6.2.1 Product Offering - Model](#621-product-offering---model)
-      - [6.2.1.1 Introduction to the model](#6211-introduction-to-the-model)
-      - [6.2.1.2 Product Offering Specification Schema](#6212-product-offering-specification-schema)
-      - [6.2.1.3 Product Offering Contextual Info](#6213-product-offering-contextual-info)
-    - [6.2.2 Product Offering - Lifecycle](#622-product-offering---lifecycle)
-    - [6.2.3 Use case 3: Retrieve Product Offering List](#623-use-case-3-retrieve-product-offering-list)
-      - [6.2.3.1 Interaction flow](#6231-interaction-flow)
+    - [6.2.1. Product Offering - Model](#621-product-offering---model)
+      - [6.2.1.1. Product Offering](#6211-product-offering)
+      - [6.2.1.2. Product Offering Bundle Relationship](#6212-product-offering-bundle-relationship)
+      - [6.2.1.3. Product Relationship Constraint](#6213-product-relationship-constraint)
+      - [6.2.1.4. Place Relationship Constraint](#6214-place-relationship-constraint)
+      - [6.2.1.5. Product Offering Specification Schema](#6215-product-offering-specification-schema)
+      - [6.2.1.6. Product Offering Contextual Info](#6216-product-offering-contextual-info)
+      - [6.2.1.7. Product Offering Price](#6217-product-offering-price)
+    - [6.2.2. Product Offering - Lifecycle](#622-product-offering---lifecycle)
+    - [6.2.3. Use case 3: Retrieve Product Offering List](#623-use-case-3-retrieve-product-offering-list)
+      - [6.2.3.1. Interaction flow](#6231-interaction-flow)
       - [6.2.3.2. Retrieve Product Offering List - Request](#6232-retrieve-product-offering-list---request)
       - [6.2.3.3. Retrieve Product Offering List - Response](#6233-retrieve-product-offering-list---response)
-    - [6.2.4 Use case 4: Retrieve Product Offering by Identifier](#624-use-case-4-retrieve-product-offering-by-identifier)
-      - [6.2.4.1 Interaction flow](#6241-interaction-flow)
+    - [6.2.4. Use case 4: Retrieve Product Offering by Identifier](#624-use-case-4-retrieve-product-offering-by-identifier)
+      - [6.2.4.1. Interaction flow](#6241-interaction-flow)
       - [6.2.4.2. Retrieve Product Offering by Identifier - Request](#6242-retrieve-product-offering-by-identifier---request)
       - [6.2.4.3. Retrieve Product Offering by Identifier - Response](#6243-retrieve-product-offering-by-identifier---response)
   - [6.3. Product Specification Use Cases](#63-product-specification-use-cases)
-    - [6.3.1 Product Specification - Model](#631-product-specification---model)
-    - [6.3.2 Product Specification - Lifecycle](#632-product-specification---lifecycle)
-    - [6.3.3 Use case 5: Retrieve Product Specification List](#633-use-case-5-retrieve-product-specification-list)
-      - [6.3.3.1 Interaction flow](#6331-interaction-flow)
+    - [6.3.1. Product Specification - Model](#631-product-specification---model)
+    - [6.3.2. Product Specification - Lifecycle](#632-product-specification---lifecycle)
+    - [6.3.3. Use case 5: Retrieve Product Specification List](#633-use-case-5-retrieve-product-specification-list)
+      - [6.3.3.1. Interaction flow](#6331-interaction-flow)
       - [6.3.3.2. Retrieve Product Specification List - Request](#6332-retrieve-product-specification-list---request)
       - [6.3.3.3. Retrieve Product Specification List - Response](#6333-retrieve-product-specification-list---response)
-    - [6.3.4 Use case 6: Retrieve Product Specification by Identifier](#634-use-case-6-retrieve-product-specification-by-identifier)
-      - [6.3.4.1 Interaction flow](#6341-interaction-flow)
+    - [6.3.4. Use case 6: Retrieve Product Specification by Identifier](#634-use-case-6-retrieve-product-specification-by-identifier)
+      - [6.3.4.1. Interaction flow](#6341-interaction-flow)
       - [6.3.4.2. Retrieve Product Specification by Identifier - Request](#6342-retrieve-product-specification-by-identifier---request)
       - [6.3.4.3. Retrieve Product Specification by Identifier - Response](#6343-retrieve-product-specification-by-identifier---response)
   - [6.4. Use case 7: Register for Event Notifications](#64-use-case-7-register-for-event-notifications)
@@ -156,14 +161,15 @@ contained herein.
       - [7.1.1.6. Type Error403](#7116-type-error403)
       - [7.1.1.7. `enum` Error403Code](#7117-enum-error403code)
       - [7.1.1.8. Type Error404](#7118-type-error404)
-      - [7.1.1.9. Type Error500](#7119-type-error500)
-      - [7.1.1.10. Type Error501](#71110-type-error501)
-    - [7.1.2. Response pagination](#712-response-pagination)
+      - [7.1.1.9. Type Error422](#7119-type-error422)
+      - [7.1.1.10. `enum` Error422Code](#71110-enum-error422code)
+      - [7.1.1.11. Type Error500](#71111-type-error500)
+      - [7.1.1.12. Type Error501](#71112-type-error501)
   - [7.2. API Data model](#72-api-data-model)
     - [7.2.1. Product Category](#721-product-category)
       - [7.2.1.1. Type ProductCategory](#7211-type-productcategory)
       - [7.2.1.2. Type ProductOfferingRef](#7212-type-productofferingref)
-    - [7.2.2. Product Offering](#722-product-offering)
+    - [7.2.2 Product Offering](#722-product-offering)
       - [7.2.2.1. Type ProductOffering\_Common](#7221-type-productoffering_common)
       - [7.2.2.2. Type ProductOffering](#7222-type-productoffering)
       - [7.2.2.3. Type ProductOffering\_Find](#7223-type-productoffering_find)
@@ -171,13 +177,20 @@ contained herein.
       - [7.2.2.5. Type ProductOfferingLifecycleStatusTransition](#7225-type-productofferinglifecyclestatustransition)
       - [7.2.2.6. Type ProductSpecificationRef](#7226-type-productspecificationref)
       - [7.2.2.7. Type MEFItemTerm](#7227-type-mefitemterm)
+      - [7.2.2.7. Type ProductOfferingTerm](#7227-type-productofferingterm)
       - [7.2.2.8. `enum` MEFEndOfTermAction](#7228-enum-mefendoftermaction)
       - [7.2.2.9. Type ProductOfferingContextualInfo](#7229-type-productofferingcontextualinfo)
       - [7.2.2.10. Type Context](#72210-type-context)
       - [7.2.2.11. `enum` ProductActionMask](#72211-enum-productactionmask)
       - [7.2.2.12. `enum` BusinessFunctionMask](#72212-enum-businessfunctionmask)
       - [7.2.2.13. Type Region](#72213-type-region)
-    - [7.2.3. Product Specification](#723-product-specification)
+      - [7.2.2.14. Type ProductOfferingBundleRelationship](#72214-type-productofferingbundlerelationship)
+      - [7.2.2.15. Type ProductOfferingPrice](#72215-type-productofferingprice)
+      - [7.2.2.16. Type Price](#72216-type-price)
+      - [7.2.2.17. Type PriceModifier](#72217-type-pricemodifier)
+      - [7.2.2.18. `enum` MEFPriceType](#72218-enum-mefpricetype)
+      - [7.2.2.19. Type Money](#72219-type-money)
+    - [7.2.3 Product Specification](#723-product-specification)
       - [7.2.3.1. Type ProductSpecification\_Common](#7231-type-productspecification_common)
       - [7.2.3.2. Type ProductSpecification](#7232-type-productspecification)
       - [7.2.3.3. Type ProductSpecification\_Find](#7233-type-productspecification_find)
@@ -186,33 +199,39 @@ contained herein.
       - [7.2.4.1. Type AttachmentValue](#7241-type-attachmentvalue)
       - [7.2.4.2. `enum` DataSizeUnit](#7242-enum-datasizeunit)
       - [7.2.4.3. Type Duration](#7243-type-duration)
-      - [7.2.4.4. Type FieldedAddress](#7244-type-fieldedaddress)
-      - [7.2.4.5. Type GeographicSubAddress](#7245-type-geographicsubaddress)
+      - [7.2.4.4. Type FieldedAddressRepresentation](#7244-type-fieldedaddressrepresentation)
       - [7.2.4.6. `enum` MEFBuyerSellerType](#7246-enum-mefbuyersellertype)
       - [7.2.4.7. Type MEFByteSize](#7247-type-mefbytesize)
-      - [7.2.4.8. Type MEFSubUnit](#7248-type-mefsubunit)
+      - [7.2.4.8. Type SubUnit](#7248-type-subunit)
       - [7.2.4.9. Type Note](#7249-type-note)
       - [7.2.3.10. Type PlaceRelationshipConstraint](#72310-type-placerelationshipconstraint)
       - [7.2.1.11. Type ProductCategoryRef](#72111-type-productcategoryref)
       - [7.2.1.12. Type ProductMilestoneDefinition](#72112-type-productmilestonedefinition)
-      - [7.2.3.13. Type ProductRelationshipConstraint](#72313-type-productrelationshipconstraint)
-      - [7.2.4.14. Type RelatedContactInformation](#72414-type-relatedcontactinformation)
-      - [7.2.4.15. Type SchemaRefOrValue](#72415-type-schemareforvalue)
-      - [7.2.4.16. `enum` TimeUnit](#72416-enum-timeunit)
+      - [7.2.3.13 Type ProductRelationshipConstraint](#72313-type-productrelationshipconstraint)
+      - [7.2.4.14 Type RelatedContactInformation](#72414-type-relatedcontactinformation)
+      - [7.2.4.15 Type SchemaRefOrValue](#72415-type-schemareforvalue)
+      - [7.2.4.16. Type TimePeriod](#72416-type-timeperiod)
+      - [7.2.4.17. `enum` TimeUnit](#72417-enum-timeunit)
     - [7.2.5. Notification Registration](#725-notification-registration)
       - [7.2.8.1. Type EventSubscriptionInput](#7281-type-eventsubscriptioninput)
       - [7.2.8.2. Type EventSubscription](#7282-type-eventsubscription)
   - [7.3. Notification API Data model](#73-notification-api-data-model)
     - [7.3.1. Type Event](#731-type-event)
-    - [7.3.2. Type ProductCategoryEvent](#732-type-productcategoryevent)
+    - [7.3.2. Type ProductCategoryCreateEvent](#732-type-productcategorycreateevent)
+    - [7.3.2. Type ProductCategoryAttributeValueChangeEvent](#732-type-productcategoryattributevaluechangeevent)
     - [7.3.3. Type ProductCategoryEventPayload](#733-type-productcategoryeventpayload)
-    - [7.3.4. `enum` ProductCategoryEventType](#734-enum-productcategoryeventtype)
-    - [7.3.5. Type ProductOfferingEvent](#735-type-productofferingevent)
+    - [7.3.4. Type ProductOfferingAttributeValueChangeEvent](#734-type-productofferingattributevaluechangeevent)
+    - [7.3.5. Type ProductOfferingCreateEvent](#735-type-productofferingcreateevent)
     - [7.3.6. Type ProductOfferingEventPayload](#736-type-productofferingeventpayload)
-    - [7.3.7. `enum` ProductOfferingEventType](#737-enum-productofferingeventtype)
-    - [7.3.8. Type ProductSpecificationEvent](#738-type-productspecificationevent)
-    - [7.3.9. Type ProductSpecificationEventPayload](#739-type-productspecificationeventpayload)
-    - [7.3.10. `enum` ProductSpecificationEventType](#7310-enum-productspecificationeventtype)
+    - [7.3.7. Type ProductOfferingStateChangeEvent](#737-type-productofferingstatechangeevent)
+    - [7.3.8. Type ProductOfferingStateChangeEventPayload](#738-type-productofferingstatechangeeventpayload)
+    - [7.3.9. `enum` ProductOfferingLifecycleStatusType](#739-enum-productofferinglifecyclestatustype)
+    - [7.3.10. Type ProductSpecificationAttributeValueChangeEvent](#7310-type-productspecificationattributevaluechangeevent)
+    - [7.3.10. Type ProductSpecificationCreateEvent](#7310-type-productspecificationcreateevent)
+    - [7.3.10. Type ProductSpecificationEventPayload](#7310-type-productspecificationeventpayload)
+    - [7.3.10. Type ProductSpecificationStateChangeEvent](#7310-type-productspecificationstatechangeevent)
+    - [7.3.10. Type ProductSpecificationStateChangeEventPayload](#7310-type-productspecificationstatechangeeventpayload)
+    - [7.3.10. `enum` ProductSpecificationLifecycleStatusType](#7310-enum-productspecificationlifecyclestatustype)
 - [8. References](#8-references)
 
 <!-- /code_chunk_output -->
@@ -238,10 +257,10 @@ document and have requested to be included in this list.
 
 This standard is intended to assist implementation of the Product Catalog
 functionality defined for the LSO Cantata and LSO Sonata Interface Reference
-Points (IRPs), for which requirements and use cases are defined in MEF 127
-_Product Catalog Requirements and Use Cases_ [[MEF127](#8-references)]. This
-standard consists of this document and complementary API definitions for
-Product Catalog Querying and Product Catalog Notifications.
+Points (IRPs), for which requirements and use cases are defined in MEF 127.1
+_Product Catalog Requirements and Use Cases_ [[MEF 127.1](#8-references)]. This
+standard consists of this document and complementary API definitions for Product
+Catalog Querying and Product Catalog Notifications.
 
 This standard normatively incorporates the following files by reference as if
 they were part of this document, from the GitHub repository:
@@ -263,9 +282,9 @@ The Product Catalog API is defined using OpenAPI 3.0 [[OAS-V3](#8-references)]
 # 2. Terminology and Abbreviations
 
 This section defines the terms used in this document. In many cases, the
-normative definitions of terms are found in other documents. In these cases,
-the third column is used to provide the reference that is controlling, in other
-MEF or external documents.
+normative definitions of terms are found in other documents. In these cases, the
+third column is used to provide the reference that is controlling, in other MEF
+or external documents.
 
 In addition, terms defined in the standards referenced below are included in
 this document by reference and are not repeated in the table below:
@@ -273,10 +292,11 @@ this document by reference and are not repeated in the table below:
 - MEF 55.1.1 Lifecycle Service Orchestration (LSO): Reference Architecture and
   Framework [[MEF 55.1.1](#8-references)]
 - MEF 57.2 Product Order Management Requirements and Use Cases
-  [[MEF57.2](#8-references)]
-- MEF 127 Product Catalog Requirements and Use Cases [[MEF127](#8-references)]
-- MEF 79 Address, Service Site, and Product Offering Qualification Management,
-  Requirements and Use Cases, November 2019 [[MEF79](#8-references)]
+  [[MEF 57.2](#8-references)]
+- MEF 127.1 Product Catalog Requirements and Use Cases
+  [[MEF 127.1](#8-references)]
+- MEF 150 Installation Place and Service Site Management Business Requirements
+  and Use Cases [[MEF 150](#8-references)]
 
 <table>
 
@@ -310,19 +330,18 @@ capitals, as shown here. All key words must be in bold text.
 
 Items that are **REQUIRED** (contain the words **MUST** or **MUST NOT**) are
 labeled as **[Rx]** for required. Items that are **RECOMMENDED** (contain the
-words **SHOULD** or **SHOULD NOT**) are labeled as **[Dx]** for desirable.
-Items that are **OPTIONAL** (contain the words MAY or OPTIONAL) are labeled as
+words **SHOULD** or **SHOULD NOT**) are labeled as **[Dx]** for desirable. Items
+that are **OPTIONAL** (contain the words MAY or OPTIONAL) are labeled as
 **[Ox]** for optional.
 
-A paragraph preceded by **[CRa]<** specifies a conditional mandatory
-requirement that **MUST** be followed if the condition(s) following the "<"
-have been met. For example, **"[CR1]<[D38]"** indicates that Conditional
-Mandatory Requirement 1 must be followed if Desirable Requirement 38 has been
-met. A paragraph preceded by **[CDb]<** specifies a Conditional Desirable
-Requirement that **SHOULD** be followed if the condition(s) following the "<"
-have been met. A paragraph preceded by **[COc]<**specifies a Conditional
-Optional Requirement that **MAY** be followed if the condition(s) following the
-"<" have been met.
+A paragraph preceded by **[CRa]<** specifies a conditional mandatory requirement
+that **MUST** be followed if the condition(s) following the "<" have been met.
+For example, **"[CR1]<[D38]"** indicates that Conditional Mandatory Requirement
+1 must be followed if Desirable Requirement 38 has been met. A paragraph
+preceded by **[CDb]<** specifies a Conditional Desirable Requirement that
+**SHOULD** be followed if the condition(s) following the "<" have been met. A
+paragraph preceded by **[COc]<**specifies a Conditional Optional Requirement
+that **MAY** be followed if the condition(s) following the "<" have been met.
 
 <div class="page"/>
 
@@ -338,7 +357,7 @@ Specifications and Product Offerings to the market.
 This standard specifies the Application Programming Interface (API) for the
 Product Catalog functionality of the LSO Cantata IRP and LSO Sonata IRP as
 defined in the _MEF 55.1 Lifecycle Service Orchestration (LSO): Reference
-Architecture and Framework_ [[MEF55.1](#8-references)]. The LSO Reference
+Architecture and Framework_ [[MEF 55.1](#8-references)]. The LSO Reference
 Architecture is shown in Figure 1 with both IRPs highlighted.
 
 ![Figure 1. The LSO Reference Architecture](media/lsoArchitecture.png)
@@ -359,22 +378,13 @@ Domains. Those are:
 - Trouble Ticketing
 - Billing
 
-The business requirements and use cases for the Product Catalog are defined in
-MEF 127 _Product Catalog Requirements and Use Cases_ [[MEF127](#8-references)].
-
-**_Note:_** [[TMF620](#8-references)] Product Catalog API covers use cases
-related to Product Catalog management as well. Whereas the goal of this API
-(specified in this document) is to allow the publishing of Product Offerings
-and Product Specifications and onboarding of them (between the Buyer and
-Seller) in a fast and efficient way (inter-carrier read-only API ).
-
 This document is structured as follows:
 
 - [Chapter 4](#4-introduction) provides an introduction to the Product Catalog
   and its description in a broader context of Cantata and Sonata and their
   corresponding SDKs.
-- [Chapter 5](#5-api-description) gives an overview of endpoints, resource
-  model and design patterns.
+- [Chapter 5](#5-api-description) gives an overview of endpoints, resource model
+  and design patterns.
 - Use cases and flows are presented in
   [Chapter 6](#6-api-interactions-and-flows).
 - And finally, [Chapter 7](#7-api-details) complements previous sections with a
@@ -388,17 +398,25 @@ This document is structured as follows:
 - Model definitions are formatted as in-line code (e.g. `ProductOffering`).
 - In UML diagrams the default cardinality of associations is `0..1`. Other
   cardinality markers are compliant with the UML standard.
-- In the API details tables and UML diagrams required attributes are marked
-  with a `*` next to their names.
+- In the API details tables and UML diagrams required attributes are marked with
+  a `*` next to their names.
 - In UML sequence diagrams `` notation is used to indicate a variable to be
   substituted with a correct value.
 
 ## 4.2. Relation to Other Documents
 
-This API implements the Product Catalog related requirements and use cases that
-are defined in MEF 127 [[MEF127](#8-references)]. The API definition builds on
-_TMF620 Product Catalog API REST Specification 4.1.0_
-[[TMF620](#8-references)].
+The business requirements and use cases for this API are defined by MEF 127.1
+_Product Catalog Requirements and Use Cases_ [[MEF 127.1](#8-references)].
+Product specifications are defined using JSON Schema (draft 7) standard
+[[JS](#8-references)], whereas the Product Catalog API is defined using OpenAPI
+3.0 [[OAS-V3](#8-references)].
+
+This API definition builds on _TMF620 Product Catalog API REST Specification
+4.1.0_ [[TMF620](#8-references)]. TMF620 covers use cases related to the Product
+Catalog management as well, whereas the goal of the API specified in this
+document is to allow the publishing of Product Offerings and Product
+Specifications and onboarding of them (between the Buyer and Seller) in a fast
+and efficient way (inter-carrier read-only API).
 
 ## 4.3. Approach
 
@@ -415,15 +433,14 @@ three structural components:
 **Figure 2. Cantata and Sonata API framework**
 
 The essential concept behind the framework is to decouple the common structure,
-information and operations from the specific product information content.  
+information and operations from the specific product information content.  
 Firstly, the Generic API Framework defines a set of design rules and patterns
-that are applied across all Cantata or Sonata APIs.  
-Secondly, the product-independent information of the framework focuses on a
-model of a particular Cantata or Sonata functionality and is agnostic to any of
-the product specifications.  
-Finally, the product-specific information part of the framework focuses on MEF
-product specifications that define business-relevant attributes and
-requirements for supporting MEF subscriber and MEF operator services.
+that are applied across all Cantata or Sonata APIs. Secondly, the
+product-independent information of the framework focuses on a model of a
+particular Cantata or Sonata functionality and is agnostic to any of the product
+specifications. Finally, the product-specific information part of the framework
+focuses on MEF product specifications that define business-relevant attributes
+and requirements for supporting MEF subscriber and MEF operator services.
 
 In this framework, the Product Catalog is a Seller provided repository that
 hosts Product-specific definitions. Every product-related operation starts with
@@ -437,31 +454,31 @@ Product Offerings and Product Specifications to chosen Buyers.
 Product Catalog introduces three key Product Catalog Element types: Product
 Specification, Product Offering, and Product Category. The Product Catalog
 modeling starts with the introduction of the Product Specification type which
-defines the Product's attributes (with their types, cardinalities, and
-allowable values) and relationships that define how the Product may be related
-to other Products. Once Product Specifications are defined in the Product
-Catalog, they may be made available by the Seller for marketing purposes.
-Because terms and conditions which define where and how a Product is available
-on the market are usually organized by different business processes, the
-Product Offering element type has been defined in the Product Catalog. Product
-Offering element type may further constrain attributes' values and
-cardinalities of the relations to define the desired offer.
+defines the Product's attributes (with their types, cardinalities, and allowable
+values) and relationships that define how the Product may be related to other
+Products. Once Product Specifications are defined in the Product Catalog, they
+may be made available by the Seller for marketing purposes. Because terms and
+conditions that define where and how a Product is available on the market are
+usually organized by different business processes, the Product Offering element
+type has been defined in the Product Catalog. Product Offering element type may
+further constrain attributes' values and cardinalities of the relations to
+define the desired offer.
 
 In short, Product Specification is the definition of the Product, and Product
 Offering is the commercial realization of the Product Specification in the
 market by the Seller.
 
-A given Product Specification may be exposed on the market by multiple
-different Product Offerings. To better structure and organize the Product
-Catalog, Product Categories have been introduced to allow the grouping of
-related Product Offerings. To make the categorizing more flexible, it is
-allowed to group Product Categories within a parent Product Category as well.
+A given Product Specification may be exposed on the market by multiple different
+Product Offerings. To better structure and organize the Product Catalog, Product
+Categories have been introduced to allow the grouping of related Product
+Offerings. To make the categorizing more flexible, it is allowed to group
+Product Categories within a parent Product Category as well.
 
-### 4.4.2 JSON Subschema
+### 4.4.2. JSON Subschema
 
 JSON Subschema term has been introduced to allow defining specialization of
-particular JSON Schema. Specialization should be understood as narrowing the
-set of JSONs that are valid against the given JSON Schema.
+particular JSON Schema. Specialization should be understood as narrowing the set
+of JSONs that are valid against the given JSON Schema.
 
 JSON Subschema definition is formalized as:
 
@@ -470,7 +487,7 @@ JSON Subschema definition is formalized as:
 
 The rules that are used to constrain or restrict the JSON Schema are described
 in the chapter
-[[Product Offering Specification Schema](#6212-product-offering-specification-schema)].
+[[Product Offering Specification Schema](#6215-product-offering-specification-schema)].
 
 Let's consider illustrative JSON Schema as an example (this is the reduced JSON
 Schema of AccessElineOvc for illustrative purposes):
@@ -478,7 +495,7 @@ Schema of AccessElineOvc for illustrative purposes):
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://mef.com/product.schema.json",
+  "$id": "https://seller.mef.com/product.schema.json",
   "title": "AccessELineOvc",
   "type": "object",
   "properties": {
@@ -499,7 +516,7 @@ JSON Subschema of the schema above could be constructed as:
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://mef.com/product.schema.json",
+  "$id": "https://seller.mef.com/product.schema.json",
   "title": "AccessELineOvc",
   "type": "object",
   "properties": {
@@ -536,44 +553,43 @@ Considering two following JSON payloads:
 }
 ```
 
-we see that Payload A is compliant with both schemas, while Payload B is valid
+We see that Payload A is compliant with both schemas, while Payload B is valid
 only against the first schema. Since the second schema is more restrictive, it
 is considered a subschema of the first schema.
 
-### 4.4.3 Product Specification and Product Offering Schemas
+### 4.4.3. Product Specification and Product Offering Schemas
 
 The chapters above introduced the Product Specification as the Product Catalog
 Element type which defines the attributes of the Product. Those attributes are
-organized as [[JSON Schema](#8-references)] which is called the
-`Source Schema`.
+organized as [[JSON Schema](#8-references)] which is called the `Source Schema`.
 
 Product Offering is introduced as the second key Product Catalog Element type
 which exposes the Product Specification to the market and may constrain the
 Product Specification attributes defined in the `Source Schema` which produces
-another more restrictive JSON Schema specific for the Product Offering called
-the `Intermediate Schema`. This Intermediate Schema is the JSON Subschema of
-the `Source Schema`.
+another more restrictive JSON Schema specific to the Product Offering called the
+`Intermediate Schema`. This Intermediate Schema is the JSON Subschema of the
+`Source Schema`.
 
 Additionally, it may be required to constrain the `Intermediate Schema` in the
 context of a particular Business Function and Product Action (e.g. some
 attributes may not be relevant for the Product Offering Qualification business
-function or the `modify` Product Action). As such, it is possible to define
-such cases in the `Contextual Schema` for every combination of Business
-Function and Product Action context. This Contextual Schema is the JSON
-Subschema of the `Intermediate Schema`.
+function or the `modify` Product Action). As such, it is possible to define such
+cases in the `Contextual Schema` for every combination of Business Function and
+Product Action context. This Contextual Schema is the JSON Subschema of the
+`Intermediate Schema`.
 
 The JSON Subschema is still a JSON Schema.
 
 Summarizing, three types of schemas may be defined in the Product Catalog:
 
-- `Source Schema` which is the definition of the Product Specification (e.g.
-  MEF Standard),
+- `Source Schema` which is the definition of the Product Specification (e.g. MEF
+  Standard),
 - `Intermediate Schema` which is the constrained usage of the `Source Schema`
   for a given Product Offering
-  [[Intermediate Schema](#6212-product-offering-specification-schema)],
+  [[Intermediate Schema](#6215-product-offering-specification-schema)],
 - `Contextual Schema` which defines the contextual usage of the
   `Intermediate Schema` in the given context of Business Function and Product
-  Action [[Contextual Schema](#6213-product-offering-contextual-info)].
+  Action [[Contextual Schema](#6216-product-offering-contextual-info)].
 
 The below diagram depicts the above summary in graphical form.
 
@@ -582,15 +598,63 @@ The below diagram depicts the above summary in graphical form.
 **Figure 3. Relationship between Source Schema, Intermediate Schema and
 Contextual Schema**
 
+### 4.4.4. Bundles
+
+The LSO Cantata/Sonata APIs support Bundles which are comprised of multiple
+Product Offerings made available by the Seller. The benefits for a Buyer are,
+for example, a preferential price or a simplified ordering process for a Bundle,
+versus ordering all the individual Product Offerings separately. A Bundle may
+not contain a Product Offering that is a Bundle.
+
+A Bundle definition also includes a list of Product Offering Bundle Relation,
+which specifies the set of Product Offerings that comprise the Bundle, along
+with the ability for the Seller to constrain the minimum and maximum number of
+instances of each Product Offering supported for a given Bundle. Figure 4 shows
+an example of this Bundle definition and Bundle Relation, with the "OVC UNI
+Bundle" comprised of exactly one "Access E-Line OVC Excellence" Product Offering
+and from one to three "UNI Excellence" Product Offerings.
+
+![Figure 4](media/annotatedBundleDiagram.png)
+
+**Figure 4. Bundling Product Offering Example**
+
+A given Product Offering may be sellable independently and be part of a Bundle
+at the same time. When this occurs, the Product Offering and the Bundle must
+each include a separate set of Product Offering Terms and prices. A Bundle with
+optional or variable number of Product Offerings must always include the Product
+Offering Term(s) and prices that include all the instances of Product Offerings
+included in the Bundle. An example of this can be seen in Figure 4 above, where
+the "Access E-Line OVC Excellence" Product Offering is sellable independently
+and as part of the Bundle. Hence it defines its own term ("24 month term for OVC
+Excellence") and is also covered by the Bundle Term ("24 month fixed bundle")
+and prices with `bundledProductOffering` pointing to Access E-Line OVC
+Excellence Product Offering. The "UNI Excellence" Product Offering is not
+sellable independently and as such, its Terms and prices are only defined within
+the Bundle.
+
+In addition, every independently sellable Product Offering and Bundle may
+include separate Price Modifiers (e.g. as a Reduction Percentage or Discounted
+Price). In the example above, the Bundle includes a 10% Reduction Percentage for
+all the non-recurring prices as part of the standard contract renewal discount
+(e.g. as a Deal Reference promo code), while the "Access E-Line OVC Excellence"
+Product Offering does not currently offer any pricing discounts.
+
+**_Note:_** The example in this chapter is only illustrative and might not be
+valid from the Access E-Line and UNI Product requirements point of view.
+
 ## 4.5. High-Level Flow
 
+<!-- TODO examples -->
+<!-- TODO all diagrams new model -->
+<!-- TODO bundle example in files -->
+
 The Product Catalog is part of a broader Cantata and Sonata End-to-End flow.
-Figure 4 shows a high-level diagram to get a good understanding of the whole
-process and Product Catalog's position within it.
+Figure 5 shows a high-level diagram to get a good understanding of the whole
+process and the Product Catalog's position within it.
 
-![Figure 4. Cantata and Sonata End-to-End Flow](media/E2E_ALL.png)
+![Figure 5. Cantata and Sonata End-to-End Flow](media/E2E_ALL.png)
 
-**Figure 4. Cantata and Sonata End-to-End Function Flow**
+**Figure 5. Cantata and Sonata End-to-End Function Flow**
 
 - Product Catalog:
   - Allows the Buyer to retrieve Product Offerings and Product Specifications
@@ -598,19 +662,19 @@ process and Product Catalog's position within it.
     Catalog.
 - Address Validation:
   - Allows the Buyer to retrieve address information from the Seller, including
-    exact formats, for addresses known to the Seller.
+    exact formats, for Geographic Addresses known to the Seller.
 - Site Retrieval:
   - Allows the Buyer to retrieve Geographic Site information including exact
     formats for Geographic Sites known to the Seller.
 - Product Offering Qualification (POQ):
-  - Allows the Buyer to check whether the Seller can deliver a product or set
-    of products from among their product offerings at the geographic address or
-    a Geographic Site specified by the Buyer; or modify a previously purchased
+  - Allows the Buyer to check whether the Seller can deliver a product or set of
+    products from among their product offerings at the geographic address or a
+    Geographic Site specified by the Buyer; or modify a previously purchased
     product.
 - Quote:
   - Allows the Buyer to submit a request to find out how much the installation
-    of an instance of a Product Offering, an update to an existing Product, or
-    a disconnect of an existing Product will cost.
+    of an instance of a Product Offering, an update to an existing Product, or a
+    disconnect of an existing Product will cost.
 - Product Order:
   - Allows the Buyer to request the Seller to initiate and complete the
     fulfillment process of an installation of a Product Offering, an update to
@@ -632,41 +696,43 @@ process and Product Catalog's position within it.
 # 5. API Description
 
 This section presents the API structure and design patterns. It starts with the
-high-level use cases diagram. Then it describes the REST endpoints with use
-case mapping. Next, it gives an overview of the API resource model.
+high-level use cases diagram. Then it describes the REST endpoints with use case
+mapping. Next, it gives an overview of the API resource model.
 
 ## 5.1. High-level use cases
 
-Figure 5 presents a high-level use case diagram as specified in MEF 127
-[[MEF127](#8-references)] in section 8. This picture aims to help understand
+Figure 6 presents a high-level use case diagram as specified in
+[[MEF 127.1](#8-references)] in section 8. This picture aims to help understand
 the endpoint mapping for the supported use cases. Use cases are described
 extensively in [chapter 6](#6-api-interactions-and-flows).
 
 ![Use cases](media/useCases.png)
 
-**Figure 5. Use cases**
+**Figure 6. Use cases**
 
 ## 5.2. API Endpoint and Operation Description
 
 ### 5.2.1. Seller side API Endpoints
 
 **Base URL for Cantata**:
-`https://{{serverBase}}:{{port}}{{?/seller_prefix}}/mefApi/cantata/productCatalog/v2/`
+
+`https://{{serverBase}}:{{port}}{{?/seller_prefix}}/mefApi/cantata/productCatalog/v3/`
 
 **Base URL for Sonata**:
-`https://{{serverBase}}:{{port}}{{?/seller_prefix}}/mefApi/sonata/productCatalog/v2/`
 
-The following API endpoints are implemented by the Seller and allow the Buyer
-to retrieve Product Categories, Product Offerings, and Product Specifications
-as well as register for Notifications. The endpoints and corresponding data
-model are defined in
+`https://{{serverBase}}:{{port}}{{?/seller_prefix}}/mefApi/sonata/productCatalog/v3/`
+
+The following API endpoints are implemented by the Seller and allow the Buyer to
+retrieve Product Categories, Product Offerings, and Product Specifications as
+well as register for Notifications. The endpoints and corresponding data model
+are defined in
 
 `productApi/productCatalog/productCatalog.api.yaml`.
 
-| API endpoint                       | Description                                                                                                                                                                      | MEF 127 Use Case mapping                           |
+| API endpoint                       | Description                                                                                                                                                                      | MEF 127.1 Use Case mapping                         |
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| `GET /productCategory`             | The Buyer requests a list of Product Categories from the Seller based on a set of specified filter criteria. The Seller returns a summarized list of Product Categories.         | UC 1: Retrieve Product Category List               |
-| `GET /productCategory/{{id}}`      | The Buyer requests detailed information about a single Product Category based on a Product Category Identifier.                                                                  | UC 2: Retrieve Product Category by Identifier      |
+| `GET /category`                    | The Buyer requests a list of Product Categories from the Seller based on a set of specified filter criteria. The Seller returns a summarized list of Product Categories.         | UC 1: Retrieve Product Category List               |
+| `GET /category/{{id}}`             | The Buyer requests detailed information about a single Product Category based on a Product Category Identifier.                                                                  | UC 2: Retrieve Product Category by Identifier      |
 | `GET /productOffering`             | The Buyer requests a list of Product Offerings from the Seller based on a set of specified filter criteria. The Seller returns a summarized list of Product Offerings.           | UC 3: Retrieve Product Offering List               |
 | `GET /productOffering/{{id}}`      | The Buyer requests detailed information about a single Product Offering based on a Product Offering Identifier.                                                                  | UC 4: Retrieve Product Offering by Identifier      |
 | `GET /productSpecification`        | The Buyer requests a list of Product Specifications from the Seller based on a set of specified filter criteria. The Seller returns a summarized list of Product Specifications. | UC 5: Retrieve Product Specification List          |
@@ -675,9 +741,9 @@ model are defined in
 **Table 3. Seller side mandatory API endpoints**
 
 **[R1]** The Seller **MUST** implement all API endpoints listed in Table 3.
-[MEF127 R16]
+[MEF127.1 R16]
 
-| API endpoint      | Description                                                                                                          | MEF 127 Use Case mapping                         |
+| API endpoint      | Description                                                                                                          | MEF 127.1 Use Case mapping                       |
 | ----------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
 | `POST /hub`       | The Buyer requests to subscribe to Product Catalog notifications.                                                    | UC 7: Register for Product Catalog Notifications |
 | `GET /hub/{{id}}` | A request initiated by the Buyer to retrieve the details of the notification subscription with the given Identifier. | UC 7: Register for Product Catalog Notifications |
@@ -685,7 +751,7 @@ model are defined in
 
 **Table 4. Seller side optional API endpoints**
 
-**[O1]** The Seller **MAY** implement API endpoints listed in Table 4. [MEF127
+**[O1]** The Seller **MAY** implement API endpoints listed in Table 4. [MEF127.1
 O3]
 
 **[CR1]<[O1]** If any of the endpoints defined in Table 4 is implemented, then
@@ -694,126 +760,161 @@ all of the endpoints listed in Table 4 **MUST** be implemented
 ### 5.2.2. Buyer side API Endpoints
 
 **Base URL for Cantata**:
-`https://:/mefApi/cantata/productCatalogNotification/v2/`
+
+`https://:/mefApi/cantata/productCatalogNotification/v3/`
 
 **Base URL for Sonata**:
-`https://:/mefApi/cantata/productCatalogNotification/v2/`
+
+`https://:/mefApi/cantata/productCatalogNotification/v3/`
 
 The following API Endpoints are used by the Seller to post notifications to
 registered listeners. The endpoints and corresponding data model are defined in
 
 `productApi/catalog/productCatalogNotification.api.yaml`
 
-| API Endpoint                                                   | Description                                                                                                    | MEF 127 Use Case Mapping                 |
-| -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| `POST /listener/productCategoryCreateEvent`                    | A request initiated by the Seller to notify the Buyer on new `ProductCategory` creation.                       | UC 08: Send Product Catalog Notification |
-| `POST /listener/productCategoryAttributeValueChangeEvent`      | A request initiated by the Seller to notify the Buyer of `ProductCategory` attribute value change.             | UC 08: Send Product Catalog Notification |
-| `POST /listener/productCategoryStatusChangeEvent`              | A request initiated by the Seller to notify the Buyer on `ProductCategory.lifecycleStatus` status change.      | UC 08: Send Product Catalog Notification |
-| `POST /listener/productOfferingCreateEvent`                    | A request initiated by the Seller to notify the Buyer of new `ProductOffering` creation.                       | UC 08: Send Product Catalog Notification |
-| `POST /listener/productOfferingAttributeValueChangeEvent`      | A request initiated by the Seller to notify the Buyer of `ProductOffering` attribute value change.             | UC 08: Send Product Catalog Notification |
-| `POST /listener/productOfferingStatusChangeEvent`              | A request initiated by the Seller to notify the Buyer on `ProductOffering.lifecycleStatus` status change.      | UC 08: Send Product Catalog Notification |
-| `POST /listener/productSpecificationCreateEvent`               | A request initiated by the Seller to notify the Buyer on new `ProductSpecification` creation.                  | UC 08: Send Product Catalog Notification |
-| `POST /listener/productSpecificationAttributeValueChangeEvent` | A request initiated by the Seller to notify the Buyer of `ProductSpecification` attribute value change.        | UC 08: Send Product Catalog Notification |
-| `POST /listener/productSpecificationStatusChangeEvent`         | A request initiated by the Seller to notify the Buyer on `ProductSpecification.lifecycleStatus` status change. | UC 08: Send Product Catalog Notification |
+| API Endpoint                                                   | Description                                                                                                        | MEF 127.1 Use Case Mapping               |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------------------------------------- |
+| `POST /listener/categoryCreateEvent`                           | A request initiated by the Seller to notify the Buyer on new `ProductCategory` creation.                           | UC 08: Send Product Catalog Notification |
+| `POST /listener/categoryAttributeValueChangeEvent`             | A request initiated by the Seller to notify the Buyer of the `ProductCategory` attribute value change.             | UC 08: Send Product Catalog Notification |
+| `POST /listener/productOfferingCreateEvent`                    | A request initiated by the Seller to notify the Buyer of new `ProductOffering` creation.                           | UC 08: Send Product Catalog Notification |
+| `POST /listener/productOfferingAttributeValueChangeEvent`      | A request initiated by the Seller to notify the Buyer of the `ProductOffering` attribute value change.             | UC 08: Send Product Catalog Notification |
+| `POST /listener/productOfferingStateChangeEvent`               | A request initiated by the Seller to notify the Buyer on `ProductOffering.lifecycleStatus` status change.          | UC 08: Send Product Catalog Notification |
+| `POST /listener/productSpecificationCreateEvent`               | A request initiated by the Seller to notify the Buyer on new `ProductSpecification` creation.                      | UC 08: Send Product Catalog Notification |
+| `POST /listener/productSpecificationAttributeValueChangeEvent` | A request initiated by the Seller to notify the Buyer of the `ProductSpecification` attribute value change.        | UC 08: Send Product Catalog Notification |
+| `POST /listener/productSpecificationStatusChangeEvent`         | A request initiated by the Seller to notify the Buyer on the `ProductSpecification.lifecycleStatus` status change. | UC 08: Send Product Catalog Notification |
 
 **Table 5. Buyer side optional API endpoints**
 
-**[O2]** The Buyer **MAY** support API endpoints listed in Table 5. [MEF127 O3]
+**[O2]** The Buyer **MAY** support API endpoints listed in Table 5. [MEF127.1
+O3]
 
 ## 5.3. Specifying the Buyer ID and the Seller ID
 
-A business entity willing to represent multiple Buyers or multiple Sellers must
-follow requirements of MEF 79 [[MEF79](#8-references)] chapter 8.8, which
-states:
+A business Entity willing to represent multiple Buyers or multiple Sellers must
+follow requirements of [[MEF 150](#8-references)] chapter 8.8, which states:
 
-> For requests of all types, there is a business entity that is initiating an
-> Operation (called a Requesting Entity) and a business entity that is
+> For requests of all types, there is a business Entity that initiates an
+> Operation (called a Requesting Entity) and a business Entity that is
 > responding to this request (called the Responding Entity). In the simplest
 > case, the Requesting Entity is the Buyer and the Responding Entity is the
 > Seller. However, in some cases, the Requesting Entity may represent more than
 > one Buyer and similarly, the Responding Entity may represent more than one
 > Seller.
->
+
+![Figure 7. Buyer ID and Seller ID Examples](media/buyerIdSellerId.png)
+
+**Figure 7. Buyer ID and Seller ID Examples**
+
+> As shown in Figure 7, if a Requesting Entity representing a single Buyer is
+> doing business with a Responding Entity representing a single Seller, Buyer
+> and Seller IDs are not required to be passed between the two Entities. If a
+> Requesting Entity representing more than one Buyer is doing business with a
+> Responding Entity representing a single Seller, the Buyer ID is required to be
+> passed between the two Entities. If a Requesting Entity representing a single
+> Buyer is doing business with a Responding Entity representing multiple
+> Sellers, the Seller ID is required to be passed between the two Entities. If a
+> Requesting Entity representing multiple Buyers is doing business with a
+> Responding Entity representing multiple Sellers, both the Buyer ID and the
+> Seller ID are required to be passed between the Entities.
+
 > While it is outside the scope of this specification, it is assumed that the
 > Requesting Entity and the Responding Entity are aware of each other and can
-> authenticate requests initiated by the other party. It is further assumed
-> that both the Buying Entity and the Requesting Entity know:
+> authenticate requests initiated by the other party. It is further assumed that
+> the Buying Entity knows:
 >
-> a) the list of Buyers the Requesting Entity represents when interacting with
-> this Responding Entity; and  
-> b) the list of Sellers that this Responding Entity represents to this
-> Requesting Entity.
+> - the list of Buyers the Requesting Entity represents when interacting with
+>   this Responding Entity; and
+> - the list of Sellers that this Responding Entity represents to this
+>   Requesting Entity.
+>
+> It is also assumed that the Responding Entity knows:
+>
+> - the list of Sellers that this Responding Entity represents to this
+>   Requesting Entity and
+> - the list of Buyers the Requesting Entity represents when interacting with
+>   this Respond-ing Entity.
 
-In the API the `buyerId` and `sellerId` are represented as query parameters in
-each operation defined in `productCatalog.api.yaml` and as attributes of events
-as described in `productCatalogNotification.api.yaml`.
+In the API the `buyerId` and `sellerId` are represented as an optional query
+parameters in each operation defined.
 
 **[R2]** If the Requesting Entity has the authority to represent more than one
-Buyer the request **MUST** include `buyerId` query parameter that identifies
-the Buyer being represented [MEF79 R80]
+Buyer the request **MUST** include `buyerId` that identifies the Buyer being
+represented [MEF150 R62]
 
-**[R3]** If the Requesting Entity represents precisely one Buyer with the
-Responding Entity, the request **MUST NOT** specify the `buyerId` [MEF79 R81]
+**[R3]** If the Responding Entity represents more than one Seller to this Buyer
+the request **MUST** include `sellerId` that identifies the Seller with whom
+this request is associated [MEF150 R63]
 
-**[R4]** If the Responding Entity represents more than one Seller to this Buyer
-the request **MUST** include `sellerId` query parameter that identifies the
-Seller with whom this request is associated [MEF79 R82]
-
-**[R5]** If the Responding Entity represents precisely one Seller to this
-Buyer, the request **MUST NOT** specify the `sellerId` [MEF79 R83]
-
-**[R6]** If `buyerId` or `sellerId` attributes were specified in the request
+**[R4]** If `buyerId` or `sellerId` attributes were specified in the request
 same attributes **MUST** be used in the notification payload.
 
 ## 5.4. Model Structural Validation
 
-The structure of the HTTP payloads exchanged via Product Catalog API endpoints
-is defined using OpenAPI version 3.0.
+The structure of the HTTP payloads exchanged via Quote API endpoints is defined
+using:
 
-**[R7]** Implementations **MUST** use payloads that conform to these
+- OpenAPI version 3.0 for the product-agnostic part of the payload
+- JsonSchema (draft 7) for the product-specific part of the payload
+
+**[R5]** Implementations **MUST** use payloads that conform to these
 definitions.
+
+**[R6]** The Buyer and the Seller **MUST NOT** use any operation, entity or
+attribute that is not explicitly defined or allowed by this standard.
+
+**[R7]** A product specification may define additional consistency rules and
+requirements that **MUST** be respected by implementations.
+
+These are defined for:
+
+- required relation type, multiplicity to other items in the same quote request
+- required relation type, multiplicity to entities in the Seller's product
+  inventory
+- related contact information roles that are to be defined at the item level
+- relations to places (locations) and their roles that are to be defined at the
+  item level
 
 ## 5.5. Security Considerations
 
 There must be an authentication mechanism whereby a Seller can be assured who a
-Buyer is and vice-versa. There must also be authorization mechanisms in place
-to control what a particular Buyer or Seller is allowed to do and what
-information may be obtained. However, the definition of the exact security
-mechanism and configuration is outside the scope of this document. It is
-specified by a separate MEF Project ([[MEF128](#8-references)]).
+Buyer is and vice-versa. There must also be authorization mechanisms in place to
+control what a particular Buyer or Seller is allowed to do and what information
+may be obtained. However, the definition of the exact security mechanism and
+configuration is outside the scope of this document. Security considerations are
+standardized by _LSO API Security Profile_ [[MEF 128.1](#8-references)].
 
 <div class="page"/>
 
 # 6. API Interactions and Flows
 
 This section provides a detailed insight into the API functionality, use cases,
-and flows. It starts with Table 6 presenting a list and short description of
-all business use cases then presents the variants of end-to-end interaction
-flows, and in the following subchapters describes the API usage flow and
-examples for each of the use cases.
+and flows. It starts with Table 6 presenting a list and short description of all
+business use cases then presents the variants of end-to-end interaction flows,
+and in the following subchapters describes the API usage flow and examples for
+each of the use cases.
 
 Table 6 lists the use cases supported by Product Catalog API (use case numbers
-as in MEF 127 for mapping):
+as in MEF 127.1 for mapping):
 
-| Use Case # | Use Case Name                                                      | Use Case Description                                                                                                                                                              |     |
-| ---------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
-| 1          | Retrieve Product Category List                                     | The Buyer requests a list of Product Categories from the Seller based on a set of specified filter criteria. The Seller returns a summarized list of Product Categories.          |     |
-| 2          | Retrieve Product Category by Product Category Identifier           | The Buyer requests detailed information about a single Product Category based on a Product Category Identifier.                                                                   |     |
-| 3          | Retrieve Product Offering List                                     | The Buyers requests a list of Product Offerings from the Seller based on a set of specified filter criteria. The Seller returns a summarized list of Product Offering.            |     |
-| 4          | Retrieve Product Category by Product Offering Identifier           | The Buyer requests detailed information about a single Product Offering based on a Product Offering Identifier.                                                                   |     |
-| 5          | Retrieve Product Specification List                                | The Buyers requests a list of Product Specifications from the Seller based on a set of specified filter criteria. The Seller returns a summarized list of Product Specifications. |     |
-| 6          | Retrieve Product Specification by Product Specification Identifier | The Buyer requests detailed information about a single Product Specification based on a Product Specification Identifier.                                                         |     |
-| 7          | Register for Event Notifications                                   | The Buyer requests to subscribe to Product Categories, Product Offerings and Product Specifications Notifications.                                                                |     |
-| 8          | Send Event Notification                                            | Send Event Notification The Seller sends a notification regarding a Product Category, Product Offering, or Product Specification to the Buyer.                                    |     |
+| Use Case # | Use Case Name                                                      | Use Case Description                                                                                                                                                             |     |
+| ---------- | ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| 1          | Retrieve Product Category List                                     | The Buyer requests a list of Product Categories from the Seller based on a set of specified filter criteria. The Seller returns a summarized list of Product Categories.         |     |
+| 2          | Retrieve Product Category by Product Category Identifier           | The Buyer requests detailed information about a single Product Category based on a Product Category Identifier.                                                                  |     |
+| 3          | Retrieve Product Offering List                                     | The Buyer requests a list of Product Offerings from the Seller based on a set of specified filter criteria. The Seller returns a summarized list of Product Offering.            |     |
+| 4          | Retrieve Product Category by Product Offering Identifier           | The Buyer requests detailed information about a single Product Offering based on a Product Offering Identifier.                                                                  |     |
+| 5          | Retrieve Product Specification List                                | The Buyer requests a list of Product Specifications from the Seller based on a set of specified filter criteria. The Seller returns a summarized list of Product Specifications. |     |
+| 6          | Retrieve Product Specification by Product Specification Identifier | The Buyer requests detailed information about a single Product Specification based on a Product Specification Identifier.                                                        |     |
+| 7          | Register for Event Notifications                                   | The Buyer requests to subscribe to Product Categories, Product Offerings and Product Specifications Notifications.                                                               |     |
+| 8          | Send Event Notification                                            | Send Event Notification The Seller sends a notification regarding a Product Category, Product Offering, or Product Specification to the Buyer.                                   |     |
 
 **Table 6. Use cases description**
 
-Figure 6 presents an example of the flow of `ProductOffering` lifecycle and
+Figure 8 presents an example of the flow of `ProductOffering` lifecycle and
 possible related requests.
 
 ![Exemplary API flow for Product Offering](media/exemplaryFlow.png)
 
-**Figure 6. Exemplary API flow for Product Offering**
+**Figure 8. Exemplary API flow for Product Offering**
 
 Registration for events is optional, so all sequences on the diagram related to
 notification exchange were framed as optional, so as the below description of
@@ -821,112 +922,116 @@ the sequence diagram.
 
 - _(optional)_ The Buyer registers the listener by sending the request (1) with
   specified `eventType` as `productOfferingCreateEvent`,
-  `productOfferingStatusChangeEvent`, and
+  `productOfferingStateChangeEvent`, and
   `productOfferingAttributeValueChangeEvent`.
 - _(optional)_ (2) The Seller responds with success.
-- The Seller publishes new `ProductOffering` with `lifecycleStatus=announced`
+- The Seller publishes a new `ProductOffering` with `lifecycleStatus=active`
   (3).
-- _(optional)_ What causes sending notification to the Buyer (4-5) with the
-  type `productOfferingCreateEvent`.
+- _(optional)_ What causes sending notification to the Buyer (4-5) with the type
+  `productOfferingCreateEvent`.
 - The Seller decides to make the previously created offering available for
-  ordering by changing `lifecycleStatus` to `orderable` (6).
-- _(optional)_ What causes sending notification to the Buyer (7-8) with type
-  the `productOfferingStatusChangeEvent`.
+  ordering by changing `lifecycleStatus` to `launched` (6).
+- _(optional)_ What causes sending notification to the Buyer (7-8) with type the
+  `productOfferingStateChangeEvent`.
 - The Buyer decides to ask for offerings available for ordering by sending a
   request (9) providing in query parameters required `lifecycleStatus` as
-  `orderable`.
-- (10) The Seller responds with the list of `orderable` offerings.
-- (11) The Buyer asks for details of the retrieved offering by sending a
-  request (12) with the specified `identifier` of the offering.
+  `launched`.
+- (10) The Seller responds with the list of `launched` offerings.
+- (11) The Buyer asks for details of the retrieved offering by sending a request
+  (12) with the specified `identifier` of the offering.
 - (13) The Seller responds with detailed offering information.
 - The Seller decides to end selling previously published offering by changing
   `lifecycleStatus` to `endOfSale` (14).
 - _(optional)_ What causes sending notification to the Buyer (15-16) with the
-  type `productOfferingStatusChangeEvent`.
-- The Buyer asks again for offerings available for ordering by sending a
-  request (17) providing in query parameters required `lifecycleStatus` as
-  `orderable`.
+  type `productOfferingStateChangeEvent`.
+- The Buyer asks again for offerings available for ordering by sending a request
+  (17) providing in query parameters required `lifecycleStatus` as `launched`.
 - Because there is no offering that is available for sale, the Seller responds
   with an empty list (18).
 
 The detailed business requirements of each of the use cases are described in
-section 8 of MEF 127 [[MEF127](#8-references)].
+section 8 of [[MEF127.1](#8-references)].
 
 ## 6.1. Product Category Use Cases
 
-## 6.1.1 Product Category - Model
+### 6.1.1. Product Category - Model
 
 Product Categories are designed to be used for grouping related Product
-Offerings into logical containers (e.g. grouping Product Offerings delivered
-via Fiber medium).
+Offerings into logical containers (e.g. grouping Product Offerings delivered via
+Fiber medium).
 
-![Figure 7. Product Category Model](media/categoryModel.png)
+![Figure 9. Product Category Model](media/categoryModel.png)
 
-**Figure 7. Product Category Model**
+**Figure 9. Product Category Model**
 
 **[R8]** After a Product Category has been created, the `id` **MUST NOT** be
-modified. [MEF127 R22]
+modified. [MEF127.1 R22]
 
-**[R9]** In the case of a change of any attribute except `subCategory`, the
-Seller **MUST** set the `lastUpdate` attribute with the date of the most recent
-modification. [MEF127 R21]
+**[R9]** In the case of a change of any attribute, the Seller **MUST** set the
+`lastUpdate` attribute with the date of the most recent modification. [MEF127.1
+R21]
 
 **[R10]** If a `ProductCategory` has a parent category, then its `id` **MUST**
-be in the `subCategory` list of the referenced Product Category. [MEF127 R17]
+be in the `subCategory` list of the referenced Product Category. [MEF127.1 R17]
 
-**[R11]]** If a Product Category A is specified in the `subCategory` list of
+**[R11]** If a Product Category A is specified in the `subCategory` list of
 Product Category B, then the `id` of Product Category B **MUST** be included in
-the `parentCategory` attribute of Product Category A. [MEF127 R19]
+the `parentCategory` attribute of Product Category A. [MEF127.1 R19]
 
 **[R12]** If a Product Category has no parent Category, then its `id` **MUST
-NOT** be in the `subCategory` list for any Product Category. [MEF127 R18]
+NOT** be in the `subCategory` list for any Product Category. [MEF127.1 R18]
 
-**[R13]** The `productOffering` attribute **MUST** contain all Product
-Offerings that reference this Product Category. [MEF127 R20]
+**[R13]** The `productOffering` attribute **MUST** include a list of references
+to all Product Offerings that are grouped in this Product Category. [MEF127.1
+R20]
 
-### 6.1.3 Use case 1: Retrieve Product Category List
+### 6.1.2. Use case 1: Retrieve Product Category List
 
-#### 6.1.3.1 Interaction flow
+#### 6.1.2.1. Interaction flow
 
-The flow of this use case is very simple and is described in Figure 8.
+The flow of this use case is very simple and is described in Figure 10.
 
 ![Use Case 1](media/retrieveProductCategoryList-seqFlow.png)
 
-**Figure 8. Use Case 1 - Retrieve Product Category List**
+**Figure 10. Use Case 1 - Retrieve Product Category List**
 
 The Buyer wants to retrieve the list of Product Categories that match the given
 filtering criteria. Later on, the result may be used to query Product Offerings
 by category.
 
-#### 6.1.3.2. Retrieve Product Category List - Request
+#### 6.1.2.2. Retrieve Product Category List - Request
 
 **[O3]** The Buyer **MAY** retrieve the list of Product Categories by using a
-`GET /productCategory` operation with desired filtering criteria. The
-attributes that are available to be used are [MEF127 O4]:
+`GET /category` operation with desired filtering criteria. The attributes that
+are available to be used are [MEF127.1 O4]:
 
-- `name`
 - `lastUpdate.gt`
 - `lastUpdate.lt`
 - `parentCategory.id`
 
 The Buyer may also ask for pagination with the use of the `offset` and `limit`
-parameters. The filtering and pagination attributes must be specified in URI
-query format [RFC3986](#8-references). Section
-[7.1.2.](#712-response-pagination) provides details about the implementation of
-pagination mechanism.
+parameters. The Buyer can specify the following query attributes related to
+pagination:
+
+- `limit` - number of expected list items
+- `offset` - offset of the first element in the result list
+
+The Seller returns a list of elements that comply with the requested `limit`. If
+the requested `limit` is higher than the supported list size the smaller list
+result is returned. In that case, the size of the result is returned in the
+header attribute `X-Result-Count`. The Seller can indicate that there are
+additional results available using:
+
+- `X-Total-Count` header attribute with the total number of available results
+- `X-Pagination-Throttled` header set to `true`
 
 ```url
-https://serverRoot/mefApi/sonata/productCatalog/v2/category?lastUpdate.gt=2023-01-01T00:00:00.000Z&limit=10&offset=0
+https://serverRoot/mefApi/sonata/productCatalog/v3/category?lastUpdate.gt=2023-01-01T00:00:00.000Z&limit=10&offset=0
 ```
 
-The example above shows a Buyer's request to get the first ten Product
-Categories that were updated since the beginning of 2023. The correct response
-(HTTP code `200`) in the response body contains a list of `ProductCategory`
-objects matching the criteria. To get more details (e.g. the list of Product
-Offerings in the given Product Category), the Buyer has to query a specific
-`ProductCategory` by `id`.
+**[D]** The Seller **SHOULD** support the pagination mechanism.
 
-#### 6.1.3.3. Retrieve Product Category List - Response
+#### 6.1.2.3. Retrieve Product Category List - Response
 
 The snippet below presents an example of the Retrieve Product Category List
 response:
@@ -947,22 +1052,22 @@ Body:
 [
   {
     "id": "productCategory-2",
-    "href": "http://mef.com:8080/mefApi/sonata/productCatalog/v2/category/productCategory-2",
+    "href": "http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/category/productCategory-2",
     "name": "Access E-Lines Product Offerings",
     "description": "This category groups are available Access E-Line Product Offerings",
     "lastUpdate": "2023-01-19T16:33:20.324Z",
     "parentCategory": {
       "id": "productCategory-1",
-      "href": "http://mef.com:8080/mefApi/sonata/productCatalog/v2/category/productCategory-1"
+      "href": "http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/category/productCategory-1"
     },
     "productOffering": [
       {
         "id": "productOffering-1",
-        "href": "http://mef.com:8080/mefApi/sonata/productCatalog/v2/productOffering/productOffering-1"
+        "href": "http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/productOffering/productOffering-1"
       },
       {
         "id": "productOffering-2",
-        "href": "http://mef.com:8080/mefApi/sonata/productCatalog/v2/productOffering/productOffering-2"
+        "href": "http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/productOffering/productOffering-2"
       }
     ]
   }
@@ -970,34 +1075,34 @@ Body:
 ```
 
 **[R14]** The Seller **MUST** provide all attributes of `ProductCategory` (if
-they are set in the system) [MEF127 R23], [MEF127 24]:
+they are set in the system) [MEF127.1 R23], [MEF127.1 24]:
 
 **[R15]** In case no items matching the criteria are found, the Seller **MUST**
-return a valid response with an empty list. [MEF127 R26]
+return a valid response with an empty list. [MEF127.1 R26]
 
 The full list of attributes is available in [Section 7](#7-api-details) and in
 the API specification which is an integral part of this standard.
 
-### 6.1.4 Use case 2: Retrieve Product Category by Identifier
+### 6.1.3. Use case 2: Retrieve Product Category by Identifier
 
-#### 6.1.4.1 Interaction flow
+#### 6.1.3.1. Interaction flow
 
-The flow of this use case is very simple and is described in Figure 9.
+The flow of this use case is very simple and is described in Figure 11.
 
 ![Use Case 2](media/retrieveProductCategoryById-seqFlow.png)
 
-**Figure 9. Use Case 2 - Retrieve Product Category by Identifier**
+**Figure 11. Use Case 2 - Retrieve Product Category by Identifier**
 
-The Buyer wants to retrieve detailed information about a single Product
-Category with a given `id`.
+The Buyer wants to retrieve detailed information about a single Product Category
+with a given `id`.
 
-#### 6.1.4.2. Retrieve Product Category by Identifier - Request
+#### 6.1.3.2. Retrieve Product Category by Identifier - Request
 
 **[R16]** The Buyer must provide the `id` of the Product Category in the query.
-[MEF127 R27]
+[MEF127.1 R27]
 
 ```url
-https://mef.com:8080/mefApi/sonata/productCatalog/v2/category/productCategory-2
+https://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/category/productCategory-2
 ```
 
 The example above shows a Buyer's request to get the Product Category with `id`
@@ -1005,39 +1110,38 @@ equal to `productCategory-2`. The correct response (HTTP code `200`) in the
 response body contains a single `ProductCategory` object matching the given
 `id`.
 
-#### 6.1.4.3. Retrieve Product Category by Identifier - Response
+#### 6.1.3.3. Retrieve Product Category by Identifier - Response
 
-The snippet below presents an example of the Retrieve Product Category
-Response:
+The snippet below presents an example of the Retrieve Product Category Response:
 
 **Retrieve `ProductCategory` by Identifier Response**
 
 ```json
 {
   "id": "productCategory-2",
-  "href": "http://mef.com:8080/mefApi/sonata/productCatalog/v2/category/productCategory-2",
+  "href": "http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/category/productCategory-2",
   "name": "Access E-Lines Product Offerings",
   "description": "This category groups are available Access E-Line Product Offerings",
   "lastUpdate": "2023-01-19T16:33:20.324Z",
   "parentCategory": {
     "id": "productCategory-1",
-    "href": "http://mef.com:8080/mefApi/sonata/productCatalog/v2/category/productCategory-1"
+    "href": "http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/category/productCategory-1"
   },
   "productOffering": [
     {
       "id": "productOffering-1",
-      "href": "http://mef.com:8080/mefApi/sonata/productCatalog/v2/productOffering/productOffering-1"
+      "href": "http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/productOffering/productOffering-1"
     },
     {
       "id": "productOffering-2",
-      "href": "http://mef.com:8080/mefApi/sonata/productCatalog/v2/productOffering/productOffering-2"
+      "href": "http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/productOffering/productOffering-2"
     }
   ]
 }
 ```
 
 **[R17]** The Seller **MUST** put the all `ProductCategory` attributes that are
-set in the Seller's system: [MEF127 R28], [MEF127 R29]:
+set in the Seller's system: [MEF127.1 R28], [MEF127.1 R29]:
 
 - `id`
 - `name`
@@ -1049,170 +1153,209 @@ the API specification which is an integral part of this standard.
 
 ## 6.2. Product Offering Use Cases
 
-### 6.2.1 Product Offering - Model
+### 6.2.1. Product Offering - Model
 
-#### 6.2.1.1 Introduction to the model
+#### 6.2.1.1. Product Offering
 
-Figure 10 presents the data model of the Product Offering. The model of the
+Figure 12 presents the data model of the Product Offering. The model of the
 retrieve list response (`ProductOffering_Find`) is a subset of the
-`ProductOffering` model and contains only those attributes that can (or must)
-be returned by the Seller. For visibility of these differences, the
-`ProductOffering_Common` has been introduced. Though, it is not to be used
+`ProductOffering` model and contains only those attributes that can (or must) be
+returned by the Seller. For visibility of these differences, the
+`ProductOffering_Common` has been introduced. However, it is not to be used
 directly in the response to any endpoint.
 
 The full list of attributes is available in [Section 7](#7-api-details) and in
 the API specification which is an integral part of this standard.
 
-![Figure 10. Product Offering Model](media/offeringModel.png)
+![Figure 12. Product Offering Model](media/offeringModel.png)
 
-**Figure 10. Product Offering Model**
+**Figure 12. Product Offering Model**
 
-**[R18]** Once the Product Offering is in `lifecycleStatus=announced`, the
-Seller **MUST NOT** update the following Product Offering attributes: [MEF127
-R32], [MEF127 R34]
+**[R18]** Once the Product Offering is created, the Seller **MUST NOT** update
+the following attributes: [MEF127.1 R37]
 
 - `id`
-- `productOfferingTerm`
 - `productSpecification`
-- `productOfferingSpecification`
-- `productRelationship`
-- `placeRelationship`
-- `productOfferingContextualInfo`
 
 Product Offerings are designed to be used for exposing the particular Product
 Specification to the market, therefore Product Specification related attributes
 must not change.
 
-**[R19]** Because attributes defined in [R18] are not allowed to be changed,
-the Seller **MUST** create a new `ProductOffering` (with a new `id`) to
-introduce a new version that modifies those attributes. [MEF127 R32]
+**[R19]** If any of the `ProductOffering` attributes are changed in a
+non-backward compatible way, the Seller **MUST** create a new Product Offering
+with a different Identifier. [MEF127.1 R36]
+
+"Non-backwards compatibility" refers to any modification to a Product Offering
+that results in any previously valid Product Offering Configuration to become
+invalid.
 
 It's at the Seller's discretion to transition the older version of Product
 Offering to a `lifecycleStatus` that prevents using that offering for ordering.
 
-**[R20]** In the case of any of `ProductOffering` attributes has changed, the
-Seller **MUST** update the `lastUpdate` attribute with the date of the
-modification occurred. [MEF127 R31]
+**[R20]** The `productOfferingTerm` attribute **MUST NOT** be defined if
+`isSellable=false`. [MEF127.1 R33]
 
-**[R21]** The Seller **MUST** update the `statusReason` attribute whenever the
-`lifecycleStatus` attribute is changed.
+**[R21]** The `productOfferingTerm` attribute **MUST** be defined if
+`isSellable=true`.
 
-**[R22]** The following attributes of `statusTransition` entities **MUST** be
-set [MEF127 R35]:
+**[R22]** A `productOfferingTerm` of Product Offering that is a Bundle **MUST**
+cover all bundled Product Offering, including their prices.
+
+The point of the requirement above is to decouple the definition and lifecycle
+of a standalone Product Offering from possible definitions of Bundles that would
+include it.
+
+The prices defined within a Bundle may or may not be dependant on the number of
+bundled Product Offerings ordered.
+
+**[R23]** If the `isBundle` attribute is `true`, then the `isSellable` attribute
+**MUST** be also be set to `true`. [MEF127.1 R34]
+
+**[R24]** The `bundledProductOffering` attribute **MUST** only be defined if the
+`isBundle` attribute is `true`. [MEF127.1 R35]
+
+**[R25]** In the case of any of the `ProductOffering` attributes has changed,
+the Seller **MUST** update the `lastUpdate` attribute with the date the
+modification occurred. [MEF127.1 R31]
+
+**[R26]** The Seller **MUST** update the `statusTransition` attribute whenever
+the `lifecycleStatus` attribute is changed.
+
+**[R27]** The following attributes of `statusTransition` entities **MUST** be
+set [MEF127.1 R38]:
 
 - `transitionDate`
-- `transitionLifecycleStatus`
+- `lifecycleStatus`
 
 **[D1]** Whenever the `transitionDate` has passed but the transition has not
-taken place, then the Seller **SHOULD** update the `transitionDate` with the
-new anticipated date of transition.
+taken place, then the Seller **SHOULD** update the `transitionDate` with the new
+anticipated date of transition.
 
-**[R23]** When the planned transition took place, then the Seller **MUST NOT**
+**[R28]** When the planned transition took place, then the Seller **MUST NOT**
 remove the corresponding record from the `statusTransition` list.
 
 The `statusTransition` records are used for historical log purposes.
 
-**[R24]** The `country` attribute **MUST** be set when specyfying a `region`
-[MEF127 R36]
+**[R29]** The `countryCode` attribute **MUST** be set when specifying a
+`region`, using the ISO 3166 two-letter codes. [MEF127.1 R39]
 
-**[R25]** The following attributes of `productOfferingTerm` **MUST** be set
-[MEF127 R38]:
+**[R30]** The following attributes of `productOfferingTerm` **MUST** be set
+[MEF127.1 R41]:
 
 - `name`
 - `duration`
 - `endOfTermAction`
 
-**[R26]** If the `productOfferingTerm.endOfTermAction` is set to `roll` then
-attribute `productOfferingTerm.rollInternal` **MUST** be set. [MEF127 R39]
+**[R31]** If the `productOfferingTerm.endOfTermAction` is set to `roll` then
+attribute `productOfferingTerm.rollInternal` **MUST** be set. [MEF127.1 R42]
 
-**ProductRelationshipConstraint**
+#### 6.2.1.2. Product Offering Bundle Relationship
 
-**[R27]** A `ProductRelationshipConstraint` **MUST** contain the following
-attributes: [MEF127 R40]
+**[R32]** A `ProductOfferingBundleRelationship` **MUST** contain the following
+attributes: [MEF127.1 R43]
 
-- `id`
+- `productOffering`
+- `maxCardinality`
+- `minCardinality`
+
+**[R33]** If `maxCardinality` is not unlimited (`-1`) then it **MUST** be
+greater than or equal to the `minCardinality`. [MEF127.1 R44]
+
+**[R34]** The `ProductOfferingBundleRelationship` **MUST NOT** reference a
+Product Offering with the attribute `isBundle` set to `true`. [MEF127.1 R45]
+
+#### 6.2.1.3. Product Relationship Constraint
+
+**[R35]** A `ProductRelationshipConstraint` **MUST** contain the following
+attributes: [MEF127.1 R46], [MEF127.1 R73]
+
+- `productSpecification`
 - `relationshipType`
+- `isModifiable`
 - `minCardinality`
 - `maxCardinality`
 
-**[R28]** The `minCardinality` **MUST** be greater than or equal to the
-`minCardinality` of the respective `productRelationship` it attempts to
-restrict (of the Product Offering's Specification for the specified `id` and
-`relationshipType`). [MEF127 R41]
+**[R36]** If used for the purpose of putting a restriction, the `minCardinality`
+**MUST** be greater than or equal to the `minCardinality` of the respective
+`productRelationship` it attempts to restrict (the Product Offering's
+Specification for the specified `id` and `relationshipType`). [MEF127.1 R47]
 
-**[R29]** If provided, the `maxCardinality` **MUST** be less than or equal to
-the `maxCardinality` of the respective `productRelationship` it attempts to
-restrict (of the Product Offering's Specification for the specified `id` and
-`relationshipType`). [MEF127 R42]
+**[R37]** If used for the purpose of putting a restriction, the `maxCardinality`
+**MUST** be less than or equal to the `maxCardinality` of the respective
+`productRelationship` it attempts to restrict (the Product Offering's
+Specification for the specified `id` and `relationshipType`). [MEF127.1 R49]
 
-**[R30]** `maxCardinality` **MUST** be greater than or equal to the
-`minCardinality`.
+**[R38]** If `maxCardinality` is not unlimited (`-1`) then it **MUST** be
+greater than or equal to the `minCardinality`. [MEF127.1 R48], [MEF127.1 R74]
 
-**PlaceRelationshipConstraint**
+#### 6.2.1.4. Place Relationship Constraint
 
-**[R31]** A `PlaceRelationshipConstraint` **MUST** contain the following
-attributes: [MEF127 R43]
+**[R39]** A `PlaceRelationshipConstraint` **MUST** contain the following
+attributes: [MEF127.1 R50], [MEF127.1 R75]
 
+- `isModifiable`
+- `maxCardinality`
+- `minCardinality`
 - `relationshipRole`
-- `minCardinality`
-- `maxCardinality`
 
-**[R32]** The `minCardinality` **MUST** be greater than or equal to the
-`minCardinality` of the respective `placeRelationship` it attempts to restrict
-(of the Product Offering's Specification for the specified `relationshipRole`).
-[MEF127 R44]
+**[R40]** If used for the purpose of putting a restriction, the `minCardinality`
+**MUST** be greater than or equal to the `minCardinality` of the respective
+`placeRelationship` it attempts to restrict (the Product Offering's
+Specification for the specified `relationshipRole`). [MEF127.1 R51]
 
-**[R33]** If provided, the `maxCardinality` **MUST** be less than or equal to
-the `maxCardinality` of the respective `placeRelationship` it attempts to
-restrict (of the Product Offering's Specification for the specified
-`relationshipRole`). [MEF127 R45]
+**[R41]** If used for the purpose of putting a restriction, the `maxCardinality`
+**MUST** be less than or equal to the `maxCardinality` of the respective
+`placeRelationship` it attempts to restrict (the Product Offering's
+Specification for the specified `relationshipRole`). [MEF127.1 R53]
 
-**[R34]** `maxCardinality` **MUST** be either `-1` or greater than or equal to
-the `minCardinality`.
+**[R42]** If `maxCardinality` is not unlimited (`-1`) then it **MUST** be
+greater than or equal to the `minCardinality`. [MEF127.1 R52], [MEF127.1 R76]
 
-#### 6.2.1.2 Product Offering Specification Schema
+#### 6.2.1.5. Product Offering Specification Schema
 
 The concept of subschema was introduced to allow defining the Product
 Specification schema in the context of a particular Product Offering which is
-expressed as the `productOfferingSpecification` attribute. The `JSON subschema`
-term is introduced in [[Chapter 2](#2-terminology-and-abbreviations)] of this
-document.
+expressed as the `productOfferingSpecificationSchema` attribute. The
+`JSON subschema` term is introduced in
+[[Chapter 2](#2-terminology-and-abbreviations)] of this document.
 
 Per the Product Schemas Specification (e.g. MEF 106, MEF 125), all
-Product-Specific Attributes are defined as optional. Some of them are defined
-as enumerations, some of them should satisfy the given regular expression, etc.
-For Product Offering purposes the Seller and Buyer may agree to restrict some
-of the Product-Specific Attributes as mandatory, optional or fixed (especially
-for particular business functions and product actions), the set of enumerated
-values may be constrained, etc. Subschema was introduced in the Product Catalog
-to express such constraints in an unambiguous form.
+Product-Specific Attributes are defined as optional. Some of them are defined as
+enumerations, some of them should satisfy the given regular expression, etc. For
+Product Offering purposes the Seller and Buyer may agree to restrict some of the
+Product-Specific Attributes as mandatory, optional or fixed (especially for
+particular business functions and product actions), the set of enumerated values
+may be constrained, etc. Subschema was introduced in the Product Catalog to
+express such constraints in an unambiguous form.
 
-The table below defines the list of changes that can be applied to the schema
-and the rules for expressing them:
+The table 7 defines the list of changes that can be applied to the schema and
+the rules for expressing them:
 
-| The change on attribute          | How to express in schema                        | Reference requirement                    | Remarks                  |
-| -------------------------------- | ----------------------------------------------- | ---------------------------------------- | ------------------------ |
-| Make required                    | Add attribute name to `required` array.         | [MEF127 R5], [MEF127 R6]                 |                          |
-| Make not applicable              | Remove from the schema.                         | [MEF127 R10], [MEF127 R11], [MEF127 R13] |                          |
-| Fix the value                    | Set fixed value as `const`.                     | [MEF127 R10], [MEF127 R14]               |
-| Fix the already enumerated value | Remove `enum` array, set fixed value as `const` | [MEF127 R10], [MEF127 R14]               |                          |
-| Apply enumeration                | Set enumerated values as `enum` array.          | --not covered--                          |
-| Narrow existing enumeration      | Set narrowed enumerations as `enum` array.      | --not covered--                          |                          |
-| Set default value                | Set default value as `default`.                 | [MEF127 R3],[MEF127 R8]                  | If it's not set already. |
+| The change on attribute          | How to express in schema                        | Reference requirement                          | Remarks                  |
+| -------------------------------- | ----------------------------------------------- | ---------------------------------------------- | ------------------------ |
+| Make required                    | Add attribute name to `required` array.         | [MEF127.1 R5], [MEF127.1 R6]                   |                          |
+| Make not applicable              | Remove from the schema.                         | [MEF127.1 R10], [MEF127.1 R11], [MEF127.1 R13] |                          |
+| Fix the value                    | Set fixed value as `const`.                     | [MEF127.1 R10], [MEF127.1 R14]                 |
+| Fix the already enumerated value | Remove `enum` array, set fixed value as `const` | [MEF127.1 R10], [MEF127.1 R14]                 |                          |
+| Apply enumeration                | Set enumerated values as `enum` array.          | --not covered--                                |
+| Narrow existing enumeration      | Set narrowed enumerations as `enum` array.      | --not covered--                                |                          |
+| Set default value                | Set default value as `default`.                 | [MEF127.1 R3],[MEF127.1 R8]                    | If it's not set already. |
 
 **Table 7. Schema modification rules**
 
-**[R35]** The Seller **MUST** respect the rules defined in Table 7 for the
-`productOfferingSpecification` schema. [MEF127 R1], [MEF127 R2], [MEF127 R3]
+**[R43]** The Seller **MUST** respect the rules defined in Table 7 for the
+`productOfferingSpecificationSchema` schema. [MEF127.1 R1], [MEF127.1 R2],
+[MEF127.1 R3]
 
-**[R36]** The Seller **MUST** apply the agreed default value for an Optional
+**[R44]** The Seller **MUST** apply the agreed default value for an Optional
 Product-Specific Attribute if a value is not included by the Buyer in the
-corresponding API request. [MEF127 R8]
+corresponding API request. [MEF127.1 R8]
 
 Let's consider the following JSON Schema of Product Specification
 `AccessElineOvc` as the schema that will be used to construct
-`productOfferingSpecification` JSON Subschema (the below schema is a subset of
-the `AccessElineOvc` schema for readability purposes):
+`productOfferingSpecificationSchema` JSON Subschema (the below schema is a
+subset of the `AccessElineOvc` schema for readability purposes):
+
 
 ```json
 {
@@ -1304,8 +1447,8 @@ the `AccessElineOvc` schema for readability purposes):
 }
 ```
 
-For example, a Seller wants to define a Product Offering of the
-`AccessElineOvc` with the following constraints:
+For example, a Seller wants to define a Product Offering of the `AccessElineOvc`
+with the following constraints:
 
 - class of service is constrained to `Excellence`,
 - attribute `maximumFrameSize` is fixed to `9100`,
@@ -1313,7 +1456,8 @@ For example, a Seller wants to define a Product Offering of the
 - attributes `cTagPcpPreservation`, `frameDisposition` are mandatory
 
 The constraints above may be expressed as the JSON Subschema of the Product
-Specification `AccessElineOvc` i.e. `productOfferingSpecification` JSON Schema:
+Specification `AccessElineOvc` i.e. `productOfferingSpecificationSchema` JSON
+Schema:
 
 ```json
 {
@@ -1399,13 +1543,13 @@ Specification `AccessElineOvc` i.e. `productOfferingSpecification` JSON Schema:
 }
 ```
 
-**[R37]** Attribute `productOfferingSpecification` **MUST** be the subschema of
-the `sourceSchema` of `ProductSpecification`.
+**[R45]** Attribute `productOfferingSpecificationSchema` **MUST** be the
+subschema of the `sourceSchema` of `ProductSpecification`.
 
-#### 6.2.1.3 Product Offering Contextual Info
+#### 6.2.1.6. Product Offering Contextual Info
 
 The Product Offering Contextual Info was introduced to express how the
-`productOfferingSpecification` JSON Schema should be constrained for the
+`productOfferingSpecificationSchema` JSON Schema should be constrained for the
 Product-Specific Attributes for every combination of Business Functions and
 Product Actions.
 
@@ -1427,37 +1571,37 @@ The Product Offering Contextual Info is expressed as a pair:
 - `context` which is a `businessFunction` and `productAction` pair.
 
 Notice that `contextSchema` is JSON Subschema of `sourceSchema` as well as a
-JSON Subschema of `productOfferingSpecification` schema.
+JSON Subschema of `productOfferingSpecificationSchema` schema.
 
-**[R38]** The following attributes of `productOfferingContextualInfo` **MUST**
-be set [MEF127 R46]:
+**[R46]** The following attributes of `ProductOfferingContextualInfo` **MUST**
+be set [MEF127.1 R54]:
 
 - `contextSchema`
 - `context.businessFunction`
 
-**[R39]** `productOfferingContextualInfo` **MUST** provide the
+**[R47]** `productOfferingContextualInfo` **MUST** provide the
 `context.productAction` attribute when `context.businessFunction` is not
-`productInventory`. [MEF127 R47]:
+`productInventory`. [MEF127.1 R55]:
 
-**[R40]** For each `productOfferingContextualInfo`, attribute `contextSchema`
+**[R48]** For each `productOfferingContextualInfo`, attribute `contextSchema`
 **MUST** be the subschema of the `sourceSchema` of the corresponding Product
 Specification.
 
-**[R41]** For each `productOfferingContextualInfo`, attribute `contextSchema`
-**MUST** be the subschema of the `productOfferingSpecification` of the
+**[R49]** For each `productOfferingContextualInfo`, attribute `contextSchema`
+**MUST** be the subschema of the `productOfferingSpecificationSchema` of the
 corresponding Product Offering (if present).
 
-**[R42]** The Seller **MUST** respect the rules defined in Table 7 for each
+**[R50]** The Seller **MUST** respect the rules defined in Table 7 for each
 `contextSchema` schema.
 
 Continuing the example from
-[[Chapter 6.2.1.2](#6212-product-offering-specification-schema)], the Product
+[[Chapter 6.2.1.5](#6215-product-offering-specification-schema)], the Product
 Offering Qualification would be constrained as follows::
 
 - attribute `cTagDeiPreservation` becomes required,
 - attributes `availableMegLevel`, `ovcL2cpAddressSet`, `carrierEthernetSls`,
   `cTagDeiPreservation`, `cTagPcpPreservation` are not applicable and
-- for all other cases `productOfferingSpecification` JSON Schema should be
+- for all other cases `productOfferingSpecificationSchema` JSON Schema should be
   applied.
 
 The snippet below presents the above use case for the Product Offering
@@ -1592,7 +1736,7 @@ Embedded schemas:
 }
 ```
 
-Schema `#context-schema-1` is equal to the `productOfferingSpecification`
+Schema `#context-schema-1` is equal to the `productOfferingSpecificationSchema`
 schema. That means that for every use case (except `businessFunction=poq`) the
 schema is unchanged.
 
@@ -1664,11 +1808,12 @@ schema is unchanged.
 }
 ```
 
-The above example is the realization of [D2].
+The above example is the realization of **[D2]**.
 
-Schema `#context-schema-2` is modified according to the example described
-above. The below list summarizes the modifications applied to the
-`productOfferingSpecification` schema that results with `#context-schema-2`:
+Schema `#context-schema-2` is modified according to the example described above.
+The below list summarizes the modifications applied to the
+`productOfferingSpecificationSchema` schema that results with
+`#context-schema-2`:
 
 - attribute `cTagDeiPreservation` is required and, therefore is added to the
   `required` array,
@@ -1676,123 +1821,168 @@ above. The below list summarizes the modifications applied to the
   `cTagPcpPreservation` are not applicable, therefore were removed from the
   schema
 
-**[R43]** If the `productOfferingContextualInfo` includes an entry for one
+**[R51]** If the `productOfferingContextualInfo` includes an entry for one
 Business Function or Product Action, then the Seller **MUST** provide a
 `productOfferingContextualInfo` entry in this list for every combination of
-Business Function and Product Action. [MEF127 R33]
+Business Function and Product Action. [MEF127.1 R32]
 
 It doesn't mean that all possible combinations must be listed explicitly.
-Wildcards are recommended to be used, when feasible, to cover the whole group
-of possibilities, as is shown in the example above.
+Wildcards are recommended to be used, when feasible, to cover the whole group of
+possibilities, as is shown in the example above.
 
-**[D2]** The Seller **SHOULD** use the `productAction=all`,
-`businessAction=all` wildcards to cover as many use cases as feasible and
-extend the `productOfferingContextualInfo` by adding specific use cases as
-required.
+**[D2]** The Seller **SHOULD** use the `productAction=all`, `businessAction=all`
+wildcards to cover as many use cases as feasible and extend the
+`productOfferingContextualInfo` by adding specific use cases as required.
 
-**[R44]** When the Buyer sends the request for any combination of
+**[R52]** When the Buyer sends the request for any combination of
 `businessFunction` and `productAction`, the request's Product Payload **MUST**
 be valid against the schema defined in the corresponding
 `productOfferingContextualInfo` attribute of referred `ProductOffering`.
 
-**[R45]** The Buyer and the Seller **MUST** agree on whether the Buyer can
+**[R53]** The Buyer and the Seller **MUST** agree on whether the Buyer can
 include in an API request Product-Specific Attributes that have been classified
-as Fixed. [MEF127 R10]
+as Fixed. [MEF127.1 R10]
 
-**[R46]** If the Buyer and Seller agree that Product-Specific Attributes
+**[R54]** If the Buyer and Seller agree that Product-Specific Attributes
 classified as Fixed cannot be included in the API request, the Buyer and Seller
 **MUST** agree on whether the Seller includes Product-Specific Attributes
-classified as Fixed in the corresponding API responses. [MEF127 R11]
+classified as Fixed in the corresponding API responses. [MEF127.1 R11]
 
-**[R47]** If the Buyer and Seller agree that Product-Specific Attributes
+**[R55]** If the Buyer and Seller agree that Product-Specific Attributes
 classified as Fixed cannot be included in an API request, the Seller **MUST**
-reject an API request from the Buyer if it includes a Product-Specific
-Attribute that has been classified as Fixed for the Business Function (POQ,
-Quote, Order), Product Action (add, modify), and Product Offering. [MEF127 R12]
+reject an API request from the Buyer if it includes a Product-Specific Attribute
+that has been classified as Fixed for the Business Function (POQ, Quote, Order),
+Product Action (add, modify), and Product Offering. [MEF127.1 R12]
 
-**[R48]** If the Buyer and Seller agree that Product-Specific Attributes
+**[R56]** If the Buyer and Seller agree that Product-Specific Attributes
 classified as Fixed cannot be included in an API request, and if a
-Product-Specific Attribute is classified to be Fixed for Inventory for a
-Product Offering, then the Seller **MUST NOT** include a value for the
-attribute in the corresponding API response. [MEF127 R13]
+Product-Specific Attribute is classified to be Fixed for Inventory for a Product
+Offering, then the Seller **MUST NOT** include a value for the attribute in the
+corresponding API response. [MEF127.1 R13]
 
-**[R49]** If the Buyer and Seller agree that Product-Specific Attributes
+**[R57]** If the Buyer and Seller agree that Product-Specific Attributes
 classified as Fixed can be included in an API request, the Seller **MUST**
-reject an API request from the Buyer if it includes a Product-Specific
-Attribute that has been classified as Fixed for the Business Function (POQ,
-Quote, Order), Product Action (add, modify), and Product Offering and includes
-a value that is different than the agreed-on fixed value. [MEF127 R14]
+reject an API request from the Buyer if it includes a Product-Specific Attribute
+that has been classified as Fixed for the Business Function (POQ, Quote, Order),
+Product Action (add, modify), and Product Offering and includes a value that is
+different than the agreed-on fixed value. [MEF127.1 R14]
 
-**[R50]** If the Buyer and Seller agree that Product-Specific Attributes
+**[R58]** If the Buyer and Seller agree that Product-Specific Attributes
 classified as Fixed can be included in API request, and if a Product-Specific
 Attribute is agreed to be Fixed for Inventory for a Product Offering, then the
 Seller **MUST** include a value for the Product-Specific attribute in the
-Inventory API response. [MEF127 R15]
+Inventory API response. [MEF127.1 R15]
 
-### 6.2.2 Product Offering - Lifecycle
+#### 6.2.1.7. Product Offering Price
 
-Figure 11 presents the Product Offering state machine:
+<!-- TODO examples and description -->
 
-![Figure 11. Product Offering State Machine](media/offering_stateMachine.png)
-**Figure 11. Product Offering State Machine**
+**[R59]** A `ProductOfferingPrice` **MUST** contain the following attributes:
+[MEF127.1 R84]
+
+- `description`
+- `lastUpdate`
+- `validFor`
+- `priceType`
+- `price`
+
+**[R60]** When specifying the `ProductOfferingPrice` the Seller **MUST** follow
+the combination of attributes presented in Table 8. [MEF127.1 R85], [MEF127.1
+R86]
+
+| `priceType`    | `recurringChargePeriod` | `unitOfMeasure` | `price.dutyFreeAmount` | Comments                                                 |
+| -------------- | ----------------------- | --------------- | ---------------------- | -------------------------------------------------------- |
+| `recurring`    | X                       |                 | X                      |                                                          |
+| `nonRecurring` |                         |                 | X                      |                                                          |
+| `usageBased`   |                         | X               | X                      | `price.dutyFreeAmount` is the charge per `unitOfMeasure` |
+
+**Table 8. Price Type Required Information**
+
+**[R61]** The `bundledProductOffering` **MUST NOT** be set for within a Product
+Offering that is not a Bundle. [MEF127.1 R87]
+
+**[R62]** The `bundledProductOffering` **MUST** refer only Product Offerings
+that are part of the Bundle.
+
+**[R63]** The `bundledProductOffering` **MUST** be set if the price is dependent
+on number of Product Offers that are ordered within a Bundled Product Offering.
+[MEF127.1 R88]
+
+**[R64]** A `PriceModifier` **MUST** contain the following attributes: [MEF127.1
+R89]
+
+- `description`
+- `lastUpdate`
+- `validFor`
+- `minimumQuantity`
+
+**[R65]** A `PriceModifier` **MUST** contain either the `reductionPercentage` or
+the `discountedPrice`, but not both. [MEF127.1 R90]
+
+### 6.2.2. Product Offering - Lifecycle
+
+Figure 13 presents the Product Offering state machine:
+
+![Figure 13. Product Offering State Machine](media/offering_stateMachine.png)
+**Figure 13. Product Offering State Machine**
 
 The Product Offering State Machine is simpler than the one proposed by TMF
 [[TMF620](#8-references)] because it focuses on exposing Product Offerings and
 the states that are relevant to the Buyers, not the whole Product Offering
-Management lifecycle, some of which is only relevant and internal to the
-Seller. The specific states are managed by the Seller.
+Management lifecycle, some of which is only relevant and internal to the Seller.
+The specific states are managed by the Seller.
 
 **[O4]** The Seller **MAY** decide for agreed upon Buyers being part of beta
-test process to expose the Product Offerings in `inTest` state.
+test process to expose the Product Offerings in `inTest` or `rejected` state.
 
-Table 8 presents the mapping between API `lifecycleStatus` values (aligned with
-TMF) and MEF 127 naming together with states' descriptions.
+Table 9 presents the mapping between API `lifecycleStatus` values (aligned with
+TMF) and MEF 127.1 naming together with states' descriptions.
 
-| lifecycleStatus | MEF 127 name   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| --------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `announced`     | ANNOUNCED      | A Product Offering has been defined in the Product Catalog for marketing purposes but is not yet available for ordering.                                                                                                                                                                                                                                                                                                                                   |
-| `endOfSale`     | END_OF_SALE    | A new Product based on the Product Offering cannot be ordered by any Buyers, but Products may still be in use and may be changed or disconnected, and receive support.                                                                                                                                                                                                                                                                                     |
-| `endOfSupport`  | END_OF_SUPPORT | A Product Offering is no longer possible to Install new or Change any existing Products based on the Product Offering. The Buyer can still use Products based on the Product Offering as is without any support from the Seller (the only allowed action is `remove`).                                                                                                                                                                                     |
-| `obsolete`      | OBSOLETE       | The Product Offering is only available in the Product Catalog for historical documentation reasons. No actions are allowed on Products based on these Product Offerings. A Product Offering that is `obsolete` may be removed at the Seller's discretion from the Product Catalog. This is a final state.                                                                                                                                                  |
-| `onHold`        | ON_HOLD        | The Seller decides to stop Buyers from ordering new Products based on the Product Offering (for example, due to supply constraints, product recall, legal reasons, etc.). The Product Offering can transition to either `orderable` when the constraints are lifted and the Buyer can order new Products again, or to `endOfSale`, if the Seller decides to stop offering Products based on the Product Offering. This is an intermediate temporary state. |
-| `orderable`     | ORDERABLE      | The Buyer can order new Products, and change or disconnect any active Products based on the Product Offering.                                                                                                                                                                                                                                                                                                                                              |
-| `inTest`        | PILOT_BETA     | A Product Offering can only be used by a Buyer during a limited period for beta testing or during the pilot of a Product. Normally, only a limited set of Buyers will be given access to a Product Offering in this state.                                                                                                                                                                                                                                 |
-| `rejected`      | REJECTED       | When the pilot testing period is ended by the Seller, they may decide whether the Product Offering becomes available for ordering; otherwise, the Product Offering transitions to the `rejected` state. This is a final state.                                                                                                                                                                                                                             |
+| lifecycleStatus | MEF 127.1 name | Description                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| --------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `active`        | active         | A Product Offering has been defined in the Product Catalog for marketing purposes but is not yet available for ordering.                                                                                                                                                                                                                                                                                                                                  |
+| `endOfSale`     | END_OF_SALE    | A new Product based on the Product Offering cannot be ordered by any Buyers, but Products may still be in use and may be changed or disconnected, and receive support.                                                                                                                                                                                                                                                                                    |
+| `endOfSupport`  | END_OF_SUPPORT | A Product Offering is no longer possible to Install new or Change any existing Products based on the Product Offering. The Buyer can still use Products based on the Product Offering as is without any support from the Seller (the only allowed action is `remove`).                                                                                                                                                                                    |
+| `obsolete`      | OBSOLETE       | The Product Offering is only available in the Product Catalog for historical documentation reasons. No actions are allowed on Products based on these Product Offerings. A Product Offering that is `obsolete` may be removed at the Seller's discretion from the Product Catalog. This is a final state.                                                                                                                                                 |
+| `onHold`        | ON_HOLD        | The Seller decides to stop Buyers from ordering new Products based on the Product Offering (for example, due to supply constraints, product recall, legal reasons, etc.). The Product Offering can transition to either `launched` when the constraints are lifted and the Buyer can order new Products again, or to `endOfSale`, if the Seller decides to stop offering Products based on the Product Offering. This is an intermediate temporary state. |
+| `launched`      | launched       | The Buyer can order new Products, and change or disconnect any active Products based on the Product Offering.                                                                                                                                                                                                                                                                                                                                             |
+| `inTest`        | PILOT_BETA     | A Product Offering can only be used by a Buyer during a limited period for beta testing or during the pilot of a Product. Normally, only a limited set of Buyers will be given access to a Product Offering in this state.                                                                                                                                                                                                                                |
+| `rejected`      | REJECTED       | When the pilot testing period is ended by the Seller, they may decide whether the Product Offering becomes available for ordering; otherwise, the Product Offering transitions to the `rejected` state. This is a final state.                                                                                                                                                                                                                            |
 
-**Table 8. Product Offering lifecycle statuses**
+**Table 9. Product Offering lifecycle statuses**
 
-**[R51]** The Seller **MUST** support all statuses for Product Offering and the
-associated state transitions as shown in Table 8 and Figure 11. [MEF127 R80].
+**[R66]** The Seller **MUST** support all statuses for Product Offering and the
+associated state transitions as shown in Table 9 and Figure 13. [MEF127.1 R98].
 
-It is at the Seller's discretion whether the `inTest` and `rejected` states
-will be used.
+It is at the Seller's discretion whether the `inTest` and `rejected` states will
+be used.
 
 **[D3]** The Seller **SHOULD** add a `note` describing the reasons for the
-condition when a Product Offering transitions to the `onHold` state. [MEF127
+condition when a Product Offering transitions to the `onHold` state. [MEF127.1
 D1]
 
-**[R52]** The Seller **MUST NOT** remove a Product Offering from the Product
-Catalog unless the state is `rejected` or `obsolete`. [MEF127 R81]
+**[R67]** The Seller **MUST NOT** remove a Product Offering from the Product
+Catalog unless the state is `rejected` or `obsolete`. [MEF127.1 R99]
 
-Removing obsoleted Product Offerings is at the Seller's discretion. There may
-be a value in keeping them in the Ptoduct Catalog for an extended period so the
+Removing obsoleted Product Offerings is at the Seller's discretion. There may be
+a value in keeping them in the Product Catalog for an extended period so the
 Buyer may reference them for historical reasons.
 
-### 6.2.3 Use case 3: Retrieve Product Offering List
+### 6.2.3. Use case 3: Retrieve Product Offering List
 
-#### 6.2.3.1 Interaction flow
+#### 6.2.3.1. Interaction flow
 
-The flow of this use case is very simple and is described in Figure 12.
+The flow of this use case is very simple and is described in Figure 14.
 
 ![Use Case 1](media/retrieveProductOfferingList-seqFlow.png)
 
-**Figure 12. Use Case 3 - Retrieve Product Offering List**
+**Figure 14. Use Case 3 - Retrieve Product Offering List**
 
 #### 6.2.3.2. Retrieve Product Offering List - Request
 
 **[O5]** The Buyer **MAY** retrieve the list of Product Offerings by using a
-`GET /productOffering` operation with desired filtering criteria. The
-attributes that are available to be used are: [MEF127 O5]
+`GET /productOffering` operation with desired filtering criteria. The attributes
+that are available to be used are: [MEF127.1 O5]
 
 - `name`
 - `lastUpdate.gt`
@@ -1801,7 +1991,9 @@ attributes that are available to be used are: [MEF127 O5]
 - `agreement`
 - `channel`
 - `marketSegment`
-- `region.country`
+- `region.countryCode`
+- `isBundle`
+- `isSellable`
 - `category.id`
 - `productSpecification.id`
 
@@ -1827,25 +2019,25 @@ of querying interpretation is settled as:
 - Resource is matched if any of the provided values match any value from the
   collection.
 
-**[R53]** If the Buyer provides more than one value in filtering criteria for
-the array type attributes, then the Seller **MUST** return all Product
-Offerings whose corresponding attributes contain any of the provided values.
+**[R68]** If the Buyer provides more than one value in filtering criteria for
+the array type attributes, then the Seller **MUST** return all Product Offerings
+whose corresponding attributes contain any of the provided values.
 
-Regarding [R53], if the Buyer provides e.g.
-`marketSegment=Federal&marketSegment=Financial` then the Seller uses that
-values as alternatives i.e. result matches if at least one of the provided
-values is contained by the Product Offering's `marketSegment` list.
+Regarding [R68], if the Buyer provides e.g.
+`marketSegment=Federal&marketSegment=Financial` then the Seller uses that values
+as alternatives i.e. result matches if at least one of the provided values is
+contained by the Product Offering's `marketSegment` list.
 
 ```url
-http://mef.com:8080/mefApi/sonata/productCatalog/v2/productOffering?lifecycleStatus=orderable&marketSegment=Federal&marketSegment=Financial&limit=10&offset=0
+http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/productOffering?lifecycleStatus=launched&marketSegment=Federal&marketSegment=Financial&limit=10&offset=0
 ```
 
-The example above shows a Buyer's request to get the first ten Product
-Offerings that are in `orderable` status and are available for the `Federal` or
-`Financial` markets. The correct response (HTTP code `200`) in the response
-body contains a list of `ProductOffering_Find` objects matching the criteria.
-To get more details (e.g. the list of 'Product Offering Terms'), the Buyer has
-to query a specific `ProductOffering` by `id`.
+The example above shows a Buyer's request to get the first ten Product Offerings
+that are in `launched` status and are available for the `Federal` or `Financial`
+markets. The correct response (HTTP code `200`) in the response body contains a
+list of `ProductOffering_Find` objects matching the criteria. To get more
+details (e.g. the list of 'Product Offering Terms'), the Buyer has to query a
+specific `ProductOffering` by `id`.
 
 #### 6.2.3.3. Retrieve Product Offering List - Response
 
@@ -1868,62 +2060,66 @@ Body:
 [
   {
     "id": "productOffering-1",
-    "href": "http://mef.com:8080/mefApi/sonata/productCatalog/v2/productOffering/productOffering-1",
+    "href": "http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/productOffering/productOffering-1",
     "name": "Access E-line OVC Basic",
     "lastUpdate": "2023-01-19T16:33:20.324Z",
-    "lifecycleStatus": "orderable",
+    "lifecycleStatus": "launched",
     "agreement": "Official agreement no 4",
     "channel": ["DirectSales", "Distribution"],
     "marketSegment": ["Federal", "Financial"],
+    "isBundle": "false",
+    "isSellable": "true",
     "region": [
       {
         "stateOrProvince": "Malopolskie",
-        "country": "Poland"
+        "countryCode": "PL"
       }
     ],
     "category": [
       {
         "id": "productCategory-2",
-        "href": "http://mef.com:8080/mefApi/sonata/productCatalog/v2/category/productCategory-2"
+        "href": "http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/category/productCategory-2"
       }
     ],
     "productSpecification": {
       "id": "productSpecification-1",
-      "href": "http://mef.com:8080/mefApi/sonata/productCatalog/v2/productSpecification/productSpecification-1"
+      "href": "http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/productSpecification/productSpecification-1"
     }
   },
   {
     "id": "productOffering-2",
-    "href": "http://mef.com:8080/mefApi/sonata/productCatalog/v2/productOffering/productOffering-2",
+    "href": "http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/productOffering/productOffering-2",
     "name": "Access E-line OVC Excellence",
     "lastUpdate": "2023-01-19T16:33:20.324Z",
-    "lifecycleStatus": "orderable",
+    "lifecycleStatus": "launched",
     "agreement": "string",
     "channel": ["DirectSales"],
     "marketSegment": ["Federal"],
+    "isBundle": "false",
+    "isSellable": "true",
     "region": [
       {
         "stateOrProvince": "Malopolskie",
-        "country": "Poland"
+        "countryCode": "PL"
       }
     ],
     "category": [
       {
         "id": "productCategory-2",
-        "href": "http://mef.com:8080/mefApi/sonata/productCatalog/v2/category/productCategory-2"
+        "href": "http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/category/productCategory-2"
       }
     ],
     "productSpecification": {
       "id": "productSpecification-1",
-      "href": "http://mef.com:8080/mefApi/sonata/productCatalog/v2/productSpecification/productSpecification-1"
+      "href": "http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/productSpecification/productSpecification-1"
     }
   }
 ]
 ```
 
-**[R54]** When the Buyer queries by `category.id` attribute, then the Seller
+**[R69]** When the Buyer queries by `category.id` attribute, then the Seller
 **MUST** include every Product Offering that is a direct or indirect member of
-this category. [MEF127 R55]
+this category. [MEF127.1 R63]
 
 An indirect member of a given category is any member that is present in the
 `subcategory` list of that category. This rule applies recursively.
@@ -1938,8 +2134,8 @@ categorized by Category C is:
 - an indirect member of Category A (because Category C is a subcategory of
   Category A by recursiveness).
 
-**[R55]** The Seller **MUST** put the following attributes into the
-`ProductOffering_Find` object in the response: [MEF127 R48]
+**[R70]** The Seller **MUST** put the following attributes into the
+`ProductOffering_Find` object in the response: [MEF127.1 R56]
 
 - `id`
 - `name`
@@ -1949,25 +2145,27 @@ categorized by Category C is:
 - `channel`
 - `marketSegment`
 - `region`
+- `isBundle`
+- `isSellable`
 - `category`
 - `productSpecification`
 
-**[R56]** The Seller response **MUST** include every Product Offering where the
+**[R71]** The Seller response **MUST** include every Product Offering where the
 `channel` filter criteria match one of the Product Offering's `channel` or the
-Product Offering's `channel` is an empty list [MEF127 R49], [MEF17 R50]
+Product Offering's `channel` is an empty list [MEF127.1 R57], [MEF127.1 R63]
 
-**[R57]** The Seller response **MUST** include every Product Offering where the
+**[R72]** The Seller response **MUST** include every Product Offering where the
 `marketSegment` filter criteria match one of the Product Offering's
 `marketSegment` or the Product Offering's `marketSegment` is an empty list.
-[MEF127 R51], [MEF127 R52]
+[MEF127.1 R59], [MEF127.1 R60]
 
-**[R58]** The Seller response **MUST** include every Product Offering where the
-`region.country` filter criteria match one of the Product Offering's
-`region.country` or the Product Offering's `region` is an empty list. [MEF127
-R53], [MEF127 R54]
+**[R73]** The Seller response **MUST** include every Product Offering where the
+`region.countryCode` filter criteria match one of the Product Offering's
+`region.countryCode` or the Product Offering's `region` is an empty list.
+[MEF127.1 R61], [MEF127.1 R62]
 
-**[R59]** If case no items matching the criteria are found, the Seller **MUST**
-return a valid (HTTP code `200`) response with an empty list. [MEF127 R57]
+**[R74]** If case no items matching the criteria are found, the Seller **MUST**
+return a valid (HTTP code `200`) response with an empty list. [MEF127.1 R65]
 
 The full list of attributes is available in [Section 7](#7-api-details) and in
 the API specification which is an integral part of this standard.
@@ -1975,28 +2173,30 @@ the API specification which is an integral part of this standard.
 **_Note:_** The Product Offering model for this use case is the subset of the
 model from the chapter [[6.2.1](#621-product-offering---model)].
 
-![Figure 13. Product Offering Find Model](media/offeringModel_find.png)
-**Figure 13. Use Case 3 - Product Offering Find Model**
+![Figure 15. Product Offering Find Model](media/offeringModel_find.png)
 
-### 6.2.4 Use case 4: Retrieve Product Offering by Identifier
+**Figure 15. Use Case 3 - Product Offering Find Model**
 
-#### 6.2.4.1 Interaction flow
+### 6.2.4. Use case 4: Retrieve Product Offering by Identifier
 
-The flow of this use case is very simple and is described in Figure 14.
+#### 6.2.4.1. Interaction flow
 
-![Use Case 2](media/retrieveProductOfferingById-seqFlow.png) **Figure 14. Use
-Case 4 - Retrieve Product Offering by Identifier**
+The flow of this use case is very simple and is described in Figure 16.
 
-The Buyer wants to retrieve detailed information about a single Product
-Offering with the given `id`.
+![Use Case 2](media/retrieveProductOfferingById-seqFlow.png)
+
+**Figure 16. Use Case 4 - Retrieve Product Offering by Identifier**
+
+The Buyer wants to retrieve detailed information about a single Product Offering
+with the given `id`.
 
 #### 6.2.4.2. Retrieve Product Offering by Identifier - Request
 
-**[R60]** The Buyer must provide the `id` of the Product Offering that
-originates from the Seller. [MEF127 R58]
+**[R75]** The Buyer must provide the `id` of the Product Offering that
+originates from the Seller. [MEF127.1 R66]
 
 ```url
-http://mef.com:8080/mefApi/sonata/productCatalog/v2/productOffering/productOffering-1
+http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/productOffering/productOffering-1
 ```
 
 The example above shows a Buyer's request to get the Product Category with `id`
@@ -2014,10 +2214,10 @@ The snippet below presents an example of the Retrieve Product Offering Request
 ```json
 {
     "id": "productOffering-1",
-    "href": "http://mef.com:8080/mefApi/sonata/productCatalog/v2/productOffering/productOffering-1",
+    "href": "http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/productOffering/productOffering-1",
     "name": "Access E-line OVC Basic",
     "lastUpdate": "2023-01-19T16:33:20.324Z",
-    "lifecycleStatus": "orderable",
+    "lifecycleStatus": "launched",
     "agreement": "Official agreement no 4",
     "channel": [
         "DirectSales",
@@ -2027,22 +2227,32 @@ The snippet below presents an example of the Retrieve Product Offering Request
         "Federal",
         "Financial"
     ],
+    "isBundle": "false",
+    "isSellable": "true",
     "region": [
         {
             "stateOrProvince": "Malopolskie",
-            "country": "Poland"
+            "countryCode": "PL"
         }
     ],
     "category": [
         {
             "id": "productCategory-2",
-            "href": "http://mef.com:8080/mefApi/sonata/productCatalog/v2/category/productCategory-2"
+            "href": "http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/category/productCategory-2"
         }
     ],
     "statusTransition": [
         {
+            "transitionDate": "2023-01-01T00:00:00.004Z",
+            "lifecycleStatus": "active"
+        },
+        {
+            "transitionDate": "2023-01-19T16:33:20.324Z",
+            "lifecycleStatus": "launched"
+        },
+        {
             "transitionDate": "2024-01-19T16:33:20.324Z",
-            "transitionLifecycleStatus": "obsolete"
+            "lifecycleStatus": "obsolete"
         }
     ],
     "statusReason": "Ready to be used for ordering.",
@@ -2067,13 +2277,13 @@ The snippet below presents an example of the Retrieve Product Offering Request
             "description": "Basic Term",
             "duration": {
                 "amount": 12,
-                "units": "calendarMonths"
+                "units": "months"
             },
             "endOfTermAction": "roll",
             "name": "Basic",
             "rollInterval": {
                 "amount": 6,
-                "units": "calendarMonths"
+                "units": "months"
             }
         }
     ],
@@ -2088,7 +2298,7 @@ The snippet below presents an example of the Retrieve Product Offering Request
     ],
     "productSpecification": {
         "id": "productSpecification-1",
-        "href": "http://mef.com:8080/mefApi/sonata/productCatalog/v2/productSpecification/productSpecification-1"
+        "href": "http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/productSpecification/productSpecification-1"
     },
     "productOfferingContextualInfo":
     [
@@ -2106,26 +2316,29 @@ The snippet below presents an example of the Retrieve Product Offering Request
 }
 ```
 
-**[R61]** The Seller **MUST** put the following attributes into the
-`ProductOffering` object in the response: [MEF127 R59]
+**[R76]** The Seller **MUST** put the following attributes into the
+`ProductOffering` object in the response: [MEF127.1 R67]
 
 - `id`
 - `name`
 - `description`
 - `lastUpdate`
 - `lifecycleStatus`
+- `statusTransition`
+- `isBundle`
+- `isSellable`
 - `productSpecification`
 
-**[R62]** The Seller response **MUST** include every other of the remaining
-attributes of the `ProductOffering` if they are set. [MEF127 R60]
+**[R77]** The Seller response **MUST** include every other of the remaining
+attributes of the `ProductOffering` if they are set. [MEF127.1 R68]
 
-**[R63]** The Seller response **MUST** include exactly one of the
-`productOfferingSpecification` attributes:
+**[R78]** The Seller response **MUST** include exactly one of the
+`productOfferingSpecificationSchema` attributes:
 
 - `schema`
 - `schemaLocation`
 
-**[R64]** The Seller response **MUST** include exactly one of the
+**[R79]** The Seller response **MUST** include exactly one of the
 `contextSchema` attributes:
 
 - `schema`
@@ -2134,10 +2347,15 @@ attributes of the `ProductOffering` if they are set. [MEF127 R60]
 Attributes `schema` and `schemaLocation` are modeled as mutually exclusive to
 avoid the dualistic representation of `contextSchema`.
 
-**[R65]** If the `attachment` is provided, either the `attachment.url` or
+**[R80]** If the `attachment` is provided, either the `attachment.url` or
 (`attachment.content` and `attachment.mimeType`) **MUST** be specified.
 
-**[R66]** For Product Offerings, the Seller **MUST** set the respective
+**[R81]** The Buyer and the Seller **MUST** agree whether the `attachment.url`
+or (`attachment.content` and `attachment.mimeType`) can be used.
+
+Use of `attachment.url` is preferred.
+
+**[R82]** For Product Offerings, the Seller **MUST** set the respective
 `source=seller` attribute when adding any item to one of the following lists:
 `note`, `attachment`.
 
@@ -2153,79 +2371,54 @@ the API specification which is an integral part of this standard.
 
 ## 6.3. Product Specification Use Cases
 
-### 6.3.1 Product Specification - Model
+### 6.3.1. Product Specification - Model
 
-Figure 15 presents the data model of the Product Specification. The model of
-the retrieve list response (`ProductSpecification_Find`) is a subset of the
+Figure 17 presents the data model of the Product Specification. The model of the
+retrieve list response (`ProductSpecification_Find`) is a subset of the
 `ProductSpecification` model and contains only those attributes that can (or
 must) be returned by the Seller. For visibility of these differences the
-`ProductSpecification_Common` has been introduced. However, it is not to be
-used directly in the response of any endpoint.
+`ProductSpecification_Common` has been introduced. However, it is not to be used
+directly in the response of any endpoint.
 
 The full list of attributes is available in [Section 7](#7-api-details) and in
 the API specification which is an integral part of this standard.
 
-![Figure 15. Product Specification Model](media/specificationModel.png)
-**Figure 15. Product Specification Model**
+![Figure 17. Product Specification Model](media/specificationModel.png)
+**Figure 17. Product Specification Model**
 
-**[R67]** After a `ProductSpecification` has been created, the following
-attributes **MUST NOT** be modified: [MEF127 R63]
+**[R83]** After a `ProductSpecification` has been created, the following
+attributes **MUST NOT** be modified: [MEF127.1 R77]
 
 - `id`
 - `productRelationship`
 - `placeRelationship`
 - `sourceSchema`
 
-**[R68]** In the case of a change of any attribute of `ProductSpecification`,
+**[R84]** In the case of a change of any attribute of `ProductSpecification`,
 the Seller **MUST** set the `lastUpdate` to reflect the most recent date the
-modification occurred. [MEF127 R62]
+modification occurred. [MEF127.1 R70]
 
-**[R69]** A `ProductMilestoneDefinition` **MUST** contain the following
-attributes: [MEF127 R66]
+**[R85]** A `ProductMilestoneDefinition` **MUST** contain the following
+attributes: [MEF127.1 R74]
 
 - `name`
 - `description`
 
-**ProductRelationshipConstraint**
-
-**[R70]** A `ProductRelationshipConstraint` **MUST** contain the following
-attributes: [MEF127 R64]
-
-- `id`
-- `relationshipType`
-- `minCardinality`
-- `maxCardinality`
-
-**[R71]** `maxCardinality` **MUST** be either `-1` or greater than or equal to
-the `minCardinality`.
-
-**PlaceRelationshipConstraint**
-
-**[R72]** A `PlaceRelationshipConstraint` **MUST** contain the following
-attributes: [MEF127 R65]
-
-- `relationshipRole`
-- `minCardinality`
-- `maxCardinality`
-
-**[R73]** `maxCardinality` **MUST** be greater than or equal to the
-`minCardinality`.
-
-Product Specifications are designed to be used for the decoration of the
-Product Schema (represented by `sourceSchema`) by the business attributes to
-publish them for commercial usage. Related `sourceSchema` defines the JSON
-schema ([JSONSchema](#8-references)) of a prospective Product instance. At the
-very beginning, by definition all attributes in the `sourceSchema` are optional
-and during integration between the Buyer and Seller must be negotiated and
-defined in `ProductOffering` as `productOfferingSpecification` and
+Product Specifications are designed to be used for the decoration of the Product
+Schema (represented by `sourceSchema`) by the business attributes to publish
+them for commercial usage. Related `sourceSchema` defines the JSON schema
+([JSONSchema](#8-references)) of a prospective Product instance. At the very
+beginning, by definition all attributes in the `sourceSchema` are optional and
+during integration between the Buyer and Seller must be negotiated and defined
+in `ProductOffering` as `productOfferingSpecificationSchema` and
 `productOfferingContextualInfo` attributes.
 
-### 6.3.2 Product Specification - Lifecycle
+### 6.3.2. Product Specification - Lifecycle
 
-Figure 16 presents the Product Specification state machine:
+Figure 18 presents the Product Specification state machine:
 
-![Figure 16. Product Specification State Machine](media/specification_stateMachine.png)
-**Figure 16. Product Specification State Machine**
+![Figure 18. Product Specification State Machine](media/specification_stateMachine.png)
+**Figure 18. Product Specification State Machine**
 
 The Product Specification State Machine is consistent with the State Machine of
 Product Offering and it is a simplification of the one proposed by TMF
@@ -2233,51 +2426,53 @@ Product Offering and it is a simplification of the one proposed by TMF
 to the Buyers, not the whole Product Specifications Management. The specific
 states and notifications are managed by the Seller.
 
-Table 9 presents the mapping between API `lifecycleStatus` values and MEF127
+Table 10 presents the mapping between API `lifecycleStatus` values and MEF 127.1
 naming together with the state's description.
 
-| Name        | MEF 127 Name | Description                                                                                                                                                                                                                                                                                                                                                                                                  |
-| ----------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `obsolete`  | OBSOLETE     | After a Product Offering orThe Product Specification is only available in the Product Catalog for historical documentation reasons. There are no active Products on the Seller's Network based on the Product Specification. A Product Specification that is no longer available it transitions to `obsolete` and may be removed at the Seller's discretion from the Product Catalog. This is a final state. |
-| `published` | PUBLISHED    | A Product Specification has been defined in the Product Catalog. Product Offerings based on the Product Specification may be available for ordering.                                                                                                                                                                                                                                                         |
+| Name        | MEF 127.1 Name | Description                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ----------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `obsolete`  | OBSOLETE       | After a Product Offering orThe Product Specification is only available in the Product Catalog for historical documentation reasons. There are no active Products on the Seller's Network based on the Product Specification. A Product Specification that is no longer available it transitions to `obsolete` and may be removed at the Seller's discretion from the Product Catalog. This is a final state. |
+| `published` | PUBLISHED      | A Product Specification has been defined in the Product Catalog. Product Offerings based on the Product Specification may be available for ordering.                                                                                                                                                                                                                                                         |
 
-**Table 9. Product Specification lifecycle statuses**
+**Table 10. Product Specification lifecycle statuses**
 
-**[R74]** The Seller **MUST** support all lifecycle statuses for Product
-Specification and the associated state transitions [MEF127 R82].
+**[R86]** The Seller **MUST** support all lifecycle statuses for Product
+Specification and the associated state transitions [MEF127.1 R100].
 
 **[O6]** The Seller **MAY** update the Product Specification (see chapter
-[[6.3.1](#631-product-specification---model)] to find updatable attributes)
-when the Product Specification `lifecycleStatus` is not final i.e. `rejected`
+[[6.3.1](#631-product-specification---model)] to find updatable attributes) when
+the Product Specification `lifecycleStatus` is not final i.e. `rejected`
 
-**[R75]** A Product Specification **MUST NOT** be set to the `obsolete` state
+**[R87]** A Product Specification **MUST NOT** be set to the `obsolete` state
 unless all associated Product Offerings are in the `obsolete` or `rejected`
-state. [MEF127 R83]
+state. [MEF127.1 R101]
 
-**[R76]** The Seller **MUST NOT** remove a Product Specification from the
-Product Catalog unless the state is `obsolete`. [MEF127 R84]
+**[R88]** The Seller **MUST NOT** remove a Product Specification from the
+Product Catalog unless the state is `obsolete`. [MEF127.1 R102]
 
-**[R77]** When the Seller is removing the `obsolete` Product Specifications,
-then the Seller **MUST** remove all related Product Offerings too.
+**[R89]** When the Seller is removing the `obsolete` Product Specifications,
+then the Seller **MUST** remove all related Product Offerings referencing the
+`obsolete` Product Specification.
 
 Removing obsoleted Product Specifications is at the Seller's discretion.
 Nevertheless, it must be consulted with the Buyer for the reasons why the Buyer
 still uses their definitions for historical purposes.
 
-### 6.3.3 Use case 5: Retrieve Product Specification List
+### 6.3.3. Use case 5: Retrieve Product Specification List
 
-#### 6.3.3.1 Interaction flow
+#### 6.3.3.1. Interaction flow
 
-The flow of this use case is very simple and is described in Figure 17.
+The flow of this use case is very simple and is described in Figure 19.
 
-![Use Case 1](media/retrieveProductSpecificationList-seqFlow.png) **Figure 17.
-Use Case 5 - Retrieve Product Specification List**
+![Use Case 1](media/retrieveProductSpecificationList-seqFlow.png)
+
+**Figure 19. Use Case 5 - Retrieve Product Specification List**
 
 #### 6.3.3.2. Retrieve Product Specification List - Request
 
 **[O7]** The Buyer **MAY** retrieve the list of Product Specifications by using
 a `GET /productSpecification` operation with desired filtering criteria. The
-attributes that are available to be used are: [MEF127 O6]:
+attributes that are available to be used are: [MEF127.1 O6]:
 
 - `name`
 - `lastUpdate.gt`
@@ -2286,12 +2481,10 @@ attributes that are available to be used are: [MEF127 O6]:
 
 The Buyer may also ask for pagination with the use of the `offset` and `limit`
 parameters. The filtering and pagination attributes must be specified in URI
-query format [RFC3986](#8-references). Section
-[7.1.2.](#712-response-pagination) provides details about the implementation of
-pagination mechanism.
+query format [RFC3986](#8-references).
 
 ```url
-http://mef.com:8080/mefApi/sonata/productCatalog/v2/productSpecification?lifecycleStatus=published&limit=3&offset=8
+http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/productSpecification?lifecycleStatus=published&limit=3&offset=8
 ```
 
 The example above shows a Buyer's request to omit the first seven and get the
@@ -2303,8 +2496,8 @@ by `id`.
 
 #### 6.3.3.3. Retrieve Product Specification List - Response
 
-The snippet below presents an example of the Retrieve Product Specification
-List response:
+The snippet below presents an example of the Retrieve Product Specification List
+response:
 
 **Retrieve `ProductSpecification` List Response**
 
@@ -2322,14 +2515,14 @@ Body:
 [
   {
     "id": "productSpecification-11",
-    "href": "http://mef.com:8080/mefApi/sonata/productCatalog/v2/productSpecification/productSpecification-11",
+    "href": "http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/productSpecification/productSpecification-11",
     "name": "Ethernet Virtual Private Tree EVC",
     "lifecycleStatus": "published",
     "lastUpdate": "2023-01-19T16:30:51.626Z"
   },
   {
     "id": "productSpecification-9",
-    "href": "http://mef.com:8080/mefApi/sonata/productCatalog/v2/productSpecification/productSpecification-9",
+    "href": "http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/productSpecification/productSpecification-9",
     "name": "Ethernet Private Tree EVC EP",
     "lifecycleStatus": "published",
     "lastUpdate": "2023-01-19T16:30:51.626Z"
@@ -2337,16 +2530,16 @@ Body:
 ]
 ```
 
-**[R78]** The Seller **MUST** put the following attributes into the
-`ProductSpecification_Find` object in the response: [MEF127 R67]
+**[R90]** The Seller **MUST** put the following attributes into the
+`ProductSpecification_Find` object in the response: [MEF127.1 R78]
 
 - `id`
 - `name`
 - `lastUpdate`
 - `lifecycleStatus`
 
-**[R79]** If case no items matching the criteria are found, the Seller **MUST**
-return a valid response with an empty list. [MEF127 R69]
+**[R91]** If case no items matching the criteria are found, the Seller **MUST**
+return a valid response with an empty list. [MEF127.1 R80]
 
 The full list of attributes is available in [Section 7](#7-api-details) and in
 the API specification which is an integral part of this standard.
@@ -2354,30 +2547,30 @@ the API specification which is an integral part of this standard.
 **_Note:_** The Product Specification model for this use case is the subset of
 the model from the chapter [[6.3.1](#631-product-specification---model)].
 
-![Figure 18. Product Specification Find Model](media/specificationModel_find.png)
+![Figure 20. Product Specification Find Model](media/specificationModel_find.png)
 
-**Figure 18. Use Case 5 - Product Specification Find Model**
+**Figure 20. Use Case 5 - Product Specification Find Model**
 
-### 6.3.4 Use case 6: Retrieve Product Specification by Identifier
+### 6.3.4. Use case 6: Retrieve Product Specification by Identifier
 
-#### 6.3.4.1 Interaction flow
+#### 6.3.4.1. Interaction flow
 
-The flow of this use case is very simple and is described in Figure 19.
+The flow of this use case is very simple and is described in Figure 21.
 
 ![Use Case 6](media/retrieveProductSpecificationById-seqFlow.png)
 
-**Figure 19. Use Case 6 - Retrieve Product Specification by Identifier**
+**Figure 21. Use Case 6 - Retrieve Product Specification by Identifier**
 
 The Buyer wants to retrieve detailed information about a single Product
 Specification with a given `id`.
 
 #### 6.3.4.2. Retrieve Product Specification by Identifier - Request
 
-**[R80]** The Buyer must provide the `id` of the Product Specification that
-originates from the Seller. [MEF127 R70]
+**[R92]** The Buyer must provide the `id` of the Product Specification that
+originates from the Seller. [MEF127.1 R81]
 
 ```url
-http://127.0.0.1:8080/mefApi/sonata/productCatalog/v2/productSpecification/productSpecification-9
+http://127.1.0.0.1:8080/mefApi/sonata/productCatalog/v3/productSpecification/productSpecification-9
 ```
 
 The example above shows a Buyer's request to get the Product Specification with
@@ -2396,7 +2589,7 @@ clarity):
 ```json
 {
   "id": "productSpecification-9",
-  "href": "http://mef.com:8080/mefApi/sonata/productCatalog/v2/productSpecification/productSpecification-9",
+  "href": "http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/productSpecification/productSpecification-9",
   "name": "Ethernet Private Tree EVC EP",
   "lifecycleStatus": "published",
   "lastUpdate": "2023-01-19T16:30:51.626Z",
@@ -2427,7 +2620,7 @@ clarity):
     }
   ],
   "sourceSchema": {
-    "schemaLocation": "http://mef.com:8081/publisher/v2/schema/6346d966-0a9c-4dfe-88f2-86b0e995a8a9"
+    "schemaLocation": "http://seller.mef.com:8081/publisher/v3/schema/6346d966-0a9c-4dfe-88f2-86b0e995a8a9"
   },
   "placeRelationship": [],
   "productRelationship": [
@@ -2453,8 +2646,8 @@ clarity):
 }
 ```
 
-**[R81]** The Seller **MUST** put the following attributes into the
-`ProductSpecification` object in the response: [MEF127 R71]
+**[R93]** The Seller **MUST** put the following attributes into the
+`ProductSpecification` object in the response: [MEF127.1 R81]
 
 - `id`
 - `name`
@@ -2463,28 +2656,28 @@ clarity):
 - `lifecycleStatus`
 - `sourceSchema`
 
-**[R82]** The Seller response **MUST** include the remaining optional
-attributes in the `ProductSpecification` if they are set: [MEF127 R72]
+**[R94]** The Seller response **MUST** include the remaining optional attributes
+in the `ProductSpecification` if they are set: [MEF127.1 R82]
 
 The full list of attributes is available in [Section 7](#7-api-details) and in
 the API specification which is an integral part of this standard.
 
-**[R83]** If the `attachment` is provided, either the `attachment.url` or
+**[R95]** If the `attachment` is provided, either the `attachment.url` or
 (`attachment.content` and `attachment.mimeType`) **MUST** be specified.
 
-**[R84]** For Product Specifications, the Seller **MUST** set the respective
+**[R96]** For Product Specifications, the Seller **MUST** set the respective
 `source=seller` attribute when adding any item to one of the following lists:
-`note`, `attachment`. [MEF113 R13]
+`note`, `attachment`.
 
 The source of the notes is always the Seller (`note[?].source=seller`) because
 API doesn't allow for any modifications that could be initiated by the Buyer.
 
-**_Note:_** The Product Specification model for this use case is the full set
-of the model from the chapter [[6.3.1](#631-product-specification---model)]. To
-see the model go to the mentioned chapter.
+**_Note:_** The Product Specification model for this use case is the full set of
+the model from the chapter [[6.3.1](#631-product-specification---model)]. To see
+the model go to the mentioned chapter.
 
-**[R85]** The Seller response **MUST** include exactly one of the
-`sourceSchema` attributes:
+**[R97]** The Seller response **MUST** include exactly one of the `sourceSchema`
+attributes:
 
 - `schema`
 - `schemaLocation`
@@ -2499,7 +2692,7 @@ Notifications is supported.
 
 **[CR2]<[O1]** If the Seller supports the Register for Product Catalog
 Notification Use Case, the Seller **MUST** support all of the Notification
-Types. [MEF127 C01]
+Types. [MEF127.1 C01]
 
 ### 6.4.1. Register for Event Notifications - Request
 
@@ -2510,8 +2703,8 @@ from the API: `POST /hub`. The request model contains only 2 attributes:
   notified to,
 - `query` - optional, to provide the required types of event.
 
-**[R86]** The Buyer request **MUST** contain the following attributes [MEF127
-R74]:
+**[R98]** The Buyer request **MUST** contain the following attributes [MEF127.1
+R91]:
 
 - `callback`
 
@@ -2531,7 +2724,7 @@ must be added:
 ```json
 {
   "callback": "https://buyer.mef.com/listenerEndpoint",
-  "query": "evenType=productOfferingCreateEvent,productOfferingStatusChangeEvent"
+  "query": "evenType=productOfferingCreateEvent,productOfferingStateChangeEvent"
 }
 ```
 
@@ -2539,26 +2732,26 @@ If the Buyer wishes to subscribe to 2 different types of events, there are 2
 possible syntax variants [[TMF630](#8-references)]:
 
 ```
-eventType=productOfferingCreateEvent,productOfferingStatusChangeEvent
+eventType=productOfferingCreateEvent,productOfferingStateChangeEvent
 ```
 
 or
 
 ```
-eventType=productOfferingCreateEvent&eventType=productOfferingStatusChangeEvent
+eventType=productOfferingCreateEvent&eventType=productOfferingStateChangeEvent
 ```
 
-The `query` formatting complies with RCF3986 [RFC3986](#8-references).
-According to it, every attribute defined in the Event model (from notification
-API) can be used in the `query`. However, this standard requires only
-`eventType` attribute to be supported.
+The `query` formatting complies with RCF3986 [RFC3986](#8-references). According
+to it, every attribute defined in the Event model (from notification API) can be
+used in the `query`. However, this standard requires only `eventType` attribute
+to be supported.
 
-**[R87]** `eventType` is the only attribute that the Seller **MUST** support in
+**[R99]** `eventType` is the only attribute that the Seller **MUST** support in
 the query.
 
-**[R88]** If the Seller does not support notifications, they **MUST** return an
+**[R100]** If the Seller does not support notifications, they **MUST** return an
 error message to the Buyer indicating that notifications are not supported.
-[MEF127 R75]
+[MEF127.1 R93]
 
 ### 6.4.2. Register for Event Notifications - Response
 
@@ -2569,14 +2762,14 @@ subscription to the message that must be further used for unsubscribing.
 {
   "callback": "https://buyer.mef.com/listenerEndpoint",
   "id": "1659bc83-d334-4de4-aa60-0818e4060ae1",
-  "query": "eventType=productOfferingCreateEvent&eventType=productOfferingStatusChangeEvent"
+  "query": "eventType=productOfferingCreateEvent&eventType=productOfferingStateChangeEvent"
 }
 ```
 
 Example of a final address that the Notifications will be sent to (for Sonata,
 `productOfferingCreateEvent`):
 
-- `https://buyer.mef.com/listenerEndpoint/mefApi/sonata/productCatalogNotifications/v2/listener/productOfferingCreateEvent`
+- `https://buyer.mef.com/listenerEndpoint/mefApi/sonata/productCatalogNotifications/v3/listener/productOfferingCreateEvent`
 
 ### 6.4.3. Unregister from Event Notifications - Request
 
@@ -2584,26 +2777,26 @@ To stop receiving events, the Buyer has to use the `unregisterListener`
 operation from the `DELETE /hub/{id}` endpoint. The `id` is the identifier
 received from the Seller during the listener registration.
 
-**[R89]** The Buyer must provide the `id` of the registered `EventSubscription`
-that originates from the Seller. [MEF127 R74]
+**[R101]** The Buyer must provide the `id` of the registered `EventSubscription`
+that originates from the Seller. [MEF127.1 R91]
 
 The example below shows an exemplary unregister call sent by the Buyer to the
 Seller:
 
 ```url
-http://mef.com:8080/mefApi/sonata/productCatalog/v2/hub/1659bc83-d334-4de4-aa60-0818e4060ae1
+http://seller.mef.com:8080/mefApi/sonata/productCatalog/v3/hub/1659bc83-d334-4de4-aa60-0818e4060ae1
 ```
 
 ### 6.4.4. Unregister for Event Notifications - Response
 
-**[R90]** In the successful scenario the Seller **MUST** respond with an empty
-body and HTTP code `204`. [MEF127 R75]
+**[R102]** In the successful scenario the Seller **MUST** respond with an empty
+body and HTTP code `204`. [MEF127.1 R92]
 
 The Buyer can unregister only the whole `EventSubscription`, regardless of the
-provided `query`. In the case when the Buyer e.g. resigns from specific types
-of events (or changes the callback address), the previous `EventSubscription`
-that includes undesired notification types that need to be removed and replaced
-by the new `EventSubscription` with adjusted `query` attribute.
+provided `query`. In the case when the Buyer e.g. resigns from specific types of
+events (or changes the callback address), the previous `EventSubscription` that
+includes undesired notification types that need to be removed and replaced by
+the new `EventSubscription` with adjusted `query` attribute.
 
 **_Note:_** The above note concludes that the Buyer cannot update the existing
 `EventSubscription`. Every kind of update is done by subscription replacement.
@@ -2613,29 +2806,29 @@ by the new `EventSubscription` with adjusted `query` attribute.
 Notifications are used to asynchronously inform the Buyer about the respective
 objects and attributes changes.
 
-**[R91]** The Seller **MUST** send Notifications for `eventType`s to Buyers who
-have registered for them. [MEF127 R77], [MEF127 C02], [MEF127 C03], [MEF127
-C04]
+**[R103]** The Seller **MUST** send Notifications for `eventType`s to Buyers who
+have registered for them. [MEF127.1 R94], [MEF127.1 C02], [MEF127.1 C03],
+[MEF127.1 C04], [MEF127.1 R97]
 
-**[R92]** The Seller **MUST NOT** send Notifications for `eventType`s to Buyers
+**[R104]** The Seller **MUST NOT** send Notifications for `eventType`s to Buyers
 who have not registered for them.
 
 **[O8]** If the Seller fails to receive an acknowledgment from the Buyer
-repeatedly then Seller **MAY** mark related `EventSubscription` as corrupted
-and stop sending notifications. [MEF127 O7]
+repeatedly then Seller **MAY** mark related `EventSubscription` as corrupted and
+stop sending notifications. [MEF127.1 O7]
 
 **[CR3]<[O8]** If the Seller marked related `EventSubscription` as corrupted
 then unsent notifications **MUST** be stored as dead letters for resending
 purposes.
 
 It's at the Buyer and Seller's discretion how to inform the Buyer that the
-listener is out of service and how to uncheck corrupted `EventSubscription`
-when the listener is claimed.
+listener is out of service and how to uncheck corrupted `EventSubscription` when
+the listener is claimed.
 
-Figure 20 shows all entities involved in the Notification use cases.
+Figure 22 shows all entities involved in the Notification use cases.
 
 ![Product Catalog Notification Data Model](media/notificationModel.png)
-**Figure 20. Use Case 8. Notification Data Model**
+**Figure 22. Use Case 8. Notification Data Model**
 
 The following snippet presents an example of `productOfferingCreateEvent`
 
@@ -2658,29 +2851,28 @@ implies that each kind of event that is sent by the Seller is triggered by the
 Seller activities. This is because all the endpoints of the Product Catalog API
 published to the Buyer are used only for query purposes.
 
-The table below presents the mapping between the API Notification types' names
-and the ones in MEF 127 together with event descriptions. The inconsistencies
-are caused by the API naming convention and using the TMF's
+Table 11 presents the mapping between the API Notification types' names and the
+ones in MEF 127.1 together with event descriptions. The inconsistencies are
+caused by the API naming convention and using the TMF's
 [[TMF620](#8-references)] event types as the base for this API.
 
-| API name                                        | MEF 127 name                       | Description                                                                            |
+| API name                                        | MEF 127.1 name                     | Description                                                                            |
 | ----------------------------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------- |
 | `categoryCreateEvent`                           | PRODUCT_CATEGORY_CREATE            | The Seller has published a new Product Category to the Buyers.                         |
 | `categoryAttributeValueChangeEvent`             | PRODUCT_CATEGORY_UPDATE            | The Seller settable attributes for a Product Category were updated by the Seller.      |
-| `categoryStatusChangeEvent`                     | PRODUCT_CATEGORY_STATE_CHANGE      | A Product Category `status` was changed by the Seller.                                 |
 | `productOfferingCreateEvent`                    | PRODUCT_OFFERING_CREATE            | The Seller has published a new Product Offering to the Buyers.                         |
 | `productOfferingAttributeValueChangeEvent`      | PRODUCT_OFFERING_UPDATE            | The Seller settable attributes for a Product Offering were updated by the Seller.      |
-| `productOfferingStatusChangeEvent`              | PRODUCT_OFFERING_STATE_CHANGE      | A Product Offering `status` was changed by the Seller.                                 |
+| `productOfferingStateChangeEvent`               | PRODUCT_OFFERING_STATE_CHANGE      | A Product Offering `status` was changed by the Seller.                                 |
 | `productSpecificationCreateEvent`               | PRODUCT_SPECIFICATION_CREATE       | The Seller has published a new Product Specification to the Buyers.                    |
 | `productSpecificationAttributeValueChangeEvent` | PRODUCT_SPECIFICATION_UPDATE       | The Seller settable attributes for a Product Specification were updated by the Seller. |
 | `productSpecificationStatusChangeEvent`         | PRODUCT_SPECIFICATION_STATE_CHANGE | A Product Specification `status` was changed by the Seller.                            |
 
-**Table 10. Notification types mapping**
+**Table 11. Notification types mapping**
 
-**[R93]** The Seller **MUST** send Product Catalog Notifications for `inTest`
+**[R105]** The Seller **MUST** send Product Catalog Notifications for `inTest`
 or `rejected` states only to Buyers that have been included in beta testing or
 during the pilot of a Product based on prior agreement between the Buyer and
-Seller. [MEF127 R79]
+Seller. [MEF127.1 R96]
 
 <div class="page"/>
 
@@ -2692,21 +2884,22 @@ Seller. [MEF127 R79]
 
 Erroneous situations are indicated by appropriate HTTP responses. An error
 response is indicated by HTTP status 4xx (for client errors) or 5xx (for server
-errors) and appropriate response payload. The Product Order API uses the error
-responses as depicted and described below.
+errors) and appropriate response payload. The POQ API uses the error responses
+depicted and described below.
 
-Implementations can use HTTP error codes not specified in this standard in
-compliance with rules defined in RFC 7231 [[RFC7231](#8-references)]. In such a
-case, the error message body structure might be aligned with the `Error`.
+Implementations can use http error codes not specified in this standard in
+compliance with rules defined in RFC 7231 [[RFC7231](#8-references)]. In such
+case the error message body structure might be aligned with the `Error`.
 
-![Error response data model](media/error_entities.png) **Figure 21. Data model
-types to represent an erroneous response**
+![Error response data model](media/error_entities.png)
+
+**Figure 24. Data model types to represent an erroneous response**
 
 #### 7.1.1.1. Type Error
 
-**Description:** Standard Class used to describe API response error Not
-intended to be used directly. The `code` in the HTTP header is used as a
-discriminator for the type of error returned in runtime.
+**Description:** Standard Class used to describe API response error Not intended
+to be used directly. The `code` in the HTTP header is used as a discriminator
+for the type of error returned in runtime.
 
 <table id="T_Error">
     <thead style="font-weight:bold;">
@@ -2755,11 +2948,12 @@ Inherits from:
             <td>code*</td>
             <td><a href="#T_Error400Code">Error400Code</a></td>
             <td>One of the following error codes:
-
 - missingQueryParameter: The URI is missing a required query-string parameter
 - missingQueryValue: The URI is missing a required query-string parameter value
 - invalidQuery: The query section of the URI is invalid.
-- invalidBody: The request has an invalid body</td> </tr> </tbody>
+- invalidBody: The request has an invalid body</td>
+        </tr>
+    </tbody>
 </table>
 
 #### 7.1.1.3. `enum` Error400Code
@@ -2773,8 +2967,7 @@ Inherits from:
 
 #### 7.1.1.4. Type Error401
 
-**Description:** Unauthorized.
-(https://tools.ietf.org/html/rfc7235#section-3.1)
+**Description:** Unauthorized. (https://tools.ietf.org/html/rfc7235#section-3.1)
 
 Inherits from:
 
@@ -2793,10 +2986,10 @@ Inherits from:
             <td>code*</td>
             <td><a href="#T_Error401Code">Error401Code</a></td>
             <td>One of the following error codes:
-
 - missingCredentials: No credentials provided.
-- invalidCredentials: Provided credentials are invalid or expired</td> </tr>
-</tbody>
+- invalidCredentials: Provided credentials are invalid or expired</td>
+        </tr>
+    </tbody>
 </table>
 
 #### 7.1.1.5. `enum` Error401Code
@@ -2831,10 +3024,11 @@ Inherits from:
             <td>This code indicates that the server understood
 the request but refuses to authorize it because
 of one of the following error codes:
-
 - accessDenied: Access denied
 - forbiddenRequester: Forbidden requester
-- tooManyUsers: Too many users</td> </tr> </tbody>
+- tooManyUsers: Too many users</td>
+        </tr>
+    </tbody>
 </table>
 
 #### 7.1.1.7. `enum` Error403Code
@@ -2873,7 +3067,72 @@ Inherits from:
     </tbody>
 </table>
 
-#### 7.1.1.9. Type Error500
+#### 7.1.1.9. Type Error422
+
+The response for HTTP status `422` is a list of elements that are structured
+using the `Error422` data type. Each list item describes a business validation
+problem. This type introduces the `propertyPath` attribute which points to the
+erroneous property of the request, so that the Buyer may fix it easier. It is
+highly recommended that this property should be used, yet remains optional
+because it might be hard to implement.
+
+**Description:** Unprocessable entity due to a business validation problem.
+(https://tools.ietf.org/html/rfc4918#section-11.2)
+
+Inherits from:
+
+- <a href="#T_Error">Error</a>
+
+<table id="T_Error422">
+    <thead style="font-weight:bold;">
+        <tr>
+            <td>Name</td>
+            <td>Type</td>
+            <td>Description</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>code*</td>
+            <td><a href="#T_Error422Code">Error422Code</a></td>
+            <td>One of the following error codes:
+  - missingProperty: The property the Seller has expected is not present in the payload
+  - invalidValue: The property has an incorrect value
+  - invalidFormat: The property value does not comply with the expected value format
+  - referenceNotFound: The object referenced by the property cannot be identified in the Seller system
+  - unexpectedProperty: Additional property, not expected by the Seller has been provided
+  - tooManyRecords: the number of records to be provided in the response exceeds the Seller&#x27;s threshold.
+  - otherIssue: Other problem was identified (detailed information provided in a reason)
+</td>
+        </tr><tr>
+            <td>propertyPath</td>
+            <td>string</td>
+            <td>A pointer to a particular property of the payload that caused the validation issue. It is highly recommended that this property should be used.
+Defined using JavaScript Object Notation (JSON) Pointer (https://tools.ietf.org/html/rfc6901).
+</td>
+        </tr>
+    </tbody>
+</table>
+
+#### 7.1.1.10. `enum` Error422Code
+
+**Description:** One of the following error codes:
+
+- missingProperty: The property the Seller has expected is not present in the
+  payload
+- invalidValue: The property has an incorrect value
+- invalidFormat: The property value does not comply with the expected value
+  format
+- referenceNotFound: The object referenced by the property cannot be identified
+  in the Seller system
+- unexpectedProperty: Additional property, not expected by the Seller has been
+  provided
+- tooManyRecords: the number of records to be provided in the response exceeds
+  the Seller's threshold.
+- otherIssue: Other problem was identified (detailed information provided in a
+  reason)
+
+#### 7.1.1.11. Type Error500
 
 **Description:** Internal Server Error.
 (https://tools.ietf.org/html/rfc7231#section-6.6.1)
@@ -2895,12 +3154,12 @@ Inherits from:
             <td>code*</td>
             <td>string</td>
             <td>The following error code:
-
-- internalError: Internal server error - the server encountered an unexpected
-condition that prevented it from fulfilling the request.</td> </tr> </tbody>
+- internalError: Internal server error - the server encountered an unexpected condition that prevented it from fulfilling the request.</td>
+        </tr>
+    </tbody>
 </table>
 
-#### 7.1.1.10. Type Error501
+#### 7.1.1.12. Type Error501
 
 **Description:** Not Implemented. Used in case Seller is not supporting an
 optional operation (https://tools.ietf.org/html/rfc7231#section-6.6.2)
@@ -2922,39 +3181,20 @@ Inherits from:
             <td>code*</td>
             <td>string</td>
             <td>The following error code:
-            
 - notImplemented: Method not supported by the server</td>
         </tr>
     </tbody>
 </table>
 
-### 7.1.2. Response pagination
-
-A response to retrieve a list of results (e.g. `GET /productOffering`) can be
-paginated. The Buyer can specify the following query attributes related to
-pagination:
-
-- `limit` - number of expected list items
-- `offset` - offset of the first element in the result list
-
-The Seller returns a list of elements that comply with the requested `limit`.
-If the requested `limit` is higher than the supported list size the smaller
-list result is returned. In that case, the size of the result is returned in
-the header attribute `X-Result-Count`. The Seller can indicate that there are
-additional results available using:
-
-- `X-Total-Count` header attribute with the total number of available results
-- `X-Pagination-Throttled` header set to `true`
-
 ## 7.2. API Data model
 
-Figure 22 presents the whole Product Catalog data model. The data types,
-requirements related to them and mapping to MEF 127 specification are discussed
-later in this section.
+Figure 24 presents the whole Product Catalog data model. The data types,
+requirements related to them and mapping to MEF 127.1 specification are
+discussed later in this section.
 
 ![Product Catalog Data Model](media/completeCatalogModel.png)
 
-**Figure 22. Product Catalog Data Model**
+**Figure 24. Product Catalog Data Model**
 
 ### 7.2.1. Product Category
 
@@ -2971,7 +3211,7 @@ logical containers defined by the Seller. A Product Category may contain other
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -2986,7 +3226,7 @@ logical containers defined by the Seller. A Product Category may contain other
             <td>uri<br/><span style="font-size:10px;font-style:italic">format = uri</span></td>
             <td>O</td>
             <td>Reference of the Product Category</td>
-            <td>Not represented in MEF 127</td>
+            <td>Not represented in MEF 127.1</td>
         </tr><tr>
         <td>name</td>
             <td>string</td>
@@ -3001,7 +3241,7 @@ logical containers defined by the Seller. A Product Category may contain other
             <td>Product Category Description</td>
         </tr><tr>
         <td>lastUpdate</td>
-            <td>string<br/><span style="font-size:10px;font-style:italic">format = date-time</span></td>
+            <td>date-time<br/><span style="font-size:10px;font-style:italic">format = date-time</span></td>
             <td>M</td>
             <td>The date and time the Product Category was created or most recently updated.</td>
             <td>Product Category Last Update</td>
@@ -3015,7 +3255,7 @@ logical containers defined by the Seller. A Product Category may contain other
         <td>subCategory</td>
             <td><a href="#T_ProductCategoryRef">ProductCategoryRef</a>[]</td>
             <td>O</td>
-            <td>A list of references to Product Category, to which this Product Category is a parent of.</td>
+            <td>A list of references to the Product Category, to which this Product Category is a parent of.</td>
             <td>Sub Categories</td>
         </tr><tr>
         <td>productOffering</td>
@@ -3030,7 +3270,7 @@ logical containers defined by the Seller. A Product Category may contain other
 #### 7.2.1.2. Type ProductOfferingRef
 
 **Description:** ProductOffering reference. A product offering represents
-entities that are orderable from the provider of the catalog.
+entities that are launched from the provider of the catalog.
 
 <table id="T_ProductOfferingRef" style="width:100%">
     <thead style="font-weight:bold">
@@ -3039,7 +3279,7 @@ entities that are orderable from the provider of the catalog.
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -3048,22 +3288,22 @@ entities that are orderable from the provider of the catalog.
             <td>string</td>
             <td>M</td>
             <td>Unique (within the Seller domain) identifier for the Product Offering.</td>
-            <td>Not represented in MEF 127</td>
+            <td>Not represented in MEF 127.1</td>
         </tr><tr>
         <td>href</td>
             <td>uri<br/><span style="font-size:10px;font-style:italic">format = uri</span></td>
             <td>O</td>
             <td>Hyperlink to access the Product Offering</td>
-            <td>Not represented in MEF 127</td>
+            <td>Not represented in MEF 127.1</td>
         </tr>
     </tbody>
 </table>
 
-### 7.2.2. Product Offering
+### 7.2.2 Product Offering
 
 #### 7.2.2.1. Type ProductOffering_Common
 
-**Description:** The Product Offering represents the Products orderable from a
+**Description:** The Product Offering represents the Products launched from a
 Seller's Product Catalog.
 
 <table id="T_ProductOffering_Common" style="width:100%">
@@ -3073,7 +3313,7 @@ Seller's Product Catalog.
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -3088,7 +3328,7 @@ Seller's Product Catalog.
             <td>uri<br/><span style="font-size:10px;font-style:italic">format = uri</span></td>
             <td>O</td>
             <td>Hyperlink reference to the Product Offering</td>
-            <td>Not represented in MEF 127</td>
+            <td>Not represented in MEF 127.1</td>
         </tr><tr>
         <td>name</td>
             <td>string</td>
@@ -3103,7 +3343,7 @@ Seller's Product Catalog.
             <td>Product Offering Description</td>
         </tr><tr>
         <td>lastUpdate</td>
-            <td>string<br/><span style="font-size:10px;font-style:italic">format = date-time</span></td>
+            <td>date-time<br/><span style="font-size:10px;font-style:italic">format = date-time</span></td>
             <td>O</td>
             <td>The date and time the Product Offering was created or most recently updated.</td>
             <td>Product Offering Last Update</td>
@@ -3120,10 +3360,22 @@ Seller's Product Catalog.
             <td>The name of the Seller&#x27;s standard offer arrangement (such as a framework agreement). The name is unique within the Seller domain. This should be the name of the Seller&#x27;s standard offer arrangement or framework agreement for this category of Product Offering (e.g., Commercial, Federal or Regulated) as used by the Seller in their official communication of the Product.</td>
             <td>Standard Framework Agreement</td>
         </tr><tr>
+        <td>isBundle</td>
+            <td>boolean</td>
+            <td>O</td>
+            <td>Determines whether a productOffering represents a single productOffering (false), or a bundle of productOfferings (true).</td>
+            <td></td>
+        </tr><tr>
+        <td>isSellable</td>
+            <td>boolean</td>
+            <td>O</td>
+            <td>A flag indicating if this product offer can be ordered or not. If this flag is false it indicates that the offer can only be sold within a bundle.</td>
+            <td></td>
+        </tr><tr>
         <td>channel</td>
             <td>string[]</td>
             <td>O</td>
-            <td>A list of names defined by the Seller which identify the different methods by which the Product Offering is made available to the Buyer for ordering. The different Sales Channels should be specified in the Standard Frame-work Agreement or provided during the onboarding process. For example: Reseller, Distribution, Direct Sales. Note: If Sales Chan-nels is an empty list, it implies that the Product Offering is available in all Seller supported Sales Channels.
+            <td>A list of names defined by the Seller which identify the different methods by which the Product Offering is made available to the Buyer for ordering. The different Sales Channels should be specified in the Standard Framework Agreement or provided during the onboarding process. For example: Reseller, Distribution, Direct Sales. Note: If Sales Channels is an empty list, it implies that the Product Offering is available in all Seller-supported Sales Channels.
 </td>
             <td>Sales Channels</td>
         </tr><tr>
@@ -3142,9 +3394,7 @@ supported market segments
         <td>region</td>
             <td><a href="#T_Region">Region</a>[]</td>
             <td>O</td>
-            <td>Areas where the products are offered by the Seller to potential Buyers.
-Note: If region is an empty list, it implies that the Product Offering
-is available in all Seller supported Regions.
+            <td>Areas where the products are offered by the Seller to potential Buyers. Note: If region is an empty list, it implies that the Product Offering is available in all Seller-supported Regions.
 </td>
             <td>Regions</td>
         </tr><tr>
@@ -3165,9 +3415,8 @@ is available in all Seller supported Regions.
 
 #### 7.2.2.2. Type ProductOffering
 
-**Description:** Represents entities that are orderable from the provider of
-the catalog, this resource included all available information of Product
-Offering
+**Description:** Represents entities that are launched from the provider of the
+catalog, this resource included all available information of Product Offering
 
 Inherits from:
 
@@ -3180,21 +3429,21 @@ Inherits from:
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
         <tr>
         <td>statusTransition</td>
             <td><a href="#T_ProductOfferingLifecycleStatusTransition">ProductOfferingLifecycleStatusTransition</a>[]</td>
-            <td>O</td>
-            <td>The list of Product Offering Status transitions, including the date they are expected to occur or have occured</td>
+            <td>M</td>
+            <td>The list of Product Offering Status transitions, including the date they are expected to occur or have occurred</td>
             <td>Product Offering State Transitions</td>
         </tr><tr>
         <td>statusReason</td>
             <td>string</td>
             <td>O</td>
-            <td>Provides complementary information on the reason why the &#x60;lifecycleStatus&#x60;&#x60; is set to a particular value.</td>
+            <td>Provides complementary information on the reason why the &#x60;lifecycleStatus&#x60; is set to a particular value.</td>
             <td>Product Offering State Reason</td>
         </tr><tr>
         <td>attachment</td>
@@ -3210,7 +3459,7 @@ Inherits from:
             <td>Related Contacts</td>
         </tr><tr>
         <td>productOfferingTerm</td>
-            <td><a href="#T_MEFItemTerm">MEFItemTerm</a>[]</td>
+            <td><a href="#T_ProductOfferingTerm">ProductOfferingTerm</a>[]</td>
             <td>O</td>
             <td>Commitment durations under which a Product Offering is available to Buyers. For instance, a Product Offering can be made available with multiple commitment periods of 1, 2 or 3 year terms.</td>
             <td>Product Offering Terms</td>
@@ -3218,8 +3467,14 @@ Inherits from:
         <td>milestone</td>
             <td><a href="#T_ProductMilestoneDefinition">ProductMilestoneDefinition</a>[]</td>
             <td>O</td>
-            <td>Allows constraining the milestones for the Product Offering.</td>
+            <td>Allows constraining the Product Specification Milestones for the Product Offering. This list must be a subset of the Product Specification Milestones and if defined, it will override the entire set of Product Specification Milestones</td>
             <td>Product Offering Milestones</td>
+        </tr><tr>
+        <td>bundledProductOffering</td>
+            <td><a href="#T_ProductOfferingBundleRelationship">ProductOfferingBundleRelationship</a>[]</td>
+            <td>O</td>
+            <td>Defines the set of Product Offerings that comprise the  Product Offering Bundle, along with how they are related. This list may only be defined if &#x27;isBundle&#x27; attribute is TRUE.</td>
+            <td></td>
         </tr><tr>
         <td>note</td>
             <td><a href="#T_Note">Note</a>[]</td>
@@ -3228,11 +3483,11 @@ Inherits from:
 </td>
             <td>Product Offering Notes</td>
         </tr><tr>
-        <td>productOfferingSpecification</td>
+        <td>productOfferingSpecificationSchema</td>
             <td><a href="#T_SchemaRefOrValue">SchemaRefOrValue</a></td>
             <td>O</td>
-            <td>A reference to or value of a subschema of the Source Product Specification that restricts the possible values of the Product-Specific Attributes, relationships, and milestones to define the Product Offering.</td>
-            <td>Product Offering Specification</td>
+            <td>A reference to or value of a subschema of the Source Product Specification Schema that restricts the possible values of the Product-Specific Attributes, relationships, and milestones to define the Product Offering.</td>
+            <td></td>
         </tr><tr>
         <td>productOfferingContextualInfo</td>
             <td><a href="#T_ProductOfferingContextualInfo">ProductOfferingContextualInfo</a>[]</td>
@@ -3240,25 +3495,25 @@ Inherits from:
             <td>Defines additional constraints on the Product Offering Specification for the Product-Specific Attributes of a Product Offering for each Business Function and Product Action.</td>
             <td>Product Offering Contextual Information</td>
         </tr><tr>
-        <td>productRelationship</td>
+        <td>productRelationshipConstraint</td>
             <td><a href="#T_ProductRelationshipConstraint">ProductRelationshipConstraint</a>[]</td>
             <td>O</td>
-            <td>Allows constraining the relationships between related Product Specifications. As an example, an Access E-Line OVC references Operator UNI and ENNI Product Offerings. Note: this effectively constrains the relationship between related Product Offerings (since the relationship is inherited from the Product Specification).</td>
-            <td>Product Offering Product Relationships</td>
+            <td>Allows constraining the relationships between related Product Specifications. As an example, an Access E-Line OVC references Operator UNI and ENNI Product Offerings. Note: this  constrains the relationship between related Product Offerings (since the relationship is inherited from the Product Specification).</td>
+            <td></td>
         </tr><tr>
-        <td>placeRelationship</td>
+        <td>placeRelationshipConstraint</td>
             <td><a href="#T_PlaceRelationshipConstraint">PlaceRelationshipConstraint</a>[]</td>
             <td>O</td>
-            <td>Allows constraining the Place relationships for the Product Offering.</td>
-            <td>Product Offering Place Relationships</td>
+            <td>Allows constraining the Place relationships for the Product Offering. Only the Place relationships that need to be constraint should be included.</td>
+            <td></td>
         </tr>
     </tbody>
 </table>
 
 #### 7.2.2.3. Type ProductOffering_Find
 
-**Description:** Represents entities that are orderable from the provider of
-the catalog, this resource includes pricing information.
+**Description:** Represents entities that are launched from the provider of the
+catalog, this resource includes pricing information.
 
 Inherits from:
 
@@ -3266,23 +3521,21 @@ Inherits from:
 
 #### 7.2.2.4. `enum` ProductOfferingLifecycleStatusType
 
-**Description:**
-
-| Name         | MEF 127 Name   | Description                                                                                                                                                                                                                                  |
-| ------------ | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| announced    | ANNOUNCED      | A Product Offering has been defined in the Product Catalog for marketing purposes, but is not yet available for ordering.                                                                                                                    |
-| endOfSale    | END_OF_SALE    | The Product Offering or Product Specification cannot be Installed by any new or existing Buyers, but Buyers may still have Products in use and may modify or delete it, and receive support.                                                 |
-| endOfSupport | END_OF_SUPPORT | When a Product Offering or Product Specification in the `endOfSale` state is no longer supported, the status transitions to `endOfSupport`. Any existing products can no longer be modified, with the only Order action allowed is `delete`. |
-| inTest       | PILOT_BETA     | When a Product Offering or Product Specification starts Pilot/Beta testing, it starts in the `pilotBeta` state .                                                                                                                             |
-| obsolete     | OBSOLETE       | After a Product Offering or Product Specification that is no longer available it transitions to `obsolete` and may be removed at the Seller's discretion from the Product Catalog. This is a final state.                                    |
-| onHold       | ON_HOLD        | A Product Offering or Product Specification that has been `orderable`, but is currently not available for Buyers due to supply constraints, product recall or other issues preventing it to be offered.                                      |
-| orderable    | ORDERABLE      | A new Product Offering or Product Specification is in the `orderable` state when it is available for ordering by Buyers.                                                                                                                     |
-| rejected     | REJECTED       | When PILOT_BETA testing fails the Product Offering or Product Specification transitions to the `rejected` state. This is a final state.                                                                                                      |
+| **Description:** | Name           | MEF 127 Name                                                                                                                                                                                                                                 | Description |
+| ---------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| active           | ANNOUNCED      | A Product Offering has been defined in the Product Catalog for marketing purposes, but is not yet available for ordering.                                                                                                                    |
+| endOfSale        | END_OF_SALE    | The Product Offering or Product Specification cannot be Installed by any new or existing Buyers, but Buyers may still have Products in use and may modify or delete it, and receive support.                                                 |
+| endOfSupport     | END_OF_SUPPORT | When a Product Offering or Product Specification in the `endOfSale` state is no longer supported, the status transitions to `endOfSupport`. Any existing products can no longer be modified, with the only Order action allowed is `delete`. |
+| inTest           | PILOT_BETA     | When a Product Offering or Product Specification starts Pilot/Beta testing, it starts in the `pilotBeta` state .                                                                                                                             |
+| obsolete         | OBSOLETE       | After a Product Offering or Product Specification that is no longer available it transitions to `obsolete` and may be removed at the Seller's discretion from the Product Catalog. This is a final state.                                    |
+| onHold           | ON_HOLD        | A Product Offering or Product Specification that has been `launched`, but is currently not available for Buyers due to supply constraints, product recall, or other issues preventing it from being offered.                                 |
+| launched         | ORDERABLE      | A new Product Offering or Product Specification is in the `launched` state when it is available for ordering by Buyers.                                                                                                                      |
+| rejected         | REJECTED       | When PILOT_BETA testing fails the Product Offering or Product Specification transitions to the `rejected` state. This is a final state.                                                                                                      |
 
 #### 7.2.2.5. Type ProductOfferingLifecycleStatusTransition
 
 **Description:** The Date and Time that the next Product Offering Status
-transition is planned to occur, or have accured.
+transition is planned to occur, or have occurred.
 
 <table id="T_ProductOfferingLifecycleStatusTransition" style="width:100%">
     <thead style="font-weight:bold">
@@ -3291,22 +3544,28 @@ transition is planned to occur, or have accured.
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
         <tr>
         <td>transitionDate</td>
-            <td>string<br/><span style="font-size:10px;font-style:italic">format = date-time</span></td>
+            <td>date-time<br/><span style="font-size:10px;font-style:italic">format = date-time</span></td>
             <td>M</td>
             <td>The Date and Time that the Transition Product Offering State is planned to occur or has occurred.</td>
             <td>Transition Date</td>
         </tr><tr>
-        <td>transitionLifecycleStatus</td>
+        <td>lifecycleStatus</td>
             <td><a href="#T_ProductOfferingLifecycleStatusType">ProductOfferingLifecycleStatusType</a></td>
             <td>M</td>
             <td>The status of the Product Offering on the Transition Date.</td>
-            <td>Transition Product Offering State</td>
+            <td></td>
+        </tr><tr>
+        <td>statusReason</td>
+            <td>string</td>
+            <td>O</td>
+            <td>Provides complementary information on the reason why the Product Offering State is planned to occur or was set to a particular value. For example, a description of &quot;Supply Constraint&quot; as why a Product Offering is on ON_HOLD.</td>
+            <td></td>
         </tr>
     </tbody>
 </table>
@@ -3322,7 +3581,7 @@ transition is planned to occur, or have accured.
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -3331,13 +3590,13 @@ transition is planned to occur, or have accured.
             <td>string</td>
             <td>M</td>
             <td>Unique (within the Seller domain) identifier for the Product Specification.</td>
-            <td>Not represented in MEF 127</td>
+            <td>Not represented in MEF 127.1</td>
         </tr><tr>
         <td>href</td>
             <td>uri<br/><span style="font-size:10px;font-style:italic">format = uri</span></td>
             <td>O</td>
             <td>Hyperlink to access the Product Specification</td>
-            <td>Not represented in MEF 127</td>
+            <td>Not represented in MEF 127.1</td>
         </tr>
     </tbody>
 </table>
@@ -3353,7 +3612,7 @@ transition is planned to occur, or have accured.
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -3391,20 +3650,52 @@ transition is planned to occur, or have accured.
     </tbody>
 </table>
 
+#### 7.2.2.7. Type ProductOfferingTerm
+
+**Description:** The commitment duration under which a Product Offering is
+available to Buyers. A Product Offering can have multiple Product Offering
+Terms, each with a different commitment period, for instance with a 1, 2 or 3
+year duration.
+
+Inherits from:
+
+- <a href="#T_MEFItemTerm">MEFItemTerm</a>
+
+<table id="T_ProductOfferingTerm" style="width:100%">
+    <thead style="font-weight:bold">
+        <tr>
+            <td>Name</td>
+            <td style="width:15%">Type</td>
+            <td>M/O</td>
+            <td>Description</td>
+            <td>MEF 127.1</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>productOfferingPrice</td>
+            <td><a href="#T_ProductOfferingPrice">ProductOfferingPrice</a>[]</td>
+            <td>O</td>
+            <td>A list of prices for which a Product Offering is available for the Term Duration.</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
 #### 7.2.2.8. `enum` MEFEndOfTermAction
 
 **Description:** The action the Seller will take once the term expires. Roll
 indicates that the Product's contract will continue on a rolling basis for the
 duration of the Roll Interval at the end of the Term.  
 Auto-disconnect indicates that the Product will be disconnected at the end of
-the Term. Auto-renew indicates that the Product's contract will be
-automatically renewed for the Term Duration at the end of the Term.
+the Term. Auto-renew indicates that the Product's contract will be automatically
+renewed for the Term Duration at the end of the Term.
 
 <table id="T_MEFEndOfTermAction">
     <thead style="font-weight:bold;">
         <tr>
             <td>Value</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -3424,13 +3715,13 @@ automatically renewed for the Term Duration at the end of the Term.
 #### 7.2.2.9. Type ProductOfferingContextualInfo
 
 **Description:** Used for the cases when the schema must be differentiated per
-the defined Context, where Context is built as pair - a Business Function (e.g.
-Quote) and Product Action (e.g. add). Those product schemas are created by
+the defined Context, where Context is built as a pair - a Business Function
+(e.g. Quote) and Product Action (e.g. add). Those product schemas are created by
 applying the constraints to Product Schemas defined in the Product
 Specification. If provided, Contextual info MUST cover every possible
 combination of Product Actions and Business Functions (if there are no
-differences per function of per action then use wildcard - 'all' - and reuse
-the value of Product Offering Specification attribute).
+differences per function or per action then use wildcard - 'all' - and reuse the
+value of Product Offering Specification attribute).
 
 <table id="T_ProductOfferingContextualInfo" style="width:100%">
     <thead style="font-weight:bold">
@@ -3439,7 +3730,7 @@ the value of Product Offering Specification attribute).
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -3454,15 +3745,15 @@ the value of Product Offering Specification attribute).
             <td><a href="#T_Context">Context</a></td>
             <td>M</td>
             <td>Context that is defined as a two-dimensional vector of Business Function and Product Action.</td>
-            <td>Not represented in MEF 127</td>
+            <td>Not represented in MEF 127.1</td>
         </tr>
     </tbody>
 </table>
 
 #### 7.2.2.10. Type Context
 
-**Description:** Context that is defined as a two-dimensional vector of
-Business Function and Product Action.
+**Description:** Context that is defined as a two-dimensional vector of Business
+Function and Product Action.
 
 <table id="T_Context" style="width:100%">
     <thead style="font-weight:bold">
@@ -3471,7 +3762,7 @@ Business Function and Product Action.
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -3479,13 +3770,13 @@ Business Function and Product Action.
         <td>productAction</td>
             <td><a href="#T_ProductActionMask">ProductActionMask</a></td>
             <td>O</td>
-            <td>Defines Product Action to which the given context applies.</td>
+            <td>Defines Product Action to which the given context applies. &#x60;all&#x60; Applies for all supported Product Action for a given Product Offering. This attribute does not apply for &#x60;businessFunction&#x3D;productInventory&#x60;. &#x60;remove&#x60; does not apply here, since this Product Action only includes a Product Identifier.</td>
             <td>Product Action</td>
         </tr><tr>
         <td>businessFunction</td>
             <td><a href="#T_BusinessFunctionMask">BusinessFunctionMask</a></td>
-            <td>O</td>
-            <td>Defines Business Function to which the given context applies.</td>
+            <td>M</td>
+            <td>Defines Business Function to which the given context applies. &#x60;all&#x60; Applies for all supported Business Functions for a given Product Offering.</td>
             <td>Business Function</td>
         </tr>
     </tbody>
@@ -3493,15 +3784,15 @@ Business Function and Product Action.
 
 #### 7.2.2.11. `enum` ProductActionMask
 
-**Description:** Action that could be applied to the Product (or future
-product) during the execution of the Business Function. Value 'all' is the
-wildcard - stands for any action.
+**Description:** Action that could be applied to the Product (or future product)
+during the execution of the Business Function. Value 'all' is the wildcard -
+stands for any action.
 
 <table id="T_ProductActionMask">
     <thead style="font-weight:bold;">
         <tr>
             <td>Value</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -3521,14 +3812,14 @@ wildcard - stands for any action.
 #### 7.2.2.12. `enum` BusinessFunctionMask
 
 **Description:** Business Function that could be executed for the given Product
-accordingly to LSO Cantata/Sonata IRPs. Value 'all' is the wildcard - stands
-for any action.
+accordingly to LSO Cantata/Sonata IRPs. Value 'all' is the wildcard - stands for
+any action.
 
 <table id="T_BusinessFunctionMask">
     <thead style="font-weight:bold;">
         <tr>
             <td>Value</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -3562,11 +3853,17 @@ for any action.
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
         <tr>
+        <td>city</td>
+            <td>string</td>
+            <td>O</td>
+            <td>City in which the Product can be provided</td>
+            <td></td>
+        </tr><tr>
         <td>locality</td>
             <td>string</td>
             <td>O</td>
@@ -3576,19 +3873,322 @@ for any action.
         <td>stateOrProvince</td>
             <td>string</td>
             <td>O</td>
-            <td>The State or Province the region is located. Should only be specified by a Seller for a Product Offering that not available Country wide.</td>
+            <td>The State or Province in the region is located. Should only be specified by a Seller for a Product Offering that is not available Country wide.</td>
             <td>State Or Province</td>
         </tr><tr>
-        <td>country</td>
-            <td>string</td>
+        <td>countryCode</td>
+            <td>string<br/><span style="font-size:10px;font-style:italic">minLength = 2<br/>maxLength = 2</span></td>
             <td>M</td>
-            <td>The Country the region is located. MUST use the ISO 3166 two letter codes.</td>
-            <td>Country</td>
+            <td>Country in which the Address is located, defined using two characters as defined in ISO 3166</td>
+            <td></td>
         </tr>
     </tbody>
 </table>
 
-### 7.2.3. Product Specification
+#### 7.2.2.14. Type ProductOfferingBundleRelationship
+
+**Description:** The Product Offering Bundle Relationship defines the set of
+Product Offerings that comprise a Product Offering Bundle, along with the
+ability to specify the minimum and maximum number of instances of a Product
+Offering (e.g. fixed, optional or variable component) that are supported for the
+Bundle. The Product Offering Bundle Relationship may only be specified within a
+Product Offering Bundle.
+
+<table id="T_ProductOfferingBundleRelationship" style="width:100%">
+    <thead style="font-weight:bold">
+        <tr>
+            <td>Name</td>
+            <td style="width:15%">Type</td>
+            <td>M/O</td>
+            <td>Description</td>
+            <td>MEF 127.1</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>productOffering</td>
+            <td><a href="#T_ProductOfferingRef">ProductOfferingRef</a></td>
+            <td>M</td>
+            <td>Identifier of the Product Offering being defined in this Product Offering Bundle Relation.</td>
+            <td></td>
+        </tr><tr>
+        <td>minCardinality</td>
+            <td>integer<br/><span style="font-size:10px;font-style:italic">minimum = 0</span></td>
+            <td>M</td>
+            <td>The minimum required number of instances of the Bundled Product Offerings</td>
+            <td></td>
+        </tr><tr>
+        <td>maxCardinality</td>
+            <td>integer<br/><span style="font-size:10px;font-style:italic">minimum = -1</span></td>
+            <td>M</td>
+            <td>The maximum required number of instances of the Bundled Product Offerings. -1 defines no restriction (unlimited)</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+#### 7.2.2.15. Type ProductOfferingPrice
+
+**Description:** Is based on both the basic cost to develop and produce products
+and the enterprises policy on revenue targets. This price may be further revised
+through discounting (a Product Offering Price that reflects an alteration). The
+price, applied for a productOffering may also be influenced by the
+productOfferingTerm, the customer selected, eg: a productOffering can be offered
+with multiple terms, like commitment periods for the contract. The price may be
+influenced by this productOfferingTerm. A productOffering may be cheaper with a
+24 month commitment than with a 12 month commitment.
+
+<table id="T_ProductOfferingPrice" style="width:100%">
+    <thead style="font-weight:bold">
+        <tr>
+            <td>Name</td>
+            <td style="width:15%">Type</td>
+            <td>M/O</td>
+            <td>Description</td>
+            <td>MEF 127.1</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>description</td>
+            <td>string</td>
+            <td>M</td>
+            <td>Description of the productOfferingPrice</td>
+            <td></td>
+        </tr><tr>
+        <td>lastUpdate</td>
+            <td>date-time<br/><span style="font-size:10px;font-style:italic">format = date-time</span></td>
+            <td>M</td>
+            <td>the last update time of this ProductOfferingPrice</td>
+            <td></td>
+        </tr><tr>
+        <td>validFor</td>
+            <td><a href="#T_TimePeriod">TimePeriod</a></td>
+            <td>M</td>
+            <td>The date range that the ProductOfferingPrice is applicable</td>
+            <td></td>
+        </tr><tr>
+        <td>bundledProductOffering</td>
+            <td><a href="#T_ProductOfferingRef">ProductOfferingRef</a></td>
+            <td>O</td>
+            <td>The identifier of the Bundled Product Offering. This indicates that this price is dependant on the number of ordered Product Offerings.</td>
+            <td></td>
+        </tr><tr>
+        <td>region</td>
+            <td><a href="#T_Region">Region</a>[]</td>
+            <td>O</td>
+            <td>The areas where the Price is applicable. If region is an empty list, it implies that the Price is not region-restricted
+</td>
+            <td></td>
+        </tr><tr>
+        <td>note</td>
+            <td><a href="#T_Note">Note</a>[]</td>
+            <td>O</td>
+            <td>A set of comments for additional information.</td>
+            <td></td>
+        </tr><tr>
+        <td>priceType</td>
+            <td><a href="#T_MEFPriceType">MEFPriceType</a></td>
+            <td>M</td>
+            <td>Indicates if the price is for recurring, non-recurring, or usage based charges</td>
+            <td></td>
+        </tr><tr>
+        <td>recurringChargePeriod</td>
+            <td><a href="#T_Duration">Duration</a></td>
+            <td>O</td>
+            <td>Used for a recurring charge to indicate a period</td>
+            <td></td>
+        </tr><tr>
+        <td>unitOfMeasure</td>
+            <td>string</td>
+            <td>O</td>
+            <td>Unit of Measure if price depending on it (Gb, SMS volume, etc..) MEF: if Quote Item Price Type equals usageBased</td>
+            <td></td>
+        </tr><tr>
+        <td>price</td>
+            <td><a href="#T_Price">Price</a></td>
+            <td>M</td>
+            <td>The value of the  price</td>
+            <td></td>
+        </tr><tr>
+        <td>priceModifier</td>
+            <td><a href="#T_PriceModifier">PriceModifier</a>[]</td>
+            <td>O</td>
+            <td>Related price discounts.</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+#### 7.2.2.16. Type Price
+
+**Description:** Provides all amounts (tax included, duty-free, tax rate) and
+used currency of a Price
+
+<table id="T_Price" style="width:100%">
+    <thead style="font-weight:bold">
+        <tr>
+            <td>Name</td>
+            <td style="width:15%">Type</td>
+            <td>M/O</td>
+            <td>Description</td>
+            <td>MEF 127.1</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>taxRate</td>
+            <td>float<br/><span style="font-size:10px;font-style:italic">format = float</span></td>
+            <td>O</td>
+            <td>Price Tax Rate. Unit: [%]. E.g. value 16 stand for 16% tax.</td>
+            <td></td>
+        </tr><tr>
+        <td>taxIncludedAmount</td>
+            <td><a href="#T_Money">Money</a></td>
+            <td>O</td>
+            <td>All taxes included amount (expressed in the given currency)</td>
+            <td></td>
+        </tr><tr>
+        <td>dutyFreeAmount</td>
+            <td><a href="#T_Money">Money</a></td>
+            <td>M</td>
+            <td>All taxes excluded amount (expressed in the given currency)</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+#### 7.2.2.17. Type PriceModifier
+
+**Description:** The Price Modifier allows specifying promotional (via Price
+Modifier Deal Reference) and/or volume based pricing discounts. For example, if
+only Minimum Quantity is specified, then the Price Modifier is a volume based
+discount, and if only Price Modifier Deal Reference is set then the Price
+Modifier is a form of promo code, and if both are set then the Pricer Modifier
+is a form of promo code with a minimum purchase requirement.
+
+<table id="T_PriceModifier" style="width:100%">
+    <thead style="font-weight:bold">
+        <tr>
+            <td>Name</td>
+            <td style="width:15%">Type</td>
+            <td>M/O</td>
+            <td>Description</td>
+            <td>MEF 127.1</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>description</td>
+            <td>string</td>
+            <td>M</td>
+            <td>Description of the Price Modifier</td>
+            <td></td>
+        </tr><tr>
+        <td>lastUpdate</td>
+            <td>date-time<br/><span style="font-size:10px;font-style:italic">format = date-time</span></td>
+            <td>M</td>
+            <td>The last update time of this Price Modifier</td>
+            <td></td>
+        </tr><tr>
+        <td>validFor</td>
+            <td><a href="#T_TimePeriod">TimePeriod</a></td>
+            <td>M</td>
+            <td>The date range that the Price Modifier is applicable</td>
+            <td></td>
+        </tr><tr>
+        <td>region</td>
+            <td><a href="#T_Region">Region</a>[]</td>
+            <td>O</td>
+            <td>Allows constraining the Regions where the Price Modifier is applicable. Only the Regions that need to be constraint should be included (since this is inherited from the Product Offering Price).
+</td>
+            <td></td>
+        </tr><tr>
+        <td>minimumQuantity</td>
+            <td>integer<br/><span style="font-size:10px;font-style:italic">minimum = 0</span></td>
+            <td>M</td>
+            <td>The minimum quantity of the associated Product Offering required to receive the price reduction.</td>
+            <td></td>
+        </tr><tr>
+        <td>reductionPercentage</td>
+            <td>number<br/><span style="font-size:10px;font-style:italic">minimum = 0<br/>maximum = 100</span></td>
+            <td>O</td>
+            <td>The amount of price discount, expressed as a percentage. A value of 5 represents a 5% price reduction. This attribute may only be set if the discountedPrice is not set.</td>
+            <td></td>
+        </tr><tr>
+        <td>discountedPrice</td>
+            <td><a href="#T_Price">Price</a></td>
+            <td>O</td>
+            <td>The associated discounted price. This attribute may only be set if the reductionPercentage is not set.</td>
+            <td></td>
+        </tr><tr>
+        <td>dealReference</td>
+            <td>string</td>
+            <td>O</td>
+            <td>A pre-agreed pricing modifier reference that the Seller is offering which may impact the pricing (for example, a Promo Code). This Price Modifier is applicable when the fulfillment of the associated Product Offering satisfies this pre-agreed Deal Reference.</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+#### 7.2.2.18. `enum` MEFPriceType
+
+**Description:** Indicates if the price is for recurring or non-recurring
+charges.
+
+<table id="T_MEFPriceType">
+    <thead style="font-weight:bold;">
+        <tr>
+            <td>Value</td>
+            <td>MEF 127.1</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>recurring</td>
+            <td>RECURRING</td>
+        </tr><tr>
+            <td>nonRecurring</td>
+            <td>NON_RECURRING</td>
+        </tr><tr>
+            <td>usageBased</td>
+            <td>USAGE_BASED</td>
+        </tr>
+    </tbody>
+</table>
+
+#### 7.2.2.19. Type Money
+
+**Description:** A base/value business entity used to represent money
+
+<table id="T_Money" style="width:100%">
+    <thead style="font-weight:bold">
+        <tr>
+            <td>Name</td>
+            <td style="width:15%">Type</td>
+            <td>M/O</td>
+            <td>Description</td>
+            <td>MEF 127.1</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>unit</td>
+            <td>string</td>
+            <td>M</td>
+            <td>Currency (ISO4217 norm uses 3 letters to define the currency)</td>
+            <td></td>
+        </tr><tr>
+        <td>value</td>
+            <td>float<br/><span style="font-size:10px;font-style:italic">format = float</span></td>
+            <td>M</td>
+            <td>A positive floating point number</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+### 7.2.3 Product Specification
 
 #### 7.2.3.1. Type ProductSpecification_Common
 
@@ -3601,7 +4201,7 @@ for any action.
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -3616,7 +4216,7 @@ for any action.
             <td>uri<br/><span style="font-size:10px;font-style:italic">format = uri</span></td>
             <td>O</td>
             <td>Reference of the Product Specification</td>
-            <td>Not represented in MEF 127</td>
+            <td>Not represented in MEF 127.1</td>
         </tr><tr>
         <td>name</td>
             <td>string</td>
@@ -3631,9 +4231,9 @@ for any action.
             <td>Product Specification State</td>
         </tr><tr>
         <td>lastUpdate</td>
-            <td>string<br/><span style="font-size:10px;font-style:italic">format = date-time</span></td>
+            <td>date-time<br/><span style="font-size:10px;font-style:italic">format = date-time</span></td>
             <td>O</td>
-            <td>The date and time an attribute within this Product Specification was created or most recently updated.</td>
+            <td>The date and time of an attribute within this Product Specification was created or most recently updated.</td>
             <td>Product Specification Last Update</td>
         </tr>
     </tbody>
@@ -3642,8 +4242,8 @@ for any action.
 #### 7.2.3.2. Type ProductSpecification
 
 **Description:** Is a detailed description of a tangible or intangible object
-made available externally in the form of a ProductOffering to customers or
-other parties playing a party role.
+made available externally in the form of a ProductOffering to customers or other
+parties playing a party role.
 
 Inherits from:
 
@@ -3656,7 +4256,7 @@ Inherits from:
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -3688,7 +4288,7 @@ Inherits from:
         <td>milestone</td>
             <td><a href="#T_ProductMilestoneDefinition">ProductMilestoneDefinition</a>[]</td>
             <td>O</td>
-            <td>Specifies the different stages of the Product Ordering.</td>
+            <td>Specifies the different milestones during the fulfillment process</td>
             <td>Product Specification Milestones</td>
         </tr><tr>
         <td>note</td>
@@ -3718,12 +4318,10 @@ Inherits from:
 
 #### 7.2.3.4. `enum` ProductSpecificationLifecycleStatusType
 
-**Description:**
-
-| Name      | MEF 127 Name | Description                                                                                                                                                                                                                                                                                                                                                                                                  |
-| --------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| obsolete  | OBSOLETE     | After a Product Offering orThe Product Specification is only available in the Product Catalog for historical documentation reasons. There are no active Products on the Seller's Network based on the Product Specification. A Product Specification that is no longer available it transitions to `obsolete` and may be removed at the Seller's discretion from the Product Catalog. This is a final state. |
-| published | PUBLISHED    | A Product Specification has been defined in the Product Catalog. Product Offerings based on the Product Specification may be available for ordering.                                                                                                                                                                                                                                                         |
+| **Description:** | Name      | MEF 127 Name                                                                                                                                                                                                                                                                                                                                                                   | Description |
+| ---------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| obsolete         | OBSOLETE  | The Product Specification is only available in the Product Catalog for historical documentation reasons. There are no active Products on the Seller's Network based on the Product Specification. A Product Specification that is no longer available transitions to `obsolete` and may be removed at the Seller's discretion from the Product Catalog. This is a final state. |
+| published        | PUBLISHED | A Product Specification has been defined in the Product Catalog. Product Offerings based on the Product Specification may be available for ordering.                                                                                                                                                                                                                           |
 
 ### 7.2.4. Common types
 
@@ -3742,7 +4340,7 @@ product) through video, pictures...
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -3751,7 +4349,7 @@ product) through video, pictures...
             <td>string</td>
             <td>O</td>
             <td>locally unique identifier to distinguish items from the Attachment list.</td>
-            <td>Not represented in MEF 127</td>
+            <td>Not represented in MEF 127.1</td>
         </tr><tr>
         <td>author</td>
             <td>string</td>
@@ -3762,11 +4360,11 @@ product) through video, pictures...
         <td>content</td>
             <td>string</td>
             <td>O</td>
-            <td>The actual contents of the attachment object, if embedded, encoded as base64. Either url or (content and mimeType) attributes MUST be provided during creation.</td>
+            <td>The actual contents of the attachment object, if embedded, encoded as base64. Either URL or (content and mimeType) attributes MUST be provided during creation.</td>
             <td>Content</td>
         </tr><tr>
         <td>creationDate</td>
-            <td>string<br/><span style="font-size:10px;font-style:italic">format = date-time</span></td>
+            <td>date-time<br/><span style="font-size:10px;font-style:italic">format = date-time</span></td>
             <td>M</td>
             <td>The date the Attachment was added.</td>
             <td>Attachment Date</td>
@@ -3804,7 +4402,7 @@ product) through video, pictures...
         <td>url</td>
             <td>string</td>
             <td>O</td>
-            <td>URL where the attachment is located. Either url or (content and mimeType) attributes MUST be provided during creation.</td>
+            <td>URL where the attachment is located. Either URL or (content and mimeType) attributes MUST be provided during creation.</td>
             <td>URL</td>
         </tr>
     </tbody>
@@ -3854,13 +4452,13 @@ product) through video, pictures...
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
         <tr>
         <td>amount</td>
-            <td>integer</td>
+            <td>integer<br/><span style="font-size:10px;font-style:italic">minimum = 0</span></td>
             <td>M</td>
             <td>Duration (number of seconds, minutes, hours, etc.)</td>
             <td>Value</td>
@@ -3868,177 +4466,150 @@ product) through video, pictures...
         <td>units</td>
             <td><a href="#T_TimeUnit">TimeUnit</a></td>
             <td>M</td>
-            <td>Time unit type</td>
+            <td>Time unit enumerated</td>
             <td>Unit</td>
         </tr>
     </tbody>
 </table>
 
-#### 7.2.4.4. Type FieldedAddress
+#### 7.2.4.4. Type FieldedAddressRepresentation
 
 **Description:** A type of Address that has a discrete field and value for each
 type of boundary or identifier down to the lowest level of detail. For example
-"street number" is one field, "street name" is another field, etc. Reference:
-MEF 79 (Sn 8.9.2)
+"street number" is one field, "street name" is another field, etc.
 
-<table id="T_FieldedAddress" style="width:100%">
+<table id="T_FieldedAddressRepresentation" style="width:100%">
     <thead style="font-weight:bold">
         <tr>
             <td>Name</td>
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
         <tr>
-        <td>country</td>
+        <td>streetNr</td>
             <td>string</td>
-            <td>M</td>
-            <td>Country that the address is in</td>
-            <td>Country</td>
+            <td>O</td>
+            <td>Number identifying a specific property on a public street. It may be combined with streetNrLast for ranged addresses.</td>
+            <td></td>
+        </tr><tr>
+        <td>streetNrSuffix</td>
+            <td>string</td>
+            <td>O</td>
+            <td>The first street number suffix (in a street number range) or the suffix for the street number if there is no range</td>
+            <td></td>
+        </tr><tr>
+        <td>streetNrLast</td>
+            <td>string</td>
+            <td>O</td>
+            <td>Last number in a range of street numbers allocated to an Address</td>
+            <td></td>
+        </tr><tr>
+        <td>streetNrLastSuffix</td>
+            <td>string</td>
+            <td>O</td>
+            <td>Last street number suffix for a ranged Address</td>
+            <td></td>
+        </tr><tr>
+        <td>streetPreDirection</td>
+            <td>string</td>
+            <td>O</td>
+            <td>The direction of the street that appears before the Street Name</td>
+            <td></td>
+        </tr><tr>
+        <td>streetName</td>
+            <td>string</td>
+            <td>O</td>
+            <td>Name of the street or other street type</td>
+            <td></td>
         </tr><tr>
         <td>streetType</td>
             <td>string</td>
             <td>O</td>
             <td>The type of street (e.g., alley, avenue, boulevard, brae, crescent, drive, highway, lane, terrace, parade, place, tarn, way, wharf)</td>
-            <td>Street Type</td>
+            <td></td>
         </tr><tr>
-        <td>postcodeExtension</td>
+        <td>streetPostDirection</td>
             <td>string</td>
             <td>O</td>
-            <td>An extension of a postal code. E.g. the part following the dash in a US urban property address</td>
-            <td>Postal Code Extension</td>
-        </tr><tr>
-        <td>city</td>
-            <td>string</td>
-            <td>M</td>
-            <td>The city that the address is in</td>
-            <td>City</td>
-        </tr><tr>
-        <td>streetNr</td>
-            <td>string</td>
-            <td>O</td>
-            <td>Number identifying a specific property on a public street. It may be combined with streetNrLast for ranged addresses. MEF 79 defines it as required however as in certain countries it is not used we make it optional in API.</td>
-            <td>Street Number</td>
+            <td>A modifier denoting a relative direction that appears after the Street Name.</td>
+            <td></td>
         </tr><tr>
         <td>locality</td>
             <td>string</td>
             <td>O</td>
-            <td>The locality that the address is in</td>
-            <td>Locality</td>
+            <td>An area of defined or undefined boundaries within a local authority or other legislatively defined area.</td>
+            <td></td>
+        </tr><tr>
+        <td>city</td>
+            <td>string</td>
+            <td>O</td>
+            <td>City in which the Address is located.</td>
+            <td></td>
         </tr><tr>
         <td>postcode</td>
             <td>string</td>
             <td>O</td>
-            <td>Descriptor for a postal delivery area, used to speed and simplify the delivery of mail (also known as zip code)</td>
-            <td>Postal Code</td>
+            <td>A descriptor for a postal delivery area used to speed and simplify the delivery of mail (also known as zip code)</td>
+            <td></td>
         </tr><tr>
-        <td>streetNrLast</td>
+        <td>postcodeExtension</td>
             <td>string</td>
             <td>O</td>
-            <td>Last number in a range of street numbers allocated to a property</td>
-            <td>Street Number Last</td>
-        </tr><tr>
-        <td>streetNrSuffix</td>
-            <td>string</td>
-            <td>O</td>
-            <td>The first street number suffix</td>
-            <td>Street Number Suffix</td>
-        </tr><tr>
-        <td>streetName</td>
-            <td>string</td>
-            <td>M</td>
-            <td>Name of the street or other street type</td>
-            <td>Street Name</td>
+            <td>The extension used on a postal code. Note: there are different use codes for this attribute depending upon the country.</td>
+            <td></td>
         </tr><tr>
         <td>stateOrProvince</td>
             <td>string</td>
             <td>O</td>
-            <td>The State or Province that the address is in</td>
-            <td>State Or Province</td>
+            <td>The State or Province in which the Address is located.</td>
+            <td></td>
         </tr><tr>
-        <td>streetNrLastSuffix</td>
+        <td>country</td>
             <td>string</td>
             <td>O</td>
-            <td>Last street number suffix for a ranged address</td>
-            <td>Street Number Last Suffix</td>
+            <td>Country in which the Address is located.</td>
+            <td></td>
         </tr><tr>
-        <td>geographicSubAddress</td>
-            <td><a href="#T_GeographicSubAddress">GeographicSubAddress</a></td>
+        <td>countryCode</td>
+            <td>string<br/><span style="font-size:10px;font-style:italic">minLength = 2<br/>maxLength = 2</span></td>
             <td>O</td>
-            <td>Additional fields used to specify an address, as detailed as possible.</td>
-            <td>Not represented in MEF 127</td>
+            <td>Country in which the Address is located, defined using two characters as defined in ISO 3166</td>
+            <td></td>
         </tr><tr>
-        <td>streetSuffix</td>
-            <td>string</td>
+        <td>subUnit</td>
+            <td><a href="#T_SubUnit">SubUnit</a>[]</td>
             <td>O</td>
-            <td>A modifier denoting a relative direction</td>
-            <td>Street Suffix</td>
-        </tr>
-    </tbody>
-</table>
-
-#### 7.2.4.5. Type GeographicSubAddress
-
-**Description:** Additional fields used to specify an address, as detailed as
-possible.
-
-<table id="T_GeographicSubAddress" style="width:100%">
-    <thead style="font-weight:bold">
-        <tr>
-            <td>Name</td>
-            <td style="width:15%">Type</td>
-            <td>M/O</td>
-            <td>Description</td>
-            <td>MEF 127</td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
+            <td>The Service Site Sub Unit represented as a list. This is a list to allow complex sub-unit information such as SUITE 42 ROOM A</td>
+            <td></td>
+        </tr><tr>
         <td>buildingName</td>
             <td>string</td>
             <td>O</td>
-            <td>Allows for identification of places that require building name  as part of addressing information
+            <td>The well-known name of a building that is located at this Address (e.g., where there is one Address for a campus).
 </td>
-            <td>Building Name</td>
-        </tr><tr>
-        <td>id</td>
-            <td>string</td>
-            <td>O</td>
-            <td>Unique Identifier of the subAddress</td>
-            <td>Not represented in MEF 127</td>
-        </tr><tr>
-        <td>levelNumber</td>
-            <td>string</td>
-            <td>O</td>
-            <td>Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT 2</td>
-            <td>Level Number</td>
-        </tr><tr>
-        <td>levelType</td>
-            <td>string</td>
-            <td>O</td>
-            <td>Describes level types within a building</td>
-            <td>Level Type</td>
-        </tr><tr>
-        <td>privateStreetName</td>
-            <td>string</td>
-            <td>O</td>
-            <td>&quot;Private streets internal to a property (e.g. a university) may have internal names that are not recorded by the land title office</td>
-            <td>Private Street Name</td>
+            <td></td>
         </tr><tr>
         <td>privateStreetNumber</td>
             <td>string</td>
             <td>O</td>
-            <td>Private streets numbers internal to a private street</td>
-            <td>Private Street Number</td>
+            <td>Street number on a private street within the Address.</td>
+            <td></td>
         </tr><tr>
-        <td>subUnit</td>
-            <td><a href="#T_MEFSubUnit">MEFSubUnit</a>[]</td>
+        <td>privateStreetName</td>
+            <td>string</td>
             <td>O</td>
-            <td>Representation of a MEFSubUnit It is used for describing subunit within a subaddress  e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF.</td>
-            <td>Not represented in MEF 127</td>
+            <td>Private streets internal to a property (e.g., a university) may have internal names that are not recorded by the land title office.</td>
+            <td></td>
+        </tr><tr>
+        <td>language</td>
+            <td>string<br/><span style="font-size:10px;font-style:italic">minLength = 2<br/>maxLength = 2</span></td>
+            <td>O</td>
+            <td>The language in which the address is expressed. Based on ISO 639:2023</td>
+            <td></td>
         </tr>
     </tbody>
 </table>
@@ -4073,7 +4644,7 @@ possible.
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -4093,18 +4664,18 @@ possible.
     </tbody>
 </table>
 
-#### 7.2.4.8. Type MEFSubUnit
+#### 7.2.4.8. Type SubUnit
 
 **Description:** Allows for sub unit identification
 
-<table id="T_MEFSubUnit" style="width:100%">
+<table id="T_SubUnit" style="width:100%">
     <thead style="font-weight:bold">
         <tr>
             <td>Name</td>
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -4113,13 +4684,13 @@ possible.
             <td>string</td>
             <td>M</td>
             <td>The discriminator used for the subunit, often just a simple number but may also be a range.</td>
-            <td>Sub Unit Number</td>
+            <td></td>
         </tr><tr>
         <td>subUnitType</td>
             <td>string</td>
             <td>M</td>
-            <td>The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF.</td>
-            <td>Sub Unit Type</td>
+            <td>The type of subunit e.g. BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF.</td>
+            <td></td>
         </tr>
     </tbody>
 </table>
@@ -4127,8 +4698,7 @@ possible.
 #### 7.2.4.9. Type Note
 
 **Description:** Extra information about a given entity. Only useful in
-processes involving human interaction. Not applicable for the automated
-process.
+processes involving human interaction. Not applicable for the automated process.
 
 <table id="T_Note" style="width:100%">
     <thead style="font-weight:bold">
@@ -4137,7 +4707,7 @@ process.
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -4149,7 +4719,7 @@ process.
             <td>Note Author</td>
         </tr><tr>
         <td>date</td>
-            <td>string<br/><span style="font-size:10px;font-style:italic">format = date-time</span></td>
+            <td>date-time<br/><span style="font-size:10px;font-style:italic">format = date-time</span></td>
             <td>M</td>
             <td>Date the Note was created</td>
             <td>Note Date</td>
@@ -4158,7 +4728,7 @@ process.
             <td>string</td>
             <td>M</td>
             <td>Identifier of the note within its containing entity (may or may not be globally unique, depending on provider implementation)</td>
-            <td>Not represented in MEF 127</td>
+            <td>Not represented in MEF 127.1</td>
         </tr><tr>
         <td>source</td>
             <td><a href="#T_MEFBuyerSellerType">MEFBuyerSellerType</a></td>
@@ -4187,7 +4757,7 @@ can be specified for the ordered Product.
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -4198,10 +4768,16 @@ can be specified for the ordered Product.
             <td>Specifies the nature of the relationship between the Product Offering and Place. This must be one of the roles as defined in the related Product Specification. For example, &#x60;INSTALL_LOCATION&#x60;.</td>
             <td>Place Relationship Role</td>
         </tr><tr>
+        <td>isModifiable</td>
+            <td>boolean</td>
+            <td>M</td>
+            <td>Specifies if the Place Relationship can be modified on an active Product.</td>
+            <td></td>
+        </tr><tr>
         <td>minCardinality</td>
             <td>integer<br/><span style="font-size:10px;font-style:italic">minimum = 0</span></td>
             <td>M</td>
-            <td>The minimum required number of PlaceRelationships of given relationshipRole that must configured for ordered Product. For example, as specified in the &#x27;Relationship Between Entities&#x27; Section of MEF 106.</td>
+            <td>The minimum required number of PlaceRelationships of given relationshipRole that must configured for ordered Product. For example, as specified in the &#x27;Relationship Between Entities&#x27; Section of MEF 106. &#x60;0&#x60; means the relation is optional.</td>
             <td>Min Cardinality</td>
         </tr><tr>
         <td>maxCardinality</td>
@@ -4224,7 +4800,7 @@ can be specified for the ordered Product.
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -4239,7 +4815,7 @@ can be specified for the ordered Product.
             <td>uri<br/><span style="font-size:10px;font-style:italic">format = uri</span></td>
             <td>O</td>
             <td>Hyperlink to access the Category</td>
-            <td>Not represented in MEF 127</td>
+            <td>Not represented in MEF 127.1</td>
         </tr>
     </tbody>
 </table>
@@ -4256,7 +4832,7 @@ provisioning process.
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -4276,10 +4852,10 @@ provisioning process.
     </tbody>
 </table>
 
-#### 7.2.3.13. Type ProductRelationshipConstraint
+#### 7.2.3.13 Type ProductRelationshipConstraint
 
-**Description:** Allows definition and constraining of Product Relationship
-that can be specified for the ordered Product.
+**Description:** Allows definition and constraining of Product Relationship that
+can be specified for the ordered Product.
 
 <table id="T_ProductRelationshipConstraint" style="width:100%">
     <thead style="font-weight:bold">
@@ -4288,16 +4864,16 @@ that can be specified for the ordered Product.
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
         <tr>
-        <td>id</td>
+        <td>productSpecification</td>
             <td>string</td>
             <td>M</td>
             <td>The identifier of the associated Product Specification to define the allowable target Product types</td>
-            <td>Related Product Specification Identifier</td>
+            <td></td>
         </tr><tr>
         <td>relationshipType</td>
             <td>string</td>
@@ -4305,10 +4881,16 @@ that can be specified for the ordered Product.
             <td>Specifies the nature of productRelationship between Products. This must be one of the relationshipTypes as defined by the main product specification.</td>
             <td>Relationship Type</td>
         </tr><tr>
+        <td>isModifiable</td>
+            <td>boolean</td>
+            <td>M</td>
+            <td>Specifies if the Product Relationship can be modified on an active Product.</td>
+            <td></td>
+        </tr><tr>
         <td>minCardinality</td>
             <td>integer<br/><span style="font-size:10px;font-style:italic">minimum = 0</span></td>
             <td>M</td>
-            <td>The minimum required number of ProductRelationships (of given relationshipType and target productSpecification) that must configured for ordered Product. For example, as specified in the &#x27;Relationship Between Entities&#x27; Section of MEF 106.</td>
+            <td>The minimum required number of ProductRelationships (of given relationshipType and target productSpecification) that must configured for ordered Product. For example, as specified in the &#x27;Relationship Between Entities&#x27; Section of MEF 106. &#x60;0&#x60; means the relation is optional.</td>
             <td>Min Cardinality</td>
         </tr><tr>
         <td>maxCardinality</td>
@@ -4320,11 +4902,11 @@ that can be specified for the ordered Product.
     </tbody>
 </table>
 
-#### 7.2.4.14. Type RelatedContactInformation
+#### 7.2.4.14 Type RelatedContactInformation
 
-**Description:** Contact data for a person or organization that is involved in
-a given context. It is specified by the Seller (e.g. Seller Contact
-Information) or by the Buyer.
+**Description:** Contact data for a person or organization that is involved in a
+given context. It is specified by the Seller (e.g. Seller Contact Information)
+or by the Buyer.
 
 <table id="T_RelatedContactInformation" style="width:100%">
     <thead style="font-weight:bold">
@@ -4333,7 +4915,7 @@ Information) or by the Buyer.
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -4369,7 +4951,7 @@ Information) or by the Buyer.
             <td>Contact Organization</td>
         </tr><tr>
         <td>postalAddress</td>
-            <td><a href="#T_FieldedAddress">FieldedAddress</a></td>
+            <td><a href="#T_FieldedAddressRepresentation">FieldedAddressRepresentation</a></td>
             <td>O</td>
             <td>Identifies the postal address of the person or office to be contacted.</td>
             <td>Contact Postal Address</td>
@@ -4378,15 +4960,15 @@ Information) or by the Buyer.
             <td>string</td>
             <td>M</td>
             <td>A role the party plays in a given context.</td>
-            <td>Not represented in MEF 127</td>
+            <td>Not represented in MEF 127.1</td>
         </tr>
     </tbody>
 </table>
 
-#### 7.2.4.15. Type SchemaRefOrValue
+#### 7.2.4.15 Type SchemaRefOrValue
 
-**Description:** Reference to the JSON schema location or the exact value of
-the JSON schema. **Note:** One of the properties must be provided i.e.
+**Description:** Reference to the JSON schema location or the exact value of the
+JSON schema. **Note:** One of the properties must be provided i.e.
 schemaLocation or schema.
 
 <table id="T_SchemaRefOrValue" style="width:100%">
@@ -4396,7 +4978,7 @@ schemaLocation or schema.
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -4405,50 +4987,76 @@ schemaLocation or schema.
             <td>string</td>
             <td>O</td>
             <td>Raw JSON schema value.</td>
-            <td>Not represented in MEF 127</td>
+            <td>Not represented in MEF 127.1</td>
         </tr><tr>
         <td>schemaLocation</td>
             <td>uri<br/><span style="font-size:10px;font-style:italic">format = uri</span></td>
             <td>O</td>
             <td>This field provides a link to the schema describing the target product</td>
-            <td>Not represented in MEF 127</td>
+            <td>Not represented in MEF 127.1</td>
         </tr>
     </tbody>
 </table>
 
-#### 7.2.4.16. `enum` TimeUnit
+#### 7.2.4.16. Type TimePeriod
 
-**Description:** Represents a unit of time. Reference: MEF 57.2 (Sn 9.22)
+**Description:** A period of time, either as a deadline (endDateTime only) a
+startDateTime only, or both.
+
+<table id="T_TimePeriod" style="width:100%">
+    <thead style="font-weight:bold">
+        <tr>
+            <td>Name</td>
+            <td style="width:15%">Type</td>
+            <td>M/O</td>
+            <td>Description</td>
+            <td>MEF 127.1</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>startDateTime</td>
+            <td>date-time<br/><span style="font-size:10px;font-style:italic">format = date-time</span></td>
+            <td>O</td>
+            <td>Start of the time period, using IETC-RFC-3339 format. If you define a start, you must also define an end</td>
+            <td></td>
+        </tr><tr>
+        <td>endDateTime</td>
+            <td>date-time<br/><span style="font-size:10px;font-style:italic">format = date-time</span></td>
+            <td>O</td>
+            <td>End of the time period, using IETC-RFC-3339 format</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+#### 7.2.4.17. `enum` TimeUnit
+
+**Description:** Represents a unit of time.
 
 <table id="T_TimeUnit">
     <thead style="font-weight:bold;">
         <tr>
             <td>Value</td>
-            <td>MEF 57.2</td>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>calendarMonths</td>
-            <td>CALENDAR_MONTHS</td>
+            <td>seconds</td>
         </tr><tr>
-            <td>calendarDays</td>
-            <td>CALENDAR_DAYS</td>
-        </tr><tr>
-            <td>calendarHours</td>
-            <td>CALENDAR_HOURS</td>
-        </tr><tr>
-            <td>calendarMinutes</td>
-            <td>CALENDAR_MINUTES</td>
-        </tr><tr>
-            <td>businessDays</td>
-            <td>BUSINESS_DAYS</td>
+            <td>minutes</td>
         </tr><tr>
             <td>businessHours</td>
-            <td>BUSINESS_HOURS</td>
         </tr><tr>
-            <td>businessMinutes</td>
-            <td>BUSINESS_MINUTES</td>
+            <td>calendarHours</td>
+        </tr><tr>
+            <td>businessDays</td>
+        </tr><tr>
+            <td>calendarDays</td>
+        </tr><tr>
+            <td>months</td>
+        </tr><tr>
+            <td>years</td>
         </tr>
     </tbody>
 </table>
@@ -4460,11 +5068,11 @@ The below sections describe data models related to this endpoint.
 
 #### 7.2.8.1. Type EventSubscriptionInput
 
-The `query` attribute is used to constrain the notification types that the
-Buyer is willing to receive to the callback endpoint. The `query` formatting
-complies to RCF3986 [rfc3986](#8-references) and [TMF620](#8-references). Every
-attribute defined in the Event model (from notification API) can be used in the
-`query`. Example:
+The `query` attribute is used to constrain the notification types that the Buyer
+is willing to receive to the callback endpoint. The `query` formatting complies
+to RCF3986 [rfc3986](#8-references) and [TMF620](#8-references). Every attribute
+defined in the Event model (from notification API) can be used in the `query`.
+Example:
 
 ```
     "query":"eventType=productOfferingCreateEvent"
@@ -4473,8 +5081,8 @@ attribute defined in the Event model (from notification API) can be used in the
 If the Buyer wishes to subscribe to 2 different types of events, there are 2
 possible syntax variants:
 
-- `eventType=productOfferingCreateEvent,productOfferingStatusChangeEvent` or
-- `eventType=productOfferingCreateEvent&eventType=productOfferingStatusChangeEvent`
+- `eventType=productOfferingCreateEvent,productOfferingStateChangeEvent` or
+- `eventType=productOfferingCreateEvent&eventType=productOfferingStateChangeEvent`
 
 **Description:** This class is used to register for Notifications.
 
@@ -4485,7 +5093,7 @@ possible syntax variants:
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -4493,13 +5101,13 @@ possible syntax variants:
         <td>callback</td>
             <td>string</td>
             <td>M</td>
-            <td>This callback value must be set to *host* property from Buyer Product Catalog Notification API (productCatalogNotification.api.yaml). This property is appended with the base path and notification resource path specified in that API to construct an URL to which notification is sent. E.g. for &quot;callback&quot;: &quot;https://buyer.com/listenerEndpoint&quot;, the Product Specification state change event notification will be sent to: &#x60;https://buyer.com/listenerEndpoint/mefApi/sonata/productCatalogNotification/v2/listener/productCatalogStateChange&#x60;</td>
+            <td>This callback value must be set to *host* property from the Buyer Product Catalog Notification API (productCatalogNotification.api.yaml). This property is appended with the base path and notification resource path specified in that API to construct a URL to which notification is sent. E.g. for &quot;callback&quot;: &quot;https://buyer.mef.com/listenerEndpoint&quot;, the Product Specification state change event notification will be sent to: &#x60;https://buyer.mef.com/listenerEndpoint/mefApi/sonata/productCatalogNotifications/v3/listener/productCatalogStateChange&#x60;</td>
             <td>Recipient Information</td>
         </tr><tr>
         <td>query</td>
             <td>string</td>
             <td>O</td>
-            <td>This attribute is used to define to which type of events to register to. See the &#x60;ProductCategoryEventType&#x60;, &#x60;ProductSpecificationEventType&#x60;, &#x60;ProductOfferingEventType&#x60; in (productCatalogNotification.api.yaml to check what kind of events are supported. To subscribe for more than one event type, put the values separated by comma: &#x60;eventType&#x3D;productOfferingCreateEvent,productOfferingAttributeValueChangeEvent&#x60; or repeat the same attribute: &#x60;eventType&#x3D;productOfferingCreateEvent&amp;eventType&#x3D;productOfferingAttributeValueChangeEvent&#x60; An empty query is treated as specifying no filters - ending in subscription for all event types.</td>
+            <td>This attribute is used to define which type of events to register to. See the &#x60;ProductCategoryEventType&#x60;, &#x60;ProductSpecificationEventType&#x60;, &#x60;ProductOfferingEventType&#x60; in (productCatalogNotification.api.yaml to check what kind of events are supported. To subscribe for more than one event type, put the values separated by a comma: &#x60;eventType&#x3D;productOfferingCreateEvent,productOfferingAttributeValueChangeEvent&#x60; or repeat the same attribute: &#x60;eventType&#x3D;productOfferingCreateEvent&amp;eventType&#x3D;productOfferingAttributeValueChangeEvent&#x60; An empty query is treated as specifying no filters - ending in subscription for all event types.</td>
             <td>Notification Type</td>
         </tr>
     </tbody>
@@ -4507,8 +5115,7 @@ possible syntax variants:
 
 #### 7.2.8.2. Type EventSubscription
 
-**Description:** This resource is used to respond to notification
-subscriptions.
+**Description:** This resource is used to respond to notification subscriptions.
 
 <table id="T_EventSubscription" style="width:100%">
     <thead style="font-weight:bold">
@@ -4517,7 +5124,7 @@ subscriptions.
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -4532,7 +5139,7 @@ subscriptions.
             <td>string</td>
             <td>M</td>
             <td>An identifier of this Event Subscription assigned by the Seller when a resource is created.</td>
-            <td>Not represented in MEF 127</td>
+            <td>Not represented in MEF 127.1</td>
         </tr><tr>
         <td>query</td>
             <td>string</td>
@@ -4545,13 +5152,13 @@ subscriptions.
 
 ## 7.3. Notification API Data model
 
-Figure 23 presents the Product Catalog Notification data model. section.
+Figure 25 presents the Product Catalog Notification data model. section.
 
 ![Product Catalog Notification Data Model](media/notificationModel.png)
-**Figure 23. Product Catalog Notification Notification Data Model**
+**Figure 25. Product Catalog Notification Notification Data Model**
 
-This data model is used to construct requests and responses of the API
-endpoints described in [Section 5.2.2](#522-buyer-side-api-endpoints).
+This data model is used to construct requests and responses of the API endpoints
+described in [Section 5.2.2](#522-buyer-side-api-endpoints).
 
 ### 7.3.1. Type Event
 
@@ -4565,7 +5172,7 @@ notification.
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -4577,15 +5184,27 @@ notification.
             <td></td>
         </tr><tr>
         <td>eventTime</td>
-            <td>string<br/><span style="font-size:10px;font-style:italic">format = date-time</span></td>
+            <td>date-time<br/><span style="font-size:10px;font-style:italic">format = date-time</span></td>
             <td>M</td>
-            <td>Datetime when the event occurred</td>
+            <td>Date-time when the event occurred</td>
+            <td></td>
+        </tr><tr>
+        <td>eventType</td>
+            <td>string</td>
+            <td>M</td>
+            <td>The type of the notification.</td>
+            <td></td>
+        </tr><tr>
+        <td>event</td>
+            <td>object</td>
+            <td>M</td>
+            <td>The event linked to the involved resource object</td>
             <td></td>
         </tr>
     </tbody>
 </table>
 
-### 7.3.2. Type ProductCategoryEvent
+### 7.3.2. Type ProductCategoryCreateEvent
 
 **Description:**
 
@@ -4593,29 +5212,64 @@ Inherits from:
 
 - <a href="#T_Event">Event</a>
 
-<table id="T_ProductCategoryEvent" style="width:100%">
+<table id="T_ProductCategoryCreateEvent" style="width:100%">
     <thead style="font-weight:bold">
         <tr>
             <td>Name</td>
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
         <tr>
         <td>eventType</td>
-            <td><a href="#T_ProductCategoryEventType">ProductCategoryEventType</a></td>
+            <td>string</td>
             <td>M</td>
-            <td>Indicates the type of the event.
-</td>
+            <td>Indicates the type of the event.</td>
             <td></td>
         </tr><tr>
         <td>event</td>
             <td><a href="#T_ProductCategoryEventPayload">ProductCategoryEventPayload</a></td>
             <td>M</td>
-            <td>A reference to the object that is source of the notification.
+            <td>A reference to the object that is the source of the notification.
+</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+### 7.3.2. Type ProductCategoryAttributeValueChangeEvent
+
+**Description:**
+
+Inherits from:
+
+- <a href="#T_Event">Event</a>
+
+<table id="T_ProductCategoryAttributeValueChangeEvent" style="width:100%">
+    <thead style="font-weight:bold">
+        <tr>
+            <td>Name</td>
+            <td style="width:15%">Type</td>
+            <td>M/O</td>
+            <td>Description</td>
+            <td>MEF 127.1</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>eventType</td>
+            <td>string</td>
+            <td>M</td>
+            <td>Indicates the type of the event.</td>
+            <td></td>
+        </tr><tr>
+        <td>event</td>
+            <td><a href="#T_ProductCategoryEventPayload">ProductCategoryEventPayload</a></td>
+            <td>M</td>
+            <td>A reference to the object that is the source of the notification.
 </td>
             <td></td>
         </tr>
@@ -4634,17 +5288,11 @@ event.
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
         <tr>
-        <td>sellerId</td>
-            <td>string</td>
-            <td>O</td>
-            <td>The unique identifier of the organization that is acting as the Seller. MUST be specified in the request only when requester entity represents more than one Seller.</td>
-            <td></td>
-        </tr><tr>
         <td>id</td>
             <td>string</td>
             <td>M</td>
@@ -4656,27 +5304,11 @@ event.
             <td>O</td>
             <td>Hyperlink to access the Product Category</td>
             <td></td>
-        </tr><tr>
-        <td>buyerId</td>
-            <td>string</td>
-            <td>O</td>
-            <td>The unique identifier of the organization that is acting as the a Buyer. MUST be specified in the request only when the responding represents more than one Buyer.</td>
-            <td></td>
         </tr>
     </tbody>
 </table>
 
-### 7.3.4. `enum` ProductCategoryEventType
-
-**Description:** Type of the Product Category event.
-
-| API name                            | MEF 127 name                  | Description                                                                       |
-| ----------------------------------- | ----------------------------- | --------------------------------------------------------------------------------- |
-| `categoryCreateEvent`               | PRODUCT_CATEGORY_CREATE       | The Seller has published new Product Category to the Buyers.                      |
-| `categoryAttributeValueChangeEvent` | PRODUCT_CATEGORY_UPDATE       | The Seller settable attributes for a Product Category were updated by the Seller. |
-| `categoryStateChangeEvent`          | PRODUCT_CATEGORY_STATE_CHANGE | A Product Category `status` was changed by the Seller.                            |
-
-### 7.3.5. Type ProductOfferingEvent
+### 7.3.4. Type ProductOfferingAttributeValueChangeEvent
 
 **Description:**
 
@@ -4684,29 +5316,64 @@ Inherits from:
 
 - <a href="#T_Event">Event</a>
 
-<table id="T_ProductOfferingEvent" style="width:100%">
+<table id="T_ProductOfferingAttributeValueChangeEvent" style="width:100%">
     <thead style="font-weight:bold">
         <tr>
             <td>Name</td>
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
         <tr>
         <td>eventType</td>
-            <td><a href="#T_ProductOfferingEventType">ProductOfferingEventType</a></td>
+            <td>string</td>
             <td>M</td>
-            <td>Indicates the type of the event.
-</td>
+            <td>Indicates the type of the event.</td>
             <td></td>
         </tr><tr>
         <td>event</td>
             <td><a href="#T_ProductOfferingEventPayload">ProductOfferingEventPayload</a></td>
             <td>M</td>
-            <td>A reference to the object that is source of the notification.
+            <td>A reference to the object that is the source of the notification.
+</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+### 7.3.5. Type ProductOfferingCreateEvent
+
+**Description:**
+
+Inherits from:
+
+- <a href="#T_Event">Event</a>
+
+<table id="T_ProductOfferingCreateEvent" style="width:100%">
+    <thead style="font-weight:bold">
+        <tr>
+            <td>Name</td>
+            <td style="width:15%">Type</td>
+            <td>M/O</td>
+            <td>Description</td>
+            <td>MEF 127.1</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>eventType</td>
+            <td>string</td>
+            <td>M</td>
+            <td>Indicates the type of the event.</td>
+            <td></td>
+        </tr><tr>
+        <td>event</td>
+            <td><a href="#T_ProductOfferingEventPayload">ProductOfferingEventPayload</a></td>
+            <td>M</td>
+            <td>A reference to the object that is the source of the notification.
 </td>
             <td></td>
         </tr>
@@ -4725,17 +5392,79 @@ event.
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
         <tr>
-        <td>sellerId</td>
+        <td>id</td>
             <td>string</td>
-            <td>O</td>
-            <td>The unique identifier of the organization that is acting as the Seller. MUST be specified in the request only when requester entity represents more than one Seller.</td>
+            <td>M</td>
+            <td>ID of the Product Offering attributed by the Seller</td>
             <td></td>
         </tr><tr>
+        <td>href</td>
+            <td>uri<br/><span style="font-size:10px;font-style:italic">format = uri</span></td>
+            <td>O</td>
+            <td>Hyperlink to access the Product Offering</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+### 7.3.7. Type ProductOfferingStateChangeEvent
+
+**Description:**
+
+Inherits from:
+
+- <a href="#T_Event">Event</a>
+
+<table id="T_ProductOfferingStateChangeEvent" style="width:100%">
+    <thead style="font-weight:bold">
+        <tr>
+            <td>Name</td>
+            <td style="width:15%">Type</td>
+            <td>M/O</td>
+            <td>Description</td>
+            <td>MEF 127.1</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>eventType</td>
+            <td>string</td>
+            <td>M</td>
+            <td>Indicates the type of the event.</td>
+            <td></td>
+        </tr><tr>
+        <td>event</td>
+            <td><a href="#T_ProductOfferingStateChangeEventPayload">ProductOfferingStateChangeEventPayload</a></td>
+            <td>M</td>
+            <td>A reference to the object that is the source of the notification.
+</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+### 7.3.8. Type ProductOfferingStateChangeEventPayload
+
+**Description:** The identifier of the Product Offering being subject of this
+event.
+
+<table id="T_ProductOfferingStateChangeEventPayload" style="width:100%">
+    <thead style="font-weight:bold">
+        <tr>
+            <td>Name</td>
+            <td style="width:15%">Type</td>
+            <td>M/O</td>
+            <td>Description</td>
+            <td>MEF 127.1</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
         <td>id</td>
             <td>string</td>
             <td>M</td>
@@ -4748,26 +5477,29 @@ event.
             <td>Hyperlink to access the Product Offering</td>
             <td></td>
         </tr><tr>
-        <td>buyerId</td>
-            <td>string</td>
-            <td>O</td>
-            <td>The unique identifier of the organization that is acting as the a Buyer. MUST be specified in the request only when the responding represents more than one Buyer.</td>
+        <td>lifecycleStatus</td>
+            <td><a href="#T_ProductOfferingLifecycleStatusType">ProductOfferingLifecycleStatusType</a></td>
+            <td>M</td>
+            <td>The current lifecycle status of the Product Offering.</td>
             <td></td>
         </tr>
     </tbody>
 </table>
 
-### 7.3.7. `enum` ProductOfferingEventType
+### 7.3.9. `enum` ProductOfferingLifecycleStatusType
 
-**Description:** Type of the Product Offering event.
+| **Description:** | Name           | MEF 127 Name                                                                                                                                                                                                                                 | Description |
+| ---------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| announced        | ANNOUNCED      | A Product Offering has been defined in the Product Catalog for marketing purposes, but is not yet available for ordering.                                                                                                                    |
+| endOfSale        | END_OF_SALE    | The Product Offering or Product Specification cannot be Installed by any new or existing Buyers, but Buyers may still have Products in use and may modify or delete it, and receive support.                                                 |
+| endOfSupport     | END_OF_SUPPORT | When a Product Offering or Product Specification in the `endOfSale` state is no longer supported, the status transitions to `endOfSupport`. Any existing products can no longer be modified, with the only Order action allowed is `delete`. |
+| inTest           | PILOT_BETA     | When a Product Offering or Product Specification starts Pilot/Beta testing, it starts in the `pilotBeta` state .                                                                                                                             |
+| obsolete         | OBSOLETE       | After a Product Offering or Product Specification that is no longer available it transitions to `obsolete` and may be removed at the Seller's discretion from the Product Catalog. This is a final state.                                    |
+| onHold           | ON_HOLD        | A Product Offering or Product Specification that has been `launched`, but is currently not available for Buyers due to supply constraints, product recall, or other issues preventing it from being offered.                                 |
+| launched         | launched       | A new Product Offering or Product Specification is in the `launched` state when it is available for ordering by Buyers.                                                                                                                      |
+| rejected         | REJECTED       | When PILOT_BETA testing fails the Product Offering or Product Specification transitions to the `rejected` state. This is a final state.                                                                                                      |
 
-| API name                                   | MEF 127 name                  | Description                                                                       |
-| ------------------------------------------ | ----------------------------- | --------------------------------------------------------------------------------- |
-| `productOfferingCreateEvent`               | PRODUCT_OFFERING_CREATE       | The Seller has published new Product Offering to the Buyers.                      |
-| `productOfferingAttributeValueChangeEvent` | PRODUCT_OFFERING_UPDATE       | The Seller settable attributes for a Product Offering were updated by the Seller. |
-| `productOfferingStateChangeEvent`          | PRODUCT_OFFERING_STATE_CHANGE | A Product Offering `status` was changed by the Seller.                            |
-
-### 7.3.8. Type ProductSpecificationEvent
+### 7.3.10. Type ProductSpecificationAttributeValueChangeEvent
 
 **Description:**
 
@@ -4775,36 +5507,71 @@ Inherits from:
 
 - <a href="#T_Event">Event</a>
 
-<table id="T_ProductSpecificationEvent" style="width:100%">
+<table id="T_ProductSpecificationAttributeValueChangeEvent" style="width:100%">
     <thead style="font-weight:bold">
         <tr>
             <td>Name</td>
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
         <tr>
         <td>eventType</td>
-            <td><a href="#T_ProductSpecificationEventType">ProductSpecificationEventType</a></td>
+            <td>string</td>
             <td>M</td>
-            <td>Indicates the type of the event.
-</td>
+            <td>Indicates the type of the event.</td>
             <td></td>
         </tr><tr>
         <td>event</td>
             <td><a href="#T_ProductSpecificationEventPayload">ProductSpecificationEventPayload</a></td>
             <td>M</td>
-            <td>A reference to the object that is source of the notification.
+            <td>A reference to the object that is the source of the notification.
 </td>
             <td></td>
         </tr>
     </tbody>
 </table>
 
-### 7.3.9. Type ProductSpecificationEventPayload
+### 7.3.10. Type ProductSpecificationCreateEvent
+
+**Description:**
+
+Inherits from:
+
+- <a href="#T_Event">Event</a>
+
+<table id="T_ProductSpecificationCreateEvent" style="width:100%">
+    <thead style="font-weight:bold">
+        <tr>
+            <td>Name</td>
+            <td style="width:15%">Type</td>
+            <td>M/O</td>
+            <td>Description</td>
+            <td>MEF 127.1</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>eventType</td>
+            <td>string</td>
+            <td>M</td>
+            <td>Indicates the type of the event.</td>
+            <td></td>
+        </tr><tr>
+        <td>event</td>
+            <td><a href="#T_ProductSpecificationEventPayload">ProductSpecificationEventPayload</a></td>
+            <td>M</td>
+            <td>A reference to the object that is the source of the notification.
+</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+### 7.3.10. Type ProductSpecificationEventPayload
 
 **Description:** The identifier of the Product Specification being subject of
 this event.
@@ -4816,7 +5583,75 @@ this event.
             <td style="width:15%">Type</td>
             <td>M/O</td>
             <td>Description</td>
-            <td>MEF 127</td>
+            <td>MEF 127.1</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>id</td>
+            <td>string</td>
+            <td>M</td>
+            <td>ID of the Product Specification attributed by the Seller</td>
+            <td></td>
+        </tr><tr>
+        <td>href</td>
+            <td>uri<br/><span style="font-size:10px;font-style:italic">format = uri</span></td>
+            <td>O</td>
+            <td>Hyperlink to access the Product Specification</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+### 7.3.10. Type ProductSpecificationStateChangeEvent
+
+**Description:**
+
+Inherits from:
+
+- <a href="#T_Event">Event</a>
+
+<table id="T_ProductSpecificationStateChangeEvent" style="width:100%">
+    <thead style="font-weight:bold">
+        <tr>
+            <td>Name</td>
+            <td style="width:15%">Type</td>
+            <td>M/O</td>
+            <td>Description</td>
+            <td>MEF 127.1</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>eventType</td>
+            <td>string</td>
+            <td>M</td>
+            <td>Indicates the type of the event.</td>
+            <td></td>
+        </tr><tr>
+        <td>event</td>
+            <td><a href="#T_ProductSpecificationStateChangeEventPayload">ProductSpecificationStateChangeEventPayload</a></td>
+            <td>M</td>
+            <td>A reference to the object that is the source of the notification.
+</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+### 7.3.10. Type ProductSpecificationStateChangeEventPayload
+
+**Description:** The identifier of the Product Specification being subject of
+this event.
+
+<table id="T_ProductSpecificationStateChangeEventPayload" style="width:100%">
+    <thead style="font-weight:bold">
+        <tr>
+            <td>Name</td>
+            <td style="width:15%">Type</td>
+            <td>M/O</td>
+            <td>Description</td>
+            <td>MEF 127.1</td>
         </tr>
     </thead>
     <tbody>
@@ -4833,60 +5668,54 @@ this event.
             <td>Hyperlink to access the Product Specification</td>
             <td></td>
         </tr><tr>
-        <td>buyerId</td>
-            <td>string</td>
-            <td>O</td>
-            <td>The unique identifier of the organization that is acting as the a Buyer. MUST be specified in the request only when the responding represents more than one Buyer.</td>
-            <td></td>
-        </tr><tr>
-        <td>sellerId</td>
-            <td>string</td>
-            <td>O</td>
-            <td>The unique identifier of the organization that is acting as the Seller. MUST be specified in the request only when requester entity represents more than one Seller.</td>
+        <td>lifecycleStatus</td>
+            <td><a href="#T_ProductSpecificationLifecycleStatusType">ProductSpecificationLifecycleStatusType</a></td>
+            <td>M</td>
+            <td>The current lifecycle status of the Product Specification.</td>
             <td></td>
         </tr>
     </tbody>
 </table>
 
-### 7.3.10. `enum` ProductSpecificationEventType
+### 7.3.10. `enum` ProductSpecificationLifecycleStatusType
 
-**Description:** Type of the Product Specification event.
-
-| API name                                        | MEF 127 name                       | Description                                                                            |
-| ----------------------------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------- |
-| `productSpecificationCreateEvent`               | PRODUCT_SPECIFICATION_CREATE       | The Seller has published new Product Specification to the Buyers.                      |
-| `productSpecificationAttributeValueChangeEvent` | PRODUCT_SPECIFICATION_UPDATE       | The Seller settable attributes for a Product Specification were updated by the Seller. |
-| `productSpecificationStateChangeEvent`          | PRODUCT_SPECIFICATION_STATE_CHANGE | A Product Specification `status` was changed by the Seller.                            |
-
-<div class="page"/>
+| **Description:** | Name      | MEF 127 Name                                                                                                                                                                                                                                                                                                                                                                   | Description |
+| ---------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| obsolete         | OBSOLETE  | The Product Specification is only available in the Product Catalog for historical documentation reasons. There are no active Products on the Seller's Network based on the Product Specification. A Product Specification that is no longer available transitions to `obsolete` and may be removed at the Seller's discretion from the Product Catalog. This is a final state. |
+| published        | PUBLISHED | A Product Specification has been defined in the Product Catalog. Product Offerings based on the Product Specification may be available for ordering.                                                                                                                                                                                                                           |
 
 # 8. References
 
+- [ISO4217](https://www.currency-iso.org/en/home/tables/table-a1.html)
+  International Standards Organization ISO 4217:2015, 2015
 - [JSONSchema](https://json-schema.org/) JSON Schema main page
-- [OAS-v3](http://spec.openapis.org/oas/v3.0.3.html), February 2020
-- [MEF55.1](https://www.mef.net/wp-content/uploads/2021/02/MEF-55.1.pdf),
+- [MEF 55.1](https://www.mef.net/wp-content/uploads/2021/02/MEF-55.1.pdf),
   Lifecycle Service Orchestration (LSO): Reference Architecture and Framework,
   February 2021
-- [MEF79.1](http://www.mef.net/resources/technical-specifications/download?id=129&fileid=file1),
-  Address, Service Site, and Product Offering Qualification Management,
-  Requirements and Use Cases, November 2019
-- [MEF57.2](https://www.mef.net/wp-content/uploads/MEF-57.2.pdf), Product Order
+- [MEF 55.1.1](https://www.mef.net/wp-content/uploads/MEF-55.1.1.pdf), Amendment
+  to MEF 55.1: Reference Architecture and Framework - Terminology, June 2023
+- [MEF 57.2](https://www.mef.net/wp-content/uploads/MEF-57.2.pdf), Product Order
   Management Business Requirements and Use Cases, October 2022
-- [MEF113](https://www.mef.net/wp-content/uploads/MEF-113.pdf) Trouble
-  Ticketing Business Requirements and Use Cases, October 2022
-- [MEF127](https://www.mef.net/wp-content/uploads/MEF-127-Draft-R2.pdf),
-  Product Catalog Business Requirements and Use Cases, November 2023, Draft
-  Standard (R2)
-- [MEF128](https://www.mef.net/wp-content/uploads/MEF-128.pdf), LSO API
-  Security Profile, July 2023
+- [MEF 127.1](https://www.mef.net/wp-content/uploads/MEF-127.1-Draft-R1.pdf),
+  Product Catalog Business Requirements and Use Cases, December 2024, Draft
+  Standard (R1)
+- [MEF 128.1](https://www.mef.net/wp-content/uploads/MEF-128.1.pdf), LSO API
+  Security Profile, April 2024
+- [MEF 150](https://www.mef.net/wp-content/uploads/MEF-150-Draft-R1.pdf),
+  Installation Place and Service Site Management Business Requirements and Use
+  Cases, November 2024, Draft Standard (R1)
+- [OAS-v3](http://spec.openapis.org/oas/v3.0.3.html), February 2020
 - [REST](http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
   Fielding, Roy Thomas, Architectural Styles and the Design of Network-based
   Software Architectures (Ph.D.).
-- [RFC2119](https://tools.ietf.org/html/rfc2119), Key words for use in RFCs to
+- [RFC 2119](https://tools.ietf.org/html/rfc2119), Key words for use in RFCs to
   Indicate Requirement Levels, March 1997
-- [RFC3986](https://tools.ietf.org/html/rfc3986#section-3) Uniform Resource
+- [RFC 3986](https://tools.ietf.org/html/rfc3986#section-3) Uniform Resource
   Identifier (URI): Generic Syntax, January 2005
-- [RFC8174](https://tools.ietf.org/html/rfc8174), Ambiguity of Uppercase vs
+- [RFC 7231](https://tools.ietf.org/html/rfc7231), Hypertext Transfer Protocol
+  (HTTP/1.1): Semantics and Content, June 2014
+  https://tools.ietf.org/html/rfc7231
+- [RFC 8174](https://tools.ietf.org/html/rfc8174), Ambiguity of Uppercase vs
   Lowercase in RFC 2119 Key Words, May 2017
 - [TMF620](https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/4.1.0/user_guides/TMF620_Product_Catalog_Management_API_REST_Specification_v4-1-0.pdf),
   Product Catalog API REST Specification 4.1.0, April 2021

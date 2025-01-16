@@ -2,10 +2,7 @@
 
 'skinparam Linetype polyline
 'skinparam Linetype ortho
-skinparam state {
-    BackgroundColor White
-    BorderColor Black
-}
+
 hide empty description
 
 '''decisions'''
@@ -26,14 +23,16 @@ note right of product_order_moved : product order moved to cancelling?
 
 '''state redefinitions '''
 ' state exception <<end>>
+state "rejected.validated" as validated
+state "rejected.unassessed" as unassessed
 
 '''state rank'''
 other_errors -d[hidden]-> validation_passed
 other_errors -d[hidden]-> all_order_validated
 
 validation_passed_other -d[hidden]-> rejected
-validation_passed_other -d[hidden]-> rejected.validated
-validation_passed_other -d[hidden]-> rejected.unassessed
+validation_passed_other -d[hidden]-> validated
+validation_passed_other -d[hidden]-> unassessed
 
 inProgress -d[hidden]-> product_order_moved
 
@@ -62,17 +61,17 @@ pending --> product_order_moved
 product_order_moved --> failed : no
 product_order_moved --> cancelled : yes
 
-all_order_validated -[norank]-> rejected.unassessed : no
+all_order_validated -[norank]-> unassessed : no
 all_order_validated -d-> validation_passed_other : yes
 
 validation_passed_other -[norank]-> rejected : no
-validation_passed_other -[norank]-> rejected.validated : yes
+validation_passed_other -[norank]-> validated : yes
 
 completed --> [*]
 failed --> [*]
 cancelled --> [*]
-rejected.unassessed --> [*]
-rejected.validated --> [*]
+unassessed --> [*]
+validated --> [*]
 rejected --> [*]
 
 @enduml

@@ -1,19 +1,23 @@
 openapi: 3.0.1
 info:
   description: "**This file forms part of MEF W142**\n\nThis API implements the Business\
-    \ Requirements described in MEF W127.\n\n**This specification represents MEF work\
-    \ in progress and is subject to change.**  \n\nThis API implements Business Requirements\
-    \ that are defined in MEF Standard: MEF W127\n\nSupported use cases:\n- Retrieve\
-    \ List of Product Categories\n- Retrieve Product Category by Product Category\
-    \ Identifier\n- Retrieve List of Product Offerings\n- Retrieve Product Offering\
-    \ by Product Offering Identifier\n- Retrieve List of Product Specifications\n\
+    \ Requirements described in MEF W127.1.\n\n**This specification represents MEF\
+    \ work in progress and is subject to change.**  \n\nThis API implements Business\
+    \ Requirements that are defined in MEF Standard: MEF W127\n\nSupported use cases:\n\
+    - Retrieve List of Product Categories\n- Retrieve Product Category by Product\
+    \ Category Identifier\n- Retrieve List of Product Offerings\n- Retrieve Product\
+    \ Offering by Product Offering Identifier\n- Retrieve List of Product Specifications\n\
     - Retrieve Product Specification by Product Specification Identifier\n- Register\
     \ for Notifications \n- Unregister Notifications\n- Retrieve Notification Hub\
-    \ Registry\n"
+    \ Registry\n    Copyright 2024 MEF Forum and its contributors\n\n\nThis file includes\
+    \ content based on the TM Forum Product Catalog API (TMF620 v4.1.0) available\
+    \ at https://github.com/tmforum-apis/TMF620_ProductCatalog, which is licensed\
+    \ by the TM Forum under the Apache License version 2.0. Such content has been\
+    \ modified by the MEF Forum and its contributors.\n"
   title: Product Catalog
-  version: 2.0.0-RC
+  version: 3.0.0-RC
 servers:
-- url: "http://{serverBase}/mefApi/sonata/productCatalog/v2/"
+- url: "http://{serverBase}/mefApi/sonata/productCatalog/v3/"
 security:
 - oauth2MEFLSOAPI:
   - default
@@ -123,6 +127,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error403'
           description: Forbidden
+        "422":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Error422'
+                type: array
+          description: Unprocessable entity due to the business validation problems
         "500":
           content:
             application/json;charset=utf-8:
@@ -237,16 +249,7 @@ paths:
         name: lifecycleStatus
         required: false
         schema:
-          enum:
-          - announced
-          - endOfSale
-          - endOfSupport
-          - obsolete
-          - onHold
-          - orderable
-          - pilotBeta
-          - rejected
-          type: string
+          $ref: '#/components/schemas/ProductOfferingLifecycleStatusType'
       - description: "The name of the Seller's offer arrangement (such as a framework\
           \ agreement).  **Note:** The list of allowable values for agreements should\
           \ be negotiated between the Buyer and the Seller, during the integration\
@@ -278,10 +281,25 @@ paths:
       - description: Country where the products are offered by the Seller to potential
           Buyers.
         in: query
-        name: region.country
+        name: region.countryCode
         required: false
         schema:
           type: string
+      - description: "Determines whether a productOffering represents a single productOffering\
+          \ (false), or a bundle of productOfferings (true)."
+        in: query
+        name: isBundle
+        required: false
+        schema:
+          type: boolean
+      - description: A flag indicating if this product offer can be sold stand-alone
+          for sale or not. If this flag is false it indicates that the offer can only
+          be sold within a bundle.
+        in: query
+        name: isSellable
+        required: false
+        schema:
+          type: boolean
       - description: Identifier of the Category that Product Offering is the direct
           or transitive member of. Direct member - there is a direct relation between
           Category and Product Offering. Transitive member - there is a relation between
@@ -373,6 +391,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error403'
           description: Forbidden
+        "422":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Error422'
+                type: array
+          description: Unprocessable entity due to the business validation problems
         "500":
           content:
             application/json;charset=utf-8:
@@ -566,6 +592,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error403'
           description: Forbidden
+        "422":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Error422'
+                type: array
+          description: Unprocessable entity due to the business validation problems
         "500":
           content:
             application/json;charset=utf-8:
@@ -704,6 +738,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error403'
           description: Forbidden
+        "422":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Error422'
+                type: array
+          description: Unprocessable entity due to the business validation problems
         "500":
           content:
             application/json;charset=utf-8:
@@ -936,6 +978,8 @@ components:
           $ref: '#/components/schemas/ProductActionMask'
         businessFunction:
           $ref: '#/components/schemas/BusinessFunctionMask'
+      required:
+      - businessFunction
       type: object
     DataSizeUnit:
       description: The unit of measure in the data size.
@@ -955,6 +999,7 @@ components:
       properties:
         amount:
           description: "Duration (number of seconds, minutes, hours, etc.)"
+          minimum: 0
           type: integer
         units:
           $ref: '#/components/schemas/TimeUnit'
@@ -1063,6 +1108,40 @@ components:
         - code
         type: object
       description: Resource for the requested path not found. (https://tools.ietf.org/html/rfc7231#section-6.5.4)
+    Error422:
+      allOf:
+      - $ref: '#/components/schemas/Error'
+      - properties:
+          code:
+            $ref: '#/components/schemas/Error422Code'
+          propertyPath:
+            description: |
+              A pointer to a particular property of the payload that caused the validation issue. It is highly recommended that this property should be used.
+              Defined using JavaScript Object Notation (JSON) Pointer (https://tools.ietf.org/html/rfc6901).
+            type: string
+        required:
+        - code
+        type: object
+      description: Unprocessable entity due to a business validation problem. (https://tools.ietf.org/html/rfc4918#section-11.2)
+    Error422Code:
+      description: |
+        One of the following error codes:
+          - missingProperty: The property the Seller has expected is not present in the payload
+          - invalidValue: The property has an incorrect value
+          - invalidFormat: The property value does not comply with the expected value format
+          - referenceNotFound: The object referenced by the property cannot be identified in the Seller system
+          - unexpectedProperty: Additional property, not expected by the Seller has been provided
+          - tooManyRecords: the number of records to be provided in the response exceeds the Seller's threshold.
+          - otherIssue: Other problem was identified (detailed information provided in a reason)
+      enum:
+      - missingProperty
+      - invalidValue
+      - invalidFormat
+      - referenceNotFound
+      - unexpectedProperty
+      - tooManyRecords
+      - otherIssue
+      type: string
     Error500:
       allOf:
       - $ref: '#/components/schemas/Error'
@@ -1122,9 +1201,9 @@ components:
             \ Buyer Product Catalog Notification API (productCatalogNotification.api.yaml).\
             \ This property is appended with the base path and notification resource\
             \ path specified in that API to construct a URL to which notification\
-            \ is sent. E.g. for \"callback\": \"https://buyer.com/listenerEndpoint\"\
+            \ is sent. E.g. for \"callback\": \"https://buyer.mef.com/listenerEndpoint\"\
             , the Product Specification state change event notification will be sent\
-            \ to: `https://buyer.com/listenerEndpoint/mefApi/sonata/productCatalogNotifications/v2/listener/productCatalogStateChange`"
+            \ to: `https://buyer.mef.com/listenerEndpoint/mefApi/sonata/productCatalogNotifications/v3/listener/productCatalogStateChange`"
           type: string
         query:
           description: "This attribute is used to define which type of events to register\
@@ -1139,95 +1218,90 @@ components:
       required:
       - callback
       type: object
-    FieldedAddress:
+    FieldedAddressRepresentation:
       description: "A type of Address that has a discrete field and value for each\
         \ type of boundary or identifier down to the lowest level of detail. For example\
-        \ \"street number\" is one field, \"street name\" is another field, etc. Reference:\
-        \ MEF 79 (Sn 8.9.2)"
+        \ \"street number\" is one field, \"street name\" is another field, etc."
       properties:
-        country:
-          description: Country that the address is in
+        streetNr:
+          description: Number identifying a specific property on a public street.
+            It may be combined with streetNrLast for ranged addresses.
+          type: string
+        streetNrSuffix:
+          description: The first street number suffix (in a street number range) or
+            the suffix for the street number if there is no range
+          type: string
+        streetNrLast:
+          description: Last number in a range of street numbers allocated to an Address
+          type: string
+        streetNrLastSuffix:
+          description: Last street number suffix for a ranged Address
+          type: string
+        streetPreDirection:
+          description: The direction of the street that appears before the Street
+            Name
+          type: string
+        streetName:
+          description: Name of the street or other street type
           type: string
         streetType:
           description: "The type of street (e.g., alley, avenue, boulevard, brae,\
             \ crescent, drive, highway, lane, terrace, parade, place, tarn, way, wharf)"
           type: string
-        postcodeExtension:
-          description: An extension of a postal code. E.g. the part following the
-            dash in a US urban property address
-          type: string
-        city:
-          description: The city that the address is in
-          type: string
-        streetNr:
-          description: Number identifying a specific property on a public street.
-            It may be combined with streetNrLast for ranged addresses. MEF 79 defines
-            it as required however in certain countries it is not used we make it
-            optional in API.
+        streetPostDirection:
+          description: A modifier denoting a relative direction that appears after
+            the Street Name.
           type: string
         locality:
-          description: The locality that the address is in
+          description: An area of defined or undefined boundaries within a local authority
+            or other legislatively defined area.
+          type: string
+        city:
+          description: City in which the Address is located.
           type: string
         postcode:
-          description: Descriptor for a postal delivery area used to speed and simplify
+          description: A descriptor for a postal delivery area used to speed and simplify
             the delivery of mail (also known as zip code)
           type: string
-        streetNrLast:
-          description: Last number in a range of street numbers allocated to a property
-          type: string
-        streetNrSuffix:
-          description: The first street number suffix
-          type: string
-        streetName:
-          description: Name of the street or other street type
+        postcodeExtension:
+          description: "The extension used on a postal code. Note: there are different\
+            \ use codes for this attribute depending upon the country."
           type: string
         stateOrProvince:
-          description: The State or Province that the address is in
+          description: The State or Province in which the Address is located.
           type: string
-        streetNrLastSuffix:
-          description: Last street number suffix for a ranged address
+        country:
+          description: Country in which the Address is located.
           type: string
-        geographicSubAddress:
-          $ref: '#/components/schemas/GeographicSubAddress'
-        streetSuffix:
-          description: A modifier denoting a relative direction
-          type: string
-      required:
-      - city
-      - country
-      - streetName
-      type: object
-    GeographicSubAddress:
-      description: "Additional fields used to specify an address, as detailed as possible."
-      properties:
-        buildingName:
-          description: |
-            Allows for identification of places that require building name  as part of addressing information
-          type: string
-        id:
-          description: Unique Identifier of the subAddress
-          type: string
-        levelNumber:
-          description: "Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT\
-            \ 2"
-          type: string
-        levelType:
-          description: Describes level types within a building
-          type: string
-        privateStreetName:
-          description: '"Private streets internal to a property (e.g. a university)
-            may have internal names that are not recorded by the land title office'
-          type: string
-        privateStreetNumber:
-          description: Private street numbers internal to a private street
+        countryCode:
+          description: "Country in which the Address is located, defined using two\
+            \ characters as defined in ISO 3166"
+          maxLength: 2
+          minLength: 2
           type: string
         subUnit:
-          description: "Representation of a MEFSubUnit It is used for describing subunit\
-            \ within a subaddress  e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT,\
-            \ WHARF."
+          description: The Service Site Sub Unit represented as a list. This is a
+            list to allow complex sub-unit information such as SUITE 42 ROOM A
           items:
-            $ref: '#/components/schemas/MEFSubUnit'
+            $ref: '#/components/schemas/SubUnit'
           type: array
+        buildingName:
+          description: |
+            The well-known name of a building that is located at this Address (e.g., where there is one Address for a campus).
+          type: string
+        privateStreetNumber:
+          description: Street number on a private street within the Address.
+          type: string
+        privateStreetName:
+          description: "Private streets internal to a property (e.g., a university)\
+            \ may have internal names that are not recorded by the land title office."
+          type: string
+        language:
+          description: The language in which the address is expressed. Based on ISO
+            639:2023
+          maxLength: 2
+          minLength: 2
+          type: string
       type: object
     MEFBuyerSellerType:
       description: An enumeration with buyer and seller values.
@@ -1281,20 +1355,26 @@ components:
       - endOfTermAction
       - name
       type: object
-    MEFSubUnit:
-      description: Allows for sub unit identification
+    MEFPriceType:
+      description: Indicates if the price is for recurring or non-recurring charges.
+      enum:
+      - recurring
+      - nonRecurring
+      - usageBased
+      type: string
+    Money:
+      description: A base/value business entity used to represent money
       properties:
-        subUnitNumber:
-          description: "The discriminator used for the subunit, often just a simple\
-            \ number but may also be a range."
+        unit:
+          description: Currency (ISO4217 norm uses 3 letters to define the currency)
           type: string
-        subUnitType:
-          description: "The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,\
-            \ UNIT, WHARF."
-          type: string
+        value:
+          description: A positive floating point number
+          format: float
+          type: number
       required:
-      - subUnitNumber
-      - subUnitType
+      - unit
+      - value
       type: object
     Note:
       description: Extra information about a given entity. Only useful in processes
@@ -1332,10 +1412,15 @@ components:
             \ Offering and Place. This must be one of the roles as defined in the\
             \ related Product Specification. For example, `INSTALL_LOCATION`."
           type: string
+        isModifiable:
+          description: Specifies if the Place Relationship can be modified on an active
+            Product.
+          type: boolean
         minCardinality:
           description: "The minimum required number of PlaceRelationships of given\
             \ relationshipRole that must configured for ordered Product. For example,\
-            \ as specified in the 'Relationship Between Entities' Section of MEF 106."
+            \ as specified in the 'Relationship Between Entities' Section of MEF 106.\
+            \ `0` means the relation is optional."
           minimum: 0
           type: integer
         maxCardinality:
@@ -1347,9 +1432,74 @@ components:
           minimum: -1
           type: integer
       required:
+      - isModifiable
       - maxCardinality
       - minCardinality
       - relationshipRole
+      type: object
+    Price:
+      description: "Provides all amounts (tax included, duty-free, tax rate) and used\
+        \ currency of a Price"
+      properties:
+        taxRate:
+          description: "Price Tax Rate. Unit: [%]. E.g. value 16 stand for 16% tax."
+          format: float
+          type: number
+        taxIncludedAmount:
+          $ref: '#/components/schemas/Money'
+        dutyFreeAmount:
+          $ref: '#/components/schemas/Money'
+      required:
+      - dutyFreeAmount
+      type: object
+    PriceModifier:
+      description: "The Price Modifier allows specifying promotional (via Price Modifier\
+        \ Deal Reference) and/or volume based pricing discounts. For example, if only\
+        \ Minimum Quantity is specified, then the Price Modifier is a volume based\
+        \ discount, and if only Price Modifier Deal Reference is set then the Price\
+        \ Modifier is a form of promo code, and if both are set then the Pricer Modifier\
+        \ is a form of promo code with a minimum purchase requirement."
+      properties:
+        description:
+          description: Description of the Price Modifier
+          type: string
+        lastUpdate:
+          description: The last update time of this Price Modifier
+          format: date-time
+          type: string
+        validFor:
+          $ref: '#/components/schemas/TimePeriod'
+        region:
+          description: |
+            Allows constraining the Regions where the Price Modifier is applicable. Only the Regions that need to be constraint should be included (since this is inherited from the Product Offering Price).
+          items:
+            $ref: '#/components/schemas/Region'
+          type: array
+        minimumQuantity:
+          description: The minimum quantity of the associated Product Offering required
+            to receive the price reduction.
+          minimum: 0
+          type: integer
+        reductionPercentage:
+          description: "The amount of price discount, expressed as a percentage. A\
+            \ value of 5 represents a 5% price reduction. This attribute may only\
+            \ be set if the discountedPrice is not set."
+          maximum: 100
+          minimum: 0
+          type: number
+        discountedPrice:
+          $ref: '#/components/schemas/Price'
+        dealReference:
+          description: "A pre-agreed pricing modifier reference that the Seller is\
+            \ offering which may impact the pricing (for example, a Promo Code). This\
+            \ Price Modifier is applicable when the fulfillment of the associated\
+            \ Product Offering satisfies this pre-agreed Deal Reference."
+          type: string
+      required:
+      - description
+      - lastUpdate
+      - minimumQuantity
+      - validFor
       type: object
     ProductActionMask:
       description: Action that could be applied to the Product (or future product)
@@ -1436,9 +1586,8 @@ components:
     ProductOffering:
       allOf:
       - $ref: '#/components/schemas/ProductOffering_Common'
-      - description: "Represents entities that are orderable from the provider of\
-          \ the catalog, this resource included all available information of Product\
-          \ Offering"
+      - description: "Represents entities that are launched from the provider of the\
+          \ catalog, this resource included all available information of Product Offering"
         properties:
           statusTransition:
             description: "The list of Product Offering Status transitions, including\
@@ -1448,7 +1597,7 @@ components:
             type: array
           statusReason:
             description: Provides complementary information on the reason why the
-              `lifecycleStatus`` is set to a particular value.
+              `lifecycleStatus` is set to a particular value.
             type: string
           attachment:
             description: "Complements the Product Offering description with presentation,\
@@ -1463,12 +1612,22 @@ components:
               \ to Buyers. For instance, a Product Offering can be made available\
               \ with multiple commitment periods of 1, 2 or 3 year terms."
             items:
-              $ref: '#/components/schemas/MEFItemTerm'
+              $ref: '#/components/schemas/ProductOfferingTerm'
             type: array
           milestone:
-            description: Allows for constraining the milestones for the Product Offering.
+            description: "Allows constraining the Product Specification Milestones\
+              \ for the Product Offering. This list must be a subset of the Product\
+              \ Specification Milestones and if defined, it will override the entire\
+              \ set of Product Specification Milestones"
             items:
               $ref: '#/components/schemas/ProductMilestoneDefinition'
+            type: array
+          bundledProductOffering:
+            description: "Defines the set of Product Offerings that comprise the \
+              \ Product Offering Bundle, along with how they are related. This list\
+              \ may only be defined if 'isBundle' attribute is TRUE."
+            items:
+              $ref: '#/components/schemas/ProductOfferingBundleRelationship'
             type: array
           note:
             description: |
@@ -1476,7 +1635,7 @@ components:
             items:
               $ref: '#/components/schemas/Note'
             type: array
-          productOfferingSpecification:
+          productOfferingSpecificationSchema:
             $ref: '#/components/schemas/SchemaRefOrValue'
           productOfferingContextualInfo:
             description: Defines additional constraints on the Product Offering Specification
@@ -1485,39 +1644,60 @@ components:
             items:
               $ref: '#/components/schemas/ProductOfferingContextualInfo'
             type: array
-          productRelationship:
+          productRelationshipConstraint:
             description: "Allows constraining the relationships between related Product\
               \ Specifications. As an example, an Access E-Line OVC references Operator\
-              \ UNI and ENNI Product Offerings. Note: this effectively constrains\
-              \ the relationship between related Product Offerings (since the relationship\
-              \ is inherited from the Product Specification)."
+              \ UNI and ENNI Product Offerings. Note: this  constrains the relationship\
+              \ between related Product Offerings (since the relationship is inherited\
+              \ from the Product Specification)."
             items:
               $ref: '#/components/schemas/ProductRelationshipConstraint'
             type: array
-          placeRelationship:
+          placeRelationshipConstraint:
             description: Allows constraining the Place relationships for the Product
-              Offering.
+              Offering. Only the Place relationships that need to be constraint should
+              be included.
             items:
               $ref: '#/components/schemas/PlaceRelationshipConstraint'
             type: array
         required:
-        - agreement
-        - category
-        - channel
+        - description
         - id
+        - isBundle
+        - isSellable
         - lastUpdate
         - lifecycleStatus
-        - marketSegment
         - name
         - productSpecification
-        - region
+        - statusTransition
+    ProductOfferingBundleRelationship:
+      description: |
+        The Product Offering Bundle Relationship defines the set of Product Offerings that comprise a Product Offering Bundle, along with the ability to specify the minimum and maximum number of instances of a Product Offering (e.g. fixed, optional or variable component) that are supported for the Bundle. The Product Offering Bundle Relationship may only be specified within a Product Offering Bundle.
+      properties:
+        productOffering:
+          $ref: '#/components/schemas/ProductOfferingRef'
+        minCardinality:
+          description: The minimum required number of instances of the Bundled Product
+            Offerings
+          minimum: 0
+          type: integer
+        maxCardinality:
+          description: The maximum required number of instances of the Bundled Product
+            Offerings. -1 defines no restriction (unlimited)
+          minimum: -1
+          type: integer
+      required:
+      - maxCardinality
+      - minCardinality
+      - productOffering
+      type: object
     ProductOfferingContextualInfo:
       description: "Used for the cases when the schema must be differentiated per\
         \ the defined Context, where Context is built as a pair - a Business Function\
         \ (e.g. Quote) and Product Action (e.g. add). Those product schemas are created\
         \ by applying the constraints to Product Schemas defined in the Product Specification.\
         \ If provided, Contextual info MUST cover every possible combination of Product\
-        \ Actions and Business Functions  (if there are no differences per function\
+        \ Actions and Business Functions (if there are no differences per function\
         \ or per action then use wildcard - 'all' -  and reuse the value of Product\
         \ Offering Specification attribute)."
       properties:
@@ -1538,37 +1718,111 @@ components:
             is planned to occur or has occurred.
           format: date-time
           type: string
-        transitionLifecycleStatus:
+        lifecycleStatus:
           $ref: '#/components/schemas/ProductOfferingLifecycleStatusType'
+        statusReason:
+          description: "Provides complementary information on the reason why the Product\
+            \ Offering State is planned to occur or was set to a particular value.\
+            \ For example, a description of \"Supply Constraint\" as why a Product\
+            \ Offering is on ON_HOLD."
+          type: string
       required:
+      - lifecycleStatus
       - transitionDate
-      - transitionLifecycleStatus
       type: object
     ProductOfferingLifecycleStatusType:
       description: |
         | Name         | MEF 127 Name   | Description                                                                                                                                                                                                                                  |
         | ------------ | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-        | announced    | ANNOUNCED      | A Product Offering has been defined in the Product Catalog for marketing purposes, but is not yet available for ordering.                                                                                                                    |
+        | active       | ANNOUNCED      | A Product Offering has been defined in the Product Catalog for marketing purposes, but is not yet available for ordering.                                                                                                                    |
         | endOfSale    | END_OF_SALE    | The Product Offering or Product Specification cannot be Installed by any new or existing Buyers, but Buyers may still have Products in use and may modify or delete it, and receive support.                                                 |
         | endOfSupport | END_OF_SUPPORT | When a Product Offering or Product Specification in the `endOfSale` state is no longer supported, the status transitions to `endOfSupport`. Any existing products can no longer be modified, with the only Order action allowed is `delete`. |
         | inTest       | PILOT_BETA     | When a Product Offering or Product Specification starts Pilot/Beta testing, it starts in the `pilotBeta` state .                                                                                                                             |
         | obsolete     | OBSOLETE       | After a Product Offering or Product Specification that is no longer available it transitions to `obsolete` and may be removed at the Seller's discretion from the Product Catalog. This is a final state.                                    |
-        | onHold       | ON_HOLD        | A Product Offering or Product Specification that has been `orderable`, but is currently not available for Buyers due to supply constraints, product recall, or other issues preventing it from being offered.                                      |
-        | orderable    | ORDERABLE      | A new Product Offering or Product Specification is in the `orderable` state when it is available for ordering by Buyers.                                                                                                                     |
+        | onHold       | ON_HOLD        | A Product Offering or Product Specification that has been `launched`, but is currently not available for Buyers due to supply constraints, product recall, or other issues preventing it from being offered.                                      |
+        | launched     | ORDERABLE      | A new Product Offering or Product Specification is in the `launched` state when it is available for ordering by Buyers.                                                                                                                     |
         | rejected     | REJECTED       | When PILOT_BETA testing fails the Product Offering or Product Specification transitions to the `rejected` state. This is a final state.                                                                                                      |
       enum:
-      - announced
+      - active
       - endOfSale
       - endOfSupport
       - inTest
       - obsolete
       - onHold
-      - orderable
+      - launched
       - rejected
       type: string
+    ProductOfferingPrice:
+      description: "Is based on both the basic cost to develop and produce products\
+        \ and the enterprises policy on revenue targets. This price may be further\
+        \ revised through discounting (a Product Offering Price that reflects an alteration).\
+        \ The price, applied for a productOffering may also be influenced by the productOfferingTerm,\
+        \ the customer selected, eg: a productOffering can be offered with multiple\
+        \ terms, like commitment periods for the contract. The price may be influenced\
+        \ by this productOfferingTerm. A productOffering may be cheaper with a 24\
+        \ month commitment than with a 12 month commitment."
+      properties:
+        description:
+          description: Description of the productOfferingPrice
+          type: string
+        lastUpdate:
+          description: the last update time of this ProductOfferingPrice
+          format: date-time
+          type: string
+        validFor:
+          $ref: '#/components/schemas/TimePeriod'
+        bundledProductOffering:
+          $ref: '#/components/schemas/ProductOfferingRef'
+        region:
+          description: |
+            The areas where the Price is applicable. If region is an empty list, it implies that the Price is not region-restricted
+          items:
+            $ref: '#/components/schemas/Region'
+          type: array
+        note:
+          description: A set of comments for additional information.
+          items:
+            $ref: '#/components/schemas/Note'
+          type: array
+        priceType:
+          $ref: '#/components/schemas/MEFPriceType'
+        recurringChargePeriod:
+          $ref: '#/components/schemas/Duration'
+        unitOfMeasure:
+          description: "Unit of Measure if price depending on it (Gb, SMS volume,\
+            \ etc..) MEF: if Quote Item Price Type equals usageBased"
+          type: string
+        price:
+          $ref: '#/components/schemas/Price'
+        priceModifier:
+          description: Related price discounts.
+          items:
+            $ref: '#/components/schemas/PriceModifier'
+          type: array
+      required:
+      - description
+      - lastUpdate
+      - price
+      - priceType
+      - validFor
+      type: object
+    ProductOfferingTerm:
+      allOf:
+      - $ref: '#/components/schemas/MEFItemTerm'
+      - description: "The commitment duration under which a Product Offering is available\
+          \ to Buyers. A Product Offering can have multiple Product Offering Terms,\
+          \ each with a different commitment period, for instance with a 1, 2 or 3\
+          \ year duration."
+        properties:
+          productOfferingPrice:
+            description: A list of prices for which a Product Offering is available
+              for the Term Duration.
+            items:
+              $ref: '#/components/schemas/ProductOfferingPrice'
+            type: array
     ProductOfferingRef:
       description: ProductOffering reference. A product offering represents entities
-        that are orderable from the provider of the catalog.
+        that are launched from the provider of the catalog.
       properties:
         id:
           description: Unique (within the Seller domain) identifier for the Product
@@ -1582,7 +1836,7 @@ components:
       - id
       type: object
     ProductOffering_Common:
-      description: The Product Offering represents the Products orderable from a Seller's
+      description: The Product Offering represents the Products launched from a Seller's
         Product Catalog.
       properties:
         id:
@@ -1616,6 +1870,15 @@ components:
             \ Federal or Regulated) as used by the Seller in their official communication\
             \ of the Product."
           type: string
+        isBundle:
+          description: "Determines whether a productOffering represents a single productOffering\
+            \ (false), or a bundle of productOfferings (true)."
+          type: boolean
+        isSellable:
+          description: A flag indicating if this product offer can be ordered or not.
+            If this flag is false it indicates that the offer can only be sold within
+            a bundle.
+          type: boolean
         channel:
           description: |
             A list of names defined by the Seller which identify the different methods by which the Product Offering is made available to the Buyer for ordering. The different Sales Channels should be specified in the Standard Framework Agreement or provided during the onboarding process. For example: Reseller, Distribution, Direct Sales. Note: If Sales Channels is an empty list, it implies that the Product Offering is available in all Seller-supported Sales Channels.
@@ -1635,9 +1898,7 @@ components:
           type: array
         region:
           description: |
-            Areas where the products are offered by the Seller to potential Buyers.
-            Note: If region is an empty list, it implies that the Product Offering
-            is available in all Seller-supported Regions.
+            Areas where the products are offered by the Seller to potential Buyers. Note: If region is an empty list, it implies that the Product Offering is available in all Seller-supported Regions.
           items:
             $ref: '#/components/schemas/Region'
           type: array
@@ -1654,13 +1915,15 @@ components:
     ProductOffering_Find:
       allOf:
       - $ref: '#/components/schemas/ProductOffering_Common'
-      - description: "Represents entities that are orderable from the provider of\
-          \ the catalog, this resource includes pricing information."
+      - description: "Represents entities that are launched from the provider of the\
+          \ catalog, this resource includes pricing information."
         required:
         - agreement
         - category
         - channel
         - id
+        - isBundle
+        - isSellable
         - lastUpdate
         - lifecycleStatus
         - marketSegment
@@ -1671,7 +1934,7 @@ components:
       description: Allows definition and constraining of Product Relationship that
         can be specified for the ordered Product.
       properties:
-        id:
+        productSpecification:
           description: The identifier of the associated Product Specification to define
             the allowable target Product types
           type: string
@@ -1680,11 +1943,15 @@ components:
             This must be one of the relationshipTypes as defined by the main product
             specification.
           type: string
+        isModifiable:
+          description: Specifies if the Product Relationship can be modified on an
+            active Product.
+          type: boolean
         minCardinality:
           description: "The minimum required number of ProductRelationships (of given\
             \ relationshipType and target productSpecification) that must configured\
             \ for ordered Product. For example, as specified in the 'Relationship\
-            \ Between Entities' Section of MEF 106."
+            \ Between Entities' Section of MEF 106. `0` means the relation is optional."
           minimum: 0
           type: integer
         maxCardinality:
@@ -1695,9 +1962,10 @@ components:
           minimum: -1
           type: integer
       required:
-      - id
+      - isModifiable
       - maxCardinality
       - minCardinality
+      - productSpecification
       - relationshipType
       type: object
     ProductSpecification:
@@ -1730,7 +1998,8 @@ components:
               $ref: '#/components/schemas/PlaceRelationshipConstraint'
             type: array
           milestone:
-            description: Specifies the different stages of the Product Ordering.
+            description: Specifies the different milestones during the fulfillment
+              process
             items:
               $ref: '#/components/schemas/ProductMilestoneDefinition'
             type: array
@@ -1808,6 +2077,9 @@ components:
     Region:
       description: Specifies a region
       properties:
+        city:
+          description: City in which the Product can be provided
+          type: string
         locality:
           description: "An area of defined or undefined present boundaries within\
             \ a local authority or other legislatively defined area, usually rural\
@@ -1819,16 +2091,19 @@ components:
             be specified by a Seller for a Product Offering that is not available
             Country wide.
           type: string
-        country:
-          description: The Country that the region is located. MUST use the ISO 3166
-            two-letter codes.
+        countryCode:
+          description: "Country in which the Address is located, defined using two\
+            \ characters as defined in ISO 3166"
+          maxLength: 2
+          minLength: 2
           type: string
       required:
-      - country
+      - countryCode
       type: object
     RelatedContactInformation:
-      description: Contact data for a person or organization that is involved in a
-        given context. It is specified by the Seller (e.g. Seller Contact Information)
+      description: |
+        Contact data for a person or organization that is involved in a given
+        context. It is specified by the Seller (e.g. Seller Contact Information)
         or by the Buyer.
       properties:
         emailAddress:
@@ -1847,7 +2122,7 @@ components:
           description: The organization or company that the contact belongs to
           type: string
         postalAddress:
-          $ref: '#/components/schemas/FieldedAddress'
+          $ref: '#/components/schemas/FieldedAddressRepresentation'
         role:
           description: A role the party plays in a given context.
           type: string
@@ -1871,18 +2146,47 @@ components:
           format: uri
           type: string
       type: object
+    SubUnit:
+      description: Allows for sub unit identification
+      properties:
+        subUnitNumber:
+          description: "The discriminator used for the subunit, often just a simple\
+            \ number but may also be a range."
+          type: string
+        subUnitType:
+          description: "The type of subunit e.g. BERTH, FLAT, PIER, SUITE, SHOP, TOWER,\
+            \ UNIT, WHARF."
+          type: string
+      required:
+      - subUnitNumber
+      - subUnitType
+      type: object
+    TimePeriod:
+      description: "A period of time, either as a deadline (endDateTime only) a startDateTime\
+        \ only, or both."
+      properties:
+        startDateTime:
+          description: "Start of the time period, using IETC-RFC-3339 format. If you\
+            \ define a start, you must also define an end"
+          format: date-time
+          type: string
+        endDateTime:
+          description: "End of the time period, using IETC-RFC-3339 format"
+          format: date-time
+          type: string
+      type: object
     TimeUnit:
       description: |
         Represents a unit of time.
-        Reference: MEF 57.2 (Sn 9.22)
       enum:
-      - calendarMonths
-      - calendarDays
-      - calendarHours
-      - calendarMinutes
-      - businessDays
+      - seconds
+      - minutes
       - businessHours
-      - businessMinutes
+      - calendarHours
+      - businessDays
+      - calendarDays
+      - months
+      - years
       type: string
   securitySchemes:
     oauth2MEFLSOAPI:

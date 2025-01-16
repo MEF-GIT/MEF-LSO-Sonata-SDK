@@ -1,82 +1,78 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
-
-class Error400 {
-
-    code*: string 
-}
-Error <|-- Error400
-
-
-
-class Error401 {
-
-    code*: string 
-}
-Error <|-- Error401
-
-
-
-class Error403 {
-
-    code*: string 
-}
-Error <|-- Error403
-
-
-
-class Error408 {
-
-    code*: string 
-}
-Error <|-- Error408
-
-
-
-class Error500 {
-
-    code*: string 
-}
-Error <|-- Error500
-
-
-
-class Error {
-
-    message: string 
-    reason*: string 
-    referenceError: uri 
-}
-
 
 
 class Event {
 
-    eventId*: string 
-    eventTime*: date-time 
-    eventType*: QuoteEventType 
-}
-
-Event *-->"1" QuoteEvent : event
-
-
-class QuoteEvent {
-
-    id*: string 
-    href: string 
-    quoteItemId: string 
-    buyerId: string 
-    sellerId: string 
+    eventId*: string
+    eventTime*: date-time
+    eventType*: string
+    event*: object
 }
 
 
 
-enum QuoteEventType {
+enum MEFQuoteItemStateType {
 
-    quoteStateChangeEvent
-    quoteItemStateChangeEvent
+    answered
+    acknowledged
+    approved.orderable
+    approved.orderableAlternate
+    inProgress
+    inProgress.draft
+    rejected
+    abandoned
+    unableToProvide
 }
+enum MEFQuoteStateType {
+
+    accepted
+    acknowledged
+    answered
+    approved.orderable
+    approved.orderableAlternate
+    cancelled
+    unableToProvide
+    declined
+    expired
+    inProgress
+    inProgress.draft
+    rejected
+}
+class QuoteItemStateChangeEvent {
+
+    eventType*: string
+}
+Event <|-- QuoteItemStateChangeEvent
+
+QuoteItemStateChangeEvent *-->"1" QuoteItemStateChangeEventPayload : event
+
+
+class QuoteItemStateChangeEventPayload {
+
+    id*: string
+    href: string
+    quoteItemId*: string
+    state*: MEFQuoteItemStateType
+}
+
+
+
+class QuoteStateChangeEvent {
+
+    eventType*: string
+}
+Event <|-- QuoteStateChangeEvent
+
+QuoteStateChangeEvent *-->"1" QuoteStateChangeEventPayload : event
+
+
+class QuoteStateChangeEventPayload {
+
+    id*: string
+    href: string
+    state*: MEFQuoteStateType
+}
+
+
+
 @enduml

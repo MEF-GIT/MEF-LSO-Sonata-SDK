@@ -1,14 +1,4 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-    shadowing true
-    RoundCorner 0
-    LineColor DarkRed
-    ArrowColor DarkRed
-    ArrowThickness 1
-}
-
 
 
 class ProductOffering_Common {
@@ -20,6 +10,8 @@ class ProductOffering_Common {
     lastUpdate: date-time
     lifecycleStatus: ProductOfferingLifecycleStatusType
     agreement: string
+    isBundle: boolean
+    isSellable: boolean
     channel: string[]
     marketSegment: string[]
 }
@@ -39,23 +31,24 @@ class ProductCategoryRef {
     id*: string
     href: uri
 }
-
 class Region {
 
+    city: string
     locality: string
     stateOrProvince: string
-    country*: string
+    countryCode*: string
 }
+
 
 enum ProductOfferingLifecycleStatusType {
 
-    announced
+    active
     endOfSale
     endOfSupport
     inTest
     obsolete
     onHold
-    orderable
+    launched
     rejected
 }
 

@@ -2,11 +2,11 @@
 
 'skinparam Linetype polyline
 ' skinparam Linetype ortho
-skinparam state {
-    BackgroundColor White
-    BorderColor Black
-}
+
 hide empty description
+
+state "inProgress.assessingCharge" as assessingCharge
+state "done.declined" as declined
 
 '''decisions'''
 state business_validation_pass <<choice>> 
@@ -27,15 +27,15 @@ business_validation_pass --> charges_associated : yes
 business_validation_pass --> rejected : no
 
 charges_associated --> done : no
-charges_associated --> inProgress.assessingCharge : yes
+charges_associated --> assessingCharge : yes
 
-inProgress.assessingCharge --> blocking_charges_accepted
+assessingCharge --> blocking_charges_accepted
 
 blocking_charges_accepted --> done : yes
-blocking_charges_accepted --> done.declined : no
+blocking_charges_accepted --> declined : no
 
 done --> [*]
-done.declined --> [*]
+declined --> [*]
 rejected --> [*]
 
 @enduml

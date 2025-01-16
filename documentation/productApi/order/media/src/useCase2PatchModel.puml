@@ -1,49 +1,5 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
 
-
-class FieldedAddress {
-
-    city*: string
-    country*: string
-    locality: string
-    postcode: string
-    postcodeExtension: string
-    stateOrProvince: string
-    streetName*: string
-    streetNr: string
-    streetNrLast: string
-    streetNrLastSuffix: string
-    streetNrSuffix: string
-    streetSuffix: string
-    streetType: string
-}
-RelatedPlaceRefOrValue <|-- FieldedAddress
-
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
-
-class RelatedPlaceRefOrValue {
-
-    @schemaLocation: uri
-    @type*: string
-    role*: string
-}
-
-
-
-class GeographicSubAddress {
-
-    buildingName: string
-    levelNumber: string
-    levelType: string
-    privateStreetName: string
-    privateStreetNumber: string
-}
-
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
 
 
 class Note {
@@ -54,6 +10,8 @@ class Note {
     source*: MEFBuyerSellerType
     text*: string
 }
+
+
 
 
 
@@ -69,8 +27,7 @@ MEFProductOrderItem_Update *-->"*" RelatedContactInformation : relatedContactInf
 
 
 
-
-class MEFSubUnit {
+class SubUnit {
 
     subUnitNumber*: string
     subUnitType*: string
@@ -89,7 +46,6 @@ ProductOrder_Update *-->"*" RelatedContactInformation : relatedContactInformatio
 
 
 
-
 class RelatedContactInformation {
 
     emailAddress*: string
@@ -100,7 +56,31 @@ class RelatedContactInformation {
     role*: string
 }
 
-RelatedContactInformation *--> FieldedAddress : postalAddress
+RelatedContactInformation *--> FieldedAddressRepresentation : postalAddress
+class FieldedAddressRepresentation {
+
+    streetNr: string
+    streetNrSuffix: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetPreDirection: string
+    streetName: string
+    streetType: string
+    streetPostDirection: string
+    poBox: string
+    locality: string
+    city: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+    countryCode: string
+    buildingName: string
+    privateStreetNumber: string
+    privateStreetName: string
+    language: string
+}
+
+FieldedAddressRepresentation *-->"*" SubUnit : subUnit
 
 
 @enduml

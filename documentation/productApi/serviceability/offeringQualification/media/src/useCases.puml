@@ -1,0 +1,24 @@
+@startuml
+
+left to right direction
+actor Seller
+actor Buyer
+
+rectangle {
+
+Buyer --> (1. Register for POQ Notifications)
+Buyer --> (2. Create POQ)
+    (2. Create POQ) --> (2c. with action modify with a Product.id)
+    (2. Create POQ) --> (2b. with action add with a productSpecification)
+    (2. Create POQ) --> (2a. with action add with a productOffering)
+    
+
+Buyer --> (3. Retrieve POQ List)
+Buyer --> (4. Retrieve POQ by POQ Identifier)
+(5. Send POQ Notification) <-- Seller
+
+Seller -[hidden]up-> (2c. with action modify with a Product.id)
+
+}
+
+@enduml

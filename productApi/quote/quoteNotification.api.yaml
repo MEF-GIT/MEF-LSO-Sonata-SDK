@@ -1,9 +1,11 @@
 openapi: 3.0.1
 info:
   description: |
-    **This file forms part of MEF 115**
+    **This file forms part of MEF 115.1**
+    **This draft represents MEF work in progress and is subject to change.**
 
-    This API implements Business Requirements described in MEF 80
+    This API implements Business Requirements described in MEF 80 and MEF 80.0.1
+
 
     Quote API allows the Buyer to submit a request to find out how much the installation
     of an instance of a Product Offering, an update to an existing Product, or
@@ -12,7 +14,7 @@ info:
     List of supported Use Cases:
     - Send Quote Notification
 
-    Copyright 2021 MEF Forum and its contributors.
+    Copyright 2024 MEF Forum and its contributors.
 
     This file includes content based on the TM Forum Quote Management API
     (TMF648 v4.0.0) available at
@@ -20,12 +22,12 @@ info:
     the TM Forum under the Apache License version 2.0. Such content has been
     modified by the MEF Forum and its contributors.
   title: Quote Notification
-  version: 8.0.1
+  version: 9.0.0-RC
   x-logo:
     url: /redoc/logo.png
     backgroundColor: '#FFFFFF'
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/quoteNotification/v8/'
+  - url: 'https://{serverBase}/mefApi/sonata/quoteNotification/v9/'
     variables:
       serverBase:
         default: mef.net
@@ -41,11 +43,30 @@ paths:
       description: |
         This endpoint is used to receive notifications on Quote state change
       operationId: listenToQuoteStateChangeEvent
+      parameters:
+        - name: buyerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Buyer. MUST be specified in the request when the requester
+            represents more than one Buyer.
+          required: false
+          schema:
+            type: string
+        - name: sellerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request when the responding entity
+            represents more than one Seller.
+          required: false
+          schema:
+            type: string
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/Event'
+              $ref: '#/components/schemas/QuoteStateChangeEvent'
         required: true
       responses:
         '204':
@@ -78,7 +99,6 @@ paths:
       summary: Quote State Change Notification endpoint
       tags:
         - Notification listeners
-      x-codegen-request-body-name: data
   /listener/quoteItemStateChangeEvent:
     post:
       deprecated: false
@@ -86,11 +106,30 @@ paths:
         This endpoint is used to receive notifications on Quote Item state
         change
       operationId: listenToQuoteItemStateChangeEvent
+      parameters:
+        - name: buyerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Buyer. MUST be specified in the request when the requester
+            represents more than one Buyer.
+          required: false
+          schema:
+            type: string
+        - name: sellerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request when the responding entity
+            represents more than one Seller.
+          required: false
+          schema:
+            type: string
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/Event'
+              $ref: '#/components/schemas/QuoteItemStateChangeEvent'
         required: true
       responses:
         '204':
@@ -123,7 +162,6 @@ paths:
       summary: Quote Item State Change Notification endpoint
       tags:
         - Notification listeners
-      x-codegen-request-body-name: data
 components:
   schemas:
     Error400Code:
@@ -275,62 +313,163 @@ components:
       description: >-
         Event class is used to describe information structure used for
         notification.
+      type: object
       properties:
         eventId:
           description: Id of the event
           type: string
         eventTime:
-          description: Datetime when the event occurred
-          format: date-time
+          description: Date-time when the event occurred
           type: string
+          format: date-time
         eventType:
-          $ref: '#/components/schemas/QuoteEventType'
+          description: The type of the notification.
+          type: string
         event:
-          $ref: '#/components/schemas/QuoteEvent'
+          description: The event linked to the involved resource object
+          type: object
       required:
         - event
         - eventId
         - eventTime
         - eventType
-      type: object
-    QuoteEvent:
-      description: >-
-        The identifier of the Quote and/or Quote Item being subject of this
-        event.
-      properties:
-        sellerId:
-          description: >-
-            The unique identifier of the organization that is acting as the
-            Seller. MUST be specified in the request only when the requester
-            entity represents more than one Seller.
+    MEFQuoteItemStateType:
+      description: |
+        Possible values for the status of a QuoteItem.
 
-            Reference: MEF 79 (Sn 8.8)
-          type: string
+        Following mapping has been used between `MEFQuoteItemStateType` and MEF
+        80:
+
+        | MEFQuoteItemStateType       | MEF 80                            |
+        | ----------------------------| --------------------------------- |
+        | answered                    | ANSWERED                          |
+        | acknowledged                | ACKNOWLEDGED                      |
+        | approved.orderable          | ORDERABLE                         |
+        | approved.orderableAlternate | ORDERABLE_ALTERNATE               |
+        | inProgress                  | IN_PROGRESS                       |
+        | inProgress.draft            | IN_PROGRESS_DRAFT                 |
+        | abandoned                   | ABANDONED                         |
+        | rejected                    | REJECTED                          |
+        | unableToProvide             | UNABLE_TO_PROVIDE                 |
+      enum:
+        - answered
+        - acknowledged
+        - approved.orderable
+        - approved.orderableAlternate
+        - inProgress
+        - inProgress.draft
+        - rejected
+        - abandoned
+        - unableToProvide
+      type: string
+    MEFQuoteStateType:
+      description: |
+        Possible values for the status of a Quote.
+        Following mapping has been used between `MEFQuoteStateType` and MEF 80:
+
+         | QuoteStateType                            | MEF 80                            |
+         | ----------------------------------------- | --------------------------------- |
+         | accepted                                  | ACCEPTED                          |
+         | acknowledged                              | ACKNOWLEDGED                      |
+         | answered                                  | ANSWERED                          |
+         | approved.orderable                        | ORDERABLE                         |
+         | approved.orderableAlternate               | ORDERABLE_ALTERNATE               |
+         | declined                                  | DECLINED                          |
+         | expired                                   | EXPIRED                           |
+         | cancelled                                 | CANCELLED                         |
+         | unableToProvide                           | UNABLE_TO_PROVIDE                 |
+         | inProgress                                | IN_PROGRESS                       |
+         | inProgress.draft                          | IN_PROGRESS_DRAFT                 |
+         | rejected                                  | REJECTED                          |
+      enum:
+        - accepted
+        - acknowledged
+        - answered
+        - approved.orderable
+        - approved.orderableAlternate
+        - cancelled
+        - unableToProvide
+        - declined
+        - expired
+        - inProgress
+        - inProgress.draft
+        - rejected
+      type: string
+    QuoteItemStateChangeEvent:
+      allOf:
+        - $ref: '#/components/schemas/Event'
+        - description: QuoteItemStateChangeEvent structure
+          type: object
+          properties:
+            eventType:
+              description:
+                Indicates the type of product offering qualification event.
+              type: string
+              enum:
+                - quoteItemStateChangeEvent
+            event:
+              description: |
+                A reference to the Quote that is source of the notification.
+              $ref: '#/components/schemas/QuoteItemStateChangeEventPayload'
+          required:
+            - event
+            - eventType
+    QuoteItemStateChangeEventPayload:
+      description:
+        A reference to the Quote that is the source of the notification.
+      type: object
+      properties:
         id:
-          description: ID of the Quote attributed by quoting system
+          description: The Quote unique identifier.
           type: string
         href:
-          description: Hyperlink to access the quote
+          description: Link to the Quote
           type: string
         quoteItemId:
           description: >-
-            ID of the Quote Item (within the Quote) which state change
-            triggered the event
+            ID of the Quote Item (within the Quote) which state change triggered
+            the event
           type: string
-        buyerId:
-          description: >-
-            The unique identifier of the organization that is acting as the a
-            Buyer. MUST be specified in the request only when the responding
-            represents more than one Buyer.
-
-            Reference: MEF 79 (Sn 8.8)
-          type: string
+        state:
+          description: The state reached at change date
+          $ref: '#/components/schemas/MEFQuoteItemStateType'
       required:
         - id
+        - quoteItemId
+        - state
+    QuoteStateChangeEvent:
+      allOf:
+        - $ref: '#/components/schemas/Event'
+        - description: QuoteStateChangeEvent structure
+          type: object
+          properties:
+            eventType:
+              description:
+                Indicates the type of product offering qualification event.
+              type: string
+              enum:
+                - quoteStateChangeEvent
+            event:
+              description: |
+                A reference to the Quote that is source of the notification.
+              $ref: '#/components/schemas/QuoteStateChangeEventPayload'
+          required:
+            - event
+            - eventType
+    QuoteStateChangeEventPayload:
+      description:
+        A reference to the Quote that is the source of the notification.
       type: object
-    QuoteEventType:
-      description: Type of the Event
-      enum:
-        - quoteStateChangeEvent
-        - quoteItemStateChangeEvent
-      type: string
+      properties:
+        id:
+          description: The Quote unique identifier.
+          type: string
+        href:
+          description: Link to the Quote
+          type: string
+        state:
+          description: The state reached at change date
+          $ref: '#/components/schemas/MEFQuoteStateType'
+      required:
+        - id
+        - state

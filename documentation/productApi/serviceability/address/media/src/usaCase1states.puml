@@ -1,0 +1,33 @@
+@startuml
+
+'skinparam Linetype polyline
+'skinparam Linetype ortho
+
+hide empty description
+
+'''decisions'''
+state response <<choice>> 
+ note left of response : Response type ?
+ 
+state validation <<choice>> 
+ note left of validation : Validation OK ?
+
+
+
+''' diagram'''
+[*] -d-> response
+
+response -d-> acknowledged: deferred
+
+acknowledged -d-> validation
+validation -d-> inProgress: Yes
+inProgress -d-> ready
+ready -d-> [*]
+
+validation -r-> rejected: No
+rejected -d-> [*]
+response -d->  ready: immediate
+
+
+ 
+@enduml

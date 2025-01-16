@@ -1,8 +1,20 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
+
+enum Error400Code {
+
+    missingQueryParameter
+    missingQueryValue
+    invalidQuery
+    invalidBody
 }
+class Error {
+
+    reason*: string
+    message: string
+    referenceError: uri
+}
+
+
 
 class Error400 {
 
@@ -20,6 +32,11 @@ Error <|-- Error401
 
 
 
+enum Error401Code {
+
+    missingCredentials
+    invalidCredentials
+}
 class Error403 {
 
     code*: Error403Code
@@ -40,6 +57,8 @@ class Error404 {
 }
 Error <|-- Error404
 
+
+
 class Error422 {
 
     code*: Error422Code
@@ -48,35 +67,6 @@ class Error422 {
 Error <|-- Error422
 
 
-
-class Error500 {
-
-    code*: string
-}
-Error <|-- Error500
-
-
-
-class Error {
-
-    reason*: string
-    message: string
-    referenceError: uri
-}
-
-enum Error400Code {
-
-    missingQueryParameter
-    missingQueryValue
-    invalidQuery
-    invalidBody
-}
-
-enum Error401Code {
-
-    missingCredentials
-    invalidCredentials
-}
 
 enum Error422Code {
 
@@ -88,4 +78,19 @@ enum Error422Code {
     tooManyRecords
     otherIssue
 }
+class Error500 {
+
+    code*: string
+}
+Error <|-- Error500
+
+
+
+class Error501 {
+
+    code*: string
+}
+Error <|-- Error501
+
+
 @enduml

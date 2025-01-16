@@ -1,135 +1,142 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
+
+class GeographicAddressRefOrQuery {
+    --
+    discriminator:
+    GeographicAddressRef
+    GeographicAddress_Query
 }
 
+GeographicAddressRefOrQuery ..> GeographicAddressRef : ""
+GeographicAddressRefOrQuery ..> GeographicAddress_Query : ""
 
-class FieldedAddress {
-
-    city*: string 
-    country*: string 
-    locality: string 
-    postcode: string 
-    postcodeExtension: string 
-    stateOrProvince: string 
-    streetName*: string 
-    streetNr: string 
-    streetNrLast: string 
-    streetNrLastSuffix: string 
-    streetNrSuffix: string 
-    streetSuffix: string 
-    streetType: string 
-}
-GeographicAddressRefOrValue <|-- FieldedAddress
-
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
-
-
-class FormattedAddress {
-
-    addrLine1*: string 
-    addrLine2: string 
-    city*: string 
-    country*: string 
-    locality: string 
-    postcode: string 
-    postcodeExtension: string 
-    stateOrProvince: string 
-}
-GeographicAddressRefOrValue <|-- FormattedAddress
-
-
-
-class GeographicAddressLabel {
-
-    externalReferenceId*: string 
-    externalReferenceType*: string 
-}
-GeographicAddressRefOrValue <|-- GeographicAddressLabel
 
 
 
 class GeographicAddressRef {
 
-    href: string 
-    id*: string 
-}
-GeographicAddressRefOrValue <|-- GeographicAddressRef
-
-
-
-class GeographicAddressRefOrValue {
-
-    @schemaLocation: uri 
-    @type*: string 
+    href: string
+    id*: string
+    @type*: string
 }
 
 
 
 class GeographicSite {
 
-    id*: string 
-    href: string 
-    description: string 
-    name: string 
-    companyName: string 
-    customerName: string 
-    siteType: MEFSiteType 
-    @type: string 
+    id*: string
+    href: string
+    name*: string
+    administrativeAuthority*: string
+    customerName*: string
+    siteRestrictionType*: SiteRestrictionType
+    networkType*: SiteNetworkType
+    @type*: string
 }
 
-GeographicSite *-->"*" GeographicAddressRefOrValue : place
-GeographicSite *-->"*" RelatedContactInformation : relatedContactInformation
+GeographicSite *-->"1" GeographicAddressRefOrQuery : place
+GeographicSite *-->"1..*" SubUnit : subUnit
 
 
-class GeographicSubAddress {
+class GeographicSite_Query {
 
-    buildingName: string 
-    levelNumber: string 
-    levelType: string 
-    privateStreetName: string 
-    privateStreetNumber: string 
+    name: string
+    administrativeAuthority: string
+    customerName: string
+    siteRestrictionType: SiteRestrictionType
+    networkType: SiteNetworkType
 }
 
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
+GeographicSite_Query *-->"1" GeographicAddressRefOrQuery : place
+GeographicSite_Query *-->"*" SubUnit : subUnit
 
 
-class MEFGeographicPoint {
+enum SiteNetworkType {
 
-    spatialRef*: string 
-    x*: string 
-    y*: string 
-    z: string 
+    offNet
+    onNet
 }
-GeographicAddressRefOrValue <|-- MEFGeographicPoint
-
-
-
-class MEFSubUnit {
-
-    subUnitNumber*: string 
-    subUnitType*: string 
-}
-
-
-
-class RelatedContactInformation {
-
-    emailAddress*: string 
-    name*: string 
-    number*: string 
-    numberExtension: string 
-    organization: string 
-    role*: string 
-}
-
-RelatedContactInformation *--> FieldedAddress : postalAddress
-
-
-enum MEFSiteType {
+enum SiteRestrictionType {
 
     public
     private
 }
+class FieldedAddressRepresentation {
+
+    streetNr: string
+    streetNrSuffix: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetPreDirection: string
+    streetName: string
+    streetType: string
+    streetPostDirection: string
+    poBox: string
+    locality: string
+    city: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+    countryCode: string
+    buildingName: string
+    privateStreetNumber: string
+    privateStreetName: string
+    language: string
+}
+
+FieldedAddressRepresentation *-->"*" SubUnit : subUnit
+
+
+class FormattedAddressRepresentation {
+
+    formattedAddress*: string
+    language: string
+}
+
+
+
+class GeographicAddress_Query {
+
+    @type*: string
+}
+
+GeographicAddress_Query *-->"*" FieldedAddressRepresentation : fieldedAddressRepresentation
+GeographicAddress_Query *-->"*" FormattedAddressRepresentation : formattedAddressRepresentation
+GeographicAddress_Query *-->"*" GeographicPointRepresentation : geographicPointRepresentation
+GeographicAddress_Query *-->"*" LabelRepresentation : labelRepresentation
+
+
+class GeographicPointRepresentation {
+
+    spatialRef*: string
+    latitude*: string
+    longitude*: string
+    elevation: string
+}
+
+
+
+class LabelRepresentation {
+
+    label*: string
+    administrativeAuthority*: string
+    language: string
+}
+
+
+
+class GeographicAddressRefOrQuery {
+
+}
+
+
+
+class SubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+
+
+
 @enduml

@@ -1,8 +1,4 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
 
 class MEFProductOrderChargeItem {
 
@@ -19,38 +15,6 @@ class MEFProductOrderChargeItem {
 
 MEFProductOrderChargeItem *-->"1" Price : price
 MEFProductOrderChargeItem *-->"*" Note : note
-
-enum MEFPriceCategory {
-
-  expedite
-  construction
-  connection
-  inFlightCancellation
-  disconnect
-  other
-}
-
-enum MEFProductOrderChargeStateType {
-
-    awaitingResponse
-    completed
-    withdrawnBySeller
-}
-
-
-enum MEFProductOrderChargeItemStateType {
-
-    awaitingResponse
-    acceptedByBuyer
-    declinedByBuyer
-    withdrawnBySeller
-}
-
-enum MEFAcceptedRejectedType {
-
-    accepted
-    rejected
-}
 
 
 class MEFCancelProductOrderRef {
@@ -77,11 +41,6 @@ MEFProductOrderCharge *--> MEFProductOrderRef : productOrder
 MEFProductOrderCharge *--> MEFProductOrderItemRef : productOrderItem
 
 
-enum MEFProductOrderChargeActivityType {
-
-    new
-    change
-}
 
 MEFProductOrderChargeItem *--> Price : price
 
@@ -115,23 +74,6 @@ class MEFProductOrderItemRef {
     productOrderHref: string
     productOrderId*: string
     productOrderItemId*: string
-}
-
-
-enum MEFChargePeriod {
-
-    hour
-    day
-    week
-    month
-    year
-}
-
-enum MEFPriceType {
-
-    recurring
-    nonRecurring
-    usageBased
 }
 
 

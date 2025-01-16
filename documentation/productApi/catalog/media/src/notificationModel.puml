@@ -1,82 +1,144 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
 
 
 class Event {
 
     eventId*: string
     eventTime*: date-time
+    eventType*: string
+    event*: object
 }
 
-class ProductCategoryEvent {
 
-    eventType*: ProductCategoryEventType
+
+class ProductCategoryAttributeValueChangeEvent {
+
+    eventType*: string
 }
-Event <|-- ProductCategoryEvent
+Event <|-- ProductCategoryAttributeValueChangeEvent
 
-ProductCategoryEvent *-->"1" ProductCategoryEventPayload : event
+ProductCategoryAttributeValueChangeEvent *-->"1" ProductCategoryEventPayload : event
+
+
+class ProductCategoryCreateEvent {
+
+    eventType*: string
+}
+Event <|-- ProductCategoryCreateEvent
+
+ProductCategoryCreateEvent *-->"1" ProductCategoryEventPayload : event
+
 
 class ProductCategoryEventPayload {
 
-    sellerId: string
     id*: string
-    href: string
-    buyerId: string
+    href: uri
 }
 
-class ProductOfferingEvent {
 
-    eventType*: ProductOfferingEventType
+
+class ProductOfferingAttributeValueChangeEvent {
+
+    eventType*: string
 }
-Event <|-- ProductOfferingEvent
+Event <|-- ProductOfferingAttributeValueChangeEvent
 
-ProductOfferingEvent *-->"1" ProductOfferingEventPayload : event
+ProductOfferingAttributeValueChangeEvent *-->"1" ProductOfferingEventPayload : event
+
+
+class ProductOfferingCreateEvent {
+
+    eventType*: string
+}
+Event <|-- ProductOfferingCreateEvent
+
+ProductOfferingCreateEvent *-->"1" ProductOfferingEventPayload : event
+
 
 class ProductOfferingEventPayload {
 
-    sellerId: string
     id*: string
-    href: string
-    buyerId: string
+    href: uri
 }
 
-class ProductSpecificationEvent {
 
-    eventType*: ProductSpecificationEventType
+
+enum ProductOfferingLifecycleStatusType {
+
+    active
+    endOfSale
+    endOfSupport
+    inTest
+    obsolete
+    onHold
+    launched
+    rejected
 }
-Event <|-- ProductSpecificationEvent
+class ProductOfferingStateChangeEvent {
 
-ProductSpecificationEvent *-->"1" ProductSpecificationEventPayload : event
+    eventType*: string
+}
+Event <|-- ProductOfferingStateChangeEvent
+
+ProductOfferingStateChangeEvent *-->"1" ProductOfferingStateChangeEventPayload : event
+
+
+class ProductOfferingStateChangeEventPayload {
+
+    id*: string
+    href: uri
+    lifecycleStatus*: ProductOfferingLifecycleStatusType
+}
+
+
+
+class ProductSpecificationAttributeValueChangeEvent {
+
+    eventType*: string
+}
+Event <|-- ProductSpecificationAttributeValueChangeEvent
+
+ProductSpecificationAttributeValueChangeEvent *-->"1" ProductSpecificationEventPayload : event
+
+
+class ProductSpecificationCreateEvent {
+
+    eventType*: string
+}
+Event <|-- ProductSpecificationCreateEvent
+
+ProductSpecificationCreateEvent *-->"1" ProductSpecificationEventPayload : event
+
 
 class ProductSpecificationEventPayload {
 
-    sellerId: string
     id*: string
-    href: string
-    buyerId: string
+    href: uri
 }
 
-enum ProductCategoryEventType {
 
-    productCategoryCreateEvent
-    productCategoryAttributeValueChangeEvent
-    productCategoryStatusChangeEvent
+
+enum ProductSpecificationLifecycleStatusType {
+
+    obsolete
+    published
+}
+class ProductSpecificationStateChangeEvent {
+
+    eventType*: string
+}
+Event <|-- ProductSpecificationStateChangeEvent
+
+ProductSpecificationStateChangeEvent *-->"1" ProductSpecificationStateChangeEventPayload : event
+
+
+class ProductSpecificationStateChangeEventPayload {
+
+    id*: string
+    href: uri
+    lifecycleStatus*: ProductSpecificationLifecycleStatusType
 }
 
-enum ProductOfferingEventType {
 
-    productOfferingCreateEvent
-    productOfferingAttributeValueChangeEvent
-    productOfferingStatusChangeEvent
-}
 
-enum ProductSpecificationEventType {
-    
-    productSpecificationCreateEvent
-    productSpecificationAttributeValueChangeEvent
-    productSpecificationStatusChangeEvent
-}
 @enduml

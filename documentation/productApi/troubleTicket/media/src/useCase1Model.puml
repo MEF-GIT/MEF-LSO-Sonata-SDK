@@ -1,42 +1,44 @@
 @startuml
-skinparam {
-    ClassBackgroundColor White
-    ClassBorderColor Black
-}
 
 class AttachmentValue {
 
-    attachmentId: string
     author*: string
-    content: string
     creationDate*: date-time
     description: string
     mimeType: string
     name*: string
     source*: MEFBuyerSellerType
-    url: string
+    url*: string
 }
 
 AttachmentValue *--> MEFByteSize : size
 
-class FieldedAddress {
 
-    country*: string
-    streetType: string
-    postcodeExtension: string
-    city*: string
+class FieldedAddressRepresentation {
+
     streetNr: string
-    locality: string
-    postcode: string
-    streetNrLast: string
     streetNrSuffix: string
-    streetName*: string
-    stateOrProvince: string
+    streetNrLast: string
     streetNrLastSuffix: string
-    streetSuffix: string
+    streetPreDirection: string
+    streetName: string
+    streetType: string
+    streetPostDirection: string
+    poBox: string
+    locality: string
+    city: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+    countryCode: string
+    buildingName: string
+    privateStreetNumber: string
+    privateStreetName: string
+    language: string
 }
 
-FieldedAddress *--> GeographicSubAddress : geographicSubAddress
+FieldedAddressRepresentation *-->"*" SubUnit : subUnit
+
 
 
 class IssueRelationship {
@@ -67,19 +69,6 @@ class TroubleTicketStatusChange {
 
 
 
-
-class GeographicSubAddress {
-
-    buildingName: string
-    id: string
-    levelNumber: string
-    levelType: string
-    privateStreetName: string
-    privateStreetNumber: string
-}
-
-GeographicSubAddress *-->"*" MEFSubUnit : subUnit
-
 class MEFByteSize {
 
     amount: float
@@ -104,7 +93,7 @@ enum DataSizeUnit {
     ZBYTES
     YBYTES
 }
-class MEFSubUnit {
+class SubUnit {
 
     subUnitNumber*: string
     subUnitType*: string
@@ -119,18 +108,18 @@ class Note {
     source*: MEFBuyerSellerType
     text*: string
 }
-
 class RelatedContactInformation {
 
-    emailAddress*: string
-    name*: string
-    number*: string
-    numberExtension: string
-    organization: string
     role*: string
+    number*: string
+    emailAddress*: string
+    organization: string
+    name*: string
+    numberExtension: string
 }
 
-RelatedContactInformation *--> FieldedAddress : postalAddress
+RelatedContactInformation *--> FieldedAddressRepresentation : postalAddress
+
 
 
 class RelatedEntity {
@@ -156,7 +145,7 @@ class TroubleTicket {
 }
 TroubleTicket_Common <|-- TroubleTicket
 
-TroubleTicket *-->"*" TroubleTicketStatusChange : statusChange
+TroubleTicket *-->"1..*" TroubleTicketStatusChange : statusChange
 TroubleTicket *-->"*" WorkOrderRef : workOrder
 
 
