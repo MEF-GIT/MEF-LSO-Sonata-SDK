@@ -11,15 +11,13 @@ img
 ![MEF_LOGO](media/mefLogo.png)
 
 <div style="font-weight:bold; font-size:33pt; font-family:Sansation;  text-align:center;">
-Working Draft
+Letter Ballot
 </br>
-MEF W160 v0.4
+MEF W160
 </br>
 </br>
 LSO Cantata and LSO Sonata Product Offering Availability and Pricing Discovery API - Developer Guide
 </br>
-</br>
-<p style="color:red;font-weight:bold; font-size:18pt">This draft represents MEF work in progress and is subject to change.</p>
 </br>
 January 2025
 </br>
@@ -147,6 +145,7 @@ contained herein.
       - [7.2.4.4. Type ProductRelationship](#7244-type-productrelationship)
       - [7.2.4.5. `enum` TimeUnit](#7245-enum-timeunit)
 - [8. References](#8-references)
+- [Appendix A Acknowledgments](#appendix-a-acknowledgments)
 
 <div class="page"/>
 
@@ -155,11 +154,11 @@ contained herein.
 The following members of the MEF participated in the development of this
 document and have requested to be included in this list.
 
-| Member |
-| ------ |
-|        |
-|        |
-|        |
+| Member                   |
+| ------------------------ |
+| Amartus                  |
+| Colt Technology Services |
+| Proximus                 |
 
 **Table 1. Contributing Members**
 
@@ -179,11 +178,17 @@ they were part of this document, from the GitHub repository:
 
 <https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK>
 
-- [`productApi/availabilityAndPricingDiscovery/productOfferingAvailabilityAndPricingDiscovery.api.yaml`](https://raw.githubusercontent.com/MEF-GIT/MEF-LSO-Sonata-SDK/refs/tags/irene/productApi/availabilityAndPricingDiscovery/productOfferingAvailabilityAndPricingDiscovery.api.yaml)
+commit id:
+[2ed9d8dddcb2e7919b1eba4652fb553e485cb84c](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/commit/2ed9d8dddcb2e7919b1eba4652fb553e485cb84c)
+
+- [`productApi/availabilityAndPricingDiscovery/productOfferingAvailabilityAndPricingDiscovery.api.yaml`](https://raw.githubusercontent.com/MEF-GIT/MEF-LSO-Sonata-SDK/2ed9d8dddcb2e7919b1eba4652fb553e485cb84c/productApi/availabilityAndPricingDiscovery/productOfferingAvailabilityAndPricingDiscovery.api.yaml)
 
 <https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK>
 
-- [`productApi/availabilityAndPricingDiscovery/productOfferingAvailabilityAndPricingDiscovery.api.yaml`](https://raw.githubusercontent.com/MEF-GIT/MEF-LSO-Cantata-SDK/refs/tags/irene/productApi/availabilityAndPricingDiscovery/productOfferingAvailabilityAndPricingDiscovery.api.yaml)
+commit id:
+[39d87ccbe6e9f3383b3f8d8aaa121103a70e8fb0](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/commit/39d87ccbe6e9f3383b3f8d8aaa121103a70e8fb0)
+
+- [`productApi/availabilityAndPricingDiscovery/productOfferingAvailabilityAndPricingDiscovery.api.yaml`](https://raw.githubusercontent.com/MEF-GIT/MEF-LSO-Cantata-SDK/39d87ccbe6e9f3383b3f8d8aaa121103a70e8fb0/productApi/availabilityAndPricingDiscovery/productOfferingAvailabilityAndPricingDiscovery.api.yaml)
 
 <div class="page"/>
 
@@ -1436,7 +1441,7 @@ the Seller's system. [MEF110 R45]
 **[R39]** `PricingAndTerm` provided by the Seller **MUST** be valid for at least
 15 minutes. [MEF110 R42]
 
-**[R409]** If the `installationInterval` is 0 (immediate) the
+**[R40]** If the `installationInterval` is 0 (immediate) the
 `subjectToAdditionalNonrecurringCharges` **MUST** be set to `false`. [MEF110
 R43]
 
@@ -2234,27 +2239,6 @@ expires.
 | autoDisconnect | The Product will automatically be disconnected (and contract terminated) by the Seller once the contract term expires |
 | autoRenew      | The Product's contract will be renewed for another term equivalent to the original contract term.                     |
 
-<table id="T_MEFEndOfTermAction">
-    <thead style="font-weight:bold;">
-        <tr>
-            <td>Value</td>
-            <td>MEF 110</td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>roll</td>
-            <td>ROLL</td>
-        </tr><tr>
-            <td>autoDisconnect</td>
-            <td>AUTO_DISCONNECT</td>
-        </tr><tr>
-            <td>autoRenew</td>
-            <td>AUTO_RENEW</td>
-        </tr>
-    </tbody>
-</table>
-
 #### 7.2.2.8. `enum` MEFPriceType
 
 **Description:** Indicates if the price is for recurring or non-recurring
@@ -2264,19 +2248,15 @@ charges.
     <thead style="font-weight:bold;">
         <tr>
             <td>Value</td>
-            <td>MEF 110</td>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>recurring</td>
-            <td>RECURRING</td>
         </tr><tr>
             <td>nonRecurring</td>
-            <td>NON_RECURRING</td>
         </tr><tr>
             <td>usageBased</td>
-            <td>USAGE_BASED</td>
         </tr>
     </tbody>
 </table>
@@ -2372,20 +2352,21 @@ GeographicSite.
         <td>place</td>
             <td><a href="#T_PlaceRef">PlaceRef</a></td>
             <td>M</td>
-            <td></td>
-            <td></td>
-        </tr><tr>
+            <td>A place described by reference to Geographic Address or Geographic
+            Site.</td>
+            <td>Place</td>
+        </tr>Place<tr>
         <td>role</td>
             <td>string</td>
             <td>M</td>
             <td>Role of this place. The values that can be specified here are described by Product Specification (e.g. &quot;INSTALL_LOCATION&quot;).</td>
-            <td></td>
+            <td>Role</td>
         </tr><tr>
         <td>subUnit</td>
             <td><a href="#T_SubUnit">SubUnit</a>[]</td>
             <td>O</td>
             <td>A list of zero or more sub units included within the boundary of the &#x60;place&#x60; for this POQ Item. This is a list to allow complex sub-unit information such as SUITE 42 ROOM A. It MUST only be used together with GeographicAddressRef</td>
-            <td></td>
+            <td>Sub Units</td>
         </tr>
     </tbody>
 </table>
@@ -2417,19 +2398,19 @@ Address Validation API.
             <td>O</td>
             <td>Hyperlink to the referenced Address. Hyperlink MAY be used by the Seller in responses. Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request.
 </td>
-            <td></td>
+            <td>Not represented in MEF 110</td>
         </tr><tr>
         <td>id</td>
             <td>string</td>
             <td>M</td>
             <td>Identifier of the referenced Geographic Address. This identifier is assigned during a successful address validation request (Geographic Address Management API)</td>
-            <td></td>
+            <td>Place</td>
         </tr><tr>
         <td>@type</td>
             <td>string</td>
             <td>M</td>
             <td>Used to unambiguously designate the class type when using &#x60;oneOf&#x60;</td>
-            <td></td>
+            <td>Place Type</td>
         </tr>
     </tbody>
 </table>
@@ -2462,13 +2443,13 @@ Service Site API
             <td>string</td>
             <td>M</td>
             <td>Identifier of the referenced Geographic Site.</td>
-            <td>Place Identifier</td>
+            <td>Place</td>
         </tr><tr>
         <td>@type</td>
             <td>string</td>
             <td>M</td>
             <td>Used to unambiguously designate the class type when using &#x60;oneOf&#x60;</td>
-            <td></td>
+            <td>Place Type</td>
         </tr>
     </tbody>
 </table>
@@ -2493,13 +2474,13 @@ Service Site API
             <td>string</td>
             <td>M</td>
             <td>The discriminator used for the subunit, often just a simple number but may also be a range.</td>
-            <td></td>
+            <td>Sub Unit Name</td>
         </tr><tr>
         <td>subUnitType</td>
             <td>string</td>
             <td>M</td>
             <td>The type of subunit e.g. BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF.</td>
-            <td></td>
+            <td>Sub Unit Type</td>
         </tr>
     </tbody>
 </table>
@@ -2547,24 +2528,6 @@ The following mapping has been used between `ProductActionType` and MEF 110:
 | ----------------- | ------- |
 | add               | INSTALL |
 | modify            | CHANGE  |
-
-<table id="T_ProductActionAddModifyType">
-    <thead style="font-weight:bold;">
-        <tr>
-            <td>Value</td>
-            <td>MEF 110</td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>add</td>
-            <td>ADD</td>
-        </tr><tr>
-            <td>modify</td>
-            <td>MODIFY</td>
-        </tr>
-    </tbody>
-</table>
 
 #### 7.2.4.3. Type ProductRef
 
@@ -2680,7 +2643,7 @@ usage for given Product are described in the Product Specification.
 
 # 8. References
 
-- [MEF 55.1](https://www.mef.net/wp-content/uploads/2021/02/MEF-55.1.pdf)
+- [MEF 55.1](https://www.mef.net/wp-content/uploads/2021/02/MEF-55.1.pdf),
   Lifecycle Service Orchestration (LSO): Reference Architecture and Framework,
   February 2021
 - [MEF 55.1.1](https://www.mef.net/wp-content/uploads/MEF-55.1.1.pdf), Amendment
@@ -2691,22 +2654,36 @@ usage for given Product are described in the Product Specification.
   LSO Sonata Product Offering Qualification API - Developer Guide, May 2022
 - [MEF 106](https://www.mef.net/wp-content/uploads/MEF-106.pdf), LSO Sonata
   Access E-Line Product Schemas and Developer Guide, February 2023
-- [MEF 110](https://www.mef.net/wp-content/uploads/MEF-110-Draft-R4.pdf) Product
+- [MEF 110](https://www.mef.net/wp-content/uploads/MEF-110.pdf), Product
   Offering Availability and Pricing Discovery - Business Requirements and Use
-  Cases, Draft Standard 4, June 2024
-- [MEF 115](https://www.mef.net/wp-content/uploads/MEF-115.pdf) LSO Cantata and
+  Cases, January 2025
+- [MEF 115](https://www.mef.net/wp-content/uploads/MEF-115.pdf), LSO Cantata and
   LSO Sonata Quote Management API - Developer Guide, May 2022
 - [MEF 128.1](https://www.mef.net/wp-content/uploads/MEF-128.1.pdf), LSO API
   Security Profile, April 2024
-- [MEF 150](https://www.mef.net/wp-content/uploads/MEF-150-Draft-R1.pdf),
-  Installation Place and Service Site Management Business Requirements and Use
-  Cases, November 2024, Draft Standard (R1)
+- [MEF 150](https://www.mef.net/wp-content/uploads/MEF-150.pdf), Installation
+  Place and Service Site Management Business Requirements and Use Cases, January
+  2025
 - [RFC 2119](https://tools.ietf.org/html/rfc2119), Key words for use in RFCs to
   Indicate Requirement Levels, March 1997
-- [RFC 3986](https://tools.ietf.org/html/rfc3986#section-3) Uniform Resource
+- [RFC 3986](https://tools.ietf.org/html/rfc3986#section-3), Uniform Resource
   Identifier (URI): Generic Syntax, January 2005
 - [RFC 7231](https://tools.ietf.org/html/rfc7231), Hypertext Transfer Protocol
   (HTTP/1.1): Semantics and Content, June 2014
   https://tools.ietf.org/html/rfc7231
 - [RFC 8174](https://tools.ietf.org/html/rfc8174), Ambiguity of Uppercase vs
   Lowercase in RFC 2119 Key Words, May 2017
+
+# Appendix A Acknowledgments
+
+Mike **BENCHECK**
+
+Pankaj **BODADE**
+
+Michał **ŁĄCZYŃSKI**
+
+Jack **PUGACZEWSKI**
+
+Patrick **ROOSEN**
+
+Fahim **SABIR**
