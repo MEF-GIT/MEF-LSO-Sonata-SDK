@@ -1,11 +1,11 @@
 openapi: 3.0.1
 info:
   description: |
-    **This file forms part of MEF 121.1**
+    **This file forms part of Mplify 121.1**
 
-    This API implements Business Requirements described in MEF 150
+    This API implements Business Requirements described in Mplify 150
 
-    This draft represents MEF work in progress and is subject to change
+    This draft represents Mplify work in progress and is subject to change
 
     It allows the Buyer to retrieve address information from the Seller, including
     exact formats, for addresses known to the Seller.
@@ -13,21 +13,20 @@ info:
     List of supported Use Cases:
     - Send Notifications
 
-    Copyright 2024 MEF Forum and its contributors
-
+    Copyright 2025 Mplify Alliance and its contributors.
 
     This file includes content based on the TM Forum Geographic Address API
     (TMF673 v4.0.1) available at
     https://github.com/tmforum-apis/TMF673_GeographicAddress, which is licensed
     by the TM Forum under the Apache License version 2.0. Such content has been
-    modified by the MEF Forum and its contributors.
+    modified by the Mplify Alliance and its contributors.
   title: Geographic Address Notification
-  version: 8.0.0-RC
+  version: 8.0.0
 servers:
   - url: 'https://{serverBase}/mefApi/sonata/geographicAddressNotification/v8/'
     variables:
       serverBase:
-        default: mef.net
+        default: mplify.net
         description: The base of Buyer's URL.
 tags:
   - description: |
@@ -99,25 +98,6 @@ paths:
         - Notification listeners
 components:
   schemas:
-    Error400Code:
-      description: >-
-        One of the following error codes:
-
-        - missingQueryParameter: The URI is missing a required query-string
-        parameter
-
-        - missingQueryValue: The URI is missing a required query-string
-        parameter value
-
-        - invalidQuery: The query section of the URI is invalid.
-
-        - invalidBody: The request has an invalid body
-      enum:
-        - missingQueryParameter
-        - missingQueryValue
-        - invalidQuery
-        - invalidBody
-      type: string
     Error:
       description: >
         Standard Class used to describe API response error
@@ -166,6 +146,25 @@ components:
           type: object
       description:
         'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
+    Error400Code:
+      description: >-
+        One of the following error codes:
+
+        - missingQueryParameter: The URI is missing a required query-string
+        parameter
+
+        - missingQueryValue: The URI is missing a required query-string
+        parameter value
+
+        - invalidQuery: The query section of the URI is invalid.
+
+        - invalidBody: The request has an invalid body
+      enum:
+        - missingQueryParameter
+        - missingQueryValue
+        - invalidQuery
+        - invalidBody
+      type: string
     Error401:
       allOf:
         - $ref: '#/components/schemas/Error'

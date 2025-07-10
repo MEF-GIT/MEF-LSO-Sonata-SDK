@@ -2,17 +2,10 @@ openapi: 3.0.1
 info:
   title: Product Catalog Notification
   description: >
-    **This file forms part of MEF W142**
+    **This file forms part of Mplify 142**
 
 
-    This API implements Business Requirements described in MEF W127.1 
-
-    related to the notifications that are sent by the Seller to the Buyer.
-
-
-    **This specification represents MEF work in progress and is subject to
-
-    change.** 
+    This API implements the Business Requirements described in Mplify 127.1.
 
 
     List of supported use cases:
@@ -21,33 +14,27 @@ info:
 
 
     It allows the Buyer to receive notifications about Product Categories',
-    Product Offerings',
-
-    and Product Specifications' updates.
-
-    This allows the Buyer to be up to date with the Product Catalog that is
-    published by the Seller. 
-
-    The Seller may introduce some changes related to Product Catalog Elements
-    such as adding new elements 
-
-    or modifying their lifecycle that causes sending notifications.
+    Product Offerings', and Product Specifications' updates. This allows the
+    Buyer to be up to date with the Product Catalog that is published by the
+    Seller. The Seller may introduce some changes related to Product Catalog
+    Elements such as adding new elements or modifying their lifecycle that
+    causes sending notifications.
 
 
-    Copyright 2024 MEF Forum and its contributors
+    Copyright 2025 Mplify Alliance and its contributors.
 
 
     This file includes content based on the TM Forum Product Catalog API (TMF620
     v4.1.0) available at https://github.com/tmforum-apis/TMF620_ProductCatalog,
     which is licensed by the TM Forum under the Apache License version 2.0. Such
-    content has been modified by the MEF Forum and its contributors.
-  version: 3.0.0-RC
+    content has been modified by the Mplify Alliance and its contributors.
+  version: 4.0.0-RC
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/productCatalogNotifications/v3/'
+  - url: 'https://{serverBase}/mefApi/sonata/productCatalogNotifications/v4/'
     variables:
       serverBase:
         description: The base of Buyer's URL.
-        default: mef.net
+        default: mplify.net
 tags:
   - name: Notification listeners
     description:
@@ -562,9 +549,9 @@ components:
   schemas:
     Error:
       description: >
-        Standard Class used to describe API response error
-        Not intended to be used directly. The `code` in the HTTP header is used
-        as a discriminator for the type of error returned in runtime.
+        Standard Class used to describe API response error Not intended to be
+        used directly. The `code` in the HTTP header is used as a discriminator
+        for the type of error returned in runtime.
       type: object
       properties:
         reason:
@@ -694,7 +681,7 @@ components:
           properties:
             code:
               description: >-
-                One of the following error codes:
+                The following error code:
 
                 - internalError: Internal server error - the server encountered
                 an unexpected condition that prevented it from fulfilling the
@@ -744,7 +731,7 @@ components:
               $ref: '#/components/schemas/ProductCategoryEventPayload'
           required:
             - event
-            - eventType    
+            - eventType
     ProductCategoryCreateEvent:
       allOf:
         - $ref: '#/components/schemas/Event'
@@ -826,19 +813,19 @@ components:
         - id
     ProductOfferingLifecycleStatusType:
       description: |
-        | Name         | MEF 127 Name   | Description                                                                                                                                                                                                                                  |
-        | ------------ | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-        | announced    | ANNOUNCED      | A Product Offering has been defined in the Product Catalog for marketing purposes, but is not yet available for ordering.                                                                                                                    |
-        | endOfSale    | END_OF_SALE    | The Product Offering or Product Specification cannot be Installed by any new or existing Buyers, but Buyers may still have Products in use and may modify or delete it, and receive support.                                                 |
-        | endOfSupport | END_OF_SUPPORT | When a Product Offering or Product Specification in the `endOfSale` state is no longer supported, the status transitions to `endOfSupport`. Any existing products can no longer be modified, with the only Order action allowed is `delete`. |
-        | inTest       | PILOT_BETA     | When a Product Offering or Product Specification starts Pilot/Beta testing, it starts in the `pilotBeta` state .                                                                                                                             |
-        | obsolete     | OBSOLETE       | After a Product Offering or Product Specification that is no longer available it transitions to `obsolete` and may be removed at the Seller's discretion from the Product Catalog. This is a final state.                                    |
-        | onHold       | ON_HOLD        | A Product Offering or Product Specification that has been `launched`, but is currently not available for Buyers due to supply constraints, product recall, or other issues preventing it from being offered.                                      |
-        | launched    | launched      | A new Product Offering or Product Specification is in the `launched` state when it is available for ordering by Buyers.                                                                                                                     |
-        | rejected     | REJECTED       | When PILOT_BETA testing fails the Product Offering or Product Specification transitions to the `rejected` state. This is a final state.                                                                                                      |
+        | Name         | Mplify 127.1 Name | Description                                                                                                                                                                                                                                  |
+        | ------------ | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | active       | ANNOUNCED         | A Product Offering has been defined in the Product Catalog for marketing purposes, but is not yet available for ordering.                                                                                                                    |
+        | endOfSale    | END_OF_SALE       | A new Product based on the Product Offering cannot be ordered by any Buyers, but Products may still be in use and may be changed or disconnected, and receive support                                                 |
+        | endOfSupport | END_OF_SUPPORT    | When a Product Offering is in the `endOfSupport` state, it is no longer possible to `add` new, nor `modify` any existing Products based on the Product Offering. The Buyer can still use Products based on the Product Offering as is without any support from the Seller (the only allowed action is `delete`). |
+        | inTest       | PILOT_BETA        | When a Product Offering or Product Specification starts Pilot/Beta testing, it starts in the `inTest` state .                                                                                                                             |
+        | obsolete     | OBSOLETE          | The Product Offering is only available in the Product Catalog for historical documentation reasons. No actions are allowed on Products based on these Product Offering. A Product Offering that is `obsolete` may be removed at the Seller's discretion from the Product Catalog. This is a final state.                                |
+        | onHold       | ON_HOLD           | A Product Offering is `onHold` when the Seller decides to stop Buyers from ordering new Products based on the Product Offering (for example, due to supply constraints, product recall, legal reasons, etc.). The Product Offering can transition to either `launched` when the constraints are lifted and the Buyer can order new Products again, or to `endOfSale`, if the Seller decides to stop offering Products based on the Product Offering.                                      |
+        | launched     | ORDERABLE         | When a Product Offering is in the `launched` state, a Buyer can `add` new Products, and `modify` or `delete` any active Products based on the Product Offering                                                                                                                    |
+        | rejected     | REJECTED          | When the pilot testing period is ended by the Seller, they may decide whether the Product Offering becomes available for ordering; otherwise, the Product Offering transitions to the `rejected` state. This is a final state.                                                                                                      |
       type: string
       enum:
-        - announced
+        - active
         - endOfSale
         - endOfSupport
         - inTest
@@ -931,10 +918,10 @@ components:
         - id
     ProductSpecificationLifecycleStatusType:
       description: |
-        | Name         | MEF 127 Name   | Description                                                                                                                                                                                                                                                                                                                                                                                                  |
-        | ------------ | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-        | obsolete     | OBSOLETE       | The Product Specification is only available in the Product Catalog for historical documentation reasons. There are no active Products on the Seller's Network based on the Product Specification. A Product Specification that is no longer available transitions to `obsolete` and may be removed at the Seller's discretion from the Product Catalog. This is a final state. |
-        | published    | PUBLISHED      | A Product Specification has been defined in the Product Catalog. Product Offerings based on the Product Specification may be available for ordering.                                                                                                                                                                                                                                                         |
+        | Name         | Mplify 127.1 Name | Description                                                                                                                                                                                                                                                                                                                                                                                                  |
+        | ------------ | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+        | obsolete     | OBSOLETE          | The Product Specification is only available in the Product Catalog for historical documentation reasons. There are no active Products on the Seller's Network based on the Product Specification. A Product Specification that is no longer available transitions to `obsolete` and may be removed at the Seller's discretion from the Product Catalog. This is a final state. |
+        | published    | PUBLISHED         | A Product Specification has been defined in the Product Catalog. Product Offerings based on the Product Specification may be available for ordering.                                                                                                                                                                                                                                                         |
       type: string
       enum:
         - obsolete
@@ -969,7 +956,8 @@ components:
           type: string
           format: uri
         lifecycleStatus:
-          description: The current lifecycle status of the Product Specification.
+          description:
+            The current lifecycle status of the Product Specification.
           $ref: '#/components/schemas/ProductSpecificationLifecycleStatusType'
       required:
         - id

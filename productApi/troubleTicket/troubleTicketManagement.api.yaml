@@ -2,9 +2,7 @@ openapi: 3.0.1
 info:
   title: Trouble Ticket and Incident Management
   description: |
-    **This file forms part of MEF 124.1**
-
-    **This draft represents MEF work in progress and is subject to change.**
+    **This file forms part of Mplify 124.1**
 
     This API implements Business Requirements described in MEF 113
 
@@ -24,19 +22,19 @@ info:
     - Retrieve Incident by Incident Identifier
     - Register for Event Notifications
 
-    Copyright 2025 MEF Forum and its contributors
+    Copyright 2025 Mplify Alliance and its contributors.
 
     This file includes content based on the TM Forum Trouble Ticket API (TMF621
     v4.0.0) available at https://github.com/tmforum-apis/TMF621_TroubleTicket,
     which is licensed by the TM Forum under the Apache License version 2.0.
-    Such content has been modified by the MEF Forum and its contributors.
-  version: 5.0.0-RC
+    Such content has been modified by the Mplify Alliance and its contributors.
+  version: 5.0.0
 servers:
   - url: 'https://{serverBase}/mefApi/sonata/troubleTicket/v5/'
     variables:
       serverBase:
         description: The base of Seller's URL.
-        default: mef.net
+        default: mplify.net
 tags:
   - name: troubleTicket
   - name: troubleTicket operations
@@ -495,7 +493,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error404'
         '409':
-          description: Not Found
+          description: Conflict
           content:
             application/json;charset=utf-8:
               schema:
@@ -1573,15 +1571,16 @@ components:
           required:
             - code
     Error501:
-      description:
-        'Not Implemented. (https://tools.ietf.org/html/rfc7231#section-6.6.2)'
+      description: >-
+        Not Implemented. Used in case Seller is not supporting an optional
+        operation (https://tools.ietf.org/html/rfc7231#section-6.6.2)
       allOf:
         - $ref: '#/components/schemas/Error'
         - type: object
           properties:
             code:
               description: |-
-                The following error code::
+                The following error code:
                 - notImplemented: Method not supported by the server
               type: string
               enum:
@@ -2054,10 +2053,12 @@ components:
           description: Numeric value in a given unit
           type: number
           format: float
-          default: 1
         units:
           description: Byte Unit
           $ref: '#/components/schemas/DataSizeUnit'
+      required:
+        - amount
+        - units
     MEFObservedImpactType:
       description: >-
         An enumeration of the possible values of impact observed by the Buyer.
@@ -2377,10 +2378,10 @@ components:
           $ref: '#/components/schemas/MEFObservedImpactType'
         priority:
           description: >-
-            The priority of the Trouble Ticket and how quickly the issue should
-            be resolved. Example: Critical, High, Medium, Low. The value is set
-            by the ticket management system considering the severity, ticket
-            type etc...
+            The priority (ITIL) is based on the assessment of the impact and
+            urgency of how quickly the Ticket should be resolved as evaluated by
+            the Buyer. The Priority is used by the Seller to determine the
+            order in which Tickets get resolved across Buyers.
           $ref: '#/components/schemas/TroubleTicketPriorityType'
         relatedContactInformation:
           description: >-
@@ -2474,7 +2475,7 @@ components:
           description: >-
             The priority (ITIL) is based on the assessment of the impact and
             urgency of how quickly the Ticket should be resolved as evaluated by
-            the Buy-er.   The Priority is used by the Seller to determine the
+            the Buyer. The Priority is used by the Seller to determine the
             order in which Tickets get resolved across Buyers.
           $ref: '#/components/schemas/TroubleTicketPriorityType'
         relatedEntity:
@@ -2566,10 +2567,10 @@ components:
             $ref: '#/components/schemas/Note'
         priority:
           description: >-
-            The priority of the Trouble Ticket and how quickly the issue should
-            be resolved. Example: Critical, High, Medium, Low. The value is set
-            by the ticket management system considering the severity, ticket
-            type etc...
+            The priority (ITIL) is based on the assessment of the impact and
+            urgency of how quickly the Ticket should be resolved as evaluated by
+            the Buyer. The Priority is used by the Seller to determine the
+            order in which Tickets get resolved across Buyers.
           $ref: '#/components/schemas/TroubleTicketPriorityType'
         relatedContactInformation:
           description: >-

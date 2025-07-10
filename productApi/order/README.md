@@ -1,5 +1,30 @@
 # Product Order Management: Release notes
 
+## Release Janis:
+
+**Readiness status**: Requested Letter Ballot. It will be most likely published
+as a standard in this form.
+
+**Summary**:
+
+- Common schemas consistency applied.
+- Split R111 and R112 to R111-R115 for better clarity. No actual change in
+  logic.
+- Clarification of the requirements for `action=delete` (R12 and R46) - contacts must be provided.
+- 
+**productOrderManagement.api.yaml:**
+
+- `GeographicAddress_Query`:
+  - `@type` - added
+  - `minProperties: 2` - added
+- `MEFProductOrderItem_Common`:
+  - `requestedCompletionDate` - marked as required (according to already
+    exisitng Requirement)
+
+**productOrderNotification.api.yaml:**
+
+No changes.
+
 ## Release Irene:
 
 **Readiness status**: Call for Comments Ballot #1. Work in progress and is
@@ -32,6 +57,7 @@ subject to change.
 - `POST /hub`:
   - `422` - response code added
 - `DELETE /hub/{id}`:
+
   - `422` - response code added
 
 - `ContactInformation` - added
@@ -88,8 +114,8 @@ subject to change.
 - `MEFProductOrderItem_Common`:
   - `product` - clarified to be required
 - `MEFSubUnit` - renamed to `SubUnit`
-- `PlaceRefOrQuery` - added, now using `oneOf` instead of `allOf` for
-  refOrValue pattern
+- `PlaceRefOrQuery` - added, now using `oneOf` instead of `allOf` for refOrValue
+  pattern
 - `ProductOrder`:
   - `stateChange` - clarified to be required, `minItems=1`
 - `ProductOrderItem`:
@@ -113,11 +139,13 @@ subject to change.
 **productOrderNotification.api.yaml:**
 
 - `buyerId` and `sellerId` added to parameters to all endpoints
-ProductOrderEventPayload
+  ProductOrderEventPayload
 - `buyerId` and `sellerId` removed from all payloads
-- all listener endpoint changed the `requestBody` content schema to their respective events.
+- all listener endpoint changed the `requestBody` content schema to their
+  respective events.
 
-- `/listener/productOrderItemExpectedCompletionDateSet` - path renamed to `/listener/productOrderItemExpectedCompletionDateSetEvent`
+- `/listener/productOrderItemExpectedCompletionDateSet` - path renamed to
+  `/listener/productOrderItemExpectedCompletionDateSetEvent`
 
 - `408` - response code removed
 - `Error408` - removed
@@ -209,10 +237,8 @@ resolved Call for Comments #2
 
 - `/productOrder/`
   - `GET`
-    - `requestedCompletionDate.gt` - renamed to
-      `itemRequestedCompletionDate.gt`
-    - `requestedCompletionDate.lt` - renamed to
-      `itemRequestedCompletionDate.lt`
+    - `requestedCompletionDate.gt` - renamed to `itemRequestedCompletionDate.gt`
+    - `requestedCompletionDate.lt` - renamed to `itemRequestedCompletionDate.lt`
     - `expectedCompletionDate.gt` - renamed to `itemExpectedCompletionDate.gt`
     - `expectedCompletionDate.lt` - renamed to `itemExpectedCompletionDate.lt`
     - `orderCancellationDate.gt` - renamed to `cancellationDate.gt`
@@ -326,8 +352,7 @@ resolved Call for Comments #1
 - `MEFChargeItem` - renamed to `MEFProductOrderChargeItem`
 - `MEFChargeItem_Update` - renamed to `MEFProductOrderChargeItem_Update`
 - `MEFChargeItemStateType` - renamed to `MEFProductOrderChargeItemStateType`
-- `MEFChargeItemDescription` - renamed to
-  `MEFProductOrderChargeItemDescription`
+- `MEFChargeItemDescription` - renamed to `MEFProductOrderChargeItemDescription`
 - `MEFChargeItemDescription`
   - `inFlightCancellation` - renamed to `cancellation`
 - `MEFModifyProductOrderItemCompletionDate` - renamed to

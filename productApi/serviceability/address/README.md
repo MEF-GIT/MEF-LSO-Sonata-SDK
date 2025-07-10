@@ -1,5 +1,22 @@
 # Address Validation: Release notes
 
+## Release Janis:
+
+**Readiness status**: Requested Letter Ballot. It will be most likely published as a standard in this form.
+
+**Summary**:
+
+- Fixed example to return no `bestMatchGeographicAddress` instead of "`bestMatchGeographicAddress: {},`"
+- Reworded [R36] to reflect the above correction.
+
+**geographicAddressManagement.api.yaml:**
+
+No changes.
+
+**geographicAddressNotification.api.yaml**
+
+No changes.
+
 ## Release Irene:
 
 **Readiness status**: Call for Comments #1 resolved. Ready to start Letter Ballot. It will be most likely published

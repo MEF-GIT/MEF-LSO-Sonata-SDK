@@ -2,14 +2,9 @@ openapi: 3.0.1
 info:
   title: Product Offering Qualification Management
   description: >
-    **This file forms part of MEF 87.1**
+    **This file forms part of Mplify 87.1**
      
-     
-    **This draft represents MEF work in progress and is subject to change.**
-
-    
-    This API implements Business Requirements described in MEF 79.1
-
+    This API implements Business Requirements described in Mplify 79.1
 
     The Product Offering Qualification (POQ) Management API allows a Buyer to
 
@@ -32,7 +27,7 @@ info:
     by productOfferingQualificationNotification.api.yaml)
 
 
-    Copyright 2025 MEF Forum and its contributors
+    Copyright 2025 Mplify Alliance and its contributors
 
 
     This file includes content based on the TM Forum Product Offering
@@ -43,14 +38,14 @@ info:
 
     is licensed by the TM Forum under the Apache License version 2.0. Such
 
-    content has been modified by the MEF Forum and its contributors.
-  version: 8.0.0-RC
+    content has been modified by the Mplify Alliance and its contributors.
+  version: 8.0.0
 servers:
   - url: 'https://{serverBase}/mefApi/sonata/productOfferingQualification/v8/'
     variables:
       serverBase:
         description: The base of Seller's URL.
-        default: mef.net
+        default: mplify.net
 tags:
   - name: productOfferingQualification
     description:
@@ -803,12 +798,9 @@ components:
       required:
         - reason
     Error400:
-      description:
-        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
       allOf:
         - $ref: '#/components/schemas/Error'
-        - type: object
-          properties:
+        - properties:
             code:
               description: >-
                 One of the following error codes:
@@ -816,7 +808,7 @@ components:
                 - missingQueryParameter: The URI is missing a required
                 query-string parameter
 
-                - missingQueryValue: The URI is missing a required query string
+                - missingQueryValue: The URI is missing a required query-string
                 parameter value
 
                 - invalidQuery: The query section of the URI is invalid.
@@ -825,6 +817,9 @@ components:
               $ref: '#/components/schemas/Error400Code'
           required:
             - code
+          type: object
+      description:
+        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
     Error400Code:
       description: >-
         One of the following error codes:
@@ -993,15 +988,16 @@ components:
           required:
             - code
     Error501:
-      description:
-        'Not Implemented. (https://tools.ietf.org/html/rfc7231#section-6.6.2)'
+      description: >-
+        Not Implemented. Used in case Seller is not supporting an optional
+        operation (https://tools.ietf.org/html/rfc7231#section-6.6.2)
       allOf:
         - $ref: '#/components/schemas/Error'
         - type: object
           properties:
             code:
               description: |-
-                The following error code::
+                The following error code:
                 - notImplemented: Method not supported by the server
               type: string
               enum:
@@ -1155,8 +1151,8 @@ components:
           type: string
         language:
           description: >-
-            The language in which the address is expressed. It MUST use the ISO 639:2023 two letter code
-            639:2023
+            The language in which the address is expressed. It MUST use the ISO
+            639:2023 two letter code 639:2023
           type: string
           minLength: 2
           maxLength: 2
@@ -1210,7 +1206,7 @@ components:
       description: >-
         A list of representations being a subset of Geographic Address entity.
         This is to be used when providing a list of representations to validate
-        a Geographic Address
+        or search for a Geographic Address
       type: object
       properties:
         fieldedAddressRepresentation:
@@ -1362,7 +1358,7 @@ components:
         POQ item states - The specific states are managed by the Seller based on
         its processing and/or based on the Buyer's action.
 
-        | MEFPOQItemTaskStateType | MEF 79.1            | Description                                                                                                                                                                                                                                                                                       |
+        | MEFPOQItemTaskStateType | Mplify 79.1         | Description                                                                                                                                                                                                                                                                                       |
         | ----------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
         | acknowledged            | ACKNOWLEDGED        | A request has been received by the Seller and has passed basic validation. For an Immediate response, the POQ moves directly to `done` state and does not pass through `acknowledged`.                                                                                                            |
         | inProgress              | IN_PROGRESS         | The Seller is working on a POQ item response and the answer is not ready yet                                                                                                                                                                                                                      |
@@ -1403,9 +1399,9 @@ components:
         offering qualification can transition.
 
         The following mapping has been used between `MEFPOQTaskStateType` and
-        MEF 79.1:
+        Mplify 79.1:
 
-        | MEFPOQTaskStateType | MEF 79.1            | Description                                                                                                                                                                                                             |
+        | MEFPOQTaskStateType | Mplify 79.1         | Description                                                                                                                                                                                                             |
         | ------------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
         | acknowledged        | ACKNOWLEDGED        | A request has been received by the Seller, has passed basic validation, and the id was assigned. For an Immediate response, the POQ moves directly to the `done` state and does not pass through `acknowledged`.   |
         | inProgress          | IN_PROGRESS         | The POQ is currently being worked by the Seller.                                                                                                                                                                        |
@@ -1428,7 +1424,7 @@ components:
         '@type':
           description: >-
             The name of the type that uniquely identifies the type of the
-            product that is the subject of the POQ Request. In the case of MEF
+            product that is the subject of the POQ Request. In the case of Mplify
             product this is the URN provided in the Product Specification.
           type: string
       required:
@@ -1493,38 +1489,16 @@ components:
           items:
             $ref: '#/components/schemas/RelatedPlaceRefOrQueryWithSubUnit'
     MEFServiceabilityColor:
-      description: >
-        A color that indicates confidence to service the request. When the item
-
-        state is `done` the Seller **MUST** provide a value. It **MUST
-
+      description: |
+        A color that indicates confidence to service the request. When
+        the item state is `done` the Seller **MUST** provide a value. It **MUST
         NOT** be populated for other states.
 
-
-        | ServiceabilityColor      |
-        Description                                                           |
-
-        |------------------------- |
-        -----------------------------------------------------------------------------
-        |
-
-        | green                    |  The Seller is highly confident that they
-        can deliver the Product Offering. It is not expected that the Seller
-        will change this after an order is placed.           |
-
-        | yellow                   |  The Seller is confident that they can
-        deliver the Product Offering subject to a feasibility check. The
-        delivery of the Product Offering is subject to checks that the Seller
-        may not carry out until later in the pre-sales/fulfillment process. The
-        Seller cannot be highly confident that they can deliver the Product
-        Offering until those checks are performed. There is a possibility that
-        the Seller may determine that they will not be able to deliver the
-        Product Offering. |
-
-        | red                      |  The Seller cannot deliver the Product
-        Offering as specified. The Seller may or may not have an alternate
-        Product Offerings that could be
-        substituted.                            |
+        | ServiceabilityColor | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+        | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+        | green               | The Seller is highly confident that they can deliver the Product Offering. It is not expected that the Seller will change this after an order is placed.                                                                                                                                                                                                                                                                                                                             |
+        | yellow              | The Seller is confident that they can deliver the Product Offering subject to a feasibility check. The delivery of the Product Offering is subject to checks that the Seller may not carry out until later in the pre-sales/fulfillment process. The Seller cannot be highly confident that they can deliver the Product Offering until those checks are performed. There is a possibility that the Seller may determine that they will not be able to deliver the Product Offering. |
+        | red                 | The Seller cannot deliver the Product Offering as specified. The Seller may or may not have an alternate Product Offerings that could be substituted.                                                                                                                                                                                                                                                                                                                                |
       type: string
       enum:
         - green
@@ -1550,12 +1524,12 @@ components:
         Action to be performed on the Product Item. 
 
         The following mapping has been used between `PoqProductActionType` and
-        MEF 79.1:
+        Mplify 79.1:
 
-        | PoqProductActionType | MEF 79.1   |
-        |--------------------- | ---------- |
-        | add                  | INSTALL    |
-        | modify               | CHANGE     |
+        | PoqProductActionType | Mplify 79.1 |
+        |--------------------- | ----------- |
+        | add                  | INSTALL     |
+        | modify               | CHANGE      |
       type: string
       enum:
         - add
@@ -1672,15 +1646,15 @@ components:
               format: date-time
             alternateProductOfferingProposal:
               description: >
-                A list of one or more alternative Product Offerings that the
-                Seller is proposing to the Buyer. If 1) the Buyer has set
-                `provideAlternate=true`;  2) the Seller has determined that the
-                POQ Confidence Level for this item is `yellow` or `red`; and  3)
-                The Seller has alternate Products (e.g. similar but lower
-                bandwidth) that may be adequate.
-
-                **MUST NOT** be specified if 'state' is 'terminatedWithError' or
-                'done.abandoned'.
+                A list of zero or more alternative Product Offerings that the
+                Seller is proposing to the Buyer. The Seller MAY specifiy items
+                if: 1) the Buyer has set `provideAlternate=true`; 2) the Seller
+                has determined that the POQ Confidence Level for this item is
+                `yellow` or `red`; and 3) The Seller has alternate Products
+                (e.g. similar but lower bandwidth) that may be adequate. If the
+                Buyer has requested to provide alternatives, but the Seller
+                cannot find any, then the Seller **MUST** return
+                `alternateProductOfferingProposal` array with 0 items.
               type: array
               items:
                 $ref: '#/components/schemas/AlternateProductOfferingProposal'

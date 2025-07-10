@@ -2,10 +2,7 @@ openapi: 3.0.1
 info:
   title: Billing Management
   description: >
-    **This file forms part of MEF 141.1**
-
-
-    **This draft represents MEF work in progress and is subject to change.**
+    **This file forms part of Mplify 141.1**
 
 
     **This API implements Business Requirements described in MEF 134.**
@@ -29,24 +26,21 @@ info:
     - Register for Invoice Notification
 
 
-    Copyright 2025 MEF Forum and its contributors
+    Copyright 2025 Mplify Alliance and its contributors.
 
 
     This file includes content based on the TM Forum Customer Bill Management
-
     API (TMF678 v4.0.0) available at
-    https://github.com/tmforum-apis/TMF678_CustomerBill,
-
-    which is licensed by the TM Forum under the Apache License version 2.0.
-
-    Such content has been modified by the MEF Forum and its contributors.
-  version: 3.0.0-RC
+    https://github.com/tmforum-apis/TMF678_CustomerBill, which is licensed by
+    the TM Forum under the Apache License version 2.0. Such content has been
+    modified by the Mplify Alliance and its contributors.
+  version: 3.0.1
 servers:
   - url: 'https://{serverBase}/mefApi/sonata/customerBillManagement/v3/'
     variables:
       serverBase:
         description: The base of Seller's URL.
-        default: mef.net
+        default: mplify.net
 tags:
   - name: Customer Bill
   - name: Events Subscription
@@ -236,7 +230,7 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error404'
         '500':
           description: Internal Server Error
           content:
@@ -271,31 +265,31 @@ paths:
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error400'
         '401':
           description: Unauthorized
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error401'
         '403':
           description: Forbidden
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error403'
         '404':
           description: Not Found
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error404'
         '500':
           description: Internal Server Error
           content:
             application/json;charset=utf-8:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error500'
   /hub:
     post:
       tags:
@@ -387,7 +381,7 @@ paths:
           description: >-
             The unique identifier of the organization that is acting as the a
             Buyer. MUST be specified in the request only when the requester
-            represents more than one Buyer. Reference: MEF 57.2 (Sn 9.18)
+            represents more than one Buyer.
           required: false
           schema:
             type: string
@@ -396,7 +390,7 @@ paths:
           description: >-
             The unique identifier of the organization that is acting as the
             Seller. MUST be specified in the request only when responding
-            entity  represents more than one Seller. Reference: MEF 57.2 (Sn
+            entity  represents more than one Seller.
             9.18)
           required: false
           schema:
@@ -1074,7 +1068,7 @@ components:
               description: >-
                 The following error code:
 
-                - notFound: A current representation of the target resource not
+                - notFound: A current representation for the target resource not
                 found
               type: string
               enum:

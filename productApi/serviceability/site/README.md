@@ -1,5 +1,17 @@
 # Site Retrieval: Release notes
 
+## Release Janis:
+
+**Readiness status**: Requested Letter Ballot. It will be most likely published as a standard in this form.
+
+**Summary**:
+
+- No changes
+
+**geographicSiteManagement.api.yaml:**
+
+No changes.
+
 ## Release Irene:
 
 **Readiness status**: Call for Comments #1 resolved. Ready to start Letter

@@ -1,10 +1,9 @@
 openapi: 3.0.1
 info:
   description: |
-    **This file forms part of MEF 115.1**
-    **This draft represents MEF work in progress and is subject to change.**
+    **This file forms part of Mplify 115.1**
 
-    This API implements Business Requirements described in MEF 80 and MEF 80.0.1
+    This API implements Business Requirements described in MEF 80 and Mplify 80.0.1
 
 
     Quote API allows the Buyer to submit a request to find out how much the installation
@@ -14,23 +13,20 @@ info:
     List of supported Use Cases:
     - Send Quote Notification
 
-    Copyright 2024 MEF Forum and its contributors.
+    Copyright 2025 Mplify Alliance and its contributors
 
     This file includes content based on the TM Forum Quote Management API
     (TMF648 v4.0.0) available at
     https://github.com/tmforum-apis/TMF648_QuoteManagement, which is licensed by
     the TM Forum under the Apache License version 2.0. Such content has been
-    modified by the MEF Forum and its contributors.
+    modified by the Mplify Alliance and its contributors.
   title: Quote Notification
-  version: 9.0.0-RC
-  x-logo:
-    url: /redoc/logo.png
-    backgroundColor: '#FFFFFF'
+  version: 10.0.0
 servers:
-  - url: 'https://{serverBase}/mefApi/sonata/quoteNotification/v9/'
+  - url: 'https://{serverBase}/mefApi/sonata/quoteNotification/v10/'
     variables:
       serverBase:
-        default: mef.net
+        default: mplify.net
         description: The base of Buyer's URL.
 tags:
   - description: |
@@ -290,25 +286,25 @@ components:
         - tooManyUsers
       type: string
     Error500:
+      description: >-
+        Internal Server Error.
+        (https://tools.ietf.org/html/rfc7231#section-6.6.1)
       allOf:
         - $ref: '#/components/schemas/Error'
-        - properties:
+        - type: object
+          properties:
             code:
               description: >-
-                One of the following error codes:
+                The following error code:
 
                 - internalError: Internal server error - the server encountered
                 an unexpected condition that prevented it from fulfilling the
                 request.
+              type: string
               enum:
                 - internalError
-              type: string
           required:
             - code
-          type: object
-      description: >-
-        Internal Server Error.
-        (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     Event:
       description: >-
         Event class is used to describe information structure used for

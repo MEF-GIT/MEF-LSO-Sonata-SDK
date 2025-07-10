@@ -1,8 +1,22 @@
 # Product Inventory: Release notes
 
+## Release Janis:
+
+**Readiness status**: Requested Letter Ballot. It will be most likely published
+as a standard in this form.
+
+**Summary**:
+
+- No Changes
+
+**productInventoryManagement.api.yaml:**
+
+No changes.
+
 ## Release Irene:
 
-**Readiness status**: A MEF 116.1 revision work in progress, subject to change. CfC#1 ready.
+**Readiness status**: A MEF 116.1 revision work in progress, subject to change.
+CfC#1 ready.
 
 **Summary**
 

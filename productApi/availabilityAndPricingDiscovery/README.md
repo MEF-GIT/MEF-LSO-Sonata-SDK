@@ -1,5 +1,13 @@
 # Product Offering Availability and Pricing Discovery: Release notes
 
+## Release Janis:
+
+**Readiness status**: Mplify Published Standard
+
+**Summary:**
+
+No changes
+
 ## Release Irene:
 
 **Readiness status**: Call for Comments #3 resolved. Ready to start Letter Ballot. It will be most likely published

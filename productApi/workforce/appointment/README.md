@@ -1,5 +1,23 @@
 # Appointment Management: Release notes
 
+## Release Janis:
+
+**Readiness status**: Requested Letter Ballot. It will be most likely published as a standard in this form.
+
+**Summary**:
+
+- Common schemas consistency applied.
+
+**appointmentManagement.api.yaml:**
+
+- `MEFByteSize`:
+  - `amount` - marked as required, removed `default: 1`
+  - `units` - marked as required
+
+**appointmentNotification.api.yaml:**
+
+No changes
+
 ## Release Irene:
 
 **Readiness status**: Call for Comments Ballot #1. Work in progress and is

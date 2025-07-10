@@ -1,5 +1,57 @@
 # Product Catalog: Release notes
 
+## Release Janis:
+
+**Readiness status**: Call for Comments #3 resolved. Ready to start the Letter Ballot. It will be most likely published
+as a standard in this form.
+
+**Summary:**
+
+- Attachment only allowed with use of `url`.
+- Common schemas consistency applied.
+
+### List of changed requirements:
+
+- Added:
+  - **[R105]**
+  - **[R106]**
+  - **[R107]**
+- Modified:
+  - 
+- Removed:
+  - **[*R80]**
+  - **[*R81]**
+  - **[*R95]**
+  
+The numbers with (*) refer to the numbering from previous version of the document.
+
+### List of changes in the API:
+
+**productCatalog.api.yaml:**
+
+- `AttachmentValue`:
+  - `attachmentId` - removed
+  - `content` - removed
+  - `url` - marked as required
+- `FieldedAddress`:
+  - `poBox` - added (missing in previous version)
+- `MEFByteSize`:
+  - `amount` - removed `default: 1`
+- `PriceModifier`:
+  - `minimumQuantity` - `minimum` changed from `0` to `1`
+  - `minimumQuantity` - no longer required
+- `ProductOfferingBundleRelationship`:
+  - `isModifiable` - added
+- `ProductOfferingRef`:
+  - `href` - removed `format: uri`
+- `ProductSpecificationRef`:
+  - `href` - removed `format: uri`
+
+**productCatalogNotification.api.yaml:**
+
+- `ProductOfferingLifecycleStatusType`:
+  - `announced` - renamed to `active`
+
 ## Release Irene:
 
 **Readiness status**: Work in progress and is subject to change. Completed and
@@ -46,7 +98,6 @@ resolved Call for Comments #2
   - `countryCode` - added
   - `geographicSubAddress` - removed
   - `language` - added
-  - `poBox` - added
   - `privateStreetName` - added
   - `privateStreetNumber` - added
   - `streetPreDirection` - added
@@ -85,7 +136,6 @@ resolved Call for Comments #2
   - `statusReason` - added
 - `ProductOfferingLifecycleStatusType`:
   - `announced` - renamed to `active`
-  - `launched` - renamed to `launched`
 - `ProductOfferingPrice` - added
 - `ProductOfferingTerm` - added
 - `ProductRelationshipConstraint`:

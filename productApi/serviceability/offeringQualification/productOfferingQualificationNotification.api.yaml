@@ -2,13 +2,9 @@ openapi: 3.0.1
 info:
   title: Product Offering Qualification Notification
   description: |
-    **This file forms part of MEF 87.1**
+    **This file forms part of Mplify 87.1**
           
-          
-    **This draft represents MEF work in progress and is subject to change.**
-
-    
-    This API implements Business Requirements described in MEF 79.1
+    This API implements Business Requirements described in Mplify 79.1
 
     The Product Offering Qualification (POQ) Management API allows a Buyer to
     check whether the Seller can deliver a product or set of products from
@@ -18,21 +14,21 @@ info:
     The following use cases are managed:
     - Send POQ Notifications
 
-    Copyright 2025 MEF Forum and its contributors
+    Copyright 2025 Mplify Alliance and its contributors
 
     This file includes content based on the TM Forum Product Offering
     Qualification API (TMF679 v4.0.0) available at
     https://github.com/tmforum-apis/TMF679_ProductOfferingQualification, which
     is licensed by the TM Forum under the Apache License version 2.0. Such
-    content has been modified by the MEF Forum and its contributors.
-  version: 8.0.0-RC
+    content has been modified by the Mplify Alliance and its contributors.
+  version: 8.0.0
 servers:
   - url: >-
       https://{serverBase}/mefApi/sonata/productOfferingQualificationNotification/v8/
     variables:
       serverBase:
         description: The base of Buyer's URL.
-        default: mef.net
+        default: mplify.net
 tags:
   - name: Notification listeners
     description: |
@@ -299,7 +295,7 @@ components:
           properties:
             code:
               description: >-
-                One of the following error codes:
+                The following error code:
 
                 - internalError: Internal server error - the server encountered
                 an unexpected condition that prevented it from fulfilling the
@@ -338,7 +334,7 @@ components:
         POQ item states - The specific states are managed by the Seller based on
         its processing and/or based on the Buyer's action.
 
-        | MEFPOQItemTaskStateType | MEF 79.1            | Description                                                                                                                                                                                                                                                                                       |
+        | MEFPOQItemTaskStateType | Mplify 79.1         | Description                                                                                                                                                                                                                                                                                       |
         | ----------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
         | acknowledged            | ACKNOWLEDGED        | A request has been received by the Seller and has passed basic validation. For an Immediate response, the POQ moves directly to `done` state and does not pass through `acknowledged`.                                                                                                            |
         | inProgress              | IN_PROGRESS         | The Seller is working on a POQ item response and the answer is not ready yet                                                                                                                                                                                                                      |
@@ -360,9 +356,9 @@ components:
         offering qualification can transition.
 
         The following mapping has been used between `MEFPOQTaskStateType` and
-        MEF 79.1:
+        Mplify 79.1:
 
-        | MEFPOQTaskStateType | MEF 79.1            | Description                                                                                                                                                                                                             |
+        | MEFPOQTaskStateType | Mplify 79.1         | Description                                                                                                                                                                                                             |
         | ------------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
         | acknowledged        | ACKNOWLEDGED        | A request has been received by the Seller, has passed basic validation and the id was assigned. For an Immediate response, the POQ moves directly to the `done` state and does not pass through `acknowledged`.   |
         | inProgress          | IN_PROGRESS         | The POQ is currently being worked by the Seller.                                                                                                                                                                        |

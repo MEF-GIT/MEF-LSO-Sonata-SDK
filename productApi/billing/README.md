@@ -1,5 +1,20 @@
 # Billing Management: Release notes
 
+## Release Janis:
+
+**Readiness status**: Requested Letter Ballot. It will be most likely published as a standard in this form.
+
+**Summary**:
+
+- Fixed error return types to be specific instead of `Error`.
+
+**billingManagement.api.yaml:**
+
+- `/customerBill/{id}`
+  - `GET` - Fixed error return types to be specific instead of `Error`.
+- `/customerBillItem/{id}`
+  - `GET` - Fixed error return types to be specific instead of `Error`.
+
 ## Release Irene:
 
 **Readiness status**: Work in progress and is subject to change. Ready for
@@ -15,7 +30,7 @@ CfC#1.
 
 ### List of changes in the API:
 
-**troubleTicketManagement.yaml:**
+**billingManagement.api.yaml:**
 
 - `GET /customerBill`:
 
@@ -43,7 +58,7 @@ CfC#1.
 - `RelatedContactInformation`:
   - `postalAddress` - changed ref type to `FieldedAddressRepresentation`
 
-**troubleTicketNotification.yaml:**
+**billingNotification.api.yaml:**
 
 - `buyerId` and `sellerId` added to parameters to all endpoints
   ProductOrderEventPayload

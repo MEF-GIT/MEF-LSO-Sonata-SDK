@@ -2,9 +2,9 @@ openapi: 3.0.1
 info:
   title: Geographic Site Management
   description: |
-    **This file forms part of MEF 122.1**
+    **This file forms part of Mplify 122.1**
 
-    This API implements Business Requirements described in MEF 150
+    This API implements Business Requirements described in Mplify 150
 
     It allows to retrieve a list of Geographic Sites and to get all
     information for one geographic site.
@@ -14,19 +14,20 @@ info:
     - Retrieve Service Site List
     - Retrieve Service Site by Identifier
 
-    Copyright 2024 MEF Forum and its contributors
+    Copyright 2025 Mplify Alliance and its contributors.
 
-    This file includes content based on the TM Forum Geographic Site API (TMF674
-    v4.0.0) available at https://github.com/tmforum-apis/TMF674_GeographicSite,
-    which is licensed by the TM Forum under the Apache License version 2.0. Such
-    content has been modified by the MEF Forum and its contributors.
-  version: 8.0.0-RC
+    This file includes content based on the TM Forum Geographic Address API
+    (TMF673 v4.0.1) available at
+    https://github.com/tmforum-apis/TMF673_GeographicAddress, which is licensed
+    by the TM Forum under the Apache License version 2.0. Such content has been
+    modified by the Mplify Alliance and its contributors.
+  version: 8.0.0
 servers:
   - url: 'https://{serverBase}/mefApi/sonata/geographicSiteManagement/v8/'
     variables:
       serverBase:
         description: The base of Seller's URL.
-        default: mef.net
+        default: mplify.net
 tags:
   - name: geographicSite
 paths:
@@ -48,7 +49,7 @@ paths:
             Buyer. MUST be specified in the request only when the requester
             represents more than one Buyer.
 
-            Reference: MEF 150 (Sn 8.8)
+            Reference: Mplify 150 (Sn 8.8)
           required: false
           schema:
             type: string
@@ -59,7 +60,7 @@ paths:
             Seller. MUST be specified in the request only when responding entity
             represents more than one Seller.
 
-            Reference: MEF 150 (Sn 8.8)
+            Reference: Mplify 150 (Sn 8.8)
           required: false
           schema:
             type: string
@@ -169,7 +170,7 @@ paths:
             Buyer. MUST be specified in the request only when the requester
             represents more than one Buyer.
 
-            Reference: MEF 150 (Sn 8.8)
+            Reference: Mplify 150 (Sn 8.8)
           required: false
           schema:
             type: string
@@ -180,7 +181,7 @@ paths:
             Seller. MUST be specified in the request only when responding entity
             represents more than one Seller.
 
-            Reference: MEF 150 (Sn 8.8)
+            Reference: Mplify 150 (Sn 8.8)
           required: false
           schema:
             type: string
@@ -256,16 +257,28 @@ components:
       required:
         - reason
     Error400:
-      description:
-        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
       allOf:
         - $ref: '#/components/schemas/Error'
-        - type: object
-          properties:
+        - properties:
             code:
+              description: >-
+                One of the following error codes:
+
+                - missingQueryParameter: The URI is missing a required
+                query-string parameter
+
+                - missingQueryValue: The URI is missing a required query-string
+                parameter value
+
+                - invalidQuery: The query section of the URI is invalid.
+
+                - invalidBody: The request has an invalid body
               $ref: '#/components/schemas/Error400Code'
           required:
             - code
+          type: object
+      description:
+        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
     Error400Code:
       description: >-
         One of the following error codes:
@@ -286,16 +299,23 @@ components:
         - invalidQuery
         - invalidBody
     Error401:
-      description:
-        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
       allOf:
         - $ref: '#/components/schemas/Error'
-        - type: object
-          properties:
+        - properties:
             code:
+              description: >-
+                One of the following error codes:
+
+                - missingCredentials: No credentials provided.
+
+                - invalidCredentials: Provided credentials are invalid or
+                expired
               $ref: '#/components/schemas/Error401Code'
           required:
             - code
+          type: object
+      description:
+        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
     Error401Code:
       description: |-
         One of the following error codes:
@@ -306,16 +326,23 @@ components:
         - missingCredentials
         - invalidCredentials
     Error403:
-      description:
-        'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
       allOf:
         - $ref: '#/components/schemas/Error'
-        - type: object
-          properties:
+        - properties:
             code:
+              description: |-
+                This code indicates that the server understood
+                the request but refuses to authorize it because
+                of one of the following error codes:
+                - accessDenied: Access denied
+                - forbiddenRequester: Forbidden requester
+                - tooManyUsers: Too many users
               $ref: '#/components/schemas/Error403Code'
           required:
             - code
+          type: object
+      description:
+        'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
     Error403Code:
       description: |-
         This code indicates that the server understood
@@ -357,6 +384,15 @@ components:
         - type: object
           properties:
             code:
+              description: |
+                One of the following error codes:
+                  - missingProperty: The property the Seller has expected is not present in the payload
+                  - invalidValue: The property has an incorrect value
+                  - invalidFormat: The property value does not comply with the expected value format
+                  - referenceNotFound: The object referenced by the property cannot be identified in the Seller system
+                  - unexpectedProperty: Additional property, not expected by the Seller has been provided
+                  - tooManyRecords: the number of records to be provided in the response exceeds the Seller's threshold.
+                  - otherIssue: Other problem was identified (detailed information provided in a reason)
               $ref: '#/components/schemas/Error422Code'
             propertyPath:
               description: >
@@ -409,15 +445,16 @@ components:
           required:
             - code
     Error501:
-      description:
-        'Not Implemented. (https://tools.ietf.org/html/rfc7231#section-6.6.2)'
+      description: >-
+        Not Implemented. Used in case Seller is not supporting an optional
+        operation (https://tools.ietf.org/html/rfc7231#section-6.6.2)
       allOf:
         - $ref: '#/components/schemas/Error'
         - type: object
           properties:
             code:
               description: |-
-                The following error code::
+                The following error code:
                 - notImplemented: Method not supported by the server
               type: string
               enum:
@@ -806,7 +843,7 @@ components:
       properties:
         label:
           description: >-
-            The unique reference to an Geographic Address assigned by the
+            The unique reference to a Geographic Address assigned by the
             Administrative Authority.
           type: string
         administrativeAuthority:

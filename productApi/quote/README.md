@@ -1,5 +1,29 @@
 # Quote Management: Release notes
 
+## Release Janis:
+
+**Readiness status**: Requested Letter Ballot. It will be most likely published as a standard in this form.
+
+**Summary**:
+
+- Common schemas consistency applied.
+- Added [R24] - missed from Mplify 80 R22.
+- Added [R27] and [R28] to clarify when `quoteItemInstallationInterval` and `quoteItemTerm` must be provided
+- Use Case 2: Retrieve Quote List is changed to be optional, according to MEF 80. [R3] and [O1] updated
+- Fixed Table 9 to `quoteLevel` not required in `rejected` and `unableToProvide` and [R30], [R31] to reflect that.
+
+**quoteManagement.api.yaml:**
+
+- `GET /quote`:
+  - added `Error501` as possible response
+- `ProductOfferingQualificationItemRef`:
+  - `alternateProductProposalId` - renamed to `alternateProductOfferingProposalId` for consistency purposes
+
+**quoteNotification.api.yaml:**
+
+No changes.
+
+
 ## Release Irene:
 
 **Readiness status**: Call for Comments Ballot #1. Work in progress and is

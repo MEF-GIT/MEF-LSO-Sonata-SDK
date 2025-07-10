@@ -1,5 +1,21 @@
 # Workorder Management: Release notes
 
+## Release Janis:
+
+**Readiness status**: Requested Letter Ballot. It will be most likely published as a standard in this form.
+
+**Summary**:
+
+No changes
+
+**appointmentManagement.api.yaml:**
+
+No changes
+
+**appointmentNotification.api.yaml:**
+
+No changes
+
 ## Release Irene:
 
 **Readiness status**: Call for Comments Ballot #1. Work in progress and is

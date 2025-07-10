@@ -1,0 +1,1081 @@
+openapi: 3.0.1
+info:
+  title: Circuit Impairment and Maintenance Notification
+  description: |
+    **This file forms part of MEF W175**
+
+    **This draft represents MEF work in progress and is subject to change.**
+
+    This API implements Business Requirements described in MEF 113 and MEF 173
+
+    It allows the Buyer to receive CIM Incident Notifications
+
+    List of supported use cases:
+    - Send Event Notification
+
+    Copyright 2025 MEF Forum and its contributors
+
+    This file includes content based on the TM Forum Trouble Ticket API (TMF621
+    v4.0.0) available at https://github.com/tmforum-apis/TMF621_TroubleTicket,
+    which is licensed by the TM Forum under the Apache License version 2.0. Such
+    content has been modified by the MEF Forum and its contributors.
+  version: 1.0.0-RC
+servers:
+  - url: 'https://{serverBase}/mefApi/sonata/cimIncidentNotification/v1/'
+    variables:
+      serverBase:
+        description: The base of Buyer's URL.
+        default: mef.net
+tags:
+  - name: Notification listeners
+    description: |
+      The Buyer's endpoint to send particular event types notifications to.
+paths:
+  /listener/cimIncidentCreateEvent:
+    post:
+      tags:
+        - Notification listeners
+      summary: Client listener for entity CIM Incident Create Event
+      description:
+        Client listener for receiving the notification CIM Incident Create Event
+      operationId: listenToCimIncidentCreateEvent
+      parameters:
+        - name: buyerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Buyer. MUST be specified in the request when the requester
+            represents more than one Buyer.
+          required: false
+          schema:
+            type: string
+        - name: sellerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request when the responding entity
+            represents more than one Seller.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        description: The event data
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/CimIncidentCreateEvent'
+        required: true
+      responses:
+        '204':
+          description:
+            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
+        '400':
+          description: Bad Request
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /listener/cimIncidentAttributeValueChangeEvent:
+    post:
+      tags:
+        - Notification listeners
+      summary:
+        Client listener for entity CIM Incident Attribute Value Change Event
+      description: >-
+        Client listener for receiving the notification CIM Incident Attribute
+        Value Change Event
+      operationId: listenToCimIncidentAttributeValueChangeEvent
+      parameters:
+        - name: buyerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Buyer. MUST be specified in the request when the requester
+            represents more than one Buyer.
+          required: false
+          schema:
+            type: string
+        - name: sellerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request when the responding entity
+            represents more than one Seller.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        description: The event data
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/CimIncidentAttributeValueChangeEvent'
+        required: true
+      responses:
+        '204':
+          description:
+            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
+        '400':
+          description: Bad Request
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /listener/cimIncidentStatusChangeEvent:
+    post:
+      tags:
+        - Notification listeners
+      summary: Client listener for entity CIM Incident Status Change Event
+      description: >-
+        Client listener for receiving the notification CIM Incident Status
+        Change Event
+      operationId: listenToCimIncidentStatusChangeEvent
+      parameters:
+        - name: buyerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Buyer. MUST be specified in the request when the requester
+            represents more than one Buyer.
+          required: false
+          schema:
+            type: string
+        - name: sellerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request when the responding entity
+            represents more than one Seller.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        description: The event data
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/CimIncidentStatusChangeEvent'
+        required: true
+      responses:
+        '204':
+          description:
+            'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
+        '400':
+          description: Bad Request
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+components:
+  schemas:
+    AttachmentValue:
+      description: >-
+        Complements the description of an element (for instance a product)
+        through video, pictures...
+      type: object
+      properties:
+        author:
+          description:
+            The name of the person or organization who added the Attachment.
+          type: string
+        creationDate:
+          description: The date the Attachment was added.
+          type: string
+          format: date-time
+        description:
+          description: A narrative text describing the content of the attachment
+          type: string
+        mimeType:
+          description: >-
+            Attachment mime type such as extension file for video, picture and
+            document
+          type: string
+        name:
+          description: The name of the attachment
+          type: string
+        size:
+          description: The size of the attachment.
+          $ref: '#/components/schemas/MEFByteSize'
+        source:
+          description:
+            Indicates if the attachment was added by the Buyer or the Seller.
+          $ref: '#/components/schemas/MEFBuyerSellerType'
+        url:
+          description: URL where the attachment is located.
+          type: string
+      required:
+        - author
+        - creationDate
+        - name
+        - source
+        - url
+    CimFailureIncident:
+      description: >-
+        Sent when the Seller detects an occurrence of a Situation on a Product
+        provided to the Buyer, where the Product is non-operational (for
+        example, down, routing failures, severe packet drops, etc.).
+      allOf:
+        - $ref: '#/components/schemas/CimIncident'
+        - type: object
+          properties:
+            '@type':
+              description: >-
+                Used to unambiguously designate the class type when using
+                `oneOf`
+              type: string
+              enum:
+                - CimFailureIncident
+            impact:
+              description:
+                The presumed impact on the Buyer for the referenced Product(s).
+              type: string
+              enum:
+                - down
+            incidentType:
+              description: >-
+                The presumed cause of the CIM Incident as evaluated by the
+                Seller.
+              type: string
+              enum:
+                - failure
+    CimIncident:
+      description: >
+        An CIM Incident is a record of an issue that is not part of normal
+        operation in the Seller's network that has a possible negative impact on
+        the operability of the network on one or more Buyers.
+      type: object
+      properties:
+        '@type':
+          description:
+            Used to unambiguously designate the class type when sublassing
+          type: string
+        attachment:
+          description: >-
+            Attachments to the Incident, such as a file or screenshot.
+            Attachments may be added but may not be modified or deleted (for
+            historical reasons).
+          type: array
+          items:
+            $ref: '#/components/schemas/AttachmentValue'
+        closedDate:
+          description:
+            The date the CIM Incident status was set to closed by the Seller
+          type: string
+          format: date-time
+        creationDate:
+          description: The date on which the CIM Incident was created
+          type: string
+          format: date-time
+        description:
+          description: Description of the CIM Incident
+          type: string
+        expectedClosedDate:
+          description: >-
+            The date provided by the Seller to indicate when the CIM Incident is
+            expected to be closed.
+          type: string
+          format: date-time
+        href:
+          description: 'Hyperlink, a reference to the CIM Incident entity'
+          type: string
+        id:
+          description:
+            Unique (within the Seller domain) identifier for the CIM Incident.
+          type: string
+        impact:
+          description:
+            The presumed impact on the Buyer for the referenced Product(s).
+          type: string
+        incidentType:
+          description:
+            The presumed cause of the CIM Incident as evaluated by the Seller.
+          type: string
+        note:
+          description: >-
+            A set of unstructured comments or information associated to the CIM
+            Incident. Notes may be added but may not be modified or deleted (for
+            historical reasons).
+          type: array
+          items:
+            $ref: '#/components/schemas/Note'
+        priority:
+          description: >-
+            The priority (ITIL) is based on the assessment of the impact and
+            urgency of how quickly the CIM Incident should be resolved after
+            evaluation by the Seller of the impact of the CIM Incident.
+          $ref: '#/components/schemas/CimIncidentPriorityType'
+        relatedContactInformation:
+          description: >-
+            Party playing a role in this CIM Incident.
+
+            The 'role' is to specify the type of contact as specified in MEF
+            113:
+
+            Incident Contact ('role=incidentContact') - REQUIRED to be set by
+            the Seller
+
+            Incident Technical Contact ('role=incidentTechnicalContact')
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/RelatedContactInformation'
+        relatedEntity:
+          description: >-
+            A set of identifiers of the Products on which the CIM Incident could
+            have an impact on the normal operation.
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/RelatedEntity'
+        relatedIssue:
+          description: >-
+            A list of Related Issue relationships. Represents relationships to
+            other Trouble Tickets, Incidents, and CIM Incidents.
+          type: array
+          items:
+            $ref: '#/components/schemas/IssueRelationship'
+        severity:
+          description:
+            The severity (ITIL) of the CIM Incident as evaluated by the Seller.
+          $ref: '#/components/schemas/CimIncidentSeverityType'
+        situationStartDate:
+          description: >-
+            The date when the situation was first identified, for example via
+            error logs.
+          type: string
+          format: date-time
+        status:
+          description: The current status of the CIM Incident
+          $ref: '#/components/schemas/IncidentStatusType'
+        statusChange:
+          description: >-
+            The status change history that is associated to the CIM Incident.
+            Populated by the Seller.
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/IncidentStatusChange'
+      required:
+        - '@type'
+        - creationDate
+        - description
+        - id
+        - impact
+        - incidentType
+        - priority
+        - relatedContactInformation
+        - relatedEntity
+        - severity
+        - situationStartDate
+        - status
+        - statusChange
+      discriminator:
+        propertyName: '@type'
+        mapping:
+          CimFailureIncident: '#/components/schemas/CimFailureIncident'
+          CimServiceImpairmentIncident: '#/components/schemas/CimServiceImpairmentIncident'
+          CimMaintenanceIncident: '#/components/schemas/CimMaintenanceIncident'
+      oneOf:
+        - $ref: '#/components/schemas/CimFailureIncident'
+        - $ref: '#/components/schemas/CimServiceImpairmentIncident'
+        - $ref: '#/components/schemas/CimMaintenanceIncident'
+    CimIncidentAttributeValueChangeEvent:
+      allOf:
+        - $ref: '#/components/schemas/Event'
+        - type: object
+          properties:
+            eventType:
+              description: Indicates the type of the event.
+              type: string
+              enum:
+                - cimIncidentAttributeValueChangeEvent
+            event:
+              description: >
+                A reference to the object that is the source of the
+                notification.
+              $ref: '#/components/schemas/CimIncident'
+          required:
+            - event
+            - eventType
+    CimIncidentCreateEvent:
+      allOf:
+        - $ref: '#/components/schemas/Event'
+        - type: object
+          properties:
+            eventType:
+              description: Indicates the type of the event.
+              type: string
+              enum:
+                - cimIncidentCreateEvent
+            event:
+              description: >
+                A reference to the object that is the source of the
+                notification.
+              $ref: '#/components/schemas/CimIncident'
+          required:
+            - event
+            - eventType
+    CimIncidentPriorityType:
+      description: Possible values for the priority of CIM Incident
+      type: string
+      enum:
+        - low
+        - medium
+        - high
+        - critical
+    CimIncidentSeverityType:
+      description: Possible values for the severity of CIM Incident
+      type: string
+      enum:
+        - minor
+        - moderate
+        - significant
+        - extensive
+    CimIncidentStatusChangeEvent:
+      allOf:
+        - $ref: '#/components/schemas/Event'
+        - type: object
+          properties:
+            eventType:
+              description: Indicates the type of the event.
+              type: string
+              enum:
+                - cimIncidentStatusChangeEvent
+            event:
+              description: >
+                A reference to the object that is the source of the
+                notification.
+              $ref: '#/components/schemas/CimIncident'
+          required:
+            - event
+            - eventType
+    CimMaintenanceIncident:
+      description: >-
+        Any scheduled maintenance to be performed by the Seller that may impact
+        a Product for the Buyer, which also includes the planned ending time and
+        date.
+      allOf:
+        - $ref: '#/components/schemas/CimIncident'
+        - type: object
+          properties:
+            '@type':
+              description: >-
+                Used to unambiguously designate the class type when using
+                `oneOf`
+              type: string
+              enum:
+                - CimMaintenanceIncident
+            impact:
+              description:
+                The presumed impact on the Buyer for the referenced Product(s).
+              $ref: '#/components/schemas/MEFObservedImpactType'
+            incidentType:
+              description: >-
+                The presumed cause of the CIM Incident as evaluated by the
+                Seller.
+              type: string
+              enum:
+                - plannedMaintenance
+          required:
+            - expectedClosedDate
+    CimServiceImpairmentIncident:
+      description: >-
+        Sent when the Seller detects an occurrence of a Situation on a Product
+        provided to the Buyer, where the Product is not meeting the Product
+        specifications or is not opera-tional on an intermittent basis. This
+        includes impair-ments due to traffic violating traffic profile
+        thresholds (for example, excessive traffic drops due to policing) and/or
+        traffic congestion exceeding thresholds.
+      allOf:
+        - $ref: '#/components/schemas/CimIncident'
+        - type: object
+          properties:
+            '@type':
+              description: >-
+                Used to unambiguously designate the class type when using
+                `oneOf`
+              type: string
+              enum:
+                - CimServiceImpairmentIncident
+            impact:
+              description:
+                The presumed impact on the Buyer for the referenced Product(s).
+              type: string
+              enum:
+                - degraded
+                - intermittent
+            incidentType:
+              description: >-
+                The presumed cause of the CIM Incident as evaluated by the
+                Seller.
+              type: string
+              enum:
+                - policing
+                - congestion
+    DataSizeUnit:
+      description: The unit of measure in the data size.
+      type: string
+      enum:
+        - BYTES
+        - KBYTES
+        - MBYTES
+        - GBYTES
+        - TBYTES
+        - PBYTES
+        - EBYTES
+        - ZBYTES
+        - YBYTES
+    Error:
+      description: >
+        Standard Class used to describe API response error
+
+        Not intended to be use directly. The `code` in the HTTP header is used
+        as a discriminator for the type of error returned in runtime.
+      type: object
+      properties:
+        reason:
+          description: >-
+            Text that explains the reason for error. This can be shown to a
+            client user.
+          type: string
+          maxLength: 255
+        message:
+          description: >-
+            Text that provide mode details and corrective actions related to the
+            error. This can be shown to a client user.
+          type: string
+        referenceError:
+          description: url pointing to documentation describing the error
+          type: string
+          format: uri
+      required:
+        - reason
+    Error400:
+      description:
+        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - type: object
+          properties:
+            code:
+              description: >-
+                One of the following error codes:
+
+                - missingQueryParameter: The URI is missing a required
+                query-string parameter
+
+                - missingQueryValue: The URI is missing a required query-string
+                parameter value
+
+                - invalidQuery: The query section of the URI is invalid.
+
+                - invalidBody: The request has an invalid body
+              $ref: '#/components/schemas/Error400Code'
+          required:
+            - code
+    Error400Code:
+      description: >-
+        One of the following error codes:
+
+        - missingQueryParameter: The URI is missing a required query-string
+        parameter
+
+        - missingQueryValue: The URI is missing a required query-string
+        parameter value
+
+        - invalidQuery: The query section of the URI is invalid.
+
+        - invalidBody: The request has an invalid body
+      type: string
+      enum:
+        - missingQueryParameter
+        - missingQueryValue
+        - invalidQuery
+        - invalidBody
+    Error401:
+      description:
+        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - type: object
+          properties:
+            code:
+              description: >-
+                One of the following error codes:
+
+                - missingCredentials: No credentials provided.
+
+                - invalidCredentials: Provided credentials are invalid or
+                expired
+              $ref: '#/components/schemas/Error401Code'
+          required:
+            - code
+    Error401Code:
+      description: |-
+        One of the following error codes:
+        - missingCredentials: No credentials provided.
+        - invalidCredentials: Provided credentials are invalid or expired
+      type: string
+      enum:
+        - missingCredentials
+        - invalidCredentials
+    Error403:
+      description:
+        'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - type: object
+          properties:
+            code:
+              description: |-
+                This code indicates that the server understood
+                the request but refuses to authorize it because
+                of one of the following error codes:
+                - accessDenied: Access denied
+                - forbiddenRequester: Forbidden requester
+                - tooManyUsers: Too many users
+              $ref: '#/components/schemas/Error403Code'
+          required:
+            - code
+    Error403Code:
+      description: |-
+        This code indicates that the server understood
+        the request but refuses to authorize it because
+        of one of the following error codes:
+        - accessDenied: Access denied
+        - forbiddenRequester: Forbidden requester
+        - tooManyUsers: Too many users
+      type: string
+      enum:
+        - accessDenied
+        - forbiddenRequester
+        - tooManyUsers
+    Error500:
+      description: >-
+        Internal Server Error.
+        (https://tools.ietf.org/html/rfc7231#section-6.6.1)
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - type: object
+          properties:
+            code:
+              description: >-
+                The following error code:
+
+                - internalError: Internal server error - the server encountered
+                an unexpected condition that prevented it from fulfilling the
+                request.
+              type: string
+              enum:
+                - internalError
+          required:
+            - code
+    Event:
+      description: >-
+        Event class is used to describe information structure used for
+        notification.
+      type: object
+      properties:
+        eventId:
+          description: Id of the event
+          type: string
+        eventTime:
+          description: Date-time when the event occurred
+          type: string
+          format: date-time
+        eventType:
+          description: The type of the notification.
+          type: string
+        event:
+          description: The event linked to the involved resource object
+          type: object
+      required:
+        - event
+        - eventId
+        - eventTime
+        - eventType
+    FieldedAddressRepresentation:
+      description: >-
+        A type of Address that has a discrete field and value for each type of
+        boundary or identifier down to the lowest level of detail. For example
+        "street number" is one field, "street name" is another field, etc.
+      type: object
+      properties:
+        streetNr:
+          description: >-
+            Number identifying a specific property on a public street. It may be
+            combined with streetNrLast for ranged addresses.
+          type: string
+        streetNrSuffix:
+          description: >-
+            The first street number suffix (in a street number range) or the
+            suffix for the street number if there is no range
+          type: string
+        streetNrLast:
+          description:
+            Last number in a range of street numbers allocated to an Address
+          type: string
+        streetNrLastSuffix:
+          description: Last street number suffix for a ranged Address
+          type: string
+        streetPreDirection:
+          description:
+            The direction of the street that appears before the Street Name
+          type: string
+        streetName:
+          description: Name of the street or other street type
+          type: string
+        streetType:
+          description: >-
+            The type of street (e.g., alley, avenue, boulevard, brae, crescent,
+            drive, highway, lane, terrace, parade, place, tarn, way, wharf)
+          type: string
+        streetPostDirection:
+          description: >-
+            A modifier denoting a relative direction that appears after the
+            Street Name.
+          type: string
+        poBox:
+          description: Number identifying a specific location in a post office.
+          type: string
+        locality:
+          description: >-
+            An area of defined or undefined boundaries within a local authority
+            or other legislatively defined area.
+          type: string
+        city:
+          description: City in which the Address is located.
+          type: string
+        postcode:
+          description: >-
+            A descriptor for a postal delivery area used to speed and simplify
+            the delivery of mail (also known as zip code)
+          type: string
+        postcodeExtension:
+          description: >-
+            The extension used on a postal code. Note: there are different use
+            codes for this attribute depending upon the country.
+          type: string
+        stateOrProvince:
+          description: The State or Province in which the Address is located.
+          type: string
+        countryCode:
+          description: >-
+            Country in which the Address is located, defined using two
+            characters as defined in ISO 3166
+          type: string
+          minLength: 2
+          maxLength: 2
+        subUnit:
+          description: >-
+            The Sub Unit represented as a list. This is a list to allow complex
+            sub-unit information such as SUITE 42 ROOM A
+          type: array
+          items:
+            $ref: '#/components/schemas/SubUnit'
+        buildingName:
+          description: >
+            The well-known name of a building that is located at this Address
+            (e.g., where there is one Address for a campus).
+          type: string
+        privateStreetNumber:
+          description: Street number on a private street within the Address.
+          type: string
+        privateStreetName:
+          description: >-
+            Private streets internal to a property (e.g., a university) may have
+            internal names that are not recorded by the land title office.
+          type: string
+        language:
+          description: >-
+            The language in which the address is expressed. It MUST use the ISO
+            639:2023 two letter code 639:2023
+          type: string
+          minLength: 2
+          maxLength: 2
+    IncidentStatusChange:
+      description: >-
+        Holds the status notification reasons and associated date the status
+        changed, populated by the server
+      type: object
+      properties:
+        changeDate:
+          description: The date and time the status changed.
+          type: string
+          format: date-time
+        changeReason:
+          description: The reason why the status changed.
+          type: string
+        status:
+          description: Reached status
+          $ref: '#/components/schemas/IncidentStatusType'
+    IncidentStatusType:
+      description: >
+        Possible values for the status of the Incident
+
+
+        | status       | MEF 113 name |
+        Description                                                                                                                                                             
+        |
+
+        | ------------ | ------------ |
+        ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        |
+
+        | `closed`     | CLOSED       | The Situation described in the Incident
+        was closed by has been resolved and normal operation has been restored
+        on the Seller.Seller's network. This is a terminal status. |
+
+        | `created`    | CREATED      | A new Incident has been created and
+        allocated a unique
+        `id`.                                                                                                            
+        |
+
+        | `inProgress` | IN_PROGRESS  | The Incident is in the process of being
+        handled and investigated for resolution by the Seller.
+      type: string
+      enum:
+        - closed
+        - created
+        - inProgress
+    IssueRelationship:
+      description:
+        Represents relationships to other Trouble Tickets and Incidents
+      type: object
+      properties:
+        '@referredType':
+          description:
+            The type of the referred Issue (Incident or TroubleTicket)
+          type: string
+        creationDate:
+          description: The date the relationship was created
+          type: string
+          format: date-time
+        description:
+          description: >-
+            A description of the reason for the Relation Source to set the
+            relationship
+          type: string
+        href:
+          description: Reference of the Trouble Ticket or Incident
+          type: string
+        id:
+          description: >-
+            Unique identifier of the referenced Issue (Trouble Ticket od
+            Incident)
+          type: string
+        relationshipType:
+          description: >-
+            Type of the Trouble Ticket relationship can be blocks, depends on,
+            duplicates, causes, etc...
+          type: string
+        source:
+          description: >-
+            Indicates if this Related Issue was added by the Buyer or the
+            Seller.
+          $ref: '#/components/schemas/MEFBuyerSellerType'
+      required:
+        - '@referredType'
+        - creationDate
+        - description
+        - id
+        - relationshipType
+        - source
+    MEFBuyerSellerType:
+      description: An enumeration with buyer and seller values.
+      type: string
+      enum:
+        - buyer
+        - seller
+    MEFByteSize:
+      description: A size represented by value and Byte units
+      type: object
+      properties:
+        amount:
+          description: Numeric value in a given unit
+          type: number
+          format: float
+        units:
+          description: Byte Unit
+          $ref: '#/components/schemas/DataSizeUnit'
+      required:
+        - amount
+        - units
+    MEFObservedImpactType:
+      description: >-
+        An enumeration of the possible values of impact observed by the Buyer.
+
+        - degraded: When the Product is impacted and not meeting the Product
+        specifications.
+
+        - intermittent: When the Product is not operational as intended on an
+        intermittent basis.
+
+        - down: When the Product is non-operational.
+      type: string
+      enum:
+        - degraded
+        - intermittent
+        - down
+    Note:
+      description: >-
+        Extra information about a given entity. Only useful in processes
+        involving human interaction. Not applicable for an automated process.
+      type: object
+      properties:
+        author:
+          description: Author of the note
+          type: string
+        date:
+          description: Date of the note
+          type: string
+          format: date-time
+        id:
+          description: >-
+            Identifier of the note within its containing entity (may or may not
+            be globally unique, depending on provider implementation)
+          type: string
+        source:
+          description: Indicates if this Note was added by the Buyer or Seller.
+          $ref: '#/components/schemas/MEFBuyerSellerType'
+        text:
+          description: Text of the note
+          type: string
+      required:
+        - author
+        - date
+        - id
+        - source
+        - text
+    RelatedContactInformation:
+      description: >-
+        Contact data for a person or organization that is involved in the
+        product offering qualification. In a given context it is always
+        specified by the Seller (e.g. Seller Contact Information) or by the
+        Buyer.
+      type: object
+      properties:
+        role:
+          description: A role of the particular contact in the request
+          type: string
+        number:
+          description: Phone number
+          type: string
+        emailAddress:
+          description: Email address
+          type: string
+        postalAddress:
+          description: >-
+            Identifies the postal address of the person or office to be
+            contacted.
+          $ref: '#/components/schemas/FieldedAddressRepresentation'
+        organization:
+          description: The organization or company that the contact belongs to
+          type: string
+        name:
+          description: Name of the contact
+          type: string
+        numberExtension:
+          description: Phone number extension
+          type: string
+      required:
+        - emailAddress
+        - name
+        - number
+        - role
+    RelatedEntity:
+      description: >-
+        A reference to an entity, where the type of the entity is not known in
+        advance.
+      type: object
+      properties:
+        '@referredType':
+          description: >-
+            The actual type of the target instance when needed for
+            disambiguation.
+          type: string
+          default: Product
+        href:
+          description: Reference of the related entity.
+          type: string
+        id:
+          description: Unique identifier of a related entity.
+          type: string
+        role:
+          description: The role of an entity.
+          type: string
+      required:
+        - '@referredType'
+        - id
+        - role
+    SubUnit:
+      description: Allows for sub unit identification
+      type: object
+      properties:
+        subUnitNumber:
+          description: >-
+            The discriminator used for the subunit, often just a simple number
+            but may also be a range.
+          type: string
+        subUnitType:
+          description: >-
+            The type of subunit e.g. BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
+            UNIT, WHARF.
+          type: string
+      required:
+        - subUnitNumber
+        - subUnitType

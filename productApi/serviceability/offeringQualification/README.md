@@ -1,5 +1,23 @@
 # Product Offering Qualification: Release notes
 
+## Release Janis:
+
+**Readiness status**: Requested Letter Ballot. It will be most likely published as a standard in this form.
+
+**Summary**:
+
+- [R35] - removed `contact` from the list. Yaml spec was OK.
+- [R65] - added `product.productOffering` to the list
+- [CR2]<[O5] added
+- 
+**productOfferingQualificationManagement.api.yaml:**
+
+No changes.
+
+**productOfferingQualificationNotification.api.yaml**
+
+No changes.
+
 ## Release Irene: 
 
 **Readiness status**: Call for Comments Ballot #1 Resolved. Ready to start Letter Ballot. It will be most likely published

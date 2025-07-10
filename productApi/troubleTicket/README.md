@@ -1,8 +1,31 @@
 # Trouble Ticket Management: Release notes
 
+## Release Janis:
+
+**Readiness status**: Requested Letter Ballot. It will be most likely published
+as a standard in this form.
+
+**Summary**:
+
+- Common schemas consistency applied.
+
+**troubleTicketManagement.yaml:**
+
+- `RelatedEntity`:
+  - `@referredType` - removed `default: Product` - its defined as required, so
+    default is obsolete.
+- `MEFByteSize`:
+  - `amount` - marked as required, removed `default: 1`
+  - `units` - marked as required
+
+**troubleTicketNotification.yaml:**
+
+No changes.
+
 ## Release Irene:
 
-**Readiness status**: Work in progress and is subject to change. Ready for CfC#1.
+**Readiness status**: Work in progress and is subject to change. Ready for
+CfC#1.
 
 **Summary:**
 
@@ -15,7 +38,7 @@
 
 ### List of changes in the API:
 
-**troubleTicketManagement.yaml:**
+**troubleTicketManagement.api.yaml:**
 
 - `GET /incident`:
   - `422` - response code added
@@ -23,7 +46,6 @@
   - `422` - response code added
 - `POST /hub`:
   - `422` - response code added
-
 - `AttachmentValue`:
   - `attachmentId` - removed
   - `content` - removed
@@ -51,7 +73,7 @@
 - `TroubleTicket`:
   - `statusChange` - clarified to be required
 
-**troubleTicketNotification.yaml:**
+**troubleTicketNotification.api.yaml:**
 
 - `buyerId` and `sellerId` added to parameters to all endpoints
   ProductOrderEventPayload
@@ -63,6 +85,7 @@
 - `Error408` - removed
 
 - `Event` - made a generic Event
+
   - `eventType` - added
   - `event` - added
 
@@ -113,7 +136,7 @@ as a standard without further changes.
 
 ### List of changes in the API:
 
-**troubleTicketManagement.yaml:**
+**troubleTicketManagement.api.yaml:**
 
 - `TroubleTicket_Update`
   - `observedImpact` - added
@@ -135,7 +158,7 @@ as a standard without further changes.
     - `repair`
     - `installation`
 
-**troubleTicketNotification.yaml:**
+**troubleTicketNotification.api.yaml:**
 
 None
 
