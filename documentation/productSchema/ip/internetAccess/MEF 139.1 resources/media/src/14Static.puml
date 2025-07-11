@@ -1,0 +1,70 @@
+@startuml
+
+class ForwardingInformation {
+
+}
+
+ForwardingInformation *-->"1" Ipv4OrIpv6Address : nextHopIpAddress
+ForwardingInformation *-->"1" IdentifierString : uniAccessLink
+
+
+
+class Ipv4Address {
+
+}
+
+
+
+class Ipv4OrIpv6Address {
+
+}
+
+
+
+class Ipv4OrIpv6Prefix {
+
+}
+
+Ipv4OrIpv6Prefix *-->"1" Ipv4Prefix : ipv4Prefix
+Ipv4OrIpv6Prefix *-->"1" Ipv6Prefix : ipv6Prefix
+
+
+class Ipv4Prefix {
+
+    prefixLength: integer
+}
+
+Ipv4Prefix *--> Ipv4Address : ipv4Address
+
+
+class Ipv6Address {
+
+}
+
+
+
+class Ipv6Prefix {
+
+    prefixLength: integer
+}
+
+Ipv6Prefix *--> Ipv6Address : ipv6Address
+
+
+class Static {
+
+}
+
+Static *-->"*" StaticIpEntry : staticIpEntry
+
+
+class StaticIpEntry {
+
+    administrativeDistance: integer
+}
+
+StaticIpEntry *--> ForwardingInformation : forwardingInformation
+StaticIpEntry *--> Ipv4OrIpv6Prefix : staticPrefix
+
+
+@enduml

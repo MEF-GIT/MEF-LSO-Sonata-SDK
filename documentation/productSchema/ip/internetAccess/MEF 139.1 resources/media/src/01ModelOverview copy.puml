@@ -1,0 +1,490 @@
+@startuml
+
+
+class Bgp {
+
+    connectionAddressFamily: AddressFamilyIpv4Ipv6
+    authentication: string[]
+    asOverride: EnabledDisabled
+    administrativeDistance: integer
+}
+
+Bgp *--> FourOctetInteger : subscriberAsNumber
+Bgp *--> FourOctetInteger : peerAsNumber
+Bgp *--> PeeringAddress : peeringAddresses
+Bgp *-->"*" BgpCommunity : bgpCommunityList
+Bgp *-->"*" BgpExtendedCommunity : bgpExtendedCommunityList
+Bgp *--> TwoOctetInteger : holdTime
+Bgp *-->"0..1" Damping : damping
+
+
+class BgpCommunity {
+
+    semantics: string
+}
+
+BgpCommunity *--> TwoOctetInteger : autonomousSystemNumber
+BgpCommunity *--> TwoOctetInteger : autonomousSystemDefined
+
+
+class BgpExtendedCommunity {
+
+    regularType*: integer
+    regularValue*: integer
+    extendedValue*: integer
+    semantics: string
+}
+
+BgpExtendedCommunity *-->"1" TwoOctetInteger : extendedType
+
+
+class BiDirSimpleBandwidth {
+
+}
+
+BiDirSimpleBandwidth *--> InformationRate : downstream
+BiDirSimpleBandwidth *--> InformationRate : upstream
+
+
+class Damping {
+
+    cutoffThreshold: integer
+    decayHalfLifeWhileReachable: integer
+    decayHalfLifeWhileUnReachable: integer
+    decayMemoryLimit: integer
+    maxHoldDownTime: integer
+    numberOfReuseLists: integer
+    reuseListMemory: integer
+    reuseListTimeGranularity: integer
+    reuseThreshold: integer
+    timeGranularity: integer
+    reuseIndexArraySize: integer
+}
+
+
+
+class DataSize {
+
+    dataSizeValue: integer
+    dataSizeUnits: DataSizeUnits
+}
+
+
+class Duration {
+
+    amount*: integer
+    units*: TimeUnit
+}
+
+
+
+
+class ForwardingInformation {
+
+}
+
+ForwardingInformation *-->"1" Ipv4OrIpv6Address : nextHopIpAddress
+ForwardingInformation *-->"1" IdentifierString : uniAccessLink
+
+
+class FourOctetInteger {
+
+}
+
+
+
+class IdentifierString {
+
+}
+
+
+
+class InformationRate {
+
+    irValue: number
+    irUnits: InformationRateUnits
+}
+
+
+
+
+class InternetAccess {
+
+    deliveryMechanism*: InternetAccessDeliveryMechanism
+    providerIndependentIpAddresses: EnabledDisabled
+    ipAddressType: InternetAccessIpAddressType
+}
+MEFProductConfiguration <|-- InternetAccess
+
+InternetAccess *-->"*" SubUnit : demarcationPoint
+InternetAccess *--> InternetAccessServiceAccessInterfaceType : serviceAccessInterfaceType
+InternetAccess *--> VlanIdOrUntagged : vlan
+InternetAccess *-u->"1" InternetAccessFeatures : features
+InternetAccess *-->"1" BiDirSimpleBandwidth : bandwidth
+InternetAccess *--> BiDirSimpleBandwidth : guaranteedBandwidth
+InternetAccess *--> InternetAccessBillingModel : billingModel
+InternetAccess *--> InternetAccessLocalNetworkAddresses : localNetworkAddresses
+InternetAccess *--> InternetAccessAutonomousSystemNumber : autonomousSystemNumber
+InternetAccess *--> InternetAccessPublicAddressesPrefixLength : publicAddressesPrefixLength
+InternetAccess *--> InternetAccessPublicAddressBlock : publicAddressBlock
+InternetAccess *--> InternetAccessTransitAddresses : transitAddresses
+
+
+class InternetAccessAutonomousSystemNumber {
+
+    asnType: AsnType
+}
+
+InternetAccessAutonomousSystemNumber *--> FourOctetInteger : asnId
+
+
+class InternetAccessBillingModel {
+
+    billingModelType*: BillingModelType
+}
+
+InternetAccessBillingModel *-->"1..*" InternetAccessNonRecurringPrice : nonRecurringPrice
+InternetAccessBillingModel *-->"1..*" InternetAccessRecurringPrice : recurringPrice
+
+
+class InternetAccessBurstablePercentileBilling {
+
+    burstablePercentile*: integer
+}
+InternetAccessBillingModel <|-- InternetAccessBurstablePercentileBilling
+
+InternetAccessBurstablePercentileBilling *-->"1..*" InternetAccessNonRecurringPrice : burstablePriceList
+
+
+class InternetAccessDataTransferBilling {
+
+}
+InternetAccessBillingModel <|-- InternetAccessDataTransferBilling
+
+InternetAccessDataTransferBilling *-->"1" Duration : dataTransferPeriod
+InternetAccessDataTransferBilling *-->"1..*" InternetAccessDataTransferTier : dataTransferTiers
+
+
+class InternetAccessDataTransferTier {
+
+}
+
+InternetAccessDataTransferTier *-->"1" DataSize : unit
+InternetAccessDataTransferTier *-->"1" Price : unitPrice
+InternetAccessDataTransferTier *-->"1" DataSize : cap
+
+
+
+class InternetAccessDhcpStaticListEntry {
+
+    staticMACAddress: string
+    staticIpAddress: string
+}
+
+
+
+class InternetAccessFeature {
+
+    isSupported*: boolean
+    isEnabled*: boolean
+}
+
+
+
+class InternetAccessFeatureAssistance {
+
+    assistanceLevel*: AssistanceLevel
+    simpleRequestsPerMonth: integer
+    complexRequestsPerMonth: integer
+}
+InternetAccessFeature <|-u- InternetAccessFeatureAssistance
+
+
+
+class InternetAccessFeatureCloudPrioritization {
+
+    cloudServiceProvider*: string[]
+}
+InternetAccessFeature <|-u- InternetAccessFeatureCloudPrioritization
+
+
+
+class InternetAccessFeatureDedicatedFirewall {
+
+    firewallType: FirewallType
+}
+InternetAccessFeature <|-u- InternetAccessFeatureDedicatedFirewall
+
+
+
+class InternetAccessFeatureDns {
+
+    searchDomain*: string[]
+}
+InternetAccessFeature <|-u- InternetAccessFeatureDns
+
+
+
+class InternetAccessFeatureFacilityDiversity {
+
+    internetAccessRef: string
+}
+InternetAccessFeature <|-u- InternetAccessFeatureFacilityDiversity
+
+
+
+class InternetAccessFeatureLayer3Resiliency {
+
+    layer3Resiliency*: Layer3Resiliency
+}
+InternetAccessFeature <|-u- InternetAccessFeatureLayer3Resiliency
+
+
+
+class InternetAccessFeatureMobileBackup {
+
+}
+InternetAccessFeature <|-u- InternetAccessFeatureMobileBackup
+
+InternetAccessFeatureMobileBackup *-->"1" BiDirSimpleBandwidth : minimumExpectedBandwidth
+
+
+class InternetAccessFeatureMonitoring {
+
+    monitoringType*: MonitoringType
+}
+InternetAccessFeature <|-u- InternetAccessFeatureMonitoring
+
+
+
+class InternetAccessFeatureRouting {
+    bgp: Bgp
+    static: Static 
+    routingType*: RoutingType
+}
+InternetAccessFeature <|-u- InternetAccessFeatureRouting
+
+
+
+class InternetAccessFeatures {
+
+}
+
+InternetAccessFeatures *-u-> InternetAccessFeatureAssistance : assistance
+InternetAccessFeatures *-u-> InternetAccessFeatureCloudPrioritization : cloudPrioritization
+InternetAccessFeatures *-u-> InternetAccessFeature : ddosMitigation
+InternetAccessFeatures *-u-> InternetAccessFeatureDedicatedFirewall : dedicatedFirewall
+InternetAccessFeatures *-u-> InternetAccessFeatureDns : dns
+InternetAccessFeatures *-u-> InternetAccessFeatureFacilityDiversity : facilityDiversity
+InternetAccessFeatures *-u-> InternetAccessFeatureLayer3Resiliency : layer3Resiliency
+InternetAccessFeatures *-u-> InternetAccessFeatureMobileBackup : mobileBackup
+InternetAccessFeatures *-u-> InternetAccessFeatureMonitoring : monitoring
+InternetAccessFeatures *-u-> InternetAccessFeature : performanceReporting
+InternetAccessFeatures *-u-> InternetAccessFeatureRouting : routing
+InternetAccessFeatures *-u-> InternetAccessFeature : snmpRead
+
+
+class InternetAccessFlatBilling {
+
+}
+InternetAccessBillingModel <|-- InternetAccessFlatBilling
+
+
+
+
+class InternetAccessLocalNetworkAddresses {
+
+    lanAddressBlock: string
+    dhcpStatus: EnabledDisabled
+    dhcpStart: string
+    dhcpEnd: string
+    nat: string
+}
+
+InternetAccessLocalNetworkAddresses *-->"*" InternetAccessDhcpStaticListEntry : dhcpStaticList
+
+
+class InternetAccessNonRecurringPrice {
+
+    priceDescription*: string
+}
+
+InternetAccessNonRecurringPrice *-->"1" Price : price
+
+
+class InternetAccessPhysicalInterface {
+
+    physicalLayer: SaiEthernetPhysicalLayer
+    connectorType: ConnectorType
+}
+
+
+
+class InternetAccessPublicAddressBlock {
+
+    ipv4: string
+    ipv6: string
+}
+
+
+
+class InternetAccessPublicAddressesPrefixLength {
+
+    ipv4*: InternetAccessIpv4PublicAddressesPrefixLength
+    ipv6*: InternetAccessIpv6PublicAddressesPrefixLength
+}
+
+
+
+class InternetAccessRecurringPrice {
+
+    priceDescription*: string
+}
+
+InternetAccessRecurringPrice *-->"1" Price : price
+InternetAccessRecurringPrice *-->"1" Duration : recurringChargePeriod
+
+
+
+class InternetAccessServiceAccessInterfaceType {
+
+    resiliency: InternetAccessResiliency
+}
+
+InternetAccessServiceAccessInterfaceType *-->"*" InternetAccessPhysicalInterface : physical
+
+
+class InternetAccessTransitAddresses {
+
+    ipv4TransitAddressPrefixLength: InternetAccessIpv4TransitAddressPrefixLength
+    ipv6TransitAddressPrefixLength: InternetAccessIpv6TransitAddressPrefixLength
+    ipv4TransitAddressBlock: string
+    ipv6TransitAddressBlock: string
+}
+
+
+
+class Ipv4Address {
+
+}
+
+
+
+class Ipv4OrIpv6Address {
+
+}
+
+
+
+class Ipv4OrIpv6Prefix {
+
+}
+
+Ipv4OrIpv6Prefix *-->"1" Ipv4Prefix : ipv4Prefix
+Ipv4OrIpv6Prefix *-->"1" Ipv6Prefix : ipv6Prefix
+
+
+class Ipv4Prefix {
+
+    prefixLength: integer
+}
+
+Ipv4Prefix *--> Ipv4Address : ipv4Address
+
+
+class Ipv6Address {
+
+}
+
+
+
+class Ipv6Prefix {
+
+    prefixLength: integer
+}
+
+Ipv6Prefix *--> Ipv6Address : ipv6Address
+
+
+
+class MEFProductConfiguration {
+
+    @type*: string
+}
+
+
+
+class Money {
+
+    unit*: string
+    value*: float
+}
+
+
+
+
+class PeeringAddress {
+
+    peeringAddressType: PeeringAddressType
+}
+
+PeeringAddress *-->"*" SubscriberAndSpLoopbackAddresses : subscriberAndSpLoopbackAddresses
+
+
+
+class Price {
+
+    taxRate: float
+}
+
+Price *-->"1" Money : dutyFreeAmount
+Price *--> Money : taxIncludedAmount
+
+
+
+class Static {
+
+}
+
+Static *-->"*" StaticIpEntry : staticIpEntry
+
+
+class StaticIpEntry {
+
+    administrativeDistance: integer
+}
+
+StaticIpEntry *--> ForwardingInformation : forwardingInformation
+StaticIpEntry *--> Ipv4OrIpv6Prefix : staticPrefix
+
+
+class SubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+
+
+
+class SubscriberAndSpLoopbackAddresses {
+
+}
+
+SubscriberAndSpLoopbackAddresses *--> Ipv4OrIpv6Address : subscriberLoopbackAddress
+SubscriberAndSpLoopbackAddresses *--> Ipv4OrIpv6Address : spLoopbackAddress
+
+
+
+class TwoOctetInteger {
+
+}
+
+
+
+class VlanIdOrUntagged {
+
+}
+
+
+
+@enduml

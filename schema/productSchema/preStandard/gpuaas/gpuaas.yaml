@@ -1,0 +1,170 @@
+---
+type: object
+$id: urn:mef:xid:spec:cantata-sonata:virtual-machine-with-gpuaas:v0.0.1:all
+$schema: http://json-schema.org/draft-07/schema#
+description:
+  Product Specification schema for IaaS Virtual Machine, extended to include
+  GPU as a Service (GPUaaS). Reference MEF W132 Section 8.14 Virtual Machine
+  Requirements. Product relationship with role `INTERFACES_TO` pointing to
+  Network.
+title:
+  MEF LSO IaaS Virtual Machine with GPUaaS
+  # ---------------------
+  # Disclaimer
+  #
+  # © MEF Forum 2024. All Rights Reserved.
+  #
+  # The information in this publication is freely available for reproduction
+  # and use by any recipient and is believed to be accurate as of its
+  # publication date. Such information is subject to change without notice
+  # and MEF Forum (MEF) is not responsible for any errors. MEF does not
+  # assume responsibility to update or correct any information in this
+  # publication. No representation or warranty, expressed or implied, is
+  # made by MEF concerning the completeness, accuracy, or applicability of
+  # any information contained herein and no liability of any kind shall be
+  # assumed by MEF as a result of reliance upon such information.
+  #
+  # The information contained herein is intended to be used without
+  # modification by the recipient or user of this document. MEF is not
+  # responsible or liable for any modifications to this document made by any
+  # other party.
+  #
+  # The receipt or any use of this document or its contents
+  # does not in any way create, by implication or otherwise:
+  #
+  # a) any express or implied license or right to or under any patent,
+  # copyright, trademark or trade secret rights held or claimed by any MEF
+  # member which are or may be associated with the ideas, techniques,
+  # concepts or expressions contained herein; nor
+  #
+  # b) any warranty or representation that any MEF members will announce
+  # any product(s) and/or service(s) related thereto, or if such
+  # announcements are made, that such announced product(s) and/or service(s)
+  # embody any or all of the ideas, technologies, or concepts contained
+  # herein; nor
+  #
+  # c) any form of relationship between any MEF member and the recipient
+  # or user of this document.
+  #
+  # Implementation or use of specific MEF standards, specifications, or
+  # recommendations will be voluntary, and no Member shall be obliged to
+  # implement them by virtue of participation in MEF Forum. MEF is a
+  # non-profit international organization to enable the development and
+  # worldwide adoption of agile, assured and orchestrated network services.
+  # MEF does not, expressly or otherwise, endorse or promote any specific
+  # products or services.
+  # ---------------------
+  #
+properties:
+  manufacturerIdentifier:
+    $ref: '../edgeCompute/common.yaml#/definitions/IdentifierOrUnspecified'
+    description: The Manufacturer Identifier.
+  modelIdentifier:
+    $ref: '../edgeCompute/common.yaml#/definitions/IdentifierOrUnspecified'
+    description: Manufacturer model identifier.
+  packageType:
+    $ref: '../edgeCompute/common.yaml#/definitions/PackageType'
+    description: 'The access to the processor provided. '
+  processorType:
+    $ref: '../edgeCompute/common.yaml#/definitions/ProcessorType'
+    description:
+      Specifies the architecture and machine language of the processor.
+  clockSpeedRange:
+    description: 'Specifies the minimum and maximum speed of the processor.'
+    $ref: '../edgeCompute/common.yaml#/definitions/ClockSpeedRange'
+  numberOfCores:
+    $ref: '../edgeCompute/common.yaml#/definitions/IntegerOrUnspecifiedGtZero'
+    description: 'Specifies the number of cores supported by the processor. '
+  numberOfThreads:
+    $ref: '../edgeCompute/common.yaml#/definitions/IntegerOrUnspecifiedGtZero'
+    description:
+      'Specifies the number of threads that the processor supports. '
+  level1CacheSize:
+    $ref: '../edgeCompute/common.yaml#/definitions/CacheSize'
+    description:
+      Specifies the size of the level 1 cache that the processor supports.
+  level2CacheSize:
+    $ref: '../edgeCompute/common.yaml#/definitions/CacheSize'
+    description:
+      Specifies the size of the level 2 cache that the processor supports.
+  instructionsPerClockCycle:
+    $ref: '../edgeCompute/common.yaml#/definitions/IntegerOrUnspecifiedGtZero'
+    description:
+      Specifies the the number of machine instructions executed per clock cycle
+      by the processor. Its value is an integer > 0 in thousands or
+      Unspecified.
+  memory:
+    $ref: '../edgeCompute/common.yaml#/definitions/Memory'
+    description: Specifies the memory. Added for Project Mongoose.
+  gpu:
+    $ref: '#/definitions/GPU'
+definitions:
+  GPU:
+    description: GPU resource specification for IaaS.
+    type: object
+    properties:
+      manufacturerIdentifier:
+        $ref: '../edgeCompute/common.yaml#/definitions/IdentifierOrUnspecified'
+      modelIdentifier:
+        $ref: '../edgeCompute/common.yaml#/definitions/IdentifierOrUnspecified'
+      memorySize:
+        $ref: '../edgeCompute/common.yaml#/definitions/IntegerOrUnspecifiedGtZero'
+      clockSpeedRange:
+        $ref: '../edgeCompute/common.yaml#/definitions/ClockSpeedRange'
+      numberOfCores:
+        $ref: '../edgeCompute/common.yaml#/definitions/IntegerOrUnspecifiedGtZero'
+      numberOfThreads:
+        $ref: '../edgeCompute/common.yaml#/definitions/IntegerOrUnspecifiedGtZero'
+      cudaCores:
+        type: integer
+        description: The number of CUDA cores for parallel computing.
+      tensorCores:
+        type: integer
+        minimum: 0
+        description: The number of Tensor Cores in the GPU.
+      performanceProfile:
+        $ref: '#/definitions/GpuPerformanceProfile'
+      supportedFrameworks:
+        items:
+          $ref: '#/definitions/GpuSupportedFrameworks'
+        type: array
+      vram:
+        type: integer
+        description: The video memory available on the GPU.
+      driverVersion:
+        type: string
+        description: The required GPU driver version.
+      location:
+        $ref: '#/definitions/GpuCloudEdgeLocation'
+  GpuCloudEdgeLocation:
+    type: object
+    properties:
+      type:
+        $ref: '#/definitions/CloudEdgeType'
+      region:
+        type: string
+        description: Region (e.g., 'North America', 'Europe').
+      site:
+        type: string
+        description: Specific site within the region (e.g., 'New York', 'London').
+      availabilityZone:
+        type: string
+        description: Availability zone (cloud-specific).
+  CloudEdgeType:
+    enum:
+    - CLOUD
+    - EDGE
+    type: string
+  GpuPerformanceProfile:
+    enum:
+    - HIGH_PERFORMANCE_COMPUTING
+    - DEEP_LEARNING_INFERENCE
+    - DATA_SCIENCE
+    type: string
+  GpuSupportedFrameworks:
+    enum:
+    - TENSOR_FLOW
+    - PY_TORCH
+    - CUDA
+    - MX_NET
+    type: string

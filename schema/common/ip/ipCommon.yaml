@@ -1,0 +1,296 @@
+---
+$schema: http://json-schema.org/draft-07/schema#
+title:
+  MEF LSO IP Common Types
+  # ---------------------
+  # Disclaimer
+  #
+  # © MEF Forum 2023. All Rights Reserved.
+  #
+  # The information in this publication is freely available for reproduction
+  # and use by any recipient and is believed to be accurate as of its
+  # publication date. Such information is subject to change without notice
+  # and MEF Forum (MEF) is not responsible for any errors. MEF does not
+  # assume responsibility to update or correct any information in this
+  # publication. No representation or warranty, expressed or implied, is
+  # made by MEF concerning the completeness, accuracy, or applicability of
+  # any information contained herein and no liability of any kind shall be
+  # assumed by MEF as a result of reliance upon such information.
+  #
+  # The information contained herein is intended to be used without
+  # modification by the recipient or user of this document. MEF is not
+  # responsible or liable for any modifications to this document made by any
+  # other party.
+  #
+  # The receipt or any use of this document or its contents
+  # does not in any way create, by implication or otherwise:
+  #
+  # a) any express or implied license or right to or under any patent,
+  # copyright, trademark or trade secret rights held or claimed by any MEF
+  # member which are or may be associated with the ideas, techniques,
+  # concepts or expressions contained herein; nor
+  #
+  # b) any warranty or representation that any MEF members will announce
+  # any product(s) and/or service(s) related thereto, or if such
+  # announcements are made, that such announced product(s) and/or service(s)
+  # embody any or all of the ideas, technologies, or concepts contained
+  # herein; nor
+  #
+  # c) any form of relationship between any MEF member and the recipient
+  # or user of this document.
+  #
+  # Implementation or use of specific MEF standards, specifications, or
+  # recommendations will be voluntary, and no Member shall be obliged to
+  # implement them by virtue of participation in MEF Forum. MEF is a
+  # non-profit international organization to enable the development and
+  # worldwide adoption of agile, assured and orchestrated network services.
+  # MEF does not, expressly or otherwise, endorse or promote any specific
+  # products or services.
+  # ---------------------
+  #
+definitions:
+  Ipv4Address:
+    description: Data type representing IPv4 address.
+    type: string
+    format: ipv4
+  Ipv4AddressingType:
+    description: >
+      Enumeration representing IPv4 Address Types specific for UNI Access Links.
+
+      - DHCP: Dynamic Host Configuration Protocol (DHCP) is used the Subscriber
+      devices 
+
+      to request IPv4 addresses in a given subnet from the SP or Operator.
+
+      - STATIC: IPv4 addresses in a given IPv4 subnet are statically assigned to
+      the 
+
+      SP or Operator and to the Subscriber.
+
+      - UNNUMBERED: The SP or Operator and the Subscriber each assigned an IPv4
+      address
+
+      (from their own address pools) independently. These addresses can be on
+      different 
+
+      subnets, and so an interface-based routing protocol is needed to ensure
+      reachability.
+    type: string
+    enum:
+      - DHCP
+      - STATIC
+      - UNNUMBERED
+  Ipv4OrIpv6Address:
+    description: Data type representing IPv4 or IPV6 address.
+    type: string
+    oneOf:
+      - format: ipv4
+      - format: ipv6
+  Ipv4OrIpv6Prefix:
+    description: IPv4 or IPv6 prefix. Includes subnet address and prefix length.
+    type: object
+    properties:
+      ipv4Prefix:
+        description: IPv4 prefix.
+        $ref: '#/definitions/Ipv4Prefix'
+      ipv6Prefix:
+        description: IPv6 prefix.
+        $ref: '#/definitions/Ipv6Prefix'
+    oneOf:
+      - required: [ipv4Prefix]
+      - required: [ipv6Prefix]
+  Ipv4Prefix:
+    description: >-
+      Data type representing IPv4 address prefix and mask length between 0 and
+      31 bits.
+    type: object
+    properties:
+      ipv4Address:
+        description: IPv4 address.
+        $ref: '#/definitions/Ipv4Address'
+      prefixLength:
+        description: IPv4 address prefix. Length 0-31.
+        type: integer
+        minimum: 0
+        maximum: 31
+  Ipv4PrimarySubnet:
+    allOf:
+      - $ref: '#/definitions/Ipv4SecondarySubnet'
+      - description: >-
+          IPv4 Subnet used in context of Primary Ipvc subnet. It adds the
+          subscriberIpv4Address attribute to the Ipv4SecondarySubnet.
+        type: object
+        properties:
+          subscriberIpv4Address:
+            description: Subscriber IPv4 Address
+            type: array
+            maxItems: 1
+            items:
+              $ref: '../../../common/ip/ipCommon.yaml#/definitions/Ipv4Address'
+  Ipv4SecondarySubnet:
+    description: >-
+      Data type representing an IPv4 subnet logical partition of an IP network.
+      Included is list of Service Provider IPv4 addresses.
+    type: object
+    properties:
+      ipv4Prefix:
+        description: >-
+          IPv4 address prefix (IPv4 address prefix and mask length between 0 and
+          31 in bits).
+        $ref: '../../../common/ip/ipCommon.yaml#/definitions/Ipv4Prefix'
+      serviceProviderIpv4Addresses:
+        description: >
+          List of Service Provider IPv4 addresses. [R25] "If IPv4 Connection
+          Addressing is DHCP, the UNI Access Link IPv4 Connection Addressing
+          Primary Subnet parameter MUST contain only a single Service Provider
+          IPv4 Address." Reference - MEF 69.1 Section 9.4
+        type: array
+        minItems: 1
+        items:
+          $ref: '../../../common/ip/ipCommon.yaml#/definitions/Ipv4Address'
+      reservedPrefixes:
+        description: 'List of IPv4 Prefixes, possibly empty'
+        type: array
+        items:
+          $ref: '../../../common/ip/ipCommon.yaml#/definitions/Ipv4Prefix'
+  Ipv6Address:
+    description: Data type representing IPv6 address.
+    type: string
+    format: ipv6
+  Ipv6AddressingType:
+    description: |
+      Enumeration representing IPv6 Address Types specific for UNI Access
+      Links.
+
+      - DHCP: Dynamic Host Configuration Protocol (DHCP) is used by the
+      Subscriber devices to request IPv6 addresses in a given subnet from the
+      SP or Operator.
+      - SLAAC: Stateless Address Autoconfiguration (SLAAC) is
+      used by the Subscriber devices to create unique IPv6 global addresses
+      within an IP Prefix advertised by the SP or Operator as describer in
+      RFC 4862.
+      - STATIC: IPv6 addresses in a given IPv6 subnet are statically
+      assigned to the SP or Operator and to the Subscriber.
+      - LL_ONLY: If the value is LL-only, these are only IPv6 addresses used on 
+      the UNI Access Link.
+    type: string
+    enum:
+      - DHCP
+      - SLAAC
+      - STATIC
+      - LL_ONLY
+  Ipv6Prefix:
+    description: >-
+      Data type representing IPv6 address prefix and mask length between 0 and
+      127 in bits.
+    type: object
+    properties:
+      ipv6Address:
+        description: IPv6 address.
+        $ref: '#/definitions/Ipv6Address'
+      prefixLength:
+        description: IPv6 address prefix. Length 0-127.
+        type: integer
+        minimum: 0
+        maximum: 127
+  Ipv6Subnet:
+    description: >-
+      IPv6Subnet is a data type representing an IPv6 subnet logical partition of
+      an IP network. Included is list of Service Provider IPv6 addresses.
+    type: object
+    properties:
+      ipv6Prefix:
+        description: >-
+          IPv6 Prefix (IPv6 address prefix and mask length between 0 and 127 in
+          bits).
+        $ref: '#/definitions/Ipv6Prefix'
+      serviceProviderIpv6Addresses:
+        description: List of IPv6 Service Provider addresses.
+        type: array
+        minItems: 1
+        items:
+          $ref: '#/definitions/Ipv6Address'
+      reservedPrefixes:
+        description: 'List of IPv6 Prefixes, possibly empty'
+        type: array
+        items:
+          $ref: '#/definitions/Ipv6Prefix'
+  SynchronousEthernet:
+    description: >
+      Enumeration indicating if the physical link supports Synchronous Ethernet.
+
+
+      - DISBALED - Synchronous Ethernet is disabled on the corresponding
+      physical link.
+
+      - ESMC - Synchronous Ethernet as defined in ITU-T G.8262/Y.1362 MUST be
+      used on the corresponding physical link with synchronization provided by
+      the Service Provider or Operator by the Subscriber. SSM for Synchronous
+      Ethernet using the Ethernet Synchronous Messaging Channel (ESMC) protocol
+      as defined in ITU-T G.8264/Y.1364 MUST be used on the corresponding
+      physical link.
+
+      - NO_ESMC - Synchronous Ethernet as defined in ITU-T G.8262/Y.1362 MUST be
+      used on the corresponding physical link with synchronization provided by
+      the Service Provider or Operator by the Subscriber. SSM for Synchronous
+      Ethernet using the Ethernet Synchronous Messaging Channel (ESMC) protocol
+      as defined in ITU-T G.8264/Y.1364 MUST NOT be used on the corresponding
+      physical link.
+    type: string
+    enum:
+      - DISABLED
+      - ESMC
+      - NO_ESMC
+  UniIpv4ConnectionAddressing:
+    description: >-
+      UniIpv4ConnectionAddressing is a data type representing how IPv4 addresses
+      are allocated to the devices on the UNI Access Link. Reference - MEF 61
+      Section 13.4. [R22] "At a UNI Access Link in a UNI with an IPVC EP for an
+      Advanced Internet Access Service, UNI Access Link IPv4 Connection
+      Addressing MUST be Static or empty. Reference - MEF 69.1 Section 9.4
+    type: object
+    properties:
+      ipv4AddressingType:
+        description: IPv4 Connection Addressing.
+        $ref: '#/definitions/Ipv4AddressingType'
+      ipv4PrimarySubnet:
+        description: >-
+          Primary IPv4 Subnet. Includes IPv4 Prefix and Service Provider IPv4
+          Addresses.
+        $ref: '#/definitions/Ipv4PrimarySubnet'
+      ipv4SecondarySubnetList:
+        description: >-
+          Secondary IPv4 Subnet List. Includes IPv4 Prefix and Service Provider
+          IPv4 Addresses.
+        type: array
+        items:
+          $ref: '#/definitions/Ipv4SecondarySubnet'
+  UniIpv6ConnectionAddressing:
+    description: >-
+      UniIpv6ConnectionAddressing is a data type representing how IPv6 addresses
+      are allocated to the devices on the UNI Access Link. Reference - MEF 61
+      Section 13.5. [R26] "At a UNI Access Link in a UNI with an IPVC EP for an
+      Advanced Internet Access Service, UNI Access Link IPv6 Connection
+      Addressing MUST be Static or empty. Reference - MEF 69.1 Section 9.4
+    type: object
+    properties:
+      ipv6AddressingType:
+        description: IPv6 Connection Addressing.
+        $ref: '#/definitions/Ipv6AddressingType'
+      subscriberIpv6Address:
+        description: Subscriber IPv6 address.
+        $ref: '#/definitions/Ipv6Address'
+      ipv6Subnet:
+        description: Ipv6 Subnet
+        type: array
+        items:
+          $ref: '#/definitions/Ipv6Subnet'
+  VlanIdOrUntagged:
+    description: >-
+      Data type used for VLAN id configuration. Defined as a Integer, value 0
+      to 4094. The value 0 indicates that the Service uses untagged Ethernet
+      frames.
+    type: integer
+    minimum: 0
+    maximum: 4094
+

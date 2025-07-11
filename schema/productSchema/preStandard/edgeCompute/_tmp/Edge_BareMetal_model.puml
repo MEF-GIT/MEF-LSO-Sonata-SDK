@@ -1,0 +1,140 @@
+@startuml
+skinparam class {
+
+BackgroundColor<<Product>> Wheat
+BorderColor<<Product>> Tomato
+}
+
+class BareMetal<<Product>> {
+
+}
+
+BareMetal *--> Processor : processor
+BareMetal *--> Memory : memory
+BareMetal *--> storage : storage
+BareMetal *--> guestOs : guestOs
+
+
+class ClockSpeedRange {
+
+}
+
+ClockSpeedRange *--> NumberOrUnspecifiedGtZero : minimum
+ClockSpeedRange *--> NumberOrUnspecifiedGtZero : maximum
+
+
+class IdentifierOrUnspecified {
+
+    unspecified: string
+}
+
+IdentifierOrUnspecified *--> IdentifierString : identifier
+
+
+class IdentifierString {
+
+}
+
+
+
+class IntegerOrUnspecifiedGtZero {
+
+    value: number
+    unspecified: string
+}
+
+
+
+class Memory {
+
+}
+
+Memory *--> IntegerOrUnspecifiedGtZero : amount
+Memory *--> MemoryTime : accessTime
+Memory *--> MemoryTime : cycleTime
+Memory *--> NumberOrUnspecifiedGtZero : transferRate
+
+
+class MemoryTime {
+
+    value: integer
+    units: Units
+}
+
+
+
+class NumberOrUnspecifiedGtZero {
+
+    value: number
+    unspecified: string
+}
+
+
+
+enum PackageType {
+
+    BINARY
+    SOURCE
+}
+class Processor {
+
+    packageType: PackageType
+    processorType: ProcessorType
+}
+
+Processor *--> IdentifierOrUnspecified : manufacturerIdentifier
+Processor *--> IdentifierOrUnspecified : modelIdentifier
+Processor *--> ClockSpeedRange : clockSpeedRange
+Processor *--> IntegerOrUnspecifiedGtZero : numberOfCores
+Processor *--> IntegerOrUnspecifiedGtZero : numberOfThreads
+Processor *--> IntegerOrUnspecifiedGtZero : instructionsPerClockCycle
+
+
+enum ProcessorType {
+
+    X86
+    ARM
+    OTHER
+    UNSPECIFIED
+}
+class StorageClasses {
+
+    archival: string
+    storage: string
+}
+
+
+
+enum StorageType {
+
+    FILE
+    BLOCK
+    OBJECT
+}
+enum Units {
+
+    NANOSECONDS
+    MICROSECONDS
+}
+class guestOs {
+
+}
+
+guestOs *--> IdentifierString : vendorIdentifier
+guestOs *--> IdentifierString : model
+guestOs *--> IdentifierString : version
+
+
+class storage {
+
+    storageType: StorageType
+    timeToAccess: integer
+    archiveDuration: integer
+    storageAmount: integer
+    replication: boolean
+}
+
+storage *--> StorageClasses : classes
+
+
+@enduml

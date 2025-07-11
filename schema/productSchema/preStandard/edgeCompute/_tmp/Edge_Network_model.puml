@@ -1,0 +1,171 @@
+@startuml
+skinparam class {
+    BackgroundColor<<Product>> Wheat
+    BorderColor<<Product>> Tomato
+}
+
+class Access {
+
+    uri: uri
+}
+
+Access *--> IdentifierString128 : accessIdentifier
+Access *--> IdentifierString128 : accessCredentials
+
+
+class CloudApplicationInterface {
+
+}
+
+CloudApplicationInterface *--> IdentifierString : entityIdentifier
+CloudApplicationInterface *--> Ipv4OrIpv6Address : addressing
+CloudApplicationInterface *--> Access : access
+CloudApplicationInterface *-->"*" IdentifierString : cloudApplication
+
+
+class CloudUni {
+
+}
+
+CloudUni *--> IdentifierString : identifier
+CloudUni *--> UniIpv4ConnectionAddressing : ipv4ConnectionAddressing
+CloudUni *--> UniIpv6ConnectionAddressing : ipv6ConnectionAddressing
+
+
+class CloudVc {
+
+}
+
+CloudVc *--> Connectivity : connectivity
+
+
+class CloudVcEndPoint {
+
+}
+
+CloudVcEndPoint *--> IdentifierString : identifier
+CloudVcEndPoint *-->"*" CloudApplicationInterface : cloudApplicationInterface
+
+
+class Connectivity {
+
+    cloudVcConnectionType: string
+    cloudVcConnectionProtectionType: string
+}
+
+Connectivity *-->"*" IdentifierString : cloudVcConnectionEndPointList
+
+
+class IdentifierString {
+
+}
+
+
+
+class IdentifierString128 {
+
+}
+
+
+
+class Ipv4Address {
+
+}
+
+
+
+enum Ipv4AddressingType {
+
+    DHCP
+    STATIC
+    UNNUMBERED
+}
+class Ipv4OrIpv6Address {
+
+}
+
+
+
+class Ipv4Prefix {
+
+    prefixLength: integer
+}
+
+Ipv4Prefix *--> Ipv4Address : ipv4Address
+
+
+class Ipv4PrimarySubnet {
+
+}
+Ipv4SecondarySubnet <|-- Ipv4PrimarySubnet
+
+Ipv4PrimarySubnet *-->"0..1" Ipv4Address : subscriberIpv4Address
+
+
+class Ipv4SecondarySubnet {
+
+}
+
+Ipv4SecondarySubnet *--> Ipv4Prefix : ipv4Prefix
+Ipv4SecondarySubnet *-->"*" Ipv4Address : serviceProviderIpv4Addresses
+Ipv4SecondarySubnet *-->"*" Ipv4Prefix : reservedPrefixes
+
+
+class Ipv6Address {
+
+}
+
+
+
+enum Ipv6AddressingType {
+
+    DHCP
+    SLAAC
+    STATIC
+    LL_ONLY
+}
+class Ipv6Prefix {
+
+    prefixLength: integer
+}
+
+Ipv6Prefix *--> Ipv6Address : ipv6Address
+
+
+class Ipv6Subnet {
+
+}
+
+Ipv6Subnet *--> Ipv6Prefix : ipv6Prefix
+Ipv6Subnet *-->"*" Ipv6Address : serviceProviderIpv6Addresses
+Ipv6Subnet *-->"*" Ipv6Prefix : reservedPrefixes
+
+
+class Network<<Product>> {
+
+}
+
+Network *--> CloudUni : cloudUni
+Network *--> CloudVcEndPoint : cloudVcEndPoint
+Network *--> CloudVc : cloudVc
+
+
+class UniIpv4ConnectionAddressing {
+
+    ipv4AddressingType: Ipv4AddressingType
+}
+
+UniIpv4ConnectionAddressing *--> Ipv4PrimarySubnet : ipv4PrimarySubnet
+UniIpv4ConnectionAddressing *-->"*" Ipv4SecondarySubnet : ipv4SecondarySubnetList
+
+
+class UniIpv6ConnectionAddressing {
+
+    ipv6AddressingType: Ipv6AddressingType
+}
+
+UniIpv6ConnectionAddressing *--> Ipv6Address : subscriberIpv6Address
+UniIpv6ConnectionAddressing *-->"*" Ipv6Subnet : ipv6Subnet
+
+
+@enduml

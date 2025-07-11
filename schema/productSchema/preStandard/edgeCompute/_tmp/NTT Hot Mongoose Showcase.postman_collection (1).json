@@ -1,0 +1,1057 @@
+{
+	"info": {
+		"_postman_id": "32a8e901-c0b9-4709-bdcb-c2e27fc22505",
+		"name": "NTT Hot Mongoose Showcase",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3828809"
+	},
+	"item": [
+		{
+			"name": "NTT-VM",
+			"item": [
+				{
+					"name": "Create VM Transaction",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var json = JSON.parse(responseBody);\r",
+									"\r",
+									"postman.setNextRequest(\"\")\r",
+									"\r",
+									"pm.test(\"Response status 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    postman.setEnvironmentVariable(\"txId\", json.id);\r",
+									"    postman.setNextRequest(\"Finish transaction configuration\")\r",
+									"});\r",
+									"\r",
+									"//sleep for 10 seconds\r",
+									"console.info(\"Create transaction from payload: Sleep for 10 seconds\");\r",
+									"setTimeout(function(){}, 10000);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"actionType\": \"add\",\r\n    \"partnerId\": \"ntt\",\r\n    \"items\": [\r\n      {\r\n        \"id\": \"LAN\",\r\n        \"characteristicsWrapper\": {\r\n          \"productBundleId\": \"network\",\r\n          \"productOfferingId\": \"productOffering_default_network\",\r\n          \"characteristics\": {\r\n            \"cloudUni\": {\r\n              \"identifier\": \"LAN\",\r\n              \"ipv4ConnectionAddressing\": {\r\n                \"ipv4AddressingType\": \"STATIC\",\r\n                \"ipv4PrimarySubnet\": {\r\n                  \"serviceProviderIpv4Addresses\": \"20.20.20.0/24\"\r\n                }\r\n              }\r\n            }\r\n          }\r\n        },\r\n        \"businessAddressReferences\": [],\r\n        \"relationships\": []\r\n      },\r\n      {\r\n        \"id\": \"storage\",\r\n        \"characteristicsWrapper\": {\r\n          \"productBundleId\": \"storage\",\r\n          \"productOfferingId\": \"productOffering_default_storage\",\r\n          \"characteristics\": {\r\n            \"storageAmount\": 300\r\n          }\r\n        },\r\n        \"businessAddressReferences\": [],\r\n        \"relationships\": []\r\n      },\r\n      {\r\n        \"id\": \"os\",\r\n        \"characteristicsWrapper\": {\r\n          \"productBundleId\": \"guest-os\",\r\n          \"productOfferingId\": \"productOffering_default_guest-os\",\r\n          \"characteristics\": {\r\n            \"vendorIdentifier\": \"VERSO\",\r\n            \"model\": \"versoOS\",\r\n            \"version\": \"1.0.0\"\r\n          }\r\n        },\r\n        \"businessAddressReferences\": [],\r\n        \"relationships\": []\r\n      },\r\n      {\r\n        \"id\": \"vm\",\r\n        \"characteristicsWrapper\": {\r\n          \"productBundleId\": \"virtual-machine\",\r\n          \"productOfferingId\": \"productOffering_default_virtual-machine\",\r\n          \"characteristics\": {\r\n            \"manufacturerIdentifier\": {},\r\n            \"modelIdentifier\": {},\r\n            \"numberOfCores\": {\r\n              \"numberOfCores\": 4\r\n            },\r\n            \"numberOfThreads\": {\r\n              \"numberOfThreads\": 8\r\n            },\r\n            \"memory\": {\r\n              \"amount\": {\r\n                \"dataSizeValue\": 16,\r\n                \"dataSizeUnits\": \"GBYTES\"\r\n              }\r\n            }\r\n          }\r\n        },\r\n        \"businessAddressReferences\": [],\r\n        \"relationships\": [\r\n          {\r\n            \"source\": \"ITEM\",\r\n            \"sourceId\": \"os\",\r\n            \"relationshipType\": \"installedWith\"\r\n          },\r\n          {\r\n            \"source\": \"ITEM\",\r\n            \"sourceId\": \"storage\",\r\n            \"relationshipType\": \"mounts\"\r\n          },\r\n          {\r\n            \"source\": \"PRODUCT\",\r\n            \"sourceId\": \"WAN\",\r\n            \"relationshipType\": \"interfacesTo\"\r\n          },\r\n          {\r\n            \"source\": \"ITEM\",\r\n            \"sourceId\": \"LAN\",\r\n            \"relationshipType\": \"interfacesTo\"\r\n          },\r\n          {\r\n            \"source\": \"PRODUCT\",\r\n            \"sourceId\": \"MGTM\",\r\n            \"relationshipType\": \"interfacesTo\"\r\n          }\r\n        ]\r\n      }\r\n    ]\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{url-buyer}}/nbrace/backend/buyer/integrations/api/entity/action/CREATE_TRANSACTION_ENTITY",
+							"protocol": "https",
+							"host": [
+								"{{url-buyer}}"
+							],
+							"path": [
+								"nbrace",
+								"backend",
+								"buyer",
+								"integrations",
+								"api",
+								"entity",
+								"action",
+								"CREATE_TRANSACTION_ENTITY"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Finish Transaction",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var json = JSON.parse(responseBody);",
+									"",
+									"postman.setNextRequest(\"\")",
+									"",
+									"pm.test(\"Response status 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    postman.setEnvironmentVariable(\"txVersion\", json.version);",
+									"    postman.setNextRequest(\"Start POQ from transaction\")",
+									"});",
+									"",
+									"//sleep for 10 seconds",
+									"console.info(\"Finish transaction configuration: Sleep for 10 seconds\");",
+									"setTimeout(function(){}, 10000);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.info(\"Starting: Finish transaction configuration\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{url-buyer}}/nbrace/backend/buyer/integrations/api/entity/action/FINISH_TRANSACTION_CONFIGURATION?entityId={{txId}}",
+							"protocol": "https",
+							"host": [
+								"{{url-buyer}}"
+							],
+							"path": [
+								"nbrace",
+								"backend",
+								"buyer",
+								"integrations",
+								"api",
+								"entity",
+								"action",
+								"FINISH_TRANSACTION_CONFIGURATION"
+							],
+							"query": [
+								{
+									"key": "entityId",
+									"value": "{{txId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "EQ-BareMetal",
+			"item": [
+				{
+					"name": "Create Bare Metal Transaction",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var json = JSON.parse(responseBody);\r",
+									"\r",
+									"postman.setNextRequest(\"\")\r",
+									"\r",
+									"pm.test(\"Response status 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    postman.setEnvironmentVariable(\"txId\", json.id);\r",
+									"    postman.setNextRequest(\"Finish transaction configuration\")\r",
+									"});\r",
+									"\r",
+									"//sleep for 10 seconds\r",
+									"console.info(\"Create transaction from payload: Sleep for 10 seconds\");\r",
+									"setTimeout(function(){}, 10000);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"actionType\": \"add\",\r\n    \"partnerId\": \"equinix\",\r\n    \"items\": [\r\n        {\r\n            \"id\": \"network\",\r\n            \"characteristicsWrapper\": {\r\n                \"productBundleId\": \"network\",\r\n                \"productOfferingId\": \"productOffering_default_network\",\r\n                \"characteristics\": {\r\n                    \"cloudUni\": {\r\n                        \"ipv4ConnectionAddressing\": {\r\n                            \"ipv4AddressingType\": \"STATIC\",\r\n                            \"ipv4PrimarySubnet\": {\r\n                                \"serviceProviderIpv4Addresses\": \"192.168.1.0/28\" \r\n                            }\r\n                        }\r\n                    }\r\n                }\r\n            },\r\n            \"businessAddressReferences\": [],\r\n            \"relationships\": []\r\n        },\r\n        {\r\n            \"id\": \"baremetal\",\r\n            \"characteristicsWrapper\": {\r\n                \"productBundleId\": \"bare-metal\",\r\n                \"productOfferingId\": \"productOffering_default_bare-metal\",\r\n                \"characteristics\": {\r\n                    \"processor\": {\r\n                        \"manufacturerIdentifier\": {\r\n                            \"identifier\": \"AMD\"\r\n                        },\r\n                        \"modelIdentifier\": {\r\n                            \"identifier\": \"EPYC 7443P\"\r\n                        },\r\n                        \"packageType\": \"BINARY\",\r\n                        \"processorType\": \"X86\",\r\n                        \"numberOfCores\": {\r\n                            \"numberOfCores\": 8\r\n                        },\r\n                        \"numberOfThreads\": {\r\n                            \"numberOfThreads\": 16\r\n                        }\r\n                    },\r\n                    \"memory\": {\r\n                        \"amount\": {\r\n                            \"dataSizeValue\": 64,\r\n                            \"dataSizeUnits\": \"GBYTES\"\r\n                        }\r\n                    },\r\n                    \"guestOs\": {\r\n                        \"vendorIdentifier\": \"RedHat\",\r\n                        \"model\": \"CentOS\",\r\n                        \"version\": \"7\"\r\n                    }\r\n                }\r\n            },\r\n            \"businessAddressReferences\": [\r\n                {\r\n                    \"id\": \"DALLAS\",\r\n                    \"role\": \"INSTALL LOCATION\"\r\n                }\r\n            ],\r\n            \"relationships\": [\r\n                {\r\n                    \"source\": \"ITEM\",\r\n                    \"sourceId\": \"network\",\r\n                    \"relationshipType\": \"interfacesTo\"\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{url-buyer}}/nbrace/backend/buyer/integrations/api/entity/action/CREATE_TRANSACTION_ENTITY",
+							"protocol": "https",
+							"host": [
+								"{{url-buyer}}"
+							],
+							"path": [
+								"nbrace",
+								"backend",
+								"buyer",
+								"integrations",
+								"api",
+								"entity",
+								"action",
+								"CREATE_TRANSACTION_ENTITY"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Finish Transaction",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var json = JSON.parse(responseBody);",
+									"",
+									"postman.setNextRequest(\"\")",
+									"",
+									"pm.test(\"Response status 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    postman.setEnvironmentVariable(\"txVersion\", json.version);",
+									"    postman.setNextRequest(\"Start POQ from transaction\")",
+									"});",
+									"",
+									"//sleep for 10 seconds",
+									"console.info(\"Finish transaction configuration: Sleep for 10 seconds\");",
+									"setTimeout(function(){}, 10000);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.info(\"Starting: Finish transaction configuration\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{url-buyer}}/nbrace/backend/buyer/integrations/api/entity/action/FINISH_TRANSACTION_CONFIGURATION?entityId={{txId}}",
+							"protocol": "https",
+							"host": [
+								"{{url-buyer}}"
+							],
+							"path": [
+								"nbrace",
+								"backend",
+								"buyer",
+								"integrations",
+								"api",
+								"entity",
+								"action",
+								"FINISH_TRANSACTION_CONFIGURATION"
+							],
+							"query": [
+								{
+									"key": "entityId",
+									"value": "{{txId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get Transaction",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var json = pm.response.json();\r",
+							"\r",
+							"//loop if not finished\r",
+							"postman.setNextRequest(\"Get transaction after Quote\");\r",
+							"\r",
+							"var attempts = pm.environment.get(\"attempts_number\");\r",
+							"console.log(\"attempts {}\", attempts);\r",
+							"if (attempts === null){\r",
+							"    attempts = 1;\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Transaction state = QUOTE_DONE\", function () {\r",
+							"    var transaction = json.find(m => m.id === pm.environment.get(\"txId\"));\r",
+							"\r",
+							"    if (!(transaction.state === \"QUOTE_DONE\")) {\r",
+							"      console.info(\"Get transaction after Quote: State is not QUOTE_DONE. Attempt: {}. Sleeping for 5 seconds and retrying\", attempts);\r",
+							"\r",
+							"      if (attempts > 5){\r",
+							"        console.info(\"Get transaction after Quote: reset number of attempts and exit\");\r",
+							"        pm.environment.set(\"attempts_number\", undefined)\r",
+							"        postman.setNextRequest(\"\");\r",
+							"      } else {\r",
+							"        attempts = attempts + 1;\r",
+							"        pm.environment.set(\"attempts_number\", attempts)\r",
+							"      }\r",
+							"     \r",
+							"      setTimeout(function(){}, 5000);\r",
+							"\r",
+							"      pm.expect.fail(\"Transaction state is not QUOTE_DONE\");\r",
+							"    }\r",
+							"    \r",
+							"    postman.setEnvironmentVariable(\"txVersion\", transaction.version);\r",
+							"    \r",
+							"    pm.environment.set(\"attempts_number\", 1)\r",
+							"    postman.setNextRequest(\"Start Order from transaction\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.info(\"Starting: Get transaction after Quote\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{user}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{url-buyer}}/nbrace/backend/buyer/integrations/api/entity/query/transactionEntity",
+					"protocol": "https",
+					"host": [
+						"{{url-buyer}}"
+					],
+					"path": [
+						"nbrace",
+						"backend",
+						"buyer",
+						"integrations",
+						"api",
+						"entity",
+						"query",
+						"transactionEntity"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Hot MG] CreateTransaction",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var json = JSON.parse(responseBody);\r",
+							"\r",
+							"postman.setNextRequest(\"\")\r",
+							"\r",
+							"pm.test(\"Response status 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    postman.setEnvironmentVariable(\"txId\", json.id);\r",
+							"    postman.setNextRequest(\"Finish transaction configuration\")\r",
+							"});\r",
+							"\r",
+							"//sleep for 10 seconds\r",
+							"console.info(\"Create transaction from payload: Sleep for 10 seconds\");\r",
+							"setTimeout(function(){}, 10000);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{user}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "        {\r\n            \"actionType\": \"add\",\r\n            \"partnerId\": \"6b20efab-4417-405c-af16-cfb7bf462581\",\r\n            \"items\":\r\n            [\r\n                {\r\n                    \"id\": \"oi1\",\r\n                    \"characteristicsWrapper\":\r\n                    {\r\n                        \"productBundleId\": \"EdgeComputingIaasPlatform\",\r\n                        \"productOfferingId\": \"productOffering_default_edge\",\r\n                        \"characteristics\":\r\n                        {\r\n                            \"edgeNetwork\":\r\n                            {\r\n                                \"cloudVcEndPoint\":\r\n                                {\r\n                                    \"identifier\": \"1234\",\r\n                                    \"cloudApplicationInterface\":\r\n                                    [\r\n                                        {\r\n                                            \"entityIdentifier\": \"1234\",\r\n                                            \"addressing\":{\r\n                                                \r\n                                            },\r\n                                            \"access\":\r\n                                            {\r\n                                                \"uri\": \"https://www.example.com\",\r\n                                                \"accessIdentifier\": \"1234\",\r\n                                                \"accessCredentials\": \"qwerty\"\r\n                                            },\r\n                                            \"cloudApplication\":\r\n                                            [\r\n                                                {\r\n                                                    \"identifier\": \"1234\"\r\n                                                }\r\n                                            ]\r\n                                        }\r\n                                    ]\r\n                                },\r\n                                \"cloudVc\":\r\n                                {}\r\n                            },\r\n                            \"edgeComputingIaas\":\r\n                            {\r\n                                \"processor\":\r\n                                {\r\n                                    \"manufacturerIdentifier\": \"amd\",\r\n                                    \"modelIdentifier\": \"ryzen\",\r\n                                    \"packageType\": \"BINARY\",\r\n                                    \"processorType\": \"ARM\",\r\n                                    \"clockSpeedRange\": \"3,5GHz\",\r\n                                    \"numberOfCores\": 8,\r\n                                    \"numberOfThreads\": 16,\r\n                                    \"level1CacheSize\":\r\n                                    {\r\n                                        \"memorySize\":\r\n                                        {\r\n                                            \"dataSizeValue\": 16,\r\n                                            \"dataSizeUnits\": \"MBYTES\"\r\n                                        },\r\n                                        \"unspecified\": \"UNSPECIFIED\"\r\n                                    },\r\n                                    \"level2CacheSize\":\r\n                                    {\r\n                                        \"memorySize\":\r\n                                        {\r\n                                            \"dataSizeValue\": 8,\r\n                                            \"dataSizeUnits\": \"MBYTES\"\r\n                                        },\r\n                                        \"unspecified\": \"UNSPECIFIED\"\r\n                                    },\r\n                                    \"instructionsPerClockCycle\": 517\r\n                                },\r\n                                \"memory\":\r\n                                {\r\n                                    \"amount\":\r\n                                    {\r\n                                        \"dataSizeValue\": 10,\r\n                                        \"dataSizeUnits\": \"TBYTES\"\r\n                                    },\r\n                                    \"cycleTime\": 1\r\n                                },\r\n                                \"storage\": \"4096\",\r\n                                \"virtualCpu\":\r\n                                {\r\n                                    \"numberOfCores\": 16,\r\n                                    \"numberOfThreads\": 64,\r\n                                    \"instructionsPerClockCycle\": 617\r\n                                },\r\n                                \"performanceAccelerator\":\r\n                                {\r\n                                    \"acceleratorType\": \"HARDWARE\",\r\n                                    \"vendor\": \"ExampleVendor\",\r\n                                    \"model\": \"1234\",\r\n                                    \"version\": \"1\",\r\n                                    \"clockSpeedRange\": \"5,3GHz\",\r\n                                    \"memoryAmount\":\r\n                                    {\r\n                                        \"dataSizeValue\": 16,\r\n                                        \"dataSizeUnits\": \"MBYTES\"\r\n                                    }\r\n                                },\r\n                                \"virtualization\":\r\n                                {\r\n                                    \"provided\": true,\r\n                                    \"vendor\": \"vendor1\",\r\n                                    \"model\": \"model1\",\r\n                                    \"version\": \"1\"\r\n                                },\r\n                                \"hostOs\":\r\n                                {\r\n                                    \"vendorIdentifier\": \"1234\",\r\n                                    \"osTypeIdentifier\": \"1\",\r\n                                    \"osVersion\": \"16.53\"\r\n                                },\r\n                                \"hypervisor\":\r\n                                {\r\n                                    \"vendor\": \"vendor2\",\r\n                                    \"model\": \"model2\",\r\n                                    \"version\": \"1\"\r\n                                },\r\n                                \"guestOs\":\r\n                                {\r\n                                    \"vendorIdentifier\": \"vendor3\",\r\n                                    \"model\": \"model3\",\r\n                                    \"version\": \"1\"\r\n                                },\r\n                                \"containerEngine\":\r\n                                {\r\n                                    \"vendor\": \"vendor4\",\r\n                                    \"model\": \"model4\",\r\n                                    \"version\": \"1\"\r\n                                },\r\n                                \"virtualMachine\":\r\n                                {\r\n                                    \"manufacturerIdentifier\": \"manfudacturer1\",\r\n                                    \"modelIdentifier\": \"model1\",\r\n                                    \"packageType\": \"BINARY\",\r\n                                    \"processorType\": \"ARM\",\r\n                                    \"clockSpeedRange\": \"5,3GHz\",\r\n                                    \"numberOfCores\": 16,\r\n                                    \"numberOfThreads\": 32,\r\n                                    \"level1CacheSize\":\r\n                                    {\r\n                                        \"memorySize\":\r\n                                        {\r\n                                            \"dataSizeValue\": 32,\r\n                                            \"dataSizeUnits\": \"MBYTES\"\r\n                                        },\r\n                                        \"unspecified\": \"UNSPECIFIED\"\r\n                                    },\r\n                                    \"level2CacheSize\":\r\n                                    {\r\n                                        \"memorySize\":\r\n                                        {\r\n                                            \"dataSizeValue\": 32,\r\n                                            \"dataSizeUnits\": \"MBYTES\"\r\n                                        },\r\n                                        \"unspecified\": \"UNSPECIFIED\"\r\n                                    },\r\n                                    \"instructionsPerClockCycle\": 617\r\n                                }\r\n                            }\r\n                        }\r\n                    },\r\n                    \"businessAddressReferences\":\r\n                    [],\r\n                    \"relationships\":\r\n                    []\r\n                }\r\n            ]\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{url}}/nbrace/backend/buyer/integrations/api/entity/action/CREATE_TRANSACTION_ENTITY",
+					"protocol": "https",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"nbrace",
+						"backend",
+						"buyer",
+						"integrations",
+						"api",
+						"entity",
+						"action",
+						"CREATE_TRANSACTION_ENTITY"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Hot MG][EQ-BareMetal] CreateTransaction",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var json = JSON.parse(responseBody);\r",
+							"\r",
+							"postman.setNextRequest(\"\")\r",
+							"\r",
+							"pm.test(\"Response status 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    postman.setEnvironmentVariable(\"txId\", json.id);\r",
+							"    postman.setNextRequest(\"Finish transaction configuration\")\r",
+							"});\r",
+							"\r",
+							"//sleep for 10 seconds\r",
+							"console.info(\"Create transaction from payload: Sleep for 10 seconds\");\r",
+							"setTimeout(function(){}, 10000);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"actionType\": \"add\",\r\n    \"partnerId\": \"ntt\",\r\n    \"items\": [\r\n        {\r\n            \"id\": \"oi1\",\r\n            \"characteristicsWrapper\": {\r\n                \"productBundleId\": \"network\",\r\n                \"productOfferingId\": \"productOffering_default_network\",\r\n                \"characteristics\": {\r\n                    \"cloudUni\": null,\r\n                    \"cloudVcEndPoint\": null,\r\n                    \"cloudVc\": null\r\n                }\r\n            },\r\n            \"businessAddressReferences\": [],\r\n            \"relationships\": []\r\n        },\r\n        {\r\n            \"id\": \"oi2\",\r\n            \"characteristicsWrapper\": {\r\n                \"productBundleId\": \"bare-metal\",\r\n                \"productOfferingId\": \"productOffering_default_bare-metal\",\r\n                \"characteristics\": {\r\n                    \"processor\": null,\r\n                    \"memory\": null,\r\n                    \"storage\": null\r\n                }\r\n            },\r\n            \"businessAddressReferences\": [\r\n                {\r\n                    \"id\": \"WARSAW\",\r\n                    \"role\": \"INSTALL_LOCATION\"\r\n                }\r\n            ],\r\n            \"relationships\": [\r\n                {\r\n                    \"source\": \"ITEM\",\r\n                    \"sourceId\": \"oi1\",\r\n                    \"relationshipType\": \"interfacesTo\"\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{url-buyer}}/nbrace/backend/buyer/integrations/api/entity/action/CREATE_TRANSACTION_ENTITY",
+					"protocol": "https",
+					"host": [
+						"{{url-buyer}}"
+					],
+					"path": [
+						"nbrace",
+						"backend",
+						"buyer",
+						"integrations",
+						"api",
+						"entity",
+						"action",
+						"CREATE_TRANSACTION_ENTITY"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Optional][Hot MG] Configure Transaction",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var json = JSON.parse(responseBody);\r",
+							"\r",
+							"postman.setNextRequest(\"\")\r",
+							"\r",
+							"pm.test(\"Response status 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    postman.setEnvironmentVariable(\"txId\", json.id);\r",
+							"    postman.setNextRequest(\"Finish transaction configuration\")\r",
+							"});\r",
+							"\r",
+							"//sleep for 10 seconds\r",
+							"console.info(\"Create transaction from payload: Sleep for 10 seconds\");\r",
+							"setTimeout(function(){}, 10000);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "        {\r\n            \"version\": 2,\r\n            \"actionType\": \"add\",\r\n            \"partnerId\": \"6b20efab-4417-405c-af16-cfb7bf462581\",\r\n            \"items\":\r\n            [\r\n                {\r\n                    \"id\": \"oi1\",\r\n                    \"characteristicsWrapper\":\r\n                    {\r\n                        \"productBundleId\": \"EdgeComputingIaasPlatform\",\r\n                        \"characteristics\":\r\n                        {\r\n                            \"edgeNetwork\":\r\n                            {\r\n                                \"cloudVcEndPoint\":\r\n                                {\r\n                                    \"identifier\": \"1234\",\r\n                                    \"cloudApplicationInterface\":\r\n                                    [\r\n                                        {\r\n                                            \"entityIdentifier\": \"1234\",\r\n                                            \"addressing\":{\r\n                                                \"2001:0db8:85a3:0000:0000:8a2e:0370:7334\"\r\n                                            },\r\n                                            \"access\":\r\n                                            {\r\n                                                \"uri\": \"https://www.example.com\",\r\n                                                \"accessIdentifier\": \"1234\",\r\n                                                \"accessCredentials\": \"qwerty\"\r\n                                            },\r\n                                            \"cloudApplication\":\r\n                                            [\r\n                                                {\r\n                                                    \"identifier\": \"1234\"\r\n                                                }\r\n                                            ]\r\n                                        }\r\n                                    ]\r\n                                },\r\n                                \"cloudVc\":\r\n                                {\r\n                                    \"exampleKey\": \"exampleValue\"\r\n                                }\r\n                            },\r\n                            \"edgeComputingIaas\":\r\n                            {\r\n                                \"processor\":\r\n                                {\r\n                                    \"manufacturerIdentifier\": \"amd\",\r\n                                    \"modelIdentifier\": \"ryzen\",\r\n                                    \"packageType\": \"BINARY\",\r\n                                    \"processorType\": \"ARM\",\r\n                                    \"clockSpeedRange\": \"3,5GHz\",\r\n                                    \"numberOfCores\": 8,\r\n                                    \"numberOfThreads\": 16,\r\n                                    \"level1CacheSize\":\r\n                                    {\r\n                                        \"memorySize\":\r\n                                        {\r\n                                            \"dataSizeValue\": 16,\r\n                                            \"dataSizeUnits\": \"MBYTES\"\r\n                                        },\r\n                                        \"unspecified\": \"UNSPECIFIED\"\r\n                                    },\r\n                                    \"level2CacheSize\":\r\n                                    {\r\n                                        \"memorySize\":\r\n                                        {\r\n                                            \"dataSizeValue\": 8,\r\n                                            \"dataSizeUnits\": \"MBYTES\"\r\n                                        },\r\n                                        \"unspecified\": \"UNSPECIFIED\"\r\n                                    },\r\n                                    \"instructionsPerClockCycle\": 517\r\n                                },\r\n                                \"memory\":\r\n                                {\r\n                                    \"amount\":\r\n                                    {\r\n                                        \"dataSizeValue\": 10,\r\n                                        \"dataSizeUnits\": \"TBYTES\"\r\n                                    },\r\n                                    \"cycleTime\": 1,\r\n                                    \"accessTime\": {\r\n                                        \"exampleKey\":\"exampleValue\"\r\n                                    },\r\n                                    \"transferRate\": {\r\n                                        \"exampleKey\":\"exampleValue\"\r\n                                    }\r\n                                },\r\n                                \"storage\": \"4096\",\r\n                                \"virtualCpu\":\r\n                                {\r\n                                    \"numberOfCores\": 16,\r\n                                    \"numberOfThreads\": 64,\r\n                                    \"instructionsPerClockCycle\": 617\r\n                                },\r\n                                \"performanceAccelerator\":\r\n                                {\r\n                                    \"acceleratorType\": \"HARDWARE\",\r\n                                    \"vendor\": \"ExampleVendor\",\r\n                                    \"model\": \"1234\",\r\n                                    \"version\": \"1\",\r\n                                    \"clockSpeedRange\": \"5,3GHz\",\r\n                                    \"memoryAmount\":\r\n                                    {\r\n                                        \"dataSizeValue\": 16,\r\n                                        \"dataSizeUnits\": \"MBYTES\"\r\n                                    }\r\n                                },\r\n                                \"virtualization\":\r\n                                {\r\n                                    \"provided\": true,\r\n                                    \"vendor\": \"vendor1\",\r\n                                    \"model\": \"model1\",\r\n                                    \"version\": \"1\"\r\n                                },\r\n                                \"hostOs\":\r\n                                {\r\n                                    \"vendorIdentifier\": \"1234\",\r\n                                    \"osTypeIdentifier\": \"1\",\r\n                                    \"osVersion\": \"16.53\"\r\n                                },\r\n                                \"hypervisor\":\r\n                                {\r\n                                    \"vendor\": \"vendor2\",\r\n                                    \"model\": \"model2\",\r\n                                    \"version\": \"1\"\r\n                                },\r\n                                \"guestOs\":\r\n                                {\r\n                                    \"vendorIdentifier\": \"vendor3\",\r\n                                    \"model\": \"model3\",\r\n                                    \"version\": \"1\"\r\n                                },\r\n                                \"containerEngine\":\r\n                                {\r\n                                    \"vendor\": \"vendor4\",\r\n                                    \"model\": \"model4\",\r\n                                    \"version\": \"1\"\r\n                                },\r\n                                \"virtualMachine\":\r\n                                {\r\n                                    \"manufacturerIdentifier\": \"manfudacturer1\",\r\n                                    \"modelIdentifier\": \"model1\",\r\n                                    \"packageType\": \"BINARY\",\r\n                                    \"processorType\": \"ARM\",\r\n                                    \"clockSpeedRange\": \"5,3GHz\",\r\n                                    \"numberOfCores\": 16,\r\n                                    \"numberOfThreads\": 32,\r\n                                    \"level1CacheSize\":\r\n                                    {\r\n                                        \"memorySize\":\r\n                                        {\r\n                                            \"dataSizeValue\": 32,\r\n                                            \"dataSizeUnits\": \"MBYTES\"\r\n                                        },\r\n                                        \"unspecified\": \"UNSPECIFIED\"\r\n                                    },\r\n                                    \"level2CacheSize\":\r\n                                    {\r\n                                        \"memorySize\":\r\n                                        {\r\n                                            \"dataSizeValue\": 32,\r\n                                            \"dataSizeUnits\": \"MBYTES\"\r\n                                        },\r\n                                        \"unspecified\": \"UNSPECIFIED\"\r\n                                    },\r\n                                    \"instructionsPerClockCycle\": 617\r\n                                },\r\n                                \"edgeComputingIaasType\": {\r\n                                    \"exampleKey\": \"exampleValue\"\r\n                                }\r\n                            }\r\n                        }\r\n                    },\r\n                    \"businessAddressReferences\":\r\n                    [],\r\n                    \"relationships\":\r\n                    []\r\n                }\r\n            ]\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{url}}/nbrace/backend/buyer/integrations/api/entity/action/CONFIGURE_TRANSACTION?entityId={{txId}}",
+					"protocol": "https",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"nbrace",
+						"backend",
+						"buyer",
+						"integrations",
+						"api",
+						"entity",
+						"action",
+						"CONFIGURE_TRANSACTION"
+					],
+					"query": [
+						{
+							"key": "entityId",
+							"value": "{{txId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Hot MG] FinishTransaction",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var json = JSON.parse(responseBody);",
+							"",
+							"postman.setNextRequest(\"\")",
+							"",
+							"pm.test(\"Response status 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    postman.setEnvironmentVariable(\"txVersion\", json.version);",
+							"    postman.setNextRequest(\"Start POQ from transaction\")",
+							"});",
+							"",
+							"//sleep for 10 seconds",
+							"console.info(\"Finish transaction configuration: Sleep for 10 seconds\");",
+							"setTimeout(function(){}, 10000);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.info(\"Starting: Finish transaction configuration\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{url}}/nbrace/backend/buyer/integrations/api/entity/action/FINISH_TRANSACTION_CONFIGURATION?entityId={{txId}}",
+					"protocol": "https",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"nbrace",
+						"backend",
+						"buyer",
+						"integrations",
+						"api",
+						"entity",
+						"action",
+						"FINISH_TRANSACTION_CONFIGURATION"
+					],
+					"query": [
+						{
+							"key": "entityId",
+							"value": "{{txId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Hot MG] Start POQ from transaction",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"postman.setNextRequest(\"\")\r",
+							"\r",
+							"pm.test(\"Response status 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    postman.setNextRequest(\"Get transaction after POQ\")\r",
+							"});\r",
+							"\r",
+							"//sleep for 10 seconds\r",
+							"console.info(\"Start POQ from transaction: Sleep for 15 seconds\");\r",
+							"setTimeout(function(){}, 15000);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.info(\"Starting: Start POQ from transaction\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"version\": \"{{txVersion}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{url}}/nbrace/backend/buyer/integrations/api/entity/action/START_POQ_FROM_TRANSACTION?entityId={{txId}}",
+					"protocol": "https",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"nbrace",
+						"backend",
+						"buyer",
+						"integrations",
+						"api",
+						"entity",
+						"action",
+						"START_POQ_FROM_TRANSACTION"
+					],
+					"query": [
+						{
+							"key": "entityId",
+							"value": "{{txId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Query Business Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var json = pm.response.json();\r",
+							"\r",
+							"//loop if not finished\r",
+							"postman.setNextRequest(\"Get transaction after POQ\");\r",
+							"\r",
+							"var attempts = pm.environment.get(\"attempts_number\");\r",
+							"console.log(\"attempts {}\", attempts);\r",
+							"if (attempts === null){\r",
+							"    attempts = 1;\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Transaction state = POQ_DONE\", function () {\r",
+							"    var transaction = json.find(m => m.id === pm.environment.get(\"txId\"));\r",
+							"\r",
+							"    if (!(transaction.state === \"POQ_DONE\")) {\r",
+							"      console.info(\"Get transaction after POQ: State is not POQ_DONE. Attempt: {}. Sleeping for 5 seconds and retrying\", attempts);\r",
+							"\r",
+							"      if (attempts > 5){\r",
+							"        console.info(\"Get transaction after POQ: reset number of attempts and exit\");\r",
+							"        pm.environment.set(\"attempts_number\", undefined)\r",
+							"        postman.setNextRequest(\"\");\r",
+							"      } else {\r",
+							"        attempts = attempts + 1;\r",
+							"        pm.environment.set(\"attempts_number\", attempts)\r",
+							"      }\r",
+							"     \r",
+							"      setTimeout(function(){}, 5000);\r",
+							"\r",
+							"      pm.expect.fail(\"Transaction state is not POQ_DONE\");\r",
+							"    }\r",
+							"\r",
+							"    postman.setEnvironmentVariable(\"txVersion\", transaction.version);\r",
+							"\r",
+							"    pm.environment.set(\"attempts_number\", 1)\r",
+							"    postman.setNextRequest(\"Start Quote from transaction\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.info(\"Starting: Get transaction after POQ\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{url}}/nbrace/backend/buyer/integrations/api/entity/query/businessProduct",
+					"protocol": "https",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"nbrace",
+						"backend",
+						"buyer",
+						"integrations",
+						"api",
+						"entity",
+						"query",
+						"businessProduct"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Seller] Query Product Offering",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var json = pm.response.json();\r",
+							"\r",
+							"//loop if not finished\r",
+							"postman.setNextRequest(\"Get transaction after POQ\");\r",
+							"\r",
+							"var attempts = pm.environment.get(\"attempts_number\");\r",
+							"console.log(\"attempts {}\", attempts);\r",
+							"if (attempts === null){\r",
+							"    attempts = 1;\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Transaction state = POQ_DONE\", function () {\r",
+							"    var transaction = json.find(m => m.id === pm.environment.get(\"txId\"));\r",
+							"\r",
+							"    if (!(transaction.state === \"POQ_DONE\")) {\r",
+							"      console.info(\"Get transaction after POQ: State is not POQ_DONE. Attempt: {}. Sleeping for 5 seconds and retrying\", attempts);\r",
+							"\r",
+							"      if (attempts > 5){\r",
+							"        console.info(\"Get transaction after POQ: reset number of attempts and exit\");\r",
+							"        pm.environment.set(\"attempts_number\", undefined)\r",
+							"        postman.setNextRequest(\"\");\r",
+							"      } else {\r",
+							"        attempts = attempts + 1;\r",
+							"        pm.environment.set(\"attempts_number\", attempts)\r",
+							"      }\r",
+							"     \r",
+							"      setTimeout(function(){}, 5000);\r",
+							"\r",
+							"      pm.expect.fail(\"Transaction state is not POQ_DONE\");\r",
+							"    }\r",
+							"\r",
+							"    postman.setEnvironmentVariable(\"txVersion\", transaction.version);\r",
+							"\r",
+							"    pm.environment.set(\"attempts_number\", 1)\r",
+							"    postman.setNextRequest(\"Start Quote from transaction\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.info(\"Starting: Get transaction after POQ\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{url}}/nbrace/backend/seller/api/entity/query/productOffering",
+					"protocol": "https",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"nbrace",
+						"backend",
+						"seller",
+						"api",
+						"entity",
+						"query",
+						"productOffering"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Business Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var json = pm.response.json();\r",
+							"\r",
+							"//loop if not finished\r",
+							"postman.setNextRequest(\"Get transaction after POQ\");\r",
+							"\r",
+							"var attempts = pm.environment.get(\"attempts_number\");\r",
+							"console.log(\"attempts {}\", attempts);\r",
+							"if (attempts === null){\r",
+							"    attempts = 1;\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Transaction state = POQ_DONE\", function () {\r",
+							"    var transaction = json.find(m => m.id === pm.environment.get(\"txId\"));\r",
+							"\r",
+							"    if (!(transaction.state === \"POQ_DONE\")) {\r",
+							"      console.info(\"Get transaction after POQ: State is not POQ_DONE. Attempt: {}. Sleeping for 5 seconds and retrying\", attempts);\r",
+							"\r",
+							"      if (attempts > 5){\r",
+							"        console.info(\"Get transaction after POQ: reset number of attempts and exit\");\r",
+							"        pm.environment.set(\"attempts_number\", undefined)\r",
+							"        postman.setNextRequest(\"\");\r",
+							"      } else {\r",
+							"        attempts = attempts + 1;\r",
+							"        pm.environment.set(\"attempts_number\", attempts)\r",
+							"      }\r",
+							"     \r",
+							"      setTimeout(function(){}, 5000);\r",
+							"\r",
+							"      pm.expect.fail(\"Transaction state is not POQ_DONE\");\r",
+							"    }\r",
+							"\r",
+							"    postman.setEnvironmentVariable(\"txVersion\", transaction.version);\r",
+							"\r",
+							"    pm.environment.set(\"attempts_number\", 1)\r",
+							"    postman.setNextRequest(\"Start Quote from transaction\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.info(\"Starting: Get transaction after POQ\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{url}}/nbrace/backend/buyer/integrations/api/entity/get/businessProduct/b2a65fae-1e17-4239-9e65-6d97be523a21",
+					"protocol": "https",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"nbrace",
+						"backend",
+						"buyer",
+						"integrations",
+						"api",
+						"entity",
+						"get",
+						"businessProduct",
+						"b2a65fae-1e17-4239-9e65-6d97be523a21"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "4407ce421c00",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "demo",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

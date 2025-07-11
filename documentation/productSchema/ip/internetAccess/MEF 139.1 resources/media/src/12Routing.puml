@@ -1,0 +1,37 @@
+@startuml
+
+
+
+class InternetAccessFeature {
+
+    isSupported*: boolean
+    isEnabled*: boolean
+}
+
+
+
+class InternetAccessFeatureRouting {
+
+    routingType*: RoutingType
+}
+InternetAccessFeature <|-- InternetAccessFeatureRouting
+
+InternetAccessFeatureRouting *--> Bgp : bgp
+InternetAccessFeatureRouting *--> Static : static
+
+enum RoutingType {
+
+    BGP
+    STATIC
+}
+
+
+class Bgp {
+    <<skipped>>
+}
+class Static {
+    <<skipped>>
+}
+
+
+@enduml

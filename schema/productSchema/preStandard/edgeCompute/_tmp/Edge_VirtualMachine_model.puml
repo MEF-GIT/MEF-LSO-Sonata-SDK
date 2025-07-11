@@ -1,0 +1,80 @@
+@startuml
+skinparam class {
+    BackgroundColor<<Product>> Wheat
+    BorderColor<<Product>> Tomato
+}
+
+class VirtualMachine<<Product>> {
+
+    packageType: PackageType
+    processorType: ProcessorType
+}
+
+VirtualMachine *--> IdentifierOrUnspecified : manufacturerIdentifier
+VirtualMachine *--> IdentifierOrUnspecified : modelIdentifier
+VirtualMachine *--> ClockSpeedRange : clockSpeedRange
+VirtualMachine *--> IntegerOrUnspecifiedGtZero : numberOfCores
+VirtualMachine *--> IntegerOrUnspecifiedGtZero : numberOfThreads
+VirtualMachine *--> CacheSize : level1CacheSize
+VirtualMachine *--> CacheSize : level2CacheSize
+VirtualMachine *--> IntegerOrUnspecifiedGtZero : instructionsPerClockCycle
+VirtualMachine *--> Memory : memory
+
+
+class IdentifierOrUnspecified {
+
+    unspecified: string
+}
+
+IdentifierOrUnspecified *--> IdentifierString : identifier
+
+
+class ClockSpeedRange {
+
+}
+
+ClockSpeedRange *--> NumberOrUnspecifiedGtZero : minimum
+ClockSpeedRange *--> NumberOrUnspecifiedGtZero : maximum
+
+
+class NumberOrUnspecifiedGtZero {
+
+    value: number
+    unspecified: string
+}
+
+
+
+class IntegerOrUnspecifiedGtZero {
+
+    value: number
+    unspecified: string
+}
+
+class CacheSize {
+
+    unspecified*: string
+}
+
+CacheSize *-->"1" IntegerOrUnspecifiedGtZero : memorySize
+
+
+
+class Memory {
+
+}
+
+Memory *--> IntegerOrUnspecifiedGtZero : amount
+Memory *--> MemoryTime : accessTime
+Memory *--> MemoryTime : cycleTime
+Memory *--> NumberOrUnspecifiedGtZero : transferRate
+
+class MemoryTime {
+
+    value: integer
+    units: Units
+}
+
+
+
+@enduml

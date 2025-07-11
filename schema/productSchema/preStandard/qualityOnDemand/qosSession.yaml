@@ -1,0 +1,479 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+$id: 'urn:mef:xid:spec:product:qos-session:v0.0.1:all'
+title: MEF LSO - QoS Session
+description: >-
+  Attributes of a QoD session Note that the device object is defined as
+  optional and will only to be returned if provided in createSession. If more
+  than one type of device identifier was provided, only one identifier will be
+  returned (at implementation choice and with the original value provided in
+  createSession). Please note that IP addresses of devices can change and get
+  reused, so the original values may no longer identify the same device. They
+  identified the device at the time of session creation.
+type: object
+properties:
+  device:
+    $ref: '#/definitions/Device'
+  applicationServer:
+    $ref: '#/definitions/ApplicationServer'
+  devicePorts:
+    description: >-
+      The ports used locally by the device for flows to which the requested QoS
+      profile should apply. If omitted, then the qosProfile will apply to all
+      flows between the device and the specified application server address and
+      ports
+    allOf:
+      - $ref: '#/definitions/PortsSpec'
+  applicationServerPorts:
+    description:
+      A list of single ports or port ranges on the application server
+    allOf:
+      - $ref: '#/definitions/PortsSpec'
+  qosProfile:
+    $ref: '#/definitions/QosProfileName'
+  qosProfiles:
+    description: >-
+      A list of QoS Profile Name to QoS configuration mapping. To be used as a
+      parameter for defining in Product Catalog. During ordering of a single
+      QoS Session only QoSProfileName must be used
+    type: array
+    items:
+      $ref: '#/definitions/QosProfile'
+required:
+  - applicationServer
+  - qosProfile
+definitions:
+  ApplicationServer:
+    description: >
+      A server hosting backend applications to deliver some business logic to
+      clients.
+
+
+      The developer can choose to provide the below specified device
+      identifiers:
+
+
+      * `ipv4Address`
+
+      * `ipv6Address`
+    type: object
+    properties:
+      ipv4Address:
+        $ref: '#/definitions/Ipv4AddressWithMask'
+      ipv6Address:
+        $ref: '#/definitions/Ipv6AddressWithMask'
+    minProperties: 1
+  Device:
+    description: >
+      End-user equipment able to connect to a mobile network. Examples of
+      devices include smartphones or IoT sensors/actuators.
+
+
+      The developer can choose to provide the below specified device
+      identifiers:
+
+
+      * `ipv4Address`
+
+      * `ipv6Address`
+
+      * `phoneNumber`
+
+      * `networkAccessIdentifier`
+
+
+      NOTE1: the network operator might support only a subset of these options.
+      The API invoker can provide multiple identifiers to be compatible across
+      different network operators. In this case the identifiers MUST belong to
+      the same device
+
+      NOTE2: for the Commonalities release v0.4, we are enforcing that the
+      networkAccessIdentifier is only part of the schema for future-proofing,
+      and CAMARA does not currently allow its use. After the CAMARA
+      meta-release work is concluded and the relevant issues are resolved, its
+      use will need to be explicitly documented in the guidelines.
+    type: object
+    properties:
+      phoneNumber:
+        description: >-
+          A public identifier addressing a telephone subscription. In mobile
+          networks it corresponds to the MSISDN (Mobile Station International
+          Subscriber Directory Number). In order to be globally unique it has
+          to be formatted in international format, according to E.164 standard,
+          prefixed with '+'.
+        type: string
+        pattern: '^\+[1-9][0-9]{4,14}$'
+        example: '+123456789'
+      networkAccessIdentifier:
+        description: >-
+          A public identifier addressing a subscription in a mobile network. In
+          3GPP terminology, it corresponds to the GPSI formatted with the
+          External Identifier ({Local Identifier}@{Domain Identifier}). Unlike
+          the telephone number, the network access identifier is not subjected
+          to portability ruling in force, and is individually managed by each
+          operator.
+        type: string
+        example: 123456789@domain.com
+      ipv4Address:
+        $ref: '#/definitions/DeviceIpv4Address'
+      ipv6Address:
+        $ref: '../../../common/ip/ipCommon.yaml#/definitions/Ipv6Address'
+    minProperties: 1
+  DeviceIpv4Address:
+    type: object
+    description: >
+      The device should be identified by either the public (observed) IP
+      address and port as seen by the application server, or the private
+      (local) and any public (observed) IP addresses in use by the device (this
+      information can be obtained by various means, for example from some DNS
+      servers).
+
+
+      If the allocated and observed IP addresses are the same (i.e. NAT is not
+      in use) then  the same address should be specified for both publicAddress
+      and privateAddress.
+
+
+      If NAT64 is in use, the device should be identified by its publicAddress
+      and publicPort, or separately by its allocated IPv6 address (field
+      ipv6Address of the Device object)
+
+
+      In all cases, publicAddress must be specified, along with at least one of
+      either privateAddress or publicPort, dependent upon which is known. In
+      general, mobile devices cannot be identified by their public IPv4 address
+      alone.
+    minProperties: 2
+    properties:
+      publicAddress:
+        $ref: '../../../common/ip/ipCommon.yaml#/definitions/Ipv4Address'
+      privateAddress:
+        $ref: '../../../common/ip/ipCommon.yaml#/definitions/Ipv4Address'
+      publicPort:
+        $ref: '#/definitions/PortNumber'
+    required:
+      - publicAddress
+    example:
+      publicAddress: 203.0.113.0
+      publicPort: 59765
+  Ipv4AddressWithMask:
+    type: string
+    example: 198.51.100.0/24
+    description: |
+      IPv4 address may be specified in form <address/mask> as:
+        - address - an IPv4 number in dotted-quad form 1.2.3.4. Only this exact IP number will match the flow control rule.
+        - address/mask - an IP number as above with a mask width of the form 1.2.3.4/24.
+          In this case, all IP numbers from 1.2.3.0 to 1.2.3.255 will match. The bit width MUST be valid for the IP version.
+  Ipv6AddressWithMask:
+    type: string
+    example: '2001:db8:85a3:8d3:1319:8a2e:370:7344'
+    description: |
+      IPv6 address may be specified in form <address/mask> as:
+        - address - The /128 subnet is optional for single addresses:
+          - 2001:db8:85a3:8d3:1319:8a2e:370:7344
+          - 2001:db8:85a3:8d3:1319:8a2e:370:7344/128
+        - address/mask - an IP v6 number with a mask:
+          - 2001:db8:85a3:8d3::0/64
+          - 2001:db8:85a3:8d3::/64
+  PortNumber:
+    description: TCP or UDP port number
+    type: integer
+    minimum: 0
+    maximum: 65535
+  PortsSpec:
+    description: Specification of several TCP or UDP ports
+    type: object
+    minProperties: 1
+    properties:
+      ranges:
+        description: Range of TCP or UDP ports
+        type: array
+        minItems: 1
+        items:
+          type: object
+          required:
+            - from
+            - to
+          properties:
+            from:
+              $ref: '#/definitions/PortNumber'
+            to:
+              $ref: '#/definitions/PortNumber'
+      ports:
+        description: Array of TCP or UDP ports
+        type: array
+        minItems: 1
+        items:
+          $ref: '#/definitions/PortNumber'
+    example:
+      ranges:
+        - from: 5010
+          to: 5020
+      ports:
+        - 5060
+        - 5070
+  QosProfileName:
+    description: >
+      A unique name for identifying a specific QoS profile.
+
+      This may follow different formats depending on the service providers
+      implementation.
+
+      Some options addresses:
+        - A UUID style string
+        - Support for predefined profiles QOS_S, QOS_M, QOS_L, and QOS_E
+        - A searchable descriptive name
+      The set of QoS Profiles that an operator is offering can be retrieved by
+      means of the [QoS Profile API](link TBC).
+    type: string
+    minLength: 3
+    maxLength: 256
+    format: string
+    pattern: '^[a-zA-Z0-9_.-]+$'
+  QosProfile:
+    description: |
+      Data type with attributes of a QosProfile
+    type: object
+    properties:
+      name:
+        $ref: '#/definitions/QosProfileName'
+      description:
+        description: |
+          A description of the QoS profile.
+        type: string
+        example: QoS profile for video streaming
+      status:
+        $ref: '#/definitions/QosProfileStatusEnum'
+      targetMinUpstreamRate:
+        description: >
+          This is the target minimum upstream rate for the QoS profile.
+
+          For 5G networks 3GPP Guaranteed Bit Rate (GBR) refers to a dedicated,
+          fixed data rate assigned to
+
+          specific services, ensuring a minimum performance level. As per 3GPP
+          TS 23.203,
+
+          GBR is a QoS parameter used to manage traffic classes in mobile
+          networks. It
+
+          provides a stable data rate for latency-sensitive applications, such
+          as voice calls or
+
+          video streaming, helping maintain a consistent user experience. When
+          this attribute is set
+
+          this could imply that a GBR QCI is used, though mechanisms on the
+          network can be used to
+
+          ensure a minimum performance level without using a GBR QCI.
+
+          The committed data rate allocated to specific services, ensuring a
+          consistent level of
+
+          performance. For DOCSIS networks, the "Minimum Reserved Traffic Rate"
+          is defined in the
+
+          DOCSIS 3.1 - MAC and Upper Layer Protocols Interface Specification"
+
+          and it ensures a consistent level of performance for specific
+          services within the network.
+        allOf:
+          - $ref: '../../../common/common.yaml#/definitions/InformationRate'
+      maxUpstreamRate:
+        description: |
+          The maximum best effort data
+        allOf:
+          - $ref: '../../../common/common.yaml#/definitions/InformationRate'
+      maxUpstreamBurstRate:
+        description: >
+          When defined, this is the maximum upstream burst rate for the QoS
+          profile, that will enable
+
+          the network to burst data at a higher rate than the maxUpstreamRate
+          for a period of time.
+        allOf:
+          - $ref: '../../../common/common.yaml#/definitions/InformationRate'
+      targetMinDownstreamRate:
+        description: >
+          This is the target minimum downstream rate for the QoS profile.
+
+          For 5G networks 3GPP Guaranteed Bit Rate (GBR) refers to a dedicated,
+          fixed data rate assigned to
+
+          specific services, ensuring a minimum performance level. As per 3GPP
+          TS 23.203,
+
+          GBR is a QoS parameter used to manage traffic classes in mobile
+          networks. It
+
+          provides a stable data rate for latency-sensitive applications, such
+          as voice calls or
+
+          video streaming, helping maintain a consistent user experience.  When
+          this attribute is set
+
+          this could imply that a GBR QCI is used, though mechanisms on the
+          network can be used to
+
+          ensure a minimum performance level without using a GBR QCI.
+
+          The committed data rate allocated to specific services, ensuring a
+          consistent level of
+
+          performance. DOCSIS networks, the "Minimum Reserved Traffic Rate" is
+          defined in the
+
+          DOCSIS 3.1 - MAC and Upper Layer Protocols Interface Specification"
+
+          and it ensures a consistent level of performance for specific
+          services within the network.
+        allOf:
+          - $ref: '../../../common/common.yaml#/definitions/InformationRate'
+      maxDownstreamRate:
+        description: |
+          The maximum best effort rate
+        allOf:
+          - $ref: '../../../common/common.yaml#/definitions/InformationRate'
+      maxDownstreamBurstRate:
+        description: >
+          When defined, this is the maximum downstream burst rate for the QoS
+          profile, that will enable
+
+          the network to burst data at a higher rate than the maxDownstreamRate
+          for a period of time.
+
+          This can result in improved user experience when there is additional
+          network capacity.
+
+          For instance, when a user is streaming a video, the network can burst
+          data at a higher rate
+
+          to fill the buffer, and then return to the maxUpstreamRate once the
+          buffer is full.
+        allOf:
+          - $ref: '../../../common/common.yaml#/definitions/InformationRate'
+      minDuration:
+        description: |
+          The shortest time period that this profile can be deployed.
+        allOf:
+          $ref: '../../../common/common.yaml#/definitions/TimeDuration'
+      maxDuration:
+        description: >
+          The maximum time period that this profile can be deployed.
+
+          Overall session duration must not exceed this value. This includes
+          the initial requested duration plus any extensions.
+        allOf:
+          $ref: '../../../common/common.yaml#/definitions/TimeDuration'
+      priority:
+        type: integer
+        example: 20
+        description: >
+          Priority levels allow efficient resource allocation and ensure
+          optimal performance
+
+          for various services in each technology, with the highest priority
+          traffic receiving
+
+          preferential treatment.
+
+          The lower value the higher priority.
+
+          Not all access networks use the same priority range, so this priority
+          will be
+
+          scaled to the access network's priority range.
+        format: int32
+        minimum: 1
+        maximum: 100
+      packetDelayBudget:
+        description: >
+          The packet delay budget is the maximum allowable one-way latency
+          between the customer's device
+
+          and the gateway from the operator's network to other networks. By
+          limiting the delay, the network
+
+          can provide an acceptable level of performance for various services,
+          such as voice calls,
+
+          video streaming, and data.
+
+          The end-to-end or round trip latency will be about two times this
+          value plus the latency not controlled
+
+          by the operator
+        allOf:
+          $ref: '../../../common/common.yaml#/definitions/TimeDuration'
+      jitter:
+        description: >
+          The jitter requirement aims to limit the maximum variation in
+          round-trip
+
+          packet delay for the 99th percentile of traffic, following ITU Y.1540
+
+          standards. It considers only acknowledged packets in a session, which
+          are
+
+          packets that receive a confirmation of receipt from the recipient
+          (e.g.,
+
+          using TCP). This requirement helps maintain consistent latency,
+          essential
+
+          for real-time applications such as VoIP, video calls, and gaming.
+        allOf:
+          $ref: '../../../common/common.yaml#/definitions/TimeDuration'
+      packetErrorLossRate:
+        type: integer
+        description: >
+          The exponential power of the allowable error loss rate 10^(-N).
+
+          For instance 3 would be an error loss rate of 10 to the power of -3
+          (0.001)
+
+
+          For 5G network the 3GPP specification TS 23.203 defines the packet
+          error loss rate QCI attribute. It
+
+          describes the Quality of Service (QoS) Class Identifier (QCI)
+          parameters used to
+
+          differentiate traffic classes in mobile networks, ensuring
+          appropriate resource
+
+          allocation and performance for various services.
+
+
+          The packet error loss rate is one of the QCI attributes, providing
+          information on the
+
+          acceptable packet loss rate for a specific traffic class. This
+          attribute helps maintain
+
+          the desired performance level for services like voice calls, video
+          streaming, or data
+
+          transfers within the 3GPP mobile network.
+        format: int32
+        minimum: 1
+        maximum: 10
+        example: 3
+    required:
+      - name
+      - status
+  QosProfileStatusEnum:
+    description: >
+      The current status of the QoS Profile
+
+      - `ACTIVE`- QoS Profile is available to be used
+
+      - `INACTIVE`- QoS Profile is not currently available to be deployed
+
+      - `DEPRECATED`- QoS profile is actively being used in a QoD session, but
+      can not be deployed in new QoD sessions
+    type: string
+    enum:
+      - ACTIVE
+      - INACTIVE
+      - DEPRECATED

@@ -1,0 +1,117 @@
+@startuml
+
+
+enum BillingModelType {
+
+    FLAT
+    BURSTABLE_PERCENTILE
+    DATA_TRANSFER
+}
+
+class InternetAccessFlatBilling {
+
+}
+InternetAccessBillingModel <|-- InternetAccessFlatBilling
+
+
+class InternetAccessBurstablePercentileBilling {
+
+    burstablePercentile*: integer
+}
+InternetAccessBillingModel <|-- InternetAccessBurstablePercentileBilling
+
+InternetAccessBurstablePercentileBilling *-->"1..*" InternetAccessNonRecurringPrice : burstablePriceList
+
+
+class InternetAccessDataTransferBilling {
+
+}
+InternetAccessBillingModel <|-- InternetAccessDataTransferBilling
+
+InternetAccessDataTransferBilling *-->"1" Duration : dataTransferPeriod
+InternetAccessDataTransferBilling *-->"1..*" InternetAccessDataTransferTier : dataTransferTiers
+
+
+class InternetAccessBillingModel {
+
+    billingModelType*: BillingModelType
+}
+
+InternetAccessBillingModel *-->"*" InternetAccessNonRecurringPrice : nonRecurringPrice
+InternetAccessBillingModel *-->"*" InternetAccessRecurringPrice : recurringPrice
+
+
+
+
+class InternetAccessDataTransferTier {
+
+}
+
+InternetAccessDataTransferTier *-->"1" DataSize : unit
+InternetAccessDataTransferTier *-->"1" DataSize : cap
+InternetAccessDataTransferTier *-->"1" Price : unitPrice
+
+
+
+class InternetAccessNonRecurringPrice {
+
+    priceDescription*: string
+}
+
+InternetAccessNonRecurringPrice *-->"1" Price : price
+
+
+class InternetAccessRecurringPrice {
+
+    priceDescription: string
+}
+
+InternetAccessRecurringPrice *--> Price : price
+InternetAccessRecurringPrice *--> Duration : recurringChargePeriod
+
+class Price {
+
+    taxRate: float
+}
+
+Price *-->"1" Money : dutyFreeAmount
+Price *--> Money : taxIncludedAmount
+
+class Money {
+
+    unit*: string
+    value*: float
+}
+
+class Duration {
+
+    amount*: integer
+    units*: TimeUnit
+}
+
+
+
+
+class DataSize {
+
+    dataSizeValue: integer
+    dataSizeUnits: DataSizeUnits
+}
+
+
+
+enum DataSizeUnits {
+
+    BYTES
+    KBYTES
+    MBYTES
+    GBYTES
+    TBYTES
+    PBYTES
+    EBYTES
+    ZBYTES
+    YBYTES
+}
+
+
+@enduml

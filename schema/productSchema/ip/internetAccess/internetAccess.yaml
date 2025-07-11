@@ -1,0 +1,864 @@
+---
+$id: urn:mef:lso:spec:cantata-sonata:internet-access:v0.0.2:all
+$schema: http://json-schema.org/draft-07/schema#
+title: MEF LSO Internet Access
+type: object
+# ---------------------
+# Disclaimer
+#
+# © MEF Forum 2025. All Rights Reserved.
+#
+# The information in this publication is freely available for reproduction
+# and use by any recipient and is believed to be accurate as of its
+# publication date. Such information is subject to change without notice
+# and MEF Forum (MEF) is not responsible for any errors. MEF does not
+# assume responsibility to update or correct any information in this
+# publication. No representation or warranty, expressed or implied, is
+# made by MEF concerning the completeness, accuracy, or applicability of
+# any information contained herein and no liability of any kind shall be
+# assumed by MEF as a result of reliance upon such information.
+#
+# The information contained herein is intended to be used without
+# modification by the recipient or user of this document. MEF is not
+# responsible or liable for any modifications to this document made by any
+# other party.
+#
+# The receipt or any use of this document or its contents
+# does not in any way create, by implication or otherwise:
+#
+# a) any express or implied license or right to or under any patent,
+# copyright, trademark or trade secret rights held or claimed by any MEF
+# member which are or may be associated with the ideas, techniques,
+# concepts or expressions contained herein; nor
+#
+# b) any warranty or representation that any MEF members will announce
+# any product(s) and/or service(s) related thereto, or if such
+# announcements are made, that such announced product(s) and/or service(s)
+# embody any or all of the ideas, technologies, or concepts contained
+# herein; nor
+#
+# c) any form of relationship between any MEF member and the recipient
+# or user of this document.
+#
+# Implementation or use of specific MEF standards, specifications, or
+# recommendations will be voluntary, and no Member shall be obliged to
+# implement them by virtue of participation in MEF Forum. MEF is a
+# non-profit international organization to enable the development and
+# worldwide adoption of agile, assured and orchestrated network services.
+# MEF does not, expressly or otherwise, endorse or promote any specific
+# products or services.
+# ---------------------
+#
+description: >-
+  # TODO Required Place Relationship with `role=INSTALL_LOCATION` If not
+  specified otherwise, attribute are applicable to all Internet Access Products
+  use cases.
+properties:
+  demarcationPoint:
+    description:
+      The demarcation point is between the responsibility of the Buyer and the
+      responsibility of the Seller upon delivery of the Product. Applicable to
+      Broadband Internet Access, Basic and Advanced. [EditorNote] To be changed
+      once PRoduct Order and Product Inventory APIs will support it natively
+    type: array
+    items:
+      $ref: '../../../common/common.yaml#/definitions/SubUnit'
+  deliveryMechanism:
+    description:
+      Describes the type of equipment provided by the Seller as part of the
+      Internet Access Product.
+    $ref: '#/definitions/InternetAccessDeliveryMechanism'
+  serviceAccessInterfaceType:
+    description:
+      When the Internet Access Product is not delivered at an existing Service
+      Access Interface, the value of this Attribute describes important aspects
+      of the Service Access Interface to be delivered by the Seller
+    $ref: '#/definitions/InternetAccessServiceAccessInterfaceType'
+  vlan:
+    description: >-
+      The C-tag VLAN ID that the Internet Access is carried over at the access
+      interface. It is an integer with a value between 1 and 4094. The value 0
+      indicates that the Service uses untagged Ethernet frames. Applicable Use
+      Cases: Dedicated Internet Access, with and without router
+    $ref: '../../../common/ip/ipCommon.yaml#/definitions/VlanIdOrUntagged'
+  features:
+    description: >-
+      Indicates the major functional and protocol features provided for the
+      Internet Access Service. For BasicBroadband Internet Access this attribute
+      must be empty
+    $ref: '#/definitions/InternetAccessFeatures'
+  bandwidth:
+    description: >-
+      For Broadband Internet Access this Product Attribute represents the
+      "nominal" bandwidth. For Dedicated Internet Access this Product Attribute
+      represents the maximum bandwidth that can be sustained by the Subscriber.
+    $ref: '../../../common/common.yaml#/definitions/BiDirSimpleBandwidth'
+  guaranteedBandwidth:
+    description: >-
+      The value of this Product Attribute is the bandwidth level that can be
+      sustained by the Subscriber on a continual basis with a very high
+      probability of successful packet delivery. This parameter is commonly used
+      for Enterprise Internet Access (DIA) but rarely for Residential or
+      Business Internet Access (Broadband).
+    $ref: '../../../common/common.yaml#/definitions/BiDirSimpleBandwidth'
+  billingModel:
+    description:
+      The value of this Product Attribute indicates how the service is billed.
+      Although the charge for the Product depends on the values of many Product
+      Attributes, the billing model is based primarily on the bandwidth-related
+      Product Attributes described in sections 11.11 and 11.12. Three models are
+      defined. This attribute is covered by the usage of
+    $ref: '#/definitions/InternetAccessBillingModel'
+  localNetworkAddresses:
+    description: >-
+      The Internet Access Local Network Addresses Product Attribute is used when
+      the Seller is responsible for assigning Private Local Network Addresses
+      for the Buyer's Network. The Product Attribute specifies the private
+      address block to be assigned to the Buyer's IP hosts, whether DHCP is
+      used, and if so, parameters necessary to configure the DHCP and NAT
+      servers. Applicable Use Cases: Broadband Internet Access, Advanced
+      Dedicated Internet Access, with router
+    $ref: '#/definitions/InternetAccessLocalNetworkAddresses'
+  providerIndependentIpAddresses:
+    description: >-
+      Indicates whether the Buyer is using Public (WAN) IP addresses routable
+      over the Internet purchased directly from a registration authority for
+      Internet Access or Public IP addresses obtained from the Seller.
+      Applicable Use Cases: Broadband Internet Access, Advanced, Dedicated
+      Internet Access with and without router.
+    $ref: '../../../common/common.yaml#/definitions/EnabledDisabled'
+  autonomousSystemNumber:
+    description: >-
+      An autonomous system (AS) is a collection of connected Internet Protocol
+      (IP) routing prefixes under the control of one or more network operators
+      on behalf of a single administrative entity or domain, that presents a
+      common and clearly defined routing policy to the Internet. If the
+      Subscriber is providing the Internet-routable IP Addresses  then this
+      Product Attribute is required to be specified. Applicable Use Cases:
+      Broadband Internet Access, Advanced, Dedicated Internet Access with and
+      without router.
+    $ref: '#/definitions/InternetAccessAutonomousSystemNumber'
+  ipAddressType:
+    description: >-
+      Indicates whether the publicly routable IP address block consists of fixed
+      addresses or addresses that can change over time. Applicable Use Cases:
+      Broadband Internet Access, Advanced, Dedicated Internet Access with and
+      without router.
+    $ref: '#/definitions/InternetAccessIpAddressType'
+  publicAddressesPrefixLength:
+    description: >-
+      If the Seller is providing the Public Addresses for the Internet Access
+      Product (i.e., the value of the Internet Access Provider Independent IP
+      Addresses Product Attribute is Disabled) then this Product Attribute
+      specifies the size of the IPv4 address block and the IPv6 address block
+      re-quested by the Buyer and provided by the Seller. The value of this
+      Product Attribute has two components, a string that indicates the length
+      (in bits) of the network mask for the IPv4 address block and a string that
+      indicates the length of the network mask for the IPv6 address block. By
+      extension, these strings indicate the length of the host mask for each
+      address block. Applicable Use Cases: Broadband Internet Access, Advanced,
+      Dedicated Internet Access with and without router.
+    $ref: '#/definitions/InternetAccessPublicAddressesPrefixLength'
+  publicAddressBlock:
+    description: >-
+      If the Subscriber is providing the WAN (public) addresses for the Internet
+      Service (i.e., the value of the Internet Access Provider Independent IP
+      Addresses Product Attribute is ENABLED) then this Product Attribute fully
+      specifies the blocks (IPv4 or IPv6) of public addresses used by the
+      Subscriber, e.g., "72.23.28.248/29". Applicable Use Cases: Broadband
+      Internet Access, Advanced, Dedicated Internet Access with and without
+      router.
+    $ref: '#/definitions/InternetAccessPublicAddressBlock'
+  transitAddresses:
+    description: >-
+      Internet Access Transit Addresses Prefix Length Product Attribute
+      specifies the size of the IPv4 address block and the IPv6 address block
+      used for Transit Addresses in the Seller's network to access the Buyer's
+      Public Addresses. The value of this Product Attribute al-lows the Buyer to
+      specify the number of Transit Addresses (IPv4 and IPv6) that it wants the
+      Seller to allocate and the Seller to return the Transit Address blocks
+      allocated by the Seller to the Buyer. Applicable Use Cases: Dedicated
+      Internet Access, with and without router
+    $ref: '#/definitions/InternetAccessTransitAddresses'
+
+required:
+  - bandwidth
+  - deliveryMechanism
+  - features
+definitions:
+  AsnType:
+    description: The type of the ASN.
+    type: string
+    enum:
+      - PUBLIC
+      - PRIVATE
+  InternetAccessAutonomousSystemNumber:
+    description:
+      An autonomous system (AS) is a collection of connected Internet Protocol
+      (IP) routing prefixes under the control of one or more network operators
+      on behalf of a single administrative entity or domain, that presents a
+      common and clearly defined routing policy to the Internet. If the
+      Subscriber is providing the Internet-routable IP Addresses then this
+      Product Attribute is required to be specified.
+    properties:
+      asnType:
+        description: >-
+          The type of the ASN. This MUST be provided If the value of the
+          `providerIndependentIpAddress` is Enabled
+        $ref: '#/definitions/AsnType'
+      asnId:
+        description:
+          ASN Id. This MUST be provided if the value of the asnType is `PUBLIC`
+        $ref: '../../../common/common.yaml#/definitions/FourOctetInteger'
+  InternetAccessBillingModel:
+    type: object
+    required: [billingModelType, nonRecurringPrice, recurringPrice]
+    properties:
+      nonRecurringPrice:
+        type: array
+        items:
+          $ref: '#/definitions/InternetAccessNonRecurringPrice'
+      recurringPrice:
+        type: array
+        items:
+          $ref: '#/definitions/InternetAccessRecurringPrice'
+      billingModelType:
+        type: string
+        enum: [FLAT, BURSTABLE_PERCENTILE, DATA_TRANSFER]
+    discriminator:
+      propertyName: billingModelType
+      mapping:
+        FLAT: '#/definitions/InternetAccessFlatBilling'
+        BURSTABLE_PERCENTILE: '#/definitions/InternetAccessBurstablePercentileBilling'
+        DATA_TRANSFER: '#/definitions/InternetAccessDataTransferBilling'
+  InternetAccessBurstablePercentileBilling:
+    allOf:
+      - $ref: '#/definitions/InternetAccessBillingModel'
+      - type: object
+        required: [burstablePercentile, burstablePriceList]
+        properties:
+          burstablePercentile:
+            type: integer
+            minimum: 0
+            maximum: 99
+          burstablePriceList:
+            type: array
+            items:
+              $ref: '#/definitions/InternetAccessNonRecurringPrice'
+  InternetAccessDataTransferBilling:
+    allOf:
+      - $ref: '#/definitions/InternetAccessBillingModel'
+      - type: object
+        required: [dataTransferPeriod, dataTransferTiers]
+        properties:
+          dataTransferPeriod:
+            $ref: '../../../common/common.yaml#/definitions/Duration'
+          dataTransferTiers:
+            type: array
+            items:
+              $ref: '#/definitions/InternetAccessDataTransferTier'
+  InternetAccessDataTransferTier:
+    type: object
+    required: [unit, cap, unitPrice]
+    properties:
+      unit:
+        $ref: '../../../common/common.yaml#/definitions/DataSize'
+      unitPrice:
+        $ref: '../../../common/common.yaml#/definitions/Price'
+      cap:
+        $ref: '../../../common/common.yaml#/definitions/DataSize'
+  InternetAccessDeliveryMechanism:
+    description: |
+      Describes the type of equipment provided by the Seller as part of the
+      Internet Access Product.
+
+      | Delivery Mechanism    | Description                                                                                                                                                                                                                                                                                                                             |
+      | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+      | DEMARCATION_ONLY      | The product is delivered to the customer without IP routing. It is the buyer's responsibility to provide the mandatory routing function.                                                                                                                                                                                                |
+      | PHYSICAL_ROUTER       | The product delivered to the buyer includes a physical IP Router installed at the customer premises.                                                                                                                                                                                                                                    |
+      | VIRTUAL_ROUTER_REMOTE | The product delivered to the buyer includes an IP routing function which is executed in a virtual environment not at the customer premises. The network connectivity from the buyer's location to the virtual router provides transport only.                                                                                           |
+      | VIRTUAL_ROUTER_LOCAL  | The product delivered to the buyer includes an IP routing function running in a virtual environment at the buyer's premises. The virtual environment (frequently referred to as a universal CPE, white-box CPE, or edge device) is provided by the Seller and can be pre-existing or can be delivered with the Internet Access Product. |
+    enum:
+      - DEMARCATION_ONLY
+      - PHYSICAL_ROUTER
+      - VIRTUAL_ROUTER_REMOTE
+      - VIRTUAL_ROUTER_LOCAL
+    type: string
+  InternetAccessDhcpStaticListEntry:
+    description: Entry of static DHCP MAC to IP mapping.
+    type: object
+    properties:
+      staticMACAddress:
+        description: >-
+          MAC address
+        type: string
+      staticIpAddress:
+        description: >-
+          IPv4 or IPv6 Address
+        type: string
+  InternetAccessFeature:
+    description: >-
+      Basic feature configuration for Internet Access
+    properties:
+      isSupported:
+        description:
+          Indicates whether support of the feature by the Seller is required.
+        type: boolean
+      isEnabled:
+        description:
+          Indicates whether Buyer requests that the Feature is enabled.
+        type: boolean
+    required:
+      - isSupported
+      - isEnabled
+  InternetAccessFeatureAssistance:
+    description:
+      The level of Installation, Operation, and Configuration Changes done by
+      Seller.
+    allOf:
+      - $ref: '#/definitions/InternetAccessFeature'
+      - type: object
+        properties:
+          assistanceLevel:
+            description: >-
+              Assistance Level
+            type: string
+            enum:
+              - SELF_MANAGED
+              - CO_MANAGED
+              - FULLY_MANAGED
+          simpleRequestsPerMonth:
+            description:
+              The number of simple requests allowed per month. Appliable for
+              Quote, Order and Inventory.
+            type: integer
+          complexRequestsPerMonth:
+            description:
+              The number of complex requests allowed per month. Appliable for
+              Quote, Order and Inventory.
+            type: integer
+        required:
+          - assistanceLevel
+  InternetAccessFeatureCloudPrioritization:
+    description:
+      The Seller enables prioritization, traffic congestion control, and SLAs
+      for cloud traffic.
+    allOf:
+      - $ref: '#/definitions/InternetAccessFeature'
+      - type: object
+        properties:
+          cloudServiceProvider:
+            description: List of Cloud Service Providers
+            type: array
+            items:
+              type: string
+        required:
+          - cloudServiceProvider
+  InternetAccessFeatureDedicatedFirewall:
+    description:
+      The Seller provides a firewall service implemented on a dedicated device.
+    allOf:
+      - $ref: '#/definitions/InternetAccessFeature'
+      - type: object
+        properties:
+          firewallType:
+            description: >-
+              The value Basic denotes a simple Firewall based on IP 5-tuples
+              and/or Access Control Lists. The value Complex denotes more
+              complex Firewall capabilities such as Deep Packet Inspection.
+            type: string
+            enum:
+              - BASIC
+              - COMPLEX
+  InternetAccessFeatureDns:
+    description:
+      The seller is providing a Domain Name Service to translate Domain Names to
+      IP addresses.
+    allOf:
+      - $ref: '#/definitions/InternetAccessFeature'
+      - type: object
+        properties:
+          searchDomain:
+            description: >-
+              A possibly empty ordered list of domain names, specified as
+              strings, that are sequentially appended to the specified domain
+              name if the specified domain name does not in-clude a dot (.),
+              until the first successful DNS lookup. Applicable to Order and
+              Inventory
+            type: array
+            items:
+              type: string
+        required:
+          - searchDomain
+  InternetAccessFeatureFacilityDiversity:
+    description:
+      The Seller ensures that this Internet Access Service has no common points
+      of failure with another Internet Access Service.
+    allOf:
+      - $ref: '#/definitions/InternetAccessFeature'
+      - type: object
+        properties:
+          internetAccessRef:
+            description: >-
+              Identifier for the other Internet Access Service. Applicable to
+              Order and Inventory
+            type: string
+  InternetAccessFeatureLayer3Resiliency:
+    description:
+      The Seller providers Layer 3 resiliency for the access connection to the
+      Buyer. If the `layer3Resiliency` feature with `WIRELESS_BACKUP` is
+      specified, the `mobileBackup` feature MUST also be specified.
+    allOf:
+      - $ref: '#/definitions/InternetAccessFeature'
+      - type: object
+        properties:
+          layer3Resiliency:
+            description: >-
+              Translation and forwarding rules
+            type: string
+            enum:
+              - DUAL_ACCESS_ALL_ACTIVE
+              - DUAL_ACCESS_ACTIVE_STANDBY
+              - WIRELESS_BACKUP
+        required:
+          - layer3Resiliency
+  InternetAccessFeatureMobileBackup:
+    description:
+      The Seller provides a method for backing up the Internet Access Service
+      via a 4G or 5G cellular service.
+    allOf:
+      - $ref: '#/definitions/InternetAccessFeature'
+      - type: object
+        properties:
+          minimumExpectedBandwidth:
+            description: >-
+              Bandwidth of the mobile backup.
+            $ref: '../../../common/common.yaml#/definitions/BiDirSimpleBandwidth'
+        required:
+          - minimumExpectedBandwidth
+  InternetAccessFeatureMonitoring:
+    description:
+      The Seller is monitoring the Internet Access Service for the Buyer.
+    allOf:
+      - $ref: '#/definitions/InternetAccessFeature'
+      - type: object
+        properties:
+          monitoringType:
+            description: >-
+              Monitoring type
+            type: string
+            enum:
+              - PROACTIVE
+              - REACTIVE
+        required:
+          - monitoringType
+  InternetAccessFeatureRouting:
+    description:
+      The method by which IP routes are exchanged between the Buyer and the
+      Seller.
+    allOf:
+      - $ref: '#/definitions/InternetAccessFeature'
+      - type: object
+        minproperties: 1
+        maxproperties: 2
+        properties:
+          routingType:
+            description: >-
+              Routing type designation. BGP or Static
+            type: string
+            enum:
+              - BGP
+              - STATIC
+          bgp:
+            description: >-
+              BGP routing configuration for Internet Access in case BGP is used
+              as the routing type.
+            $ref: '../../../common/ip/ipRoutingProtocolsCommon.yaml#/definitions/Bgp'
+          static:
+            description: >-
+              Static routing configuration for Internet Access in case STATIC is
+              used as the routing type.
+            $ref: '../../../common/ip/ipRoutingProtocolsCommon.yaml#/definitions/Static'
+        required:
+          - routingType
+  InternetAccessFeatures:
+    description: >-
+      List of all possible feature configurations for Internet Access. If a
+      value for a feature is not specified, it is equivalent to specifying the
+      feature with isSupported=false and isEnabled=false.
+    type: object
+    properties:
+      assistance:
+        description: >-
+          The level of Installation, Operation, and Configuration Changes done
+          by Seller.
+        $ref: '#/definitions/InternetAccessFeatureAssistance'
+      cloudPrioritization:
+        description: >-
+          The Seller enables prioritization, traffic congestion control, and
+          SLAs for cloud traffic.
+        $ref: '#/definitions/InternetAccessFeatureCloudPrioritization'
+      ddosMitigation:
+        description: >-
+          The Seller provides enhanced protection of the customer network from
+          Distributed Denial of Service (DDoS) attacks.
+        $ref: '#/definitions/InternetAccessFeature'
+      dedicatedFirewall:
+        description: >-
+          The Seller provides a firewall service implemented on a dedicated
+          device.
+        $ref: '#/definitions/InternetAccessFeatureDedicatedFirewall'
+      dns:
+        description: >-
+          The seller is providing a Domain Name Service to translate Domain
+          Names to IP addresses.
+        $ref: '#/definitions/InternetAccessFeatureDns'
+      facilityDiversity:
+        description: >-
+          The Seller ensures that this Internet Access Service has no common
+          points of failure with another Internet Access Service.
+        $ref: '#/definitions/InternetAccessFeatureFacilityDiversity'
+      layer3Resiliency:
+        description: >-
+          The Seller providers Layer 3 resiliency for the access connection to
+          the Buyer. If the LAYER 3 RESILIENCY feature with Wireless Backup is
+          specified, the MOBILE BACKUP feature MUST also be specified.
+        $ref: '#/definitions/InternetAccessFeatureLayer3Resiliency'
+      mobileBackup:
+        description: >-
+          The Seller provides a method for backing up the Internet Access
+          Service via a 4G or 5G cellular service.
+        $ref: '#/definitions/InternetAccessFeatureMobileBackup'
+      monitoring:
+        description: >-
+          The Seller is monitoring the Internet Access Service for the Buyer.
+        $ref: '#/definitions/InternetAccessFeatureMonitoring'
+      performanceReporting:
+        description: >-
+          Performance Metrics are delivered to the Buyer on the Internet Access
+          Service.
+        $ref: '#/definitions/InternetAccessFeature'
+      routing:
+        description: >-
+          The method by which IP routes are exchanged between the Buyer and the
+          Seller.
+        $ref: '#/definitions/InternetAccessFeatureRouting'
+      snmpRead:
+        description: >-
+          The Seller providers SNMP v2/v3 read access to the router including
+          MIB-2.
+        $ref: '#/definitions/InternetAccessFeature'
+  InternetAccessFlatBilling:
+    allOf:
+      - $ref: '#/definitions/InternetAccessBillingModel'
+      - type: object
+        properties: {}
+  InternetAccessIpAddressType:
+    description:
+      Indicates whether the publicly routable IP address block consists of fixed
+      addresses or addresses that can change over time.
+    type: string
+    enum:
+      - STATIC
+      - DYNAMIC
+  InternetAccessIpv4PublicAddressesPrefixLength:
+    description:
+      Indicates the length (in bits) of the network mask for the IPv4 address
+      block, and by extension, the length of the host mask. The size of the host
+      mask defines the number of IP addresses available for use in the
+      Subscriber's network. The value "NONE" indicates that no IPv4 addresses
+      are distributed by DHCP to the Subscriber network.
+    enum:
+      - /24
+      - /25
+      - /26
+      - /27
+      - /28
+      - /29
+      - /30
+      - /31
+      - /32
+      - NONE
+    type: string
+  InternetAccessIpv4TransitAddressPrefixLength:
+    description: IPv4 Transit Address Prefix Length
+    enum:
+      - /24
+      - /25
+      - /26
+      - /27
+      - /28
+      - /29
+      - /30
+      - /31
+      - /32
+      - NONE
+    type: string
+  InternetAccessIpv6PublicAddressesPrefixLength:
+    description:
+      The length (in bits) of the network mask for the IPv6 address block, and
+      by extension, the length of the host mask. The value "NONE" indicates that
+      no IPv6 addresses are distributed by DHCP to the Subscriber network.
+    enum:
+      - /96
+      - /100
+      - /104
+      - /108
+      - /112
+      - /116
+      - /120
+      - /124
+      - /128
+      - NONE
+    type: string
+  InternetAccessIpv6TransitAddressPrefixLength:
+    description: IPv6 Transit Address Prefix Length
+    enum:
+      - /120
+      - /124
+      - /128
+      - NONE
+    type: string
+  InternetAccessLocalNetworkAddresses:
+    description:
+      The private addresses are those used in the link between the Subscriber
+      Network and the Service Router / Service Aggregation Router at the service
+      provider backbone. The value of this Product Attribute is a string that
+      indicates the length (in bits) of the network mask for the IPv4 address
+      block and IPv6 address block, and by extension, the length of the host
+      mask for each address block. The size of the host mask defines the number
+      of IP addresses available for use in the Subscriber's network
+    properties:
+      lanAddressBlock:
+        type: string
+        description: 'IP address range, specified in CIDR notation.'
+        example: '192.0.2.0/24'
+      dhcpStatus:
+        description: >-
+          Indicates whether the Seller is providing a DHCP Service to centrally
+          manage and automate the assignment of IP configurations for the
+          Buyer's Network.
+        $ref: '../../../common/common.yaml#/definitions/EnabledDisabled'
+      dhcpStart:
+        description: >-
+          Start of the DHCP address range. This is the first address in the
+          range that can be assigned to a device. IPv4 or IPv6 address.
+        type: string
+      dhcpEnd:
+        description: >-
+          End of the DHCP address range. This is the last address in the range
+          that can be assigned to a device.IPv4 or IPv6 address.
+        type: string
+      dhcpStaticList:
+        description: >-
+          A list of static IP addresses that are reserved for specific devices
+          in the network. Each entry in the list is a string representing an
+          IPv4 or IPv6 address.
+        type: array
+        items:
+          $ref: '#/definitions/InternetAccessDhcpStaticListEntry'
+      nat:
+        description: >-
+          An IP address if NAT is provided by the Seller
+        type: string
+    type: object
+  InternetAccessNonRecurringPrice:
+    type: object
+    required: [priceDescription, price]
+    properties:
+      priceDescription:
+        type: string
+      price:
+        $ref: '../../../common/common.yaml#/definitions/Price'
+  InternetAccessPhysicalInterface:
+    description:
+      Describes the physical aspects of the Service Access Interface delivered
+      by the Seller
+    properties:
+      physicalLayer:
+        description: >-
+          Specifies a physical layer
+        $ref: '#/definitions/SaiEthernetPhysicalLayer'
+      connectorType:
+        description: >-
+          Indicates the connector type,
+        $ref: '../../../common/common.yaml#/definitions/ConnectorType'
+    type: object
+  InternetAccessRecurringPrice:
+    type: object
+    required: [priceDescription, price, recurringChargePeriod]
+    properties:
+      priceDescription:
+        type: string
+      price:
+        $ref: '../../../common/common.yaml#/definitions/Price'
+      recurringChargePeriod:
+        description: Used for a recurring charge to indicate a period
+        $ref: '../../../common/common.yaml#/definitions/Duration'
+  InternetAccessResiliency:
+    description: |
+      Describes the configuration for resiliency at the Service Access
+      Interface
+
+      | Resiliency type       | Description                                                                                                                  |
+      | --------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+      | NONE                  | No resiliency                                                                                                                |
+      | ALL_ACTIVE            | Link Aggregation is used, and all of the physical interfaces specified in can be active and carrying traffic simultaneously. |
+      | 2_LINK_ACTIVE_STANDBY | Link Aggregation is used and that there are two physical interfaces and only one of them can be carrying traffic.            |
+      | OTHER                 | The buyer and seller have agreed on a resiliency approach other than Link Aggregation.                                       |
+    enum:
+      - NONE
+      - ALL_ACTIVE
+      - 2_LINK_ACTIVE_STANDBY
+      - OTHER
+    type: string
+  InternetAccessServiceAccessInterfaceType:
+    description:
+      Describes the aspects of the Service Access Interface delivered by the
+      Seller
+    properties:
+      physical:
+        type: array
+        items:
+          $ref: '#/definitions/InternetAccessPhysicalInterface'
+        description: >-
+          Describes the physical aspects of the Service Access Interface
+          delivered by the Seller
+      resiliency:
+        description: >-
+          Describes the configuration for resiliency at the Service Access
+          Interface
+        $ref: '#/definitions/InternetAccessResiliency'
+    type: object
+  InternetAccessPublicAddressesPrefixLength:
+    description:
+      If the Seller is providing the Public Addresses for the Internet Access
+      Product (i.e., the value of the Internet Access Provider Independent IP
+      Addresses Product Attribute is Disabled) then this Product Attribute
+      specifies the size of the IPv4 address block and the IPv6 address block
+      requested by the Buyer and provided by the Seller. The value of this
+      Product Attribute has two components, a string that indicates the length
+      (in bits) of the network mask for the IPv4 address block and a string that
+      indicates the length of the network mask for the IPv6 address block. By
+      extension, these strings indicate the length of the host mask for each
+      address block
+    properties:
+      ipv4:
+        description: >-
+          IPv4 Public Addresses Prefix Length
+        $ref: '#/definitions/InternetAccessIpv4PublicAddressesPrefixLength'
+      ipv6:
+        description: >-
+          IPv6 Public Addresses Prefix Length
+        $ref: '#/definitions/InternetAccessIpv6PublicAddressesPrefixLength'
+    required:
+      - ipv4
+      - ipv6
+    type: object
+  InternetAccessPublicAddressBlock:
+    description:
+      If the Subscriber is providing the WAN (public) addresses for the Internet
+      Service (i.e., the value of the Internet Access Provider Independent IP
+      Addresses Product Attribute is ENABLED) then this Product Attribute fully
+      specifies the blocks (IPv4 or IPv6) of public addresses used by the
+      Subscriber, e.g., "72.23.28.248/29".
+    properties:
+      ipv4:
+        description: >-
+          IPv4 Address Block in CIDR notation. `null` value represents the value
+          of `None`
+        type: string
+        nullable: true
+      ipv6:
+        description: >-
+          IPv6 Address Block in CIDR notation. `null` value represents the value
+          of `None`
+        type: string
+        nullable: true
+      required:
+        - ipv4
+        - ipv6
+    type: object
+  InternetAccessTransitAddresses:
+    description: >-
+      Internet Access Transit Addresses Prefix Length Product Attribute
+      specifies the size of the IPv4 address block and the IPv6 address block
+      used for Transit Addresses in the Seller's network to access the Buyer's
+      Public Addresses. The value of this Product Attribute al-lows the Buyer to
+      specify the number of Transit Addresses (IPv4 and IPv6) that it wants the
+      Seller to allocate and the Seller to return the Transit Address blocks
+      allocated by the Seller to the Buyer. Applicable Use Cases: Dedicated
+      Internet Access, with and without router
+    properties:
+      ipv4TransitAddressPrefixLength:
+        description: >-
+          IPv4 Transit Address Prefix Length
+        $ref: '#/definitions/InternetAccessIpv4TransitAddressPrefixLength'
+      ipv6TransitAddressPrefixLength:
+        description: >-
+          IPv6 Transit Address Prefix Length
+        $ref: '#/definitions/InternetAccessIpv6TransitAddressPrefixLength'
+      ipv4TransitAddressBlock:
+        type: string
+        description: 'IPv4 address block, specified in CIDR notation or NONE'
+      ipv6TransitAddressBlock:
+        type: string
+        description: 'IPv6 address block, specified in CIDR notation or NONE'
+  SaiEthernetPhysicalLayer:
+    description: >-
+      Enumeration representing the different Ethernet physical layers. Reference
+      MEF 61.1.1 Table A1-4 Ethernet PHYs for UNI Access Link Trunks.
+    type: string
+    enum:
+      - 10BASE-CX4
+      - 10BASE-ER/EW
+      - 10BASE-FL
+      - 10BASE-LR/LW
+      - 10BASE-LX4
+      - 10BASE-SR/SW
+      - 10BASE-T
+      - 1000BASE-BX10
+      - 1000BASE-LX
+      - 1000BASE-LX10
+      - 1000BASE-SX
+      - 1000BASE-T
+      - 2.5GBASE-T
+      - 25GBASE-CR
+      - 25GBASE-ER
+      - 25GBASE-LR
+      - 25GBASE-SR
+      - 25GBASE-T
+      - 40GBASE-CR4
+      - 40GBASE-ER4
+      - 40GBASE-FR
+      - 40GBASE-LR4
+      - 40GBASE-SR4
+      - 40GBASE-T
+      - 50GBASE-CR
+      - 50GBASE-ER
+      - 50GBASE-FR
+      - 50GBASE-LR
+      - 50GBASE-SR
+      - 100BASE-BX10
+      - 100BASE-FX
+      - 100BASE-LX10
+      - 100BASE-SR10
+      - 100BASE-SX
+      - 100BASE-TX
+      - 200GBASE-CR2
+      - 200GBASE-CR4
+      - 200GBASE-DR4
+      - 200GBASE-ER4
+      - 200GBASE-FR4
+      - 200GBASE-LR4
+      - 200GBASE-SR4
+      - 400GBASE-DR4
+      - 400GBASE-ER8
+      - 400GBASE-FR4
+      - 400GBASE-FR8
+      - 400GBASE-LR4-6
+      - 400GBASE-LR8
+      - 400GBASE-SR16
+      - 400GBASE-SR4.2
+      - 400GBASE-SR4
+      - 400GBASE-SR8

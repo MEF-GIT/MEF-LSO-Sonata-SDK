@@ -1,0 +1,30 @@
+@startuml
+
+left to right direction
+actor Seller
+actor Buyer
+
+rectangle {
+([MEF 113] 15. Retrieve Incident List)
+([MEF 113] 16. Retrieve Incident by Incident Identifier)
+
+
+([MEF 113] 17. Register for Notifications)
+([MEF 113] 18. Send Notification)
+([MEF 173] 1. Failure Notification)
+([MEF 173] 2. Service Impairment Notification)
+([MEF 173] 3. Maintenance Notification)
+
+Buyer --> ([MEF 113] 15. Retrieve Incident List)
+Buyer --> ([MEF 113] 16. Retrieve Incident by Incident Identifier)
+Buyer --> ([MEF 113] 17. Register for Notifications)
+
+
+([MEF 113] 18. Send Notification) <-- Seller
+([MEF 173] 1. Failure Notification) <-- ([MEF 113] 18. Send Notification) 
+([MEF 173] 2. Service Impairment Notification) <-- ([MEF 113] 18. Send Notification) 
+([MEF 173] 3. Maintenance Notification) <-- ([MEF 113] 18. Send Notification) 
+
+}
+
+@enduml

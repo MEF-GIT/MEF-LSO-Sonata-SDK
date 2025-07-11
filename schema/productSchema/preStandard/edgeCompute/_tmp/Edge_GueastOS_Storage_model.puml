@@ -1,0 +1,50 @@
+@startuml
+skinparam class {
+
+BackgroundColor<<Product>> Wheat
+BorderColor<<Product>> Tomato
+}
+
+
+class GuestOs<<Product>> {
+
+}
+
+GuestOs *--> IdentifierString : vendorIdentifier
+GuestOs *--> IdentifierString : model
+GuestOs *--> IdentifierString : version
+
+
+class IdentifierString {
+
+}
+
+
+
+class Storage<<Product>> {
+
+    storageType: StorageType
+    timeToAccess: integer
+    archiveDuration: integer
+    storageAmount: integer
+    replication: boolean
+}
+
+Storage *--> StorageClasses : classes
+
+
+class StorageClasses {
+
+    archival: string
+    storage: string
+}
+
+
+
+enum StorageType {
+
+    FILE
+    BLOCK
+    OBJECT
+}
+@enduml

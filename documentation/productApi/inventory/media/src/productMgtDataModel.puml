@@ -1,5 +1,6 @@
 @startuml
 
+
 class ContactInformation {
 
     number*: string
@@ -7,9 +8,9 @@ class ContactInformation {
     organization: string
     name*: string
     numberExtension: string
-}
+    postalAddress: FieldedAddressRepresentation
 
-ContactInformation *--> FieldedAddressRepresentation : postalAddress
+}
 
 
 class Duration {
@@ -20,101 +21,12 @@ class Duration {
 
 
 
-class FieldedAddressRepresentation {
-
-    streetNr: string
-    streetNrSuffix: string
-    streetNrLast: string
-    streetNrLastSuffix: string
-    streetPreDirection: string
-    streetName: string
-    streetType: string
-    streetPostDirection: string
-    poBox: string
-    locality: string
-    city: string
-    postcode: string
-    postcodeExtension: string
-    stateOrProvince: string
-    countryCode: string
-    buildingName: string
-    privateStreetNumber: string
-    privateStreetName: string
-    language: string
-}
-
-FieldedAddressRepresentation *-->"*" SubUnit : subUnit
-
-
-class FormattedAddressRepresentation {
-
-    formattedAddress*: string
-    language: string
-}
-
-
-
-class GeographicAddressRef {
-
-    href: string
-    id*: string
-    @type*: string
-}
-
-
-
-class GeographicAddress_Query {
-
-    @type*: string
-}
-
-GeographicAddress_Query *-->"*" FieldedAddressRepresentation : fieldedAddressRepresentation
-GeographicAddress_Query *-->"*" FormattedAddressRepresentation : formattedAddressRepresentation
-GeographicAddress_Query *-->"*" GeographicPointRepresentation : geographicPointRepresentation
-GeographicAddress_Query *-->"*" LabelRepresentation : labelRepresentation
-
-
-class GeographicPointRepresentation {
-
-    spatialRef*: string
-    latitude*: string
-    longitude*: string
-    elevation: string
-}
-
-
-
-class GeographicSiteRef {
-
-    href: string
-    id*: string
-    @type*: string
-}
-
-
-
-class LabelRepresentation {
-
-    label*: string
-    administrativeAuthority*: string
-    language: string
-}
-
-
-
 class MEFBillingAccountRef {
 
     id*: string
 }
 
 
-
-enum MEFEndOfTermAction {
-
-    roll
-    autoDisconnect
-    autoRenew
-}
 class MEFItemTerm {
 
     endOfTermAction*: MEFEndOfTermAction
@@ -125,13 +37,6 @@ class MEFItemTerm {
 MEFItemTerm *-->"1" Duration : duration
 MEFItemTerm *--> Duration : rollInterval
 
-
-enum MEFPriceType {
-
-    recurring
-    nonRecurring
-    usageBased
-}
 class MEFProduct {
 
     id*: string
@@ -182,36 +87,6 @@ class MEFProductStatusChange {
 }
 
 
-
-enum MEFProductStatusType {
-
-    active
-    active.pendingChange
-    cancelled
-    pendingActive
-    pendingTerminate
-    suspended
-    suspendedPendingTerminate
-    terminated
-}
-class MEFProduct_Find {
-
-    lastUpdateDate: date-time
-    externalId: string
-    id*: string
-    href: string
-    startDate: date-time
-    status*: MEFProductStatusType
-}
-
-MEFProduct_Find *--> ProductSpecificationRef : productSpecification
-MEFProduct_Find *-->"*" RelatedPlaceRefOrQuery : place
-MEFProduct_Find *--> ProductOfferingRef : productOffering
-MEFProduct_Find *-->"*" ProductRelationship : productRelationship
-MEFProduct_Find *--> MEFBillingAccountRef : billingAccount
-MEFProduct_Find *-->"*" MEFProductOrderItemRef : productOrderItem
-
-
 class Money {
 
     unit*: string
@@ -221,15 +96,10 @@ class Money {
 
 
 class PlaceRefOrQuery {
-    --
-    discriminator:
-    GeographicAddressRef
-    GeographicSiteRef
-    GeographicAddress_Query
+
 }
-PlaceRefOrQuery ..> GeographicAddressRef : """"
-PlaceRefOrQuery ..> GeographicSiteRef : """"
-PlaceRefOrQuery ..> GeographicAddress_Query : """"
+
+
 
 class Price {
 
@@ -285,9 +155,8 @@ class RelatedContactInformation {
     organization: string
     name*: string
     numberExtension: string
+    postalAddress: FieldedAddressRepresentation
 }
-
-RelatedContactInformation *--> FieldedAddressRepresentation : postalAddress
 
 
 class RelatedPlaceRefOrQuery {
@@ -299,23 +168,21 @@ RelatedPlaceRefOrQuery *-->"1" PlaceRefOrQuery : place
 RelatedPlaceRefOrQuery *-->"*" ContactInformation : contact
 
 
-class SubUnit {
+class MEFProduct_Find {
 
-    subUnitNumber*: string
-    subUnitType*: string
+    externalId: string
+    id*: string
+    href: string
+    lastUpdateDate: date-time
+    startDate: date-time
+    status*: MEFProductStatusType
 }
 
+MEFProduct_Find *--> ProductSpecificationRef : productSpecification
+MEFProduct_Find *-->"*" RelatedPlaceRefOrQuery : place
+MEFProduct_Find *--> ProductOfferingRef : productOffering
+MEFProduct_Find *-->"*" ProductRelationship : productRelationship
+MEFProduct_Find *--> MEFBillingAccountRef : billingAccount
+MEFProduct_Find *-->"*" MEFProductOrderItemRef : productOrderItem
 
-
-enum TimeUnit {
-
-    seconds
-    minutes
-    businessHours
-    calendarHours
-    businessDays
-    calendarDays
-    months
-    years
-}
 @enduml

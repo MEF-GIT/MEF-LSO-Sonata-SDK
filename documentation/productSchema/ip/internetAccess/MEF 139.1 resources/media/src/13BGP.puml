@@ -1,0 +1,92 @@
+@startuml
+
+
+
+
+class Bgp {
+
+    connectionAddressFamily: AddressFamilyIpv4Ipv6
+    authentication: string[]
+    asOverride: EnabledDisabled
+    administrativeDistance: integer
+    holdTime: TwoOctetInteger
+    peerAsNumber: FourOctetInteger
+    subscriberAsNumber: FourOctetInteger
+}
+
+
+Bgp *--> PeeringAddress : peeringAddresses
+Bgp *-->"*" BgpCommunity : bgpCommunityList
+Bgp *-->"*" BgpExtendedCommunity : bgpExtendedCommunityList
+Bgp *-->"0..1" Damping : damping
+
+
+class BgpCommunity {
+    autonomousSystemNumber: TwoOctetInteger
+    autonomousSystemDefined: TwoOctetInteger
+    semantics: string
+}
+
+
+class BgpExtendedCommunity {
+
+    regularType*: integer
+    regularValue*: integer
+    extendedType*: TwoOctetInteger
+    extendedValue*: integer
+    semantics: string
+}
+
+
+
+enum AddressFamilyIpv4Ipv6 {
+
+    IPV4
+    IPV6
+}
+
+
+enum EnabledDisabled {
+
+    ENABLED
+    DISABLED
+}
+
+
+class PeeringAddress {
+
+    peeringAddressType: PeeringAddressType
+}
+
+PeeringAddress *-->"*" SubscriberAndSpLoopbackAddresses : subscriberAndSpLoopbackAddresses
+
+enum PeeringAddressType {
+
+    CONNECTION_ADDRESSES
+    LOOPBACKS
+}
+
+
+
+class Damping {
+
+    cutoffThreshold: integer
+    decayHalfLifeWhileReachable: integer
+    decayHalfLifeWhileUnReachable: integer
+    decayMemoryLimit: integer
+    maxHoldDownTime: integer
+    numberOfReuseLists: integer
+    reuseListMemory: integer
+    reuseListTimeGranularity: integer
+    reuseThreshold: integer
+    timeGranularity: integer
+    reuseIndexArraySize: integer
+}
+class SubscriberAndSpLoopbackAddresses {
+    subscriberLoopbackAddress: Ipv4OrIpv6Address
+    spLoopbackAddress: Ipv4OrIpv6Address
+}
+
+
+
+@enduml

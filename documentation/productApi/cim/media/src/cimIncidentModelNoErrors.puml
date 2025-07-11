@@ -1,0 +1,165 @@
+@startuml
+
+class AttachmentValue {
+
+    author*: string
+    creationDate*: date-time
+    description: string
+    mimeType: string
+    name*: string
+    source*: MEFBuyerSellerType
+    url*: string
+}
+
+AttachmentValue *--> MEFByteSize : size
+
+
+class FieldedAddressRepresentation {
+
+    streetNr: string
+    streetNrSuffix: string
+    streetNrLast: string
+    streetNrLastSuffix: string
+    streetPreDirection: string
+    streetName: string
+    streetType: string
+    streetPostDirection: string
+    poBox: string
+    locality: string
+    city: string
+    postcode: string
+    postcodeExtension: string
+    stateOrProvince: string
+    countryCode: string
+    buildingName: string
+    privateStreetNumber: string
+    privateStreetName: string
+    language: string
+}
+
+FieldedAddressRepresentation *-->"*" SubUnit : subUnit
+
+
+class CimIncident {
+
+    @type*: string
+    closedDate: date-time
+    creationDate*: date-time
+    description*: string
+    expectedClosedDate: date-time
+    href: string
+    id*: string
+    impact*: string
+    incidentType*: string
+    priority*: CimIncidentPriorityType
+    severity*: CimIncidentSeverityType
+    situationStartDate*: date-time
+    status*: IncidentStatusType
+}
+
+CimIncident *-->"*" AttachmentValue : attachment
+CimIncident *-->"*" Note : note
+CimIncident *-->"1..*" RelatedContactInformation : relatedContactInformation
+CimIncident *-->"1..*" RelatedEntity : relatedEntity
+CimIncident *-->"*" IssueRelationship : relatedIssue
+CimIncident *-->"1..*" IncidentStatusChange : statusChange
+
+
+
+class CimFailureIncident  {
+  @type = "CimFailureIncident"
+  impact = "down"
+  incidentType = "failure"
+}
+
+class CimServiceImpairmentIncident  {
+  @type = "CimServiceImpairmentIncident"
+  impact: "degraded"|"intermittent"
+  incidentType: "policing"|"congestion"
+}
+
+class CimMaintenanceIncident  {
+  @type = "CimMaintenanceIncident"
+  expectedClosedDate*: date-time
+  impact: MEFObservedImpactType
+  incidentType = "plannedMaintenance"
+}
+
+
+CimIncident <|-r- CimFailureIncident
+CimIncident <|-l- CimServiceImpairmentIncident
+CimIncident <|-u- CimMaintenanceIncident
+
+
+
+class IncidentStatusChange {
+
+    changeDate: date-time
+    changeReason: string
+    status: IncidentStatusType
+}
+
+
+class IssueRelationship {
+
+    @referredType*: string
+    creationDate*: date-time
+    description*: string
+    href: string
+    id*: string
+    relationshipType*: string
+    source*: MEFBuyerSellerType
+}
+
+
+
+class MEFByteSize {
+
+    amount: float
+    units: DataSizeUnit
+}
+
+
+class Note {
+
+    author*: string
+    date*: date-time
+    id*: string
+    source*: MEFBuyerSellerType
+    text*: string
+}
+
+
+
+class RelatedContactInformation {
+
+    role*: string
+    number*: string
+    emailAddress*: string
+    organization: string
+    name*: string
+    numberExtension: string
+}
+
+RelatedContactInformation *--> FieldedAddressRepresentation : postalAddress
+
+
+class RelatedEntity {
+
+    @referredType*: string
+    href: string
+    id*: string
+    role*: string
+}
+
+
+
+class SubUnit {
+
+    subUnitNumber*: string
+    subUnitType*: string
+}
+
+
+
+@enduml

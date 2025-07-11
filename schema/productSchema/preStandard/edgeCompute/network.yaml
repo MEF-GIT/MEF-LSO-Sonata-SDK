@@ -1,0 +1,181 @@
+---
+type: object
+$id: urn:mef:xid:spec:cantata-sonata:network:v0.0.2:all
+$schema: http://json-schema.org/draft-07/schema#
+description:
+  The Network for Computing IaaS. Reference MEF W132 Section 7.5 Network
+  Building Block.
+  # ---------------------
+  # Disclaimer
+  #
+  # © MEF Forum 2024. All Rights Reserved.
+  #
+  # The information in this publication is freely available for reproduction
+  # and use by any recipient and is believed to be accurate as of its
+  # publication date. Such information is subject to change without notice
+  # and MEF Forum (MEF) is not responsible for any errors. MEF does not
+  # assume responsibility to update or correct any information in this
+  # publication. No representation or warranty, expressed or implied, is
+  # made by MEF concerning the completeness, accuracy, or applicability of
+  # any information contained herein and no liability of any kind shall be
+  # assumed by MEF as a result of reliance upon such information.
+  #
+  # The information contained herein is intended to be used without
+  # modification by the recipient or user of this document. MEF is not
+  # responsible or liable for any modifications to this document made by any
+  # other party.
+  #
+  # The receipt or any use of this document or its contents
+  # does not in any way create, by implication or otherwise:
+  #
+  # a) any express or implied license or right to or under any patent,
+  # copyright, trademark or trade secret rights held or claimed by any MEF
+  # member which are or may be associated with the ideas, techniques,
+  # concepts or expressions contained herein; nor
+  #
+  # b) any warranty or representation that any MEF members will announce
+  # any product(s) and/or service(s) related thereto, or if such
+  # announcements are made, that such announced product(s) and/or service(s)
+  # embody any or all of the ideas, technologies, or concepts contained
+  # herein; nor
+  #
+  # c) any form of relationship between any MEF member and the recipient
+  # or user of this document.
+  #
+  # Implementation or use of specific MEF standards, specifications, or
+  # recommendations will be voluntary, and no Member shall be obliged to
+  # implement them by virtue of participation in MEF Forum. MEF is a
+  # non-profit international organization to enable the development and
+  # worldwide adoption of agile, assured and orchestrated network services.
+  # MEF does not, expressly or otherwise, endorse or promote any specific
+  # products or services.
+  # ---------------------
+  #
+properties:
+  cloudUni:
+    $ref: '#/definitions/CloudUni'
+    description:
+      The demarcation point marking the boundary between the responsibility of
+      the Cloud Subscriber and the Cloud Service Provider.
+  cloudVcEndPoint:
+    $ref: '#/definitions/CloudVcEndPoint'
+    description:
+      A logical construct at a Cloud UNI, or Cloud Application Interface to
+      which a subnet  of the Cloud Service Protocol Data Units (PDUs) passing
+      over that interface is mapped.
+  cloudVc:
+    $ref: '#/definitions/CloudVc'
+    description: An association of two or more Cloud VC End Points.
+definitions:
+  CloudUni:
+    type: object
+    description:
+      The demarcation point marking the boundary between the responsibility of
+      the Cloud Subscriber and the Cloud Service Provider. Reference MEF W132
+      Section 8.17 Cloud UNI. NOTE - Future work.
+    properties:
+      identifier:
+        $ref: '../../../common/common.yaml#/definitions/IdentifierString'
+        description: The unique identifier of the Cloud UNI.
+      ipv4ConnectionAddressing:
+        $ref: '../../../common/ip/ipCommon.yaml#/definitions/UniIpv4ConnectionAddressing'
+        description: IPv4 allocation
+      ipv6ConnectionAddressing:
+        $ref: '../../../common/ip/ipCommon.yaml#/definitions/UniIpv6ConnectionAddressing'
+        description: IPv6 allocation
+    title: MEF LSO IaaS Cloud UNI
+  CloudVc:
+    type: object
+    description:
+      An association of two or more Cloud Virtual Circuit End Points.
+    properties:
+      connectivity:
+        $ref: '#/definitions/Connectivity'
+        description:
+          Reference MEF W132 Section 8.18.2.2 Connectivity Service Attributes.
+    title: MEF LSO IaaS Cloud Virtual Circuit
+  Access:
+    type: object
+    description:
+      The Access attributes to gain access to the subscriber's Edge Computing
+      IaaS.
+    properties:
+      uri:
+        type: string
+        format: uri
+        description:
+          A description of a URL with possible values following the URI format
+          specified in Section 2.7.2 of RFC 7230.
+      accessIdentifier:
+        $ref: '../../../common/common.yaml#/definitions/IdentifierString128'
+        description:
+          The unique characters that make up the Edge IaaS Instance Identifier
+          used by the Subscriber to access the Edge IaaS.
+      accessCredentials:
+        $ref: '../../../common/common.yaml#/definitions/IdentifierString128'
+        description:
+          The unique characters that make up the Edge IaaS Instance User Access
+          Credentials used by the Subscriber to access the Edge IaaS.
+  CloudVcEndPoint:
+    type: object
+    description:
+      A logical construct at a Cloud UNI, or Cloud Application Interface to
+      which a subset of the Cloud Service Protocol Date Units (PDUs) passing
+      over that interface is mapped.
+    properties:
+      identifier:
+        $ref: '../../../common/common.yaml#/definitions/IdentifierString'
+        description: The unique identifier of the Cloud UNI.
+      cloudApplicationInterface:
+        type: array
+        description:
+          The demarcation point between a Cloud Application and one or more
+          Cloud VC End Points.
+        items:
+          $ref: '#/definitions/CloudApplicationInterface'
+        minItems: 1
+    title: MEF LSO IaaS Cloud Virtual Circuit End Point
+  CloudApplicationInterface:
+    type: object
+    description:
+      The demarcation point between a Cloud Application and one or more Cloud
+      VC End Points.
+    properties:
+      entityIdentifier:
+        $ref: '../../../common/common.yaml#/definitions/IdentifierString'
+        description: The unique identifier of the Cloud Application Interface.
+      addressing:
+        $ref: '../../../common/ip/ipCommon.yaml#/definitions/Ipv4OrIpv6Address'
+        description:
+          Identify the IP address that is used to connect to Edge Computing
+          IaaS.
+      access:
+        $ref: '#/definitions/Access'
+        description:
+          Access by the Subscriber to the Edge Computing IaaS is described with
+          the Access Service Attributes.
+      cloudApplication:
+        type: array
+        description:
+          The demarcation point between a Cloud Application and one or more
+          Cloud VC End Points.
+        items:
+          $ref: '../../../common/common.yaml#/definitions/IdentifierString'
+        minItems: 1
+    title: MEF LSO IaaS Cloud Application Interface
+  Connectivity:
+    type: object
+    description:
+      Defines the parties that are connected by the Subscriber Cloud VC.
+    properties:
+      cloudVcConnectionType:
+        type: string
+        enum:
+          - EDGE_COMPUTE_IAAS_CLOUD_VC
+      cloudVcConnectionEndPointList:
+        type: array
+        items:
+          $ref: '../../../common/common.yaml#/definitions/IdentifierString'
+        minItems: 1
+      cloudVcConnectionProtectionType:
+        type: string

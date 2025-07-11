@@ -1,0 +1,166 @@
+---
+$schema: http://json-schema.org/draft-07/schema#
+title:
+  MEF LSO Edge Compute Common Types
+  # ---------------------
+  # Disclaimer
+  #
+  # © MEF Forum 2024. All Rights Reserved.
+  #
+  # The information in this publication is freely available for reproduction
+  # and use by any recipient and is believed to be accurate as of its
+  # publication date. Such information is subject to change without notice
+  # and MEF Forum (MEF) is not responsible for any errors. MEF does not
+  # assume responsibility to update or correct any information in this
+  # publication. No representation or warranty, expressed or implied, is
+  # made by MEF concerning the completeness, accuracy, or applicability of
+  # any information contained herein and no liability of any kind shall be
+  # assumed by MEF as a result of reliance upon such information.
+  #
+  # The information contained herein is intended to be used without
+  # modification by the recipient or user of this document. MEF is not
+  # responsible or liable for any modifications to this document made by any
+  # other party.
+  #
+  # The receipt or any use of this document or its contents
+  # does not in any way create, by implication or otherwise:
+  #
+  # a) any express or implied license or right to or under any patent,
+  # copyright, trademark or trade secret rights held or claimed by any MEF
+  # member which are or may be associated with the ideas, techniques,
+  # concepts or expressions contained herein; nor
+  #
+  # b) any warranty or representation that any MEF members will announce
+  # any product(s) and/or service(s) related thereto, or if such
+  # announcements are made, that such announced product(s) and/or service(s)
+  # embody any or all of the ideas, technologies, or concepts contained
+  # herein; nor
+  #
+  # c) any form of relationship between any MEF member and the recipient
+  # or user of this document.
+  #
+  # Implementation or use of specific MEF standards, specifications, or
+  # recommendations will be voluntary, and no Member shall be obliged to
+  # implement them by virtue of participation in MEF Forum. MEF is a
+  # non-profit international organization to enable the development and
+  # worldwide adoption of agile, assured and orchestrated network services.
+  # MEF does not, expressly or otherwise, endorse or promote any specific
+  # products or services.
+  # ---------------------
+  #
+definitions:
+  CacheSize:
+    description: The cache size that the processor supports.
+    minProperties: 1
+    maxProperties: 1
+    properties:
+      memorySize:
+        $ref: '#/definitions/IntegerOrUnspecifiedGtZero'
+        description:
+          The amount of memory in GiBytes. Reference MEF W132 Section 8.4.1
+          Memory Amount Service Attribute.
+      unspecified:
+        type: string
+        enum:
+          - UNSPECIFIED
+  ClockSpeedRange:
+    type: object
+    description:
+      Specifies the minimum and maximum clock speed of the processor. Each
+      value in [GHz]
+    properties:
+      minimum:
+        $ref: '#/definitions/NumberOrUnspecifiedGtZero'
+      maximum:
+        $ref: '#/definitions/NumberOrUnspecifiedGtZero'
+  IdentifierOrUnspecified:
+    type: object
+    description: An Identifier String or explicit "Unspecified."
+    properties:
+      identifier:
+        $ref: '../../../common/common.yaml#/definitions/IdentifierString'
+      unspecified:
+        type: string
+        enum:
+          - UNSPECIFIED
+  IntegerOrUnspecifiedGtZero:
+    type: object
+    description: An integer > 0 or explicit "Unspecified"
+    properties:
+      value:
+        type: number
+        minimum: 0
+      unspecified:
+        type: string
+        enum:
+          - UNSPECIFIED
+  Memory:
+    type: object
+    description: IaaS Memory resource. Reference MEF W132 Section 8.4 Memory.
+    properties:
+      amount:
+        $ref: './common.yaml#/definitions/IntegerOrUnspecifiedGtZero'
+        description:
+          The amount of memory in GiBytes. Reference MEF W132 Section 8.4.1
+          Memory Amount Service Attribute.
+      accessTime:
+        $ref: '#/definitions/MemoryTime'
+        description:
+          The Memory Access Time used to specify the time it takes to perform a
+          read or write operation in memory.  Reference MEF W132 Section 8.4.2
+          Memory Access Time Service Attribute.
+      cycleTime:
+        $ref: '#/definitions/MemoryTime'
+        description:
+          The Memory Cycle Time used to specify the duration between the
+          initiations of two successive RAM operations. Reference MEF W132
+          Section 8.4.3 Memory Cycle Time Service Attribute.
+      transferRate:
+        $ref: './common.yaml#/definitions/NumberOrUnspecifiedGtZero'
+        description:
+          The Memory Transfer Rate in [GB/s] used to specify the speed of
+          reading or writing data in memory location. Reference MEF W132
+          Section 8.4.4 Memory Transfer Rate.
+  MemoryTime:
+    type: object
+    description:
+      The memory access time to perform a read or write operation in memory.
+    properties:
+      value:
+        type: integer
+        description: The value in the data size.
+      units:
+        $ref: '#/definitions/UnitsNanoMicroSeconds'
+  NumberOrUnspecifiedGtZero:
+    type: object
+    description: A real number > 0 or explicit "Unspecified"
+    properties:
+      value:
+        type: number
+        minimum: 0
+      unspecified:
+        type: string
+        enum:
+          - UNSPECIFIED
+  PackageType:
+    type: string
+    description: 'The access to the processor provided. '
+    enum:
+      - BINARY
+      - SOURCE
+  ProcessorType:
+    type: string
+    description:
+      Specifies the architecture and machine language of the processor.
+      Reference MEF W132 Section 8.3.3 Processor Type Service Attribute.
+    enum:
+      - X86
+      - ARM
+      - OTHER
+      - UNSPECIFIED
+  UnitsNanoMicroSeconds:
+    description: The unit of measure in time. Nano and micro seconds only.
+    enum:
+      - NANOSECONDS
+      - MICROSECONDS
+    type: string

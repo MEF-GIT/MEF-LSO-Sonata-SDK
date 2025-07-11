@@ -1,55 +1,70 @@
 openapi: 3.0.1
 info:
-  description: "**This file forms part of MEF W142**\n\nThis API implements Business\
-    \ Requirements described in MEF W127.1 \nrelated to the notifications that are\
-    \ sent by the Seller to the Buyer.\n\n**This specification represents MEF work\
-    \ in progress and is subject to\nchange.** \n\nList of supported use cases:\n\
-    - Send Event Notification\n\nIt allows the Buyer to receive notifications about\
-    \ Product Categories', Product Offerings',\nand Product Specifications' updates.\n\
-    This allows the Buyer to be up to date with the Product Catalog that is published\
-    \ by the Seller. \nThe Seller may introduce some changes related to Product Catalog\
-    \ Elements such as adding new elements \nor modifying their lifecycle that causes\
-    \ sending notifications.\n\nCopyright 2024 MEF Forum and its contributors\n\n\
-    This file includes content based on the TM Forum Product Catalog API (TMF620 v4.1.0)\
-    \ available at https://github.com/tmforum-apis/TMF620_ProductCatalog, which is\
-    \ licensed by the TM Forum under the Apache License version 2.0. Such content\
-    \ has been modified by the MEF Forum and its contributors.\n"
+  description: >
+    **This file forms part of Mplify 142**
+
+
+    This API implements the Business Requirements described in Mplify 127.1.
+
+
+    List of supported use cases:
+
+    - Send Event Notification
+
+
+    It allows the Buyer to receive notifications about Product Categories',
+    Product Offerings', and Product Specifications' updates. This allows the
+    Buyer to be up to date with the Product Catalog that is published by the
+    Seller. The Seller may introduce some changes related to Product Catalog
+    Elements such as adding new elements or modifying their lifecycle that
+    causes sending notifications.
+
+
+    Copyright 2025 Mplify Alliance and its contributors.
+
+
+    This file includes content based on the TM Forum Product Catalog API (TMF620
+    v4.1.0) available at https://github.com/tmforum-apis/TMF620_ProductCatalog,
+    which is licensed by the TM Forum under the Apache License version 2.0. Such
+    content has been modified by the Mplify Alliance and its contributors.
   title: Product Catalog Notification
-  version: 3.0.0-RC
+  version: 4.0.0-RC
 servers:
-- url: "https://{serverBase}/mefApi/sonata/productCatalogNotifications/v3/"
-  variables:
-    serverBase:
-      default: mef.net
-      description: The base of Buyer's URL.
+  - url: 'https://{serverBase}/mefApi/sonata/productCatalogNotifications/v4/'
+    variables:
+      serverBase:
+        default: mplify.net
+        description: The base of Buyer's URL.
 security:
-- oauth2MEFLSOAPI:
-  - default
+  - oauth2MEFLSOAPI:
+      - default
 tags:
-- description: The Buyer's endpoint to send particular event types notifications to.
-  name: Notification listeners
+  - description: The Buyer's endpoint to send particular event types notifications to.
+    name: Notification listeners
 paths:
   /listener/categoryCreateEvent:
     post:
       description: Client listener for receiving the notification CategoryCreateEvent
       operationId: listenToCategoryCreateEvent
       parameters:
-      - description: The unique identifier of the organization that is acting as the
-          Buyer. MUST be specified in the request when the requester represents more
-          than one Buyer.
-        in: query
-        name: buyerId
-        required: false
-        schema:
-          type: string
-      - description: The unique identifier of the organization that is acting as the
-          Seller. MUST be specified in the request when the responding entity represents
-          more than one Seller.
-        in: query
-        name: sellerId
-        required: false
-        schema:
-          type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Buyer. MUST be specified in the request when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          required: false
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request when the responding entity
+            represents more than one Seller.
+          in: query
+          name: sellerId
+          required: false
+          schema:
+            type: string
       requestBody:
         content:
           application/json;charset=utf-8:
@@ -58,59 +73,63 @@ paths:
         description: The event data
         required: true
       responses:
-        "204":
-          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
-        "400":
+        '204':
+          description: 'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
+        '400':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error400'
           description: Bad Request
-        "401":
+        '401':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error401'
           description: Unauthorized
-        "403":
+        '403':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error403'
           description: Forbidden
-        "500":
+        '500':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-      - oauth2MEFLSOAPI:
-        - listenToCategoryCreateEvent
+        - oauth2MEFLSOAPI:
+            - listenToCategoryCreateEvent
       summary: Client listener for entity CategoryCreateEvent
       tags:
-      - Notification listeners
+        - Notification listeners
   /listener/categoryAttributeValueChangeEvent:
     post:
-      description: Client listener for receiving the notification CategoryAttributeValueChangeEvent
+      description: >-
+        Client listener for receiving the notification
+        CategoryAttributeValueChangeEvent
       operationId: listenToCategoryAttributeValueChangeEvent
       parameters:
-      - description: The unique identifier of the organization that is acting as the
-          Buyer. MUST be specified in the request when the requester represents more
-          than one Buyer.
-        in: query
-        name: buyerId
-        required: false
-        schema:
-          type: string
-      - description: The unique identifier of the organization that is acting as the
-          Seller. MUST be specified in the request when the responding entity represents
-          more than one Seller.
-        in: query
-        name: sellerId
-        required: false
-        schema:
-          type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Buyer. MUST be specified in the request when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          required: false
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request when the responding entity
+            represents more than one Seller.
+          in: query
+          name: sellerId
+          required: false
+          schema:
+            type: string
       requestBody:
         content:
           application/json;charset=utf-8:
@@ -119,59 +138,63 @@ paths:
         description: The event data
         required: true
       responses:
-        "204":
-          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
-        "400":
+        '204':
+          description: 'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
+        '400':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error400'
           description: Bad Request
-        "401":
+        '401':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error401'
           description: Unauthorized
-        "403":
+        '403':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error403'
           description: Forbidden
-        "500":
+        '500':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-      - oauth2MEFLSOAPI:
-        - listenToCategoryAttributeValueChangeEvent
+        - oauth2MEFLSOAPI:
+            - listenToCategoryAttributeValueChangeEvent
       summary: Client listener for entity CategoryAttributeValueChangeEvent
       tags:
-      - Notification listeners
+        - Notification listeners
   /listener/productOfferingCreateEvent:
     post:
-      description: Client listener for receiving the notification ProductOfferingCreateEvent
+      description: >-
+        Client listener for receiving the notification
+        ProductOfferingCreateEvent
       operationId: listenToProductOfferingCreateEvent
       parameters:
-      - description: The unique identifier of the organization that is acting as the
-          Buyer. MUST be specified in the request when the requester represents more
-          than one Buyer.
-        in: query
-        name: buyerId
-        required: false
-        schema:
-          type: string
-      - description: The unique identifier of the organization that is acting as the
-          Seller. MUST be specified in the request when the responding entity represents
-          more than one Seller.
-        in: query
-        name: sellerId
-        required: false
-        schema:
-          type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Buyer. MUST be specified in the request when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          required: false
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request when the responding entity
+            represents more than one Seller.
+          in: query
+          name: sellerId
+          required: false
+          schema:
+            type: string
       requestBody:
         content:
           application/json;charset=utf-8:
@@ -180,59 +203,63 @@ paths:
         description: The event data
         required: true
       responses:
-        "204":
-          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
-        "400":
+        '204':
+          description: 'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
+        '400':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error400'
           description: Bad Request
-        "401":
+        '401':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error401'
           description: Unauthorized
-        "403":
+        '403':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error403'
           description: Forbidden
-        "500":
+        '500':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-      - oauth2MEFLSOAPI:
-        - listenToProductOfferingCreateEvent
+        - oauth2MEFLSOAPI:
+            - listenToProductOfferingCreateEvent
       summary: Client listener for entity ProductOfferingCreateEvent
       tags:
-      - Notification listeners
+        - Notification listeners
   /listener/productOfferingAttributeValueChangeEvent:
     post:
-      description: Client listener for receiving the notification ProductOfferingAttributeValueChangeEvent
+      description: >-
+        Client listener for receiving the notification
+        ProductOfferingAttributeValueChangeEvent
       operationId: listenToProductOfferingAttributeValueChangeEvent
       parameters:
-      - description: The unique identifier of the organization that is acting as the
-          Buyer. MUST be specified in the request when the requester represents more
-          than one Buyer.
-        in: query
-        name: buyerId
-        required: false
-        schema:
-          type: string
-      - description: The unique identifier of the organization that is acting as the
-          Seller. MUST be specified in the request when the responding entity represents
-          more than one Seller.
-        in: query
-        name: sellerId
-        required: false
-        schema:
-          type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Buyer. MUST be specified in the request when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          required: false
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request when the responding entity
+            represents more than one Seller.
+          in: query
+          name: sellerId
+          required: false
+          schema:
+            type: string
       requestBody:
         content:
           application/json;charset=utf-8:
@@ -241,59 +268,63 @@ paths:
         description: The event data
         required: true
       responses:
-        "204":
-          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
-        "400":
+        '204':
+          description: 'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
+        '400':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error400'
           description: Bad Request
-        "401":
+        '401':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error401'
           description: Unauthorized
-        "403":
+        '403':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error403'
           description: Forbidden
-        "500":
+        '500':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-      - oauth2MEFLSOAPI:
-        - listenToProductOfferingAttributeValueChangeEvent
+        - oauth2MEFLSOAPI:
+            - listenToProductOfferingAttributeValueChangeEvent
       summary: Client listener for entity ProductOfferingAttributeValueChangeEvent
       tags:
-      - Notification listeners
+        - Notification listeners
   /listener/productOfferingStateChangeEvent:
     post:
-      description: Client listener for receiving the notification ProductOfferingStateChangeEvent
+      description: >-
+        Client listener for receiving the notification
+        ProductOfferingStateChangeEvent
       operationId: listenToProductOfferingStateChangeEvent
       parameters:
-      - description: The unique identifier of the organization that is acting as the
-          Buyer. MUST be specified in the request when the requester represents more
-          than one Buyer.
-        in: query
-        name: buyerId
-        required: false
-        schema:
-          type: string
-      - description: The unique identifier of the organization that is acting as the
-          Seller. MUST be specified in the request when the responding entity represents
-          more than one Seller.
-        in: query
-        name: sellerId
-        required: false
-        schema:
-          type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Buyer. MUST be specified in the request when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          required: false
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request when the responding entity
+            represents more than one Seller.
+          in: query
+          name: sellerId
+          required: false
+          schema:
+            type: string
       requestBody:
         content:
           application/json;charset=utf-8:
@@ -302,59 +333,63 @@ paths:
         description: The event data
         required: true
       responses:
-        "204":
-          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
-        "400":
+        '204':
+          description: 'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
+        '400':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error400'
           description: Bad Request
-        "401":
+        '401':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error401'
           description: Unauthorized
-        "403":
+        '403':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error403'
           description: Forbidden
-        "500":
+        '500':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-      - oauth2MEFLSOAPI:
-        - listenToProductOfferingStateChangeEvent
+        - oauth2MEFLSOAPI:
+            - listenToProductOfferingStateChangeEvent
       summary: Client listener for entity ProductOfferingStateChangeEvent
       tags:
-      - Notification listeners
+        - Notification listeners
   /listener/productSpecificationCreateEvent:
     post:
-      description: Client listener for receiving the notification ProductSpecificationCreateEvent
+      description: >-
+        Client listener for receiving the notification
+        ProductSpecificationCreateEvent
       operationId: listenToProductSpecificationCreateEvent
       parameters:
-      - description: The unique identifier of the organization that is acting as the
-          Buyer. MUST be specified in the request when the requester represents more
-          than one Buyer.
-        in: query
-        name: buyerId
-        required: false
-        schema:
-          type: string
-      - description: The unique identifier of the organization that is acting as the
-          Seller. MUST be specified in the request when the responding entity represents
-          more than one Seller.
-        in: query
-        name: sellerId
-        required: false
-        schema:
-          type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Buyer. MUST be specified in the request when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          required: false
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request when the responding entity
+            represents more than one Seller.
+          in: query
+          name: sellerId
+          required: false
+          schema:
+            type: string
       requestBody:
         content:
           application/json;charset=utf-8:
@@ -363,120 +398,129 @@ paths:
         description: The event data
         required: true
       responses:
-        "204":
-          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
-        "400":
+        '204':
+          description: 'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
+        '400':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error400'
           description: Bad Request
-        "401":
+        '401':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error401'
           description: Unauthorized
-        "403":
+        '403':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error403'
           description: Forbidden
-        "500":
+        '500':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-      - oauth2MEFLSOAPI:
-        - listenToProductSpecificationCreateEvent
+        - oauth2MEFLSOAPI:
+            - listenToProductSpecificationCreateEvent
       summary: Client listener for entity ProductSpecificationCreateEvent
       tags:
-      - Notification listeners
+        - Notification listeners
   /listener/productSpecificationAttributeValueChangeEvent:
     post:
-      description: Client listener for receiving the notification ProductSpecificationAttributeValueChangeEvent
+      description: >-
+        Client listener for receiving the notification
+        ProductSpecificationAttributeValueChangeEvent
       operationId: listenToProductSpecificationAttributeValueChangeEvent
       parameters:
-      - description: The unique identifier of the organization that is acting as the
-          Buyer. MUST be specified in the request when the requester represents more
-          than one Buyer.
-        in: query
-        name: buyerId
-        required: false
-        schema:
-          type: string
-      - description: The unique identifier of the organization that is acting as the
-          Seller. MUST be specified in the request when the responding entity represents
-          more than one Seller.
-        in: query
-        name: sellerId
-        required: false
-        schema:
-          type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Buyer. MUST be specified in the request when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          required: false
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request when the responding entity
+            represents more than one Seller.
+          in: query
+          name: sellerId
+          required: false
+          schema:
+            type: string
       requestBody:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/ProductSpecificationAttributeValueChangeEvent'
+              $ref: >-
+                #/components/schemas/ProductSpecificationAttributeValueChangeEvent
         description: The event data
         required: true
       responses:
-        "204":
-          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
-        "400":
+        '204':
+          description: 'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
+        '400':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error400'
           description: Bad Request
-        "401":
+        '401':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error401'
           description: Unauthorized
-        "403":
+        '403':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error403'
           description: Forbidden
-        "500":
+        '500':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-      - oauth2MEFLSOAPI:
-        - listenToProductSpecificationAttributeValueChangeEvent
+        - oauth2MEFLSOAPI:
+            - listenToProductSpecificationAttributeValueChangeEvent
       summary: Client listener for entity ProductSpecificationAttributeValueChangeEvent
       tags:
-      - Notification listeners
+        - Notification listeners
   /listener/productSpecificationStateChangeEvent:
     post:
-      description: Client listener for receiving the notification ProductSpecificationStatusChangeEvent
+      description: >-
+        Client listener for receiving the notification
+        ProductSpecificationStatusChangeEvent
       operationId: listenToProductSpecificationStatusChangeEvent
       parameters:
-      - description: The unique identifier of the organization that is acting as the
-          Buyer. MUST be specified in the request when the requester represents more
-          than one Buyer.
-        in: query
-        name: buyerId
-        required: false
-        schema:
-          type: string
-      - description: The unique identifier of the organization that is acting as the
-          Seller. MUST be specified in the request when the responding entity represents
-          more than one Seller.
-        in: query
-        name: sellerId
-        required: false
-        schema:
-          type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Buyer. MUST be specified in the request when the requester
+            represents more than one Buyer.
+          in: query
+          name: buyerId
+          required: false
+          schema:
+            type: string
+        - description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request when the responding entity
+            represents more than one Seller.
+          in: query
+          name: sellerId
+          required: false
+          schema:
+            type: string
       requestBody:
         content:
           application/json;charset=utf-8:
@@ -485,112 +529,122 @@ paths:
         description: The event data
         required: true
       responses:
-        "204":
-          description: No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)
-        "400":
+        '204':
+          description: 'No Content (https://tools.ietf.org/html/rfc7231#section-6.3.5)'
+        '400':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error400'
           description: Bad Request
-        "401":
+        '401':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error401'
           description: Unauthorized
-        "403":
+        '403':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error403'
           description: Forbidden
-        "500":
+        '500':
           content:
             application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/Error500'
           description: Internal Server Error
       security:
-      - oauth2MEFLSOAPI:
-        - listenToProductSpecificationStatusChangeEvent
+        - oauth2MEFLSOAPI:
+            - listenToProductSpecificationStatusChangeEvent
       summary: Client listener for entity ProductSpecificationStatusChangeEvent
       tags:
-      - Notification listeners
+        - Notification listeners
 components:
   schemas:
     Error:
-      description: |
-        Standard Class used to describe API response error Not intended to be used directly. The `code` in the HTTP header is used as a discriminator for the type of error returned in runtime.
+      description: >
+        Standard Class used to describe API response error Not intended to be
+        used directly. The `code` in the HTTP header is used as a discriminator
+        for the type of error returned in runtime.
       properties:
         reason:
-          description: Text that explains the reason for the error. This can be shown
-            to a client user.
+          description: >-
+            Text that explains the reason for the error. This can be shown to a
+            client user.
           maxLength: 255
           type: string
         message:
-          description: Text that provides mode details and corrective actions related
-            to the error. This can be shown to a client user.
+          description: >-
+            Text that provides mode details and corrective actions related to
+            the error. This can be shown to a client user.
           type: string
         referenceError:
           description: url pointing to documentation describing the error
           format: uri
           type: string
       required:
-      - reason
+        - reason
       type: object
     Error400:
       allOf:
-      - $ref: '#/components/schemas/Error'
-      - properties:
-          code:
-            $ref: '#/components/schemas/Error400Code'
-        required:
-        - code
-        type: object
-      description: Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              $ref: '#/components/schemas/Error400Code'
+          required:
+            - code
+          type: object
+      description: 'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
     Error400Code:
-      description: |-
+      description: >-
         One of the following error codes:
-        - missingQueryParameter: The URI is missing a required query-string parameter
-        - missingQueryValue: The URI is missing a required query-string parameter value
+
+        - missingQueryParameter: The URI is missing a required query-string
+        parameter
+
+        - missingQueryValue: The URI is missing a required query-string
+        parameter value
+
         - invalidQuery: The query section of the URI is invalid.
+
         - invalidBody: The request has an invalid body
       enum:
-      - missingQueryParameter
-      - missingQueryValue
-      - invalidQuery
-      - invalidBody
+        - missingQueryParameter
+        - missingQueryValue
+        - invalidQuery
+        - invalidBody
       type: string
     Error401:
       allOf:
-      - $ref: '#/components/schemas/Error'
-      - properties:
-          code:
-            $ref: '#/components/schemas/Error401Code'
-        required:
-        - code
-        type: object
-      description: Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              $ref: '#/components/schemas/Error401Code'
+          required:
+            - code
+          type: object
+      description: 'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
     Error401Code:
       description: |-
         One of the following error codes:
         - missingCredentials: No credentials provided.
         - invalidCredentials: Provided credentials are invalid or expired
       enum:
-      - missingCredentials
-      - invalidCredentials
+        - missingCredentials
+        - invalidCredentials
       type: string
     Error403:
       allOf:
-      - $ref: '#/components/schemas/Error'
-      - properties:
-          code:
-            $ref: '#/components/schemas/Error403Code'
-        required:
-        - code
-        type: object
-      description: Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              $ref: '#/components/schemas/Error403Code'
+          required:
+            - code
+          type: object
+      description: 'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
     Error403Code:
       description: |-
         This code indicates that the server understood
@@ -600,27 +654,33 @@ components:
         - forbiddenRequester: Forbidden requester
         - tooManyUsers: Too many users
       enum:
-      - accessDenied
-      - forbiddenRequester
-      - tooManyUsers
+        - accessDenied
+        - forbiddenRequester
+        - tooManyUsers
       type: string
     Error500:
       allOf:
-      - $ref: '#/components/schemas/Error'
-      - properties:
-          code:
-            description: |-
-              One of the following error codes:
-              - internalError: Internal server error - the server encountered an unexpected condition that prevented it from fulfilling the request.
-            enum:
-            - internalError
-            type: string
-        required:
-        - code
-        type: object
-      description: Internal Server Error. (https://tools.ietf.org/html/rfc7231#section-6.6.1)
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              description: >-
+                The following error code:
+
+                - internalError: Internal server error - the server encountered
+                an unexpected condition that prevented it from fulfilling the
+                request.
+              enum:
+                - internalError
+              type: string
+          required:
+            - code
+          type: object
+      description: >-
+        Internal Server Error.
+        (https://tools.ietf.org/html/rfc7231#section-6.6.1)
     Event:
-      description: Event class is used to describe information structure used for
+      description: >-
+        Event class is used to describe information structure used for
         notification.
       properties:
         eventId:
@@ -637,41 +697,41 @@ components:
           description: The event linked to the involved resource object
           type: object
       required:
-      - event
-      - eventId
-      - eventTime
-      - eventType
+        - event
+        - eventId
+        - eventTime
+        - eventType
       type: object
     ProductCategoryAttributeValueChangeEvent:
       allOf:
-      - $ref: '#/components/schemas/Event'
-      - properties:
-          eventType:
-            description: Indicates the type of the event.
-            enum:
-            - productCategoryAttributeValueChangeEvent
-            type: string
-          event:
-            $ref: '#/components/schemas/ProductCategoryEventPayload'
-        required:
-        - event
-        - eventType
-        type: object
+        - $ref: '#/components/schemas/Event'
+        - properties:
+            eventType:
+              description: Indicates the type of the event.
+              enum:
+                - productCategoryAttributeValueChangeEvent
+              type: string
+            event:
+              $ref: '#/components/schemas/ProductCategoryEventPayload'
+          required:
+            - event
+            - eventType
+          type: object
     ProductCategoryCreateEvent:
       allOf:
-      - $ref: '#/components/schemas/Event'
-      - properties:
-          eventType:
-            description: Indicates the type of the event.
-            enum:
-            - productCategoryCreateEvent
-            type: string
-          event:
-            $ref: '#/components/schemas/ProductCategoryEventPayload'
-        required:
-        - event
-        - eventType
-        type: object
+        - $ref: '#/components/schemas/Event'
+        - properties:
+            eventType:
+              description: Indicates the type of the event.
+              enum:
+                - productCategoryCreateEvent
+              type: string
+            event:
+              $ref: '#/components/schemas/ProductCategoryEventPayload'
+          required:
+            - event
+            - eventType
+          type: object
     ProductCategoryEventPayload:
       description: The identifier of the Product Category being subject of this event.
       properties:
@@ -683,38 +743,38 @@ components:
           format: uri
           type: string
       required:
-      - id
+        - id
       type: object
     ProductOfferingAttributeValueChangeEvent:
       allOf:
-      - $ref: '#/components/schemas/Event'
-      - properties:
-          eventType:
-            description: Indicates the type of the event.
-            enum:
-            - productOfferingAttributeValueChangeEvent
-            type: string
-          event:
-            $ref: '#/components/schemas/ProductOfferingEventPayload'
-        required:
-        - event
-        - eventType
-        type: object
+        - $ref: '#/components/schemas/Event'
+        - properties:
+            eventType:
+              description: Indicates the type of the event.
+              enum:
+                - productOfferingAttributeValueChangeEvent
+              type: string
+            event:
+              $ref: '#/components/schemas/ProductOfferingEventPayload'
+          required:
+            - event
+            - eventType
+          type: object
     ProductOfferingCreateEvent:
       allOf:
-      - $ref: '#/components/schemas/Event'
-      - properties:
-          eventType:
-            description: Indicates the type of the event.
-            enum:
-            - productCategoryCreateEvent
-            type: string
-          event:
-            $ref: '#/components/schemas/ProductOfferingEventPayload'
-        required:
-        - event
-        - eventType
-        type: object
+        - $ref: '#/components/schemas/Event'
+        - properties:
+            eventType:
+              description: Indicates the type of the event.
+              enum:
+                - productCategoryCreateEvent
+              type: string
+            event:
+              $ref: '#/components/schemas/ProductOfferingEventPayload'
+          required:
+            - event
+            - eventType
+          type: object
     ProductOfferingEventPayload:
       description: The identifier of the Product Offering being subject of this event.
       properties:
@@ -726,45 +786,93 @@ components:
           format: uri
           type: string
       required:
-      - id
+        - id
       type: object
     ProductOfferingLifecycleStatusType:
-      description: |
-        | Name         | MEF 127 Name   | Description                                                                                                                                                                                                                                  |
-        | ------------ | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-        | announced    | ANNOUNCED      | A Product Offering has been defined in the Product Catalog for marketing purposes, but is not yet available for ordering.                                                                                                                    |
-        | endOfSale    | END_OF_SALE    | The Product Offering or Product Specification cannot be Installed by any new or existing Buyers, but Buyers may still have Products in use and may modify or delete it, and receive support.                                                 |
-        | endOfSupport | END_OF_SUPPORT | When a Product Offering or Product Specification in the `endOfSale` state is no longer supported, the status transitions to `endOfSupport`. Any existing products can no longer be modified, with the only Order action allowed is `delete`. |
-        | inTest       | PILOT_BETA     | When a Product Offering or Product Specification starts Pilot/Beta testing, it starts in the `pilotBeta` state .                                                                                                                             |
-        | obsolete     | OBSOLETE       | After a Product Offering or Product Specification that is no longer available it transitions to `obsolete` and may be removed at the Seller's discretion from the Product Catalog. This is a final state.                                    |
-        | onHold       | ON_HOLD        | A Product Offering or Product Specification that has been `launched`, but is currently not available for Buyers due to supply constraints, product recall, or other issues preventing it from being offered.                                      |
-        | launched    | launched      | A new Product Offering or Product Specification is in the `launched` state when it is available for ordering by Buyers.                                                                                                                     |
-        | rejected     | REJECTED       | When PILOT_BETA testing fails the Product Offering or Product Specification transitions to the `rejected` state. This is a final state.                                                                                                      |
+      description: >
+        | Name         | Mplify 127.1 Name |
+        Description                                                                                                                                                                                                                                 
+        |
+
+        | ------------ | ----------------- |
+        --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        |
+
+        | active       | ANNOUNCED         | A Product Offering has been defined
+        in the Product Catalog for marketing purposes, but is not yet available
+        for
+        ordering.                                                                                                                   
+        |
+
+        | endOfSale    | END_OF_SALE       | A new Product based on the Product
+        Offering cannot be ordered by any Buyers, but Products may still be in
+        use and may be changed or disconnected, and receive
+        support                                                 |
+
+        | endOfSupport | END_OF_SUPPORT    | When a Product Offering is in the
+        `endOfSupport` state, it is no longer possible to `add` new, nor
+        `modify` any existing Products based on the Product Offering. The Buyer
+        can still use Products based on the Product Offering as is without any
+        support from the Seller (the only allowed action is `delete`). |
+
+        | inTest       | PILOT_BETA        | When a Product Offering or Product
+        Specification starts Pilot/Beta testing, it starts in the `inTest` state
+        .                                                                                                                            
+        |
+
+        | obsolete     | OBSOLETE          | The Product Offering is only
+        available in the Product Catalog for historical documentation reasons.
+        No actions are allowed on Products based on these Product Offering. A
+        Product Offering that is `obsolete` may be removed at the Seller's
+        discretion from the Product Catalog. This is a final
+        state.                                |
+
+        | onHold       | ON_HOLD           | A Product Offering is `onHold` when
+        the Seller decides to stop Buyers from ordering new Products based on
+        the Product Offering (for example, due to supply constraints, product
+        recall, legal reasons, etc.). The Product Offering can transition to
+        either `launched` when the constraints are lifted and the Buyer can
+        order new Products again, or to `endOfSale`, if the Seller decides to
+        stop offering Products based on the Product
+        Offering.                                      |
+
+        | launched     | ORDERABLE         | When a Product Offering is in the
+        `launched` state, a Buyer can `add` new Products, and `modify` or
+        `delete` any active Products based on the Product
+        Offering                                                                                                                   
+        |
+
+        | rejected     | REJECTED          | When the pilot testing period is
+        ended by the Seller, they may decide whether the Product Offering
+        becomes available for ordering; otherwise, the Product Offering
+        transitions to the `rejected` state. This is a final
+        state.                                                                                                     
+        |
       enum:
-      - announced
-      - endOfSale
-      - endOfSupport
-      - inTest
-      - obsolete
-      - onHold
-      - launched
-      - rejected
+        - active
+        - endOfSale
+        - endOfSupport
+        - inTest
+        - obsolete
+        - onHold
+        - launched
+        - rejected
       type: string
     ProductOfferingStateChangeEvent:
       allOf:
-      - $ref: '#/components/schemas/Event'
-      - properties:
-          eventType:
-            description: Indicates the type of the event.
-            enum:
-            - productCategoryStateChangeEvent
-            type: string
-          event:
-            $ref: '#/components/schemas/ProductOfferingStateChangeEventPayload'
-        required:
-        - event
-        - eventType
-        type: object
+        - $ref: '#/components/schemas/Event'
+        - properties:
+            eventType:
+              description: Indicates the type of the event.
+              enum:
+                - productCategoryStateChangeEvent
+              type: string
+            event:
+              $ref: '#/components/schemas/ProductOfferingStateChangeEventPayload'
+          required:
+            - event
+            - eventType
+          type: object
     ProductOfferingStateChangeEventPayload:
       description: The identifier of the Product Offering being subject of this event.
       properties:
@@ -778,42 +886,41 @@ components:
         lifecycleStatus:
           $ref: '#/components/schemas/ProductOfferingLifecycleStatusType'
       required:
-      - id
-      - lifecycleStatus
+        - id
+        - lifecycleStatus
       type: object
     ProductSpecificationAttributeValueChangeEvent:
       allOf:
-      - $ref: '#/components/schemas/Event'
-      - properties:
-          eventType:
-            description: Indicates the type of the event.
-            enum:
-            - productSpecificationAttributeValueChangeEvent
-            type: string
-          event:
-            $ref: '#/components/schemas/ProductSpecificationEventPayload'
-        required:
-        - event
-        - eventType
-        type: object
+        - $ref: '#/components/schemas/Event'
+        - properties:
+            eventType:
+              description: Indicates the type of the event.
+              enum:
+                - productSpecificationAttributeValueChangeEvent
+              type: string
+            event:
+              $ref: '#/components/schemas/ProductSpecificationEventPayload'
+          required:
+            - event
+            - eventType
+          type: object
     ProductSpecificationCreateEvent:
       allOf:
-      - $ref: '#/components/schemas/Event'
-      - properties:
-          eventType:
-            description: Indicates the type of the event.
-            enum:
-            - productCategoryCreateEvent
-            type: string
-          event:
-            $ref: '#/components/schemas/ProductSpecificationEventPayload'
-        required:
-        - event
-        - eventType
-        type: object
+        - $ref: '#/components/schemas/Event'
+        - properties:
+            eventType:
+              description: Indicates the type of the event.
+              enum:
+                - productCategoryCreateEvent
+              type: string
+            event:
+              $ref: '#/components/schemas/ProductSpecificationEventPayload'
+          required:
+            - event
+            - eventType
+          type: object
     ProductSpecificationEventPayload:
-      description: The identifier of the Product Specification being subject of this
-        event.
+      description: The identifier of the Product Specification being subject of this event.
       properties:
         id:
           description: ID of the Product Specification attributed by the Seller
@@ -823,36 +930,51 @@ components:
           format: uri
           type: string
       required:
-      - id
+        - id
       type: object
     ProductSpecificationLifecycleStatusType:
-      description: |
-        | Name         | MEF 127 Name   | Description                                                                                                                                                                                                                                                                                                                                                                                                  |
-        | ------------ | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-        | obsolete     | OBSOLETE       | The Product Specification is only available in the Product Catalog for historical documentation reasons. There are no active Products on the Seller's Network based on the Product Specification. A Product Specification that is no longer available transitions to `obsolete` and may be removed at the Seller's discretion from the Product Catalog. This is a final state. |
-        | published    | PUBLISHED      | A Product Specification has been defined in the Product Catalog. Product Offerings based on the Product Specification may be available for ordering.                                                                                                                                                                                                                                                         |
+      description: >
+        | Name         | Mplify 127.1 Name |
+        Description                                                                                                                                                                                                                                                                                                                                                                                                 
+        |
+
+        | ------------ | ----------------- |
+        ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        |
+
+        | obsolete     | OBSOLETE          | The Product Specification is only
+        available in the Product Catalog for historical documentation reasons.
+        There are no active Products on the Seller's Network based on the
+        Product Specification. A Product Specification that is no longer
+        available transitions to `obsolete` and may be removed at the Seller's
+        discretion from the Product Catalog. This is a final state. |
+
+        | published    | PUBLISHED         | A Product Specification has been
+        defined in the Product Catalog. Product Offerings based on the Product
+        Specification may be available for
+        ordering.                                                                                                                                                                                                                                                        
+        |
       enum:
-      - obsolete
-      - published
+        - obsolete
+        - published
       type: string
     ProductSpecificationStateChangeEvent:
       allOf:
-      - $ref: '#/components/schemas/Event'
-      - properties:
-          eventType:
-            description: Indicates the type of the event.
-            enum:
-            - productCategoryStateChangeEvent
-            type: string
-          event:
-            $ref: '#/components/schemas/ProductSpecificationStateChangeEventPayload'
-        required:
-        - event
-        - eventType
-        type: object
+        - $ref: '#/components/schemas/Event'
+        - properties:
+            eventType:
+              description: Indicates the type of the event.
+              enum:
+                - productCategoryStateChangeEvent
+              type: string
+            event:
+              $ref: '#/components/schemas/ProductSpecificationStateChangeEventPayload'
+          required:
+            - event
+            - eventType
+          type: object
     ProductSpecificationStateChangeEventPayload:
-      description: The identifier of the Product Specification being subject of this
-        event.
+      description: The identifier of the Product Specification being subject of this event.
       properties:
         id:
           description: ID of the Product Specification attributed by the Seller
@@ -864,16 +986,16 @@ components:
         lifecycleStatus:
           $ref: '#/components/schemas/ProductSpecificationLifecycleStatusType'
       required:
-      - id
-      - lifecycleStatus
+        - id
+        - lifecycleStatus
       type: object
   securitySchemes:
     oauth2MEFLSOAPI:
       description: Default m2m client code
       flows:
         clientCredentials:
-          refreshUrl: http://mef.net/example/refresh
+          refreshUrl: 'http://mef.net/example/refresh'
           scopes:
             default: default scope
-          tokenUrl: http://mef.net/example/token
+          tokenUrl: 'http://mef.net/example/token'
       type: oauth2

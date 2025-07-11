@@ -1,0 +1,116 @@
+@startuml
+
+
+
+class InternetAccessFeature {
+
+    isSupported*: boolean
+    isEnabled*: boolean
+}
+
+
+class InternetAccessFeatureAssistance {
+
+    assistanceLevel*: AssistanceLevel
+    simpleRequestsPerMonth: integer
+    complexRequestsPerMonth: integer
+}
+InternetAccessFeature <|-- InternetAccessFeatureAssistance
+
+
+
+class InternetAccessFeatureCloudPrioritization {
+
+    cloudServiceProvider*: string[]
+}
+InternetAccessFeature <|-- InternetAccessFeatureCloudPrioritization
+
+
+
+class InternetAccessFeatureDedicatedFirewall {
+
+    firewallType*: FirewallType
+}
+InternetAccessFeature <|-- InternetAccessFeatureDedicatedFirewall
+
+
+
+class InternetAccessFeatureDns {
+
+    searchDomain: string[]
+}
+InternetAccessFeature <|-- InternetAccessFeatureDns
+
+
+
+class InternetAccessFeatureFacilityDiversity {
+
+    internetAccessRef: string
+}
+InternetAccessFeature <|-- InternetAccessFeatureFacilityDiversity
+
+
+
+class InternetAccessFeatureLayer3Resiliency {
+
+    layer3Resiliency*: Layer3Resiliency
+}
+InternetAccessFeature <|-- InternetAccessFeatureLayer3Resiliency
+
+
+
+class InternetAccessFeatureMobileBackup {
+
+}
+InternetAccessFeature <|-- InternetAccessFeatureMobileBackup
+
+InternetAccessFeatureMobileBackup *--> BiDirSimpleBandwidth : minimumExpectedBandwidth
+
+
+class InternetAccessFeatureMonitoring {
+
+    monitoringType*: MonitoringType
+}
+InternetAccessFeature <|-- InternetAccessFeatureMonitoring
+
+
+
+class InternetAccessFeatureRouting {
+
+    routingType*: RoutingType
+}
+InternetAccessFeature <|-- InternetAccessFeatureRouting
+
+InternetAccessFeatureRouting *--> Bgp : bgp
+InternetAccessFeatureRouting *--> Static : static
+
+class Bgp {
+    <<skipped>>
+}
+
+class Static {
+    <<skipped>>
+
+}
+
+
+class InternetAccessFeatures {
+
+}
+
+InternetAccessFeatures *--> InternetAccessFeatureAssistance : assistance
+InternetAccessFeatures *--> InternetAccessFeatureCloudPrioritization : cloudPrioritization
+InternetAccessFeatures *--> InternetAccessFeature : ddosMitigation
+InternetAccessFeatures *--> InternetAccessFeatureDedicatedFirewall : dedicatedFirewall
+InternetAccessFeatures *--> InternetAccessFeatureDns : dns
+InternetAccessFeatures *--> InternetAccessFeatureFacilityDiversity : facilityDiversity
+InternetAccessFeatures *--> InternetAccessFeatureLayer3Resiliency : layer3Resiliency
+InternetAccessFeatures *--> InternetAccessFeatureMobileBackup : mobileBackup
+InternetAccessFeatures *--> InternetAccessFeatureMonitoring : monitoring
+InternetAccessFeatures *--> InternetAccessFeature : performanceReporting
+InternetAccessFeatures *--> InternetAccessFeatureRouting : routing
+InternetAccessFeatures *--> InternetAccessFeature : snmpRead
+
+
+
+@enduml

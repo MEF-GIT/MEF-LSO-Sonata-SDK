@@ -1,0 +1,168 @@
+---
+'$schema': http://json-schema.org/draft-07/schema#
+'$id': urn:mef:xid:spec:cantata-sonata:bitstream-access:v0.0.1:all
+title:
+  MEF LSO Cantata-Sonata - Bitstream Access Service (Draft) Product
+  Specification
+  # MEF Forum - Date: 2021316  Edit-level: 189
+  # File: bitstreamAccess/bSA/inventory/bitstreamAccessService.yaml
+  #
+  # ---------------------
+  # Disclaimer
+  #
+  # © MEF Forum 2021. All Rights Reserved.
+  #
+  # The information in this publication is freely available for reproduction
+  # and use by any recipient and is believed to be accurate as of its
+  # publication date. Such information is subject to change without notice
+  # and MEF Forum (MEF) is not responsible for any errors. MEF does not
+  # assume responsibility to update or correct any information in this
+  # publication. No representation or warranty, expressed or implied, is
+  # made by MEF concerning the completeness, accuracy, or applicability of
+  # any information contained herein and no liability of any kind shall be
+  # assumed by MEF as a result of reliance upon such information.
+  #
+  # The information contained herein is intended to be used without
+  # modification by the recipient or user of this document. MEF is not
+  # responsible or liable for any modifications to this document made by any
+  # other party.
+  #
+  # The receipt or any use of this document or its contents
+  # does not in any way create, by implication or otherwise:
+  #
+  # a) any express or implied license or right to or under any patent,
+  # copyright, trademark or trade secret rights held or claimed by any MEF
+  # member which are or may be associated with the ideas, techniques,
+  # concepts or expressions contained herein; nor
+  #
+  # b) any warranty or representation that any MEF members will announce
+  # any product(s) and/or service(s) related thereto, or if such
+  # announcements are made, that such announced product(s) and/or service(s)
+  # embody any or all of the ideas, technologies, or concepts contained
+  # herein; nor
+  #
+  # c) any form of relationship between any MEF member and the recipient
+  # or user of this document.
+  #
+  # Implementation or use of specific MEF standards, specifications, or
+  # recommendations will be voluntary, and no Member shall be obliged to
+  # implement them by virtue of participation in MEF Forum. MEF is a
+  # non-profit international organization to enable the development and
+  # worldwide adoption of agile, assured and orchestrated network services.
+  # MEF does not, expressly or otherwise, endorse or promote any specific
+  # products or services.
+  # ---------------------
+  #
+properties:
+  bvc:
+    type: object
+    description: Broadband Virtual Connection details
+    $ref: '#/definitions/Bvc'
+  ont:
+    type: object
+    description: ONT device details
+    $ref: '#/definitions/Ont'
+  comment:
+    type: string
+    description: This is the comment for the product
+required:
+  - bvc
+definitions:
+  Ont:
+    type: object
+    properties:
+      id:
+        type: string
+        description: This is externally exchanged ONT id
+        maxLength: 120
+      ownership:
+        type: string
+        description:
+          This attribute specifies ownership of ONT device that is exposing ONT
+        enum:
+          - 'PROVIDER'
+          - 'OPERATOR'
+          - 'END_CUSTOMER'
+      deviceType:
+        type: string
+        description: This attribute specifies type of the device
+        enum:
+          - 'CPE'
+          - 'STB'
+          - 'SIM B2B'
+          - 'SIM B2C'
+          - 'PLC'
+      serialNumber:
+        type: string
+        description: This is device serial number
+        maxLength: 120
+      barcode:
+        type: string
+        description: This is device barcode
+        maxLength: 120
+      model:
+        type: string
+        description: This is externally agreed device model
+        maxLength: 256
+      provisioningStatus:
+        type: string
+        description:
+          This attribute specifies status of the provisioning process
+        enum:
+          - 'NEW'
+          - 'COMPLETED'
+          - 'FAILED'
+      provisioningComment:
+        type: string
+        description:
+          This field contains Operator comment for the provisioning process
+          (e.g. error message)
+        maxLength: 256
+    required:
+      - ownership
+  Bvc:
+    type: object
+    properties:
+      id:
+        type: string
+        description: This is externally externally exchanged BVC is
+        maxLength: 120
+      externalId:
+        type: string
+        description: Operator Service Id
+        maxLength: 120
+      actionExternalId:
+        type: string
+        description:
+          Operator Identifier of the Service that should be transferred during
+          the Transfer action OR New Operator Identifier of the Service that
+          should be used in Service Id Change Action
+        maxLength: 120
+      sellerId:
+        type: string
+        description: Seller Service Id
+        maxLength: 120
+      enabledChannels:
+        type: string
+        enum:
+          - 'ONE_POINT'
+          - 'MULTI-POINT'
+          - 'MULTI-POINT-LIGHT'
+      slaLevel:
+        type: string
+        description: Service SLA
+        enum:
+          - 'STANDARD'
+          - 'INCREASED_SLA_8H'
+      upstreamBandwidthProfile:
+        type: string
+        description: This is bandwidth profile for the upstream connectivity
+        maxLength: 20
+      downstreamBandwidthProfile:
+        type: string
+        description: This is bandwidth profile for the downstream connectivity
+        maxLength: 20
+    required:
+      - enabledChannels
+      - upstreamBandwidthProfile
+      - downstreamBandwidthProfile

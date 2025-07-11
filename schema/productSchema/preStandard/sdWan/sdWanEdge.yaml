@@ -1,0 +1,195 @@
+$schema: http://json-schema.org/draft-07/schema#
+$id: urn:mef:xid:spec:cantata-sonata:sd-wan-edge:v0.0.1:all
+title: MEF LSO - SD-WAN Edge
+# © MEF Forum 2024. All Rights Reserved.
+#
+# The information in this publication is freely available for reproduction
+# and use by any recipient and is believed to be accurate as of its
+# publication date. Such information is subject to change without notice
+# and MEF Forum (MEF) is not responsible for any errors. MEF does not
+# assume responsibility to update or correct any information in this
+# publication. No representation or warranty, expressed or implied, is
+# made by MEF concerning the completeness, accuracy, or applicability of
+# any information contained herein and no liability of any kind shall be
+# assumed by MEF as a result of reliance upon such information.
+#
+# The information contained herein is intended to be used without
+# modification by the recipient or user of this document. MEF is not
+# responsible or liable for any modifications to this document made by any
+# other party.
+#
+# The receipt or any use of this document or its contents
+# does not in any way create, by implication or otherwise:
+#
+# a) any express or implied license or right to or under any patent,
+# copyright, trademark or trade secret rights held or claimed by any MEF
+# member which are or may be associated with the ideas, techniques,
+# concepts or expressions contained herein; nor
+#
+# b) any warranty or representation that any MEF members will announce
+# any product(s) and/or service(s) related thereto, or if such
+# announcements are made, that such announced product(s) and/or service(s)
+# embody any or all of the ideas, technologies, or concepts contained
+# herein; nor
+#
+# c) any form of relationship between any MEF member and the recipient
+# or user of this document.
+#
+# Implementation or use of specific MEF standards, specifications, or
+# recommendations will be voluntary, and no Member shall be obliged to
+# implement them by virtue of participation in MEF Forum. MEF is a
+# non-profit international organization to enable the development and
+# worldwide adoption of agile, assured and orchestrated network services.
+# MEF does not, expressly or otherwise, endorse or promote any specific
+# products or services.
+description: >-
+  This is a PRoduct model for SD-WAN Edge. It has required Product Relationship
+  with "role=INSTALL_LOCATION" to point where the equipment will be installed
+type: object
+properties:
+  name:
+    type: string
+    description: Buyer settable unique name of the SD-WAN Edge
+  features:
+    description: >-
+      Indicates the major functional and protocol features provided by the
+      SD-WAN Product
+    type: array
+    items:
+      $ref: '#/definitions/SdWanEdgeFeatures'
+    uniqueItems: true
+  topologyRole:
+    type: string
+    description: Enumeration representing role the Edge plays in the topology
+    enum:
+      - HUB
+      - SPOKE
+  uni:
+    description: List of UNI(s).
+    minItems: 1
+    type: array
+    items:
+      $ref: '#/definitions/SdWanUni'
+  device:
+    description: List of Devices delivering the Product
+    type: array
+    items:
+      $ref: '#/definitions/SdWanDevice'
+  ucs:
+    description:
+      Underlay Connection Service - list of bearer connections providing the
+      access links for the Product
+    type: array
+    items:
+      $ref: '#/definitions/SdWanUcs'
+required:
+  - swUni
+definitions:
+  SdWanEdgeFeatures:
+    description:
+      Major functional and protocol features provided by the SD-WAN
+      Edge. It influences Licenses and Device models to be chosen
+    enum:
+      - SECURITY
+      - MIDDLE_BOX_FUNCTION
+      - TBD
+    type: string
+  SdWanDevice:
+    description: Details of the Device delivering the Product
+    type: object
+    properties:
+      deviceIdentifier:
+        type: string
+      license:
+        type: string
+        description: Name of the license
+      model:
+        type: string
+        description: Model of the Device
+  SdWanUni:
+    description:
+      SdWanUni is a resource that represents the boundary between the
+      responsibility of the Subscriber and the responsibility of the Service
+      Provider. Reference MEF 70.2, Section 7.4 SD-WAN UNI.
+    type: object
+    properties:
+      uniIdentifier:
+        description:
+          A String that is used to allow the Subscriber and Service Provider to
+          uniquely identify the UNI.
+        type: string
+      ucsIdentifier:
+        description: Identifier of connected UCS (if any)
+        type: string
+      deviceIdentifier:
+        description: Identifier of the Device this Uni is located on (if any)
+        type: string
+      physicalInterface:
+        type: array
+        items:
+          $ref: '#/definitions/SdWanPhysicalInterface'
+        description: >-
+          Describes the physical aspects of the Service Access Interface
+          delivered by the Seller
+      vlan:
+        description: >-
+          The C-tag VLAN ID that the SD-WAN traffic is carried over at the UNI.
+          It is an integer with a value between 1 and 4094. The value 0
+          indicates that the Service uses untagged Ethernet frames.
+        $ref: '../../../common/ip/ipCommon.yaml#/definitions/VlanIdOrUntagged'
+      ipAddress:
+        $ref: '../../../common/ip/ipCommon.yaml#/definitions/Ipv4OrIpv6Address'
+        nullable: true
+        type: string
+    required:
+      - uniIdentifier
+  SdWanUcs:
+    description:
+      Underlay Connectivity Services are network services independent of the
+      SD-WAN Service and can have a large number of "characteristics" or
+      "attributes" that define their configuration and behavior. Reference MEF
+      70.2, Section 12.1 UCS Service Attributes.
+    type: object
+    properties:
+      ucsIdentifier:
+        type: string
+      ucsType:
+        $ref: '#/definitions/UcsType'
+      accessBearerCircuitBandwidth:
+        $ref: '../../../common/common.yaml#/definitions/InformationRate'
+      accessTechnology:
+        # TODO do we specify an enum here?
+        type: string
+        description: Technology of the UCS Link (Cable Modem, SOGEA, FTTP)
+      availableBandwidth:
+        $ref: '../../../common/common.yaml#/definitions/BiDirSimpleBandwidth'
+        description:
+          Ucs's available bandwidth  (e.g. 40/10 Mbps, 80/20 Mbps, ... ,
+          1000/220 Mbps
+    required:
+      - ucsIdentifier
+      - ucsType
+  UcsType:
+    type: string
+    description: >-
+      UcsType is an enumeration that represents the type of Underlay
+      Connectivity Service types. Reference  MEF 70.2 Section 12.1.2 UCS Type
+      Service Attribute.
+    readOnly: true
+    enum:
+      - PRIVATE
+      - PUBLIC
+  SdWanPhysicalInterface:
+    description:
+      Describes the physical aspects of the Service Access Interface delivered
+      by the Seller
+    properties:
+      physicalLayer:
+        description: >-
+          The downstream bandwidth value.
+        $ref: '../../../common/common.yaml#/definitions/EthernetPhysicalLayer'
+      connectorType:
+        description: >-
+          The upstream bandwidth value.
+        $ref: '../../../common/common.yaml#/definitions/ConnectorType'
+    type: object

@@ -1,0 +1,46 @@
+@startuml
+
+
+class Event {
+
+    eventId*: string
+    eventTime*: date-time
+    eventType*: string
+    event*: object
+}
+
+
+
+class CimIncidentAttributeValueChangeEvent {
+
+    eventType*: string
+}
+Event <|-- CimIncidentAttributeValueChangeEvent
+
+CimIncidentAttributeValueChangeEvent *-->"1" CimIncident : event
+
+
+class CimIncidentCreateEvent {
+
+    eventType*: string
+}
+Event <|-- CimIncidentCreateEvent
+
+CimIncidentCreateEvent *-->"1" CimIncident : event
+
+
+class CimIncidentStatusChangeEvent {
+
+    eventType*: string
+}
+Event <|-- CimIncidentStatusChangeEvent
+
+CimIncidentStatusChangeEvent *-->"1" CimIncident : event
+
+class CimIncident {
+
+    <<Attributes skipped>>
+}
+
+
+@enduml

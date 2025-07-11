@@ -1,0 +1,47 @@
+@startuml
+skinparam {
+    ClassBackgroundColor White
+    ClassBorderColor Black
+}
+
+class GoogleL2PartnerInterconnect {
+
+    name*: string
+    capacity*: GooglePartnerInterconnectCapacityEnum
+}
+MEFProductConfiguration <|-- GoogleL2PartnerInterconnect
+
+GoogleL2PartnerInterconnect *-->"1..4" GoogleVlanAttachment : vlanAttachments
+
+
+enum GooglePartnerInterconnectCapacityEnum {
+
+    50 Mbps
+    100 Mbps
+    200 Mbps
+    300 Mbps
+    400 Mbps
+    500 Mbps
+    1 Gbps
+    2 Gbps
+    5 Gbps
+    10 Gbps
+    20 Gbps
+    50 Gbps
+}
+class GoogleVlanAttachment {
+
+    region*: string
+    pairingKey*: string
+}
+
+
+
+class MEFProductConfiguration {
+
+    @type*: string [="urn:mef:lso:spec:cantata-sonata:google-l2-partner-interconnect:v0.1.0:all"]
+}
+
+
+
+@enduml

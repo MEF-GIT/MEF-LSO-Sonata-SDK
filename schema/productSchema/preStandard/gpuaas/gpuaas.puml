@@ -1,0 +1,153 @@
+@startuml
+skinparam class {
+
+BackgroundColor<<Product>> Wheat
+BorderColor<<Product>> Tomato
+}
+
+class CacheSize {
+
+    unspecified: string
+}
+
+CacheSize *--> IntegerOrUnspecifiedGtZero : memorySize
+
+
+class ClockSpeedRange {
+
+}
+
+ClockSpeedRange *--> NumberOrUnspecifiedGtZero : minimum
+ClockSpeedRange *--> NumberOrUnspecifiedGtZero : maximum
+
+
+enum CloudEdgeType {
+
+    CLOUD
+    EDGE
+}
+class GPU {
+
+    cudaCores: integer
+    tensorCores: integer
+    performanceProfile: GpuPerformanceProfile
+    supportedFrameworks: GpuSupportedFrameworks[]
+    vram: integer
+    driverVersion: string
+}
+
+GPU *--> IdentifierOrUnspecified : manufacturerIdentifier
+GPU *--> IdentifierOrUnspecified : modelIdentifier
+GPU *--> IntegerOrUnspecifiedGtZero : memorySize
+GPU *--> ClockSpeedRange : clockSpeedRange
+GPU *--> IntegerOrUnspecifiedGtZero : numberOfCores
+GPU *--> IntegerOrUnspecifiedGtZero : numberOfThreads
+GPU *--> GpuCloudEdgeLocation : location
+
+
+class GpuCloudEdgeLocation {
+
+    type: CloudEdgeType
+    region: string
+    site: string
+    availabilityZone: string
+}
+
+
+
+enum GpuPerformanceProfile {
+
+    HIGH_PERFORMANCE_COMPUTING
+    DEEP_LEARNING_INFERENCE
+    DATA_SCIENCE
+}
+enum GpuSupportedFrameworks {
+
+    TENSOR_FLOW
+    PY_TORCH
+    CUDA
+    MX_NET
+}
+class IdentifierOrUnspecified {
+
+    unspecified: string
+}
+
+IdentifierOrUnspecified *--> IdentifierString : identifier
+
+
+class IdentifierString {
+
+}
+
+
+
+class IntegerOrUnspecifiedGtZero {
+
+    value: number
+    unspecified: string
+}
+
+
+class Memory {
+
+}
+
+Memory *--> IntegerOrUnspecifiedGtZero : amount
+Memory *--> MemoryTime : accessTime
+Memory *--> MemoryTime : cycleTime
+Memory *--> NumberOrUnspecifiedGtZero : transferRate
+
+
+class MemoryTime {
+
+    value: integer
+    units: UnitsNanoMicroSeconds
+}
+
+
+
+class NumberOrUnspecifiedGtZero {
+
+    value: number
+    unspecified: string
+}
+
+
+
+enum PackageType {
+
+    BINARY
+    SOURCE
+}
+enum ProcessorType {
+
+    X86
+    ARM
+    OTHER
+    UNSPECIFIED
+}
+enum UnitsNanoMicroSeconds {
+
+    NANOSECONDS
+    MICROSECONDS
+}
+class VirtualMachineWithGpuaas<<Product>>  {
+
+    packageType: PackageType
+    processorType: ProcessorType
+}
+
+VirtualMachineWithGpuaas *--> IdentifierOrUnspecified : manufacturerIdentifier
+VirtualMachineWithGpuaas *--> IdentifierOrUnspecified : modelIdentifier
+VirtualMachineWithGpuaas *--> ClockSpeedRange : clockSpeedRange
+VirtualMachineWithGpuaas *--> IntegerOrUnspecifiedGtZero : numberOfCores
+VirtualMachineWithGpuaas *--> IntegerOrUnspecifiedGtZero : numberOfThreads
+VirtualMachineWithGpuaas *--> CacheSize : level1CacheSize
+VirtualMachineWithGpuaas *--> CacheSize : level2CacheSize
+VirtualMachineWithGpuaas *--> IntegerOrUnspecifiedGtZero : instructionsPerClockCycle
+VirtualMachineWithGpuaas *--> Memory : memory
+VirtualMachineWithGpuaas *--> GPU : gpu
+
+
+@enduml
