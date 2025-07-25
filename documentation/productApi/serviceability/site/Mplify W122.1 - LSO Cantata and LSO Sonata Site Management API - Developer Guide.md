@@ -170,16 +170,16 @@ they were part of this document, from the GitHub repository
 <https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK>
 
 commit id:
-[aaa03d484f98664a5a14f4f54f47b675d7efb3b8](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/tree/aaa03d484f98664a5a14f4f54f47b675d7efb3b8)
+[8488d3f07197349e20c027550487a6ba58a82ff5](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/tree/8488d3f07197349e20c027550487a6ba58a82ff5)
 
-- [`productApi/serviceability/site/geographicSiteManagement.api.yaml`](https://raw.githubusercontent.com/MEF-GIT/MEF-LSO-Sonata-SDK/aaa03d484f98664a5a14f4f54f47b675d7efb3b8/productApi/serviceability/site/geographicSiteManagement.api.yaml)
+- [`productApi/serviceability/site/geographicSiteManagement.api.yaml`](https://raw.githubusercontent.com/MEF-GIT/MEF-LSO-Sonata-SDK/8488d3f07197349e20c027550487a6ba58a82ff5/productApi/serviceability/site/geographicSiteManagement.api.yaml)
 
 <https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK>
 
 commit id:
-[83d6edd0c70386058a9af6e677c069b498671da7](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/tree/83d6edd0c70386058a9af6e677c069b498671da7)
+[eac5b917d88798590ab6e1315ceda54899e85cae](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/tree/eac5b917d88798590ab6e1315ceda54899e85cae)
 
-- [`productApi/serviceability/site/geographicSiteManagement.api.yaml`](https://raw.githubusercontent.com/MEF-GIT/MEF-LSO-Cantata-SDK/83d6edd0c70386058a9af6e677c069b498671da7/productApi/serviceability/site/geographicSiteManagement.api.yaml)
+- [`productApi/serviceability/site/geographicSiteManagement.api.yaml`](https://raw.githubusercontent.com/MEF-GIT/MEF-LSO-Cantata-SDK/eac5b917d88798590ab6e1315ceda54899e85cae/productApi/serviceability/site/geographicSiteManagement.api.yaml)
 
 <div class="page"/>
 
@@ -1980,6 +1980,8 @@ location.
         </tr>
     </tbody>
 </table>
+
+<div class="page"/>
 
 # 8. References
 
