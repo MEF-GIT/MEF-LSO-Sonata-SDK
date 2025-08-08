@@ -109,7 +109,7 @@ release.
   - Business Requirements:
     - \*Mplify 127.1 - **Published Standard**
   - Developer Guide/API:
-    - \*Mplify W142 - **work in progress - ready for CfC#4**
+    - \*Mplify W142 - **Done. Ready for Letter Ballot**
 - Address Validation, Site Query:
   - Business Requirements:
     - \*Mplify 150 - **Published Standard**

@@ -11,16 +11,15 @@ img
 ![Mplify_LOGO](media/mplifyLogo.png)
 
 <div style="font-weight:bold; font-size:33pt; font-family: Sansation; text-align:center">
-Working Draft
+Letter Ballot
 </br>
 </br>
-Mplify 142 v.04
+Mplify 142
 </br>
 </br>
 LSO Cantata and LSO Sonata Product Catalog API - Developer Guide
 </br>
 </br>
-<p style="color:red;font-weight:bold; font-size:18pt">This draft represents MEF work in progress and is subject to change.</p>
 </br>
 </br>
 July 2025
@@ -41,7 +40,7 @@ not responsible for any errors. Mplify does not assume responsibility to update
 or correct any information in this publication. No representation or warranty,
 expressed or implied, is made by Mplify concerning the completeness, accuracy,
 or applicability of any information contained herein and no liability of any
-kind shall be assumed by Mplift as a result of reliance upon such information.
+kind shall be assumed by Mplify as a result of reliance upon such information.
 
 The information contained herein is intended to be used without modification by
 the recipient or user of this document. Mplify is not responsible or liable for
@@ -91,8 +90,8 @@ information contained herein.
   - [4.1. Conventions in the Document](#41-conventions-in-the-document)
   - [4.2. Relation to Other Documents](#42-relation-to-other-documents)
   - [4.3. Approach](#43-approach)
-  - [4.4. General concept](#44-general-concept)
-    - [4.4.1. General concept introduction](#441-general-concept-introduction)
+  - [4.4. General concepts](#44-general-concepts)
+    - [4.4.1. General concepts introduction](#441-general-concepts-introduction)
     - [4.4.2. JSON Subschema](#442-json-subschema)
     - [4.4.3. Product Specification and Product Offering Schemas](#443-product-specification-and-product-offering-schemas)
     - [4.4.4. Bundles](#444-bundles)
@@ -232,7 +231,11 @@ information contained herein.
     - [7.3.13. Type ProductSpecificationStateChangeEvent](#7313-type-productspecificationstatechangeevent)
     - [7.3.14. Type ProductSpecificationStateChangeEventPayload](#7314-type-productspecificationstatechangeeventpayload)
 - [8. References](#8-references)
-- [Appendix A Acknowledgments](#appendix-a-acknowledgments)
+- [Appendix A Examples (Informative)](#appendix-a-examples-informative)
+  - [A.1 Bundling Product Offering](#a1-bundling-product-offering)
+  - [A.2 Bundled Access E-Line Product Offering](#a2-bundled-access-e-line-product-offering)
+  - [A.3 Bundled UNI Product Offering](#a3-bundled-uni-product-offering)
+- [Appendix B Acknowledgments](#appendix-b-acknowledgments)
 
 <!-- /code_chunk_output -->
 
@@ -267,13 +270,19 @@ they were part of this document, from the GitHub repository:
 
 <https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK>
 
-- `productApi/catalog/productCatalog.api.yaml`
-- `productApi/catalog/productCatalogNotification.api.yaml`
+commit id:
+[d3d0dc1a0281afd8a964311193438012a5e605b9](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/tree/d3d0dc1a0281afd8a964311193438012a5e605b9)
+
+- [`productApi/catalog/productCatalog.api.yaml`](https://raw.githubusercontent.com/MEF-GIT/MEF-LSO-Sonata-SDK/d3d0dc1a0281afd8a964311193438012a5e605b9/productApi/catalog/productCatalog.api.yaml)
+- [`productApi/catalog/productCatalogNotification.api.yaml`](https://raw.githubusercontent.com/MEF-GIT/MEF-LSO-Sonata-SDK/d3d0dc1a0281afd8a964311193438012a5e605b9/productApi/catalog/productCatalogNotification.api.yaml)
 
 <https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK>
 
-- `productApi/catalog/productCatalog.api.yaml`
-- `productApi/catalog/productCatalogNotification.api.yaml`
+commit id:
+[3a0956c2b46bd198d41808bdb97fd17957f844d5](https://github.com/MEF-GIT/MEF-LSO-Cantata-SDK/tree/3a0956c2b46bd198d41808bdb97fd17957f844d5)
+
+- [`productApi/catalog/productCatalog.api.yaml`](https://raw.githubusercontent.com/MEF-GIT/MEF-LSO-Cantata-SDK/3a0956c2b46bd198d41808bdb97fd17957f844d5/productApi/catalog/productCatalog.api.yaml)
+- [`productApi/catalog/productCatalogNotification.api.yaml`](https://raw.githubusercontent.com/MEF-GIT/MEF-LSO-Cantata-SDK/3a0956c2b46bd198d41808bdb97fd17957f844d5/productApi/catalog/productCatalogNotification.api.yaml)
 
 The Product Catalog API is defined using OpenAPI 3.0 [[OAS-V3](#8-references)]
 
@@ -299,8 +308,6 @@ this document by reference and are not repeated in the table below:
   Requirements and Use Cases [[Mplify 150](#8-references)]
 
 <table>
-<!-- TODO whether any is actually used -->
-<!-- Generate png from modified pumls -->
 <tr>
   <th>Term</th>
   <th>Description</th>
@@ -324,7 +331,7 @@ ordering process). A Bundle may not contain a Product Offering that is a Bundle.
 </tr>
 <tr>
   <td>List Price</td>
-  <td>The standard published price, without any price reduc-tions, deal references or discounts.
+  <td>The standard published price, without any price reductions, deal references or discounts.
   </td>
   <td><a href="#8-references">[Mplify 127.1]</td>
 </tr>
@@ -517,9 +524,9 @@ hosts Product-specific definitions. Every product-related operation starts with
 the Product Catalog, firstly by specifying the product, then by publishing the
 Product Offerings and Product Specifications to chosen Buyers.
 
-## 4.4. General concept
+## 4.4. General concepts
 
-### 4.4.1. General concept introduction
+### 4.4.1. General concepts introduction
 
 Product Catalog introduces three key Product Catalog Element types: Product
 Specification, Product Offering, and Product Category. The Product Catalog
@@ -541,12 +548,12 @@ market by the Seller.
 A given Product Specification may be exposed on the market by multiple different
 Product Offerings. To better structure and organize the Product Catalog, Product
 Categories have been introduced to allow the grouping of related Product
-Offerings. To make the categorizing more flexible, it is allowed to group
+Offerings. To make the categorization more flexible, it is allowed to group
 Product Categories within a parent Product Category as well.
 
 ### 4.4.2. JSON Subschema
 
-JSON Subschema term has been introduced to allow defining specialization of
+JSON Subschema term has been introduced to allow defining specialization of a
 particular JSON Schema. Specialization should be understood as narrowing the set
 of JSONs that are valid against the given JSON Schema.
 
@@ -559,7 +566,7 @@ The rules that are used to constrain or restrict the JSON Schema are described
 in the chapter
 [[Product Offering Specification Schema](#6215-product-offering-specification-schema)].
 
-Let's consider illustrative JSON Schema as an example (this is the reduced JSON
+Let's consider an illustrative JSON Schema as an example (this is the reduced JSON
 Schema of AccessElineOvc for illustrative purposes):
 
 ```json
@@ -603,7 +610,7 @@ JSON Subschema of the schema above could be constructed as:
 }
 ```
 
-Considering two following JSON payloads:
+Considering the following two JSON payloads:
 
 - Payload A:
 
@@ -630,12 +637,12 @@ is considered a subschema of the first schema.
 ### 4.4.3. Product Specification and Product Offering Schemas
 
 The chapters above introduced the Product Specification as the Product Catalog
-Element type which defines the attributes of the Product. Those attributes are
-organized as [[JSON Schema](#8-references)] which is called the `Source Schema`.
+Element type that defines the attributes of the Product. Those attributes are
+organized as [[JSON Schema](#8-references)] that is called the `Source Schema`.
 
 Product Offering is introduced as the second key Product Catalog Element type
 which exposes the Product Specification to the market and may constrain the
-Product Specification attributes defined in the `Source Schema` which produces
+Product Specification attributes defined in the `Source Schema` that produces
 another more restrictive JSON Schema specific to the Product Offering called the
 `Intermediate Schema`. This Intermediate Schema is the JSON Subschema of the
 `Source Schema`.
@@ -652,25 +659,25 @@ The JSON Subschema is still a JSON Schema.
 
 Summarizing, three types of schemas may be defined in the Product Catalog:
 
-- `Source Schema` which is the definition of the Product Specification (e.g.
+- `Source Schema` that is the definition of the Product Specification (e.g.
   Mplify Standard),
-- `Intermediate Schema` which is the constrained usage of the `Source Schema`
+- `Intermediate Schema` that is the constrained usage of the `Source Schema`
   for a given Product Offering
   [[Intermediate Schema](#6215-product-offering-specification-schema)],
 - `Contextual Schema` which defines the contextual usage of the
   `Intermediate Schema` in the given context of Business Function and Product
   Action [[Contextual Schema](#6216-product-offering-contextual-info)].
 
-The below diagram depicts the above summary in graphical form.
+The diagram below depicts the above summary in graphical form.
 
 ![Figure 3. Relation between Source Schema, Intermediate Schema and Contextual Schema](media/source_intermediate_contextual_schemas_relations.png)
 
-**Figure 3. Relationship between Source Schema, Intermediate Schema and
+**Figure 3. Relationship between Source Schema, Intermediate Schema, and
 Contextual Schema**
 
 ### 4.4.4. Bundles
 
-The LSO Cantata/Sonata APIs support Bundles which are comprised of multiple
+The LSO Cantata/Sonata APIs support Bundles that are comprised of multiple
 Product Offerings made available by the Seller. The benefits for a Buyer are,
 for example, a preferential price or a simplified ordering process for a Bundle,
 versus ordering all the individual Product Offerings separately. A Bundle may
@@ -680,18 +687,29 @@ A Bundle definition also includes a list of Product Offering Bundle Relation,
 which specifies the set of Product Offerings that comprise the Bundle, along
 with the ability for the Seller to constrain the minimum and maximum number of
 instances of each Product Offering supported for a given Bundle. Figure 4 shows
-an example of this Bundle definition and Bundle Relation, with the "OVC UNI
+an example of this Bundle definition and Bundle Relations, with the "OVC UNI
 Bundle" comprised of exactly one "Access E-Line OVC Excellence" Product Offering
-and exactly one "UNI Excellence" Product Offering.
+and exactly one "UNI Excellence" Product Offering. Figures 5 and 6 show Product
+Offering of bundled Access E-Line and UNI, respectively.
 
-![Figure 4](media/annotatedBundleDiagram.png)
+![Figure 4](media/bundlingPO.png)
 
 **Figure 4. Bundling Product Offering Example**
+
+![Figure 5](media/bundledOVC.png)
+
+**Figure 5. Bundling Product Offering Example**
+
+![Figure 6](media/bundledUNI.png)
+
+**Figure 6. Bundling Product Offering Example**
+
+_Note:_ Full JSON examples can be found in Appendix A.
 
 A given Product Offering may be sellable independently and be part of a Bundle
 at the same time. When this occurs, the Product Offering and the Bundle must
 each include a separate set of Product Offering Terms and Product Offering
-Prices. A Bundle with optional or variable number of Product Offerings must
+Prices. A Bundle with an optional or variable number of Product Offerings must
 always include the Product Offering Terms and the Product Offering Prices that
 includes all the instances of Product Offerings included in the Bundle. An
 example of this can be seen in Figure 5 above, where the “Access E-Line OVC
@@ -714,19 +732,41 @@ all the non-recurring prices as part of the standard contract renewal discount
 (e.g. as a Deal Reference promo code), while the “Access E-Line OVC Excellence”
 Product Offering does not currently offer any pricing discounts.
 
+When ordered, both the bundling and bundled Product Offerings result in Product
+instances. That means that for example above there will be 3 items in POQ,
+Quote, Product Order requests, and 3 Products in the Product Inventory. Those
+will be items/Products created based on the following Product Offerings (an
+their respective Product Specifications):
+
+- "OVC UNI Bundle"
+- "Access E-Line OVC Excellence"
+- "UNI Excellence".
+
+All technical requirements (e.g. place and product relationships) to Access
+E-Line and UNI still apply. That is shown in Figure 7 as a relation between the
+OVC and UNI Product instances. The bundling Product uses standard
+`ProductRelationship` with the restricted `relationshipType=bundles` to point to
+the elements of the bundle.
+
+Each Product Offering must have a Product Specification ([R76]) so that the
+Seller's system knows the attributes of the Product to be created. While
+Mplify does not define a standard specification (schema) for a bundling Product
+Offering, it is recommended that it does not aggregate or simplify any technical
+attributes of bundled Product Offerings. It may define no attributes as well.
+
+![Figure 7. Bundle instantiation](media/bundleInstance.png)
+
+**Figure 7. Bundle instantiation**
+
 ## 4.5. High-Level Flow
 
-<!-- TODO examples with bundles-->
-<!-- TODO all diagrams new model -->
-<!-- TODO bundle example in files -->
-
 The Product Catalog is part of a broader Cantata and Sonata End-to-End flow.
-Figure 5 shows a high-level diagram to get a good understanding of the whole
+Figure 8 shows a high-level diagram to get a good understanding of the whole
 process and the Product Catalog's position within it.
 
-![Figure 5. Cantata and Sonata End-to-End Flow](media/E2E_ALL.png)
+![Figure 8. Cantata and Sonata End-to-End Flow](media/E2E_ALL.png)
 
-**Figure 5. Cantata and Sonata End-to-End Function Flow**
+**Figure 8. Cantata and Sonata End-to-End Function Flow**
 
 - Product Catalog:
   - Allows the Buyer to retrieve Product Offerings and Product Specifications
@@ -773,14 +813,14 @@ mapping. Next, it gives an overview of the API resource model.
 
 ## 5.1. High-level use cases
 
-Figure 6 presents a high-level use case diagram as specified in
+Figure 9 presents a high-level use case diagram as specified in
 [[Mplify 127.1](#8-references)] in section 8. This picture aims to help
 understand the endpoint mapping for the supported use cases. Use cases are
 described extensively in [chapter 6](#6-api-interactions-and-flows).
 
 ![Use cases](media/useCases.png)
 
-**Figure 6. Use cases**
+**Figure 9. Use cases**
 
 ## 5.2. API Endpoint and Operation Description
 
@@ -873,11 +913,11 @@ follow requirements of [[Mplify 150](#8-references)] chapter 8.8, which states:
 > one Buyer and similarly, the Responding Entity may represent more than one
 > Seller.
 
-![Figure 5. Buyer ID and Seller ID Examples](media/buyerIdSellerId.png)
+![Figure 10. Buyer ID and Seller ID Examples](media/buyerIdSellerId.png)
 
-**Figure 5. Buyer ID and Seller ID Examples**
+**Figure 10. Buyer ID and Seller ID Examples**
 
-> As shown in Figure 5, if a Requesting Entity representing a single Buyer is
+> As shown in Figure 10, if a Requesting Entity representing a single Buyer is
 > doing business with a Responding Entity representing a single Seller, Buyer
 > and Seller IDs are not required to be passed between the two entities. If a
 > Requesting Entity representing more than one Buyer is doing business with a
@@ -981,12 +1021,12 @@ as in Mplify 127.1 for mapping):
 
 **Table 6. Use cases description**
 
-Figure 8 presents an example of the flow of `ProductOffering` lifecycle and
+Figure 11 presents an example of the flow of `ProductOffering` lifecycle and
 possible related requests.
 
 ![Exemplary API flow for Product Offering](media/exemplaryFlow.png)
 
-**Figure 8. Exemplary API flow for Product Offering**
+**Figure 11. Exemplary API flow for Product Offering**
 
 Registration for events is optional, so all sequences on the diagram related to
 notification exchange were framed as optional, so as the below description of
@@ -1032,9 +1072,9 @@ Product Categories are designed to be used for grouping related Product
 Offerings into logical containers (e.g. grouping Product Offerings delivered via
 Fiber medium).
 
-![Figure 9. Product Category Model](media/categoryModel.png)
+![Figure 12. Product Category Model](media/categoryModel.png)
 
-**Figure 9. Product Category Model**
+**Figure 12. Product Category Model**
 
 **[R8]** After a Product Category has been created, the `id` **MUST NOT** be
 modified. [Mplify127.1 R22]
@@ -1062,11 +1102,11 @@ R20]
 
 #### 6.1.2.1. Interaction flow
 
-The flow of this use case is very simple and is described in Figure 10.
+The flow of this use case is very simple and is described in Figure 13.
 
 ![Use Case 1](media/retrieveProductCategoryList-seqFlow.png)
 
-**Figure 10. Use Case 1 - Retrieve Product Category List**
+**Figure 13. Use Case 1 - Retrieve Product Category List**
 
 The Buyer wants to retrieve the list of Product Categories that match the given
 filtering criteria. Later on, the result may be used to query Product Offerings
@@ -1148,7 +1188,7 @@ Body:
 ```
 
 **[R14]** The Seller **MUST** provide all attributes of `ProductCategory` (if
-they are set in the system) [Mplify127.1 R23], [Mplify127.1 24]:
+they are set in the system) [Mplify127.1 R23], [Mplify127.1 R24]:
 
 **[R15]** In case no items matching the criteria are found, the Seller **MUST**
 return a valid response with an empty list. [Mplify127.1 R26]
@@ -1160,11 +1200,11 @@ the API specification which is an integral part of this standard.
 
 #### 6.1.3.1. Interaction flow
 
-The flow of this use case is very simple and is described in Figure 11.
+The flow of this use case is very simple and is described in Figure 14.
 
 ![Use Case 2](media/retrieveProductCategoryById-seqFlow.png)
 
-**Figure 11. Use Case 2 - Retrieve Product Category by Identifier**
+**Figure 14. Use Case 2 - Retrieve Product Category by Identifier**
 
 The Buyer wants to retrieve detailed information about a single Product Category
 with a given `id`.
@@ -1214,7 +1254,7 @@ The snippet below presents an example of the Retrieve Product Category Response:
 ```
 
 **[R17]** The Seller **MUST** put the all `ProductCategory` attributes that are
-set in the Seller's system: [Mplify127.1 R28], [Mplify127.1 R29]:
+set in the Seller's system: [Mplify127.1 R28], [Mplify127.1 R29]
 
 - `id`
 - `name`
@@ -1230,7 +1270,7 @@ the API specification which is an integral part of this standard.
 
 #### 6.2.1.1. Product Offering
 
-Figure 12 presents the data model of the Product Offering. The model of the
+Figure 15 presents the data model of the Product Offering. The model of the
 retrieve list response (`ProductOffering_Find`) is a subset of the
 `ProductOffering` model and contains only those attributes that can (or must) be
 returned by the Seller. For visibility of these differences, the
@@ -1240,9 +1280,9 @@ directly in the response to any endpoint.
 The full list of attributes is available in [Section 7](#7-api-details) and in
 the API specification which is an integral part of this standard.
 
-![Figure 12. Product Offering Model](media/offeringModel.png)
+![Figure 15. Product Offering Model](media/offeringModel.png)
 
-**Figure 12. Product Offering Model**
+**Figure 15. Product Offering Model**
 
 **[R18]** Once the Product Offering is created, the Seller **MUST NOT** update
 the following attributes: [Mplify127.1 R37]
@@ -1272,7 +1312,7 @@ Offering to a `lifecycleStatus` that prevents using that offering for ordering.
 `isSellable=true`.
 
 **[R22]** A `productOfferingTerm` of Product Offering that is a Bundle **MUST**
-cover all bundled Product Offering, including their prices.
+cover all bundled Product Offerings, including their prices.
 
 The point of the requirement above is to decouple the definition and lifecycle
 of a standalone Product Offering from possible definitions of Bundles that would
@@ -1341,7 +1381,7 @@ Product Offering with the attribute `isBundle` set to `true`. [Mplify127.1 R45]
 #### 6.2.1.3. Product Relationship Constraint
 
 **[R35]** A `ProductRelationshipConstraint` **MUST** contain the following
-attributes: [Mplify127.1 R46], [Mplify127.1 R73]
+attributes: [Mplify127.1 R46], [Mplify127.1 R72]
 
 - `productSpecification`
 - `relationshipType`
@@ -1361,12 +1401,12 @@ Specification for the specified `id` and `relationshipType`). [Mplify127.1 R49]
 
 **[R38]** If `maxCardinality` is not unlimited (`-1`) then it **MUST** be
 greater than or equal to the `minCardinality`. [Mplify127.1 R48], [Mplify127.1
-R74]
+R73]
 
 #### 6.2.1.4. Place Relationship Constraint
 
 **[R39]** A `PlaceRelationshipConstraint` **MUST** contain the following
-attributes: [Mplify127.1 R50], [Mplify127.1 R75]
+attributes: [Mplify127.1 R50], [Mplify127.1 R74]
 
 - `isModifiable`
 - `maxCardinality`
@@ -1385,7 +1425,7 @@ Specification for the specified `relationshipRole`). [Mplify127.1 R53]
 
 **[R42]** If `maxCardinality` is not unlimited (`-1`) then it **MUST** be
 greater than or equal to the `minCardinality`. [Mplify127.1 R52], [Mplify127.1
-R76]
+R75]
 
 #### 6.2.1.5. Product Offering Specification Schema
 
@@ -1407,15 +1447,15 @@ express such constraints in an unambiguous form.
 The table 7 defines the list of changes that can be applied to the schema and
 the rules for expressing them:
 
-| The change on attribute          | How to express in schema                        | Reference requirement                                   | Remarks                  |
-| -------------------------------- | ----------------------------------------------- | ------------------------------------------------------- | ------------------------ |
-| Make required                    | Add attribute name to `required` array.         | [Mplify127.1 R5], [Mplify127.1 R6]                      |                          |
-| Make not applicable              | Remove from the schema.                         | [Mplify127.1 R10], [Mplify127.1 R11], [Mplify127.1 R13] |                          |
-| Fix the value                    | Set fixed value as `const`.                     | [Mplify127.1 R10], [Mplify127.1 R14]                    |
-| Fix the already enumerated value | Remove `enum` array, set fixed value as `const` | [Mplify127.1 R10], [Mplify127.1 R14]                    |                          |
-| Apply enumeration                | Set enumerated values as `enum` array.          | --not covered--                                         |
-| Narrow existing enumeration      | Set narrowed enumerations as `enum` array.      | --not covered--                                         |                          |
-| Set default value                | Set default value as `default`.                 | [Mplify127.1 R3],[Mplify127.1 R8]                       | If it's not set already. |
+| The change on attribute          | How to express in schema                                 | Reference requirement                                   |
+| -------------------------------- | -------------------------------------------------------- | ------------------------------------------------------- |
+| Make required                    | Add attribute name to `required` array.                  | [Mplify127.1 R5], [Mplify127.1 R6]                      |
+| Make not applicable              | Remove from the schema.                                  | [Mplify127.1 R10], [Mplify127.1 R11], [Mplify127.1 R13] |
+| Fix the value                    | Set fixed value as `const`.                              | [Mplify127.1 R10], [Mplify127.1 R14]                    |
+| Fix the already enumerated value | Remove `enum` array, set fixed value as `const`          | [Mplify127.1 R10], [Mplify127.1 R14]                    |
+| Apply enumeration                | Set enumerated values as `enum` array.                   | --not covered--                                         |
+| Narrow existing enumeration      | Set narrowed enumerations as `enum` array.               | --not covered--                                         |
+| Set default value                | Set default value as `default`. If it's not set already. | [Mplify127.1 R3], [Mplify127.1 R8]                      |
 
 **Table 7. Schema modification rules**
 
@@ -1950,8 +1990,6 @@ Inventory API response. [Mplify127.1 R15]
 
 #### 6.2.1.7. Product Offering Price
 
-<!-- TODO examples and description -->
-
 **[R59]** A `ProductOfferingPrice` **MUST** contain the following attributes:
 [Mplify127.1 R84]
 
@@ -1983,8 +2021,6 @@ that are part of the Bundle. [Mplify127.1 R88]
 Offering, for which the price of the Bundle is dependent on the number of
 ordered instances of the Product Offering. [Mplify127.1 R89]
 
-<!-- TODO align to new numbering in 127.1 from R88 -->
-
 **[R64]** A `PriceModifier` **MUST** contain the following attributes:
 [Mplify127.1 R90]
 
@@ -1997,10 +2033,10 @@ the `discountedPrice`, but not both. [Mplify127.1 R91]
 
 ### 6.2.2. Product Offering - Lifecycle
 
-Figure 13 presents the Product Offering state machine:
+Figure 16 presents the Product Offering state machine:
 
-![Figure 13. Product Offering State Machine](media/offering_stateMachine.png)
-**Figure 13. Product Offering State Machine**
+![Figure 16. Product Offering State Machine](media/offering_stateMachine.png)
+**Figure 16. Product Offering State Machine**
 
 The Product Offering State Machine is simpler than the one proposed by TMF
 [[TMF620](#8-references)] because it focuses on exposing Product Offerings and
@@ -2028,7 +2064,7 @@ TMF) and Mplify 127.1 naming together with states' descriptions.
 **Table 9. Product Offering lifecycle statuses**
 
 **[R66]** The Seller **MUST** support all statuses for Product Offering and the
-associated state transitions as shown in Table 9 and Figure 13. [Mplify127.1
+associated state transitions as shown in Table 9 and Figure 16. [Mplify127.1
 R99].
 
 It is at the Seller's discretion whether the `inTest` and `rejected` states will
@@ -2049,11 +2085,11 @@ Buyer may reference them for historical reasons.
 
 #### 6.2.3.1. Interaction flow
 
-The flow of this use case is very simple and is described in Figure 14.
+The flow of this use case is very simple and is described in Figure 17.
 
 ![Use Case 1](media/retrieveProductOfferingList-seqFlow.png)
 
-**Figure 14. Use Case 3 - Retrieve Product Offering List**
+**Figure 17. Use Case 3 - Retrieve Product Offering List**
 
 #### 6.2.3.2. Retrieve Product Offering List - Request
 
@@ -2212,7 +2248,7 @@ categorized by Category C is:
   Category A by recursiveness).
 
 **[R70]** The Seller **MUST** put the following attributes into the
-`ProductOffering_Find` object in the response: [Mplify127.1 R56]
+`ProductOffering_Find` object in the response if they are set: [Mplify127.1 R56]
 
 - `id`
 - `name`
@@ -2230,7 +2266,7 @@ categorized by Category C is:
 **[R71]** The Seller response **MUST** include every Product Offering where the
 `channel` filter criteria match one of the Product Offering's `channel` or the
 Product Offering's `channel` is an empty list [Mplify127.1 R57], [Mplify127.1
-R63]
+R58]
 
 **[R72]** The Seller response **MUST** include every Product Offering where the
 `marketSegment` filter criteria match one of the Product Offering's
@@ -2251,19 +2287,19 @@ the API specification which is an integral part of this standard.
 **_Note:_** The Product Offering model for this use case is the subset of the
 model from the chapter [[6.2.1](#621-product-offering---model)].
 
-![Figure 15. Product Offering Find Model](media/offeringModel_find.png)
+![Figure 18. Product Offering Find Model](media/offeringModel_find.png)
 
-**Figure 15. Use Case 3 - Product Offering Find Model**
+**Figure 18. Use Case 3 - Product Offering Find Model**
 
 ### 6.2.4. Use case 4: Retrieve Product Offering by Identifier
 
 #### 6.2.4.1. Interaction flow
 
-The flow of this use case is very simple and is described in Figure 16.
+The flow of this use case is very simple and is described in Figure 19.
 
 ![Use Case 2](media/retrieveProductOfferingById-seqFlow.png)
 
-**Figure 16. Use Case 4 - Retrieve Product Offering by Identifier**
+**Figure 19. Use Case 4 - Retrieve Product Offering by Identifier**
 
 The Buyer wants to retrieve detailed information about a single Product Offering
 with the given `id`.
@@ -2442,7 +2478,7 @@ the API specification which is an integral part of this standard.
 
 ### 6.3.1. Product Specification - Model
 
-Figure 17 presents the data model of the Product Specification. The model of the
+Figure 20 presents the data model of the Product Specification. The model of the
 retrieve list response (`ProductSpecification_Find`) is a subset of the
 `ProductSpecification` model and contains only those attributes that can (or
 must) be returned by the Seller. For visibility of these differences the
@@ -2452,11 +2488,12 @@ directly in the response of any endpoint.
 The full list of attributes is available in [Section 7](#7-api-details) and in
 the API specification which is an integral part of this standard.
 
-![Figure 17. Product Specification Model](media/specificationModel.png)
-**Figure 17. Product Specification Model**
+![Figure 20. Product Specification Model](media/specificationModel.png)
+
+**Figure 20. Product Specification Model**
 
 **[R83]** After a `ProductSpecification` has been created, the following
-attributes **MUST NOT** be modified: [Mplify127.1 R77]
+attributes **MUST NOT** be modified: [Mplify127.1 R71]
 
 - `id`
 - `productRelationship`
@@ -2468,7 +2505,7 @@ the Seller **MUST** set the `lastUpdate` to reflect the most recent date the
 modification occurred. [Mplify127.1 R70]
 
 **[R85]** A `ProductMilestoneDefinition` **MUST** contain the following
-attributes: [Mplify127.1 R74]
+attributes: [Mplify127.1 R76]
 
 - `name`
 - `description`
@@ -2484,10 +2521,11 @@ in `ProductOffering` as `productOfferingSpecificationSchema` and
 
 ### 6.3.2. Product Specification - Lifecycle
 
-Figure 18 presents the Product Specification state machine:
+Figure 21 presents the Product Specification state machine:
 
-![Figure 18. Product Specification State Machine](media/specification_stateMachine.png)
-**Figure 18. Product Specification State Machine**
+![Figure 21. Product Specification State Machine](media/specification_stateMachine.png)
+
+**Figure 21. Product Specification State Machine**
 
 The Product Specification State Machine is consistent with the State Machine of
 Product Offering and it is a simplification of the one proposed by TMF
@@ -2531,11 +2569,11 @@ still uses their definitions for historical purposes.
 
 #### 6.3.3.1. Interaction flow
 
-The flow of this use case is very simple and is described in Figure 19.
+The flow of this use case is very simple and is described in Figure 22.
 
 ![Use Case 1](media/retrieveProductSpecificationList-seqFlow.png)
 
-**Figure 19. Use Case 5 - Retrieve Product Specification List**
+**Figure 22. Use Case 5 - Retrieve Product Specification List**
 
 #### 6.3.3.2. Retrieve Product Specification List - Request
 
@@ -2547,6 +2585,7 @@ attributes that are available to be used are: [Mplify127.1 O6]:
 - `lastUpdate.gt`
 - `lastUpdate.lt`
 - `lifecycleStatus`
+- `agreement`
 
 The Buyer may also ask for pagination with the use of the `offset` and `limit`
 parameters. The filtering and pagination attributes must be specified in URI
@@ -2600,15 +2639,17 @@ Body:
 ```
 
 **[R90]** The Seller **MUST** put the following attributes into the
-`ProductSpecification_Find` object in the response: [Mplify127.1 R78]
+`ProductSpecification_Find` object in the response if they are set: [Mplify127.1
+R77]
 
 - `id`
 - `name`
 - `lastUpdate`
 - `lifecycleStatus`
+- `agreement`
 
-**[R91]** If case no items matching the criteria are found, the Seller **MUST**
-return a valid response with an empty list. [Mplify127.1 R80]
+**[R91]** In case no items matching the criteria are found, the Seller **MUST**
+return a valid response with an empty list. [Mplify127.1 R79]
 
 The full list of attributes is available in [Section 7](#7-api-details) and in
 the API specification which is an integral part of this standard.
@@ -2616,19 +2657,19 @@ the API specification which is an integral part of this standard.
 **_Note:_** The Product Specification model for this use case is the subset of
 the model from the chapter [[6.3.1](#631-product-specification---model)].
 
-![Figure 20. Product Specification Find Model](media/specificationModel_find.png)
+![Figure 23. Product Specification Find Model](media/specificationModel_find.png)
 
-**Figure 20. Use Case 5 - Product Specification Find Model**
+**Figure 23. Use Case 5 - Product Specification Find Model**
 
 ### 6.3.4. Use case 6: Retrieve Product Specification by Identifier
 
 #### 6.3.4.1. Interaction flow
 
-The flow of this use case is very simple and is described in Figure 21.
+The flow of this use case is very simple and is described in Figure 24.
 
 ![Use Case 6](media/retrieveProductSpecificationById-seqFlow.png)
 
-**Figure 21. Use Case 6 - Retrieve Product Specification by Identifier**
+**Figure 24. Use Case 6 - Retrieve Product Specification by Identifier**
 
 The Buyer wants to retrieve detailed information about a single Product
 Specification with a given `id`.
@@ -2636,7 +2677,7 @@ Specification with a given `id`.
 #### 6.3.4.2. Retrieve Product Specification by Identifier - Request
 
 **[R92]** The Buyer must provide the `id` of the Product Specification that
-originates from the Seller. [Mplify127.1 R81]
+originates from the Seller. [Mplify127.1 R80]
 
 ```url
 http://127.1.0.0.1:8080/mefApi/sonata/productCatalog/v4/productSpecification/productSpecification-9
@@ -2725,7 +2766,7 @@ clarity):
 - `sourceSchema`
 
 **[R94]** The Seller response **MUST** include the remaining optional attributes
-in the `ProductSpecification` if they are set: [Mplify127.1 R82]
+in the `ProductSpecification` if they are set. [Mplify127.1 R82]
 
 The full list of attributes is available in [Section 7](#7-api-details) and in
 the API specification which is an integral part of this standard.
@@ -2769,7 +2810,7 @@ from the API: `POST /hub`. The request model contains only 2 attributes:
 - `query` - optional, to provide the required types of event.
 
 **[R98]** The Buyer request **MUST** contain the following attributes
-[Mplify127.1 R91]:
+[Mplify127.1 R92]:
 
 - `callback`
 
@@ -2815,8 +2856,8 @@ to be supported.
 the query.
 
 **[R100]** If the Seller does not support notifications, they **MUST** return an
-error message to the Buyer indicating that notifications are not supported.
-[Mplify127.1 R94]
+error message to the Buyer indicating that notifications are not supported
+(`Error501`). [Mplify127.1 R94]
 
 ### 6.4.2. Register for Event Notifications - Response
 
@@ -2900,10 +2941,10 @@ It's at the Buyer and Seller's discretion how to inform the Buyer that the
 listener is out of service and how to uncheck corrupted `EventSubscription` when
 the listener is claimed.
 
-Figure 22 shows all entities involved in the Notification use cases.
+Figure 25 shows all entities involved in the Notification use cases.
 
 ![Product Catalog Notification Data Model](media/notificationModel.png)
-**Figure 22. Use Case 8. Notification Data Model**
+**Figure 25. Use Case 8. Notification Data Model**
 
 The following snippet presents an example of `productOfferingCreateEvent`
 
@@ -2968,7 +3009,7 @@ case the error message body structure might be aligned with the `Error`.
 
 ![Error response data model](media/error_entities.png)
 
-**Figure 24. Data model types to represent an erroneous response**
+**Figure 26. Data model types to represent an erroneous response**
 
 #### 7.1.1.1. Type Error
 
@@ -3263,13 +3304,13 @@ Inherits from:
 
 ## 7.2. API Data model
 
-Figure 24 presents the whole Product Catalog data model. The data types,
+Figure 27 presents the whole Product Catalog data model. The data types,
 requirements related to them and mapping to MEF 127.1 specification are
 discussed later in this section.
 
 ![Product Catalog Data Model](media/completeCatalogModel.png)
 
-**Figure 24. Product Catalog Data Model**
+**Figure 27. Product Catalog Data Model**
 
 ### 7.2.1. Product Category
 
@@ -4304,6 +4345,12 @@ charges.
             <td>O</td>
             <td>The date and time of an attribute within this Product Specification was created or most recently updated.</td>
             <td>Product Specification Last Update</td>
+        </tr><tr>
+            <td>agreement</td>
+            <td>string</td>
+            <td>O</td>
+            <td>The name of the Seller's standard offer arrangement (such as a framework agreement). The name is unique within the Seller domain. This should be the name of the Seller's standard offer arrangement or framework agreement for the Product Specification.</td>
+            <td>Standard Framework Agreement</td>
         </tr>
     </tbody>
 </table>
@@ -4339,13 +4386,13 @@ Inherits from:
         <td>attachment</td>
             <td><a href="#T_AttachmentValue">AttachmentValue</a>[]</td>
             <td>O</td>
-            <td>Complements the Product Offering description with presentation, video, pictures, etc.</td>
+            <td>Complements the Product Offering description with presentation, video, pictures, etc. Note: The Seller should include all documents describing the Standard Framework Agreement as an Attachment.</td>
             <td>Product Specification Attachments</td>
         </tr><tr>
         <td>productRelationship</td>
             <td><a href="#T_ProductRelationshipConstraint">ProductRelationshipConstraint</a>[]</td>
             <td>O</td>
-            <td>Specifies the relationships with their names between Products described by related Product Specifications. As an example, an Access E-Line OVC references an Operator UNI and ENNI Product Specifications.</td>
+            <td>Specifies the relationships with their names between Products described by related Product Specifications. As an example, an Access E-Line OVC references an Operator UNI and an ENNI Product Specification.</td>
             <td>Product Specification Product Relationships</td>
         </tr><tr>
         <td>placeRelationship</td>
@@ -5209,10 +5256,10 @@ possible syntax variants:
 
 ## 7.3. Notification API Data model
 
-Figure 25 presents the Product Catalog Notification data model. section.
+Figure 28 presents the Product Catalog Notification data model. section.
 
 ![Product Catalog Notification Data Model](media/notificationModel.png)
-**Figure 25. Product Catalog Notification Notification Data Model**
+**Figure 28. Product Catalog Notification Notification Data Model**
 
 This data model is used to construct requests and responses of the API endpoints
 described in [Section 5.2.2](#522-buyer-side-api-endpoints).
@@ -5761,7 +5808,533 @@ this event.
 
 <div class="page"/>
 
-# Appendix A Acknowledgments
+# Appendix A Examples (Informative)
+
+This appendix contains examples for which diagram where presented in
+[section 4.4.4](#444-bundles).
+
+## A.1 Bundling Product Offering
+
+The following snippet contains a raw JSON payload presented on Figure 4.
+
+```json
+{
+  "id": "ID_OVC UNI Bundle",
+  "name": "OVC UNI Bundle",
+  "description": "Access E-Line + UNI, SLA 99.99%",
+  "lastUpdate": "2024-11-28T11:25:20",
+  "lifecycleStatus": "launched",
+  "statusReason": "Approved & ready for market",
+  "agreement": "standard-agreement-AG012023",
+  "region": [
+    {
+      "stateOrProvince": "AZ",
+      "countryCode": "US"
+    },
+    {
+      "stateOrProvince": "AL",
+      "countryCode": "US"
+    },
+    {
+      "stateOrProvince": "AR",
+      "countryCode": "US"
+    }
+  ],
+  "isBundle": true,
+  "isSellable": true,
+  "statusTransition": [
+    {
+      "transitionDate": "2024-11-27T11:25:20",
+      "lifecycleStatus": "active"
+    },
+    {
+      "transitionDate": "2024-11-28T11:25:20",
+      "lifecycleStatus": "launched"
+    }
+  ],
+  "productSpecification": {
+    "id": "ID_Bundle_Spec",
+    "href": "https://example.com/productSpecification/ID_Bundle_Spec"
+  },
+  "productOfferingTerm": [
+    {
+      "name": "bundle24MonthTerm",
+      "description": "24 month fixed bundle",
+      "duration": {
+        "amount": 24,
+        "units": "months"
+      },
+      "endOfTermAction": "roll",
+      "rollInterval": {
+        "amount": 1,
+        "units": "months"
+      },
+      "productOfferingPrice": [
+        {
+          "description": "Bundled OVC construction price in AZ",
+          "lastUpdate": "2024-11-28T11:25:20",
+          "validFor": {
+            "endDateTime": "2024-12-28T11:25:20"
+          },
+          "bundledProductOffering": {
+            "id": "ID_Access E-Line OVC Excellence"
+          },
+          "region": [
+            {
+              "stateOrProvince": "AZ",
+              "countryCode": "US"
+            }
+          ],
+          "priceType": "nonRecurring",
+          "price": {
+            "taxRate": 7,
+            "taxIncludedAmount": {
+              "unit": "USD",
+              "value": 600
+            },
+            "dutyFreeAmount": {
+              "unit": "USD",
+              "value": 560.75
+            }
+          },
+          "priceModifier": [
+            {
+              "description": "Standard contract renewal discount",
+              "lastUpdate": "2024-11-28T11:25:20",
+              "validFor": {
+                "endDateTime": "2025-12-31T23:59:59Z"
+              },
+              "minimumQuantity": 1,
+              "dealReference": "0123456",
+              "reductionPercentage": 10
+            }
+          ]
+        },
+        {
+          "description": "Bundled OVC installation price in AZ",
+          "lastUpdate": "2024-11-28T11:25:20",
+          "validFor": {
+            "endDateTime": "2024-12-28T11:25:20"
+          },
+          "bundledProductOffering": {
+            "id": "ID_Access E-Line OVC Excellence"
+          },
+          "region": [
+            {
+              "stateOrProvince": "AZ",
+              "countryCode": "US"
+            }
+          ],
+          "priceType": "nonRecurring",
+          "price": {
+            "taxRate": 7,
+            "taxIncludedAmount": {
+              "unit": "USD",
+              "value": 100
+            },
+            "dutyFreeAmount": {
+              "unit": "USD",
+              "value": 93.46
+            }
+          },
+          "priceModifier": [
+            {
+              "description": "Standard contract renewal discount",
+              "lastUpdate": "2024-11-28T11:25:20",
+              "validFor": {
+                "endDateTime": "2025-12-31T23:59:59Z"
+              },
+              "minimumQuantity": 1,
+              "dealReference": "0123456",
+              "reductionPercentage": 10
+            }
+          ]
+        },
+        {
+          "description": "Bundled OVC usage price in AZ",
+          "lastUpdate": "2024-11-28T11:25:20",
+          "validFor": {
+            "endDateTime": "2024-12-28T11:25:20"
+          },
+          "bundledProductOffering": {
+            "id": "ID_Access E-Line OVC Excellence"
+          },
+          "region": [
+            {
+              "stateOrProvince": "AZ",
+              "countryCode": "US"
+            }
+          ],
+          "priceType": "recurring",
+          "recurringChargePeriod": {
+            "amount": 1,
+            "units": "months"
+          },
+          "price": {
+            "taxRate": 7,
+            "taxIncludedAmount": {
+              "unit": "USD",
+              "value": 149
+            },
+            "dutyFreeAmount": {
+              "unit": "USD",
+              "value": 139.25
+            }
+          }
+        },
+        {
+          "description": "Bundled UNI construction price in AZ",
+          "lastUpdate": "2024-11-28T11:25:20",
+          "validFor": {
+            "endDateTime": "2024-12-28T11:25:20"
+          },
+          "bundledProductOffering": {
+            "id": "ID_UNI Excellence"
+          },
+          "region": [
+            {
+              "stateOrProvince": "AZ",
+              "countryCode": "US"
+            }
+          ],
+          "priceType": "nonRecurring",
+          "price": {
+            "taxRate": 7,
+            "taxIncludedAmount": {
+              "unit": "USD",
+              "value": 600
+            },
+            "dutyFreeAmount": {
+              "unit": "USD",
+              "value": 560.75
+            }
+          },
+          "priceModifier": [
+            {
+              "description": "Standard contract renewal discount",
+              "lastUpdate": "2024-11-28T11:25:20",
+              "validFor": {
+                "endDateTime": "2025-12-31T23:59:59Z"
+              },
+              "minimumQuantity": 1,
+              "dealReference": "0123456",
+              "reductionPercentage": 10
+            }
+          ]
+        },
+        {
+          "description": "Bundled UNI installation price in AZ",
+          "lastUpdate": "2024-11-28T11:25:20",
+          "validFor": {
+            "endDateTime": "2024-12-28T11:25:20"
+          },
+          "bundledProductOffering": {
+            "id": "ID_UNI Excellence"
+          },
+          "region": [
+            {
+              "stateOrProvince": "AZ",
+              "countryCode": "US"
+            }
+          ],
+          "priceType": "nonRecurring",
+          "price": {
+            "taxRate": 7,
+            "taxIncludedAmount": {
+              "unit": "USD",
+              "value": 250
+            },
+            "dutyFreeAmount": {
+              "unit": "USD",
+              "value": 233.64
+            }
+          },
+          "priceModifier": [
+            {
+              "description": "Standard contract renewal discount",
+              "lastUpdate": "2024-11-28T11:25:20",
+              "validFor": {
+                "endDateTime": "2025-12-31T23:59:59Z"
+              },
+              "minimumQuantity": 1,
+              "dealReference": "0123456",
+              "reductionPercentage": 10
+            }
+          ]
+        },
+        {
+          "description": "Bundled UNI usage price in AZ",
+          "lastUpdate": "2024-11-28T11:25:20",
+          "validFor": {
+            "endDateTime": "2024-12-28T11:25:20"
+          },
+          "bundledProductOffering": {
+            "id": "ID_UNI Excellence"
+          },
+          "region": [
+            {
+              "stateOrProvince": "AZ",
+              "countryCode": "US"
+            }
+          ],
+          "priceType": "recurring",
+          "recurringChargePeriod": {
+            "amount": 1,
+            "units": "months"
+          },
+          "price": {
+            "taxRate": 7,
+            "taxIncludedAmount": {
+              "unit": "USD",
+              "value": 49
+            },
+            "dutyFreeAmount": {
+              "unit": "USD",
+              "value": 45.79
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "bundledProductOffering": [
+    {
+      "minCardinality": 1,
+      "maxCardinality": 1,
+      "isModifiable": false,
+      "productOffering": {
+        "id": "ID_Access E-Line OVC Excellence",
+        "href": "https://example.com/productOffering/ID_Access_E-Line_OVC_Excellence"
+      }
+    },
+    {
+      "minCardinality": 1,
+      "maxCardinality": 1,
+      "isModifiable": false,
+      "productOffering": {
+        "id": "ID_UNI Excellence",
+        "href": "https://example.com/productOffering/ID_UNI_Excellence"
+      }
+    }
+  ]
+}
+```
+
+## A.2 Bundled Access E-Line Product Offering
+
+The following snippet contains a raw JSON payload presented on Figure 5.
+
+```json
+{
+  "id": "ID_Access E-Line OVC Excellence",
+  "name": "Access E-Line OVC Excellence",
+  "description": "Access E-Line, SLA 99.99%",
+  "lastUpdate": "2024-11-28T11:25:20",
+  "lifecycleStatus": "launched",
+  "statusReason": "Approved & ready for market",
+  "agreement": "standard-agreement-AG012023",
+  "region": [
+    {
+      "stateOrProvince": "AZ",
+      "countryCode": "US"
+    },
+    {
+      "stateOrProvince": "AL",
+      "countryCode": "US"
+    },
+    {
+      "stateOrProvince": "AR",
+      "countryCode": "US"
+    }
+  ],
+  "isBundle": false,
+  "isSellable": true,
+  "statusTransition": [
+    {
+      "transitionDate": "2024-11-27T11:25:20",
+      "lifecycleStatus": "active"
+    },
+    {
+      "transitionDate": "2024-11-28T11:25:20",
+      "lifecycleStatus": "launched"
+    }
+  ],
+  "productSpecification": {
+    "id": "ID_OVC_Spec",
+    "href": "https://example.com/productSpecification/ID_OVC_Spec"
+  },
+  "productOfferingTerm": [
+    {
+      "name": "standard24MonthOvcTerm",
+      "description": "24 month term for OVC Excellence",
+      "duration": {
+        "amount": 24,
+        "units": "months"
+      },
+      "endOfTermAction": "roll",
+      "rollInterval": {
+        "amount": 1,
+        "units": "months"
+      },
+      "productOfferingPrice": [
+        {
+          "description": "Standard OVC construction price in AZ",
+          "lastUpdate": "2024-11-28T11:25:20",
+          "validFor": {
+            "endDateTime": "2024-12-28T11:25:20"
+          },
+          "region": [
+            {
+              "stateOrProvince": "AZ",
+              "countryCode": "US"
+            }
+          ],
+          "priceType": "nonRecurring",
+          "price": {
+            "taxRate": 7,
+            "taxIncludedAmount": {
+              "unit": "USD",
+              "value": 800
+            },
+            "dutyFreeAmount": {
+              "unit": "USD",
+              "value": 747.66
+            }
+          },
+          "priceModifier": [
+            {
+              "description": "Standard contract renewal discount",
+              "lastUpdate": "2024-11-28T11:25:20",
+              "validFor": {
+                "endDateTime": "2025-12-31T23:59:59Z"
+              },
+              "minimumQuantity": 1,
+              "dealReference": "0123456",
+              "reductionPercentage": 10
+            }
+          ]
+        },
+        {
+          "description": "Standard OVC installation price in AZ",
+          "lastUpdate": "2024-11-28T11:25:20",
+          "validFor": {
+            "endDateTime": "2024-12-28T11:25:20"
+          },
+          "region": [
+            {
+              "stateOrProvince": "AZ",
+              "countryCode": "US"
+            }
+          ],
+          "priceType": "nonRecurring",
+          "price": {
+            "taxRate": 7,
+            "taxIncludedAmount": {
+              "unit": "USD",
+              "value": 200
+            },
+            "dutyFreeAmount": {
+              "unit": "USD",
+              "value": 186.92
+            }
+          },
+          "priceModifier": [
+            {
+              "description": "Standard contract renewal discount",
+              "lastUpdate": "2024-11-28T11:25:20",
+              "validFor": {
+                "endDateTime": "2025-12-31T23:59:59Z"
+              },
+              "minimumQuantity": 1,
+              "dealReference": "0123456",
+              "reductionPercentage": 10
+            }
+          ]
+        },
+        {
+          "description": "Standard OVC usage price in AZ",
+          "lastUpdate": "2024-11-28T11:25:20",
+          "validFor": {
+            "endDateTime": "2024-12-28T11:25:20"
+          },
+          "region": [
+            {
+              "stateOrProvince": "AZ",
+              "countryCode": "US"
+            }
+          ],
+          "priceType": "recurring",
+          "recurringChargePeriod": {
+            "amount": 1,
+            "units": "months"
+          },
+          "price": {
+            "taxRate": 7,
+            "taxIncludedAmount": {
+              "unit": "USD",
+              "value": 200
+            },
+            "dutyFreeAmount": {
+              "unit": "USD",
+              "value": 186.92
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+## A.3 Bundled UNI Product Offering
+
+The following snippet contains a raw JSON payload presented on Figure 4.
+
+```json
+{
+  "id": "ID_UNI Excellence",
+  "name": "UNI Excellence",
+  "description": "UNI, SLA 99.99%",
+  "lastUpdate": "2024-11-28T11:25:20",
+  "lifecycleStatus": "launched",
+  "statusReason": "Approved & ready for market",
+  "agreement": "standard-agreement-AG012023",
+  "region": [
+    {
+      "stateOrProvince": "AZ",
+      "countryCode": "US"
+    },
+    {
+      "stateOrProvince": "AL",
+      "countryCode": "US"
+    },
+    {
+      "stateOrProvince": "AR",
+      "countryCode": "US"
+    }
+  ],
+  "isBundle": false,
+  "isSellable": false,
+  "statusTransition": [
+    {
+      "transitionDate": "2024-11-27T11:25:20",
+      "lifecycleStatus": "active"
+    },
+    {
+      "transitionDate": "2024-11-28T11:25:20",
+      "lifecycleStatus": "launched"
+    }
+  ],
+  "productSpecification": {
+    "id": "ID_UNI_Spec",
+    "href": "https://example.com/productSpecification/ID_UNI_Spec"
+  }
+}
+```
+
+<div class="page"/>
+
+# Appendix B Acknowledgments
 
 Mike **BENCHECK**
 
