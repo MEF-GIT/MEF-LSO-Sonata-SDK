@@ -29,6 +29,10 @@ The numbers with (*) refer to the numbering from previous version of the documen
 
 **productCatalog.api.yaml:**
 
+- `GET /productSpecification/`:
+  - `agreement` - added to query params
+
+
 - `AttachmentValue`:
   - `attachmentId` - removed
   - `content` - removed
@@ -40,10 +44,14 @@ The numbers with (*) refer to the numbering from previous version of the documen
 - `PriceModifier`:
   - `minimumQuantity` - `minimum` changed from `0` to `1`
   - `minimumQuantity` - no longer required
+- `ProductOffering_Find`:
+  - `agreement` - no longer required 
 - `ProductOfferingBundleRelationship`:
   - `isModifiable` - added
 - `ProductOfferingRef`:
   - `href` - removed `format: uri`
+- `ProductSpecification_Common`:
+  - `agreement` - added
 - `ProductSpecificationRef`:
   - `href` - removed `format: uri`
 

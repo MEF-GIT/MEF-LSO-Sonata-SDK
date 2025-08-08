@@ -36,7 +36,7 @@ info:
     v4.1.0) available at https://github.com/tmforum-apis/TMF620_ProductCatalog,
     which is licensed by the TM Forum under the Apache License version 2.0. Such
     content has been modified by the Mplify Alliance and its contributors.
-  version: 4.0.0-RC
+  version: 4.0.1
 servers:
   - url: 'http://{serverBase}/mefApi/sonata/productCatalog/v4/'
     variables:
@@ -573,6 +573,16 @@ paths:
           schema:
             type: string
             format: date-time
+        - name: agreement
+          in: query
+          description: >-
+            The name of the Seller's standard offer arrangement (such as a
+            framework agreement). The name is unique within the Seller domain.
+            This should be the name of the Seller's standard offer arrangement
+            or framework agreement for the Product Specification.
+          required: false
+          schema:
+            type: string
         - name: buyerId
           in: query
           description: >-
@@ -2215,7 +2225,6 @@ components:
             Represents entities that are launched from the provider of the
             catalog, this resource includes pricing information.
           required:
-            - agreement
             - category
             - channel
             - id
@@ -2287,7 +2296,9 @@ components:
             attachment:
               description: >-
                 Complements the Product Offering description with presentation,
-                video, pictures, etc.
+                video, pictures, etc. Note: The Seller should include all
+                documents describing the Standard Framework Agreement as an
+                Attachment.
               type: array
               items:
                 $ref: '#/components/schemas/AttachmentValue'
@@ -2295,8 +2306,8 @@ components:
               description: >-
                 Specifies the relationships with their names between Products
                 described by related Product Specifications. As an example, an
-                Access E-Line OVC references an Operator UNI and ENNI Product
-                Specifications.
+                Access E-Line OVC references an Operator UNI and an ENNI Product
+                Specification.
               type: array
               items:
                 $ref: '#/components/schemas/ProductRelationshipConstraint'
@@ -2326,12 +2337,12 @@ components:
                 in the Product Specification.
               $ref: '#/components/schemas/SchemaRefOrValue'
           required:
-            - description
             - id
             - lastUpdate
             - lifecycleStatus
             - name
             - sourceSchema
+            - description
     ProductSpecificationLifecycleStatusType:
       description: |
         | Name         | Mplify 127.1 Name | Description                                                                                                                                                                                                                                                                                                                                                                                                  |
@@ -2383,6 +2394,13 @@ components:
             was created or most recently updated.
           type: string
           format: date-time
+        agreement:
+          description: >-
+            The name of the Seller's standard offer arrangement (such as a
+            framework agreement). The name is unique within the Seller domain.
+            This should be the name of the Seller's standard offer arrangement
+            or framework agreement for the Product Specification.
+          type: string
     ProductSpecification_Find:
       allOf:
         - $ref: '#/components/schemas/ProductSpecification_Common'
