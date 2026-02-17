@@ -10,29 +10,6 @@ enum AsnType {
     PUBLIC
     PRIVATE
 }
-enum AssistanceLevel {
-
-    SELF_MANAGED
-    CO_MANAGED
-    FULLY_MANAGED
-}
-class Bgp {
-
-    connectionAddressFamily: AddressFamilyIpv4Ipv6
-    authentication: string[]
-    asOverride: EnabledDisabled
-    administrativeDistance: integer
-}
-
-Bgp *--> FourOctetInteger : subscriberAsNumber
-Bgp *--> FourOctetInteger : peerAsNumber
-Bgp *--> PeeringAddress : peeringAddresses
-Bgp *-->"*" BgpCommunity : bgpCommunityList
-Bgp *-->"*" BgpExtendedCommunity : bgpExtendedCommunityList
-Bgp *--> TwoOctetInteger : holdTime
-Bgp *-->"0..1" Damping : damping
-
-
 class BgpCommunity {
 
     semantics: string
@@ -44,29 +21,44 @@ BgpCommunity *--> TwoOctetInteger : autonomousSystemDefined
 
 class BgpExtendedCommunity {
 
-    regularType*: integer
-    regularValue*: integer
-    extendedValue*: integer
     semantics: string
 }
 
-BgpExtendedCommunity *-->"1" TwoOctetInteger : extendedType
+BgpExtendedCommunity *--> BgpExtendedCommunityType : regularOrExtended
+
+
+class BgpExtendedCommunityType {
+
+}
+
+BgpExtendedCommunityType *--> BgpRegularType : regular
+BgpExtendedCommunityType *--> BgpExtendedType : extended
+
+
+class BgpExtendedType {
+
+    extendedValue: int64
+}
+
+BgpExtendedType *--> TwoOctetInteger : extendedType
+
+
+class BgpRegularType {
+
+    regularType: integer
+    regularValue: int64
+}
+
 
 
 class BiDirSimpleBandwidth {
 
 }
 
-BiDirSimpleBandwidth *--> InformationRate : downstream
-BiDirSimpleBandwidth *--> InformationRate : upstream
+BiDirSimpleBandwidth *-->"1" InformationRate : downstream
+BiDirSimpleBandwidth *-->"1" InformationRate : upstream
 
 
-enum BillingModelType {
-
-    FLAT
-    BURSTABLE_PERCENTILE
-    DATA_TRANSFER
-}
 enum ConnectorType {
 
     RJ45
@@ -74,67 +66,17 @@ enum ConnectorType {
     LC
     OTHER
 }
-class Damping {
-
-    cutoffThreshold: integer
-    decayHalfLifeWhileReachable: integer
-    decayHalfLifeWhileUnReachable: integer
-    decayMemoryLimit: integer
-    maxHoldDownTime: integer
-    numberOfReuseLists: integer
-    reuseListMemory: integer
-    reuseListTimeGranularity: integer
-    reuseThreshold: integer
-    timeGranularity: integer
-    reuseIndexArraySize: integer
-}
-
-
-
-class DataSize {
-
-    dataSizeValue: integer
-    dataSizeUnits: DataSizeUnits
-}
-
-
-
-enum DataSizeUnits {
-
-    BYTES
-    KBYTES
-    MBYTES
-    GBYTES
-    TBYTES
-    PBYTES
-    EBYTES
-    ZBYTES
-    YBYTES
-}
-class Duration {
-
-    amount*: integer
-    units*: TimeUnit
-}
-
-
-
 enum EnabledDisabled {
 
     ENABLED
     DISABLED
 }
-enum FirewallType {
-
-    BASIC
-    COMPLEX
-}
 class ForwardingInformation {
 
 }
 
-ForwardingInformation *-->"1" Ipv4OrIpv6Address : nextHopIpAddress
-ForwardingInformation *-->"1" IdentifierString : uniAccessLink
+ForwardingInformation *--> Ipv4OrIpv6Address : nextHopIpAddress
+ForwardingInformation *--> IdentifierString : uniAccessLink
 
 
 class FourOctetInteger {
@@ -171,6 +113,7 @@ enum InformationRateUnits {
 }
 class InternetAccess {
 
+    variant*: InternetAccessVariantName
     deliveryMechanism*: InternetAccessDeliveryMechanism
     providerIndependentIpAddresses: EnabledDisabled
     ipAddressType: InternetAccessIpAddressType
@@ -183,58 +126,56 @@ InternetAccess *--> VlanIdOrUntagged : vlan
 InternetAccess *-->"1" InternetAccessFeatures : features
 InternetAccess *-->"1" BiDirSimpleBandwidth : bandwidth
 InternetAccess *--> BiDirSimpleBandwidth : guaranteedBandwidth
+InternetAccess *--> InternetAccessBillingModel : billingModel
 InternetAccess *--> InternetAccessLocalNetworkAddresses : localNetworkAddresses
 InternetAccess *--> InternetAccessAutonomousSystemNumber : autonomousSystemNumber
 InternetAccess *--> InternetAccessPublicAddressesPrefixLength : publicAddressesPrefixLength
 InternetAccess *--> InternetAccessPublicAddressBlock : publicAddressBlock
 InternetAccess *--> InternetAccessTransitAddresses : transitAddresses
-InternetAccess *--> InternetAccessBillingModel : billingModel
 
 
+enum InternetAccessAssistanceLevel {
+
+    SELF_MANAGED
+    CO_MANAGED
+    FULLY_MANAGED
+}
 class InternetAccessAutonomousSystemNumber {
 
-    asnType: AsnType
+    asnType*: AsnType
 }
 
 InternetAccessAutonomousSystemNumber *--> FourOctetInteger : asnId
 
 
+class InternetAccessBgp {
+
+    connectionAddressFamily*: AddressFamilyIpv4Ipv6
+    authentication*: string[]
+    asOverride: EnabledDisabled
+}
+
+InternetAccessBgp *-->"1" FourOctetInteger : subscriberAsNumber
+InternetAccessBgp *-->"1" PeeringAddress : peeringAddresses
+InternetAccessBgp *-->"*" BgpCommunity : bgpCommunityList
+InternetAccessBgp *-->"*" BgpExtendedCommunity : bgpExtendedCommunityList
+InternetAccessBgp *--> TwoOctetInteger : holdTime
+
+
 class InternetAccessBillingModel {
 
-    billingModelType*: BillingModelType
+    billingModelType*: InternetAccessBillingModelType
+    billingModelPlanName*: string
 }
 
-InternetAccessBillingModel *-->"*" InternetAccessNonRecurringPrice : nonRecurringPrice
-InternetAccessBillingModel *-->"*" InternetAccessRecurringPrice : recurringPrice
 
 
-class InternetAccessBurstablePercentileBilling {
+enum InternetAccessBillingModelType {
 
-    burstablePercentile*: integer
+    FLAT
+    BURSTABLE_PERCENTILE
+    DATA_TRANSFER
 }
-InternetAccessBillingModel <|-- InternetAccessBurstablePercentileBilling
-
-InternetAccessBurstablePercentileBilling *-->"1..*" InternetAccessNonRecurringPrice : burstablePriceList
-
-
-class InternetAccessDataTransferBilling {
-
-}
-InternetAccessBillingModel <|-- InternetAccessDataTransferBilling
-
-InternetAccessDataTransferBilling *-->"1" Duration : dataTransferPeriod
-InternetAccessDataTransferBilling *-->"1..*" InternetAccessDataTransferTier : dataTransferTiers
-
-
-class InternetAccessDataTransferTier {
-
-}
-
-InternetAccessDataTransferTier *-->"1" DataSize : unit
-InternetAccessDataTransferTier *-->"1" DataSize : cap
-InternetAccessDataTransferTier *-->"1" Price : unitPrice
-
-
 enum InternetAccessDeliveryMechanism {
 
     DEMARCATION_ONLY
@@ -245,9 +186,9 @@ enum InternetAccessDeliveryMechanism {
 class InternetAccessDhcpStaticListEntry {
 
     staticMACAddress: string
-    staticIpAddress: string
 }
 
+InternetAccessDhcpStaticListEntry *--> Ipv4OrIpv6Address : staticIpAddress
 
 
 class InternetAccessFeature {
@@ -260,7 +201,7 @@ class InternetAccessFeature {
 
 class InternetAccessFeatureAssistance {
 
-    assistanceLevel*: AssistanceLevel
+    assistanceLevel*: InternetAccessAssistanceLevel
     simpleRequestsPerMonth: integer
     complexRequestsPerMonth: integer
 }
@@ -278,7 +219,7 @@ InternetAccessFeature <|-- InternetAccessFeatureCloudPrioritization
 
 class InternetAccessFeatureDedicatedFirewall {
 
-    firewallType: FirewallType
+    firewallCapability*: InternetAccessFirewallCapability
 }
 InternetAccessFeature <|-- InternetAccessFeatureDedicatedFirewall
 
@@ -286,23 +227,15 @@ InternetAccessFeature <|-- InternetAccessFeatureDedicatedFirewall
 
 class InternetAccessFeatureDns {
 
-    searchDomain*: string[]
+    searchDomain: string[]
 }
 InternetAccessFeature <|-- InternetAccessFeatureDns
 
 
 
-class InternetAccessFeatureFacilityDiversity {
-
-    internetAccessRef: string
-}
-InternetAccessFeature <|-- InternetAccessFeatureFacilityDiversity
-
-
-
 class InternetAccessFeatureLayer3Resiliency {
 
-    layer3Resiliency*: Layer3Resiliency
+    layer3Resiliency*: InternetAccessLayer3Resiliency
 }
 InternetAccessFeature <|-- InternetAccessFeatureLayer3Resiliency
 
@@ -318,7 +251,7 @@ InternetAccessFeatureMobileBackup *-->"1" BiDirSimpleBandwidth : minimumExpected
 
 class InternetAccessFeatureMonitoring {
 
-    monitoringType*: MonitoringType
+    monitoringType*: InternetAccessMonitoringType
 }
 InternetAccessFeature <|-- InternetAccessFeatureMonitoring
 
@@ -326,11 +259,11 @@ InternetAccessFeature <|-- InternetAccessFeatureMonitoring
 
 class InternetAccessFeatureRouting {
 
-    routingType*: RoutingType
+    routingType*: InternetAccessRoutingType
 }
 InternetAccessFeature <|-- InternetAccessFeatureRouting
 
-InternetAccessFeatureRouting *--> Bgp : bgp
+InternetAccessFeatureRouting *--> InternetAccessBgp : bgp
 InternetAccessFeatureRouting *--> Static : static
 
 
@@ -343,7 +276,7 @@ InternetAccessFeatures *--> InternetAccessFeatureCloudPrioritization : cloudPrio
 InternetAccessFeatures *--> InternetAccessFeature : ddosMitigation
 InternetAccessFeatures *--> InternetAccessFeatureDedicatedFirewall : dedicatedFirewall
 InternetAccessFeatures *--> InternetAccessFeatureDns : dns
-InternetAccessFeatures *--> InternetAccessFeatureFacilityDiversity : facilityDiversity
+InternetAccessFeatures *--> InternetAccessFeature : facilityDiversity
 InternetAccessFeatures *--> InternetAccessFeatureLayer3Resiliency : layer3Resiliency
 InternetAccessFeatures *--> InternetAccessFeatureMobileBackup : mobileBackup
 InternetAccessFeatures *--> InternetAccessFeatureMonitoring : monitoring
@@ -352,13 +285,11 @@ InternetAccessFeatures *--> InternetAccessFeatureRouting : routing
 InternetAccessFeatures *--> InternetAccessFeature : snmpRead
 
 
-class InternetAccessFlatBilling {
+enum InternetAccessFirewallCapability {
 
+    BASIC
+    ADVANCED
 }
-InternetAccessBillingModel <|-- InternetAccessFlatBilling
-
-
-
 enum InternetAccessIpAddressType {
 
     STATIC
@@ -410,57 +341,52 @@ enum InternetAccessIpv6TransitAddressPrefixLength {
     /128
     NONE
 }
+enum InternetAccessLayer3Resiliency {
+
+    DUAL_ACCESS_ALL_ACTIVE
+    DUAL_ACCESS_ACTIVE_STANDBY
+    WIRELESS_BACKUP
+}
 class InternetAccessLocalNetworkAddresses {
 
     lanAddressBlock: string
-    dhcpStatus: EnabledDisabled
-    dhcpStart: string
-    dhcpEnd: string
-    nat: string
+    dhcpStatus*: EnabledDisabled
+    natStatus*: EnabledDisabled
 }
 
+InternetAccessLocalNetworkAddresses *--> Ipv4OrIpv6Address : dhcpStart
+InternetAccessLocalNetworkAddresses *--> Ipv4OrIpv6Address : dhcpEnd
 InternetAccessLocalNetworkAddresses *-->"*" InternetAccessDhcpStaticListEntry : dhcpStaticList
+InternetAccessLocalNetworkAddresses *--> Ipv4OrIpv6Address : natAddress
 
 
-class InternetAccessNonRecurringPrice {
+enum InternetAccessMonitoringType {
 
-    priceDescription*: string
+    PROACTIVE
+    REACTIVE
 }
-
-InternetAccessNonRecurringPrice *-->"1" Price : price
-
-
 class InternetAccessPhysicalInterface {
 
-    physicalLayer: SaiEthernetPhysicalLayer
-    connectorType: ConnectorType
+    physicalLayer*: SaiEthernetPhysicalLayer
+    connectorType*: ConnectorType
 }
 
 
 
 class InternetAccessPublicAddressBlock {
 
-    ipv4: string
-    ipv6: string
+    ipv4*: string
+    ipv6*: string
 }
 
 
 
 class InternetAccessPublicAddressesPrefixLength {
 
-    ipv4: InternetAccessIpv4PublicAddressesPrefixLength
-    ipv6: InternetAccessIpv6PublicAddressesPrefixLength
+    ipv4*: InternetAccessIpv4PublicAddressesPrefixLength
+    ipv6*: InternetAccessIpv6PublicAddressesPrefixLength
 }
 
-
-
-class InternetAccessRecurringPrice {
-
-    priceDescription: string
-}
-
-InternetAccessRecurringPrice *--> Price : price
-InternetAccessRecurringPrice *--> Duration : recurringChargePeriod
 
 
 enum InternetAccessResiliency {
@@ -470,24 +396,36 @@ enum InternetAccessResiliency {
     2_LINK_ACTIVE_STANDBY
     OTHER
 }
+enum InternetAccessRoutingType {
+
+    BGP
+    STATIC
+}
 class InternetAccessServiceAccessInterfaceType {
 
-    resiliency: InternetAccessResiliency
+    resiliency*: InternetAccessResiliency
 }
 
-InternetAccessServiceAccessInterfaceType *-->"*" InternetAccessPhysicalInterface : physical
+InternetAccessServiceAccessInterfaceType *-->"1..*" InternetAccessPhysicalInterface : physicalInterface
 
 
 class InternetAccessTransitAddresses {
 
-    ipv4TransitAddressPrefixLength: InternetAccessIpv4TransitAddressPrefixLength
-    ipv6TransitAddressPrefixLength: InternetAccessIpv6TransitAddressPrefixLength
-    ipv4TransitAddressBlock: string
-    ipv6TransitAddressBlock: string
+    requestedIpv4TransitAddressPrefixLength: InternetAccessIpv4TransitAddressPrefixLength
+    requestedIpv6TransitAddressPrefixLength: InternetAccessIpv6TransitAddressPrefixLength
+    serviceProviderIpv4TransitAddress: string
+    serviceProviderIpv6TransitAddress: string
 }
 
 
 
+enum InternetAccessVariantName {
+
+    BROADBAND_BASIC
+    BROADBAND_ADVANCED
+    DEDICATED_WITHOUT_ROUTER
+    DEDICATED_WITH_ROUTER
+}
 class Ipv4Address {
 
 }
@@ -498,14 +436,16 @@ class Ipv4OrIpv6Address {
 
 }
 
+Ipv4OrIpv6Address *--> Ipv4Address : ipv4Address
+Ipv4OrIpv6Address *--> Ipv6Address : ipv6Address
 
 
 class Ipv4OrIpv6Prefix {
 
 }
 
-Ipv4OrIpv6Prefix *-->"1" Ipv4Prefix : ipv4Prefix
-Ipv4OrIpv6Prefix *-->"1" Ipv6Prefix : ipv6Prefix
+Ipv4OrIpv6Prefix *--> Ipv4Prefix : ipv4Prefix
+Ipv4OrIpv6Prefix *--> Ipv6Prefix : ipv6Prefix
 
 
 class Ipv4Prefix {
@@ -530,12 +470,6 @@ class Ipv6Prefix {
 Ipv6Prefix *--> Ipv6Address : ipv6Address
 
 
-enum Layer3Resiliency {
-
-    DUAL_ACCESS_ALL_ACTIVE
-    DUAL_ACCESS_ACTIVE_STANDBY
-    WIRELESS_BACKUP
-}
 class MEFProductConfiguration {
 
     @type*: string
@@ -543,19 +477,6 @@ class MEFProductConfiguration {
 
 
 
-class Money {
-
-    unit*: string
-    value*: float
-}
-
-
-
-enum MonitoringType {
-
-    PROACTIVE
-    REACTIVE
-}
 class PeeringAddress {
 
     peeringAddressType: PeeringAddressType
@@ -569,20 +490,6 @@ enum PeeringAddressType {
     CONNECTION_ADDRESSES
     LOOPBACKS
 }
-class Price {
-
-    taxRate: float
-}
-
-Price *-->"1" Money : dutyFreeAmount
-Price *--> Money : taxIncludedAmount
-
-
-enum RoutingType {
-
-    BGP
-    STATIC
-}
 enum SaiEthernetPhysicalLayer {
 
     10BASE-CX4
@@ -592,34 +499,35 @@ enum SaiEthernetPhysicalLayer {
     10BASE-LX4
     10BASE-SR/SW
     10BASE-T
+    10GBASE-CX4
+    10GBASE-ER/EW
+    10GBASE-LR/LW
+    10GBASE-LX4
+    10GBASE-SR/SW
+    10GBASE-T
     1000BASE-BX10
     1000BASE-LX
     1000BASE-LX10
     1000BASE-SX
     1000BASE-T
-    2.5GBASE-T
-    25GBASE-CR
-    25GBASE-ER
-    25GBASE-LR
-    25GBASE-SR
-    25GBASE-T
-    40GBASE-CR4
-    40GBASE-ER4
-    40GBASE-FR
-    40GBASE-LR4
-    40GBASE-SR4
-    40GBASE-T
-    50GBASE-CR
-    50GBASE-ER
-    50GBASE-FR
-    50GBASE-LR
-    50GBASE-SR
     100BASE-BX10
     100BASE-FX
     100BASE-LX10
     100BASE-SR10
     100BASE-SX
     100BASE-TX
+    100GBASE-CR1
+    100GBASE-CR10
+    100GBASE-CR2
+    100GBASE-CR4
+    100GBASE-DR
+    100GBASE-ER4
+    100GBASE-FR1
+    100GBASE-LR1
+    100GBASE-LR4
+    100GBASE-SR2
+    100GBASE-SR4
+    100GBASE-ZR
     200GBASE-CR2
     200GBASE-CR4
     200GBASE-DR4
@@ -627,6 +535,18 @@ enum SaiEthernetPhysicalLayer {
     200GBASE-FR4
     200GBASE-LR4
     200GBASE-SR4
+    25GBASE-CR
+    25GBASE-ER
+    25GBASE-LR
+    25GBASE-SR
+    25GBASE-T
+    2.5GBASE-T
+    40GBASE-CR4
+    40GBASE-ER4
+    40GBASE-FR
+    40GBASE-LR4
+    40GBASE-SR4
+    40GBASE-T
     400GBASE-DR4
     400GBASE-ER8
     400GBASE-FR4
@@ -634,9 +554,15 @@ enum SaiEthernetPhysicalLayer {
     400GBASE-LR4-6
     400GBASE-LR8
     400GBASE-SR16
-    400GBASE-SR4.2
     400GBASE-SR4
+    400GBASE-SR4.2
     400GBASE-SR8
+    50GBASE-CR
+    50GBASE-ER
+    50GBASE-FR
+    50GBASE-LR
+    50GBASE-SR
+    5GBASE-T
 }
 class Static {
 
@@ -670,17 +596,6 @@ SubscriberAndSpLoopbackAddresses *--> Ipv4OrIpv6Address : subscriberLoopbackAddr
 SubscriberAndSpLoopbackAddresses *--> Ipv4OrIpv6Address : spLoopbackAddress
 
 
-enum TimeUnit {
-
-    seconds
-    minutes
-    businessHours
-    calendarHours
-    businessDays
-    calendarDays
-    months
-    years
-}
 class TwoOctetInteger {
 
 }

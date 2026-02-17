@@ -1,5 +1,13 @@
 # Product Inventory: Release notes
 
+## Release Kylie:
+
+**Readiness status**: Mplify Published Standard
+
+**Summary:**
+
+No changes
+
 ## Release Janis:
 
 **Readiness status**: Requested Letter Ballot. It will be most likely published

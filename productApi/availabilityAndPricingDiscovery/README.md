@@ -1,5 +1,13 @@
 # Product Offering Availability and Pricing Discovery: Release notes
 
+## Release Kylie:
+
+**Readiness status**: Mplify Published Standard
+
+**Summary:**
+
+No changes
+
 ## Release Janis:
 
 **Readiness status**: Mplify Published Standard

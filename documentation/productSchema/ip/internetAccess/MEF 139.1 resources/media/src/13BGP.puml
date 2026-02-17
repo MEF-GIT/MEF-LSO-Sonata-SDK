@@ -1,25 +1,16 @@
 @startuml
+class InternetAccessBgp {
 
-
-
-
-class Bgp {
-
-    connectionAddressFamily: AddressFamilyIpv4Ipv6
-    authentication: string[]
+    connectionAddressFamily*: AddressFamilyIpv4Ipv6
+    authentication*: string[]
     asOverride: EnabledDisabled
-    administrativeDistance: integer
     holdTime: TwoOctetInteger
-    peerAsNumber: FourOctetInteger
     subscriberAsNumber: FourOctetInteger
 }
 
-
-Bgp *--> PeeringAddress : peeringAddresses
-Bgp *-->"*" BgpCommunity : bgpCommunityList
-Bgp *-->"*" BgpExtendedCommunity : bgpExtendedCommunityList
-Bgp *-->"0..1" Damping : damping
-
+InternetAccessBgp *-->"1" PeeringAddress : peeringAddresses
+InternetAccessBgp *-->"*" BgpCommunity : bgpCommunityList
+InternetAccessBgp *-->"*" BgpExtendedCommunity : bgpExtendedCommunityList
 
 class BgpCommunity {
     autonomousSystemNumber: TwoOctetInteger
@@ -30,12 +21,34 @@ class BgpCommunity {
 
 class BgpExtendedCommunity {
 
-    regularType*: integer
-    regularValue*: integer
-    extendedType*: TwoOctetInteger
-    extendedValue*: integer
     semantics: string
 }
+
+BgpExtendedCommunity *--> BgpExtendedCommunityType : regularOrExtended
+
+
+class BgpExtendedCommunityType {
+
+}
+
+BgpExtendedCommunityType *--> BgpRegularType : regular
+BgpExtendedCommunityType *--> BgpExtendedType : extended
+
+
+class BgpExtendedType {
+
+    extendedValue: int64
+    extendedType: TwoOctetInteger
+}
+
+
+
+class BgpRegularType {
+
+    regularType: integer
+    regularValue: int64
+}
+
 
 
 
@@ -67,25 +80,21 @@ enum PeeringAddressType {
 }
 
 
-
-class Damping {
-
-    cutoffThreshold: integer
-    decayHalfLifeWhileReachable: integer
-    decayHalfLifeWhileUnReachable: integer
-    decayMemoryLimit: integer
-    maxHoldDownTime: integer
-    numberOfReuseLists: integer
-    reuseListMemory: integer
-    reuseListTimeGranularity: integer
-    reuseThreshold: integer
-    timeGranularity: integer
-    reuseIndexArraySize: integer
-}
 class SubscriberAndSpLoopbackAddresses {
-    subscriberLoopbackAddress: Ipv4OrIpv6Address
-    spLoopbackAddress: Ipv4OrIpv6Address
+
 }
+
+SubscriberAndSpLoopbackAddresses *--> Ipv4OrIpv6Address : subscriberLoopbackAddress
+SubscriberAndSpLoopbackAddresses *--> Ipv4OrIpv6Address : spLoopbackAddress
+
+
+
+class Ipv4OrIpv6Address {
+
+}
+
+Ipv4OrIpv6Address *--> Ipv4Address : ipv4Address
+Ipv4OrIpv6Address *--> Ipv6Address : ipv6Address
 
 
 

@@ -1,5 +1,37 @@
 # Subscriber Ethernet Products: Release notes
 
+## Release Kylie:
+
+**Readiness status**: Mplify Published Standard
+
+**Summary:**
+
+No changes
+
+## Release Janis:
+
+**Readiness status**: Mplify Published Standard
+
+**Summary:**
+
+No changes
+
+## Release Irene:
+
+**Readiness status**: Mplify Published Standard
+
+**Summary:**
+
+No changes
+
+## Release Haley:
+
+**Readiness status**: Mplify Published Standard
+
+**Summary:**
+
+No changes
+
 ## Release Grace:
 
 **Readiness status**: MEF Published Standard

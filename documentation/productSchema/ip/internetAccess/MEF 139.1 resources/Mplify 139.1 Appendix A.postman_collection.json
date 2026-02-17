@@ -1,0 +1,434 @@
+{
+  "info": {
+    "_postman_id": "c885fdfb-3904-4fab-996d-3870c666c898",
+    "name": "Mplify 139.1 Appendix A",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "16534541"
+  },
+  "item": [
+    {
+      "name": "Use Case 1: Address Validation",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"instantSyncValidation\": true,\r\n    \"submittedGeographicAddress\": {\r\n        \"@type\": \"GeographicAddress_Query\",\r\n        \"fieldedAddressRepresentation\": [\r\n            {\r\n                \"streetNr\": \"20\",\r\n                \"streetName\": \"Example\",\r\n                \"city\": \"Budapest\",\r\n                \"postcode\": \"10279\",\r\n                \"country\": \"Hungary\"\r\n            }\r\n        ]\r\n    }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BasePath}}/mefApi/sonata/geographicAddressManagement/v8/geographicAddressValidation",
+          "host": [
+            "{{BasePath}}"
+          ],
+          "path": [
+            "mefApi",
+            "sonata",
+            "geographicAddressManagement",
+            "v8",
+            "geographicAddressValidation"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Use Case 1: Address Validation - Response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"state\": \"ready\",\r\n    \"bestMatchGeographicAddress\": {\r\n        \"@type\": \"GeographicAddress\",\r\n        \"id\": \"BudapestAddress-id-1\",\r\n        \"href\": \"{{baseUrl}}/geographicAddress/BudapestAddress-id-1\",\r\n        \"allowsNewSite\": \"true\",\r\n        \"hasPublicSite\": \"true\",\r\n        \"fieldedAddressRepresentation\": [\r\n            {\r\n                \"streetNr\": \"20\",\r\n                \"streetNrSuffix\": \"14\",\r\n                \"streetName\": \"Example\",\r\n                \"streetType\": \"st.\",\r\n                \"city\": \"Budapest\",\r\n                \"stateOrProvince\": \"Budapest\",\r\n                \"postcode\": \"10279\",\r\n                \"country\": \"Hungary\"\r\n            }\r\n        ]\r\n    },\r\n    \"instantSyncValidation\": true,\r\n    \"submittedGeographicAddress\": {\r\n        \"@type\": \"GeographicAddress_Query\",\r\n        \"fieldedAddressRepresentation\": [\r\n            {\r\n                \"streetNr\": \"20\",\r\n                \"streetName\": \"Example\",\r\n                \"city\": \"Budapest\",\r\n                \"postcode\": \"10279\",\r\n                \"country\": \"Hungary\"\r\n            }\r\n        ]\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BasePath}}/mefApi/sonata/geographicAddressManagement/v8/geographicAddressValidation",
+              "host": [
+                "{{BasePath}}"
+              ],
+              "path": [
+                "mefApi",
+                "sonata",
+                "geographicAddressManagement",
+                "v8",
+                "geographicAddressValidation"
+              ]
+            }
+          },
+          "_postman_previewlanguage": null,
+          "header": null,
+          "cookie": [],
+          "body": null
+        }
+      ]
+    },
+    {
+      "name": "Use Case 2: POQ - Broadband Internet Access, Basic",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"externalId\": \"BuyerPoq-00001\",\r\n    \"instantSyncQualification\": false,\r\n    \"provideAlternative\": true,\r\n    \"projectId\": \"BuyerProject1\",\r\n    \"relatedContactInformation\": [\r\n        {\r\n            \"emailAddress\": \"john.example@buyer.mplify.com\",\r\n            \"name\": \"John Example\",\r\n            \"number\": \"12-345-6789\",\r\n            \"numberExtension\": \"1234\",\r\n            \"role\": \"buyerContactInformation\",\r\n            \"organization\": \"Buyer Co.\"\r\n        }\r\n    ],\r\n    \"productOfferingQualificationItem\": [\r\n        {\r\n            \"action\": \"add\",\r\n            \"id\": \"item-00001\",\r\n            \"product\": {\r\n                \"productOffering\": {\r\n                    \"id\": \"BroadbandBasicOffering-0001\"\r\n                },\r\n                \"place\": [\r\n                    {\r\n                        \"place\": {\r\n                            \"@type\": \"GeographicAddressRef\",\r\n                            \"id\": \"Budapest-id-1\"\r\n                        },\r\n                        \"role\": \"INSTALL_LOCATION\",\r\n                        \"contact\": [\r\n                            {\r\n                                \"emailAddress\": \"LocationContact@buyer.mplify.com\",\r\n                                \"name\": \"Location Contact\",\r\n                                \"number\": \"+12-345-678-90\",\r\n                                \"organization\": \"Buyer Co.\"\r\n                            }\r\n                        ]\r\n                    }\r\n                ],\r\n                \"productConfiguration\": {\r\n                    \"@type\": \"urn:mef:lso:spec:cantata-sonata:internet-access:v1.0.0:all\",\r\n                    \"variant\": \"BROADBAND_BASIC\",\r\n                    \"deliveryMechanism\": \"DEMARCATION_ONLY\",\r\n                    \"serviceAccessInterfaceType\": {\r\n                        \"physicalInterface\": [\r\n                            {\r\n                                \"physicalLayer\": \"1000BASE-T\",\r\n                                \"connectorType\": \"RJ45\"\r\n                            }\r\n                        ],\r\n                        \"resiliency\": \"NONE\"\r\n                    },\r\n                    \"features\": {},\r\n                    \"bandwidth\": {\r\n                        \"downstream\": {\r\n                            \"irValue\": 100,\r\n                            \"irUnits\": \"MBPS\"\r\n                        },\r\n                        \"upstream\": {\r\n                            \"irValue\": 20,\r\n                            \"irUnits\": \"MBPS\"\r\n                        }\r\n                    },\r\n                    \"billingModel\": {\r\n                        \"billingModelType\": \"FLAT\",\r\n                        \"billingModelPlanName\": \"Broadband Basic Monthly\"\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BasePath}}/mefApi/sonata/productOfferingQualification/v8/productOfferingQualification",
+          "host": [
+            "{{BasePath}}"
+          ],
+          "path": [
+            "mefApi",
+            "sonata",
+            "productOfferingQualification",
+            "v8",
+            "productOfferingQualification"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Use Case 3: Quote - Broadband Internet Access, Basic",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"requestedQuoteCompletionDate\": \"2026-06-12T22:00:00Z\",\r\n    \"externalId\": \"BuyerQuote-00001\",\r\n    \"buyerRequestedQuoteLevel\": \"firm\",\r\n    \"projectId\": \"BuyerProject1\",\r\n    \"instantSyncQuote\": false,\r\n    \"relatedContactInformation\": [\r\n        {\r\n            \"emailAddress\": \"john.example@buyer.mplify.com\",\r\n            \"name\": \"John Example\",\r\n            \"number\": \"12-345-6789\",\r\n            \"numberExtension\": \"1234\",\r\n            \"role\": \"buyerContactInformation\",\r\n            \"organization\": \"Buyer Co.\"\r\n        }\r\n    ],\r\n    \"quoteItem\": [\r\n        {\r\n            \"action\": \"add\",\r\n            \"id\": \"item-00001\",\r\n            \"requestedQuoteItemTerm\": {\r\n                \"duration\": {\r\n                    \"amount\": 12,\r\n                    \"units\": \"months\"\r\n                },\r\n                \"endOfTermAction\": \"autoRenew\",\r\n                \"name\": \"Yearly Subscription\"\r\n            },\r\n            \"relatedContactInformation\": [\r\n                {\r\n                    \"emailAddress\": \"john.example@buyer.mplify.com\",\r\n                    \"name\": \"John Example\",\r\n                    \"number\": \"12-345-6789\",\r\n                    \"numberExtension\": \"1234\",\r\n                    \"role\": \"buyerAdministrativeContact\",\r\n                    \"organization\": \"Buyer Co.\"\r\n                }\r\n            ],\r\n            \"product\": {\r\n                \"productOffering\": {\r\n                    \"id\": \"BroadbandBasicOffering-0001\"\r\n                },\r\n                \"place\": [\r\n                    {\r\n                        \"place\": {\r\n                            \"@type\": \"GeographicAddressRef\",\r\n                            \"id\": \"Budapest-id-1\"\r\n                        },\r\n                        \"role\": \"INSTALL_LOCATION\",\r\n                        \"contact\": [\r\n                            {\r\n                                \"emailAddress\": \"LocationContact@buyer.mplify.com\",\r\n                                \"name\": \"Location Contact\",\r\n                                \"number\": \"+12-345-678-90\",\r\n                                \"organization\": \"Buyer Co.\"\r\n                            }\r\n                        ]\r\n                    }\r\n                ],\r\n                \"productConfiguration\": {\r\n                    \"@type\": \"urn:mef:lso:spec:cantata-sonata:internet-access:v1.0.0:all\",\r\n                    \"variant\": \"BROADBAND_BASIC\",\r\n                    \"deliveryMechanism\": \"DEMARCATION_ONLY\",\r\n                    \"serviceAccessInterfaceType\": {\r\n                        \"physicalInterface\": [\r\n                            {\r\n                                \"physicalLayer\": \"1000BASE-T\",\r\n                                \"connectorType\": \"RJ45\"\r\n                            }\r\n                        ],\r\n                        \"resiliency\": \"NONE\"\r\n                    },\r\n                    \"features\": {},\r\n                    \"bandwidth\": {\r\n                        \"downstream\": {\r\n                            \"irValue\": 100,\r\n                            \"irUnits\": \"MBPS\"\r\n                        },\r\n                        \"upstream\": {\r\n                            \"irValue\": 20,\r\n                            \"irUnits\": \"MBPS\"\r\n                        }\r\n                    },\r\n                    \"billingModel\": {\r\n                        \"billingModelType\": \"FLAT\",\r\n                        \"billingModelPlanName\": \"Broadband Basic Monthly\"\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BasePath}}/mefApi/sonata/quoteManagement/v10/quote",
+          "host": [
+            "{{BasePath}}"
+          ],
+          "path": [
+            "mefApi",
+            "sonata",
+            "quoteManagement",
+            "v10",
+            "quote"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Use Case 4: Product Order - Broadband Internet Access, Basic",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"externalId\": \"BuyerOrder-00001\",\r\n    \"projectId\": \"BuyerProject1\",\r\n    \"relatedContactInformation\": [\r\n        {\r\n            \"emailAddress\": \"john.example@buyer.mplify.com\",\r\n            \"name\": \"John Example\",\r\n            \"number\": \"12-345-6789\",\r\n            \"numberExtension\": \"1234\",\r\n            \"role\": \"productOrderContact\",\r\n            \"organization\": \"Buyer Co.\"\r\n        }\r\n    ],\r\n    \"productOrderItem\": [\r\n        {\r\n            \"action\": \"add\",\r\n            \"id\": \"item-00001\",\r\n            \"expediteIndicator\": false,\r\n            \"requestedItemTerm\": {\r\n                \"duration\": {\r\n                    \"amount\": 12,\r\n                    \"units\": \"months\"\r\n                },\r\n                \"endOfTermAction\": \"autoRenew\",\r\n                \"name\": \"Yearly subscription\"\r\n            },\r\n            \"relatedContactInformation\": [\r\n                {\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"emailAddress\": \"Buyer.ProductOrderItemContact@example.com\",\r\n                    \"role\": \"buyerProductOrderItemContact\",\r\n                    \"name\": \"Buyer Product Order Item Contact\"\r\n                },\r\n                {\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"emailAddress\": \"Buyer.ImplementationContact@example.com\",\r\n                    \"role\": \"buyerImplementationContact\",\r\n                    \"name\": \"Buyer Implementation Contact\"\r\n                },\r\n                {\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"emailAddress\": \"Buyer.TechnicalContact@example.com\",\r\n                    \"role\": \"buyerTechnicalContact\",\r\n                    \"name\": \"Buyer Technical Contact \"\r\n                },\r\n                {\r\n                    \"emailAddress\": \"bill.contact@example.com\",\r\n                    \"name\": \"Bill Contact\",\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"organization\": \"Example Company\",\r\n                    \"role\": \"buyerBillingContact\"\r\n                },\r\n                {\r\n                    \"emailAddress\": \"john.example@buyer.mplify.com\",\r\n                    \"name\": \"John Example\",\r\n                    \"number\": \"12-345-6789\",\r\n                    \"numberExtension\": \"1234\",\r\n                    \"role\": \"buyerAdministrativeContact\",\r\n                    \"organization\": \"Buyer Co.\"\r\n                }\r\n            ],\r\n            \"billingAccount\": {\r\n                \"id\": \"00000000-1111-0000-0000-000000000001\"\r\n            },\r\n            \"agreementName\": \"Buyer-Seller General Agreement 03/2023\",\r\n            \"requestedCompletionDate\": \"2026-06-28T22:00:00Z\",\r\n            \"product\": {\r\n                \"productOffering\": {\r\n                    \"id\": \"BroadbandBasicOffering-0001\"\r\n                },\r\n                \"place\": [\r\n                    {\r\n                        \"place\": {\r\n                            \"@type\": \"GeographicAddressRef\",\r\n                            \"id\": \"Budapest-id-1\"\r\n                        },\r\n                        \"role\": \"INSTALL_LOCATION\",\r\n                        \"contact\": [\r\n                            {\r\n                                \"emailAddress\": \"LocationContact@buyer.mplify.com\",\r\n                                \"name\": \"Location Contact\",\r\n                                \"number\": \"+12-345-678-90\",\r\n                                \"organization\": \"Buyer Co.\"\r\n                            }\r\n                        ]\r\n                    }\r\n                ],\r\n                \"productConfiguration\": {\r\n                    \"@type\": \"urn:mef:lso:spec:cantata-sonata:internet-access:v1.0.0:all\",\r\n                    \"variant\": \"BROADBAND_BASIC\",\r\n                    \"deliveryMechanism\": \"DEMARCATION_ONLY\",\r\n                    \"serviceAccessInterfaceType\": {\r\n                        \"physicalInterface\": [\r\n                            {\r\n                                \"physicalLayer\": \"1000BASE-T\",\r\n                                \"connectorType\": \"RJ45\"\r\n                            }\r\n                        ],\r\n                        \"resiliency\": \"NONE\"\r\n                    },\r\n                    \"features\": {},\r\n                    \"bandwidth\": {\r\n                        \"downstream\": {\r\n                            \"irValue\": 100,\r\n                            \"irUnits\": \"MBPS\"\r\n                        },\r\n                        \"upstream\": {\r\n                            \"irValue\": 20,\r\n                            \"irUnits\": \"MBPS\"\r\n                        }\r\n                    },\r\n                    \"billingModel\": {\r\n                        \"billingModelType\": \"FLAT\",\r\n                        \"billingModelPlanName\": \"Broadband Basic Monthly\"\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BasePath}}/mefApi/sonata/productOrderingManagement/v11/productOrder",
+          "host": [
+            "{{BasePath}}"
+          ],
+          "path": [
+            "mefApi",
+            "sonata",
+            "productOrderingManagement",
+            "v11",
+            "productOrder"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Use Case 5: Product Order - Broadband Internet Access, Advanced",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"externalId\": \"BuyerOrder-00002\",\r\n    \"projectId\": \"BuyerProject2\",\r\n    \"relatedContactInformation\": [\r\n        {\r\n            \"emailAddress\": \"john.example@buyer.mplify.com\",\r\n            \"name\": \"John Example\",\r\n            \"number\": \"12-345-6789\",\r\n            \"numberExtension\": \"1234\",\r\n            \"role\": \"productOrderContact\",\r\n            \"organization\": \"Buyer Co.\"\r\n        }\r\n    ],\r\n    \"productOrderItem\": [\r\n        {\r\n            \"action\": \"add\",\r\n            \"id\": \"item-00001\",\r\n            \"expediteIndicator\": false,\r\n            \"requestedItemTerm\": {\r\n                \"duration\": {\r\n                    \"amount\": 12,\r\n                    \"units\": \"months\"\r\n                },\r\n                \"endOfTermAction\": \"autoRenew\",\r\n                \"name\": \"Yearly subscription\"\r\n            },\r\n            \"relatedContactInformation\": [\r\n                {\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"emailAddress\": \"Buyer.ProductOrderItemContact@example.com\",\r\n                    \"role\": \"buyerProductOrderItemContact\",\r\n                    \"name\": \"Buyer Product Order Item Contact\"\r\n                },\r\n                {\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"emailAddress\": \"Buyer.ImplementationContact@example.com\",\r\n                    \"role\": \"buyerImplementationContact\",\r\n                    \"name\": \"Buyer Implementation Contact\"\r\n                },\r\n                {\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"emailAddress\": \"Buyer.TechnicalContact@example.com\",\r\n                    \"role\": \"buyerTechnicalContact\",\r\n                    \"name\": \"Buyer Technical Contact \"\r\n                },\r\n                {\r\n                    \"emailAddress\": \"bill.contact@example.com\",\r\n                    \"name\": \"Bill Contact\",\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"organization\": \"Example Company\",\r\n                    \"role\": \"buyerBillingContact\"\r\n                },\r\n                {\r\n                    \"emailAddress\": \"john.example@buyer.mplify.com\",\r\n                    \"name\": \"John Example\",\r\n                    \"number\": \"12-345-6789\",\r\n                    \"numberExtension\": \"1234\",\r\n                    \"role\": \"buyerAdministrativeContact\",\r\n                    \"organization\": \"Buyer Co.\"\r\n                }\r\n            ],\r\n            \"billingAccount\": {\r\n                \"id\": \"00000000-1111-0000-0000-000000000001\"\r\n            },\r\n            \"agreementName\": \"Buyer-Seller General Agreement 03/2023\",\r\n            \"requestedCompletionDate\": \"2026-06-28T22:00:00Z\",\r\n            \"product\": {\r\n                \"productOffering\": {\r\n                    \"id\": \"BroadbandAdvancedOffering-0001\"\r\n                },\r\n                \"place\": [\r\n                    {\r\n                        \"place\": {\r\n                            \"@type\": \"GeographicAddressRef\",\r\n                            \"id\": \"Budapest-id-1\"\r\n                        },\r\n                        \"role\": \"INSTALL_LOCATION\",\r\n                        \"contact\": [\r\n                            {\r\n                                \"emailAddress\": \"LocationContact@buyer.mplify.com\",\r\n                                \"name\": \"Location Contact\",\r\n                                \"number\": \"+12-345-678-90\",\r\n                                \"organization\": \"Buyer Co.\"\r\n                            }\r\n                        ]\r\n                    }\r\n                ],\r\n                \"productConfiguration\": {\r\n                    \"@type\": \"urn:mef:lso:spec:cantata-sonata:internet-access:v1.0.0:all\",\r\n                    \"variant\": \"BROADBAND_ADVANCED\",\r\n                    \"demarcationPoint\": [\r\n                        {\r\n                            \"subUnitType\": \"FLOOR\",\r\n                            \"subUnitNumber\": \"3\"\r\n                        },\r\n                        {\r\n                            \"subUnitType\": \"ROOM\",\r\n                            \"subUnitNumber\": \"305\"\r\n                        },\r\n                        {\r\n                            \"subUnitType\": \"RACK\",\r\n                            \"subUnitNumber\": \"7\"\r\n                        },\r\n                        {\r\n                            \"subUnitType\": \"CHASSIS\",\r\n                            \"subUnitNumber\": \"2\"\r\n                        },\r\n                        {\r\n                            \"subUnitType\": \"SLOT\",\r\n                            \"subUnitNumber\": \"5\"\r\n                        },\r\n                        {\r\n                            \"subUnitType\": \"PORT\",\r\n                            \"subUnitNumber\": \"12\"\r\n                        }\r\n                    ],\r\n                    \"deliveryMechanism\": \"PHYSICAL_ROUTER\",\r\n                    \"serviceAccessInterfaceType\": {\r\n                        \"physicalInterface\": [\r\n                            {\r\n                                \"physicalLayer\": \"1000BASE-T\",\r\n                                \"connectorType\": \"RJ45\"\r\n                            }\r\n                        ],\r\n                        \"resiliency\": \"NONE\"\r\n                    },\r\n                    \"features\": {\r\n                        \"assistance\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true,\r\n                            \"assistanceLevel\": \"CO_MANAGED\",\r\n                            \"simpleRequestsPerMonth\": 5,\r\n                            \"complexRequestsPerMonth\": 2\r\n                        },\r\n                        \"dns\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true,\r\n                            \"searchDomain\": [\r\n                                \"example.com\",\r\n                                \"local.example.com\"\r\n                            ]\r\n                        },\r\n                        \"monitoring\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true,\r\n                            \"monitoringType\": \"REACTIVE\"\r\n                        },\r\n                        \"performanceReporting\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true\r\n                        }\r\n                    },\r\n                    \"bandwidth\": {\r\n                        \"downstream\": {\r\n                            \"irValue\": 500,\r\n                            \"irUnits\": \"MBPS\"\r\n                        },\r\n                        \"upstream\": {\r\n                            \"irValue\": 100,\r\n                            \"irUnits\": \"MBPS\"\r\n                        }\r\n                    },\r\n                    \"guaranteedBandwidth\": {\r\n                        \"downstream\": {\r\n                            \"irValue\": 100,\r\n                            \"irUnits\": \"MBPS\"\r\n                        },\r\n                        \"upstream\": {\r\n                            \"irValue\": 20,\r\n                            \"irUnits\": \"MBPS\"\r\n                        }\r\n                    },\r\n                    \"billingModel\": {\r\n                        \"billingModelType\": \"FLAT\",\r\n                        \"billingModelPlanName\": \"Broadband Advanced Premium\"\r\n                    },\r\n                    \"localNetworkAddresses\": {\r\n                        \"lanAddressBlock\": \"192.168.1.0/24\",\r\n                        \"dhcpStatus\": \"ENABLED\",\r\n                        \"dhcpStart\": \"192.168.1.100\",\r\n                        \"dhcpEnd\": \"192.168.1.200\",\r\n                        \"dhcpStaticList\": [\r\n                            {\r\n                                \"staticMACAddress\": \"00:1A:2B:3C:4D:5E\",\r\n                                \"staticIpAddress\": \"192.168.1.10\"\r\n                            },\r\n                            {\r\n                                \"staticMACAddress\": \"00:1A:2B:3C:4D:5F\",\r\n                                \"staticIpAddress\": \"192.168.1.11\"\r\n                            }\r\n                        ],\r\n                        \"natStatus\": \"ENABLED\",\r\n                        \"natAddress\": \"203.0.113.45\"\r\n                    },\r\n                    \"providerIndependentIpAddresses\": \"DISABLED\",\r\n                    \"ipAddressType\": \"DYNAMIC\",\r\n                    \"publicAddressesPrefixLength\": {\r\n                        \"ipv4\": \"/32\",\r\n                        \"ipv6\": \"NONE\"\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BasePath}}/mefApi/sonata/productOrderingManagement/v11/productOrder",
+          "host": [
+            "{{BasePath}}"
+          ],
+          "path": [
+            "mefApi",
+            "sonata",
+            "productOrderingManagement",
+            "v11",
+            "productOrder"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Use Case 6: Product Order - Dedicated Internet Access, without Router",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"externalId\": \"BuyerOrder-00003\",\r\n    \"projectId\": \"BuyerProject3\",\r\n    \"relatedContactInformation\": [\r\n        {\r\n            \"emailAddress\": \"john.example@buyer.mplify.com\",\r\n            \"name\": \"John Example\",\r\n            \"number\": \"12-345-6789\",\r\n            \"numberExtension\": \"1234\",\r\n            \"role\": \"productOrderContact\",\r\n            \"organization\": \"Buyer Co.\"\r\n        }\r\n    ],\r\n    \"productOrderItem\": [\r\n        {\r\n            \"action\": \"add\",\r\n            \"id\": \"item-00001\",\r\n            \"expediteIndicator\": false,\r\n            \"requestedItemTerm\": {\r\n                \"duration\": {\r\n                    \"amount\": 12,\r\n                    \"units\": \"months\"\r\n                },\r\n                \"endOfTermAction\": \"autoRenew\",\r\n                \"name\": \"Yearly subscription\"\r\n            },\r\n            \"relatedContactInformation\": [\r\n                {\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"emailAddress\": \"Buyer.ProductOrderItemContact@example.com\",\r\n                    \"role\": \"buyerProductOrderItemContact\",\r\n                    \"name\": \"Buyer Product Order Item Contact\"\r\n                },\r\n                {\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"emailAddress\": \"Buyer.ImplementationContact@example.com\",\r\n                    \"role\": \"buyerImplementationContact\",\r\n                    \"name\": \"Buyer Implementation Contact\"\r\n                },\r\n                {\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"emailAddress\": \"Buyer.TechnicalContact@example.com\",\r\n                    \"role\": \"buyerTechnicalContact\",\r\n                    \"name\": \"Buyer Technical Contact \"\r\n                },\r\n                {\r\n                    \"emailAddress\": \"bill.contact@example.com\",\r\n                    \"name\": \"Bill Contact\",\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"organization\": \"Example Company\",\r\n                    \"role\": \"buyerBillingContact\"\r\n                },\r\n                {\r\n                    \"emailAddress\": \"john.example@buyer.mplify.com\",\r\n                    \"name\": \"John Example\",\r\n                    \"number\": \"12-345-6789\",\r\n                    \"numberExtension\": \"1234\",\r\n                    \"role\": \"buyerAdministrativeContact\",\r\n                    \"organization\": \"Buyer Co.\"\r\n                }\r\n            ],\r\n            \"billingAccount\": {\r\n                \"id\": \"00000000-1111-0000-0000-000000000001\"\r\n            },\r\n            \"agreementName\": \"Buyer-Seller General Agreement 03/2023\",\r\n            \"requestedCompletionDate\": \"2026-06-28T22:00:00Z\",\r\n            \"product\": {\r\n                \"productOffering\": {\r\n                    \"id\": \"BroadbandDedicatedWithoutRouterOffering-0001\"\r\n                },\r\n                \"productRelationship\": [\r\n                    {\r\n                        \"relationshipType\": \"CONNECTS_TO_SAI\",\r\n                        \"id\": \"SAI_ID-001\"\r\n                    }\r\n                ],\r\n                \"productConfiguration\": {\r\n                    \"@type\": \"urn:mef:lso:spec:cantata-sonata:internet-access:v1.0.0:all\",\r\n                    \"variant\": \"DEDICATED_WITHOUT_ROUTER\",\r\n                    \"deliveryMechanism\": \"DEMARCATION_ONLY\",\r\n                    \"vlan\": 100,\r\n                    \"features\": {\r\n                        \"assistance\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true,\r\n                            \"assistanceLevel\": \"SELF_MANAGED\",\r\n                            \"simpleRequestsPerMonth\": 10,\r\n                            \"complexRequestsPerMonth\": 5\r\n                        },\r\n                        \"ddosMitigation\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true\r\n                        },\r\n                        \"dns\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true,\r\n                            \"searchDomain\": [\r\n                                \"enterprise.example.com\"\r\n                            ]\r\n                        },\r\n                        \"monitoring\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true,\r\n                            \"monitoringType\": \"PROACTIVE\"\r\n                        },\r\n                        \"performanceReporting\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true\r\n                        }\r\n                    },\r\n                    \"bandwidth\": {\r\n                        \"downstream\": {\r\n                            \"irValue\": 500,\r\n                            \"irUnits\": \"MBPS\"\r\n                        },\r\n                        \"upstream\": {\r\n                            \"irValue\": 500,\r\n                            \"irUnits\": \"MBPS\"\r\n                        }\r\n                    },\r\n                    \"guaranteedBandwidth\": {\r\n                        \"downstream\": {\r\n                            \"irValue\": 200,\r\n                            \"irUnits\": \"MBPS\"\r\n                        },\r\n                        \"upstream\": {\r\n                            \"irValue\": 200,\r\n                            \"irUnits\": \"MBPS\"\r\n                        }\r\n                    },\r\n                    \"billingModel\": {\r\n                        \"billingModelType\": \"BURSTABLE_PERCENTILE\",\r\n                        \"billingModelPlanName\": \"DIA 95th Percentile Enterprise\"\r\n                    },\r\n                    \"providerIndependentIpAddresses\": \"DISABLED\",\r\n                    \"ipAddressType\": \"STATIC\",\r\n                    \"publicAddressesPrefixLength\": {\r\n                        \"ipv4\": \"/28\",\r\n                        \"ipv6\": \"/120\"\r\n                    },\r\n                    \"transitAddresses\": {\r\n                        \"requestedIpv4TransitAddressPrefixLength\": \"/30\",\r\n                        \"requestedIpv6TransitAddressPrefixLength\": \"/124\",\r\n                        \"serviceProviderIpv4TransitAddress\": \"198.51.100.3/30\",\r\n                        \"serviceProviderIpv6TransitAddress\": \"2001:db8:abcd:0012::0001/124\"\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BasePath}}/mefApi/sonata/productOrderingManagement/v11/productOrder",
+          "host": [
+            "{{BasePath}}"
+          ],
+          "path": [
+            "mefApi",
+            "sonata",
+            "productOrderingManagement",
+            "v11",
+            "productOrder"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Use Case 7: Product Order - Dedicated Internet Access, with Router",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"externalId\": \"BuyerOrder-00004\",\r\n    \"projectId\": \"BuyerProject4\",\r\n    \"relatedContactInformation\": [\r\n        {\r\n            \"emailAddress\": \"john.example@buyer.mplify.com\",\r\n            \"name\": \"John Example\",\r\n            \"number\": \"12-345-6789\",\r\n            \"numberExtension\": \"1234\",\r\n            \"role\": \"productOrderContact\",\r\n            \"organization\": \"Buyer Co.\"\r\n        }\r\n    ],\r\n    \"productOrderItem\": [\r\n        {\r\n            \"action\": \"add\",\r\n            \"id\": \"item-00001\",\r\n            \"expediteIndicator\": false,\r\n            \"requestedItemTerm\": {\r\n                \"duration\": {\r\n                    \"amount\": 12,\r\n                    \"units\": \"months\"\r\n                },\r\n                \"endOfTermAction\": \"autoRenew\",\r\n                \"name\": \"Yearly subscription\"\r\n            },\r\n            \"relatedContactInformation\": [\r\n                {\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"emailAddress\": \"Buyer.ProductOrderItemContact@example.com\",\r\n                    \"role\": \"buyerProductOrderItemContact\",\r\n                    \"name\": \"Buyer Product Order Item Contact\"\r\n                },\r\n                {\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"emailAddress\": \"Buyer.ImplementationContact@example.com\",\r\n                    \"role\": \"buyerImplementationContact\",\r\n                    \"name\": \"Buyer Implementation Contact\"\r\n                },\r\n                {\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"emailAddress\": \"Buyer.TechnicalContact@example.com\",\r\n                    \"role\": \"buyerTechnicalContact\",\r\n                    \"name\": \"Buyer Technical Contact \"\r\n                },\r\n                {\r\n                    \"emailAddress\": \"bill.contact@example.com\",\r\n                    \"name\": \"Bill Contact\",\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"organization\": \"Example Company\",\r\n                    \"role\": \"buyerBillingContact\"\r\n                },\r\n                {\r\n                    \"emailAddress\": \"john.example@buyer.mplify.com\",\r\n                    \"name\": \"John Example\",\r\n                    \"number\": \"12-345-6789\",\r\n                    \"numberExtension\": \"1234\",\r\n                    \"role\": \"buyerAdministrativeContact\",\r\n                    \"organization\": \"Buyer Co.\"\r\n                }\r\n            ],\r\n            \"billingAccount\": {\r\n                \"id\": \"00000000-1111-0000-0000-000000000001\"\r\n            },\r\n            \"agreementName\": \"Buyer-Seller General Agreement 03/2023\",\r\n            \"requestedCompletionDate\": \"2026-06-28T22:00:00Z\",\r\n            \"product\": {\r\n                \"productOffering\": {\r\n                    \"id\": \"BroadbandDedicatedWithRouterOffering-0001\"\r\n                },\r\n                \"productRelationship\": [\r\n                    {\r\n                        \"relationshipType\": \"CONNECTS_TO_SAI\",\r\n                        \"id\": \"SAI_ID-002\"\r\n                    },\r\n                    {\r\n                        \"relationshipType\": \"DIVERSE_FROM\",\r\n                        \"id\": \"InternetAccess-00001\"\r\n                    }\r\n                ],\r\n                \"productConfiguration\": {\r\n                    \"@type\": \"urn:mef:lso:spec:cantata-sonata:internet-access:v1.0.0:all\",\r\n                    \"variant\": \"DEDICATED_WITH_ROUTER\",\r\n                    \"deliveryMechanism\": \"PHYSICAL_ROUTER\",\r\n                    \"vlan\": 200,\r\n                    \"features\": {\r\n                        \"assistance\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true,\r\n                            \"assistanceLevel\": \"FULLY_MANAGED\",\r\n                            \"simpleRequestsPerMonth\": 20,\r\n                            \"complexRequestsPerMonth\": 10\r\n                        },\r\n                        \"cloudPrioritization\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true,\r\n                            \"cloudServiceProvider\": [\r\n                                \"Microsoft Azure\",\r\n                                \"Amazon Web Services\",\r\n                                \"Google Cloud Platform\"\r\n                            ]\r\n                        },\r\n                        \"ddosMitigation\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true\r\n                        },\r\n                        \"dedicatedFirewall\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true,\r\n                            \"firewallCapability\": \"ADVANCED\"\r\n                        },\r\n                        \"dns\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true,\r\n                            \"searchDomain\": [\r\n                                \"corp.enterprise.com\",\r\n                                \"internal.enterprise.com\"\r\n                            ]\r\n                        },\r\n                        \"facilityDiversity\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true\r\n                        },\r\n                        \"layer3Resiliency\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true,\r\n                            \"layer3Resiliency\": \"WIRELESS_BACKUP\"\r\n                        },\r\n                        \"mobileBackup\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true,\r\n                            \"minimumExpectedBandwidth\": {\r\n                                \"downstream\": {\r\n                                    \"irValue\": 100,\r\n                                    \"irUnits\": \"MBPS\"\r\n                                },\r\n                                \"upstream\": {\r\n                                    \"irValue\": 50,\r\n                                    \"irUnits\": \"MBPS\"\r\n                                }\r\n                            }\r\n                        },\r\n                        \"monitoring\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true,\r\n                            \"monitoringType\": \"PROACTIVE\"\r\n                        },\r\n                        \"performanceReporting\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true\r\n                        },\r\n                        \"routing\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true,\r\n                            \"routingType\": \"BGP\",\r\n                            \"bgp\": {\r\n                                \"subscriberAsNumber\": 65001,\r\n                                \"connectionAddressFamily\": \"IPV4\",\r\n                                \"peeringAddresses\": {\r\n                                    \"peeringAddressType\": \"CONNECTION_ADDRESSES\"\r\n                                },\r\n                                \"authentication\": [\r\n                                    \"bgp-secret-password\"\r\n                                ],\r\n                                \"bgpCommunityList\": [\r\n                                    {\r\n                                        \"asNumber\": 65001,\r\n                                        \"communityValue\": 100\r\n                                    }\r\n                                ],\r\n                                \"holdTime\": 90,\r\n                                \"asOverride\": \"DISABLED\"\r\n                            }\r\n                        },\r\n                        \"snmpRead\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true\r\n                        }\r\n                    },\r\n                    \"bandwidth\": {\r\n                        \"downstream\": {\r\n                            \"irValue\": 10,\r\n                            \"irUnits\": \"GBPS\"\r\n                        },\r\n                        \"upstream\": {\r\n                            \"irValue\": 10,\r\n                            \"irUnits\": \"GBPS\"\r\n                        }\r\n                    },\r\n                    \"guaranteedBandwidth\": {\r\n                        \"downstream\": {\r\n                            \"irValue\": 5,\r\n                            \"irUnits\": \"GBPS\"\r\n                        },\r\n                        \"upstream\": {\r\n                            \"irValue\": 5,\r\n                            \"irUnits\": \"GBPS\"\r\n                        }\r\n                    },\r\n                    \"billingModel\": {\r\n                        \"billingModelType\": \"FLAT\",\r\n                        \"billingModelPlanName\": \"DIA Premium Data FLAT\"\r\n                    },\r\n                    \"localNetworkAddresses\": {\r\n                        \"lanAddressBlock\": \"10.100.0.0/16\",\r\n                        \"dhcpStatus\": \"ENABLED\",\r\n                        \"dhcpStart\": \"10.100.1.1\",\r\n                        \"dhcpEnd\": \"10.100.255.254\",\r\n                        \"dhcpStaticList\": [\r\n                            {\r\n                                \"staticMACAddress\": \"00:11:22:33:44:55\",\r\n                                \"staticIpAddress\": \"10.100.0.10\"\r\n                            },\r\n                            {\r\n                                \"staticMACAddress\": \"00:11:22:33:44:56\",\r\n                                \"staticIpAddress\": \"10.100.0.11\"\r\n                            },\r\n                            {\r\n                                \"staticMACAddress\": \"00:11:22:33:44:57\",\r\n                                \"staticIpAddress\": \"10.100.0.12\"\r\n                            }\r\n                        ],\r\n                        \"natStatus\": \"ENABLED\",\r\n                        \"natAddress\": \"203.0.113.100\"\r\n                    },\r\n                    \"providerIndependentIpAddresses\": \"ENABLED\",\r\n                    \"autonomousSystemNumber\": {\r\n                        \"asnType\": \"PUBLIC\",\r\n                        \"asnId\": 65001\r\n                    },\r\n                    \"ipAddressType\": \"STATIC\",\r\n                    \"publicAddressBlock\": {\r\n                        \"ipv4\": \"203.0.113.0/24\",\r\n                        \"ipv6\": \"2001:db8:1234::/48\"\r\n                    },\r\n                    \"transitAddresses\": {\r\n                        \"requestedIpv4TransitAddressPrefixLength\": \"/30\",\r\n                        \"requestedIpv6TransitAddressPrefixLength\": \"/124\",\r\n                        \"serviceProviderIpv4TransitAddress\": \"198.51.100.3/30\",\r\n                        \"serviceProviderIpv6TransitAddress\": \"2001:db8:abcd:0012::0001/124\"\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BasePath}}/mefApi/sonata/productOrderingManagement/v11/productOrder",
+          "host": [
+            "{{BasePath}}"
+          ],
+          "path": [
+            "mefApi",
+            "sonata",
+            "productOrderingManagement",
+            "v11",
+            "productOrder"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Use Case 8: POQ - Dedicated Internet Access, without Router – bandwidth upgrade",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"externalId\": \"BuyerPoq-00002\",\r\n    \"instantSyncQualification\": false,\r\n    \"provideAlternative\": false,\r\n    \"projectId\": \"BuyerProject5\",\r\n    \"relatedContactInformation\": [\r\n        {\r\n            \"emailAddress\": \"john.example@buyer.mplify.com\",\r\n            \"name\": \"John Example\",\r\n            \"number\": \"12-345-6789\",\r\n            \"numberExtension\": \"1234\",\r\n            \"role\": \"buyerContactInformation\",\r\n            \"organization\": \"Buyer Co.\"\r\n        }\r\n    ],\r\n    \"productOfferingQualificationItem\": [\r\n        {\r\n            \"action\": \"modify\",\r\n            \"id\": \"item-00001\",\r\n            \"product\": {\r\n                \"id\": \"InternetAccess-BroadbandDedicatedWithoutRouter-00001\",\r\n                \"productOffering\": {\r\n                    \"id\": \"BroadbandDedicatedWithoutRouterOffering-0001\"\r\n                },\r\n                \"productRelationship\": [\r\n                    {\r\n                        \"relationshipType\": \"CONNECTS_TO_SAI\",\r\n                        \"id\": \"SAI_ID-001\"\r\n                    }\r\n                ],\r\n                \"productConfiguration\": {\r\n                    \"@type\": \"urn:mef:lso:spec:cantata-sonata:internet-access:v1.0.0:all\",\r\n                    \"variant\": \"DEDICATED_WITHOUT_ROUTER\",\r\n                    \"deliveryMechanism\": \"DEMARCATION_ONLY\",\r\n                    \"vlan\": 100,\r\n                    \"features\": {\r\n                        \"assistance\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true,\r\n                            \"assistanceLevel\": \"SELF_MANAGED\",\r\n                            \"simpleRequestsPerMonth\": 10,\r\n                            \"complexRequestsPerMonth\": 5\r\n                        },\r\n                        \"ddosMitigation\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true\r\n                        },\r\n                        \"dns\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true,\r\n                            \"searchDomain\": [\r\n                                \"enterprise.example.com\"\r\n                            ]\r\n                        },\r\n                        \"monitoring\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true,\r\n                            \"monitoringType\": \"PROACTIVE\"\r\n                        },\r\n                        \"performanceReporting\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true\r\n                        }\r\n                    },\r\n                    \"bandwidth\": {\r\n                        \"downstream\": {\r\n                            \"irValue\": 1,\r\n                            \"irUnits\": \"GBPS\"\r\n                        },\r\n                        \"upstream\": {\r\n                            \"irValue\": 1,\r\n                            \"irUnits\": \"GBPS\"\r\n                        }\r\n                    },\r\n                    \"guaranteedBandwidth\": {\r\n                        \"downstream\": {\r\n                            \"irValue\": 500,\r\n                            \"irUnits\": \"MBPS\"\r\n                        },\r\n                        \"upstream\": {\r\n                            \"irValue\": 500,\r\n                            \"irUnits\": \"MBPS\"\r\n                        }\r\n                    },\r\n                    \"billingModel\": {\r\n                        \"billingModelType\": \"BURSTABLE_PERCENTILE\",\r\n                        \"billingModelPlanName\": \"DIA 95th Percentile Enterprise\"\r\n                    },\r\n                    \"providerIndependentIpAddresses\": \"DISABLED\",\r\n                    \"ipAddressType\": \"STATIC\",\r\n                    \"publicAddressesPrefixLength\": {\r\n                        \"ipv4\": \"/28\",\r\n                        \"ipv6\": \"/120\"\r\n                    },\r\n                    \"transitAddresses\": {\r\n                        \"requestedIpv4TransitAddressPrefixLength\": \"/30\",\r\n                        \"requestedIpv6TransitAddressPrefixLength\": \"/124\",\r\n                        \"serviceProviderIpv4TransitAddress\": \"198.51.100.3/30\",\r\n                        \"serviceProviderIpv6TransitAddress\": \"2001:db8:abcd:0012::0001/124\"\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BasePath}}/mefApi/sonata/productOfferingQualification/v8/productOfferingQualification",
+          "host": [
+            "{{BasePath}}"
+          ],
+          "path": [
+            "mefApi",
+            "sonata",
+            "productOfferingQualification",
+            "v8",
+            "productOfferingQualification"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Use Case 9: Product Order – term enhancement",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"externalId\": \"BuyerOrder-00005\",\r\n    \"projectId\": \"BuyerProject1\",\r\n    \"relatedContactInformation\": [\r\n        {\r\n            \"emailAddress\": \"john.example@buyer.mplify.com\",\r\n            \"name\": \"John Example\",\r\n            \"number\": \"12-345-6789\",\r\n            \"numberExtension\": \"1234\",\r\n            \"role\": \"productOrderContact\",\r\n            \"organization\": \"Buyer Co.\"\r\n        }\r\n    ],\r\n    \"productOrderItem\": [\r\n        {\r\n            \"action\": \"modify\",\r\n            \"id\": \"item-00001\",\r\n            \"expediteIndicator\": false,\r\n            \"requestedItemTerm\": {\r\n                \"duration\": {\r\n                    \"amount\": 24,\r\n                    \"units\": \"months\"\r\n                },\r\n                \"endOfTermAction\": \"autoRenew\",\r\n                \"name\": \"2-year subscription\"\r\n            },\r\n            \"relatedContactInformation\": [\r\n                {\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"emailAddress\": \"Buyer.ProductOrderItemContact@example.com\",\r\n                    \"role\": \"buyerProductOrderItemContact\",\r\n                    \"name\": \"Buyer Product Order Item Contact\"\r\n                },\r\n                {\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"emailAddress\": \"Buyer.ImplementationContact@example.com\",\r\n                    \"role\": \"buyerImplementationContact\",\r\n                    \"name\": \"Buyer Implementation Contact\"\r\n                },\r\n                {\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"emailAddress\": \"Buyer.TechnicalContact@example.com\",\r\n                    \"role\": \"buyerTechnicalContact\",\r\n                    \"name\": \"Buyer Technical Contact \"\r\n                },\r\n                {\r\n                    \"emailAddress\": \"bill.contact@example.com\",\r\n                    \"name\": \"Bill Contact\",\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"organization\": \"Example Company\",\r\n                    \"role\": \"buyerBillingContact\"\r\n                },\r\n                {\r\n                    \"emailAddress\": \"john.example@buyer.mplify.com\",\r\n                    \"name\": \"John Example\",\r\n                    \"number\": \"12-345-6789\",\r\n                    \"numberExtension\": \"1234\",\r\n                    \"role\": \"buyerAdministrativeContact\",\r\n                    \"organization\": \"Buyer Co.\"\r\n                }\r\n            ],\r\n            \"billingAccount\": {\r\n                \"id\": \"00000000-1111-0000-0000-000000000001\"\r\n            },\r\n            \"agreementName\": \"Buyer-Seller General Agreement 03/2023\",\r\n            \"requestedCompletionDate\": \"2026-06-28T22:00:00Z\",\r\n            \"product\": {\r\n                \"id\": \"InternetAccess-BroadbandBasic-00001\",\r\n                \"productOffering\": {\r\n                    \"id\": \"BroadbandBasicOffering-0001\"\r\n                },\r\n                \"place\": [\r\n                    {\r\n                        \"place\": {\r\n                            \"@type\": \"GeographicAddressRef\",\r\n                            \"id\": \"Budapest-id-1\"\r\n                        },\r\n                        \"role\": \"INSTALL_LOCATION\",\r\n                        \"contact\": [\r\n                            {\r\n                                \"emailAddress\": \"LocationContact@buyer.mplify.com\",\r\n                                \"name\": \"Location Contact\",\r\n                                \"number\": \"+12-345-678-90\",\r\n                                \"organization\": \"Buyer Co.\"\r\n                            }\r\n                        ]\r\n                    }\r\n                ],\r\n                \"productConfiguration\": {\r\n                    \"@type\": \"urn:mef:lso:spec:cantata-sonata:internet-access:v1.0.0:all\",\r\n                    \"variant\": \"BROADBAND_BASIC\",\r\n                    \"deliveryMechanism\": \"DEMARCATION_ONLY\",\r\n                    \"serviceAccessInterfaceType\": {\r\n                        \"physicalInterface\": [\r\n                            {\r\n                                \"physicalLayer\": \"1000BASE-T\",\r\n                                \"connectorType\": \"RJ45\"\r\n                            }\r\n                        ],\r\n                        \"resiliency\": \"NONE\"\r\n                    },\r\n                    \"features\": {},\r\n                    \"bandwidth\": {\r\n                        \"downstream\": {\r\n                            \"irValue\": 100,\r\n                            \"irUnits\": \"MBPS\"\r\n                        },\r\n                        \"upstream\": {\r\n                            \"irValue\": 20,\r\n                            \"irUnits\": \"MBPS\"\r\n                        }\r\n                    },\r\n                    \"billingModel\": {\r\n                        \"billingModelType\": \"FLAT\",\r\n                        \"billingModelPlanName\": \"Broadband Basic Monthly\"\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BasePath}}/mefApi/sonata/productOrderingManagement/v11/productOrder",
+          "host": [
+            "{{BasePath}}"
+          ],
+          "path": [
+            "mefApi",
+            "sonata",
+            "productOrderingManagement",
+            "v11",
+            "productOrder"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Use Case 10: Product Order - Move Broadband Internet Access",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"externalId\": \"BuyerOrder-00006\",\r\n    \"projectId\": \"BuyerProject1\",\r\n    \"relatedContactInformation\": [\r\n        {\r\n            \"emailAddress\": \"john.example@buyer.mplify.com\",\r\n            \"name\": \"John Example\",\r\n            \"number\": \"12-345-6789\",\r\n            \"numberExtension\": \"1234\",\r\n            \"role\": \"productOrderContact\",\r\n            \"organization\": \"Buyer Co.\"\r\n        }\r\n    ],\r\n    \"productOrderItem\": [\r\n        {\r\n            \"action\": \"modify\",\r\n            \"id\": \"item-00001\",\r\n            \"expediteIndicator\": false,\r\n            \"requestedItemTerm\": {\r\n                \"duration\": {\r\n                    \"amount\": 24,\r\n                    \"units\": \"months\"\r\n                },\r\n                \"endOfTermAction\": \"autoRenew\",\r\n                \"name\": \"Yearly subscription\"\r\n            },\r\n            \"relatedContactInformation\": [\r\n                {\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"emailAddress\": \"Buyer.ProductOrderItemContact@example.com\",\r\n                    \"role\": \"buyerProductOrderItemContact\",\r\n                    \"name\": \"Buyer Product Order Item Contact\"\r\n                },\r\n                {\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"emailAddress\": \"Buyer.ImplementationContact@example.com\",\r\n                    \"role\": \"buyerImplementationContact\",\r\n                    \"name\": \"Buyer Implementation Contact\"\r\n                },\r\n                {\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"emailAddress\": \"Buyer.TechnicalContact@example.com\",\r\n                    \"role\": \"buyerTechnicalContact\",\r\n                    \"name\": \"Buyer Technical Contact \"\r\n                },\r\n                {\r\n                    \"emailAddress\": \"bill.contact@example.com\",\r\n                    \"name\": \"Bill Contact\",\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"organization\": \"Example Company\",\r\n                    \"role\": \"buyerBillingContact\"\r\n                },\r\n                {\r\n                    \"emailAddress\": \"john.example@buyer.mplify.com\",\r\n                    \"name\": \"John Example\",\r\n                    \"number\": \"12-345-6789\",\r\n                    \"numberExtension\": \"1234\",\r\n                    \"role\": \"buyerAdministrativeContact\",\r\n                    \"organization\": \"Buyer Co.\"\r\n                }\r\n            ],\r\n            \"billingAccount\": {\r\n                \"id\": \"00000000-1111-0000-0000-000000000001\"\r\n            },\r\n            \"agreementName\": \"Buyer-Seller General Agreement 03/2023\",\r\n            \"requestedCompletionDate\": \"2026-06-28T22:00:00Z\",\r\n            \"product\": {\r\n                \"id\": \"InternetAccess-BroadbandBasic-00001\",\r\n                \"productOffering\": {\r\n                    \"id\": \"BroadbandBasicOffering-0001\"\r\n                },\r\n                \"place\": [\r\n                    {\r\n                        \"place\": {\r\n                            \"@type\": \"GeographicAddressRef\",\r\n                            \"id\": \"Budapest-id-678\"\r\n                        },\r\n                        \"role\": \"INSTALL_LOCATION\",\r\n                        \"contact\": [\r\n                            {\r\n                                \"emailAddress\": \"OtherLocationContact@buyer.mplify.com\",\r\n                                \"name\": \"Other Location Contact\",\r\n                                \"number\": \"+12-678-678-90\",\r\n                                \"organization\": \"Buyer Co.\"\r\n                            }\r\n                        ]\r\n                    }\r\n                ],\r\n                \"productConfiguration\": {\r\n                    \"@type\": \"urn:mef:lso:spec:cantata-sonata:internet-access:v1.0.0:all\",\r\n                    \"variant\": \"BROADBAND_BASIC\",\r\n                    \"deliveryMechanism\": \"DEMARCATION_ONLY\",\r\n                    \"serviceAccessInterfaceType\": {\r\n                        \"physicalInterface\": [\r\n                            {\r\n                                \"physicalLayer\": \"1000BASE-T\",\r\n                                \"connectorType\": \"RJ45\"\r\n                            }\r\n                        ],\r\n                        \"resiliency\": \"NONE\"\r\n                    },\r\n                    \"features\": {},\r\n                    \"bandwidth\": {\r\n                        \"downstream\": {\r\n                            \"irValue\": 100,\r\n                            \"irUnits\": \"MBPS\"\r\n                        },\r\n                        \"upstream\": {\r\n                            \"irValue\": 20,\r\n                            \"irUnits\": \"MBPS\"\r\n                        }\r\n                    },\r\n                    \"billingModel\": {\r\n                        \"billingModelType\": \"FLAT\",\r\n                        \"billingModelPlanName\": \"Broadband Basic Monthly\"\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BasePath}}/mefApi/sonata/productOrderingManagement/v11/productOrder",
+          "host": [
+            "{{BasePath}}"
+          ],
+          "path": [
+            "mefApi",
+            "sonata",
+            "productOrderingManagement",
+            "v11",
+            "productOrder"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Use Case 11: Product Order - Move Dedicated Internet Access",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"externalId\": \"BuyerOrder-00007\",\r\n    \"projectId\": \"BuyerProject3\",\r\n    \"relatedContactInformation\": [\r\n        {\r\n            \"emailAddress\": \"john.example@buyer.mplify.com\",\r\n            \"name\": \"John Example\",\r\n            \"number\": \"12-345-6789\",\r\n            \"numberExtension\": \"1234\",\r\n            \"role\": \"productOrderContact\",\r\n            \"organization\": \"Buyer Co.\"\r\n        }\r\n    ],\r\n    \"productOrderItem\": [\r\n        {\r\n            \"action\": \"modify\",\r\n            \"id\": \"item-00001\",\r\n            \"expediteIndicator\": false,\r\n            \"requestedItemTerm\": {\r\n                \"duration\": {\r\n                    \"amount\": 12,\r\n                    \"units\": \"months\"\r\n                },\r\n                \"endOfTermAction\": \"autoRenew\",\r\n                \"name\": \"Yearly subscription\"\r\n            },\r\n            \"relatedContactInformation\": [\r\n                {\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"emailAddress\": \"Buyer.ProductOrderItemContact@example.com\",\r\n                    \"role\": \"buyerProductOrderItemContact\",\r\n                    \"name\": \"Buyer Product Order Item Contact\"\r\n                },\r\n                {\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"emailAddress\": \"Buyer.ImplementationContact@example.com\",\r\n                    \"role\": \"buyerImplementationContact\",\r\n                    \"name\": \"Buyer Implementation Contact\"\r\n                },\r\n                {\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"emailAddress\": \"Buyer.TechnicalContact@example.com\",\r\n                    \"role\": \"buyerTechnicalContact\",\r\n                    \"name\": \"Buyer Technical Contact \"\r\n                },\r\n                {\r\n                    \"emailAddress\": \"bill.contact@example.com\",\r\n                    \"name\": \"Bill Contact\",\r\n                    \"number\": \"+12-345-678-90\",\r\n                    \"organization\": \"Example Company\",\r\n                    \"role\": \"buyerBillingContact\"\r\n                },\r\n                {\r\n                    \"emailAddress\": \"john.example@buyer.mplify.com\",\r\n                    \"name\": \"John Example\",\r\n                    \"number\": \"12-345-6789\",\r\n                    \"numberExtension\": \"1234\",\r\n                    \"role\": \"buyerAdministrativeContact\",\r\n                    \"organization\": \"Buyer Co.\"\r\n                }\r\n            ],\r\n            \"billingAccount\": {\r\n                \"id\": \"00000000-1111-0000-0000-000000000001\"\r\n            },\r\n            \"agreementName\": \"Buyer-Seller General Agreement 03/2023\",\r\n            \"requestedCompletionDate\": \"2026-06-28T22:00:00Z\",\r\n            \"product\": {\r\n                \"id\": \"InternetAccess-BroadbandDedicatedWithoutRouter-00001\",\r\n                \"productOffering\": {\r\n                    \"id\": \"BroadbandDedicatedWithoutRouterOffering-0001\"\r\n                },\r\n                \"productRelationship\": [\r\n                    {\r\n                        \"relationshipType\": \"CONNECTS_TO_SAI\",\r\n                        \"id\": \"SAI_ID-678\"\r\n                    }\r\n                ],\r\n                \"productConfiguration\": {\r\n                    \"@type\": \"urn:mef:lso:spec:cantata-sonata:internet-access:v1.0.0:all\",\r\n                    \"variant\": \"DEDICATED_WITHOUT_ROUTER\",\r\n                    \"deliveryMechanism\": \"DEMARCATION_ONLY\",\r\n                    \"vlan\": 100,\r\n                    \"features\": {\r\n                        \"assistance\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true,\r\n                            \"assistanceLevel\": \"SELF_MANAGED\",\r\n                            \"simpleRequestsPerMonth\": 10,\r\n                            \"complexRequestsPerMonth\": 5\r\n                        },\r\n                        \"ddosMitigation\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true\r\n                        },\r\n                        \"dns\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true,\r\n                            \"searchDomain\": [\r\n                                \"enterprise.example.com\"\r\n                            ]\r\n                        },\r\n                        \"monitoring\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true,\r\n                            \"monitoringType\": \"PROACTIVE\"\r\n                        },\r\n                        \"performanceReporting\": {\r\n                            \"isSupported\": true,\r\n                            \"isEnabled\": true\r\n                        }\r\n                    },\r\n                    \"bandwidth\": {\r\n                        \"downstream\": {\r\n                            \"irValue\": 500,\r\n                            \"irUnits\": \"MBPS\"\r\n                        },\r\n                        \"upstream\": {\r\n                            \"irValue\": 500,\r\n                            \"irUnits\": \"MBPS\"\r\n                        }\r\n                    },\r\n                    \"guaranteedBandwidth\": {\r\n                        \"downstream\": {\r\n                            \"irValue\": 200,\r\n                            \"irUnits\": \"MBPS\"\r\n                        },\r\n                        \"upstream\": {\r\n                            \"irValue\": 200,\r\n                            \"irUnits\": \"MBPS\"\r\n                        }\r\n                    },\r\n                    \"billingModel\": {\r\n                        \"billingModelType\": \"BURSTABLE_PERCENTILE\",\r\n                        \"billingModelPlanName\": \"DIA 95th Percentile Enterprise\"\r\n                    },\r\n                    \"providerIndependentIpAddresses\": \"DISABLED\",\r\n                    \"ipAddressType\": \"STATIC\",\r\n                    \"publicAddressesPrefixLength\": {\r\n                        \"ipv4\": \"/28\",\r\n                        \"ipv6\": \"/120\"\r\n                    },\r\n                    \"transitAddresses\": {\r\n                        \"requestedIpv4TransitAddressPrefixLength\": \"/30\",\r\n                        \"requestedIpv6TransitAddressPrefixLength\": \"/124\",\r\n                        \"serviceProviderIpv4TransitAddress\": \"198.51.100.3/30\",\r\n                        \"serviceProviderIpv6TransitAddress\": \"2001:db8:abcd:0012::0001/124\"\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BasePath}}/mefApi/sonata/productOrderingManagement/v11/productOrder",
+          "host": [
+            "{{BasePath}}"
+          ],
+          "path": [
+            "mefApi",
+            "sonata",
+            "productOrderingManagement",
+            "v11",
+            "productOrder"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Use Case 12: Quote - Dedicated Internet Access, with Router – delete without SAI",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"requestedQuoteCompletionDate\": \"2026-06-12T22:00:00Z\",\r\n    \"externalId\": \"BuyerQuote-00002\",\r\n    \"buyerRequestedQuoteLevel\": \"firm\",\r\n    \"projectId\": \"BuyerProject4\",\r\n    \"instantSyncQuote\": true,\r\n    \"relatedContactInformation\": [\r\n        {\r\n            \"emailAddress\": \"john.example@buyer.mplify.com\",\r\n            \"name\": \"John Example\",\r\n            \"number\": \"12-345-6789\",\r\n            \"numberExtension\": \"1234\",\r\n            \"role\": \"buyerContactInformation\",\r\n            \"organization\": \"Buyer Co.\"\r\n        }\r\n    ],\r\n    \"quoteItem\": [\r\n        {\r\n            \"action\": \"delete\",\r\n            \"id\": \"item-00001\",\r\n            \"product\": {\r\n                \"id\": \"InternetAccess-BroadbandDedicatedWithRouter-00001\"\r\n            }\r\n        }\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BasePath}}/mefApi/sonata/quoteManagement/v10/quote",
+          "host": [
+            "{{BasePath}}"
+          ],
+          "path": [
+            "mefApi",
+            "sonata",
+            "quoteManagement",
+            "v10",
+            "quote"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Use Case 13: Product Order - Dedicated Internet Access, with Router – delete with SAI",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"externalId\": \"BuyerOrder-00008\",\r\n    \"projectId\": \"BuyerProject4\",\r\n    \"relatedContactInformation\": [\r\n        {\r\n            \"emailAddress\": \"john.example@buyer.mplify.com\",\r\n            \"name\": \"John Example\",\r\n            \"number\": \"12-345-6789\",\r\n            \"numberExtension\": \"1234\",\r\n            \"role\": \"productOrderContact\",\r\n            \"organization\": \"Buyer Co.\"\r\n        }\r\n    ],\r\n    \"productOrderItem\": [\r\n        {\r\n            \"action\": \"delete\",\r\n            \"id\": \"item-00001\",\r\n            \"requestedCompletionDate\": \"2026-09-28T22:00:00Z\",\r\n            \"product\": {\r\n                \"id\": \"InternetAccess-BroadbandDedicatedWithRouter-00001\"\r\n            }\r\n        },\r\n        {\r\n            \"action\": \"delete\",\r\n            \"id\": \"item-00002\",\r\n            \"requestedCompletionDate\": \"2026-09-28T22:00:00Z\",\r\n            \"product\": {\r\n                \"id\": \"SAI_ID-002\"\r\n            }\r\n        }\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BasePath}}/mefApi/sonata/productOrderingManagement/v11/productOrder",
+          "host": [
+            "{{BasePath}}"
+          ],
+          "path": [
+            "mefApi",
+            "sonata",
+            "productOrderingManagement",
+            "v11",
+            "productOrder"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

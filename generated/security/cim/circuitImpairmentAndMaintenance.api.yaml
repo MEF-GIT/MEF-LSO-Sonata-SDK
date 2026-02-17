@@ -1,13 +1,10 @@
 openapi: 3.0.1
 info:
   description: >
-    **This file forms part of MEF W175**
+    **This file forms part of Mplify 175**
 
 
-    **This draft represents MEF work in progress and is subject to change.**
-
-
-    This API implements Business Requirements described in MEF 113 and MEF 173
+    This API implements Business Requirements described in Mplify 113 and 173
 
 
     It allows the Buyer to retrieve CIM Incident as well as register for event
@@ -31,7 +28,7 @@ info:
     - Register for Event Notifications
 
 
-    Copyright 2025 MEF Forum and its contributors
+    Copyright 2025 Mplify Alliance and its contributors
 
 
     This file includes content based on the TM Forum Trouble Ticket API (TMF621
@@ -40,9 +37,9 @@ info:
 
     which is licensed by the TM Forum under the Apache License version 2.0.
 
-    Such content has been modified by the MEF Forum and its contributors.
+    Such content has been modified by the Mplify Alliance and its contributors.
   title: Circuit Impairment and Maintenance
-  version: 1.0.0-RC
+  version: 1.0.0
 servers:
   - url: 'https://{serverBase}/mefApi/sonata/cimIncident/v1/'
     variables:
@@ -683,7 +680,7 @@ components:
         - $ref: '#/components/schemas/CimMaintenanceIncident'
       properties:
         '@type':
-          description: Used to unambiguously designate the class type when sublassing
+          description: Used to unambiguously designate the class type when sub-classing
           type: string
         attachment:
           description: >-
@@ -757,8 +754,8 @@ components:
           type: array
         relatedIssue:
           description: >-
-            A list of Related Issue relationships. Represents relationships to
-            other Trouble Tickets, Incidents, and CIM Incidents.
+            A list of Issue Relationships. Represents relationships to other
+            Trouble Tickets, Incidents, and CIM Incidents.
           items:
             $ref: '#/components/schemas/IssueRelationship'
           type: array
@@ -821,7 +818,7 @@ components:
 
 
         - failure - Any Situation where the Product is non-operational, such as
-        down, routing fail-ures or severe packet drops.
+        down, routing failures or severe packet drops.
 
 
         - plannedMaintenance -Any scheduled maintenance that may impact a
@@ -829,7 +826,7 @@ components:
 
 
         - policing - Any Situation due to traffic violating traffic profiles
-        as-sociated with the subscribed service, such as traffic drops due to
+        associated with the subscribed service, such as traffic drops due to
         policing.
       enum:
         - congestion
@@ -887,10 +884,10 @@ components:
       description: >-
         Sent when the Seller detects an occurrence of a Situation on a Product
         provided to the Buyer, where the Product is not meeting the Product
-        specifications or is not opera-tional on an intermittent basis. This
-        includes impair-ments due to traffic violating traffic profile
-        thresholds (for example, excessive traffic drops due to policing) and/or
-        traffic congestion exceeding thresholds.
+        specifications or is not operational on an intermittent basis. This
+        includes impairments due to traffic violating traffic profile thresholds
+        (for example, excessive traffic drops due to policing) and/or traffic
+        congestion exceeding thresholds.
     DataSizeUnit:
       description: The unit of measure in the data size.
       enum:
@@ -917,7 +914,7 @@ components:
           type: string
         reason:
           description: >-
-            Text that explains the reason the for error. This can be shown to a
+            Text that explains the reason for the error. This can be shown to a
             client user.
           maxLength: 255
           type: string
@@ -1128,27 +1125,24 @@ components:
 
 
         | API name                                 | MEF 113 name          |
-        Description                                                                                                                                                                                                                                                                                                          
+        Description                                                                                      
         |
 
         | ---------------------------------------- | --------------------- |
-        ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        -------------------------------------------------------------------------------------------------
         |
 
         | `cimIncidentCreateEvent`                 | INCIDENT_CREATE       | A
         new CIM Incident was created by the
-        Seller.                                                                                                                                                                                                                                                                            
-        |
+        Seller.                                                    |
 
         | `cimIdentAttributeValueChangeEvent`      | INCIDENT_UPDATE       | An
         open CIM Incident was updated by the
-        Seller.                                                                                                                                                                                                                                                                          
-        |
+        Seller.                                                  |
 
         | `cimIdentStatusChangeEvent`              | INCIDENT_STATE_CHANGE | An
         CIM Incident `status` was changed by the
-        Seller.                                                                                                                                                                                                                                                                      
-        |
+        Seller.                                              |
       properties:
         callback:
           description: >-
@@ -1292,24 +1286,24 @@ components:
 
 
         | status       | MEF 113 name |
-        Description                                                                                                                                                             
+        Description                                                                                                        
         |
 
         | ------------ | ------------ |
-        ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        -------------------------------------------------------------------------------------------------------------------
         |
 
         | `closed`     | CLOSED       | The Situation described in the Incident
         was closed by has been resolved and normal operation has been restored
-        on the Seller.Seller's network. This is a terminal status. |
+        on the Seller's network. This is a terminal status. |
 
         | `created`    | CREATED      | A new Incident has been created and
         allocated a unique
-        `id`.                                                                                                            
-        |
+        `id`.                                                       |
 
         | `inProgress` | IN_PROGRESS  | The Incident is in the process of being
-        handled and investigated for resolution by the Seller.
+        handled and investigated for resolution by the
+        Seller.                     |
       enum:
         - closed
         - created

@@ -1,0 +1,22 @@
+@startuml
+
+hide footbox
+
+participant Buyer as b
+participant Seller as s
+
+activate b
+b -> s++: GET {{baseUrl}}/cimIncident/{{id}}
+alt Success (HTTP 200)
+b <-- s: HTTP 200 OK (1 `CimIncident`) 
+else Business Failure (HTTP 400/401/403)
+b <-- s: HTTP 4xx 
+else Not found (HTTP 404)
+b <-- s: HTTP 404 Not found 
+else Server Failure (HTTP 500)
+b <-- s--: HTTP 500 Internal error 
+end
+deactivate b
+
+...
+@enduml

@@ -1,0 +1,20 @@
+@startuml
+
+hide footbox
+
+participant Buyer as b
+participant Seller as s
+
+activate b
+b -> s++: GET {{baseUrl}}/cimIncident?...
+alt Success (HTTP 200)
+b <-- s: HTTP 200 Ok (CimIncident[] list with 0 or more elements) 
+else Business Failure (HTTP 400/401/403/422)
+b <-- s: HTTP 4xx 
+else Server Failure (HTTP 500)
+b <-- s--: HTTP 500 internal error 
+end
+deactivate b
+
+...
+@enduml

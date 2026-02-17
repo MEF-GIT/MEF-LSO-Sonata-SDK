@@ -1,5 +1,13 @@
 # Product Catalog: Release notes
 
+## Release Kylie:
+
+**Readiness status**: Mplify Published Standard
+
+**Summary:**
+
+No changes
+
 ## Release Janis:
 
 **Readiness status**: Call for Comments #3 resolved. Ready to start the Letter Ballot. It will be most likely published

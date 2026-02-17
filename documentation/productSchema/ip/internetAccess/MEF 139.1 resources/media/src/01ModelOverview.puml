@@ -9,22 +9,8 @@ class BiDirSimpleBandwidth {
 
 }
 
-BiDirSimpleBandwidth *--> InformationRate : downstream
-BiDirSimpleBandwidth *--> InformationRate : upstream
-
-
-class DataSize {
-
-    dataSizeValue: integer
-    dataSizeUnits: DataSizeUnits
-}
-
-
-class Duration {
-
-    amount*: integer
-    units*: TimeUnit
-}
+BiDirSimpleBandwidth *-->"1" InformationRate : downstream
+BiDirSimpleBandwidth *-->"1" InformationRate : upstream
 
 
 
@@ -45,12 +31,11 @@ class InformationRate {
 
 
 class InternetAccess<<Product>> {
-
+    variant*: InternetAccessVariantName
     deliveryMechanism*: InternetAccessDeliveryMechanism
     providerIndependentIpAddresses: EnabledDisabled
     ipAddressType: InternetAccessIpAddressType
 }
-MEFProductConfiguration <|-- InternetAccess
 
 InternetAccess *-->"*" SubUnit : demarcationPoint
 InternetAccess *--> InternetAccessServiceAccessInterfaceType : serviceAccessInterfaceType
@@ -68,7 +53,7 @@ InternetAccess *--> InternetAccessTransitAddresses : transitAddresses
 
 class InternetAccessAutonomousSystemNumber {
 
-    asnType: AsnType
+    asnType*: AsnType
 }
 
 InternetAccessAutonomousSystemNumber *--> FourOctetInteger : asnId
@@ -76,47 +61,17 @@ InternetAccessAutonomousSystemNumber *--> FourOctetInteger : asnId
 
 class InternetAccessBillingModel {
 
-    billingModelType*: BillingModelType
+    billingModelType*: InternetAccessBillingModelType
+    billingModelPlanName*: string
 }
-
-InternetAccessBillingModel *-->"1..*" InternetAccessNonRecurringPrice : nonRecurringPrice
-InternetAccessBillingModel *-->"1..*" InternetAccessRecurringPrice : recurringPrice
-
-
-class InternetAccessBurstablePercentileBilling {
-
-    burstablePercentile*: integer
-}
-InternetAccessBillingModel <|-- InternetAccessBurstablePercentileBilling
-
-InternetAccessBurstablePercentileBilling *-->"1..*" InternetAccessNonRecurringPrice : burstablePriceList
-
-
-class InternetAccessDataTransferBilling {
-
-}
-InternetAccessBillingModel <|-- InternetAccessDataTransferBilling
-
-InternetAccessDataTransferBilling *-->"1" Duration : dataTransferPeriod
-InternetAccessDataTransferBilling *-->"1..*" InternetAccessDataTransferTier : dataTransferTiers
-
-
-class InternetAccessDataTransferTier {
-
-}
-
-InternetAccessDataTransferTier *-->"1" DataSize : unit
-InternetAccessDataTransferTier *-->"1" Price : unitPrice
-InternetAccessDataTransferTier *-->"1" DataSize : cap
 
 
 
 class InternetAccessDhcpStaticListEntry {
 
     staticMACAddress: string
-    staticIpAddress: string
+    staticIpAddress: Ipv4OrIpv6Address
 }
-
 
 
 class InternetAccessFeature {
@@ -129,7 +84,7 @@ class InternetAccessFeature {
 
 class InternetAccessFeatureAssistance {
 
-    assistanceLevel*: AssistanceLevel
+    assistanceLevel*: InternetAccessAssistanceLevel
     simpleRequestsPerMonth: integer
     complexRequestsPerMonth: integer
 }
@@ -147,7 +102,7 @@ InternetAccessFeature <|-u- InternetAccessFeatureCloudPrioritization
 
 class InternetAccessFeatureDedicatedFirewall {
 
-    firewallType: FirewallType
+    firewallCapability*: InternetAccessFirewallCapability
 }
 InternetAccessFeature <|-u- InternetAccessFeatureDedicatedFirewall
 
@@ -155,23 +110,15 @@ InternetAccessFeature <|-u- InternetAccessFeatureDedicatedFirewall
 
 class InternetAccessFeatureDns {
 
-    searchDomain*: string[]
+    searchDomain: string[]
 }
 InternetAccessFeature <|-u- InternetAccessFeatureDns
 
 
 
-class InternetAccessFeatureFacilityDiversity {
-
-    internetAccessRef: string
-}
-InternetAccessFeature <|-u- InternetAccessFeatureFacilityDiversity
-
-
-
 class InternetAccessFeatureLayer3Resiliency {
 
-    layer3Resiliency*: Layer3Resiliency
+    layer3Resiliency*: InternetAccessLayer3Resiliency
 }
 InternetAccessFeature <|-u- InternetAccessFeatureLayer3Resiliency
 
@@ -187,16 +134,16 @@ InternetAccessFeatureMobileBackup *-->"1" BiDirSimpleBandwidth : minimumExpected
 
 class InternetAccessFeatureMonitoring {
 
-    monitoringType*: MonitoringType
+    monitoringType*: InternetAccessMonitoringType
 }
 InternetAccessFeature <|-u- InternetAccessFeatureMonitoring
 
 
 
 class InternetAccessFeatureRouting {
-    bgp: Bgp
+    bgp: InternetAccessBgp
     static: Static 
-    routingType*: RoutingType
+    routingType*: InternetAccessRoutingType
 }
 InternetAccessFeature <|-u- InternetAccessFeatureRouting
 
@@ -211,7 +158,7 @@ InternetAccessFeatures *-u-> InternetAccessFeatureCloudPrioritization : cloudPri
 InternetAccessFeatures *-u-> InternetAccessFeature : ddosMitigation
 InternetAccessFeatures *-u-> InternetAccessFeatureDedicatedFirewall : dedicatedFirewall
 InternetAccessFeatures *-u-> InternetAccessFeatureDns : dns
-InternetAccessFeatures *-u-> InternetAccessFeatureFacilityDiversity : facilityDiversity
+InternetAccessFeatures *-u-> InternetAccessFeature : facilityDiversity
 InternetAccessFeatures *-u-> InternetAccessFeatureLayer3Resiliency : layer3Resiliency
 InternetAccessFeatures *-u-> InternetAccessFeatureMobileBackup : mobileBackup
 InternetAccessFeatures *-u-> InternetAccessFeatureMonitoring : monitoring
@@ -220,10 +167,7 @@ InternetAccessFeatures *-u-> InternetAccessFeatureRouting : routing
 InternetAccessFeatures *-u-> InternetAccessFeature : snmpRead
 
 
-class InternetAccessFlatBilling {
 
-}
-InternetAccessBillingModel <|-- InternetAccessFlatBilling
 
 
 
@@ -232,34 +176,28 @@ class InternetAccessLocalNetworkAddresses {
 
     lanAddressBlock: string
     dhcpStatus: EnabledDisabled
-    dhcpStart: string
-    dhcpEnd: string
-    nat: string
+    dhcpStart: Ipv4OrIpv6Address
+    dhcpEnd: Ipv4OrIpv6Address
+    natStatus*: EnabledDisabled
+    natAddress: Ipv4OrIpv6Address
 }
 
 InternetAccessLocalNetworkAddresses *-->"*" InternetAccessDhcpStaticListEntry : dhcpStaticList
 
 
-class InternetAccessNonRecurringPrice {
-
-    priceDescription*: string
-}
-
-InternetAccessNonRecurringPrice *-->"1" Price : price
-
 
 class InternetAccessPhysicalInterface {
 
-    physicalLayer: SaiEthernetPhysicalLayer
-    connectorType: ConnectorType
+    physicalLayer*: SaiEthernetPhysicalLayer
+    connectorType*: ConnectorType
 }
 
 
 
 class InternetAccessPublicAddressBlock {
 
-    ipv4: string
-    ipv6: string
+    ipv4*: string
+    ipv6*: string
 }
 
 
@@ -272,58 +210,27 @@ class InternetAccessPublicAddressesPrefixLength {
 
 
 
-class InternetAccessRecurringPrice {
-
-    priceDescription*: string
-}
-
-InternetAccessRecurringPrice *-->"1" Price : price
-InternetAccessRecurringPrice *-->"1" Duration : recurringChargePeriod
-
-
-
 class InternetAccessServiceAccessInterfaceType {
 
-    resiliency: InternetAccessResiliency
+    resiliency*: InternetAccessResiliency
 }
 
-InternetAccessServiceAccessInterfaceType *-->"*" InternetAccessPhysicalInterface : physical
+InternetAccessServiceAccessInterfaceType *-->"1..*" InternetAccessPhysicalInterface : physicalInterface
 
 
 class InternetAccessTransitAddresses {
 
-    ipv4TransitAddressPrefixLength: InternetAccessIpv4TransitAddressPrefixLength
-    ipv6TransitAddressPrefixLength: InternetAccessIpv6TransitAddressPrefixLength
-    ipv4TransitAddressBlock: string
-    ipv6TransitAddressBlock: string
+    requestedIpv4TransitAddressPrefixLength: InternetAccessIpv4TransitAddressPrefixLength
+    requestedIpv6TransitAddressPrefixLength: InternetAccessIpv6TransitAddressPrefixLength
+    serviceProviderIpv4TransitAddress: string
+    serviceProviderIpv6TransitAddress: string
 }
 
 
 
 
-class MEFProductConfiguration {
-
-    @type*: string
-}
 
 
-
-class Money {
-
-    unit*: string
-    value*: float
-}
-
-
-
-
-class Price {
-
-    taxRate: float
-}
-
-Price *-->"1" Money : dutyFreeAmount
-Price *--> Money : taxIncludedAmount
 
 
 class SubUnit {

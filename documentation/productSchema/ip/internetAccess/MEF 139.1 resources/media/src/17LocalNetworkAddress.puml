@@ -2,18 +2,24 @@
 class InternetAccessLocalNetworkAddresses {
 
     lanAddressBlock: string
-    dhcpStatus: EnabledDisabled
-    dhcpStart: string
-    dhcpEnd: string
-    nat: string
+    dhcpStatus*: EnabledDisabled
+    dhcpStart: Ipv4OrIpv6Address
+    dhcpEnd: Ipv4OrIpv6Address
+    natStatus*: EnabledDisabled
+    natAddress: Ipv4OrIpv6Address
 }
 
+
 InternetAccessLocalNetworkAddresses *-->"*" InternetAccessDhcpStaticListEntry : dhcpStaticList
+
 
 class InternetAccessDhcpStaticListEntry {
 
     staticMACAddress: string
-    staticIpAddress: string
+    staticIpAddress: Ipv4OrIpv6Address
+}
+
+
 }
 
 

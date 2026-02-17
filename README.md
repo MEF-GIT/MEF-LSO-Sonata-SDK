@@ -1,17 +1,20 @@
-# Mplify-LSO-Sonata-SDK - Janis Release
+# Mplify-LSO-Sonata-SDK - Kylie Release
 
 ## Download Link
 
 Download the entire repository by clicking
-[here](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/releases/download/janis/Mplify-LSO-Sonata-SDK-janis.zip)
+[here](https://github.com/MEF-GIT/MEF-LSO-Sonata-SDK/releases/download/kylie/Mplify-LSO-Sonata-SDK-kylie.zip)
 
 ## Introduction
+
+**NOTE:** Please note the Readme files in particular productApi directories to
+see detailed release notes per API.
 
 All references to 'MEF Forum' or 'MEF' in the release documentation, links, and
 YAML files should be interpreted to be references to 'Mplify Alliance' and
 'Mplify' respectively. Since this release coincides with the transition of the
 name of MEF Forum to Mplify Alliance, changes were not made to the all files on
-this release. Standards that awere already published will retain the "MEF" name.
+this release. Standards that are already published will retain the "MEF" name.
 
 This repository contains the Mplify LSO Sonata SDK. It includes API definitions
 for the following functional areas:
@@ -38,59 +41,38 @@ It also provides Product Schemas for:
 
 ## High-level release notes
 
-New Circuit Impairment and Maintenance (CIM) Notification API introduced (Mplify
-W175)
-
 There are the following document maturity changes:
 
 - Updated documents:
-
-  - Mplify 57.2.1 - Amendment to MEF 57.2: Product Order Management Business
-    Requirements and Use Cases
-  - Mplify 79.1 - Product Offering Qualification Management Business
-    Requirements and Use Cases
-  - Mplify 80.0.1 - Amendment to MEF 80: Quote Management Requirements and Use
-    Cases
-  - Mplify 127.1 - LSO Cantata and LSO Sonata Product Catalog - Business
-    Requirements and Use Cases
-  - Mplify 150 - Installation Place and Service Site Management Business
-    Requirements and Use Cases
-  - Mplify W87.1 - LSO Cantata and LSO Sonata Product Offering Qualification
-    API - Developer Guide
-  - Mplify W115.1 - LSO Cantata and LSO Sonata Quote Management API - Developer
-    Guide
-  - Mplify W116.1- LSO Cantata and LSO Sonata Product Inventory API - Developer
-    Guide
-  - Mplify W121.1 - LSO Cantata and LSO Sonata Address Management API -
-    Developer Guide
-  - Mplify W122.1 - LSO Cantata and LSO Sonata Site Management API - Developer
-    Guide
-  - Mplify W123.1 - LSO Cantata and LSO Sonata Product Ordering Management API -
-    Developer Guide
-  - Mplify W124.1 - LSO Cantata and LSO Sonata Trouble Ticket and Incident
-    Management API - Developer Guide
-  - Mplify W137.1 - LSO Cantata and LSO Sonata Appointment and Work Order
-    Management API - Developer Guide
-  - Mplify W141.1 - LSO Cantata and LSO Sonata Billing Management API -
-    Developer Guide
-  - Mplify W142 - LSO Cantata and LSO Sonata Product Catalog API & Developer
-    Guide
-
-- New Documents:
-
   - Mplify W139.1 - Internet Access Product Schemas and Developer Guide
-  - Mplify W175 - Circuit Impairment and Maintenance Notification API and
+
+- Published documents (no merit change):
+  - Mplify 87.1 - LSO Cantata and LSO Sonata Product Offering Qualification
+    API - Developer Guide
+  - Mplify 115.1 - LSO Cantata and LSO Sonata Quote Management API - Developer
+    Guide
+  - Mplify 116.1- LSO Cantata and LSO Sonata Product Inventory API - Developer
+    Guide
+  - Mplify 121.1 - LSO Cantata and LSO Sonata Address Management API -
+    Developer Guide
+  - Mplify 122.1 - LSO Cantata and LSO Sonata Site Management API - Developer
+    Guide
+  - Mplify 123.1 - LSO Cantata and LSO Sonata Product Ordering Management API -
+    Developer Guide
+  - Mplify 124.1 - LSO Cantata and LSO Sonata Trouble Ticket and Incident
+    Management API - Developer Guide
+  - Mplify 137.1 - LSO Cantata and LSO Sonata Appointment and Work Order
+    Management API - Developer Guide
+  - Mplify 141.1 - LSO Cantata and LSO Sonata Billing Management API -
+    Developer Guide
+  - Mplify 142 - LSO Cantata and LSO Sonata Product Catalog API & Developer
+    Guide
+ -  Mplify 175 - Circuit Impairment and Maintenance Notification API and
     Developer Guide
 
-- Superseded Documents:
-  - MEF 139 - Internet Access Product Schemas and Developer Guide
 
 The [LSO Marketplace](http://lso.mplify.net) offers the possibility to blend the
-desired APIs with chosen Products. Thus the APIs blended with all products that
-were available in `generated/staticBinding` are no longer provided.
-
-**NOTE:** Please note the Readme files in particular productApi directories to
-see detailed release notes per API.
+desired APIs with chosen Products.
 
 ## Maturity Level
 
@@ -107,65 +89,65 @@ release.
 
 - Product Catalog:
   - Business Requirements:
-    - \*Mplify 127.1 - **Published Standard**
+    - Mplify 127.1 - **Published Standard**
   - Developer Guide/API:
-    - \*Mplify W142 - **Done. Ready for Letter Ballot**
+    - Mplify 142 - **Published Standard**
 - Address Validation, Site Query:
   - Business Requirements:
-    - \*Mplify 150 - **Published Standard**
+    - Mplify 150 - **Published Standard**
   - Developer Guide/API:
-    - \*Mplify W121.1 - Address Management - **Done. Ready for Letter Ballot**
-    - \*Mplify W122.1 - Site Management - **Done. Ready for Letter Ballot**
+    - \*Mplify 121.1 - Address Management - **Published Standard**
+    - \*Mplify 122.1 - Site Management - **Published Standard**
 - Product Offering Qualification:
   - Business Requirements:
-    - \*Mplify 79.1 - **Published Standard**
+    - Mplify 79.1 - **Published Standard**
   - Developer Guide/API:
-    - \*Mplify W87.1 - **Done. Ready for Letter Ballot**
+    - \*Mplify 87.1 - **Published Standard**
 - Quote:
   - Business Requirements:
     - MEF 80 - **Published Standard**
-    - \*Mplify 80.0.1 - **Published Standard**
+    - Mplify 80.0.1 - **Published Standard**
   - Developer Guide/API:
-    - \*Mplify W115.1 - **Done. Ready for Letter Ballot**
+    - \*Mplify 115.1 - **Published Standard**
 - Product Offering Availability and Pricing Discovery:
   - Business Requirements:
-    - \*Mplify 110 - **Published Standard**
+    - Mplify 110 - **Published Standard**
   - Developer Guide/API:
-    - \*Mplify 160: - **Published Standard**
+    - Mplify 160: - **Published Standard**
 - Order:
   - Business Requirements:
     - MEF 57.2 - **Published Standard**
-    - \*Mplify 57.2.1 - **Published Standard**
+    - Mplify 57.2.1 - **Published Standard**
   - Developer Guide/API:
-    - \*Mplify W123.1 - **Done. Ready for Letter Ballot**
+    - \*Mplify 123.1 - **Published Standard**
 - Inventory:
   - Business Requirements:
     - MEF 81, MEF 81.0.1 - **Published Standard**
   - Developer Guide/API
-    - \*Mplify W116.1 - **Done. Ready for Letter Ballot**
+    - \*Mplify 116.1 - **Published Standard**
 - Trouble Ticket:
   - Business Requirements:
     - MEF 113 - **Published Standard**
   - Developer Guide/API
-    - \*Mplify W124.1 - Trouble Ticket - **Done. Ready for Letter Ballot**
-    - \*Mplify W137.1 - Appointment - **Done. Ready for Letter Ballot**
+    - \*Mplify 124.1 - Trouble Ticket - **Published Standard**
+    - \*Mplify 137.1 - Appointment - **Published Standard**
 - Circuit Impairment and Maintenance Notification
   - Business Requirements:
-    - \*Mplify 173 - **Published Standard**
+    - Mplify 173 - **Published Standard**
   - Developer Guide/API
-    - \*Mplify W175 - **work in progress - ready for CfC#1**
+    - \*Mplify 175 - **Published Standard**
 - Billing:
   - Business Requirements:
     - MEF 134 - **Published Standard**
   - Developer Guide/API
-    - \*Mplify W141.1 - **Done. Ready for Letter Ballot**
+    - \*Mplify 141.1 - **Published Standard**
 - Product Specifications:
   - MEF 106 - Access E-Line - **Published Standard**
   - MEF 125 - Subscriber Ethernet (EPL, EPLAN, EPTREE, EVPL, EVPLAN, EVPTREE) -
     **Published Standard**
   - MEF 125.0.1 - Amendment to Subscriber Ethernet - **Published Standard**
-  - Mplify 139.1 - Internet Access Product Schemas and Developer Guide - **work
-    in progress - ready for CfC#1**
+  - \*Mplify 139.1 - Internet Access Product Schemas and Developer Guide - **Done.
+    Ready for Letter Ballot**
 - Security:
   - MEF 128.1 - **Published Standard**
 
@@ -211,7 +193,7 @@ The Mplify LSO Sonata SDK is released under the Apache 2.0 license.
 
 ## Copyright
 
-© Mplify Alliance 2025. All Rights Reserved.
+© Mplify Alliance 2026. All Rights Reserved.
 
 **Disclaimer**
 

@@ -1,290 +1,1475 @@
----
 $schema: http://json-schema.org/draft-07/schema#
-title:
-  MEF LSO IP Common Types
-  # ---------------------
-  # Disclaimer
-  #
-  # © MEF Forum 2023. All Rights Reserved.
-  #
-  # The information in this publication is freely available for reproduction
-  # and use by any recipient and is believed to be accurate as of its
-  # publication date. Such information is subject to change without notice
-  # and MEF Forum (MEF) is not responsible for any errors. MEF does not
-  # assume responsibility to update or correct any information in this
-  # publication. No representation or warranty, expressed or implied, is
-  # made by MEF concerning the completeness, accuracy, or applicability of
-  # any information contained herein and no liability of any kind shall be
-  # assumed by MEF as a result of reliance upon such information.
-  #
-  # The information contained herein is intended to be used without
-  # modification by the recipient or user of this document. MEF is not
-  # responsible or liable for any modifications to this document made by any
-  # other party.
-  #
-  # The receipt or any use of this document or its contents
-  # does not in any way create, by implication or otherwise:
-  #
-  # a) any express or implied license or right to or under any patent,
-  # copyright, trademark or trade secret rights held or claimed by any MEF
-  # member which are or may be associated with the ideas, techniques,
-  # concepts or expressions contained herein; nor
-  #
-  # b) any warranty or representation that any MEF members will announce
-  # any product(s) and/or service(s) related thereto, or if such
-  # announcements are made, that such announced product(s) and/or service(s)
-  # embody any or all of the ideas, technologies, or concepts contained
-  # herein; nor
-  #
-  # c) any form of relationship between any MEF member and the recipient
-  # or user of this document.
-  #
-  # Implementation or use of specific MEF standards, specifications, or
-  # recommendations will be voluntary, and no Member shall be obliged to
-  # implement them by virtue of participation in MEF Forum. MEF is a
-  # non-profit international organization to enable the development and
-  # worldwide adoption of agile, assured and orchestrated network services.
-  # MEF does not, expressly or otherwise, endorse or promote any specific
-  # products or services.
-  # ---------------------
-  #
+title: 
+    Mplify LSO Service - IP Common Types
+    # Mplify Alliance - Date: 20251215  Edit-level: 
+    # File: schema/common/ip/ipCommon.yaml
+    #
+    # ---------------------
+    # Disclaimer
+    # 
+    # © Mplify Alliance 2025. All Rights Reserved.
+    # 
+    # The information in this publication is freely available for reproduction
+    # and use by any recipient and is believed to be accurate as of its
+    # publication date. Such information is subject to change without notice
+    # and Mplify Alliance (Mplify) is not responsible for any errors. Mplify does not
+    # assume responsibility to update or correct any information in this
+    # publication. No representation or warranty, expressed or implied, is
+    # made by Mplify concerning the completeness, accuracy, or applicability of
+    # any information contained herein and no liability of any kind shall be
+    # assumed by Mplify as a result of reliance upon such information.
+    # 
+    # The information contained herein is intended to be used without
+    # modification by the recipient or user of this document. Mplify is not
+    # responsible or liable for any modifications to this document made by any
+    # other party.
+    # 
+    # The receipt or any use of this document or its contents
+    # does not in any way create, by implication or otherwise:
+    # 
+    # a) any express or implied license or right to or under any patent,
+    # copyright, trademark or trade secret rights held or claimed by any Mplify
+    # member which are or may be associated with the ideas, techniques,
+    # concepts or expressions contained herein; nor
+    # 
+    # b) any warranty or representation that any Mplify members will announce
+    # any product(s) and/or service(s) related thereto, or if such
+    # announcements are made, that such announced product(s) and/or service(s)
+    # embody any or all of the ideas, technologies, or concepts contained
+    # herein; nor
+    # 
+    # c) any form of relationship between any Mplify member and the recipient
+    # or user of this document.
+    # 
+    # Implementation or use of specific Mplify standards, specifications, or
+    # recommendations will be voluntary, and no Member shall be obliged to
+    # implement them by virtue of participation in Mplify Alliance. Mplify is a
+    # non-profit international organization to enable the development and
+    # worldwide adoption of agile, assured and orchestrated network services.
+    # Mplify does not, expressly or otherwise, endorse or promote any specific
+    # products or services.
+    # ---------------------
+    #
 definitions:
+  Addressing:
+    description: >-
+      Enumeration representing the Address type for the Control Protocols data type. 
+      SP_OPERATOR_ADDRESSES If the addressing information is SP/Operator Addresses, 
+      then Ingress IP Packets for the specified protocol that have a multicast or 
+      broadcast destination address, or a unicast destination address that is reachable 
+      within the SP's or Operator's network, are considered to be IP Control Protocol 
+      Packets, and Egress IP Packets for the specified protocol that have a source address 
+      that is reachable  within the SP's or Operator's network are considered to be IP 
+      Control Protocol Packets. ANY - If the addressing information is Any, then all IP 
+      Packets for the specified protocol that cross the UNI are considered to be  IP 
+      Control Protocol Packets.
+    enum:
+      - "SP_OPERATOR_ADDRESSES"
+      - "ANY"
+    type: string
+  BurstBehavior:
+    description: >
+      Enumeration used to select the Bandwidth Profile Flow Burst Behavior attribute. 
+      Reference - MEF 61.1 Section 17.3 Table 29
+      - OPTIMIZE_DELAY: Enumeration representing the Burst Behavior of
+      optimization of delay.
+      - OPTIMIZE_THROUGHPUT: Enumeration representing the Burst Behavior of
+      optimization of throughput.
+    type: string
+    enum:
+      - OPTIMIZE_DELAY
+      - OPTIMIZE_THROUGHPUT
+  ClassOfServiceMapEntry:
+    description: Values for the Cloud Ingress Class of Service Map. Reference MEF 61.1
+      Table 11 - Values for the Cloud Ingress Class of Service Map, 11.0 IPVC EP
+      Ingress Class of Service Map Service Attribute.
+    properties:
+      cosName:
+        description: Class of Service name
+        type: string
+      destinationIpAddress:
+        $ref: "#/definitions/Ipv4Prefix"
+        description: Destination IP Address
+      destinationL4Port:
+        description: Destination Layer 4 Port
+        type: integer
+        minimum: 0
+        maximum: 65535
+      ethernetPcp:
+        description: Ethernet PCP value
+        maximum: 7
+        minimum: 0
+        type: integer
+      ipds:
+        description: DSCP value
+        maximum: 63
+        minimum: 0
+        type: integer
+      l4protocol:
+        description: Layer 4 Protocol
+        type: integer
+        minimum: 0
+        maximum: 255
+      sourceIpAddress:
+        $ref: "#/definitions/Ipv4Prefix"
+        description: Source IP Address
+      sourceL4Port:
+        description: Source Layer 4 Port
+        type: integer
+        minimum: 0
+        maximum: 65535
+    type: object
+  ConnectionType:
+    description: | 
+      An enumeration representing the connection type.
+      - POINT_TO_POINT indicates that the link is logically point to Point.
+      - MULTIPOINT indicates the link is logically multipoint.
+    enum:
+      - "POINT_TO_POINT"
+      - "MULTIPOINT"
+    type: string
+  ControlProtocols:
+    description: Data type representing Control Protocols. Each entry consists of a 3-tuple
+      containing the protocol name, addressing information (either SP/Operator
+      Addresses or Any) and one or more references. Reference MEF 61.1 Section
+      12.6 UNI List of Control Protocols Service Attribute
+    properties:
+      addressing:
+        $ref: "#/definitions/Addressing"
+      protocolName:
+        description: Protocol name.
+        type: string
+      reference:
+        description: Protocol reference.
+        items:
+          type: string
+        minItems: 1
+        type: array
+    type: object
+  Demux:
+    description: >-
+      Is a value that is specific to each type of UNI Access Link Trunk and 
+      indicates which Layer 2 sub-channel should be select for this UNI Access Link.
+    properties:
+      utpt:
+        description: Untagged and priority tagged frames.
+        type: boolean
+      vlanId:
+        description: VLAN ID.
+        type: array
+        items:
+          $ref: "../common.yaml#/definitions/VlanId"
+        minItems: 0
+    type: object
+  DhcpRelay:
+    description: >-
+      The UNI Access Link DHCP Relay Server Attribute is either Disabled or a pair containing
+      a list of one or more DHCP Server IP addresses and an IPVC End Point Identifier.
+    properties: 
+      dhcpRelayDisabled: 
+        description: DHCP Relay Disabled.
+        type: string 
+        enum: 
+          - "DISABLED"
+      dhcpRelayEnabled:
+        description: Pointer to DhcpRelay.
+        $ref: "#/definitions/DhcpRelayEnabled"
+    type: object
+    minProperties: 1
+    maxProperties: 1
+  DhcpRelayEnabled:
+    description: >-
+      Dynamic Host Configuration Protocol (DHCP) Relay functionality is useful
+      when the Subscriber uses DHCP (per RFC 2131[15] and RFC 8415[24]) in the
+      Subscriber Network but does not want to place a DHCP server (or possibly a
+      pair of redundant DHCP servers) in each part of the network.
+    properties:
+      dhcpServerList:
+        description: >-
+          Non-empty list of IP addresses for DHCP Servers belonging to the
+          Subscriber. Reference MEF 61.1 Section 13.6 UNI Access Link DHCP Relay
+          Server Attribute.
+        type: array
+        items:
+          $ref: "#/definitions/DhcpServer"
+        minItems: 1
+      ipvcEndPointIdentifier:
+        description: IPVC identifier as described in MEF 61.1 Section 11.1.
+        type: string
+        minLength: 1
+        maxLength: 53
+        pattern: "[\x20-\x7F]+"
+    type: object
+  DhcpServer:
+    description: Data type representing a DHCP Server
+    properties:
+      ipv4Address:
+        description: DHCP Server IPv4 address.
+        $ref: "#/definitions/Ipv4Address"
+      ipv6Address:
+        description: DHCP Server IPv6 address.
+        $ref: "#/definitions/Ipv6Address"
+    type: object
+  DscpMapping:
+    description: IP DSCP mapping of CoS name to DSCP value
+    properties:
+      cosName:
+        description: Class of Service name
+        type: string
+      ipDscp:
+        $ref: "./ipRoutingProtocolsCommon.yaml#/definitions/DscpValue"
+    type: object
+  EgressClassOfServiceMap:
+    description: >-
+      Pair of values (D,P). D specifies how to set the DS field in Egress IP
+      Data Packets based on CoS Name. It is either None, or a mapping from CoS
+      Names to DSCP values. P specifies how to set the PCP field in VLAN Tagged
+      Ethernet Frames containing Egress IP Data Packets based on CoS Name. It is
+      eitherNone, or a mapping from CoS Names to PCP values. Reference MEF 61.1
+      Section 11.10 IPVC EP  Egress Class of Service Map Service Attribute.         
+    properties:
+      defaultCosName:
+        description: Default Class of Service Name. 
+        type: string
+      dscpMapping:
+        items:
+          $ref: "#/definitions/DscpMapping"
+        type: array
+      pcpMapping:
+        items:
+          $ref: "#/definitions/PcpMapping"
+        type: array
+    type: object
+  EndPointIdentifierAndCosName:
+    description: >-
+      Data type representing IPVC End Point Identifier and CoS name use for
+      Bandwidth Profiles.
+    properties:
+      cosName:
+        description: Class of Service name.
+        type: string
+      ipvcEndPointIdentifier:
+        type: string
+        minLength: 1
+        maxLength: 53
+        pattern: "[\x20-\x7F]+"
+    type: object
+  EnniIpv4ConnectionAddressing:
+    description: >-
+      The ENNI Link IPv4 Connection Addressing specifies how IPv4 addresses are allocated 
+      to the devices connected to the ENNI Link. It is either NONE or STATIC, plus in the 
+      case of STATIC, some additional parameters. Reference MEF 61.1 Section 16.3 ENNI 
+      Link IPv4 Connection Addressing Attribute.
+    properties:
+      enniLinkIpv4AddressType:
+        $ref: "#/definitions/EnniLinkIpv4AddressType"
+      ipv4PrimarySubnet:
+        $ref: "#/definitions/EnniIpv4Subnet"
+      ipv4SecondarySubnetList:
+        items:
+          $ref: "#/definitions/EnniIpv4Subnet"
+        type: array
+        minItems: 0
+    type: object
+  EnniIpv4Subnet:
+    description: Data type representing IPv4 Subnet for ENNI Links. Reference MEF 61.1 Section 16.3 ENNI Link IPv4 Connection Addressing Attribute.
+    properties:
+      ipv4Prefix:
+        $ref: "#/definitions/Ipv4Prefix"
+      firstLloIpv4Address:
+        description: First LLO (Lowest Level Operator IPv4 Address.
+        type: string
+      secondLloIpv4Address:
+        description: Second LLO (Lowest Level Operator IPv4 Address.
+        type: string
+    type: object
+  EnniIpv6ConnectionAddressing:
+    description: The ENNI Link IPv4 Connection Addressing specifies how IPv4 addresses are allocated 
+      to the devices connected to the ENNI Link. It is either NONE or STATIC, plus in the 
+      case of STATIC, some additional parameters. Reference MEF 61.1 Section 16.3 ENNI 
+      Link IPv4 Connection Addressing Attribute.
+    properties:
+      enniLinkIpv6AddressType:
+        $ref: "#/definitions/EnniLinkIpv6AddressType"
+      ipv6Subnet:
+        $ref: "#/definitions/EnniIpv6Subnet"
+    type: object
+  EnniIpv6Subnet:
+    description: Data type representing IPv6 Subnet for ENNI Links. Reference MEF 61.1[1] Section 16.4 ENNI Link IPv6 Connection Addressing Attribute.
+    properties:
+      ipv6Prefix:
+        $ref: "#/definitions/Ipv6Prefix"
+      firstLloIpv6Address:
+        description: First LLO (Lowest Level Operator IPv6 Address.
+        type: string
+      secondLloIpv6Address:
+        description: Second LLO (Lowest Level Operator IPv6 Address.
+        type: string
+    type: object 
+  EnniLinkIpv4AddressType:
+    description: Enumeration to indicate ENNI Link IPv4 Address Type.
+    type: string
+    enum:
+      - "STATIC"
+  EnniLinkIpv6AddressType:
+    description: Enumeration to indicate ENNI Link IPv6 Address Type.
+    type: string
+    enum:
+      - "STATIC"
+      - "LL_ONLY"
+  EnniRoutingInformation:
+    type: object
+    properties:
+      enniServiceMappingIdentifier:
+        type: string
+        minLength: 1
+        maxLength: 53
+        pattern: "[\x20-\x7F]+"
+        description: >- 
+          A string identifier that is used at the ENNI to match the IPVC EP on one side 
+          of the ENNI with IPVC EPs on the other side. Reference MEF 61.1 Section 11.6 
+          IPVC EP ENNI Service Mapping Identifier Service Attribute.
+      administrativeDistance:
+        type: integer
+        description: >-
+          The Administrative Distance for a given ENNI Service Mapping Identifier is an 
+          integer greater than 0 that indicates the value of the administrative distance 
+          assigned by the Operator to eBGP routes received from another Operator over 
+          the ENNI Links that are assigned to that ENNI Service Mapping Identifier at an 
+          ENNI using Option A. Reference MEF 61.1 Section 14.3.1.1 Administrative Distance.
+      routeFlapDamping:
+        $ref: "../common.yaml#/definitions/EnabledDisabled"
+      asOverride:
+        $ref: "../common.yaml#/definitions/EnabledDisabled"
+      staticRoute:
+        description: >-
+          The Static Routes parameter for a given ENNI Service Mapping Identifier is a 
+          list of static routes over the ENNI for the service identified by that ENNI 
+          Service Mapping Identifier. The list can be empty. Reference MEF 61.1 Section 
+          14.3.1.4 Static Routes.
+        items:
+          $ref: '#/definitions/StaticRoute'
+        minItems: 0
+        type: array  
+    description: >-
+      For an ENNI Option A, the ENNI Routing Information Service Attribute is a mapping 
+      of ENNI Service Mapping Identifiers to four-tuples of the form (Administrative Distance, 
+      Route Flap Damping, AS Override, Static Routes). Each four-tuple applies to the 
+      corresponding ENNI Service Mapping Identifier. Reference MEF 61.1 Section 14.3.1 ENNI 
+      Routing Protocols for Option A.
+  EnniType:
+    type: string
+    description: >-
+      Indication of the type of BGP Peering at the ENNI. Reference MEF 61.1 Section 14 
+      ENNI Service Attributes.
+    enum:
+    - OPTION_A
+    - OPTION_B
+    - OPTION_C 
+  ExternalInterfaceType:
+    description: Enumeration representing the different External Interface types.
+    enum:
+      - "UNI"
+      - "ENNI"
+    type: string
+  HeaderFieldTypes:
+    description: HeaderFieldTypes is an enumeration for fields defined in MEF 61.1[1]
+      Section 10.13.2 Cloud Ingress Class of Service Map.
+    enum:
+      - "SOURCE_IP_ADDRESS"
+      - "DESTINATION_IP_ADDRESS"
+      - "L4_PROTOCOL"
+      - "SOURCE_L4_PORT"
+      - "DESTINATION_L4_PORT"
+      - "ETHERNET_PCP"
+      - "IP_DS"
+    type: string
+  IngressClassOfServiceMap:
+    description: >-
+      Is a triple (F,M,D) where F is a list of one or more fields in the packet 
+      header that are used to determine the CoS Name, M is a mapping from combinations 
+      of values of those fields to CoS Names, and D is a default CoS Name used when the 
+      map cannot be applied.  Reference MEF 61.1 Section 10.13.2 Cloud Ingress Class 
+      of Service Map and Section 11.10 IPVC EP Egress Class of Service Map Service Attribute.
+    properties:
+      defaultCosName:
+        type: string
+        description: >- 
+          Default Class of Service Name. Reference MEF 61.1 Section 10.13.2 Cloud
+          Ingress Class of Service Map and Section 11.9 IPVC EP Ingress Class of 
+          Service Map Service Attribute.
+      headerFieldTypes:
+        items:
+          $ref: "#/definitions/HeaderFieldTypes"
+        type: array
+        minItems: 1
+      ingressClassOfServiceMapping:
+        items:
+          $ref: "#/definitions/ClassOfServiceMapEntry"
+        type: array
+        minItems: 0
+    type: object
+  IpBwpEnvelope:
+    description: >-
+      A BWP Envelope is a list of Bandwidth Profile Flows, plus additional
+      parameters for the BWP as a whole. A BWP Envelope is a set of one or more
+      BWP Flows that are associated such that the amount of traffic for one flow
+      can affect the amount that is permitted for another flow. Reference MEF
+      61.1 Section 17.3 Bandwidth Profile Envelopes.
+    properties:
+      maxIrE:
+        $ref: "../common.yaml#/definitions/InformationRate"
+      tE:
+        description: >-
+          The Envelope IR Time in milliseconds. This is the time period over
+          which average Information Rates are calculated and thus it limits the
+          size of a burst. Reference MEF 61.1 Section 17.3 Bandwidth Profile
+          Envelopes.
+        type: integer
+    type: object
+  IpBwpFlow:
+    type: object
+    description: >-
+      A Bandwidth Profile Flow is a stream of IP Packets meeting certain
+      criteria. The criteria than can be used depends on which BWP Envelope the
+      BWP Flow is a part of. Reference MEF 61.1 Section 17.2 Bandwidth Profile
+      Flows.
+    properties:
+      burstBehavior:
+        $ref: "#/definitions/BurstBehavior"
+      cir:
+        $ref: "../common.yaml#/definitions/InformationRate"
+      flowIdentifier:
+        description: >- 
+          Identifier for the BWP Flow within the BWP Envelope. Unique integer 
+          between 1 and n where n is the number of BWP Flows in the BWP Envelope. 
+          Reference MEF 61.1 Table 29 - Bandwidth Profile Parameters for a  
+          Bandwidth Profile Flow.
+        type: integer
+      maxIr:
+        $ref: "../common.yaml#/definitions/InformationRate"
+      weight: 
+        description: >- 
+          Identifier for Weight as an integer greater than or equal to 0. Relative 
+          weight for this BWP Flow compared to other BWP Flows in the BWP Envelope. 
+          Reference MEF 61.1 Table 29 - Bandwidth Profile Parameters for a  
+          Bandwidth Profile Flow. 
+        type: integer
+  IpEnniEgressBwp:
+    description: 
+      All Egress IP Data Packets at the ENNI Access Link.  Reference MEF 61.1 Section 14.5. NOTE- No attributes are needed.     
+  IpEnniEgressBwpCos:
+    allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+      - type: object  
+        description: >-
+          All Egress-Eligible IP Data Packets at the ENNI that if transmitted, would be transmitted over the ENNI Link, and that were mapped on ingress to any of a given set of CoS Names. Reference MEF 61.1 Section 14.5.
+        properties:
+          ipEnniIngressBwp:
+            type: string
+            description: Class of Service name.
+  IpEnniEgressBwpEnvelopePerEnniLink:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - type: object  
+        description: >-
+          Is a list (possibly empty) of pairs of (ENNI Service Mapping Identifier, Bandwidth Profile Envelope), where
+          each Bandwidth Profile Envelope consists of parameters and Bandwidth Profile Flow specifications. An Egress
+          Bandwidth Profile Envelope at an ENNI can be specific for either ENNI Links or an IPVC EP. Reference MEF
+          61.1 Section 14.5 ENNI Egress Bandwidth Profile Envelopes Service Attribute.
+        properties:
+          ipEnniEgressBwp:
+            description: Reference to IpEnniEgressBwp.
+            $ref: "#/definitions/IpEnniEgressBwp"
+          ipEnniEgressBwpCos:
+            description: Reference to IpEnniEgressBwpCos.
+            $ref: "#/definitions/IpEnniEgressBwpCos"
+  IpEnniIngressBwp:
+    description: >-
+      All Ingress IP Data Packets at the ENNI Access Link.  Reference MEF 61.1[1] Section 14.4. NOTE- No attributes 
+      are needed.     
+  IpEnniIngressBwpCos:
+    allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+      - type: object  
+        description: >-
+          All Egress-Eligible IP Data Packets at the ENNI that if transmitted, would be transmitted over the ENNI Link, and that were mapped on ingress to any of a given set of CoS Names. Reference MEF 61.1[1] Section 14.4.
+        properties:
+          ipEnniIngressBwp:
+            type: string
+            description: Class of Service name.      
+  IpEnniIngressBwpEnvelopePerEnniLink:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - type: object  
+        description: >-
+          Is a list (possibly empty) of pairs of (ENNI Service Mapping Identifier, Bandwidth Profile Envelope), where each Bandwidth Profile Envelope consists of parameters and Bandwidth Profile Flow specifications. An Ingress Bandwidth Profile Envelope at an ENNI can be specific for either ENNI Links or an IPVC EP. Reference MEF 61.1 Section 14.4 ENNI Ingress Bandwidth Profile Envelopes Service Attribute.
+        properties:
+          ipEnniIngressBwp:
+            description: Reference to IpEnniIngressBwp.
+            $ref: "#/definitions/IpEnniIngressBwp"
+          ipEnniIngressBwpCos:
+            description: Reference to IpEnniIngressBwpCos.
+            $ref: "#/definitions/IpEnniIngressBwpCos"
+  IpUniAccessLinkEgressBwp:
+    allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+        description: >-
+          All Egress IP Data Packets at the UNI Access Link.  Reference MEF 61.1 Reference
+          MEF 61.1[1] Section 13.11 UNI Access Link Egress BWP Envelope. NOTE: No attributes are needed. 
+  IpUniAccessLinkEgressBwpIpvcEp:
+    allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+      - type: object
+        description: 
+        properties:
+          ipvcEpIdentifier:
+            description: IPVC End Point Identifier for an IPVC End Point located at the UNI Access Link. Reference MEF 61.1 Table 28.
+            items:
+              type: string
+            minItems: 1
+            type: array
+  IpUniAccessLinkEgressBwpIpvcEpCos:
+    allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+      - type: object
+        description: 
+        properties:
+          ipvcEpIdentifier:
+            type: string
+          ipvcEpIdCosName:
+            items:
+              type: string
+            minItems: 1
+            type: array
+  IpUniAccessLinkEgressBwpEnvelope:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - type: object
+        description: >-
+          A single Bandwidth Profile Envelope consisting of parameters and
+          Bandwidth Profile Flow specifications. An Egress Bandwidth Profile
+          Envelope can be specified for one of a UNI, a UNI Access, or an IPVC
+          EP. Reference MEF 61.1 Section 13.11 UNI Access Link Egress Bandwidth
+          Profile Envelope Service Attribute.
+        properties:
+          ipUniAccessLinkEgressBwp:
+            $ref: "#/definitions/IpUniAccessLinkEgressBwp"
+          ipUniAccessLinkEgressBwpIpvcEp:
+            description: Pointer to IpUniAccessLinkEgressBwpIpvcEp
+            items:
+              $ref: "#/definitions/IpUniAccessLinkEgressBwpIpvcEp"
+            type: array
+            minItems: 0
+          ipUniAccessLinkEgressBwpIpvcEpCos:
+            description: Pointer to IpUniAccessLinkEgressBwpIpvcEpCos
+            items:
+              $ref: "#/definitions/IpUniAccessLinkEgressBwpIpvcEpCos"
+            type: array
+            minItems: 0
+  IpUniAccessLinkIngressBwp:
+      allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+        description: >-
+          All Egress IP Data Packets at the UNI Access Link. Reference MEF 61.1 Reference
+          MEF 61.1[1] Section 13.11 UNI Access Link Egress BWP Envelope. NOTE: No attributes are needed.       
+  IpUniAccessLinkIngressBwpIpvcEp:
+    allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+      - type: object
+        description: >- 
+          All Ingress IP Data Packets at the UNI that are received over the UNI Access 
+          Link, and are mapped to any of a given set of IPVC End Points. Reference MEF 61.1 
+          Section 13.10 UNI Access Link Ingress BWP Envelope.
+        properties:
+          ipvcEpIdentifier:
+            description: IPVC End Point Identifier for an IPVC End Point located at the UNI Access Link. Reference MEF 61.1 Table 28.
+            items:
+              type: string
+            minItems: 1
+            type: array
+  IpUniAccessLinkEgressIpvcBwpEpCos:
+    allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+      - type: object
+        description: 
+        properties:
+          ipvcEpIdentifier:
+            type: string
+          ipvcEpIdCosName:
+            items:
+              type: string
+            minItems: 1
+            type: array
+  IpUniAccessLinkIngressBwpEnvelope:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - type: object     
+        description: >-
+          A single Bandwidth Profile Envelope consisting of parameters and 
+          Bandwidth Profile Flow specifications. An Ingress Bandwidth Profile 
+          Envelope can be specified for one of a UNI, a UNI Ac-cess, or an IPVC 
+          EP. Reference MEF 61.1 Section 13.10 UNI Access Link Ingress Bandwidth 
+          Profile Envelope Service Attribute.
+        properties:
+          ipUniAccessLinkIngressBwp:
+            $ref: "#/definitions/IpUniAccessLinkIngressBwp"
+          ipUniAccessLinkIngressBwpIpvcEp:
+            description: Pointer to IpUniAccessLinkIngressBwpIpvcEp.
+            items:
+              $ref: "#/definitions/IpUniAccessLinkIngressBwpIpvcEp"
+            type: array
+            minItems: 0
+          ipUniAccessLinkIngressBwpIpvcEpCos:
+            description: Pointer to IpUniAccessLinkIngressBwpIpvcEpCos.
+            items:
+              $ref: "#/definitions/IpUniAccessLinkEgressBwpIpvcEpCos"
+            type: array
+            minItems: 0
+  IpUniEgressBwpAccessLink:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - type: object
+        description: >-
+          All Ingress IP Data Packets at the UNI that are received over one of a
+          give set of UNI Access Links. Reference MEF 61.1 Section 12.5 UNI
+          Egress BWP Envelope.
+        properties:
+          uniAccessLinkIdentifier:
+            description: UNI Access Link Identifier.
+            items:
+              type: string
+            type: array
+            minItems: 1
+  IpUniEgressBwpEnvelope:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - type: object
+        description: A single Bandwidth Profile Envelope consisting of parameters and
+          Bandwidth Profile  Flow specifications. If specified, the BWP Envelope
+          is used for an egress Bandwidth Profile. The BWP Flows can be defined
+          per UNI, per IPVC EP, per UNI Access Link, per CosName, etc. Reference
+          MEF 61.1 Section 12.5 UNI Egress Bandwidth Profile Envelope Service
+          Attribute.
+        properties:
+          ipUniEgressBwpAccessLink:
+            description: All Egress IP Data Packets at the UNI that are mapped to any of a
+              given set of (IPVC, EP, CoS Name) pairs. Reference MEF 61.1
+              Section 12.5 UNI Egress BWP Envelope.
+            items:
+              $ref: "#/definitions/IpUniEgressBwpAccessLink"
+            type: array
+          ipUniEgressBwpIpvcEp:
+            description: All Egress IP Data Packets at the UNI that are mapped to any of a
+              given set of IPVC EPs. Reference MEF 61.1 Section 12.5 UNI Egress
+              BWP Envelope.
+            items:
+              $ref: "#/definitions/IpUniEgressBwpIpvcEp"
+            type: array
+          ipUniEgressBwpIpvcEpAccessLink:
+            description: All Egress IP Data Packets at the UNI that are received over one
+              of a give set of UNI Access Links. Reference MEF 61.1 Section 12.5
+              UNI Egress BWP Envelope.
+            items:
+              $ref: "#/definitions/IpUniEgressIpvcBwpIpvcEpAccessLink"
+            type: array
+          ipUniEgressBwpIpvcEpCos:
+            description: All Egress IP Data Packets at the UNI that are mapped to any of a
+              given set of (IPVC, EP, CoS Name) pairs. Reference MEF 61.1
+              Section 12.5 UNI Egress BWP Envelope.
+            items:
+              $ref: "#/definitions/IpUniEgressBwpIpvcEpCos"
+            type: array
+          ipUniEgressBwpIpvcEpCosAccessLink:
+            description: All Egress IP Data Packets at the UNI that are received over one
+              of a given set of UNI Access Links, and that are mapped to the any
+              of a given set of (IPVC EP, Cos Name) pairs. Reference MEF 61.1
+              Section 12.5 UNI Egress BWP Envelope.
+            items:
+              $ref: "#/definitions/IpUniEgressBwpIpvcEpCosAccessLink"
+            type: array
+          ipUniEgressBwpUni:
+            $ref: "#/definitions/IpUniEgressBwpUni"
+            description: >-
+              All Egress IP Data Packets at the UNI. Reference MEF 61.1 Section
+              12.5 UNI Egress BWP Envelope.
+  IpUniEgressBwpIpvcEp:
+    allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+      - type: object
+        description: All Ingress IP Data Packets at the UNI that are mapped to any of a
+          given set of IPVC EPs. Reference MEF 61.1 Section 12.5 UNI Egress BWP
+          Envelope.
+        properties:
+          ipvcEndPointIdentifier:
+            description: >-
+              IPVC End Point Identifier for an IPVC End Point located at the
+              UNI.
+            items:
+              type: string
+            minItems: 1
+            type: array
+  IpUniEgressBwpIpvcEpCos:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - type: object
+        description: >-
+          All Ingress IP Data Packets at the UNI that are mapped to any of a
+          given set of (IPVC, EP, CoS Name) pairs. Reference MEF 61.1 Section
+          12.5 UNI Egress BWP Envelope.
+        properties:
+          ipvcEpIdCosName:
+            description:
+              IPVC End Point and CoS Identifier. Reference MEF 61.1 Table 28.
+            items:
+              type: string
+            minItems: 1
+            type: array
+  IpUniEgressBwpIpvcEpCosAccessLink:
+    description: >-
+      All Ingress IP Data Packets at the UNI that are received over one of a
+      given set of UNI Access Links,and that are mapped to the any of a given
+      set of (IPVC EP, Cos Name) pairs. Reference MEF 61.1 Section 12.4 UNI
+      Ingress BWP Envelope.
+    properties:
+      ipvcEpIdCosName:
+        description:
+          IPVC End Point and CoS Identifier. Reference MEF 61.1 Table 28.
+        items:
+          $ref: "#/definitions/EndPointIdentifierAndCosName"
+        minItems: 1
+        type: array
+      uniAccessLinkIdentifier:
+        description: UNI Access Link Identifier.
+        items:
+          type: string
+        minItems: 1
+        type: array
+    type: object
+  IpUniEgressBwpUni:
+    allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+    description: >-
+      All Ingress IP Data Packets at the UNI. Reference MEF 61.1 Section 12.5
+      UNI Egress BWP Envelope.
+  IpUniEgressIpvcBwpIpvcEpAccessLink:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - type: object
+        description: >-
+          All Ingress IP Data Packets at the UNI that are received over one of a
+          give set of UNI Access Links. Reference MEF 61.1 Section 12.4 UNI
+          Ingress BWP Envelope.
+        properties:
+          ipvcEndPointIdentifier:
+            description: IPVC End Point Identifier
+            items:
+              type: string
+            minItems: 1
+            type: array
+          uniAccessLinkIdentifier:
+            description: UNI Access Link Identifier.
+            items:
+              type: string
+            minItems: 1
+            type: array
+  IpUniIngressBwpAccessLink:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - type: object
+        description: >-
+          All Ingress IP Data Packets at the UNI that are received over one of a
+          give set of UNI Access Links. Reference MEF 61.1 Section 12.4 UNI
+          Ingress BWP Envelope.
+        properties:
+          uniAccessLinkIdentifier:
+            description: UNI Access Link Identifier.
+            items:
+              type: string
+            minItems: 1
+            type: array
+  IpUniIngressBwpEnvelope:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - type: object
+        description: >-
+          A single Bandwidth Profile Envelope consisting of parameters and
+          Bandwidth Profile  Flow specifications. If specified, the BWP Envelope
+          is used for an ingress Bandwidth Profile. The BWP Flows can be defined
+          per UNI, per IPVC EP, per UNI Access Link, per CosName, etc. Reference
+          MEF 61.1 Section 12.4 UNI Ingress Bandwidth Profile Envelope Service
+          Attribute.
+        properties:
+          ipUniIngressBwpAccessLink:
+            description: >-
+              All Ingress IP Data Packets at the UNI that are mapped to any of a
+              given set of (IPVC, EP, CoS Name) pairs. Reference MEF 61.1
+              Section 12.4 UNI Ingress BWP Envelope.
+            items:
+              $ref: "#/definitions/IpUniIngressBwpAccessLink"
+            type: array
+          ipUniIngressBwpIpvcEp:
+            description: >-
+              All Ingress IP Data Packets at the UNI that are mapped to any of a
+              given set of IPVC EPs. Reference MEF 61.1 Section 12.4 UNI Ingress
+              BWP Envelope.
+            items:
+              $ref: "#/definitions/IpUniIngressBwpIpvcEp"
+            type: array
+          ipUniIngressBwpIpvcEpAccessLink:
+            description: >-
+              All Ingress IP Data Packets at the UNI that are received over one
+              of a give set of UNI Access Links. Reference MEF 61.1 Section 12.4
+              UNI Ingress BWP Envelope.
+            items:
+              $ref: "#/definitions/IpUniIngressIpvcBwpIpvcEpAccessLink"
+            type: array
+          ipUniIngressBwpIpvcEpCos:
+            description: >-
+              All Ingress IP Data Packets at the UNI that are mapped to any of a
+              given set of (IPVC, EP, CoS Name) pairs. Reference MEF 61.1
+              Section 12.4 UNI Ingress BWP Envelope.
+            items:
+              $ref: "#/definitions/IpUniIngressBwpIpvcEpCos"
+            type: array
+          ipUniIngressBwpIpvcEpCosAccessLink:
+            description: >-
+              All Ingress IP Data Packets at the UNI that are received over one
+              of a given set of UNI Access Links, and that are mapped to the any
+              of a given set of (IPVC EP, Cos Name) pairs. Reference MEF 61.1
+              Section 12.4 UNI Ingress BWP Envelope.
+            items:
+              $ref: "#/definitions/IpUniIngressBwpIpvcEpCosAccessLink"
+            type: array
+          ipUniIngressBwpUni:
+            $ref: "#/definitions/IpUniIngressBwpUni"
+            description: >-
+              All Ingress IP Data Packets at the UNI. Reference MEF 61.1 Section
+              12.4 UNI Ingress BWP Envelope.
+  IpUniIngressBwpIpvcEp:
+    allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+      - type: object
+        description: >-
+          All Ingress IP Data Packets at the UNI that are mapped to any of a
+          given set of IPVC EPs. Reference MEF 61.1 Section 12.4 UNI Ingress BWP
+          Envelope.
+        properties:
+          ipvcEndPointIdentifier:
+            description: >-
+              IPVC End Point Identifier for an IPVC End Point located at the
+              UNI.
+            items:
+              type: string
+            minItems: 1
+            type: array
+  IpUniIngressBwpIpvcEpCos:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - type: object
+        description: >-
+          All Ingress IP Data Packets at the UNI that are mapped to any of a
+          given set of (IPVC, EP, CoS Name) pairs. Reference MEF 61.1 Section
+          12.4 UNI Ingress BWP Envelope.
+        properties:
+          ipvcEpIdCosName:
+            description:
+              IPVC End Point and CoS Identifier. Reference MEF 61.1 Table 28.
+            items:
+              type: string
+            minItems: 1
+            type: array
+  IpUniIngressBwpIpvcEpCosAccessLink:
+    description: >-
+      All Ingress IP Data Packets at the UNI that are received over one of a
+      given set of UNI Access Links,and that are mapped to the any of a given
+      set of (IPVC EP, Cos Name) pairs. Reference MEF 61.1 Section 12.4 UNI
+      Ingress BWP Envelope.
+    properties:
+      ipvcEpidCosName:
+        description:
+          IPVC End Point and CoS Identifier. Reference MEF 61.1 Table 28.
+        items:
+          $ref: "#/definitions/EndPointIdentifierAndCosName"
+        minItems: 1
+        type: array
+      uniAccessLinkIdentifier:
+        description: UNI Access Link Identifier.
+        items:
+          type: string
+        minItems: 1
+        type: array
+    type: object
+  IpUniIngressBwpUni:
+    allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+    description: >-
+      All Ingress IP Data Packets at the UNI. Reference MEF 61.1 Section 12.4
+      UNI Ingress BWP Envelope.
+  IpUniIngressIpvcBwpIpvcEpAccessLink:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - type: object
+        description: >-
+          All Ingress IP Data Packets at the UNI that are received over one of a
+          give set of UNI Access Links. Reference MEF 61.1 Section 12.4 UNI
+          Ingress BWP Envelope.
+        properties:
+          ipvcEndPointIdentifier:
+            description: IPVC End Point Identifier
+            items:
+              type: string
+            minItems: 1
+            type: array
+          uniAccessLinkIdentifier:
+            description: UNI Access Link Identifier.
+            items:
+              type: string
+            minItems: 1
+            type: array
+  IpvcEndPointRole:
+    description: >-
+      Indicates that the IPVC End Points carry traffic from both roots and leaves. 
+      Reference MEF 61.1 Section 8.7 Rooted Multipoint Services across an ENNI.
+    enum:
+      - ROOT
+      - LEAF
+      - TRUNK
+    type: string
   Ipv4Address:
     description: Data type representing IPv4 address.
     type: string
     format: ipv4
   Ipv4AddressingType:
-    description: >
+    description: |
       Enumeration representing IPv4 Address Types specific for UNI Access Links.
-
-      - DHCP: Dynamic Host Configuration Protocol (DHCP) is used the Subscriber
-      devices 
-
+      - DHCP: Dynamic Host Configuration Protocol (DHCP) is used the Subscriber devices 
       to request IPv4 addresses in a given subnet from the SP or Operator.
-
-      - STATIC: IPv4 addresses in a given IPv4 subnet are statically assigned to
-      the 
-
+      - STATIC: IPv4 addresses in a given IPv4 subnet are statically assigned to the 
       SP or Operator and to the Subscriber.
-
-      - UNNUMBERED: The SP or Operator and the Subscriber each assigned an IPv4
-      address
-
-      (from their own address pools) independently. These addresses can be on
-      different 
-
-      subnets, and so an interface-based routing protocol is needed to ensure
-      reachability.
-    type: string
+      - UNNUMBERED: The SP or Operator and the Subscriber each assigned an IPv4 address
+      (from their own address pools) independently. These addresses can be on different 
+      subnets, and so an interface-based routing protocol is needed to ensure reachability.
     enum:
-      - DHCP
-      - STATIC
-      - UNNUMBERED
+      - "DHCP"
+      - "STATIC"
+      - "UNNUMBERED"
+    type: string
   Ipv4OrIpv6Address:
     description: Data type representing IPv4 or IPV6 address.
-    type: string
-    oneOf:
-      - format: ipv4
-      - format: ipv6
-  Ipv4OrIpv6Prefix:
-    description: IPv4 or IPv6 prefix. Includes subnet address and prefix length.
-    type: object
-    properties:
-      ipv4Prefix:
-        description: IPv4 prefix.
-        $ref: '#/definitions/Ipv4Prefix'
-      ipv6Prefix:
-        description: IPv6 prefix.
-        $ref: '#/definitions/Ipv6Prefix'
-    oneOf:
-      - required: [ipv4Prefix]
-      - required: [ipv6Prefix]
-  Ipv4Prefix:
-    description: >-
-      Data type representing IPv4 address prefix and mask length between 0 and
-      31 bits.
-    type: object
     properties:
       ipv4Address:
         description: IPv4 address.
-        $ref: '#/definitions/Ipv4Address'
+        $ref: "#/definitions/Ipv4Address"
+      ipv6Address:
+        description: IPv6 address.
+        $ref: "#/definitions/Ipv6Address"
+    type: object
+    minProperties: 1
+    maxProperties: 1
+  Ipv4OrIpv6Prefix:
+    description: IPv4 or IPv6 prefix. Includes subnet address and prefix length.
+    properties:
+      ipv4Prefix:
+        description: IPv4 prefix.
+        $ref: "#/definitions/Ipv4Prefix"
+      ipv6Prefix:
+        description: IPv6 prefix.
+        $ref: "#/definitions/Ipv6Prefix"
+    type: object
+    minProperties: 1
+    maxProperties: 1
+  Ipv4Prefix:
+    description:
+      Data type representing IPv4 address prefix and mask length between 0 and
+      31 bits.
+    properties:
+      ipv4Address:
+        description: IPv4 address.
+        $ref: "#/definitions/Ipv4Address"
       prefixLength:
         description: IPv4 address prefix. Length 0-31.
         type: integer
         minimum: 0
         maximum: 31
+    type: object
   Ipv4PrimarySubnet:
     allOf:
-      - $ref: '#/definitions/Ipv4SecondarySubnet'
+      - $ref: "#/definitions/Ipv4SecondarySubnet"
       - description: >-
           IPv4 Subnet used in context of Primary Ipvc subnet. It adds the
           subscriberIpv4Address attribute to the Ipv4SecondarySubnet.
-        type: object
         properties:
           subscriberIpv4Address:
             description: Subscriber IPv4 Address
-            type: array
-            maxItems: 1
-            items:
-              $ref: '../../../common/ip/ipCommon.yaml#/definitions/Ipv4Address'
+            $ref: "#/definitions/Ipv4Address"
+            nullable: true
+        type: object
   Ipv4SecondarySubnet:
     description: >-
-      Data type representing an IPv4 subnet logical partition of an IP network.
-      Included is list of Service Provider IPv4 addresses.
-    type: object
+      Data type representing an IPv4 subnet logical partition of
+      an IP network. Included is list of Service Provider IPv4 addresses.
     properties:
       ipv4Prefix:
-        description: >-
+        description:
           IPv4 address prefix (IPv4 address prefix and mask length between 0 and
           31 in bits).
-        $ref: '../../../common/ip/ipCommon.yaml#/definitions/Ipv4Prefix'
+        $ref: "#/definitions/Ipv4Prefix"
       serviceProviderIpv4Addresses:
         description: >
           List of Service Provider IPv4 addresses. [R25] "If IPv4 Connection
           Addressing is DHCP, the UNI Access Link IPv4 Connection Addressing
           Primary Subnet parameter MUST contain only a single Service Provider
-          IPv4 Address." Reference - MEF 69.1 Section 9.4
-        type: array
+          IPv4 Address." Reference - MEF 69.1 Section 9.4.
+        items:
+          $ref: "#/definitions/Ipv4Address"
         minItems: 1
-        items:
-          $ref: '../../../common/ip/ipCommon.yaml#/definitions/Ipv4Address'
-      reservedPrefixes:
-        description: 'List of IPv4 Prefixes, possibly empty'
         type: array
+      reservedPrefixes:
+        description: List of IPv4 Prefixes, possibly empty
         items:
-          $ref: '../../../common/ip/ipCommon.yaml#/definitions/Ipv4Prefix'
+          $ref: "#/definitions/Ipv4Prefix"
+        type: array
+    type: object
   Ipv6Address:
     description: Data type representing IPv6 address.
     type: string
     format: ipv6
   Ipv6AddressingType:
     description: |
-      Enumeration representing IPv6 Address Types specific for UNI Access
-      Links.
-
-      - DHCP: Dynamic Host Configuration Protocol (DHCP) is used by the
-      Subscriber devices to request IPv6 addresses in a given subnet from the
-      SP or Operator.
-      - SLAAC: Stateless Address Autoconfiguration (SLAAC) is
-      used by the Subscriber devices to create unique IPv6 global addresses
-      within an IP Prefix advertised by the SP or Operator as describer in
-      RFC 4862.
-      - STATIC: IPv6 addresses in a given IPv6 subnet are statically
-      assigned to the SP or Operator and to the Subscriber.
+      Enumeration representing IPv6 Address Types specific for UNI Access Links.
+      -DHCP: Dynamic Host Configuration Protocol (DHCP) is used by the Subscriber
+      devices to request IPv6 addresses in a given subnet from the SP or Operator.
+      -SLAAC: Stateless Address Autoconfiguration (SLAAC) is used by the Subscriber 
+      devices to create unique IPv6 global addresses within an IP Prefix advertised 
+      by the SP or Operator as described in RFC 4862.
+      -STATIC: IPv6 addresses in a given IPv6 subnet are statically assigned to the 
+      SP or Operator and to the Subscriber.
       - LL_ONLY: If the value is LL-only, these are only IPv6 addresses used on 
       the UNI Access Link.
-    type: string
     enum:
-      - DHCP
-      - SLAAC
-      - STATIC
-      - LL_ONLY
+      - "DHCP"
+      - "SLAAC"
+      - "STATIC"
+      - "LL_ONLY"
+    type: string
   Ipv6Prefix:
-    description: >-
+    description:
       Data type representing IPv6 address prefix and mask length between 0 and
       127 in bits.
-    type: object
     properties:
       ipv6Address:
         description: IPv6 address.
-        $ref: '#/definitions/Ipv6Address'
+        $ref: "#/definitions/Ipv6Address"
       prefixLength:
         description: IPv6 address prefix. Length 0-127.
         type: integer
         minimum: 0
         maximum: 127
+    type: object
   Ipv6Subnet:
     description: >-
       IPv6Subnet is a data type representing an IPv6 subnet logical partition of
       an IP network. Included is list of Service Provider IPv6 addresses.
-    type: object
     properties:
       ipv6Prefix:
-        description: >-
+        description:
           IPv6 Prefix (IPv6 address prefix and mask length between 0 and 127 in
           bits).
-        $ref: '#/definitions/Ipv6Prefix'
+        $ref: "#/definitions/Ipv6Prefix"
       serviceProviderIpv6Addresses:
         description: List of IPv6 Service Provider addresses.
-        type: array
+        items:
+          $ref: "#/definitions/Ipv6Address"
         minItems: 1
-        items:
-          $ref: '#/definitions/Ipv6Address'
+        type: array
       reservedPrefixes:
-        description: 'List of IPv6 Prefixes, possibly empty'
+        description: List of IPv6 Prefixes, possibly empty
+        items:
+          $ref: "#/definitions/Ipv6Prefix"
+        type: array
+    type: object
+  IpvcEpBwp:
+    allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+      - type: object
+        properties:
+          cosName:
+            description: TODO
+            items:
+              type: string
+            type: array
+  IpvcEpBwpAll:
+    allOf:
+      - $ref: "#/definitions/IpBwpFlow"
+  IpvcEpEgressBwpEnvelope:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - type: object
+        description: >-
+          A single Bandwidth Profile Envelope consisting of parameters and
+          Bandwidth Profile specifications. An Egress Bandwidth Profile Envelope
+          can be specified for one of a UNI, a UNI Access Link and ENNI Link or
+          an IPVC End Point. Reference MEF 61.1 Section 11.11 IPVC EP Egress
+          Bandwidth Profile Envelope Service Attribute.
+        properties:
+          ipvcEpEgressBwp:
+            description: Pointer to IpvcEpBwp
+            items:
+              $ref: "#/definitions/IpvcEpBwp"
+            minItems: 1
+            type: array
+          ipvcEpEgressBwpAll:
+            $ref: "#/definitions/IpvcEpBwpAll"
+            description: Pointer to IpvcEpBwpAll
+  IpvcEpEgressBwpEnvelopeOrNone:
+    type: object
+    description: >- 
+      Egress Bandwidth Profile Envelope for the IPVC End Point. The absence of this attribute
+      corresponds to a value of "None". Reference MEF 61.1 Section 11.12 IPVC EP Egress
+      Bandwidth Profile Service Attribute.
+    properties: 
+      egressBwpEnvelopeValue:
+        $ref: '#/definitions/IpvcEpEgressBwpEnvelope'
+      egressBwpEnvelopeNone:
+        type: string
+        enum: ["NONE"]
+        description: Indicates that there is no Egress Bandwidth Profile Envelope.
+    minProperties: 1
+    maxProperties: 1
+  IpvcEpIngressBwpEnvelope:
+    allOf:
+      - $ref: "#/definitions/IpBwpEnvelope"
+      - type: object
+        description: >-
+          A single Bandwidth Profile Envelope consisting of parameters and
+          Bandwidth Profile specifications. An Ingress Bandwidth Profile
+          Envelope can be specified for one of a UNI, a UNI Access Link and ENNI
+          Link or an IPVC End Point. Reference MEF 61.1 Section 11.11 IPVC EP
+          Ingress Bandwidth Profile Envelope Service Attribute.
+        properties:
+          ipvcEpIngressBwp:
+            description: Pointer to IpvcEpBwp
+            items:
+              $ref: "#/definitions/IpvcEpBwp"
+            minItems: 1
+            type: array
+          ipvcEpIngressBwpAll:
+            $ref: "#/definitions/IpvcEpBwpAll"
+            description: Pointer to IpvcEpBwpAll   
+  IpvcEpIngressBwpEnvelopeOrNone:
+    type: object
+    description: >- 
+      Ingress Bandwidth Profile Envelope for the IPVC End Point. The absence of this attribute
+      corresponds to a value of "None". Reference MEF 61.1 Section 11.11 IPVC EP Ingress
+      Bandwidth Profile Service Attribute.
+    properties: 
+      ingressBwpEnvelopeValue:
+        $ref: '#/definitions/IpvcEpIngressBwpEnvelope'
+      ingressBwpEnvelopeNone:
+        type: string
+        enum: ["NONE"]
+        description: Indicates that there is no Ingress Bandwidth Profile Envelope.
+    minProperties: 1
+    maxProperties: 1         
+  L1Technology:
+    description: Layer 1 technology
+    enum:
+      - "10BASE_T"
+      - "10BASE_FP"
+      - "10BASE_FB"
+      - "10BASE_FL"
+      - "100BASE_T"
+      - "100BASE_T4"
+      - "100BASE_X"
+      - "100BASE_T2"
+      - "1000BASE_X"
+      - "1000BASE_T"
+      - "1000BASE_SX"
+      - "1000BASE_LX"
+      - "1000BASE_CX"
+      - "10GBASE_W"
+      - "10GBASE_SR"
+      - "10GBASE_LR"
+      - "10GBASE_ER"
+      - "10GBASE_LX4"
+      - "10GBASE_SW"
+      - "10GBASE_LW"
+      - "10GBASE_EW"
+    type: string 
+  L2Technology:
+    description: >-
+      Specifies the UNI Access Link Trunk used to carry IP Packets across the 
+      UNI along with information needed to identify IP Packets for this UNI 
+      Access Link. Reference MEF 61.1.1 Section 13.3 UNI Access Link L2 Technology 
+      Service Attribute.
+    type: object
+    properties:
+      trunkId:
+        type: string
+      demux:
+        $ref: "#/definitions/Demux"
+  MaximumNumberOfIpv4Routes:
+    type: object
+    description: >- 
+      Maximum number of IPv4 routes supported by the service as a whole. Absence of this 
+      attribute corresponds to a value of “Unlimited”. Reference MEF 61.1 Section 10.5 
+      IPVC Maximum Number of IPv4 Routes Service Attribute and MEF 61.1 Section 
+      11.7 IPVC EP Maximum Number of IPv4 Routes Service Attribute.
+    properties:
+      value:
+        type: integer
+        minimum: 0
+        description: The maximum number of IPv4 routes.
+      numOfIpv4RoutesUnlimited:
+        type: string
+        enum: ["UNLIMITED"]
+        description: Indicates whether the maximum is unlimited.
+    minProperties: 1
+    maxProperties: 1
+  MaximumNumberOfIpv6Routes:
+    type: object
+    description: >- 
+      Maximum number of IPv6 routes supported by the service as a whole. Absence of this 
+      attribute corresponds to a value of “Unlimited”. Reference MEF 61.1 Section 10.6 
+      IPVC Maximum Number of IPv6 Routes Service Attribute and MEF 61.1 Section 
+      11.8 IPVC EP Maximum Number of IPv6 Routes Service Attribute.
+    properties:
+      value:
+        type: integer
+        minimum: 0
+        description: The maximum number of IPv4 routes.
+      numOfIpv6RoutesUnlimited:
+        type: string
+        enum: ["UNLIMITED"]
+        description: Indicates whether the maximum is unlimited.
+    minProperties: 1
+    maxProperties: 1
+  PacketDelivery:
+    description: |
+      For each Ingress IP Data Packet that is mapped to one of the IPVC EPs for
+      the IPVC it takes one of two values. STANDARD_ROUTING or
+      POLICY-BASED_ROUTING
+      STANDARD_ROUTING: If the IPVC Packet Delivery is Standard Routing,
+      the egress UNI and UNI Ac-cess Link or egress ENNI and ENNI Link are
+      generally selected by examining the destination IP address in the packet
+      and matching it to an IP Prefix reachable via the IPVC EP at the egress 
+      EI - in other words, by normal IP routing.
+      POLICY_BASED_ROUTING: The behavior and requirements when the
+      IPVC Packet Delivery Service Attribute is set to Policy-Based Routing
+      are deferred to a future revision of this specification (MEF 61.1)
+    enum:
+      - "STANDARD_ROUTING"
+      - "POLICY_BASED_ROUTING"
+    type: string
+  PcpMapping:
+    description: Ethernet PCP mapping of CoS name to PCP value
+    properties:
+      cosName:
+        description: Class of Service name
+        type: string
+      ethernetPcp:
+        description: PCP value
+        maximum: 7
+        minimum: 0
+        type: integer
+    type: object
+  PeeringAddress:
+    description: >-
+      Peering Addresses. Connection Addresses, or Loopbacks plus a list of pairs
+      of IP addresses. Reference - MEF 61.1 Section 12.7.3.
+    properties:
+      peeringAddressType:
+        description: |
+          If the Peering Addresses parameter is CONNECTION_ADDRESSES, a separate
+          BGP peering session is established over each UNI Access Link, using
+          the primary IPv4 addresses in the UNI Access Link IPv4 Connection
+          Addressing Service Attribute (section 13.4) or the first IPv6
+          addresses in the UNI Access Link IPv6 Connection Addressing Service
+          Attribute (section 13.5), as indicated by the Connection Address
+          Family parameter.
+          If the Peering Addresses parameter is LOOPBACKS, a list of pairs of IP
+          addresses is additionally specified, each pair containing the
+          Subscriber's loopback address and the SP's or Operator's loopback
+          address. A single BGP peering session is established for each pair of
+          addresses.
+        $ref: "#/definitions/PeeringAddressType"
+      subscriberAndSpLoopbackAddresses:
+        description:
+          A list of pairs of IP addresses, each pair containing the Subscriber's
+          loopback address and the SP's or Operator's loopback address. A single
+          BGP peering session is established for each pair of addresses.
+        items:
+          $ref: "#/definitions/SubscriberAndSpLoopbackAddresses"
+        type: array
+    type: object
+  PeeringAddressType:
+    type: string
+    description: >-
+      If the Peering Addresses parameter is CONNECTION_ADDRESSES, a separate BGP
+      peering session is established over each UNI Access Link, using the
+      primary IPv4 addresses in the UNI Access Link IPv4 Connection Addressing
+      Service Attribute (section 13.4) or the first IPv6 addresses in the UNI
+      Access Link IPv6 Connection Addressing Service Attribute (section 13.5),
+      as indicated by the Connection Address Family parameter. If the Peering
+      Addresses parameter is LOOPBACKS, a list of pairs of IP addresses is
+      additionally specified, each pair containing the Subscriber's loopback
+      address and the SP's or Operator's loopback address. A single BGP peering
+      session is established for each pair of addresses.
+    enum:
+      - CONNECTION_ADDRESSES
+      - LOOPBACKS
+  PortMap:
+    description: >-
+      LACP Portmap as a 2-tuple <vid,lspl> where vid is VLAN ID and lslp is Link Selection 
+      Priority List. Reference MEF 61.1.1 Section A1-1.3.2 UNI Access Link Ethernet Link 
+      Aggregation Service Attribute.
+    properties:
+      vlanId:
+          $ref: "../common.yaml#/definitions/VlanId"
+      linkSelectionPriorityList:
         type: array
         items:
-          $ref: '#/definitions/Ipv6Prefix'
+          type: integer
+    type: object   
+  RouteDistinguisherFields:
+    description: >-
+      BGP Route Distinguisher with two fields.
+    properties:
+      field1:
+        description: Route Distinguisher field 1.
+        type: string
+      field2:
+        description: Route Distinguisher field 2.
+        type: string
+    required:
+      - field1
+      - field2
+  ServiceTopology:
+    description: Enumeration used to represent the different Service Topologies.
+    enum:
+      - "MULTIPOINT"
+      - "ROUTED_MULTIPOINT"
+      - "CLOUD_ACCESS"
+    type: string  
+  StaticRoute:
+    description: Data type representing IP static routes.
+    properties:
+      ipv4Prefix:
+        $ref: "#/definitions/Ipv4Prefix"
+      ipv6Prefix:
+        $ref: "#/definitions/Ipv6Prefix"
+      administrativeDistance:
+        description: >-
+          The administrative distance is a numeric metric used to control which routes 
+          are selected, when there are multiple routes for the same IP Prefix. A lower 
+          number indicates a more preferable route.
+        type: integer
+      targetRole:
+        $ref: "#/definitions/TargetRole"
+    type: object
+  SubscriberAndSpLoopbackAddresses:
+    type: object
+    description: >-
+      A list of pairs of IP addresses, each pair containing the Subscriber's
+      loopback address and the SP's or Operator's loopback address. A single BGP
+      peering session is established for each pair of addresses.
+    properties:
+      subscriberLoopbackAddress:
+        description: Subscriber's loopback Address for BGP establishing a session
+        $ref: "#/definitions/Ipv4OrIpv6Address"
+      spLoopbackAddress:
+        description: Service Provider's loopback Address for BGP establishing a session
+        $ref: "#/definitions/Ipv4OrIpv6Address"
   SynchronousEthernet:
-    description: >
-      Enumeration indicating if the physical link supports Synchronous Ethernet.
-
-
-      - DISBALED - Synchronous Ethernet is disabled on the corresponding
-      physical link.
-
-      - ESMC - Synchronous Ethernet as defined in ITU-T G.8262/Y.1362 MUST be
-      used on the corresponding physical link with synchronization provided by
-      the Service Provider or Operator by the Subscriber. SSM for Synchronous
-      Ethernet using the Ethernet Synchronous Messaging Channel (ESMC) protocol
-      as defined in ITU-T G.8264/Y.1364 MUST be used on the corresponding
-      physical link.
-
-      - NO_ESMC - Synchronous Ethernet as defined in ITU-T G.8262/Y.1362 MUST be
-      used on the corresponding physical link with synchronization provided by
-      the Service Provider or Operator by the Subscriber. SSM for Synchronous
-      Ethernet using the Ethernet Synchronous Messaging Channel (ESMC) protocol
-      as defined in ITU-T G.8264/Y.1364 MUST NOT be used on the corresponding
-      physical link.
+    description: >-
+      Enumeration representing the value of fs which indicates if the physical link 
+      supports Synchronous Ethernet.
     type: string
     enum:
-      - DISABLED
-      - ESMC
-      - NO_ESMC
+      - "DISABLED"
+      - "ESMC"
+      - "NO_ESMC"
+  TargetRole:
+    description: >-
+      Enumeration representing the Static Route Target Role. Reference MEF 61.1 Section 
+      14.3.1.4 Static Routes.
+      ROOT - Root role.
+      LEAK - Leaf role.
+    enum:
+      - "ROOT"
+      - "LEAF"
+    type: string
+  TwoOctetInteger:
+    description: A two octet integer. Value range 0 - 65535
+    type: integer
+    minimum: 0
+    maximum: 65535
+  UniAccessLinkEthernetLinkAggregation:
+    description: >-
+      Link Aggregation, as described in IEEE Std. 802.1AX-2020 allows one or more parallel instances
+      of full-duplex point-to-point Ethernet links to be aggregated to form a Link Aggregation Group 
+      (LAG) such that the MAC Client (the UNI Access Link) can treat the LAG as if it were a single 
+      link. Reference MEF 61.1.1 Section A1-1.3.2 UNI Access Link Trunk Ethernet Link Aggregation 
+      Service Attribute.
+    properties:
+      lacpVersion:
+        $ref: "../common.yaml#/definitions/LacpVersion"
+      portMap:
+        $ref: "#/definitions/PortMap"
+    type: object   
   UniIpv4ConnectionAddressing:
     description: >-
       UniIpv4ConnectionAddressing is a data type representing how IPv4 addresses
       are allocated to the devices on the UNI Access Link. Reference - MEF 61
       Section 13.4. [R22] "At a UNI Access Link in a UNI with an IPVC EP for an
       Advanced Internet Access Service, UNI Access Link IPv4 Connection
-      Addressing MUST be Static or empty. Reference - MEF 69.1 Section 9.4
-    type: object
+      Addressing MUST be Static or null. Reference - MEF 69.1 Section 9.4.
     properties:
       ipv4AddressingType:
         description: IPv4 Connection Addressing.
-        $ref: '#/definitions/Ipv4AddressingType'
+        $ref: "#/definitions/Ipv4AddressingType"
       ipv4PrimarySubnet:
+        $ref: "#/definitions/Ipv4PrimarySubnet"
         description: >-
           Primary IPv4 Subnet. Includes IPv4 Prefix and Service Provider IPv4
           Addresses.
-        $ref: '#/definitions/Ipv4PrimarySubnet'
       ipv4SecondarySubnetList:
         description: >-
           Secondary IPv4 Subnet List. Includes IPv4 Prefix and Service Provider
           IPv4 Addresses.
-        type: array
         items:
-          $ref: '#/definitions/Ipv4SecondarySubnet'
+          $ref: "#/definitions/Ipv4SecondarySubnet"
+        type: array
+    type: object
   UniIpv6ConnectionAddressing:
     description: >-
       UniIpv6ConnectionAddressing is a data type representing how IPv6 addresses
       are allocated to the devices on the UNI Access Link. Reference - MEF 61
       Section 13.5. [R26] "At a UNI Access Link in a UNI with an IPVC EP for an
       Advanced Internet Access Service, UNI Access Link IPv6 Connection
-      Addressing MUST be Static or empty. Reference - MEF 69.1 Section 9.4
-    type: object
+      Addressing MUST be Static or null. Reference - MEF 69.1 Section 9.4.
     properties:
       ipv6AddressingType:
         description: IPv6 Connection Addressing.
-        $ref: '#/definitions/Ipv6AddressingType'
+        $ref: "#/definitions/Ipv6AddressingType"
       subscriberIpv6Address:
+        $ref: "#/definitions/Ipv6Address"
         description: Subscriber IPv6 address.
-        $ref: '#/definitions/Ipv6Address'
       ipv6Subnet:
         description: Ipv6 Subnet
-        type: array
         items:
-          $ref: '#/definitions/Ipv6Subnet'
+          $ref: "#/definitions/Ipv6Subnet"
+        type: array
+    type: object
+  UniManagementType:
+    description: >-
+      Enumeration representing the UNI Management Type options. Reference MEF
+      61.1 Section 12.2 UNI Management Type Service Attribute.
+    enum:
+      - "SUBSCRIBER_MANAGEMENT"
+      - "PROVIDER_MANAGEMENT"
+    type: string
   VlanIdOrUntagged:
     description: >-
       Data type used for VLAN id configuration. Defined as a Integer, value 0
@@ -293,4 +1478,8 @@ definitions:
     type: integer
     minimum: 0
     maximum: 4094
-
+  Vrid:
+    description: VRID (Virtual Router ID) as defined in RFC 5798[29] is a number between 1 and 255
+    maximum: 255
+    minimum: 1
+    type: integer

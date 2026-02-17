@@ -11,7 +11,7 @@ class InternetAccessFeature {
 
 class InternetAccessFeatureAssistance {
 
-    assistanceLevel*: AssistanceLevel
+    assistanceLevel*: InternetAccessAssistanceLevel
     simpleRequestsPerMonth: integer
     complexRequestsPerMonth: integer
 }
@@ -29,7 +29,7 @@ InternetAccessFeature <|-- InternetAccessFeatureCloudPrioritization
 
 class InternetAccessFeatureDedicatedFirewall {
 
-    firewallType*: FirewallType
+    firewallCapability*: InternetAccessFirewallCapability
 }
 InternetAccessFeature <|-- InternetAccessFeatureDedicatedFirewall
 
@@ -42,18 +42,9 @@ class InternetAccessFeatureDns {
 InternetAccessFeature <|-- InternetAccessFeatureDns
 
 
-
-class InternetAccessFeatureFacilityDiversity {
-
-    internetAccessRef: string
-}
-InternetAccessFeature <|-- InternetAccessFeatureFacilityDiversity
-
-
-
 class InternetAccessFeatureLayer3Resiliency {
 
-    layer3Resiliency*: Layer3Resiliency
+    layer3Resiliency*: InternetAccessLayer3Resiliency
 }
 InternetAccessFeature <|-- InternetAccessFeatureLayer3Resiliency
 
@@ -64,12 +55,19 @@ class InternetAccessFeatureMobileBackup {
 }
 InternetAccessFeature <|-- InternetAccessFeatureMobileBackup
 
-InternetAccessFeatureMobileBackup *--> BiDirSimpleBandwidth : minimumExpectedBandwidth
+InternetAccessFeatureMobileBackup *-->"1" BiDirSimpleBandwidth : minimumExpectedBandwidth
+
+
+class BiDirSimpleBandwidth {
+    downstream: InformationRate
+    upstream: InformationRate
+}
+
 
 
 class InternetAccessFeatureMonitoring {
 
-    monitoringType*: MonitoringType
+    monitoringType*: InternetAccessMonitoringType
 }
 InternetAccessFeature <|-- InternetAccessFeatureMonitoring
 
@@ -77,14 +75,14 @@ InternetAccessFeature <|-- InternetAccessFeatureMonitoring
 
 class InternetAccessFeatureRouting {
 
-    routingType*: RoutingType
+    routingType*: InternetAccessRoutingType
 }
 InternetAccessFeature <|-- InternetAccessFeatureRouting
 
-InternetAccessFeatureRouting *--> Bgp : bgp
+InternetAccessFeatureRouting *--> InternetAccessBgp : bgp
 InternetAccessFeatureRouting *--> Static : static
 
-class Bgp {
+class InternetAccessBgp {
     <<skipped>>
 }
 
