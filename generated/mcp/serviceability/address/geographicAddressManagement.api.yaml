@@ -1,0 +1,1155 @@
+openapi: 3.0.1
+info:
+  title: Geographic Address Management
+  description: >
+    **This file forms part of Mplify 121.1**
+
+    This API implements Business Requirements described in Mplify 150
+
+
+    It allows the Buyer to retrieve address information from the Seller,
+    including exact formats, for addresses known to the Seller.
+
+
+    List of supported use cases:
+
+    - Validate Geographic Address
+
+    - Retrieve a Geographic Address Validation
+
+    - Retrieve a Geographic Address by Identifier
+
+    - Register for Notifications
+
+
+    Copyright 2025 Mplify Alliance and its contributors.
+
+    This file includes content based on the TM Forum Geographic Address API
+    (TMF673 v4.0.1) available at
+    https://github.com/tmforum-apis/TMF673_GeographicAddress, which is licensed
+    by the TM Forum under the Apache License version 2.0. Such content has been
+    modified by the Mplify Alliance and its contributors.
+  version: 8.0.0
+servers:
+  - url: 'https://{serverBase}/mefApi/sonata/geographicAddressManagement/v8/'
+    variables:
+      serverBase:
+        description: The base of Seller's URL.
+        default: mplify.net
+tags:
+  - name: geographicAddressValidation
+  - name: geographicAddress
+  - name: events subscription
+paths:
+  /geographicAddressValidation:
+    post:
+      tags:
+        - geographicAddressValidation
+      summary: Creates a GeographicAddressValidation
+      description: This operation creates a GeographicAddressValidation entity.
+      operationId: createGeographicAddressValidation
+      parameters:
+        - name: buyerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+          required: false
+          schema:
+            type: string
+        - name: sellerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity  represents more than one Seller.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        description: The GeographicAddressValidation to be created
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/GeographicAddressValidation_Create'
+        required: true
+      responses:
+        '200':
+          description:
+            'OK. (https://tools.ietf.org/html/rfc7231#section-6.3.1). MUST be be
+            used in case of an immediate response. In immediate response the
+            `id` MUST NOT be provided.'
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/GeographicAddressValidation'
+        '201':
+          description:
+            'Created (https://tools.ietf.org/html/rfc7231#section-6.3.2). MUST
+            used in case of a deferred response. In deferred response the `id`
+            MUST be provided.'
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/GeographicAddressValidation'
+        '400':
+          description: Bad Request
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '422':
+          description:
+            Unprocessable entity due to the business validation problems
+          content:
+            application/json;charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error422'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  '/geographicAddressValidation/{id}':
+    get:
+      tags:
+        - geographicAddressValidation
+      summary: Retrieves a GeographicAddressValidation by ID
+      description:
+        This operation retrieves a GeographicAddressValidation entity.
+      operationId: retrieveGeographicAddressValidation
+      parameters:
+        - name: id
+          in: path
+          description: Identifier of the GeographicAddressValidation
+          required: true
+          schema:
+            type: string
+        - name: buyerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+          required: false
+          schema:
+            type: string
+        - name: sellerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity  represents more than one Seller.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/GeographicAddressValidation'
+        '400':
+          description: Bad Request
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '404':
+          description: Not Found
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+        '501':
+          description: Method not implemented.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error501'
+  '/geographicAddress/{id}':
+    get:
+      tags:
+        - geographicAddress
+      summary: Retrieves a GeographicAddress by ID
+      description: This operation retrieves a GeographicAddress entity.
+      operationId: retrieveGeographicAddress
+      parameters:
+        - name: id
+          in: path
+          description: Identifier of the GeographicAddress
+          required: true
+          schema:
+            type: string
+        - name: buyerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+          required: false
+          schema:
+            type: string
+        - name: sellerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity  represents more than one Seller.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/GeographicAddress'
+        '400':
+          description: Bad Request
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '404':
+          description: Not Found
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /hub:
+    post:
+      tags:
+        - events subscription
+      summary: Register a listener
+      description: >-
+        Sets the communication endpoint address the service instance must use to
+        deliver information about its health state, execution state, failures
+        and metrics.
+      operationId: registerListener
+      parameters:
+        - name: buyerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+
+            Reference: Mplify 150 (Sn 8.8)
+          required: false
+          schema:
+            type: string
+        - name: sellerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity  represents more than one Seller.
+
+            Reference: Mplify 150 (Sn 8.8)
+          required: false
+          schema:
+            type: string
+      requestBody:
+        description:
+          Data containing the callback endpoint to deliver the information
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/EventSubscriptionInput'
+        required: true
+      responses:
+        '201':
+          description: Subscribed
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/EventSubscription'
+        '400':
+          description: Bad Request
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '422':
+          description: Unprocessable entity due to business validation problems
+          content:
+            application/json;charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error422'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+        '501':
+          description: Method not implemented.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error501'
+  '/hub/{id}':
+    get:
+      tags:
+        - events subscription
+      summary: Retrieves a Hub by ID
+      description: This operation retrieves a hub entity.
+      operationId: retrieveHub
+      parameters:
+        - name: id
+          in: path
+          description: Identifier of the Hub
+          required: true
+          schema:
+            type: string
+        - name: buyerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+          required: false
+          schema:
+            type: string
+        - name: sellerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity  represents more than one Seller.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/EventSubscription'
+        '400':
+          description: Bad Request
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '404':
+          description: Not Found
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+        '501':
+          description: Method not implemented.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error501'
+    delete:
+      tags:
+        - events subscription
+      summary: Unregister a listener
+      description: >-
+        Resets the communication endpoint address the service instance must use
+        to deliver information about its health state, execution state, failures
+        and metrics.
+      operationId: unregisterListener
+      parameters:
+        - name: id
+          in: path
+          description: The id of the registered listener
+          required: true
+          schema:
+            type: string
+        - name: buyerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the a
+            Buyer. MUST be specified in the request only when the requester
+            represents more than one Buyer.
+
+            Reference: Mplify 150 (Sn 8.8)
+          required: false
+          schema:
+            type: string
+        - name: sellerId
+          in: query
+          description: >-
+            The unique identifier of the organization that is acting as the
+            Seller. MUST be specified in the request only when responding
+            entity  represents more than one Seller.
+
+            Reference: Mplify 150 (Sn 8.8)
+          required: false
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Deleted
+        '400':
+          description: Bad request
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '404':
+          description: Not Found
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable entity due to business validation problems
+          content:
+            application/json;charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error422'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error500'
+        '501':
+          description: Method not implemented.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error501'
+components:
+  schemas:
+    Error:
+      description: >
+        Standard Class used to describe API response error Not intended to be
+        used directly. The `code` in the HTTP header is used as a discriminator
+        for the type of error returned in runtime.
+      type: object
+      properties:
+        reason:
+          description: >-
+            Text that explains the reason for error. This can be shown to a
+            client user.
+          type: string
+          maxLength: 255
+        message:
+          description: >-
+            Text that provides mode details and corrective actions related to
+            the error. This can be shown to a client user.
+          type: string
+        referenceError:
+          description: URL pointing to documentation describing the error
+          type: string
+          format: uri
+      required:
+        - reason
+    Error400:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              description: >-
+                One of the following error codes:
+
+                - missingQueryParameter: The URI is missing a required
+                query-string parameter
+
+                - missingQueryValue: The URI is missing a required query-string
+                parameter value
+
+                - invalidQuery: The query section of the URI is invalid.
+
+                - invalidBody: The request has an invalid body
+              $ref: '#/components/schemas/Error400Code'
+          required:
+            - code
+          type: object
+      description:
+        'Bad Request. (https://tools.ietf.org/html/rfc7231#section-6.5.1)'
+    Error400Code:
+      description: >-
+        One of the following error codes:
+
+        - missingQueryParameter: The URI is missing a required query-string
+        parameter
+
+        - missingQueryValue: The URI is missing a required query-string
+        parameter value
+
+        - invalidQuery: The query section of the URI is invalid.
+
+        - invalidBody: The request has an invalid body
+      type: string
+      enum:
+        - missingQueryParameter
+        - missingQueryValue
+        - invalidQuery
+        - invalidBody
+    Error401:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              description: >-
+                One of the following error codes:
+
+                - missingCredentials: No credentials provided.
+
+                - invalidCredentials: Provided credentials are invalid or
+                expired
+              $ref: '#/components/schemas/Error401Code'
+          required:
+            - code
+          type: object
+      description:
+        'Unauthorized.  (https://tools.ietf.org/html/rfc7235#section-3.1)'
+    Error401Code:
+      description: |-
+        One of the following error codes:
+        - missingCredentials: No credentials provided.
+        - invalidCredentials: Provided credentials are invalid or expired
+      type: string
+      enum:
+        - missingCredentials
+        - invalidCredentials
+    Error403:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - properties:
+            code:
+              description: |-
+                This code indicates that the server understood
+                the request but refuses to authorize it because
+                of one of the following error codes:
+                - accessDenied: Access denied
+                - forbiddenRequester: Forbidden requester
+                - tooManyUsers: Too many users
+              $ref: '#/components/schemas/Error403Code'
+          required:
+            - code
+          type: object
+      description:
+        'Forbidden. (https://tools.ietf.org/html/rfc7231#section-6.5.3)'
+    Error403Code:
+      description: |-
+        This code indicates that the server understood
+        the request but refuses to authorize it because
+        of one of the following error codes:
+        - accessDenied: Access denied
+        - forbiddenRequester: Forbidden requester
+        - tooManyUsers: Too many users
+      type: string
+      enum:
+        - accessDenied
+        - forbiddenRequester
+        - tooManyUsers
+    Error404:
+      description: >-
+        Resource for the requested path not found.
+        (https://tools.ietf.org/html/rfc7231#section-6.5.4)
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - type: object
+          properties:
+            code:
+              description: >-
+                The following error code:
+
+                - notFound: A current representation for the target resource not
+                found
+              type: string
+              enum:
+                - notFound
+          required:
+            - code
+    Error422:
+      description: >-
+        Unprocessable entity due to a business validation problem.
+        (https://tools.ietf.org/html/rfc4918#section-11.2)
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - type: object
+          properties:
+            code:
+              description: |
+                One of the following error codes:
+                  - missingProperty: The property the Seller has expected is not present in the payload
+                  - invalidValue: The property has an incorrect value
+                  - invalidFormat: The property value does not comply with the expected value format
+                  - referenceNotFound: The object referenced by the property cannot be identified in the Seller system
+                  - unexpectedProperty: Additional property, not expected by the Seller has been provided
+                  - tooManyRecords: the number of records to be provided in the response exceeds the Seller's threshold.
+                  - otherIssue: Other problem was identified (detailed information provided in a reason)
+              $ref: '#/components/schemas/Error422Code'
+            propertyPath:
+              description: >
+                A pointer to a particular property of the payload that caused
+                the validation issue. It is highly recommended that this
+                property should be used.
+
+                Defined using JavaScript Object Notation (JSON) Pointer
+                (https://tools.ietf.org/html/rfc6901).
+              type: string
+          required:
+            - code
+    Error422Code:
+      description: |
+        One of the following error codes:
+          - missingProperty: The property the Seller has expected is not present in the payload
+          - invalidValue: The property has an incorrect value
+          - invalidFormat: The property value does not comply with the expected value format
+          - referenceNotFound: The object referenced by the property cannot be identified in the Seller system
+          - unexpectedProperty: Additional property, not expected by the Seller has been provided
+          - tooManyRecords: the number of records to be provided in the response exceeds the Seller's threshold.
+          - otherIssue: Other problem was identified (detailed information provided in a reason)
+      type: string
+      enum:
+        - missingProperty
+        - invalidValue
+        - invalidFormat
+        - referenceNotFound
+        - unexpectedProperty
+        - tooManyRecords
+        - otherIssue
+    Error500:
+      description: >-
+        Internal Server Error.
+        (https://tools.ietf.org/html/rfc7231#section-6.6.1)
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - type: object
+          properties:
+            code:
+              description: >-
+                The following error code:
+
+                - internalError: Internal server error - the server encountered
+                an unexpected condition that prevented it from fulfilling the
+                request.
+              type: string
+              enum:
+                - internalError
+          required:
+            - code
+    Error501:
+      description: >-
+        Not Implemented. Used in case Seller is not supporting an optional
+        operation (https://tools.ietf.org/html/rfc7231#section-6.6.2)
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - type: object
+          properties:
+            code:
+              description: |-
+                The following error code:
+                - notImplemented: Method not supported by the server
+              type: string
+              enum:
+                - notImplemented
+          required:
+            - code
+    EventSubscription:
+      description: |
+        This resource is used to respond to notification subscriptions.
+      type: object
+      properties:
+        callback:
+          description: >-
+            The value provided by the Buyer in `EventSubscriptionInput` during
+            notification registration
+          type: string
+        id:
+          description: >-
+            An identifier of this Event Subscription assigned by the Seller when
+            a resource is created.
+          type: string
+        query:
+          description: >-
+            The value provided by the Buyer in `EventSubscriptionInput` during
+            notification registration
+          type: string
+      required:
+        - callback
+        - id
+    EventSubscriptionInput:
+      description: This class is used to register for Notifications.
+      type: object
+      properties:
+        callback:
+          description: >-
+            The callback address that the Buyer will be listening for the event
+            notifications at. This property is appended with the notification
+            resource path to construct an URL to which notification is sent.
+            E.g. for "callback": "https://buyer.mef.com/listenerEndpoint", the
+            Geographic Address Validation State Change Event state change
+            notification will be sent to:
+            `https://buyer.mef.com/listenerEndpoint/mefApi/sonata/geographicAddressNotification/v8/listener/geographicAddressValidationStateChangeEvent`
+          type: string
+        query:
+          description: >-
+            This attribute is used to define to which type of events to register
+            to. There is only one event type possible, so the value must either
+            be empty or equal to "geographicAddressValidationStateChangeEvent".
+          type: string
+      required:
+        - callback
+    FieldedAddressRepresentation:
+      description: >-
+        A type of Address that has a discrete field and value for each type of
+        boundary or identifier down to the lowest level of detail. For example
+        "street number" is one field, "street name" is another field, etc.
+      type: object
+      properties:
+        streetNr:
+          description: >-
+            Number identifying a specific property on a public street. It may be
+            combined with streetNrLast for ranged addresses.
+          type: string
+        streetNrSuffix:
+          description: >-
+            The first street number suffix (in a street number range) or the
+            suffix for the street number if there is no range
+          type: string
+        streetNrLast:
+          description:
+            Last number in a range of street numbers allocated to an Address
+          type: string
+        streetNrLastSuffix:
+          description: Last street number suffix for a ranged Address
+          type: string
+        streetPreDirection:
+          description:
+            The direction of the street that appears before the Street Name
+          type: string
+        streetName:
+          description: Name of the street or other street type
+          type: string
+        streetType:
+          description: >-
+            The type of street (e.g., alley, avenue, boulevard, brae, crescent,
+            drive, highway, lane, terrace, parade, place, tarn, way, wharf)
+          type: string
+        streetPostDirection:
+          description: >-
+            A modifier denoting a relative direction that appears after the
+            Street Name.
+          type: string
+        poBox:
+          description: >-
+            Number identifying a specific location in a post office.
+          type: string
+        locality:
+          description: >-
+            An area of defined or undefined boundaries within a local authority
+            or other legislatively defined area.
+          type: string
+        city:
+          description: City in which the Address is located.
+          type: string
+        postcode:
+          description: >-
+            A descriptor for a postal delivery area used to speed and simplify
+            the delivery of mail (also known as zip code)
+          type: string
+        postcodeExtension:
+          description: >-
+            The extension used on a postal code. Note: there are different use
+            codes for this attribute depending upon the country.
+          type: string
+        stateOrProvince:
+          description: The State or Province in which the Address is located.
+          type: string
+        countryCode:
+          description: >-
+            Country in which the Address is located, defined using two
+            characters as defined in ISO 3166
+          type: string
+          minLength: 2
+          maxLength: 2
+        subUnit:
+          description: >-
+            The Sub Unit represented as a list. This is a list to allow complex
+            sub-unit information such as SUITE 42 ROOM A
+          type: array
+          items:
+            $ref: '#/components/schemas/SubUnit'
+        buildingName:
+          description: >
+            The well-known name of a building that is located at this Address
+            (e.g., where there is one Address for a campus).
+          type: string
+        privateStreetNumber:
+          description: Street number on a private street within the Address.
+          type: string
+        privateStreetName:
+          description: >-
+            Private streets internal to a property (e.g., a university) may have
+            internal names that are not recorded by the land title office.
+          type: string
+        language:
+          description: >-
+            The language in which the address is expressed. It MUST use the ISO
+            639:2023 two letter code 639:2023
+          type: string
+          minLength: 2
+          maxLength: 2
+    FormattedAddressRepresentation:
+      description:
+        A type of Representation using single string based on local postal
+        addressing conventions.
+      type: object
+      properties:
+        formattedAddress:
+          description: >-
+            A string containing the address representation
+          type: string
+        language:
+          description: >-
+            The language in which the address is expressed.  It MUST use the ISO
+            639:2023 two letter code
+          type: string
+          minLength: 2
+          maxLength: 2
+      required:
+        - formattedAddress
+    GeographicAddress:
+      description: >-
+        A place on Earth, which may or may not be fixed, described using one or
+        more Geographic Address Representations.
+      type: object
+      properties:
+        id:
+          description: Unique identifier of the place
+          type: string
+        href:
+          description: Unique reference of the place
+          type: string
+        hasPublicSite:
+          description: >-
+            This attribute specifies if public sites exist at the
+            GeographicAddress
+          $ref: '#/components/schemas/TrueFalseUnknown'
+        allowsNewSite:
+          description: >-
+            This attribute specifies if a Buyer must use one of the known
+            existing Sites at this location for any Products delivered to this
+            Address.
+          $ref: '#/components/schemas/TrueFalseUnknown'
+        fieldedAddressRepresentation:
+          description: A list of Fielded Address representations
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldedAddressRepresentation'
+        formattedAddressRepresentation:
+          description: A list of Formatted Address representations
+          type: array
+          items:
+            $ref: '#/components/schemas/FormattedAddressRepresentation'
+        geographicPointRepresentation:
+          description: A list of Geographic Point Address representations
+          type: array
+          items:
+            $ref: '#/components/schemas/GeographicPointRepresentation'
+        labelRepresentation:
+          description: A list of Label Address representations
+          type: array
+          items:
+            $ref: '#/components/schemas/LabelRepresentation'
+        '@type':
+          description:
+            Used to unambiguously designate the class type when using `oneOf`
+          type: string
+          enum:
+            - GeographicAddress
+      required:
+        - allowsNewSite
+        - hasPublicSite
+        - id
+        - '@type'
+    GeographicAddressValidation:
+      allOf:
+        - $ref: '#/components/schemas/GeographicAddressValidation_Create'
+        - description:
+            This resource is used to manage address validation response.
+          type: object
+          properties:
+            id:
+              description: >-
+                An identifier that the Seller assigns to the Validate Geographic
+                Address request when the response is Deferred.
+              type: string
+            state:
+              description: The state of a GeographicAddressValidation.
+              $ref: '#/components/schemas/GeographicAddressValidationStateType'
+            alternateGeographicAddress:
+              description: >-
+                An array of zero or more GeographicAddresses known to the Seller
+                that are considered by the Seller to be an alternate to the
+                Buyer's `submittedGeographicAddress`
+              type: array
+              items:
+                $ref: '#/components/schemas/GeographicAddress'
+            bestMatchGeographicAddress:
+              description: >-
+                Specifies the GeographicAddress which the Seller believes is the
+                best match to the Buyer's `submittedGeographicAddress`.
+              $ref: '#/components/schemas/GeographicAddress'
+          required:
+            - state
+            - alternateGeographicAddress
+    GeographicAddressValidationStateType:
+      description: |
+        A list of possible `state` values for GeographicAddressValidation.
+
+
+        | Name         | Description                                                                                                                                                                                                                                                                                                                  |
+        | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | acknowledged | A GeographicAddressValidation request has been received by the Seller and has passed basic validation. A `GeographicAddressValidation.id` is assigned in the `acknowledged` state and moves to `inProgress` when it passes business validation. If it does not pass business validation, it moves to the `rejected` state. |
+        | inProgress   | The GeographicAddressValidation request is currently being worked on by the Seller.                                                                                                                                                                                                                                          |
+        | ready        | The GeographicAddressValidation processing is completed by the Seller and it is ready to be retrieved or the Immediate Response has been returned.                                                                                                                                                                           |
+        | rejected     | The GeographicAddressValidation processing has failed at least one of the validation checks the Seller performs after it reached the `acknowledged` state.                                                                                                                                                                   |
+      type: string
+      enum:
+        - acknowledged
+        - inProgress
+        - ready
+        - rejected
+    GeographicAddressValidation_Create:
+      description: This resource is used to manage address validation requests.
+      type: object
+      properties:
+        submittedGeographicAddress:
+          description: >-
+            Structure used by the buyer to request geographic address
+            validation'
+          $ref: '#/components/schemas/GeographicAddress_Query'
+        instantSyncValidation:
+          description: >-
+            If this flag is set to True, the Buyer requires an Immediate
+            Response to this request. If the Seller is unable to provide an
+            Immediate Response, the Seller is to reply with an appropriate
+            error.
+          type: boolean
+      required:
+        - instantSyncValidation
+        - submittedGeographicAddress
+    GeographicAddress_Query:
+      description: >-
+        A list of representations being a subset of Geographic Address entity.
+        This is to be used when providing a list of representations to validate
+        or search for a Geographic Address
+      type: object
+      properties:
+        fieldedAddressRepresentation:
+          description: A list of Fielded Address representations
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldedAddressRepresentation'
+        formattedAddressRepresentation:
+          description: A list of Formatted Address representations
+          type: array
+          items:
+            $ref: '#/components/schemas/FormattedAddressRepresentation'
+        geographicPointRepresentation:
+          description: A list of Geographic Point Address representations
+          type: array
+          items:
+            $ref: '#/components/schemas/GeographicPointRepresentation'
+        labelRepresentation:
+          description: A list of Label Address representations
+          type: array
+          items:
+            $ref: '#/components/schemas/LabelRepresentation'
+        '@type':
+          description:
+            Used to unambiguously designate the class type when using `oneOf`
+          type: string
+          enum:
+            - GeographicAddress_Query
+      minProperties: 2
+      required:
+        - '@type'
+    GeographicPointRepresentation:
+      description: >
+        A type of Representation where coordinates (latitude, longitude and
+        sometimes elevation) are used to specify a particular place on Earth.
+      type: object
+      properties:
+        spatialRef:
+          description: >-
+            The spatial reference system used to determine the coordinates. The
+            system used and the value of this field are to be agreed during the
+            onboarding process.
+          type: string
+        latitude:
+          description:
+            The latitude expressed in the format specified by the `spacialRef`
+          type: string
+        longitude:
+          description:
+            The longitude expressed in the format specified by the `spacialRef`
+          type: string
+        elevation:
+          description:
+            The elevation expressed in the format specified by the `spacialRef`
+          type: string
+      required:
+        - latitude
+        - longitude
+        - spatialRef
+    LabelRepresentation:
+      description: >-
+        A type of Geographic Address Representation that is a unique combination
+        of label and Administrative Authority (any organization that distributes
+        labels) that controls assignment of the label and that specifies either
+        a place which may or may not be fixed on Earth.It can be used to
+        identify things that do not have a static Address, such as airplanes or
+        ships
+      type: object
+      properties:
+        label:
+          description: >-
+            The unique reference to a Geographic Address assigned by the
+            Administrative Authority.
+          type: string
+        administrativeAuthority:
+          description: >-
+            The organization or standard from the organization that administers
+            this Label ensuring it is unique within the Administrative
+            Authority.
+          type: string
+        language:
+          description:
+            The language in which the label is expressed. It MUST use the ISO
+            639:2023 two letter code'
+          type: string
+          minLength: 2
+          maxLength: 2
+      required:
+        - administrativeAuthority
+        - label
+    SubUnit:
+      description: Allows for sub unit identification
+      type: object
+      properties:
+        subUnitNumber:
+          description: >-
+            The discriminator used for the subunit, often just a simple number
+            but may also be a range.
+          type: string
+        subUnitType:
+          description: >-
+            The type of subunit e.g. BERTH, FLAT, PIER, SUITE, SHOP, TOWER,
+            UNIT, WHARF.
+          type: string
+      required:
+        - subUnitNumber
+        - subUnitType
+    TrueFalseUnknown:
+      description: >-
+        An enumeration used to represent one of three states
+      type: string
+      enum:
+        - 'true'
+        - 'false'
+        - 'unknown'
