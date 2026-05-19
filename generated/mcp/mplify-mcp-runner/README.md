@@ -3,7 +3,7 @@
 
 Expose **MEF LSO standards**  as **MCP tools** using **FastMCP**.
 
-This server is designed to make **Mplify standard APIs** accessible through the Model Context Protocol, enabling AI assistants to interact with MEF LSO OpenAPI specifications. It automatically maps MEF API endpoints to MCP tools using `FastMCP.from_openapi()`.
+This server is designed to make **Mplify standard APIs** accessible through the Model Context Protocol, enabling AI assistants to interact with MEF LSO OpenAPI specifications. It automatically maps MEF API endpoints to MCP tools using FastMCP v3 with an `OpenAPIProvider`.
 
 ## Features
 

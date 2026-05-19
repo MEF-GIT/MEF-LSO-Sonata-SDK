@@ -6,6 +6,7 @@ from typing import Any, Literal
 
 import httpx
 from fastmcp import FastMCP
+from fastmcp.server.providers.openapi import OpenAPIProvider
 
 from .auth import OAuthRefreshTokenAuth, parse_basic_credentials
 from .openapi_loader import infer_server_uri
@@ -117,9 +118,9 @@ def build_upstream_client(cfg: ServerConfig) -> httpx.AsyncClient:
 
 def create_mcp_server(cfg: ServerConfig) -> FastMCP:
     client = build_upstream_client(cfg)
-    return FastMCP.from_openapi(
+    provider = OpenAPIProvider(
         openapi_spec=cfg.openapi_spec,
         client=client,
-        name=cfg.name,
     )
+    return FastMCP(name=cfg.name, providers=[provider])
 
