@@ -1,0 +1,182 @@
+---
+$id: urn:mplify:lso:spec:product:cross-connection-type0:v1.0.0:all
+$schema: http://json-schema.org/draft-07/schema#
+title: Mplify LSO Cross-Connection Type 0
+description: >-
+  **This file forms part of Mplify 189** 
+
+  This API implements Business Requirements described in Mplify 176 -
+  Cross-Connection Product Attributes. 
+
+  Cross-Connection Type 0 is a Layer 0 physical fiber cross-connection between
+  two demarcation points (A-Side and Z-Side) within a colocation facility. It
+  represents an optical or electrical cable that does not terminate the
+  physical layer (PHY). The cross-connection is placed by a third-party
+  provider on behalf of the Buyer. Each side of the cross-connection is
+  identified by a Connectivity Facility Assignment (CFA) specifying the
+  physical location and interface, or by a Product Relationship referencing an
+  existing product at that location. Reference: Mplify 176 - Cross-Connection
+  Product Attributes.
+type: object
+# ---------------------
+# Disclaimer
+#
+# © Mplify Alliance 2026. All Rights Reserved.
+#
+# The information in this publication is freely available for reproduction and
+# use by any recipient and is believed to be accurate as of its publication date.
+# Such information is subject to change without notice and Mplify Alliance
+# (Mplify) is not responsible for any errors. Mplify does not assume
+# responsibility to update or correct any information in this publication. No
+# representation or warranty, expressed or implied, is made by Mplify concerning
+# the completeness, accuracy, or applicability of any information contained
+# herein and no liability of any kind shall be assumed by Mplify as a result of
+# reliance upon such information.
+#
+# The information contained herein is intended to be used without modification by
+# the recipient or user of this document. Mplify is not responsible or liable for
+# any modifications to this document made by any other party.
+#
+# The receipt or any use of this document or its contents does not in any way
+# create, by implication or otherwise:
+#
+# - (a) any express or implied license or right to or under any patent,
+#   copyright, trademark or trade secret rights held or claimed by any Mplify
+#   member which are or may be associated with the ideas, techniques, concepts or
+#   expressions contained herein; nor
+#
+# - (b) any warranty or representation that any Mplify member will announce any
+#   product(s) and/or service(s) related thereto, or if such announcements are
+#   made, that such announced product(s) and/or service(s) embody any or all of
+#   the ideas, technologies, or concepts contained herein; nor
+#
+# - (c) any form of relationship between any Mplify member and the recipient or
+#   user of this document.
+#
+# Implementation or use of specific Mplify standards, specifications or
+# recommendations will be voluntary, and no Member shall be obliged to implement
+# them by virtue of participation in Mplify Alliance. Mplify is a non-profit
+# international organization to enable the development and worldwide adoption of
+# agile, assured and orchestrated network services. Mplify does not, expressly or
+# otherwise, endorse or promote any specific products or services.
+# ---------------------
+#
+properties:
+  aSideCfa:
+    $ref: '#/definitions/ConnectivityFacilityAssignment'
+    description: >-
+      The A-Side Connectivity Facility Assignment. Describes the physical
+      location and interface details for the A-Side termination point of the
+      cross-connection. The A-Side CFA MUST be provided when the Buyer does not
+      own the facility at this side (Use Case 1). Alternatively, the A-Side MAY
+      be identified via a Product Relationship (Use Case 2).
+  zSideCfa:
+    $ref: '#/definitions/ConnectivityFacilityAssignment'
+    description: >-
+      The Z-Side Connectivity Facility Assignment. Describes the physical
+      location and interface details for the Z-Side termination point of the
+      cross-connection. The Z-Side CFA MUST be provided when the Buyer does not
+      own the facility at this side (Use Case 1). Alternatively, the Z-Side MAY
+      be identified via a Product Relationship (Use Case 2).
+definitions:
+  ConnectivityFacilityAssignment:
+    description: >-
+      A Connectivity Facility Assignment (CFA) identifies a specific physical
+      termination point for one side of a cross-connection within a colocation
+      facility. It includes the building identifier, the owning entity
+      (tenant), the demarcation point (requested or assigned by the Seller),
+      the physical interface specification, and optionally a Letter of
+      Authorization (LOA) if the Buyer does not own the facility at this side.
+    type: object
+    properties:
+      owningEntity:
+        description: >-
+          Identifies the colocation tenant within the data center facility.
+          This is the entity that owns or leases the space where the
+          cross-connection terminates on this side.
+        type: string
+      buildingId:
+        description: >-
+          The unique identifier of the building (data center or colocation
+          facility) where this side of the cross-connection is located. This
+          identifier is typically assigned by the facility operator.
+        type: string
+      requestedDemarcationPoint:
+        description: >-
+          The demarcation point requested by the Buyer for this side of the
+          cross-connection. Specified as a list of SubUnit elements describing
+          the physical path from building level down to the port (e.g., Floor,
+          Room/Hall, Rack/Cabinet, Patch Panel, Port). The Buyer MAY set
+          subUnitNumber to 'NEXT_AVAILABLE' with subUnitType set to e.g. 'PORT'
+          to request the Seller to assign the next available port at the
+          specified location. When 'NEXT_AVAILABLE' is used, the Seller
+          populates the sellerDemarcationPoint with the actual assigned port.
+        type: array
+        items:
+          $ref: '../../../common/common.yaml#/definitions/SubUnit'
+      sellerDemarcationPoint:
+        description: >-
+          The demarcation point assigned by the Seller. This is populated in
+          the response when the Buyer requested 'NEXT_AVAILABLE', or when the
+          Seller assigns a specific termination point that differs from the
+          Buyer's request.
+        type: array
+        items:
+          $ref: '../../../common/common.yaml#/definitions/SubUnit'
+      physicalInterface:
+        description: >-
+          Describes the physical interface characteristics at the demarcation
+          point for this side of the cross-connection. Specifies the media type
+          and connector type. For a Type-0 Cross-Connection, the media type
+          MUST be the same on both A-Side and Z-Side.
+        $ref: '#/definitions/L0XcPhysicalInterface'
+      loa:
+        description: >-
+          Letter of Authorization (LOA). Required when the Buyer does not own
+          the facility on this side of the cross-connection and needs to
+          authorize the Seller (cross-connect provider) to perform work at that
+          location. The LOA MUST be provided as a PDF attachment.
+        $ref: '../../../common/common.yaml#/definitions/AttachmentValue'
+    required:
+      - buildingId
+      - physicalInterface
+  L0XcConnectorType:
+    description: >-
+      Enumeration representing the physical connector type for a Layer 0
+      Cross-Connection interface.
+    type: string
+    enum:
+      - 'FC'
+      - 'LC'
+      - 'SC'
+      - 'E2000'
+      - 'OTHER'
+  L0XcMediaType:
+    description: >-
+      Enumeration of Layer 0 media types representing the optical fiber
+      classification used for the cross-connection.
+    enum:
+      - 'SINGLE_MODE_FIBER'
+      - 'MULTI_MODE_50_MICRON'
+      - 'MULTI_MODE_62.5_MICRON'
+    type: string
+  L0XcPhysicalInterface:
+    description: >-
+      Describes the physical interface characteristics of one side of the
+      Cross-Connection. Specifies the media type (fiber type) and the connector
+      type used at the demarcation point.
+    properties:
+      mediaType:
+        description: >-
+          The type of fiber media used for this side of the cross-connection.
+          Must be consistent across both sides of a Type-0 Cross-Connection.
+        $ref: '#/definitions/L0XcMediaType'
+      connectorType:
+        description: >-
+          The type of physical connector used at this side of the
+          cross-connection interface.
+        $ref: '#/definitions/L0XcConnectorType'
+    type: object
+    required:
+      - mediaType
+      - connectorType

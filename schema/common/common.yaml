@@ -49,6 +49,47 @@ title: MEF LSO Common Types
 # ---------------------
 #
 definitions:
+  AttachmentValue:
+    description: >-
+      Complements the description of an element (for instance a product)
+      through video, pictures...
+    type: object
+    properties:
+      author:
+        description:
+          The name of the person or organization who added the Attachment.
+        type: string
+      creationDate:
+        description: The date the Attachment was added.
+        type: string
+        format: date-time
+      description:
+        description: A narrative text describing the content of the attachment
+        type: string
+      mimeType:
+        description: >-
+          Attachment mime type such as extension file for video, picture and
+          document
+        type: string
+      name:
+        description: The name of the attachment
+        type: string
+      size:
+        description: The size of the attachment.
+        $ref: '#/definitions/MEFByteSize'
+      source:
+        description:
+          Indicates if the attachment was added by the Buyer or the Seller.
+        $ref: '#/definitions/MEFBuyerSellerType'
+      url:
+        description: URL where the attachment is located.
+        type: string
+    required:
+      - author
+      - creationDate
+      - name
+      - source
+      - url
   BiDirSimpleBandwidth:
     description: The upstream and downstream bandwidth
     properties:
@@ -73,6 +114,7 @@ definitions:
       - SC
       - LC
       - OTHER
+  # deprecated - use MEFByteSize instead
   DataSize:
     type: object
     description: >-
@@ -90,6 +132,20 @@ definitions:
           40 KBYTES, this element is KBYTES. Note that the units indicate
           binary values, e.g., KBYTES is 1024 bytes.
         $ref: '#/definitions/DataSizeUnits'
+  DataSizeUnit:
+    description: The unit of measure in the data size.
+    type: string
+    enum:
+      - BYTES
+      - KBYTES
+      - MBYTES
+      - GBYTES
+      - TBYTES
+      - PBYTES
+      - EBYTES
+      - ZBYTES
+      - YBYTES
+  # deprecated - use DataSizeUnit instead
   DataSizeUnits:
     description: Data size in multiples of bytes (e.g., BYTES or MBYTES)
     type: string
@@ -274,6 +330,26 @@ definitions:
       - LACPV1
       - LACPV2
       - STATIC
+  MEFBuyerSellerType:
+    description: An enumeration with buyer and seller values.
+    type: string
+    enum:
+      - buyer
+      - seller
+  MEFByteSize:
+    description: A size represented by value and Byte units
+    type: object
+    properties:
+      amount:
+        description: Numeric value in a given unit
+        type: number
+        format: float
+      units:
+        description: Byte Unit
+        $ref: '#/definitions/DataSizeUnit'
+    required:
+      - amount
+      - units
   Money:
     description: A base/value business entity used to represent money
     type: object
